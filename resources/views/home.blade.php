@@ -97,6 +97,47 @@
  </div>
  </div>
 <!-- Конец -->
+
+<!-- Утвердить -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                                                                                   aria-hidden="true"
+                                                                                    id="approve">
+     <div class="modal-dialog modal-lg" >
+         <div class="modal-content" id="approve-content">
+             <h3 id="h3" style="text-align: center">Запрос на утверждение плана на день:</h3>
+             <span id="approveInfo" style="text-align: center"></span>
+              <hr/>
+              <div class="text-center" id="approve">
+                 <form method='post' id='approveForm' action=''>
+                      <hr/>
+                      <div class='list-inline'>
+                        <p class="text-info">Утвердить план</p>
+
+                        <div class="form-group" style="margin-left: 22% ">
+                          <textarea class="form-control" id="approveComment" rows="3" style="width: 70%;"
+                            placeholder="Комментарий">
+                          </textarea>
+                        </div>
+                        <div class="form-group" style="margin-left: 22% ">
+                               <textarea class="form-control" id="necessary" rows="3" style="width: 70%;"
+                                placeholder="Необходимо"></textarea>
+                         </div>
+                         <div class="form-group" style="margin-left: 22% ">
+                             <textarea class="form-control" id="for_tomorrow" rows="3" style="width: 70%;"
+                              placeholder="На завтра"></textarea>
+                         </div>
+
+                      </div>
+                      <hr/>
+                      <button type="button" onclick="closeDay()" class="btn btn-success">
+                            Утвердить план и закрыть день
+                      </button>
+                  </form>
+              </div>
+         </div>
+ </div>
+ </div>
+<!-- Конец -->
         <div class="col-md-8">
             <div class="card" style="width: 150%;">
                 <div class="card-header">План на {{$date}}</div>
@@ -237,7 +278,9 @@
                                                         data-target="#emergencyCall">
                                                     Экстренный режим
                                                 </button>
-                                                <button type="button" class="btn btn-success">Утвердить</button>
+                                                <button type="button" class="btn btn-success"
+                                                    data-toggle="modal"
+                                                       data-target="#approve">Утвердить</button>
                                                 <button type="button" class="btn btn-primary"
                                                     data-toggle="modal"
                                                      data-target="#modal-content">
@@ -254,6 +297,7 @@
 </div>
 <!-- Тест -->
             <script src="{{ asset('js/Timetable/addTask.js') }}"></script>
+            <script src="{{ asset('js/summary/summary.js') }}"></script>
  <!-- Конец -->
 @endsection
 @endif
