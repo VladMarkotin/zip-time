@@ -29,11 +29,17 @@ class HomeController extends Controller
     public function index()
     {
         $dayPlan = $this->planService->getDayPlan(\Illuminate\Support\Facades\Auth::id());
-        //dd($dayPlan);
+
         return view('home')->with(["plan" => $dayPlan,
-            'date' => \Illuminate\Support\Carbon::today()->toDateString(),
-            "message" => "У вас не составлен план на день! Исправить это можно здесь",
-            'day_status' => $this->planService->getDayStatus(\Illuminate\Support\Facades\Auth::id() ) ]
+                'date' => \Illuminate\Support\Carbon::today()->toDateString(),
+                "message" => "У вас не составлен план на день! Исправить это можно здесь",
+                'day_status' => $this->planService->getDayStatus(\Illuminate\Support\Facades\Auth::id() ),
+                'final_estimation' => $this->planService->getFinalEstimation(\Illuminate\Support\Facades\Auth::id()),
+                'own_estimation'   => $this->planService->getOwnEstimation(\Illuminate\Support\Facades\Auth::id()),
+                'comment'      => $this->planService->getComment( \Illuminate\Support\Facades\Auth::id()),
+                'necessary'    => '',
+                'for_tommorow' => '',
+            ]
         );
 
     }

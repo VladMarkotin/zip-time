@@ -35,6 +35,8 @@ Route::get('/', function (Controllers\Services\PlanServices\DisplayPlanService $
                 return view('emergency')->with(['plan' => $dayPlan,
                     'date' => \Illuminate\Support\Carbon::today()->toDateString(),
                     'day_status'   => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
+                    'final_estimation' => "",
+                    'own_estimation'   => "",
                     'comment'      => $planService->getComment( \Illuminate\Support\Facades\Auth::id()),
                     'necessary'    => '',
                     'for_tommorow' => '',

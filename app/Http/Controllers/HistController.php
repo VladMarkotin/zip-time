@@ -28,10 +28,11 @@ class HistController
     {
         $id = \Illuminate\Support\Facades\Auth::id();
         $result = $this->planService->getAllPlansOfUser($id);
-
-        return response()->json([
-            'message' => "План на день успешно сформирован. Желаю удачи в работе!",
-            "decoration" => "alert alert-success"
-        ]);
+        dd($result); //works
+        if($result){
+            return view("history.index")->with(["history" => $result]);
+        } else{
+            return view("history.index")->with(["history" => []]);
+        }
     }
 } 

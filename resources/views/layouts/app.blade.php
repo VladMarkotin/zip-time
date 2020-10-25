@@ -86,6 +86,7 @@
         <main class="py-4">
             @yield('content')
             @yield('list');
+            @yield('hist_cards')
         </main>
     </div>
 

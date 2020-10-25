@@ -26,7 +26,10 @@ class DisplayPlanService {
 
     public function getAllPlansOfUser($id)
     {
-        $query = "select * from tasks where timetable_id IN (select id from timetables where user_id = $id)";
+        $query = "select timet.date, timet.time_of_day_plan, timet.day_status,timet.final_estimation,own_estimation,timet.comment,timet.necessary,timet.for_tommorow, tasks.task_name, tasks.mark, tasks.time,
+                    tasks.details,tasks.note from tasks JOIN `timetables` timet ON timet.id = tasks.timetable_id where
+                    tasks.timetable_id IN (select id from timetables where user_id = $id)
+                      AND timet.user_id = 1";
         $result = DB::select($query);
         //dd($result); works
 
