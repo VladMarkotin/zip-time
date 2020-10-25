@@ -112,7 +112,14 @@
                       <hr/>
                       <div class='list-inline'>
                         <p class="text-info">Утвердить план</p>
-
+                         <div class="form-group">
+                            <input type="number" id="own_mark" placeholder="Личная оценка"
+                                aria-describedby="basic-addon1"
+                                    data-bind="value:replyNumber">
+                                <div class="input-group-append">
+                                     <span class="input-group-text" id="basic-addon1">%</span>
+                                </div>
+                         </div>
                         <div class="form-group" style="margin-left: 22% ">
                           <textarea class="form-control" id="approveComment" rows="3" style="width: 70%;"
                             placeholder="Комментарий">
@@ -259,7 +266,10 @@
                                         <p class="text-info">Итого:</p>
                                      </div>
                                      <div class="list-group-item ">
-                                        <p class="text-info">КПД:</p>
+                                        <p class="text-info">КПД: <span class="text-dark">
+                                           @if($final_estimation != -1.00) {{ $final_estimation }}% | @endif  </span>
+                                        <span class="text-dark">@if($own_estimation != -1.00) {{ $own_estimation }}% @endif</span>
+                                        </p>
                                      </div>
                                      <div class="list-group-item ">
                                          <p class="text-info">Комментарий: <span class="text-dark">{{ $comment }} </span></p>
@@ -268,28 +278,30 @@
                                      </div>
                                   </div>
                               </div>
-
-                              <div class="list-inline">
-                                    <div class="list-group">
-                                        <div class="list-group-item ">
-                                            <div class="text-center">
-                                                <button type="button" id="emergency" class="btn btn-danger"
-                                                     data-toggle="modal"
-                                                        data-target="#emergencyCall">
-                                                    Экстренный режим
-                                                </button>
-                                                <button type="button" class="btn btn-success"
-                                                    data-toggle="modal"
-                                                       data-target="#approve">Утвердить</button>
-                                                <button type="button" class="btn btn-primary"
-                                                    data-toggle="modal"
-                                                     data-target="#modal-content">
-                                                        Добавить задание
+                              @if($final_estimation == -1.00)
+                                  <div class="list-inline">
+                                        <div class="list-group">
+                                            <div class="list-group-item ">
+                                                <div class="text-center">
+                                                    <button type="button" id="emergency" class="btn btn-danger"
+                                                         data-toggle="modal"
+                                                            data-target="#emergencyCall">
+                                                        Экстренный режим
                                                     </button>
+                                                    <button type="button" class="btn btn-success"
+                                                        data-toggle="modal"
+                                                           data-target="#approve">Утвердить</button>
+
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-toggle="modal"
+                                                         data-target="#modal-content">
+                                                            Добавить задание
+                                                        </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                      </div>
-                              </div>
+                                          </div>
+                                  </div>
+                              @endif
                 </div>
             </div>
         </div>

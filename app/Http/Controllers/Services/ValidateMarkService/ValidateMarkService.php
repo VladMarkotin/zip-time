@@ -29,7 +29,6 @@ class ValidateMarkService {
 
     private function areAllMarksValid($data)
     {
-
         foreach($data as $i => $v){
             if($v[0] == "on"){
                 //die(print_r($data));

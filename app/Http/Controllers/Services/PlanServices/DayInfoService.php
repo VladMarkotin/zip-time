@@ -38,4 +38,25 @@ class DayInfoService
 
         return $dayInfo;
     }
+
+    public function closeDay($data)
+    {
+        //die(print_r($dayInfo));
+        $dayInfo = [
+            "user_id"          => Auth::id(),
+            "date"             => Carbon::today(),
+            "day_status"       => $data["status"],
+            "final_estimation" => "",
+            "own_estimation"   => $data["own_mark"],
+            "comment"          => $data["comment"],
+            "necessary"        => $data["necessary"],
+            "for_tomorrow"     => $data["for_tomorrow"]
+        ];
+        //die(print_r($data));
+        /*Вставляю данные в бд через $dayInfoRepository*/
+        $response = $this->dayInfoRepository->estimateDay($dayInfo);//true - good, false-bad
+
+        return $response;
+
+    }
 } 

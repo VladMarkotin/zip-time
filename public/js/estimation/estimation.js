@@ -38,6 +38,10 @@ $(document).keypress(function (event) {
 
         });
         marks.shift();
+        marks.shift();
+        marks.shift();
+        marks.shift();
+        marks.shift();
         $.each(marks, function (index,value) {
             if( value != ''){
                 console.log(value);

@@ -26,7 +26,7 @@ class EstimateService
     public function estimate(array $estimationArray)
     {
         $chunkEstimationArray = $this->chunkData($estimationArray);
-        //die(print_r($chunkEstimationArray)); то что надо (как минимум если у меня 2 задания)
+        //die(print_r($chunkEstimationArray));// то что надо (как минимум если у меня 2 задания)
         $lastTimetableId = $this->dayInfoRepository->lastTimetable();
         $this->taskRepository->updateById($lastTimetableId, $chunkEstimationArray);
 

@@ -137,7 +137,6 @@ class DayInfoRepository extends BaseRepository
         $lastTimetableId = (DB::table('timetables')
             ->select(DB::raw('id'))
             ->max('id') );
-        //dd($lastTimetableId);
         $timetable = DB::table('timetables')
             ->where('user_id', '=', $id)
             ->where('id', '=', $lastTimetableId)
@@ -170,6 +169,70 @@ class DayInfoRepository extends BaseRepository
             ->orderBy('date','DESC');
 
         return $timetable->get('comment');
+    }
+
+    public function estimateDay($request)
+    {
+        if($request) {
+            $lastTimetableId = $this->lastTimetable();
+            $finalAvgMark = $this->getAvgMark($lastTimetableId);
+            $timeOfDayPlan = $this->getTimeOfDayPlan($lastTimetableId);
+            if ($finalAvgMark >= 50) {
+                DB::table('timetables')->where([['id', '=', $lastTimetableId], ["user_id", '=', $request['user_id']]])
+                    ->update(array(
+                        'time_of_day_plan' => $timeOfDayPlan,
+                        'final_estimation' => $finalAvgMark,
+                        'own_estimation' => $request['own_estimation'],
+                        'day_status' => $request["day_status"],
+                        'comment' => $request['comment'],
+                        'necessary' => $request['necessary'],
+                        'for_tommorow' => $request['for_tomorrow']
+                    ));
+
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private function getAvgMark($lastTimetableId)
+    {
+        //die("getAvgMark"); попадаю
+        $isAbleToEstimateDay = $this->isAbleToCountAvgMark($lastTimetableId);
+        if($isAbleToEstimateDay) {
+            $query = "SELECT SUM(mark) as 'sum' FROM tasks WHERE timetable_id = $lastTimetableId AND status = 2 AND  mark <> -1.00 GROUP BY(task_id) WITH ROLLUP";
+            $query = trim($query);
+            $avgMark = DB::select($query);
+            $avgMarkLength = count($avgMark) - 1;
+            $summary = $avgMark[$avgMarkLength]->sum / $avgMarkLength;
+
+            return $summary;
+        }
+
+        return -1;
+    }
+
+    private function getTimeOfDayPlan($lastTimetableId)
+    {
+        //SELECT SEC_TO_TIME( SUM(TIME_TO_SEC (STR_TO_DATE(`time`, '%H:%i') ) ) ) AS Sum_Of_time FROM tasks WHERE `timetable_id` = 80
+        $query = "SELECT SEC_TO_TIME( SUM(TIME_TO_SEC (STR_TO_DATE(`time`, '%H:%i') ) ) ) AS Sum_Of_time FROM tasks WHERE `timetable_id` = $lastTimetableId";
+        $timeOfPlan = DB::select($query);
+
+        return $timeOfPlan[0]->Sum_Of_time;
+    }
+
+    private function isAbleToCountAvgMark($lastTimetableId)
+    {
+        $query = "select task_name FROM tasks where timetable_id = $lastTimetableId AND status = 2 AND mark IS NULL";
+        $isNull = DB::select($query);
+
+        if($isNull){
+            return false;
+        }
+
+        return true;
     }
 
 

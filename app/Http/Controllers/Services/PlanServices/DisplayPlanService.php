@@ -61,4 +61,44 @@ class DisplayPlanService {
 
         return $result[0]->comment;
     }
+
+    public function getFinalEstimation($id)
+    {
+        $currentDate = Carbon::today()->toDateString();
+        $query = "select final_estimation from timetables where user_id = $id and date = '$currentDate' ";
+        $result = DB::select($query);
+        if($result == []) return "uiyfg";
+
+        return $result[0]->final_estimation;
+    }
+
+    public function getOwnEstimation($id)
+    {
+        $currentDate = Carbon::today()->toDateString();
+        $query = "select own_estimation from timetables where user_id = $id and date = '$currentDate' ";
+        $result = DB::select($query);
+        if($result == []) return "uiyfg";
+
+        return $result[0]->own_estimation;
+    }
+
+    public function getNecessary($id)
+    {
+        $currentDate = Carbon::today()->toDateString();
+        $query = "select necessary from timetables where user_id = $id and date = '$currentDate' ";
+        $result = DB::select($query);
+        if($result == []) return "uiyfg";
+
+        return $result[0]->necessary;
+    }
+
+    public function getForTomorrow($id)
+    {
+        $currentDate = Carbon::today()->toDateString();
+        $query = "select for_tommorow from timetables where user_id = $id and date = '$currentDate' ";
+        $result = DB::select($query);
+        if($result == []) return "uiyfg";
+
+        return $result[0]->for_tommorow;
+    }
 } 

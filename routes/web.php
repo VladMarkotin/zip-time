@@ -23,9 +23,11 @@ Route::get('/', function (Controllers\Services\PlanServices\DisplayPlanService $
                 return view('home')->with(['plan' => $dayPlan,
                     'date' => \Illuminate\Support\Carbon::today()->toDateString(),
                     'day_status'   => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
+                    'final_estimation' => $planService->getFinalEstimation(\Illuminate\Support\Facades\Auth::id()),
+                    'own_estimation'   => $planService->getOwnEstimation(\Illuminate\Support\Facades\Auth::id()),
                     'comment'      => $planService->getComment( \Illuminate\Support\Facades\Auth::id()),
-                    'necessary'    => '',
-                    'for_tommorow' => '',
+                    'necessary'    => $planService->getNecessary( \Illuminate\Support\Facades\Auth::id()),
+                    'for_tommorow' => $planService->getForTomorrow( \Illuminate\Support\Facades\Auth::id()),
                 ]);
                 //возвращаю вьюху с составленным планом
             }
@@ -62,3 +64,5 @@ Route::post('/estimate', 'PlanController@estimate');
 Route::post('/addwork', 'PlanController@addWork');
 
 Route::post('/emergency', 'PlanController@emergencyCall');
+
+Route::post('/approve', 'PlanController@approve');

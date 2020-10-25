@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Services\EstimationServices\EstimateService;
 use App\Http\Controllers\Services\PlanServices\CreateTimeTableService as PlanService;
+use App\Http\Controllers\Services\SummaryServices\SummaryService;
 use App\Http\Controllers\Services\ValidateEmergencyCauseService\ValidateEmergencyCauseService;
 use App\Http\Controllers\Services\ValidateMarkService\ValidateMarkService;
 use Controllers\Services\PlanServices\DayInfoService;
@@ -31,6 +32,7 @@ class PlanController extends Controller
     private $addTaskService;
     private $validateEmergencyService;
     private $emergencyCallService;
+    private $summaryService;
 
     public function __construct(PlanService $planService,
                                 TaskProcessService $taskProcess,
@@ -40,7 +42,8 @@ class PlanController extends Controller
                                 EstimateService $estimateService,
                                 AddTaskService $addTaskService,
                                 ValidateEmergencyCauseService $validateEmergencyCauseService,
-                                EmergencyCallService $emergencyCallService)
+                                EmergencyCallService $emergencyCallService,
+                                SummaryService $summaryService)
     {
         $this->planService              = $planService;
         $this->taskProcessService       = $taskProcess;
@@ -51,6 +54,7 @@ class PlanController extends Controller
         $this->addTaskService           = $addTaskService;
         $this->validateEmergencyService = $validateEmergencyCauseService;
         $this->emergencyCallService     = $emergencyCallService;
+        $this->summaryService           = $summaryService;
     }
 
     public function index(Request $request)
@@ -136,11 +140,38 @@ class PlanController extends Controller
                 "decoration" => "alert alert-success"
             ]);
         }
+
         return response()->json([
             'message' => "Не удалось активировать экстренный режим!",
             "decoration" => "alert alert-danger"
         ]);
+    }
 
+    public function approve(Request $request)
+    {
+        $fullData = json_decode($request->getContent(), true);
+        $answers = $this->summaryService->estimateDay($fullData);
+        foreach($answers as $a){
+            if(!$a){
+                return response()->json([
+                    'message' => "При выставлении оценки за день произошла ошибка!",
+                    "decoration" => "alert alert-danger"
+                ]);
+            }
+        }
+        $fullData["status"] = "утв";
+        $response = $this->dayInfoService->closeDay($fullData);
 
+        if(!$response){
+            return response()->json([
+                'message' => "При выставлении оценки за день произошла ошибка!Кажется, вы еще не выполнили все обязательные задания!",
+                "decoration" => "alert alert-danger"
+            ]);
+        }
+
+        return response()->json([
+            'message' => "Оценка за день успешно выставлена! Хорошо потрудился,молодец! :)",
+            "decoration" => "alert alert-success"
+        ]);
     }
 }

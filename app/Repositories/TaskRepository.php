@@ -109,9 +109,9 @@ class TaskRepository extends BaseRepository
     public function updateById($id, array $data, array $options = [])
     {
         // TODO: Implement updateById() method.
-        //die(print_r($data));
+
         $taskNames = $this->getTaskNamesWithTimetableId($id);
-        array_shift($data);//избавляемся от пустых инпутов,которые связаны с формой на + нового задания после создания плана
+        //die(print_r($data));
         foreach($data as $i => $v){
             $taskId = $data[$i][2];
             $mark = (is_numeric($data[$i][0])) ? $data[$i][0]: 'NULL';
@@ -147,6 +147,10 @@ class TaskRepository extends BaseRepository
     public function with($relations)
     {
         // TODO: Implement with() method.
+    }
+
+    public function summarize(){
+
     }
 
     private function getTaskNamesWithTimetableId($timetableId)
