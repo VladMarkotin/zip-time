@@ -22,6 +22,7 @@ Route::get('/', function (Controllers\Services\PlanServices\DisplayPlanService $
             if(!$isEmergencyOn){
                 return view('home')->with(['plan' => $dayPlan,
                     'date' => \Illuminate\Support\Carbon::today()->toDateString(),
+                    'day_time' =>  $planService->getDayTime(\Illuminate\Support\Facades\Auth::id()),
                     'day_status'   => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
                     'final_estimation' => $planService->getFinalEstimation(\Illuminate\Support\Facades\Auth::id()),
                     'own_estimation'   => $planService->getOwnEstimation(\Illuminate\Support\Facades\Auth::id()),
@@ -34,9 +35,10 @@ Route::get('/', function (Controllers\Services\PlanServices\DisplayPlanService $
             else{
                 return view('emergency')->with(['plan' => $dayPlan,
                     'date' => \Illuminate\Support\Carbon::today()->toDateString(),
-                    'day_status'   => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
-                    'final_estimation' => "",
-                    'own_estimation'   => "",
+                    'day_time'         =>  "-",
+                    'day_status'       => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
+                    'final_estimation' => "-",
+                    'own_estimation'   => "-",
                     'comment'      => $planService->getComment( \Illuminate\Support\Facades\Auth::id()),
                     'necessary'    => '',
                     'for_tommorow' => '',
@@ -58,6 +60,8 @@ Auth::routes(['register' => false]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/hist', 'HistController@index')->name('hist');
+
+Route::get('/hist/{i}', 'HistController@showDayPlanHist');
 
 Route::post('/add', 'PlanController@index');
 

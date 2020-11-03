@@ -263,7 +263,7 @@
                                 <div class="list">
                                   <div class="list-group">
                                      <div class="list-group-item ">
-                                        <p class="text-info">Итого:</p>
+                                        <p class="text-info">Итого:  <span class="text-dark">@if(isset($day_time)) {{$day_time}} @endif </span> часов</p>
                                      </div>
                                      <div class="list-group-item ">
                                         <p class="text-info">КПД: <span class="text-dark">

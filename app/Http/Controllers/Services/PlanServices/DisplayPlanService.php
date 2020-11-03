@@ -26,12 +26,23 @@ class DisplayPlanService {
 
     public function getAllPlansOfUser($id)
     {
-        $query = "select timet.date, timet.time_of_day_plan, timet.day_status,timet.final_estimation,own_estimation,timet.comment,timet.necessary,timet.for_tommorow, tasks.task_name, tasks.mark, tasks.time,
-                    tasks.details,tasks.note from tasks JOIN `timetables` timet ON timet.id = tasks.timetable_id where
+
+        $query = "select DISTINCT timet.date, timet.time_of_day_plan, timet.day_status,timet.final_estimation,own_estimation,timet.comment,timet.necessary,timet.for_tommorow, tasks.task_name, tasks.mark, tasks.time,
+                    tasks.details,tasks.note,tasks.timetable_id from tasks JOIN `timetables` timet ON timet.id = tasks.timetable_id where
                     tasks.timetable_id IN (select id from timetables where user_id = $id)
-                      AND timet.user_id = 1";
+                      AND timet.user_id = $id ORDER BY timet.date DESC LIMIT 10";//временное решение
         $result = DB::select($query);
-        //dd($result); works
+        //dd($result);
+        return $result;
+    }
+
+    public function getConcretePlan($id, $date)
+    {
+        $query = "select DISTINCT timet.date, timet.time_of_day_plan, timet.day_status,timet.final_estimation,own_estimation,timet.comment,timet.necessary,timet.for_tommorow, tasks.task_name, tasks.mark, tasks.time,
+                    tasks.details,tasks.note,tasks.timetable_id from tasks JOIN `timetables` timet ON timet.id = tasks.timetable_id where
+                    tasks.timetable_id IN (select id from timetables where user_id = $id and date = '$date')
+                      AND timet.user_id = $id LIMIT 10";
+        $result = DB::select($query);
 
         return $result;
     }
@@ -63,6 +74,16 @@ class DisplayPlanService {
         if($result == []) return "uiyfg";
 
         return $result[0]->comment;
+    }
+
+    public function getDayTime($id)
+    {
+        $currentDate = Carbon::today()->toDateString();
+        $query = "select time_of_day_plan from timetables where user_id = $id and date = '$currentDate' ";
+        $result = DB::select($query);
+        if($result == []) return "uiyfg";
+
+        return $result[0]->time_of_day_plan;
     }
 
     public function getFinalEstimation($id)

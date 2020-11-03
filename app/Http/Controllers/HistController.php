@@ -16,6 +16,7 @@ class HistController
 {
     private $planService;
     private $dayInfoService;
+    private $dayPlanHistory;
 
     public function __construct(PlanService $planService,
                                 DayInfoService $dayInfoService)
@@ -28,11 +29,23 @@ class HistController
     {
         $id = \Illuminate\Support\Facades\Auth::id();
         $result = $this->planService->getAllPlansOfUser($id);
-        dd($result); //works
         if($result){
+            $this->dayPlanHistory = $result;
+     //       dd($result);
             return view("history.index")->with(["history" => $result]);
         } else{
             return view("history.index")->with(["history" => []]);
         }
+    }
+
+    public function showDayPlanHist($dateOfTimetable)
+    {
+        $id = \Illuminate\Support\Facades\Auth::id();
+        $result = $this->planService->getConcretePlan($id,$dateOfTimetable);
+        if($result) {
+            return view("history.hist")->with(["histDayPlan" => $result]);
+        }
+
+        return ;
     }
 } 
