@@ -83,7 +83,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 text-center">
             @yield('content')
             @yield('list');
             @yield('hist_cards')

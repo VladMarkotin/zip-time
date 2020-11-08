@@ -26,24 +26,25 @@ class DisplayPlanService {
 
     public function getAllPlansOfUser($id)
     {
-
-        $query = "select DISTINCT timet.date, timet.time_of_day_plan, timet.day_status,timet.final_estimation,own_estimation,timet.comment,timet.necessary,timet.for_tommorow, tasks.task_name, tasks.mark, tasks.time,
-                    tasks.details,tasks.note,tasks.timetable_id from tasks JOIN `timetables` timet ON timet.id = tasks.timetable_id where
-                    tasks.timetable_id IN (select id from timetables where user_id = $id)
-                      AND timet.user_id = $id ORDER BY timet.date DESC LIMIT 10";//временное решение
+        $query = "select  timet.date, timet.time_of_day_plan, timet.day_status,timet.final_estimation,own_estimation,timet.comment,timet.necessary,timet.for_tommorow, tasks.task_name,tasks.status, tasks.mark, tasks.time,
+                    tasks.details,tasks.note,tasks.timetable_id from timetables timet RIGHT JOIN tasks ON tasks.timetable_id  = timet.id where
+                    tasks.timetable_id IN (select id from timetables where user_id = 1)
+                      AND timet.user_id = 1  GROUP BY timet.date  ORDER BY timet.date DESC";//временное решение
+        //dd($query);
         $result = DB::select($query);
-        //dd($result);
+        //dd($query);
         return $result;
     }
 
     public function getConcretePlan($id, $date)
     {
-        $query = "select DISTINCT timet.date, timet.time_of_day_plan, timet.day_status,timet.final_estimation,own_estimation,timet.comment,timet.necessary,timet.for_tommorow, tasks.task_name, tasks.mark, tasks.time,
+        $query = "select DISTINCT timet.date, timet.time_of_day_plan, timet.day_status,timet.final_estimation,own_estimation,timet.comment,timet.necessary,timet.for_tommorow, tasks.task_name, tasks.mark,
+                    tasks.time, tasks.status,
                     tasks.details,tasks.note,tasks.timetable_id from tasks JOIN `timetables` timet ON timet.id = tasks.timetable_id where
                     tasks.timetable_id IN (select id from timetables where user_id = $id and date = '$date')
                       AND timet.user_id = $id LIMIT 10";
         $result = DB::select($query);
-
+        //dd($result);
         return $result;
     }
 

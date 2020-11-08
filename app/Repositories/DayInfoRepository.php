@@ -175,13 +175,15 @@ class DayInfoRepository extends BaseRepository
     {
         if($request) {
             $lastTimetableId = $this->lastTimetable();
-            $finalAvgMark = $this->getAvgMark($lastTimetableId);
-            $timeOfDayPlan = $this->getTimeOfDayPlan($lastTimetableId);
+            $finalAvgMark    = $this->getAvgMark($lastTimetableId);
+            $finalExtraMark  = $this->getAvgMarkOfExtraTasks($lastTimetableId);
+            $finalMark       = ($finalExtraMark) ? ($finalAvgMark + $finalExtraMark) / 2: $finalAvgMark;
+            $timeOfDayPlan   = $this->getTimeOfDayPlan($lastTimetableId);
             if ($finalAvgMark >= 50) {
                 DB::table('timetables')->where([['id', '=', $lastTimetableId], ["user_id", '=', $request['user_id']]])
                     ->update(array(
                         'time_of_day_plan' => $timeOfDayPlan,
-                        'final_estimation' => $finalAvgMark,
+                        'final_estimation' => $finalMark,
                         'own_estimation' => $request['own_estimation'],
                         'day_status' => $request["day_status"],
                         'comment' => $request['comment'],
@@ -195,6 +197,27 @@ class DayInfoRepository extends BaseRepository
 
         return false;
 
+    }
+
+    private function getAvgMarkOfExtraTasks($lastTimetableId)
+    {
+        //die("getAvgExtraMark"); //попадаю
+        $isAbleToEstimateDay = $this->isAbleToCountAvgMark($lastTimetableId);
+        if($isAbleToEstimateDay) {
+            $query = "SELECT SUM(mark) as 'sum' FROM tasks WHERE timetable_id = $lastTimetableId AND status = 1 AND mark IS NOT NULL GROUP BY(task_id) WITH ROLLUP";
+            $query = trim($query);
+            $avgMark = DB::select($query);
+            $avgMarkLength = count($avgMark) - 1;
+            if($avgMarkLength > 1) {
+                $summary = $avgMark[$avgMarkLength]->sum / $avgMarkLength;
+
+                return $summary;
+            }
+
+            return 0;
+        }
+
+        return 0;
     }
 
     private function getAvgMark($lastTimetableId)
