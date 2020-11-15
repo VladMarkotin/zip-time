@@ -173,25 +173,44 @@ class DayInfoRepository extends BaseRepository
 
     public function estimateDay($request)
     {
+
         if($request) {
-            $lastTimetableId = $this->lastTimetable();
-            $finalAvgMark    = $this->getAvgMark($lastTimetableId);
-            $finalExtraMark  = $this->getAvgMarkOfExtraTasks($lastTimetableId);
-            $finalMark       = ($finalExtraMark) ? ($finalAvgMark + $finalExtraMark) / 2: $finalAvgMark;
-            $timeOfDayPlan   = $this->getTimeOfDayPlan($lastTimetableId);
-            if ($finalAvgMark >= 50) {
+            if($request["day_status"] == "Вых"){
+                //die(print_r($request));
+                $lastTimetableId = $this->lastTimetable();
+                $timeOfDayPlan = $this->getTimeOfDayPlan($lastTimetableId);
                 DB::table('timetables')->where([['id', '=', $lastTimetableId], ["user_id", '=', $request['user_id']]])
-                    ->update(array(
+                        ->update(array(
                         'time_of_day_plan' => $timeOfDayPlan,
-                        'final_estimation' => $finalMark,
+                        'final_estimation' => -2.0, //-2 - признак того, что день под статусом Вых
                         'own_estimation' => $request['own_estimation'],
                         'day_status' => $request["day_status"],
                         'comment' => $request['comment'],
                         'necessary' => $request['necessary'],
                         'for_tommorow' => $request['for_tomorrow']
-                    ));
+                        ));
 
                 return true;
+            }else {
+                $lastTimetableId = $this->lastTimetable();
+                $finalAvgMark = $this->getAvgMark($lastTimetableId);
+                $finalExtraMark = $this->getAvgMarkOfExtraTasks($lastTimetableId);
+                $finalMark = ($finalExtraMark) ? ($finalAvgMark + $finalExtraMark) / 2 : $finalAvgMark;
+                $timeOfDayPlan = $this->getTimeOfDayPlan($lastTimetableId);
+                if ($finalAvgMark >= 50) {
+                    DB::table('timetables')->where([['id', '=', $lastTimetableId], ["user_id", '=', $request['user_id']]])
+                        ->update(array(
+                            'time_of_day_plan' => $timeOfDayPlan,
+                            'final_estimation' => $finalMark,
+                            'own_estimation' => $request['own_estimation'],
+                            'day_status' => $request["day_status"],
+                            'comment' => $request['comment'],
+                            'necessary' => $request['necessary'],
+                            'for_tommorow' => $request['for_tomorrow']
+                        ));
+
+                    return true;
+                }
             }
         }
 

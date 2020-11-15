@@ -83,10 +83,13 @@
             </div>
         </nav>
 
-        <main class="py-4 text-center">
+        <main class="py-4">
             @yield('content')
             @yield('list');
-            @yield('hist_cards')
+            <div class="container-fluid">
+                @yield('history.sorts.sorts')
+                @yield('hist_cards')
+            </div>
         </main>
     </div>
 

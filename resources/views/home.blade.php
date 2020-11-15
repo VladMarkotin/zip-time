@@ -150,7 +150,7 @@
                 <div class="card-header">План на {{$date}}</div>
                 <div id="info"></div>
                 <div class="card-body">
-                    <p>Статус: {{ $day_status }}</p>
+                    <p >Статус: <span id="dayStatus">{{ $day_status }}</span></p>
                     <table class="table table-bordered table-hover">
                     <thead>
                                     <tr>
@@ -194,7 +194,9 @@
                                                            min="50" max="100"
                                                              aria-describedby="basic-addon1"
                                                                data-bind="value:replyNumber"
-                                                                 aria-label="Оценка"/>
+                                                                 aria-label="Оценка"
+                                                                 @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
+                                                                 />
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="basic-addon1">%</span>
                                                        </div>
@@ -204,6 +206,7 @@
                                                         <input class="form-control" type="number" id="{{$p->task_id}}"
                                                              min="50" max="100"
                                                              value="{{ $p->mark }}"
+                                                               @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
                                                                aria-describedby="basic-addon1"
                                                                   data-bind="value:replyNumber"
                                                                     aria-label="Оценка"/>
@@ -218,7 +221,9 @@
                                                      aria-describedby="basic-addon1"
                                                      data-bind="value:replyNumber"
                                                      aria-label="Оценка"
-                                                     @if($p->mark == 99) checked @endif/>
+                                                     @if($p->mark == 99) checked @endif
+                                                     @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
+                                                     />
                                                <div class="input-group-append">
                                                   <span class="input-group-text" id="basic-addon1">?</span>
                                                </div>
@@ -231,6 +236,7 @@
                                                <div class="input-group mb-3">
 
                                                      <input type="text" class="form-control" placeholder="Заметки"
+                                                        @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
                                                         aria-label="Username"
                                                             aria-describedby="basic-addon2"
                                                                 >
@@ -246,6 +252,7 @@
                                                               aria-label="Username"
                                                                   aria-describedby="basic-addon2"
                                                                      value="{{$p->note}}"
+                                                                        @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
                                                        >
                                                     <div class="input-group-prepend">
                                                        <span class="input-group-text" id="basic-addon2">А</span>
@@ -266,9 +273,18 @@
                                         <p class="text-info">Итого:  <span class="text-dark">@if(isset($day_time)) {{$day_time}} @endif </span> часов</p>
                                      </div>
                                      <div class="list-group-item ">
-                                        <p class="text-info">КПД: <span class="text-dark">
-                                           @if($final_estimation != -1.00) {{ $final_estimation }}% | @endif  </span>
-                                        <span class="text-dark">@if($own_estimation != -1.00) {{ $own_estimation }}% @endif</span>
+                                        <p class="text-info">КПД:
+                                         <span class="text-dark">
+                                           @if($final_estimation > -1.00) {{ $final_estimation }}%
+                                           @elseif( $final_estimation == -2.00 ) -
+                                           @elseif( $final_estimation == -1.00 ) &nbsp %
+                                           @endif
+                                           &nbsp|&nbsp
+                                         </span>
+                                        <span class="text-dark">@if($own_estimation != -1.00) {{ $own_estimation }}&nbsp %
+                                         @elseif( $final_estimation == -2.00 ) -
+                                         @elseif( $final_estimation == -1.00 ) &nbsp %
+                                         @endif</span>
                                         </p>
                                      </div>
                                      <div class="list-group-item ">
@@ -278,7 +294,7 @@
                                      </div>
                                   </div>
                               </div>
-                              @if($final_estimation == -1.00)
+                              @if($final_estimation == -1.00 && ($day_status != "Вых")  && ($day_status != "экстрен") )
                                   <div class="list-inline">
                                         <div class="list-group">
                                             <div class="list-group-item ">
@@ -301,6 +317,21 @@
                                             </div>
                                           </div>
                                   </div>
+                              @endif
+                              @if( ($final_estimation == -1.00 && ($day_status == "Вых") ) ||
+                                 (($final_estimation == -1.00 && ($day_status == "Экстрен")))  )
+                                   <div class="list-inline">
+                                       <div class="list-group">
+                                          <div class="list-group-item ">
+                                              <div class="text-center">
+                                                 <button type="button" class="btn btn-success"
+                                                         data-toggle="modal"
+                                                             data-target="#approve">Утвердить</button>
+
+                                              </div>
+                                           </div>
+                                       </div>
+                                   </div>
                               @endif
                 </div>
             </div>

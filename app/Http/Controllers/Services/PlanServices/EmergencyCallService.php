@@ -29,7 +29,7 @@ class EmergencyCallService
                 )
         */
         $request = [
-            "status"   => 'Экстренный режим',
+            "status"   => 'экстрен',
             "comment"  => $data['cause']
         ];
         $response = $this->dayInfoRepository->updateDayStatus($request);

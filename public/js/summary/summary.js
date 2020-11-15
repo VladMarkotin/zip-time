@@ -28,10 +28,11 @@ function ApproveRequest() {
 function closeDay(){
     //alert("uygf"); //works
     var request = new ApproveRequest();
-    request.own_mark = $("#own_mark").val();
-    request.comment = $("#approveComment").val();
-    request.necessary = $("#necessary").val();
+    request.own_mark     = $("#own_mark").val();
+    request.comment      = $("#approveComment").val();
+    request.necessary    = $("#necessary").val();
     request.for_tomorrow = $("#for_tomorrow").val();
+    request.status       = $("#dayStatus").text();
 
     var jsonRequest = JSON.stringify(request);
     //console.log(jsonRequest);

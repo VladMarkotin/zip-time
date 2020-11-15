@@ -64,21 +64,31 @@ class PlanController extends Controller
         $dayPlan = $this->taskProcessService->startProcess($fullData);
 
         $result = $this->validator->validate($dayPlan);
-        while($i < count($result)){
-            if($result[$i] !== "0"){
-               return response()->json([
-                   'message' => "Задания не прошли валидацию! Перепроверьте введенные данные.",
-                   "decoration" => "alert alert-danger"
-               ]);
+        if($result != -100) {
+            while ($i < count($result)) {
+                if ($result[$i] !== "0") {
+                    return response()->json([
+                        'message' => "Задания не прошли валидацию! Перепроверьте введенные данные.",
+                        "decoration" => "alert alert-danger"
+                    ]);
+                }
+                $i++;
             }
-            $i++;
-        }
-        $this->dayInfoService->createDay($dayPlan[2][0]);   //вносим в бд данные о текущем дне.Передаем статус дня
-        $this->planService->create($dayPlan); //пишем в базу составленный план
+            $this->dayInfoService->createDay($dayPlan[2][0]);   //вносим в бд данные о текущем дне.Передаем статус дня
+            $this->planService->create($dayPlan); //пишем в базу составленный план
 
-        return response()->json(['message' => "План на день успешно сформирован. Желаю удачи в работе!",
-                                 "decoration" => "alert alert-success"
-        ]);
+            return response()->json(['message' => "План на день успешно сформирован. Желаю удачи в работе!",
+                "decoration" => "alert alert-success"
+            ]);
+        }else if($result == -100){
+            $this->dayInfoService->createDay($dayPlan[2][0]);   //вносим в бд данные о текущем дне.Передаем статус дня
+            $this->planService->create($dayPlan); //пишем в базу составленный план
+
+            return response()->json(['message' => "План на день успешно сформирован.",
+                "decoration" => "alert alert-success"]);
+        }
+
+        return ;
 
     }
 
@@ -151,15 +161,18 @@ class PlanController extends Controller
     {
         $fullData = json_decode($request->getContent(), true);
         $answers = $this->summaryService->estimateDay($fullData);
-        foreach($answers as $a){
-            if(!$a){
+        foreach ($answers as $a) {
+            if (!$a) {
                 return response()->json([
                     'message' => "При выставлении оценки за день произошла ошибка!",
                     "decoration" => "alert alert-danger"
                 ]);
             }
         }
-        $fullData["status"] = "утв";
+        if ($fullData["status"] != "Вых") {
+            $fullData["status"] = "утв";
+        }
+        //die(print_r($fullData) );
         $response = $this->dayInfoService->closeDay($fullData);
 
         if(!$response){

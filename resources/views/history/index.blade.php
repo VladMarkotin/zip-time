@@ -3,6 +3,9 @@
 
 @if($history)
 @section ("hist_cards")
+
+
+
 @foreach($history as $k => $v)
 <div class="row justify-content-center">
 

@@ -11,6 +11,7 @@ class Plan {
 }
 
 var inputQuant = 3;
+var counter = 0;
 
 
 
@@ -46,11 +47,26 @@ $("#addRequiredTask").click(function() {
             "<input type='time' title='Примерное время выполнения' placeholder='Примерное время выполнения'>" +
                 "<input type='text' title='Примечания' placeholder='Примечания'></div>" +
                     "<input type='hidden' value='2'></div>"; //0 - задача, 1 - необязательное, 2 - обязательное
+    var inputsForNothing = "<hr/><div class='list-inline'>" +
+        "<input type='text' title='Короткое название задания' size='32' value='-' disabled placeholder='Короткое название задания'>" +
+        "<input type='time' title='Примерное время выполнения' disabled placeholder='Примерное время выполнения'>" +
+        "<input type='text' title='Примечания' disabled placeholder='Примечания'></div>" +
+        "<input type='hidden' value='2'></div>"; //0 - задача, 1 - необязательное, 2 - обязательное
 
     var status = $("#status").val();
     $("#dayStatus").text("Статус дня: " + status);
     if(status == "Ред"){
         $("#list").append(inputsForWork);
+    }else if(status == "Вых" && (!counter) ){
+        console.log(counter);
+        $("#list").append(inputsForWork);
+        counter++;
+    }
+    else if(status == "Экстрен" ){
+        console.log(counter);
+        for(var i = 0; i < 4; i++){
+            $("#list").append(inputsForNothing);
+        }
     }
 });
 
@@ -63,6 +79,8 @@ $("#addNonRequieredTask").click(function (){
                     "<input type='hidden' value='1'></div>"; //0 - задача, 1 - необязательное, 2 - обязательное;
 
     if(status == "Ред"){
+        $("#list2").append(inputsForWork2);
+    }else if(status == "Вых" ){
         $("#list2").append(inputsForWork2);
     }
 });

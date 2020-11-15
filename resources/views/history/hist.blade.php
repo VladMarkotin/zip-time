@@ -26,7 +26,7 @@
                         @foreach($histDayPlan as $k => $v)
                         <tr>
                         <td><p class="card-text">{{ $v->task_name }}</p></td>
-                        <td><p class="card-text">{{ ($v->status == 2) ? "Обязательное": "Необязательное" }}</p> </td>
+                        <td><p class="card-text">{{ ($v->status == 2) ? "Обязательное": ($v->status == 1 ? "Необязательное": "Задача") }}</p> </td>
                         <td>{{ $v->time }}</td>
                         <td>
 
@@ -41,8 +41,8 @@
                     </table>
                     <hr/>
                     <p class="text-bold text-left">Итого: <span class="text-center"> {{$histDayPlan[0]->time_of_day_plan}} часов </span></p>
-                    <p class="text-bold text-left">КПД: {{ $histDayPlan[0]->final_estimation != -1 ?  $histDayPlan[0]
-                        ->final_estimation : ""}}% | {{  $histDayPlan[0]->own_estimation != -1 ? $histDayPlan[0]->own_estimation: ''}}% </p>
+                    <p class="text-bold text-left">КПД: {{ $histDayPlan[0]->final_estimation > -1 ?  $histDayPlan[0]
+                        ->final_estimation." %"  : "-"}} | {{  $histDayPlan[0]->own_estimation != -1 ? $histDayPlan[0]->own_estimation: ''}}% </p>
                    </div>
                   </div>
                </div>

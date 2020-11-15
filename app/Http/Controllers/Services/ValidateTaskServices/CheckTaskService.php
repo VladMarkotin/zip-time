@@ -16,10 +16,15 @@ class CheckTaskService
     public function validate(array $tasks)
     {
         //die(print_r($tasks));
-        $result[] = $this->checkRequiredTasks($tasks[0]);
-        $result[] = $this->checkNonRequiredTasks($tasks[1]);
+        if($tasks[2][0] != "Экстрен" && ($tasks[2][0] != "Празд") ){
+            $result[] = $this->checkRequiredTasks($tasks[0]);
+            $result[] = $this->checkNonRequiredTasks($tasks[1]);
 
-        return $result;
+            return $result;
+        }
+
+
+        return -100; //Означает, что план объявлен экстренным или праздником
     }
 
     private function checkRequiredTasks(array $requiredTasks)

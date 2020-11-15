@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Services\DataProcessServices;
 
-use App\Http\Controllers\Services\ValidateExtraTaskServices\ValidateExtraTaskService as ValidateExtraTask;
 
 class TaskProcessService {
 
@@ -103,7 +102,6 @@ class TaskProcessService {
 
     private function processedAddedTask()
     {
-        //die("jhgj"); //попадаю
         $result = $this->validateExtraTaskService->check($this->unProcessedData);//или задание или false
 
         return $result;
