@@ -11,6 +11,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link href="{{ asset('/css/auth/main.css') }}" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
         <style>
             html, body {
                 background-color: #fff;
@@ -116,8 +117,17 @@
                                 <label for="status">Выберите текущий статус дня: </label>
                                    <select class="dropdown" id="status">
                                     <option> Ред </option>
-                                    <option> Вых </option>
-                                    <option> Празд </option>
+                                    @if($isWeekendAble)
+                                        <option>Вых</option>
+                                     @else
+                                        <option disabled>Вых</option>
+                                    @endif
+                                    <option> Празд   </option>
+                                    @if($isVacationAble)
+                                    <option> Отпуск  </option>
+                                    @else
+                                    <option disabled> Отпуск  </option>
+                                    @endif
                                     <option> Экстрен </option>
                                 </select>
                             </div>

@@ -33,9 +33,10 @@ function closeDay(){
     request.necessary    = $("#necessary").val();
     request.for_tomorrow = $("#for_tomorrow").val();
     request.status       = $("#dayStatus").text();
+    request.weight       = $("#weight").val();
 
     var jsonRequest = JSON.stringify(request);
-    //console.log(jsonRequest);
+    console.log(jsonRequest);
     ajaxPost2(jsonRequest);
 }
 

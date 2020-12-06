@@ -86,9 +86,11 @@
         <main class="py-4">
             @yield('content')
             @yield('list');
+            @yield('vacation')
             <div class="container-fluid">
                 @yield('history.sorts.sorts')
                 @yield('hist_cards')
+
             </div>
         </main>
     </div>

@@ -14,42 +14,51 @@ use Illuminate\Support\Facades\Route;
 use Controllers\Services\AuthServices\AuthService as AuS;
 
 Route::get('/', function (Controllers\Services\PlanServices\DisplayPlanService $planService,
-                          \Illuminate\Support\Carbon $carbon) {
+                          \Illuminate\Support\Carbon $carbon,
+                          Controllers\Services\AuthServices\AuthService $authService) {
     if(Auth::check()){
-        if(AuS::doTimeTableExist(\Illuminate\Support\Facades\Auth::id())) {
-            $dayPlan = $planService->getDayPlan(AuS::doTimeTableExist(\Illuminate\Support\Facades\Auth::id()));
-            $isEmergencyOn = AuS::isEmergencyOn(AuS::doTimeTableExist( \Illuminate\Support\Facades\Auth::id() ));
-            if(!$isEmergencyOn){
-                return view('home')->with(['plan' => $dayPlan,
-                    'date' => \Illuminate\Support\Carbon::today()->toDateString(),
-                    'day_time' =>  $planService->getDayTime(\Illuminate\Support\Facades\Auth::id()),
-                    'day_status'   => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
-                    'final_estimation' => $planService->getFinalEstimation(\Illuminate\Support\Facades\Auth::id()),
-                    'own_estimation'   => $planService->getOwnEstimation(\Illuminate\Support\Facades\Auth::id()),
-                    'comment'      => $planService->getComment( \Illuminate\Support\Facades\Auth::id()),
-                    'necessary'    => $planService->getNecessary( \Illuminate\Support\Facades\Auth::id()),
-                    'for_tommorow' => $planService->getForTomorrow( \Illuminate\Support\Facades\Auth::id()),
-                ]);
-                //возвращаю вьюху с составленным планом
-            }
-            else{
-                return view('emergency')->with(['plan' => $dayPlan,
-                    'date' => \Illuminate\Support\Carbon::today()->toDateString(),
-                    'day_time'         =>  "-",
-                    'day_status'       => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
-                    'final_estimation' => "-",
-                    'own_estimation'   => "-",
-                    'comment'      => $planService->getComment( \Illuminate\Support\Facades\Auth::id()),
-                    'necessary'    => '',
-                    'for_tommorow' => '',
-                ]);
-            }
+        $isVacationOn = $authService->isVacationOn(\Illuminate\Support\Facades\Auth::id());
+        if(!$isVacationOn){ //Отпуск не активирован
+            if(AuS::doTimeTableExist(\Illuminate\Support\Facades\Auth::id())) { //Создано ли расписание на день
+                $dayPlan = $planService->getDayPlan(AuS::doTimeTableExist(\Illuminate\Support\Facades\Auth::id()));
+                $isEmergencyOn = AuS::isEmergencyOn(AuS::doTimeTableExist( \Illuminate\Support\Facades\Auth::id() ));
+                if(!$isEmergencyOn){ //взят ли экстренный режим
 
-        }
-        else {
-            AuS::isTimetableLegal(\Illuminate\Support\Facades\Auth::id());
+                    return view('home')->with(['plan' => $dayPlan,
+                        'date' => \Illuminate\Support\Carbon::today()->toDateString(),
+                        'day_time' =>  $planService->getDayTime(\Illuminate\Support\Facades\Auth::id()),
+                        'day_status'   => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
+                        'final_estimation' => $planService->getFinalEstimation(\Illuminate\Support\Facades\Auth::id()),
+                        'own_estimation'   => $planService->getOwnEstimation(\Illuminate\Support\Facades\Auth::id()),
+                        'comment'      => $planService->getComment( \Illuminate\Support\Facades\Auth::id()),
+                        'necessary'    => $planService->getNecessary( \Illuminate\Support\Facades\Auth::id()),
+                        'for_tommorow' => $planService->getForTomorrow( \Illuminate\Support\Facades\Auth::id()),
+                    ]);
+                    //возвращаю вьюху с составленным планом
+                }
+                else{
+                    return view('emergency')->with(['plan' => $dayPlan,
+                        'date' => \Illuminate\Support\Carbon::today()->toDateString(),
+                        'day_time'         => "-",
+                        'day_status'       => $planService->getDayStatus(\Illuminate\Support\Facades\Auth::id()),
+                        'final_estimation' => "-",
+                        'own_estimation'   => "-",
+                        'comment'          => $planService->getComment( \Illuminate\Support\Facades\Auth::id()),
+                        'necessary'        => '',
+                        'for_tommorow'     => '',
+                    ]);
+                }
 
-            return view('welcome');
+            }
+            else {
+                AuS::isTimetableLegal(\Illuminate\Support\Facades\Auth::id());
+                $isWeekendAble  = $planService->isWeekendAble(\Illuminate\Support\Facades\Auth::id());
+                $isVacationAble = $planService->isVacationAble(\Illuminate\Support\Facades\Auth::id());
+                //dd($isVacationAble);
+                return view('welcome')->with(['isWeekendAble' => $isWeekendAble, 'isVacationAble' => $isVacationAble]);
+            }
+        }else{
+            return view('vacation.index');
         }
     }
     return view('auth.login');
@@ -72,3 +81,5 @@ Route::post('/addwork', 'PlanController@addWork');
 Route::post('/emergency', 'PlanController@emergencyCall');
 
 Route::post('/approve', 'PlanController@approve');
+
+Route::post('/vacation', 'PlanController@setVacation');

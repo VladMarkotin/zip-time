@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Services\DataProcessServices\TaskProcessService as TaskProcessService;
 use App\Http\Controllers\Services\ValidateTaskServices\CheckTaskService as CheckTaskService;
 use Controllers\Services\PlanServices\AddTaskService;
+use  App\Http\Controllers\Services\VacationServices\VacationService;
 
 class PlanController extends Controller
 {
@@ -33,6 +34,7 @@ class PlanController extends Controller
     private $validateEmergencyService;
     private $emergencyCallService;
     private $summaryService;
+    private $vacationService;
 
     public function __construct(PlanService $planService,
                                 TaskProcessService $taskProcess,
@@ -43,7 +45,8 @@ class PlanController extends Controller
                                 AddTaskService $addTaskService,
                                 ValidateEmergencyCauseService $validateEmergencyCauseService,
                                 EmergencyCallService $emergencyCallService,
-                                SummaryService $summaryService)
+                                SummaryService $summaryService,
+                                VacationService $vacationService)
     {
         $this->planService              = $planService;
         $this->taskProcessService       = $taskProcess;
@@ -55,6 +58,7 @@ class PlanController extends Controller
         $this->validateEmergencyService = $validateEmergencyCauseService;
         $this->emergencyCallService     = $emergencyCallService;
         $this->summaryService           = $summaryService;
+        $this->vacationService          = $vacationService;
     }
 
     public function index(Request $request)
@@ -172,7 +176,6 @@ class PlanController extends Controller
         if ($fullData["status"] != "Вых") {
             $fullData["status"] = "утв";
         }
-        //die(print_r($fullData) );
         $response = $this->dayInfoService->closeDay($fullData);
 
         if(!$response){
@@ -186,5 +189,13 @@ class PlanController extends Controller
             'message' => "Оценка за день успешно выставлена! Хорошо потрудился,молодец! :)",
             "decoration" => "alert alert-success"
         ]);
+    }
+
+    public function setVacation(Request $request)
+    {
+        $fullData = json_decode($request->getContent(), true);
+        $fullData["id"] = \Illuminate\Support\Facades\Auth::id();
+        $response = $this->vacationService->setVacation($fullData);
+        die(print_r($response));
     }
 }

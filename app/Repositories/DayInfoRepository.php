@@ -196,6 +196,8 @@ class DayInfoRepository extends BaseRepository
                 $finalAvgMark = $this->getAvgMark($lastTimetableId);
                 $finalExtraMark = $this->getAvgMarkOfExtraTasks($lastTimetableId);
                 $finalMark = ($finalExtraMark) ? ($finalAvgMark + $finalExtraMark) / 2 : $finalAvgMark;
+                $finalMark = ($finalMark * $request["weight"]);
+                ($finalMark < 50) ? $finalMark = 50: $finalMark;
                 $timeOfDayPlan = $this->getTimeOfDayPlan($lastTimetableId);
                 if ($finalAvgMark >= 50) {
                     DB::table('timetables')->where([['id', '=', $lastTimetableId], ["user_id", '=', $request['user_id']]])

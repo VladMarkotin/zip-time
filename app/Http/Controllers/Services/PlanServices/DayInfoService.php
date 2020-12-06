@@ -41,7 +41,7 @@ class DayInfoService
 
     public function closeDay($data)
     {
-        //die(print_r($dayInfo));
+        //die(print_r($data));
         if($data["status"] == "Вых"){
             $dayInfo = [
                 "user_id" => Auth::id(),
@@ -62,7 +62,8 @@ class DayInfoService
                 "own_estimation" => $data["own_mark"],
                 "comment" => $data["comment"],
                 "necessary" => $data["necessary"],
-                "for_tomorrow" => $data["for_tomorrow"]
+                "for_tomorrow" => $data["for_tomorrow"],
+                "weight"       => $data["weight"],
             ];
         }
         //die(print_r($data));

@@ -11,15 +11,19 @@ namespace Controllers\Services\AuthServices;
 
 use App\Repositories\DayInfoRepository;
 use App\Repositories\FineRepository as FineRep;
+use App\Repositories\VacationRepository;
 use Illuminate\Support\Carbon as Carbon;
 
 class AuthService {
 
-    private $dInfoRep = null;
+    private $dInfoRep           = null;
+    private $vacationRepository = null;
 
-    public function __construct(DayInfoRepository $dInfoRep)
+    public function __construct(DayInfoRepository $dInfoRep,
+                                VacationRepository $vacationRepository)
     {
         $this->dInfoRep = $dInfoRep;
+        $this->vacationRepository = $vacationRepository;
     }
 
     public static function isTimetableLegal($id)
@@ -56,5 +60,14 @@ class AuthService {
         }
 
         return false;
+    }
+
+    public function isVacationOn($id)
+    {
+        $today = Carbon::today()->toDateString();
+        $data = ["user_id" => $id, "date" => $today];
+        $response = $this->vacationRepository->checkVacation($data);
+
+        return $response;
     }
 } 

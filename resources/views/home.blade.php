@@ -133,6 +133,14 @@
                              <textarea class="form-control" id="for_tomorrow" rows="3" style="width: 70%;"
                               placeholder="На завтра"></textarea>
                          </div>
+                         <div class="form-group">
+                             <p class="text-info" style="text-align: center">Коэффициент дисконта: </p>
+                             <select class="form-control" id="weight" style="width: 54%;margin:auto">
+                                <option >1</option>
+                                <option>0.92</option>
+                                <option>0.9</option>
+                             </select>
+                         </div>
 
                       </div>
                       <hr/>

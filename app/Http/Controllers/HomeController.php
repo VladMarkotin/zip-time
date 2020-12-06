@@ -32,6 +32,7 @@ class HomeController extends Controller
 
         return view('home')->with(["plan" => $dayPlan,
                 'date' => \Illuminate\Support\Carbon::today()->toDateString(),
+                'day_time' =>  $this->planService->getDayTime(\Illuminate\Support\Facades\Auth::id()),
                 "message" => "У вас не составлен план на день! Исправить это можно здесь",
                 'day_status' => $this->planService->getDayStatus(\Illuminate\Support\Facades\Auth::id() ),
                 'final_estimation' => $this->planService->getFinalEstimation(\Illuminate\Support\Facades\Auth::id()),
@@ -41,11 +42,6 @@ class HomeController extends Controller
                 'for_tommorow' => '',
             ]
         );
-
-    }
-
-    public function displayTimetable()
-    {
 
     }
 }

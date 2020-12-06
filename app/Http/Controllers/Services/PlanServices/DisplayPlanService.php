@@ -8,6 +8,7 @@
 
 namespace Controllers\Services\PlanServices;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Carbon as Carbon;
 use App\Repositories\TaskRepository;
 use Illuminate\Support\Facades\DB;
@@ -125,5 +126,56 @@ class DisplayPlanService {
         if($result == []) return "uiyfg";
 
         return $result[0]->for_tommorow;
+    }
+
+    public function isWeekendAble($id)
+    {
+        /**
+         * Получаю дни неджели.Похожусь в цикле по каждому дню и проверяю был ли уже взят выходной
+         */
+        date_default_timezone_set('Europe/Minsk');
+        $daysCarbon = [];
+        $days = [];
+        $now = CarbonImmutable::now();
+        $weekStartDate = $now->startOfWeek();//right
+        $weekEndDate = $now->endOfWeek(); //right
+        for($i = $weekStartDate; $i < $weekEndDate; $i = $i->addDay()){
+            $daysCarbon[] = $i->toDate();
+        }
+        for($i = 0; $i < 7; $i++){
+            $days[$i] = $daysCarbon[$i]->format('Y-m-d');
+        }
+
+        $query = "select day_status from timetables where user_id = $id and date BETWEEN '$days[0]'  AND '$days[6]'";
+        $result = DB::select($query);
+        foreach($result as $v){
+            if($v->day_status == "Вых"){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function isVacationAble($id)
+    {
+        /**
+         * Получаю начало и конец месяца.Похожусь в цикле по каждому дню и проверяю был ли уже взят выходной
+         */
+        date_default_timezone_set('Europe/Minsk');
+        $now = CarbonImmutable::now();
+        $monthStartDate = $now->firstOfMonth()->toDateString(); //right
+        $monthEndDate = $now->endOfMonth()->toDateString(); //right
+
+        $query = "select day_status from timetables where user_id = $id and date BETWEEN '$monthStartDate'  AND '$monthEndDate'";
+        $result = DB::select($query);
+        //dd($result);
+        foreach($result as $v){
+            if($v->day_status == "Отпуск"){
+                return false;
+            }
+        }
+
+        return true;
     }
 } 
