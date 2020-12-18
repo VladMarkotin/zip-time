@@ -1,6 +1,10 @@
 /**
  * Created by Vlad on 31.03.2020.
  */
+
+$(document).ready(function(){
+    $("#defaultOpen").trigger("click");
+});
 function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -22,4 +26,3 @@ function openCity(evt, cityName) {
     evt.currentTarget.className += " active";
 }
 
-document.getElementById("defaultOpen").click();

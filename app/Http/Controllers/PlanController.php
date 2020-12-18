@@ -196,6 +196,5 @@ class PlanController extends Controller
         $fullData = json_decode($request->getContent(), true);
         $fullData["id"] = \Illuminate\Support\Facades\Auth::id();
         $response = $this->vacationService->setVacation($fullData);
-        die(print_r($response));
     }
 }

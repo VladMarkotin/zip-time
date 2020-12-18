@@ -203,7 +203,7 @@
                                                              aria-describedby="basic-addon1"
                                                                data-bind="value:replyNumber"
                                                                  aria-label="Оценка"
-                                                                 @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
+                                                                 @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" || $day_status == "Экстрен" ) disabled @endif
                                                                  />
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="basic-addon1">%</span>
@@ -230,7 +230,7 @@
                                                      data-bind="value:replyNumber"
                                                      aria-label="Оценка"
                                                      @if($p->mark == 99) checked @endif
-                                                     @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
+                                                     @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" || $day_status == "Экстрен" ) disabled @endif
                                                      />
                                                <div class="input-group-append">
                                                   <span class="input-group-text" id="basic-addon1">?</span>
@@ -244,7 +244,7 @@
                                                <div class="input-group mb-3">
 
                                                      <input type="text" class="form-control" placeholder="Заметки"
-                                                        @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
+                                                        @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" || $day_status == "Экстрен" ) disabled @endif
                                                         aria-label="Username"
                                                             aria-describedby="basic-addon2"
                                                                 >
@@ -260,7 +260,7 @@
                                                               aria-label="Username"
                                                                   aria-describedby="basic-addon2"
                                                                      value="{{$p->note}}"
-                                                                        @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" ) disabled @endif
+                                                                        @if( trim($day_status) == "экстрен" || $day_status == "Празд" || $day_status == "утв" || $day_status == "Экстрен" ) disabled @endif
                                                        >
                                                     <div class="input-group-prepend">
                                                        <span class="input-group-text" id="basic-addon2">А</span>
@@ -302,7 +302,7 @@
                                      </div>
                                   </div>
                               </div>
-                              @if($final_estimation == -1.00 && ($day_status != "Вых")  && ($day_status != "экстрен") )
+                              @if($final_estimation == -1.00 && ($day_status != "Вых")  && ($day_status != "экстрен") && ( $day_status != "Экстрен") )
                                   <div class="list-inline">
                                         <div class="list-group">
                                             <div class="list-group-item ">

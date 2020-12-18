@@ -71,6 +71,7 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
+
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -144,6 +145,12 @@
                                 </div>
 
                              <div class="carousel-item">
+                             <div class="card mt-4">
+                                        <div class="py-4 card-body">
+                                            <h2>Example component</h2>
+                                            <ExampleComponent></ExampleComponent>
+                                        </div>
+                                    </div>
                                     <input type="hidden" name="jsonResult" id="jsonResult">
                                     <button class='btn btn-info' id='save' type="submit">Сохранить</button>
                              </div>

@@ -55,7 +55,7 @@ class AuthService {
     public static function isEmergencyOn($id)
     {
         $status = DayInfoRepository::getStatusOfLastTimetable($id);
-        if($status == 'Экстренный режим'){
+        if($status == 'Экстренный режим' || ($status == "Экстрен") ){
             return true;
         }
 

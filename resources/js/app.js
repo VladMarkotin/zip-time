@@ -27,6 +27,22 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
+/*const app = new Vue({
     el: '#app',
+    created: function () {
+        // `this` points to the vm instance
+        console.log('Vue component!: ')
+    },
+    data: {message: "Hello Vue"}
+});*/
+
+var app4 = new Vue({
+    el: '#app-4',
+    data: {
+        todos: [
+            { text: 'Learn JavaScript' },
+            { text: 'Learn Vue' },
+            { text: 'Build something awesome' }
+        ]
+    }
 });

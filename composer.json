@@ -9,11 +9,12 @@
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
-        "doctrine/dbal": "^2.10",
+        "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "nesbot/carbon": "^2.32"
+        "nesbot/carbon": "^2.32",
+        "markrogoyski/math-php": "1.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -42,6 +43,8 @@
             "Controllers\\Services\\DataProcessServices\\": "app/Http/Controllers/Services/TaskProcessService",
             "Controllers\\Services\\ValidateTaskServices\\": "app/Http/Controllers/Services/ValidateTaskServices",
             "Controllers\\Services\\ValidateExtraTaskServices\\": "app/Http/Controllers/Services/ValidateExtraTaskService",
+            "Controllers\\Services\\StatServices\\": "app/Http/Controllers/Services/StatServices",
+            "App\\Repositories\\": "app/Repositories",
             "Models\\": "app/Http/Models"
         },
         "classmap": [

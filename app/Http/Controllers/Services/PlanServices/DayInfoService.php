@@ -73,4 +73,11 @@ class DayInfoService
         return $response;
 
     }
+
+    public function getLastTimetableId()
+    {
+        $lastTimetableId = $this->dayInfoRepository->lastTimetable();
+
+        return $lastTimetableId;
+    }
 } 

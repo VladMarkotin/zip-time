@@ -33,6 +33,7 @@ Route::get('/', function (Controllers\Services\PlanServices\DisplayPlanService $
                         'comment'      => $planService->getComment( \Illuminate\Support\Facades\Auth::id()),
                         'necessary'    => $planService->getNecessary( \Illuminate\Support\Facades\Auth::id()),
                         'for_tommorow' => $planService->getForTomorrow( \Illuminate\Support\Facades\Auth::id()),
+                        'message'      => "У вас не составлен план на день! Исправить это можно здесь",
                     ]);
                     //возвращаю вьюху с составленным планом
                 }
@@ -71,6 +72,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/hist', 'HistController@index')->name('hist');
 
 Route::get('/hist/{i}', 'HistController@showDayPlanHist');
+
+//Route::get('/stat', 'StatController@index')->name('stat'); Перестало работать ???
+Route::get('/stat', 'StatController@period')->name('stat');
+
+Route::get('/stat/period={i}', 'StatController@period');
 
 Route::post('/add', 'PlanController@index');
 
