@@ -39,14 +39,26 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     @auth
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/stat">Статистика</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('hist') }}" class="nav-link">История</a>
-                         </li>
-                    </ul>
+                    <div class="container justify-content-center">
+                        <ul class="navbar-nav ">
+
+                            <li class="nav-item">
+                              <a class="nav-link" href="{{ route('stat') }}">План на квартал</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('stat') }}">План на неделю</a>
+                            </li>
+                            <li class="nav-item">
+                                <b><a class="nav-link" href="/">Лента</a></b>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('stat') }}">Статистика</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('hist') }}" class="nav-link">История</a>
+                             </li>
+                        </ul>
+                    </div>
                     @endauth
 
                     <!-- Right Side Of Navbar -->
@@ -71,6 +83,7 @@
 
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/">Профиль</a>
                                     <a class="dropdown-item" href="/">Настройки</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
