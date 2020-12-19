@@ -38,6 +38,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                    @auth
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="/stat">Статистика</a>
@@ -46,6 +47,7 @@
                             <a href="{{ route('hist') }}" class="nav-link">История</a>
                          </li>
                     </ul>
+                    @endauth
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -69,8 +71,7 @@
 
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/stat">Статистика</a>
-                                    <a href="{{ route('hist') }}" class="dropdown-item">История</a>
+                                    <a class="dropdown-item" href="/">Настройки</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

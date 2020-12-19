@@ -12,6 +12,7 @@ use Controllers\Services\PlanServices\DisplayPlanService as PlanService;
 use Controllers\Services\PlanServices\DayInfoService;
 use Controllers\Services\StatServices\StatService as StatService;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class StatController extends Controller {
 
@@ -47,18 +48,22 @@ class StatController extends Controller {
 
     public function period($param = null)
     {
-        $id = \Illuminate\Support\Facades\Auth::id();
-        $period = (!isset($param)) ? "Статистика за все время": "Статистика за..";
-        $data = ["id" => $id, "date" => $this->carbon->today()->toDateString(), "period" => $period];
-        $totalTime = $this->dayStatService->getTotalTime($data);
-        $avgMark = $this->dayStatService->getAvgMark($data);
-        $avgOwnMark = $this->dayStatService->getAvgOwnMark($data);
-        $maxMark = $this->dayStatService->getMaxMark($data);
-        $minMark = $this->dayStatService->getMinMark($data);
-        $medianValue = $this->dayStatService->getMedianValue($data);
-        $medianOwnValue = $this->dayStatService->getMedianValue($data, 1);
+        if(Auth::check()) {
+            $id = \Illuminate\Support\Facades\Auth::id();
+            $period = (!isset($param)) ? "Статистика за все время" : "Статистика за..";
+            $data = ["id" => $id, "date" => $this->carbon->today()->toDateString(), "period" => $period];
+            $totalTime = $this->dayStatService->getTotalTime($data);
+            $avgMark = $this->dayStatService->getAvgMark($data);
+            $avgOwnMark = $this->dayStatService->getAvgOwnMark($data);
+            $maxMark = $this->dayStatService->getMaxMark($data);
+            $minMark = $this->dayStatService->getMinMark($data);
+            $medianValue = $this->dayStatService->getMedianValue($data);
+            $medianOwnValue = $this->dayStatService->getMedianValue($data, 1);
 
-        return view('stat.index')->with(["period" => $period,"avgMark" => $avgMark, "avgOwnMark" => $avgOwnMark, "maxMark" => $maxMark,
-            "minMark" => $minMark, "totalTime" =>$totalTime, "medianValue" => $medianValue, "medianOwnValue" => $medianOwnValue]);
+            return view('stat.index')->with(["period" => $period, "avgMark" => $avgMark, "avgOwnMark" => $avgOwnMark, "maxMark" => $maxMark,
+                "minMark" => $minMark, "totalTime" => $totalTime, "medianValue" => $medianValue, "medianOwnValue" => $medianOwnValue]);
+        }
+
+        return view("stat.index");//->with(["history" => []]);
     }
 } 

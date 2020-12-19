@@ -5,6 +5,7 @@
 
 <div class="center"> <!-- row justify-content-center-->
 
+     @auth
      <!-- Tab links -->
                     <div class="tab" style="margin-left: 15px;">
                       <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">Общая статистика (за все время)</button>
@@ -118,6 +119,12 @@
                          <h3>История</h3>
                          <p>А здесь история..</p>
                     </div>
+                    @endauth
+                    @guest
+                    <div class="row justify-content-center">
+                        <h3 class="alert-info">Для просмотра этой страницы необходимо авторизоваться!</h3>
+                    </div>
+                    @endguest
 
 
 </div>
