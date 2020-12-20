@@ -8,14 +8,14 @@
      @auth
      <!-- Tab links -->
                     <div class="tab" style="margin-left: 15px;">
-                      <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">Общая статистика (за все время)</button>
-                      <button class="tablinks" onclick="openCity(event, 'Paris')">Статистика за квартал</button>
-                      <button class="tablinks" onclick="openCity(event, 'Tokyo')">Статистика за месяц</button>
-                      <button class="tablinks" >Статистика за неделю</button>
+                      <button class="tablinks" onclick="openCity(event, 'general')" id="defaultOpen">Общая статистика (за все время)</button>
+                      <button class="tablinks" onclick="openCity(event, 'quart')">Статистика за квартал</button>
+                      <button class="tablinks" onclick="openCity(event, 'month')">Статистика за месяц</button>
+                      <button class="tablinks" onclick="openCity(event, 'week')">Статистика за неделю</button>
                     </div>
 
                     <!-- Tab content -->
-                    <div id="London" class="tabcontent">
+                    <div id="general" class="tabcontent">
                         <div class="col-sm-10">
                             <div class="cards-content">
                                 <div class="card">
@@ -67,7 +67,7 @@
                                        </div>
                                     </div>
                     </div>
-                    <div id="Paris" class="tabcontent">
+                    <div id="quart" class="tabcontent">
                          <div class="col-sm-10">
                            <div class="cards-content">
                               <div class="card">
@@ -114,10 +114,97 @@
                                                                    </div>
                                                                 </div>
                     </div>
+                    </div>
 
-                    <div id="Tokyo" class="tabcontent">
-                         <h3>История</h3>
-                         <p>А здесь история..</p>
+                    <div id="month" class="tabcontent">
+                         <div class="col-sm-10">
+                                                    <div class="cards-content">
+                                                       <div class="card">
+                                                           <div class="card-header">
+                                                                                              :
+                                                           </div>
+                                                           <div class="card-body">
+                                                              <h5 class="card-title"></h5>
+                                                              <table class="table">
+                                                                 <tr>
+                                                                    <td>Общее время работы</td>
+                                                                    <td>00 </td>
+                                                                 </tr>
+                                                                 <tr>
+                                                                    <th>Средняя оценка</th>
+                                                                    <td>100 </td>
+                                                                 </tr>
+                                                                 <tr>
+                                                                    <th>Средняя (личная оценка)</th>
+                                                                    <td>100 </td>
+                                                                 </tr>
+                                                                 <tr>
+                                                                   <th>Медианная оценка</th>
+                                                                   <td>100 </td>
+                                                                 </tr>
+                                                                 <tr>
+                                                                   <th>Максимальная оценка</th>
+                                                                   <td>100 </td>
+                                                                 </tr>
+                                                                 <tr>
+                                                                   <th>Минимальная оценка</th>
+                                                                   <td>100 </td>
+                                                                 </tr>
+                                                                 <tr>
+                                                                     <th>Количество штррафов высшего порядка</th>
+                                                                     <td>0 </td>
+                                                                 </tr>
+                                                                 </table>
+                                  </div>
+                              </div>
+                          </div>
+                          </div>
+                          </div>
+                    </div>
+
+                    <div id="week" class="tabcontent">
+                        <div class="col-sm-10">
+                           <div class="cards-content">
+                               <div class="card">
+                                   <div class="card-header">
+                                         :
+                                   </div>
+                                   <div class="card-body">
+                                     <h5 class="card-title"></h5>
+                                     <table class="table">
+                                        <tr>
+                                          <td>Общее время работы</td>
+                                          <td>100 </td>
+                                        </tr>
+                                        <tr>
+                                          <th>Средняя оценка</th>
+                                          <td>100 </td>
+                                        </tr>
+                                        <tr>
+                                          <th>Средняя (личная оценка)</th>
+                                          <td>100 </td>
+                                        </tr>
+                                        <tr>
+                                           <th>Медианная оценка</th>
+                                           <td>100 </td>
+                                         </tr>
+                                         <tr>
+                                            <th>Максимальная оценка</th>
+                                            <td>100 </td>
+                                         </tr>
+                                         <tr>
+                                          <th>Минимальная оценка</th>
+                                          <td>100 </td>
+                                         </tr>
+                                         <tr>
+                                            <th>Количество штррафов высшего порядка</th>
+                                            <td>0 </td>
+                                         </tr>
+                                     </table>
+                                     </div>
+                                     </div>
+                                     </div>
+                                     </div>
                     </div>
                     @endauth
                     @guest

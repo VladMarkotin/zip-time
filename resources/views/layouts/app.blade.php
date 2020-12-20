@@ -39,14 +39,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     @auth
-                    <div class="container justify-content-center">
+                    <div class="container justify-content-center" style="margin-right:10%">
                         <ul class="navbar-nav ">
 
                             <li class="nav-item">
-                              <a class="nav-link" href="{{ route('stat') }}">План на квартал</a>
+                              <a class="nav-link" href="/">План на квартал</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('stat') }}">План на неделю</a>
+                                <a class="nav-link" href="/">План на неделю</a>
                             </li>
                             <li class="nav-item">
                                 <b><a class="nav-link" href="/">Лента</a></b>
@@ -83,8 +83,10 @@
 
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/">Профиль</a>
+                                    <a class="dropdown-item" href="{{route('profile')}}">Профиль</a>
                                     <a class="dropdown-item" href="/">Настройки</a>
+                                    <a class="dropdown-item" href="/">Правила</a>
+                                    <hr/>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -114,6 +116,7 @@
                 @yield('history.sorts.sorts')
                 @yield('hist_cards')
                 @yield('stat_cards')
+                @yield('profile')
             </div>
         </main>
     </div>

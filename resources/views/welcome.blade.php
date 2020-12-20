@@ -96,9 +96,9 @@
 
                 <!-- Tab links -->
                 <div class="tab">
-                  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">Расписание</button>
-                  <button class="tablinks" onclick="openCity(event, 'Paris')">Размышления</button>
-                  <button class="tablinks" onclick="openCity(event, 'Tokyo')">История</button>
+                  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">План на день</button>
+                  <button class="tablinks" onclick="openCity(event, 'Paris')">План на неделю</button>
+                  <button class="tablinks" onclick="openCity(event, 'Tokyo')">План на квартал</button>
                 </div>
 
                 <!-- Tab content -->

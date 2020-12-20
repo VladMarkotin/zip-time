@@ -73,6 +73,8 @@ Route::get('/hist', 'HistController@index')->name('hist');
 
 Route::get('/hist/{i}', 'HistController@showDayPlanHist');
 
+Route::get('/profile', 'ProfileController@index')->name('profile');
+
 //Route::get('/stat', 'StatController@index')->name('stat'); Перестало работать ???
 Route::get('/stat', 'StatController@period')->name('stat');
 
