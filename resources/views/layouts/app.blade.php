@@ -49,7 +49,7 @@
                                 <a class="nav-link" href="/">План на неделю</a>
                             </li>
                             <li class="nav-item">
-                                <b><a class="nav-link" href="/">Лента</a></b>
+                                <b><a class="nav-link" href="/" style="color:#fca311;">Лента</a></b>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('stat') }}">Статистика</a>
