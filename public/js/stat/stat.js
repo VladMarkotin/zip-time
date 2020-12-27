@@ -1,13 +1,24 @@
 /**
- * Created by Vlad on 31.03.2020.
+ * Created by Vlad on 22.12.2020.
  */
 
-$(document).ready(function(){
-    $("#defaultOpen").trigger("click");
-});
-function openCity(evt, cityName) {
-    // Declare all variables
-    var i, tabcontent, tablinks;
+$("#quart, #month, #week").click(function(e){
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var request = {
+        period: e.target.id
+    };
+    request = JSON.stringify(request);
+    console.log(request);
+    $.post("stat_post", request ).done(function(response){
+        //console.log();
+    });
+
+    /*var i, tabcontent, tablinks;
 
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -24,6 +35,5 @@ function openCity(evt, cityName) {
 
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-
+    evt.currentTarget.className += " active";*/
+});

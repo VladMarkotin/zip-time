@@ -6,12 +6,13 @@
 <div class="center"> <!-- row justify-content-center-->
 
      @auth
+     <script type="text/javascript" src="{{asset('js/stat/stat.js')}}"></script>
      <!-- Tab links -->
                     <div class="tab" style="margin-left: 15px;">
                       <button class="tablinks" onclick="openCity(event, 'general')" id="defaultOpen">Общая статистика (за все время)</button>
-                      <button class="tablinks" onclick="openCity(event, 'quart')">Статистика за квартал</button>
-                      <button class="tablinks" onclick="openCity(event, 'month')">Статистика за месяц</button>
-                      <button class="tablinks" onclick="openCity(event, 'week')">Статистика за неделю</button>
+                      <button class="tablinks" id="quart">Статистика за квартал</button>
+                      <button class="tablinks" id="month">Статистика за месяц</button>
+                      <button class="tablinks" id="week">Статистика за неделю</button>
                     </div>
 
                     <!-- Tab content -->
@@ -20,7 +21,7 @@
                             <div class="cards-content">
                                 <div class="card">
                                     <div class="card-header">
-                                            {{$period}}
+
                                     </div>
                                           <div class="card-body">
                                             <h5 class="card-title"></h5>
@@ -46,11 +47,11 @@
                                                 <td>{{ $medianOwnValue }}% </td>
                                            </tr>
                                            <tr>
-                                                <th>Максимальная оценка</th>
+                                                <th>Максимальная средняя оценка</th>
                                                 <td>{{ $maxMark  }}% </td>
                                            </tr>
                                             <tr>
-                                                <th>Минимальная оценка</th>
+                                                <th>Минимальная средняя оценка</th>
                                                 <td>{{$minMark}}% </td>
                                             </tr>
                                             <tr>
@@ -215,6 +216,6 @@
 
 
 </div>
-
+<script type="text/javascript" src="{{ asset('js/stat/stat.js') }}"></script>
 @endsection
 </div>

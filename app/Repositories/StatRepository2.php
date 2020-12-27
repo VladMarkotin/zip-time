@@ -30,7 +30,18 @@ class StatRepository2 extends BaseRepository
 
     public function getTotalTime(array $data)
     {
-        $query = "SELECT SUM(time_of_day_plan) total_time FROM `timetables` WHERE user_id = $data[id] AND time_of_day_plan IS NOT NULL";
+        /*Очень кривое решение! Вынести в отдельный метод!*/
+        $start = $end  = "";
+        $timeCondition = "";
+        if(!is_string($data['date']) ) {
+            $start = (isset($data['date']['start'])) ? $data['date']['start'] : "";
+            $end = (isset($data['date']['end'])) ? $data['date']['end'] : "";
+            $timeCondition = "AND date BETWEEN '". $start ."' AND '".$end."'" ;
+        }
+        //dd($start);
+
+        $query = "SELECT SUM(time_of_day_plan) total_time FROM `timetables` WHERE user_id = $data[id] AND time_of_day_plan IS NOT NULL $timeCondition";
+//        if($timeCondition) dd($query);
         $query = trim($query);
         $response = DB::select($query);
         if($response){
@@ -43,7 +54,15 @@ class StatRepository2 extends BaseRepository
 
     public function getAvgMark(array $data)
     {
-        $query = "SELECT ROUND(AVG(final_estimation),2) avg_mark FROM `timetables` WHERE final_estimation <> -1.00 AND user_id = $data[id] AND date <= '".$data['date']."'";
+        /*Очень кривое решение! Вынести в отдельный метод!*/
+        $start = $end  = "";
+        $timeCondition = "";
+        if(!is_string($data['date']) ) {
+            $start = (isset($data['date']['start'])) ? $data['date']['start'] : "";
+            $end = (isset($data['date']['end'])) ? $data['date']['end'] : "";
+            $timeCondition = "AND date BETWEEN '". $start ."' AND '".$end."'" ;
+        }
+        $query = "SELECT ROUND(AVG(final_estimation),2) avg_mark FROM `timetables` WHERE final_estimation <> -1.00 AND user_id = $data[id] $timeCondition";//AND date <= '".$data['date']."'";
         $query = trim($query);
         $response = DB::select($query);
         if($response){
@@ -55,7 +74,16 @@ class StatRepository2 extends BaseRepository
 
     public function getAvgOwnMark(array $data)
     {
-        $query = "SELECT ROUND(AVG(own_estimation),2) avg_own_mark FROM `timetables` WHERE own_estimation <> -1.00 AND user_id = $data[id] AND date < '".$data['date']."'";
+        /*Очень кривое решение! Вынести в отдельный метод!*/
+        $start = $end  = "";
+        $timeCondition = "";
+        if(!is_string($data['date']) ) {
+            $start = (isset($data['date']['start'])) ? $data['date']['start'] : "";
+            $end = (isset($data['date']['end'])) ? $data['date']['end'] : "";
+            $timeCondition = "AND date BETWEEN '". $start ."' AND '".$end."'" ;
+        }
+        /*Конец*/
+        $query = "SELECT ROUND(AVG(own_estimation),2) avg_own_mark FROM `timetables` WHERE own_estimation <> -1.00 AND user_id = $data[id] $timeCondition";
         $query = trim($query);
         $response = DB::select($query);
         if($response){
@@ -67,7 +95,16 @@ class StatRepository2 extends BaseRepository
 
     public function getMaxMark(array $data)
     {
-        $query = "SELECT ROUND(Max(final_estimation),2) max_mark FROM `timetables` WHERE final_estimation <> -1.00 AND user_id = $data[id]";
+        /*Очень кривое решение! Вынести в отдельный метод!*/
+        $start = $end  = "";
+        $timeCondition = "";
+        if(!is_string($data['date']) ) {
+            $start = (isset($data['date']['start'])) ? $data['date']['start'] : "";
+            $end = (isset($data['date']['end'])) ? $data['date']['end'] : "";
+            $timeCondition = "AND date BETWEEN '". $start ."' AND '".$end."'" ;
+        }
+        /*Конец*/
+        $query = "SELECT ROUND(Max(final_estimation),2) max_mark FROM `timetables` WHERE final_estimation <> -1.00 AND user_id = $data[id] $timeCondition";
         $query = trim($query);
         $response = DB::select($query);
         if($response){
@@ -79,7 +116,16 @@ class StatRepository2 extends BaseRepository
 
     public function getMinMark(array $data)
     {
-        $query = "SELECT ROUND(MIN(final_estimation),2) min_mark FROM `timetables` WHERE final_estimation <> -1.00 AND final_estimation <> -2.00 AND user_id = $data[id]";
+        /*Очень кривое решение! Вынести в отдельный метод!*/
+        $start = $end  = "";
+        $timeCondition = "";
+        if(!is_string($data['date']) ) {
+            $start = (isset($data['date']['start'])) ? $data['date']['start'] : "";
+            $end = (isset($data['date']['end'])) ? $data['date']['end'] : "";
+            $timeCondition = "AND date BETWEEN '". $start ."' AND '".$end."'" ;
+        }
+        /*Конец*/
+        $query = "SELECT ROUND(MIN(final_estimation),2) min_mark FROM `timetables` WHERE final_estimation <> -1.00 AND final_estimation <> -2.00 AND user_id = $data[id] $timeCondition";
         $query = trim($query);
         $response = DB::select($query);
         if($response){
@@ -96,11 +142,20 @@ class StatRepository2 extends BaseRepository
      */
     public function getMedian($data, $param = 0)
     {
+        /*Очень кривое решение! Вынести в отдельный метод!*/
+        $start = $end  = "";
+        $timeCondition = "";
+        if(!is_string($data['date']) ) {
+            $start = (isset($data['date']['start'])) ? $data['date']['start'] : "";
+            $end = (isset($data['date']['end'])) ? $data['date']['end'] : "";
+            $timeCondition = "AND date BETWEEN '". $start ."' AND '".$end."'" ;
+        }
+        /*Конец*/
         if(!$param){
-            $query = "SELECT ROUND(final_estimation,2) mediana FROM `timetables` WHERE final_estimation <> -1.00 AND final_estimation <> -2.00 AND user_id = $data[id]";
+            $query = "SELECT ROUND(final_estimation,2) mediana FROM `timetables` WHERE final_estimation <> -1.00 AND final_estimation <> -2.00 AND user_id = $data[id] $timeCondition";
         }
         else{
-            $query = "SELECT ROUND(own_estimation,2) mediana FROM `timetables` WHERE final_estimation <> -1.00 AND final_estimation <> -2.00 AND user_id = $data[id]";
+            $query = "SELECT ROUND(own_estimation,2) mediana FROM `timetables` WHERE final_estimation <> -1.00 AND final_estimation <> -2.00 AND user_id = $data[id] $timeCondition";
         }
 
         $query = trim($query);

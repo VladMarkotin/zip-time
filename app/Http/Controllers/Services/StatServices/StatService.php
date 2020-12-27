@@ -67,4 +67,47 @@ class StatService
         return $median;
     }
 
+    public function getPieceOfTime($data)
+    {
+        switch($data["period"]){
+            case "quart":
+                return $this->getQuarter();
+            case "month":
+                return $this->getMonth();
+            case "week":
+                return $this->getWeek();
+        }
+
+    }
+
+    private function getQuarter()
+    {
+        $date = new \Carbon\Carbon('-3 months');
+        $firstOfQuarter = $date->firstOfQuarter()->toDateString();
+        $lastOfQuarter = $date->lastOfQuarter()->toDateString();
+        $response = ["start" => $firstOfQuarter, "end" => $lastOfQuarter];
+        //dd($response);
+
+        return $response;
+    }
+
+    private function getMonth()
+    {
+        $date = new \Carbon\Carbon('-1 month');
+        $firstOfQuarter = $date->firstOfMonth()->toDateString();
+        $lastOfQuarter = $date->lastOfMonth()->toDateString();
+        $response = ["start" => $firstOfQuarter, "end" => $lastOfQuarter];
+
+        return $response;
+    }
+
+    private function getWeek()
+    {
+        $date = new \Carbon\Carbon('-1 week');
+        $firstOfQuarter = $date->firstOfMonth()->toDateString();
+        $lastOfQuarter = $date->lastOfMonth()->toDateString();
+        $response = ["start" => $firstOfQuarter, "end" => $lastOfQuarter];
+
+        return $response;
+    }
 } 

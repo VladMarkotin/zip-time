@@ -121,9 +121,7 @@
                                 </div>
                          </div>
                         <div class="form-group" style="margin-left: 22% ">
-                          <textarea class="form-control" id="approveComment" rows="3" style="width: 70%;"
-                            placeholder="Комментарий">
-                          </textarea>
+                          <textarea class="form-control" id="approveComment" rows="3" style="width: 70%;" placeholder="Комментарий"></textarea>
                         </div>
                         <div class="form-group" style="margin-left: 22% ">
                                <textarea class="form-control" id="necessary" rows="3" style="width: 70%;"
