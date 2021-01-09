@@ -69,6 +69,8 @@ Auth::routes(['register' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/plans', 'PlansController@index')->name('plans');
+
 Route::get('/hist', 'HistController@index')->name('hist');
 
 Route::get('/hist/{i}', 'HistController@showDayPlanHist');

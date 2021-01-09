@@ -22,6 +22,8 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+            <script src="frappe-gantt.min.js"></script>
+            <link rel="stylesheet" href="frappe-gantt.css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -43,10 +45,7 @@
                         <ul class="navbar-nav" style="margin-right:10%;">
 
                             <li class="nav-item">
-                              <a class="nav-link" href="/">План на квартал</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">План на неделю</a>
+                              <a class="nav-link" href="{{route('plans')}}">Планы</a>
                             </li>
                             <li class="nav-item">
                                 <b><a class="nav-link" href="/" style="color:#d90429;">Лента</a></b>
@@ -117,6 +116,7 @@
                 @yield('hist_cards')
                 @yield('stat_cards')
                 @yield('profile')
+                @yield('plans')
             </div>
         </main>
     </div>

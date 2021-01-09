@@ -7,6 +7,9 @@
 
      @auth
      <script type="text/javascript" src="{{asset('js/stat/stat.js')}}"></script>
+     <script type="text/javascript">
+     //console.log(new Vue());
+     </script>
      <!-- Tab links -->
                     <div class="tab" style="margin-left: 15px;">
                       <button class="tablinks" onclick="openCity(event, 'general')" id="defaultOpen">Общая статистика (за все время)</button>

@@ -94,9 +94,9 @@ class StatService
     private function getMonth()
     {
         $date = new \Carbon\Carbon('-1 month');
-        $firstOfQuarter = $date->firstOfMonth()->toDateString();
-        $lastOfQuarter = $date->lastOfMonth()->toDateString();
-        $response = ["start" => $firstOfQuarter, "end" => $lastOfQuarter];
+        $firstOfMonth = $date->firstOfMonth()->toDateString();
+        $lastOfMonth = $date->lastOfMonth()->toDateString();
+        $response = ["start" => $firstOfMonth, "end" => $lastOfMonth];
 
         return $response;
     }
@@ -104,9 +104,9 @@ class StatService
     private function getWeek()
     {
         $date = new \Carbon\Carbon('-1 week');
-        $firstOfQuarter = $date->firstOfMonth()->toDateString();
-        $lastOfQuarter = $date->lastOfMonth()->toDateString();
-        $response = ["start" => $firstOfQuarter, "end" => $lastOfQuarter];
+        $firstOfWeek = $date->startOfWeek()->format('Y-m-d');;
+        $endOfWeek   = $date->endOfWeek()->format('Y-m-d');
+        $response    = ["start" => $firstOfWeek, "end" => $endOfWeek];
 
         return $response;
     }

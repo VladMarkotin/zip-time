@@ -109,6 +109,7 @@ module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/li
 
 var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
+var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
 var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
 var buildFullPath = __webpack_require__(/*! ../core/buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
 var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
@@ -129,7 +130,7 @@ module.exports = function xhrAdapter(config) {
     // HTTP basic authentication
     if (config.auth) {
       var username = config.auth.username || '';
-      var password = config.auth.password || '';
+      var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
       requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
     }
 
@@ -210,8 +211,6 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
-
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
         cookies.read(config.xsrfCookieName) :
@@ -277,7 +276,7 @@ module.exports = function xhrAdapter(config) {
       });
     }
 
-    if (requestData === undefined) {
+    if (!requestData) {
       requestData = null;
     }
 
@@ -345,6 +344,9 @@ axios.all = function all(promises) {
   return Promise.all(promises);
 };
 axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
+
+// Expose isAxiosError
+axios.isAxiosError = __webpack_require__(/*! ./helpers/isAxiosError */ "./node_modules/axios/lib/helpers/isAxiosError.js");
 
 module.exports = axios;
 
@@ -554,9 +556,10 @@ Axios.prototype.getUri = function getUri(config) {
 utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, config) {
-    return this.request(utils.merge(config || {}, {
+    return this.request(mergeConfig(config || {}, {
       method: method,
-      url: url
+      url: url,
+      data: (config || {}).data
     }));
   };
 });
@@ -564,7 +567,7 @@ utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData
 utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, data, config) {
-    return this.request(utils.merge(config || {}, {
+    return this.request(mergeConfig(config || {}, {
       method: method,
       url: url,
       data: data
@@ -824,7 +827,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   error.response = response;
   error.isAxiosError = true;
 
-  error.toJSON = function() {
+  error.toJSON = function toJSON() {
     return {
       // Standard
       message: this.message,
@@ -873,59 +876,73 @@ module.exports = function mergeConfig(config1, config2) {
   config2 = config2 || {};
   var config = {};
 
-  var valueFromConfig2Keys = ['url', 'method', 'params', 'data'];
-  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy'];
+  var valueFromConfig2Keys = ['url', 'method', 'data'];
+  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy', 'params'];
   var defaultToConfig2Keys = [
-    'baseURL', 'url', 'transformRequest', 'transformResponse', 'paramsSerializer',
-    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
-    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress',
-    'maxContentLength', 'validateStatus', 'maxRedirects', 'httpAgent',
-    'httpsAgent', 'cancelToken', 'socketPath'
+    'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
+    'timeout', 'timeoutMessage', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
+    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'decompress',
+    'maxContentLength', 'maxBodyLength', 'maxRedirects', 'transport', 'httpAgent',
+    'httpsAgent', 'cancelToken', 'socketPath', 'responseEncoding'
   ];
+  var directMergeKeys = ['validateStatus'];
+
+  function getMergedValue(target, source) {
+    if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
+      return utils.merge(target, source);
+    } else if (utils.isPlainObject(source)) {
+      return utils.merge({}, source);
+    } else if (utils.isArray(source)) {
+      return source.slice();
+    }
+    return source;
+  }
+
+  function mergeDeepProperties(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(config1[prop], config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  }
 
   utils.forEach(valueFromConfig2Keys, function valueFromConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(undefined, config2[prop]);
     }
   });
 
-  utils.forEach(mergeDeepPropertiesKeys, function mergeDeepProperties(prop) {
-    if (utils.isObject(config2[prop])) {
-      config[prop] = utils.deepMerge(config1[prop], config2[prop]);
-    } else if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (utils.isObject(config1[prop])) {
-      config[prop] = utils.deepMerge(config1[prop]);
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
+  utils.forEach(mergeDeepPropertiesKeys, mergeDeepProperties);
 
   utils.forEach(defaultToConfig2Keys, function defaultToConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(undefined, config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  });
+
+  utils.forEach(directMergeKeys, function merge(prop) {
+    if (prop in config2) {
+      config[prop] = getMergedValue(config1[prop], config2[prop]);
+    } else if (prop in config1) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
     }
   });
 
   var axiosKeys = valueFromConfig2Keys
     .concat(mergeDeepPropertiesKeys)
-    .concat(defaultToConfig2Keys);
+    .concat(defaultToConfig2Keys)
+    .concat(directMergeKeys);
 
   var otherKeys = Object
-    .keys(config2)
+    .keys(config1)
+    .concat(Object.keys(config2))
     .filter(function filterAxiosKeys(key) {
       return axiosKeys.indexOf(key) === -1;
     });
 
-  utils.forEach(otherKeys, function otherKeysDefaultToConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
+  utils.forEach(otherKeys, mergeDeepProperties);
 
   return config;
 };
@@ -954,7 +971,7 @@ var createError = __webpack_require__(/*! ./createError */ "./node_modules/axios
  */
 module.exports = function settle(resolve, reject, response) {
   var validateStatus = response.config.validateStatus;
-  if (!validateStatus || validateStatus(response.status)) {
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
     reject(createError(
@@ -1086,6 +1103,7 @@ var defaults = {
   xsrfHeaderName: 'X-XSRF-TOKEN',
 
   maxContentLength: -1,
+  maxBodyLength: -1,
 
   validateStatus: function validateStatus(status) {
     return status >= 200 && status < 300;
@@ -1149,7 +1167,6 @@ var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/util
 
 function encode(val) {
   return encodeURIComponent(val).
-    replace(/%40/gi, '@').
     replace(/%3A/gi, ':').
     replace(/%24/g, '$').
     replace(/%2C/gi, ',').
@@ -1330,6 +1347,29 @@ module.exports = function isAbsoluteURL(url) {
   // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
   // by any combination of letters, digits, plus, period, or hyphen.
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isAxiosError.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isAxiosError.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Determines whether the payload is an error thrown by Axios
+ *
+ * @param {*} payload The value to test
+ * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
+ */
+module.exports = function isAxiosError(payload) {
+  return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
 
@@ -1659,6 +1699,21 @@ function isObject(val) {
 }
 
 /**
+ * Determine if a value is a plain Object
+ *
+ * @param {Object} val The value to test
+ * @return {boolean} True if value is a plain Object, otherwise false
+ */
+function isPlainObject(val) {
+  if (toString.call(val) !== '[object Object]') {
+    return false;
+  }
+
+  var prototype = Object.getPrototypeOf(val);
+  return prototype === null || prototype === Object.prototype;
+}
+
+/**
  * Determine if a value is a Date
  *
  * @param {Object} val The value to test
@@ -1814,34 +1869,12 @@ function forEach(obj, fn) {
 function merge(/* obj1, obj2, obj3, ... */) {
   var result = {};
   function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
+    if (isPlainObject(result[key]) && isPlainObject(val)) {
       result[key] = merge(result[key], val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
-  }
-  return result;
-}
-
-/**
- * Function equal to merge with the difference being that no reference
- * to original objects is kept.
- *
- * @see merge
- * @param {Object} obj1 Object to merge
- * @returns {Object} Result of all merge properties
- */
-function deepMerge(/* obj1, obj2, obj3, ... */) {
-  var result = {};
-  function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
-      result[key] = deepMerge(result[key], val);
-    } else if (typeof val === 'object') {
-      result[key] = deepMerge({}, val);
+    } else if (isPlainObject(val)) {
+      result[key] = merge({}, val);
+    } else if (isArray(val)) {
+      result[key] = val.slice();
     } else {
       result[key] = val;
     }
@@ -1872,6 +1905,19 @@ function extend(a, b, thisArg) {
   return a;
 }
 
+/**
+ * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+ *
+ * @param {string} content with BOM
+ * @return {string} content value without BOM
+ */
+function stripBOM(content) {
+  if (content.charCodeAt(0) === 0xFEFF) {
+    content = content.slice(1);
+  }
+  return content;
+}
+
 module.exports = {
   isArray: isArray,
   isArrayBuffer: isArrayBuffer,
@@ -1881,6 +1927,7 @@ module.exports = {
   isString: isString,
   isNumber: isNumber,
   isObject: isObject,
+  isPlainObject: isPlainObject,
   isUndefined: isUndefined,
   isDate: isDate,
   isFile: isFile,
@@ -1891,9 +1938,9 @@ module.exports = {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
-  deepMerge: deepMerge,
   extend: extend,
-  trim: trim
+  trim: trim,
+  stripBOM: stripBOM
 };
 
 
@@ -6362,6 +6409,2208 @@ __webpack_require__.r(__webpack_exports__);
 
 })));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/frappe-gantt/src/gantt.scss":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/frappe-gantt/src/gantt.scss ***!
+  \*************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".gantt .grid-background {\n  fill: none;\n}\n.gantt .grid-header {\n  fill: #ffffff;\n  stroke: #e0e0e0;\n  stroke-width: 1.4;\n}\n.gantt .grid-row {\n  fill: #ffffff;\n}\n.gantt .grid-row:nth-child(even) {\n  fill: #f5f5f5;\n}\n.gantt .row-line {\n  stroke: #ebeff2;\n}\n.gantt .tick {\n  stroke: #e0e0e0;\n  stroke-width: 0.2;\n}\n.gantt .tick.thick {\n  stroke-width: 0.4;\n}\n.gantt .today-highlight {\n  fill: #fcf8e3;\n  opacity: 0.5;\n}\n.gantt .arrow {\n  fill: none;\n  stroke: #666;\n  stroke-width: 1.4;\n}\n.gantt .bar {\n  fill: #b8c2cc;\n  stroke: #8D99A6;\n  stroke-width: 0;\n  transition: stroke-width 0.3s ease;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.gantt .bar-progress {\n  fill: #a3a3ff;\n}\n.gantt .bar-invalid {\n  fill: transparent;\n  stroke: #8D99A6;\n  stroke-width: 1;\n  stroke-dasharray: 5;\n}\n.gantt .bar-invalid ~ .bar-label {\n  fill: #555;\n}\n.gantt .bar-label {\n  fill: #fff;\n  dominant-baseline: central;\n  text-anchor: middle;\n  font-size: 12px;\n  font-weight: lighter;\n}\n.gantt .bar-label.big {\n  fill: #555;\n  text-anchor: start;\n}\n.gantt .handle {\n  fill: #ddd;\n  cursor: ew-resize;\n  opacity: 0;\n  visibility: hidden;\n  transition: opacity 0.3s ease;\n}\n.gantt .bar-wrapper {\n  cursor: pointer;\n  outline: none;\n}\n.gantt .bar-wrapper:hover .bar {\n  fill: #a9b5c1;\n}\n.gantt .bar-wrapper:hover .bar-progress {\n  fill: #8a8aff;\n}\n.gantt .bar-wrapper:hover .handle {\n  visibility: visible;\n  opacity: 1;\n}\n.gantt .bar-wrapper.active .bar {\n  fill: #a9b5c1;\n}\n.gantt .bar-wrapper.active .bar-progress {\n  fill: #8a8aff;\n}\n.gantt .lower-text, .gantt .upper-text {\n  font-size: 12px;\n  text-anchor: middle;\n}\n.gantt .upper-text {\n  fill: #555;\n}\n.gantt .lower-text {\n  fill: #333;\n}\n.gantt .hide {\n  display: none;\n}\n\n.gantt-container {\n  position: relative;\n  overflow: auto;\n  font-size: 12px;\n}\n.gantt-container .popup-wrapper {\n  position: absolute;\n  top: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.8);\n  padding: 0;\n  color: #959da5;\n  border-radius: 3px;\n}\n.gantt-container .popup-wrapper .title {\n  border-bottom: 3px solid #a3a3ff;\n  padding: 10px;\n}\n.gantt-container .popup-wrapper .subtitle {\n  padding: 10px;\n  color: #dfe2e5;\n}\n.gantt-container .popup-wrapper .pointer {\n  position: absolute;\n  height: 5px;\n  margin: 0 0 0 -5px;\n  border: 5px solid transparent;\n  border-top-color: rgba(0, 0, 0, 0.8);\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/*!*************************************************!*\
+  !*** ./node_modules/css-loader/lib/css-base.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/frappe-gantt/src/arrow.js":
+/*!************************************************!*\
+  !*** ./node_modules/frappe-gantt/src/arrow.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Arrow; });
+/* harmony import */ var _svg_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./svg_utils */ "./node_modules/frappe-gantt/src/svg_utils.js");
+
+
+class Arrow {
+    constructor(gantt, from_task, to_task) {
+        this.gantt = gantt;
+        this.from_task = from_task;
+        this.to_task = to_task;
+
+        this.calculate_path();
+        this.draw();
+    }
+
+    calculate_path() {
+        let start_x =
+            this.from_task.$bar.getX() + this.from_task.$bar.getWidth() / 2;
+
+        const condition = () =>
+            this.to_task.$bar.getX() < start_x + this.gantt.options.padding &&
+            start_x > this.from_task.$bar.getX() + this.gantt.options.padding;
+
+        while (condition()) {
+            start_x -= 10;
+        }
+
+        const start_y =
+            this.gantt.options.header_height +
+            this.gantt.options.bar_height +
+            (this.gantt.options.padding + this.gantt.options.bar_height) *
+                this.from_task.task._index +
+            this.gantt.options.padding;
+
+        const end_x = this.to_task.$bar.getX() - this.gantt.options.padding / 2;
+        const end_y =
+            this.gantt.options.header_height +
+            this.gantt.options.bar_height / 2 +
+            (this.gantt.options.padding + this.gantt.options.bar_height) *
+                this.to_task.task._index +
+            this.gantt.options.padding;
+
+        const from_is_below_to =
+            this.from_task.task._index > this.to_task.task._index;
+        const curve = this.gantt.options.arrow_curve;
+        const clockwise = from_is_below_to ? 1 : 0;
+        const curve_y = from_is_below_to ? -curve : curve;
+        const offset = from_is_below_to
+            ? end_y + this.gantt.options.arrow_curve
+            : end_y - this.gantt.options.arrow_curve;
+
+        this.path = `
+            M ${start_x} ${start_y}
+            V ${offset}
+            a ${curve} ${curve} 0 0 ${clockwise} ${curve} ${curve_y}
+            L ${end_x} ${end_y}
+            m -5 -5
+            l 5 5
+            l -5 5`;
+
+        if (
+            this.to_task.$bar.getX() <
+            this.from_task.$bar.getX() + this.gantt.options.padding
+        ) {
+            const down_1 = this.gantt.options.padding / 2 - curve;
+            const down_2 =
+                this.to_task.$bar.getY() +
+                this.to_task.$bar.getHeight() / 2 -
+                curve_y;
+            const left = this.to_task.$bar.getX() - this.gantt.options.padding;
+
+            this.path = `
+                M ${start_x} ${start_y}
+                v ${down_1}
+                a ${curve} ${curve} 0 0 1 -${curve} ${curve}
+                H ${left}
+                a ${curve} ${curve} 0 0 ${clockwise} -${curve} ${curve_y}
+                V ${down_2}
+                a ${curve} ${curve} 0 0 ${clockwise} ${curve} ${curve_y}
+                L ${end_x} ${end_y}
+                m -5 -5
+                l 5 5
+                l -5 5`;
+        }
+    }
+
+    draw() {
+        this.element = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_0__["createSVG"])('path', {
+            d: this.path,
+            'data-from': this.from_task.task.id,
+            'data-to': this.to_task.task.id
+        });
+    }
+
+    update() {
+        this.calculate_path();
+        this.element.setAttribute('d', this.path);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/frappe-gantt/src/bar.js":
+/*!**********************************************!*\
+  !*** ./node_modules/frappe-gantt/src/bar.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Bar; });
+/* harmony import */ var _date_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./date_utils */ "./node_modules/frappe-gantt/src/date_utils.js");
+/* harmony import */ var _svg_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./svg_utils */ "./node_modules/frappe-gantt/src/svg_utils.js");
+
+
+
+class Bar {
+    constructor(gantt, task) {
+        this.set_defaults(gantt, task);
+        this.prepare();
+        this.draw();
+        this.bind();
+    }
+
+    set_defaults(gantt, task) {
+        this.action_completed = false;
+        this.gantt = gantt;
+        this.task = task;
+    }
+
+    prepare() {
+        this.prepare_values();
+        this.prepare_helpers();
+    }
+
+    prepare_values() {
+        this.invalid = this.task.invalid;
+        this.height = this.gantt.options.bar_height;
+        this.x = this.compute_x();
+        this.y = this.compute_y();
+        this.corner_radius = this.gantt.options.bar_corner_radius;
+        this.duration =
+            _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].diff(this.task._end, this.task._start, 'hour') /
+            this.gantt.options.step;
+        this.width = this.gantt.options.column_width * this.duration;
+        this.progress_width =
+            this.gantt.options.column_width *
+                this.duration *
+                (this.task.progress / 100) || 0;
+        this.group = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('g', {
+            class: 'bar-wrapper ' + (this.task.custom_class || ''),
+            'data-id': this.task.id
+        });
+        this.bar_group = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('g', {
+            class: 'bar-group',
+            append_to: this.group
+        });
+        this.handle_group = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('g', {
+            class: 'handle-group',
+            append_to: this.group
+        });
+    }
+
+    prepare_helpers() {
+        SVGElement.prototype.getX = function() {
+            return +this.getAttribute('x');
+        };
+        SVGElement.prototype.getY = function() {
+            return +this.getAttribute('y');
+        };
+        SVGElement.prototype.getWidth = function() {
+            return +this.getAttribute('width');
+        };
+        SVGElement.prototype.getHeight = function() {
+            return +this.getAttribute('height');
+        };
+        SVGElement.prototype.getEndX = function() {
+            return this.getX() + this.getWidth();
+        };
+    }
+
+    draw() {
+        this.draw_bar();
+        this.draw_progress_bar();
+        this.draw_label();
+        this.draw_resize_handles();
+    }
+
+    draw_bar() {
+        this.$bar = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('rect', {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            rx: this.corner_radius,
+            ry: this.corner_radius,
+            class: 'bar',
+            append_to: this.bar_group
+        });
+
+        Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["animateSVG"])(this.$bar, 'width', 0, this.width);
+
+        if (this.invalid) {
+            this.$bar.classList.add('bar-invalid');
+        }
+    }
+
+    draw_progress_bar() {
+        if (this.invalid) return;
+        this.$bar_progress = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('rect', {
+            x: this.x,
+            y: this.y,
+            width: this.progress_width,
+            height: this.height,
+            rx: this.corner_radius,
+            ry: this.corner_radius,
+            class: 'bar-progress',
+            append_to: this.bar_group
+        });
+
+        Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["animateSVG"])(this.$bar_progress, 'width', 0, this.progress_width);
+    }
+
+    draw_label() {
+        Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('text', {
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2,
+            innerHTML: this.task.name,
+            class: 'bar-label',
+            append_to: this.bar_group
+        });
+        // labels get BBox in the next tick
+        requestAnimationFrame(() => this.update_label_position());
+    }
+
+    draw_resize_handles() {
+        if (this.invalid) return;
+
+        const bar = this.$bar;
+        const handle_width = 8;
+
+        Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('rect', {
+            x: bar.getX() + bar.getWidth() - 9,
+            y: bar.getY() + 1,
+            width: handle_width,
+            height: this.height - 2,
+            rx: this.corner_radius,
+            ry: this.corner_radius,
+            class: 'handle right',
+            append_to: this.handle_group
+        });
+
+        Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('rect', {
+            x: bar.getX() + 1,
+            y: bar.getY() + 1,
+            width: handle_width,
+            height: this.height - 2,
+            rx: this.corner_radius,
+            ry: this.corner_radius,
+            class: 'handle left',
+            append_to: this.handle_group
+        });
+
+        if (this.task.progress && this.task.progress < 100) {
+            this.$handle_progress = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('polygon', {
+                points: this.get_progress_polygon_points().join(','),
+                class: 'handle progress',
+                append_to: this.handle_group
+            });
+        }
+    }
+
+    get_progress_polygon_points() {
+        const bar_progress = this.$bar_progress;
+        return [
+            bar_progress.getEndX() - 5,
+            bar_progress.getY() + bar_progress.getHeight(),
+            bar_progress.getEndX() + 5,
+            bar_progress.getY() + bar_progress.getHeight(),
+            bar_progress.getEndX(),
+            bar_progress.getY() + bar_progress.getHeight() - 8.66
+        ];
+    }
+
+    bind() {
+        if (this.invalid) return;
+        this.setup_click_event();
+    }
+
+    setup_click_event() {
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(this.group, 'focus ' + this.gantt.options.popup_trigger, e => {
+            if (this.action_completed) {
+                // just finished a move action, wait for a few seconds
+                return;
+            }
+
+            this.show_popup();
+            this.gantt.unselect_all();
+            this.group.classList.add('active');
+        });
+
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(this.group, 'dblclick', e => {
+            if (this.action_completed) {
+                // just finished a move action, wait for a few seconds
+                return;
+            }
+
+            this.gantt.trigger_event('click', [this.task]);
+        });
+    }
+
+    show_popup() {
+        if (this.gantt.bar_being_dragged) return;
+
+        const start_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(this.task._start, 'MMM D', this.gantt.options.language);
+        const end_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(
+            _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(this.task._end, -1, 'second'),
+            'MMM D',
+            this.gantt.options.language
+        );
+        const subtitle = start_date + ' - ' + end_date;
+
+        this.gantt.show_popup({
+            target_element: this.$bar,
+            title: this.task.name,
+            subtitle: subtitle,
+            task: this.task,
+        });
+    }
+
+    update_bar_position({ x = null, width = null }) {
+        const bar = this.$bar;
+        if (x) {
+            // get all x values of parent task
+            const xs = this.task.dependencies.map(dep => {
+                return this.gantt.get_bar(dep).$bar.getX();
+            });
+            // child task must not go before parent
+            const valid_x = xs.reduce((prev, curr) => {
+                return x >= curr;
+            }, x);
+            if (!valid_x) {
+                width = null;
+                return;
+            }
+            this.update_attr(bar, 'x', x);
+        }
+        if (width && width >= this.gantt.options.column_width) {
+            this.update_attr(bar, 'width', width);
+        }
+        this.update_label_position();
+        this.update_handle_position();
+        this.update_progressbar_position();
+        this.update_arrow_position();
+    }
+
+    date_changed() {
+        let changed = false;
+        const { new_start_date, new_end_date } = this.compute_start_end_date();
+
+        if (Number(this.task._start) !== Number(new_start_date)) {
+            changed = true;
+            this.task._start = new_start_date;
+        }
+
+        if (Number(this.task._end) !== Number(new_end_date)) {
+            changed = true;
+            this.task._end = new_end_date;
+        }
+
+        if (!changed) return;
+
+        this.gantt.trigger_event('date_change', [
+            this.task,
+            new_start_date,
+            _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(new_end_date, -1, 'second')
+        ]);
+    }
+
+    progress_changed() {
+        const new_progress = this.compute_progress();
+        this.task.progress = new_progress;
+        this.gantt.trigger_event('progress_change', [this.task, new_progress]);
+    }
+
+    set_action_completed() {
+        this.action_completed = true;
+        setTimeout(() => (this.action_completed = false), 1000);
+    }
+
+    compute_start_end_date() {
+        const bar = this.$bar;
+        const x_in_units = bar.getX() / this.gantt.options.column_width;
+        const new_start_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(
+            this.gantt.gantt_start,
+            x_in_units * this.gantt.options.step,
+            'hour'
+        );
+        const width_in_units = bar.getWidth() / this.gantt.options.column_width;
+        const new_end_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(
+            new_start_date,
+            width_in_units * this.gantt.options.step,
+            'hour'
+        );
+
+        return { new_start_date, new_end_date };
+    }
+
+    compute_progress() {
+        const progress =
+            this.$bar_progress.getWidth() / this.$bar.getWidth() * 100;
+        return parseInt(progress, 10);
+    }
+
+    compute_x() {
+        const { step, column_width } = this.gantt.options;
+        const task_start = this.task._start;
+        const gantt_start = this.gantt.gantt_start;
+
+        const diff = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].diff(task_start, gantt_start, 'hour');
+        let x = diff / step * column_width;
+
+        if (this.gantt.view_is('Month')) {
+            const diff = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].diff(task_start, gantt_start, 'day');
+            x = diff * column_width / 30;
+        }
+        return x;
+    }
+
+    compute_y() {
+        return (
+            this.gantt.options.header_height +
+            this.gantt.options.padding +
+            this.task._index * (this.height + this.gantt.options.padding)
+        );
+    }
+
+    get_snap_position(dx) {
+        let odx = dx,
+            rem,
+            position;
+
+        if (this.gantt.view_is('Week')) {
+            rem = dx % (this.gantt.options.column_width / 7);
+            position =
+                odx -
+                rem +
+                (rem < this.gantt.options.column_width / 14
+                    ? 0
+                    : this.gantt.options.column_width / 7);
+        } else if (this.gantt.view_is('Month')) {
+            rem = dx % (this.gantt.options.column_width / 30);
+            position =
+                odx -
+                rem +
+                (rem < this.gantt.options.column_width / 60
+                    ? 0
+                    : this.gantt.options.column_width / 30);
+        } else {
+            rem = dx % this.gantt.options.column_width;
+            position =
+                odx -
+                rem +
+                (rem < this.gantt.options.column_width / 2
+                    ? 0
+                    : this.gantt.options.column_width);
+        }
+        return position;
+    }
+
+    update_attr(element, attr, value) {
+        value = +value;
+        if (!isNaN(value)) {
+            element.setAttribute(attr, value);
+        }
+        return element;
+    }
+
+    update_progressbar_position() {
+        this.$bar_progress.setAttribute('x', this.$bar.getX());
+        this.$bar_progress.setAttribute(
+            'width',
+            this.$bar.getWidth() * (this.task.progress / 100)
+        );
+    }
+
+    update_label_position() {
+        const bar = this.$bar,
+            label = this.group.querySelector('.bar-label');
+
+        if (label.getBBox().width > bar.getWidth()) {
+            label.classList.add('big');
+            label.setAttribute('x', bar.getX() + bar.getWidth() + 5);
+        } else {
+            label.classList.remove('big');
+            label.setAttribute('x', bar.getX() + bar.getWidth() / 2);
+        }
+    }
+
+    update_handle_position() {
+        const bar = this.$bar;
+        this.handle_group
+            .querySelector('.handle.left')
+            .setAttribute('x', bar.getX() + 1);
+        this.handle_group
+            .querySelector('.handle.right')
+            .setAttribute('x', bar.getEndX() - 9);
+        const handle = this.group.querySelector('.handle.progress');
+        handle &&
+            handle.setAttribute('points', this.get_progress_polygon_points());
+    }
+
+    update_arrow_position() {
+        this.arrows = this.arrows || [];
+        for (let arrow of this.arrows) {
+            arrow.update();
+        }
+    }
+}
+
+function isFunction(functionToCheck) {
+    var getType = {};
+    return (
+        functionToCheck &&
+        getType.toString.call(functionToCheck) === '[object Function]'
+    );
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/frappe-gantt/src/date_utils.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/frappe-gantt/src/date_utils.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const YEAR = 'year';
+const MONTH = 'month';
+const DAY = 'day';
+const HOUR = 'hour';
+const MINUTE = 'minute';
+const SECOND = 'second';
+const MILLISECOND = 'millisecond';
+
+const month_names = {
+    en: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ],
+    es: [
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre'
+    ],
+    ru: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь'
+    ],
+    ptBr: [
+        'Janeiro',
+        'Fevereiro',
+        'Março',
+        'Abril',
+        'Maio',
+        'Junho',
+        'Julho',
+        'Agosto',
+        'Setembro',
+        'Outubro',
+        'Novembro',
+        'Dezembro'
+    ],
+    fr: [
+        'Janvier',
+        'Février',
+        'Mars',
+        'Avril',
+        'Mai',
+        'Juin',
+        'Juillet',
+        'Août',
+        'Septembre',
+        'Octobre',
+        'Novembre',
+        'Décembre'
+    ],
+    tr: [
+        'Ocak',
+        'Şubat',
+        'Mart',
+        'Nisan',
+        'Mayıs',
+        'Haziran',
+        'Temmuz',
+        'Ağustos',
+        'Eylül',
+        'Ekim',
+        'Kasım',
+        'Aralık'
+    ],
+    zh: [
+        '一月',
+        '二月',
+        '三月',
+        '四月',
+        '五月',
+        '六月',
+        '七月',
+        '八月',
+        '九月',
+        '十月',
+        '十一月',
+        '十二月'
+    ]
+};
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    parse(date, date_separator = '-', time_separator = /[.:]/) {
+        if (date instanceof Date) {
+            return date;
+        }
+        if (typeof date === 'string') {
+            let date_parts, time_parts;
+            const parts = date.split(' ');
+
+            date_parts = parts[0]
+                .split(date_separator)
+                .map(val => parseInt(val, 10));
+            time_parts = parts[1] && parts[1].split(time_separator);
+
+            // month is 0 indexed
+            date_parts[1] = date_parts[1] - 1;
+
+            let vals = date_parts;
+
+            if (time_parts && time_parts.length) {
+                if (time_parts.length == 4) {
+                    time_parts[3] = '0.' + time_parts[3];
+                    time_parts[3] = parseFloat(time_parts[3]) * 1000;
+                }
+                vals = vals.concat(time_parts);
+            }
+
+            return new Date(...vals);
+        }
+    },
+
+    to_string(date, with_time = false) {
+        if (!(date instanceof Date)) {
+            throw new TypeError('Invalid argument type');
+        }
+        const vals = this.get_date_values(date).map((val, i) => {
+            if (i === 1) {
+                // add 1 for month
+                val = val + 1;
+            }
+
+            if (i === 6) {
+                return padStart(val + '', 3, '0');
+            }
+
+            return padStart(val + '', 2, '0');
+        });
+        const date_string = `${vals[0]}-${vals[1]}-${vals[2]}`;
+        const time_string = `${vals[3]}:${vals[4]}:${vals[5]}.${vals[6]}`;
+
+        return date_string + (with_time ? ' ' + time_string : '');
+    },
+
+    format(date, format_string = 'YYYY-MM-DD HH:mm:ss.SSS', lang = 'en') {
+        const values = this.get_date_values(date).map(d => padStart(d, 2, 0));
+        const format_map = {
+            YYYY: values[0],
+            MM: padStart(+values[1] + 1, 2, 0),
+            DD: values[2],
+            HH: values[3],
+            mm: values[4],
+            ss: values[5],
+            SSS:values[6],
+            D: values[2],
+            MMMM: month_names[lang][+values[1]],
+            MMM: month_names[lang][+values[1]]
+        };
+
+        let str = format_string;
+        const formatted_values = [];
+
+        Object.keys(format_map)
+            .sort((a, b) => b.length - a.length) // big string first
+            .forEach(key => {
+                if (str.includes(key)) {
+                    str = str.replace(key, `$${formatted_values.length}`);
+                    formatted_values.push(format_map[key]);
+                }
+            });
+
+        formatted_values.forEach((value, i) => {
+            str = str.replace(`$${i}`, value);
+        });
+
+        return str;
+    },
+
+    diff(date_a, date_b, scale = DAY) {
+        let milliseconds, seconds, hours, minutes, days, months, years;
+
+        milliseconds = date_a - date_b;
+        seconds = milliseconds / 1000;
+        minutes = seconds / 60;
+        hours = minutes / 60;
+        days = hours / 24;
+        months = days / 30;
+        years = months / 12;
+
+        if (!scale.endsWith('s')) {
+            scale += 's';
+        }
+
+        return Math.floor(
+            {
+                milliseconds,
+                seconds,
+                minutes,
+                hours,
+                days,
+                months,
+                years
+            }[scale]
+        );
+    },
+
+    today() {
+        const vals = this.get_date_values(new Date()).slice(0, 3);
+        return new Date(...vals);
+    },
+
+    now() {
+        return new Date();
+    },
+
+    add(date, qty, scale) {
+        qty = parseInt(qty, 10);
+        const vals = [
+            date.getFullYear() + (scale === YEAR ? qty : 0),
+            date.getMonth() + (scale === MONTH ? qty : 0),
+            date.getDate() + (scale === DAY ? qty : 0),
+            date.getHours() + (scale === HOUR ? qty : 0),
+            date.getMinutes() + (scale === MINUTE ? qty : 0),
+            date.getSeconds() + (scale === SECOND ? qty : 0),
+            date.getMilliseconds() + (scale === MILLISECOND ? qty : 0)
+        ];
+        return new Date(...vals);
+    },
+
+    start_of(date, scale) {
+        const scores = {
+            [YEAR]: 6,
+            [MONTH]: 5,
+            [DAY]: 4,
+            [HOUR]: 3,
+            [MINUTE]: 2,
+            [SECOND]: 1,
+            [MILLISECOND]: 0
+        };
+
+        function should_reset(_scale) {
+            const max_score = scores[scale];
+            return scores[_scale] <= max_score;
+        }
+
+        const vals = [
+            date.getFullYear(),
+            should_reset(YEAR) ? 0 : date.getMonth(),
+            should_reset(MONTH) ? 1 : date.getDate(),
+            should_reset(DAY) ? 0 : date.getHours(),
+            should_reset(HOUR) ? 0 : date.getMinutes(),
+            should_reset(MINUTE) ? 0 : date.getSeconds(),
+            should_reset(SECOND) ? 0 : date.getMilliseconds()
+        ];
+
+        return new Date(...vals);
+    },
+
+    clone(date) {
+        return new Date(...this.get_date_values(date));
+    },
+
+    get_date_values(date) {
+        return [
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            date.getHours(),
+            date.getMinutes(),
+            date.getSeconds(),
+            date.getMilliseconds()
+        ];
+    },
+
+    get_days_in_month(date) {
+        const no_of_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        const month = date.getMonth();
+
+        if (month !== 1) {
+            return no_of_days[month];
+        }
+
+        // Feb
+        const year = date.getFullYear();
+        if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+            return 29;
+        }
+        return 28;
+    }
+});
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+function padStart(str, targetLength, padString) {
+    str = str + '';
+    targetLength = targetLength >> 0;
+    padString = String(typeof padString !== 'undefined' ? padString : ' ');
+    if (str.length > targetLength) {
+        return String(str);
+    } else {
+        targetLength = targetLength - str.length;
+        if (targetLength > padString.length) {
+            padString += padString.repeat(targetLength / padString.length);
+        }
+        return padString.slice(0, targetLength) + String(str);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/frappe-gantt/src/gantt.scss":
+/*!**************************************************!*\
+  !*** ./node_modules/frappe-gantt/src/gantt.scss ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../css-loader!../../postcss-loader/src??ref--7-2!../../sass-loader/dist/cjs.js??ref--7-3!./gantt.scss */ "./node_modules/css-loader/index.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/frappe-gantt/src/gantt.scss");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/frappe-gantt/src/index.js":
+/*!************************************************!*\
+  !*** ./node_modules/frappe-gantt/src/index.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Gantt; });
+/* harmony import */ var _date_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./date_utils */ "./node_modules/frappe-gantt/src/date_utils.js");
+/* harmony import */ var _svg_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./svg_utils */ "./node_modules/frappe-gantt/src/svg_utils.js");
+/* harmony import */ var _bar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bar */ "./node_modules/frappe-gantt/src/bar.js");
+/* harmony import */ var _arrow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./arrow */ "./node_modules/frappe-gantt/src/arrow.js");
+/* harmony import */ var _popup__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./popup */ "./node_modules/frappe-gantt/src/popup.js");
+/* harmony import */ var _gantt_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./gantt.scss */ "./node_modules/frappe-gantt/src/gantt.scss");
+/* harmony import */ var _gantt_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_gantt_scss__WEBPACK_IMPORTED_MODULE_5__);
+
+
+
+
+
+
+
+
+const VIEW_MODE = {
+    QUARTER_DAY: 'Quarter Day',
+    HALF_DAY: 'Half Day',
+    DAY: 'Day',
+    WEEK: 'Week',
+    MONTH: 'Month',
+    YEAR: 'Year'
+};
+
+class Gantt {
+    constructor(wrapper, tasks, options) {
+        this.setup_wrapper(wrapper);
+        this.setup_options(options);
+        this.setup_tasks(tasks);
+        // initialize with default view mode
+        this.change_view_mode();
+        this.bind_events();
+    }
+
+    setup_wrapper(element) {
+        let svg_element, wrapper_element;
+
+        // CSS Selector is passed
+        if (typeof element === 'string') {
+            element = document.querySelector(element);
+        }
+
+        // get the SVGElement
+        if (element instanceof HTMLElement) {
+            wrapper_element = element;
+            svg_element = element.querySelector('svg');
+        } else if (element instanceof SVGElement) {
+            svg_element = element;
+        } else {
+            throw new TypeError(
+                'Frappé Gantt only supports usage of a string CSS selector,' +
+                    " HTML DOM element or SVG DOM element for the 'element' parameter"
+            );
+        }
+
+        // svg element
+        if (!svg_element) {
+            // create it
+            this.$svg = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('svg', {
+                append_to: wrapper_element,
+                class: 'gantt'
+            });
+        } else {
+            this.$svg = svg_element;
+            this.$svg.classList.add('gantt');
+        }
+
+        // wrapper element
+        this.$container = document.createElement('div');
+        this.$container.classList.add('gantt-container');
+
+        const parent_element = this.$svg.parentElement;
+        parent_element.appendChild(this.$container);
+        this.$container.appendChild(this.$svg);
+
+        // popup wrapper
+        this.popup_wrapper = document.createElement('div');
+        this.popup_wrapper.classList.add('popup-wrapper');
+        this.$container.appendChild(this.popup_wrapper);
+    }
+
+    setup_options(options) {
+        const default_options = {
+            header_height: 50,
+            column_width: 30,
+            step: 24,
+            view_modes: [...Object.values(VIEW_MODE)],
+            bar_height: 20,
+            bar_corner_radius: 3,
+            arrow_curve: 5,
+            padding: 18,
+            view_mode: 'Day',
+            date_format: 'YYYY-MM-DD',
+            popup_trigger: 'click',
+            custom_popup_html: null,
+            language: 'en'
+        };
+        this.options = Object.assign({}, default_options, options);
+    }
+
+    setup_tasks(tasks) {
+        // prepare tasks
+        this.tasks = tasks.map((task, i) => {
+            // convert to Date objects
+            task._start = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].parse(task.start);
+            task._end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].parse(task.end);
+
+            // make task invalid if duration too large
+            if (_date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].diff(task._end, task._start, 'year') > 10) {
+                task.end = null;
+            }
+
+            // cache index
+            task._index = i;
+
+            // invalid dates
+            if (!task.start && !task.end) {
+                const today = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].today();
+                task._start = today;
+                task._end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(today, 2, 'day');
+            }
+
+            if (!task.start && task.end) {
+                task._start = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(task._end, -2, 'day');
+            }
+
+            if (task.start && !task.end) {
+                task._end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(task._start, 2, 'day');
+            }
+
+            // if hours is not set, assume the last day is full day
+            // e.g: 2018-09-09 becomes 2018-09-09 23:59:59
+            const task_end_values = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].get_date_values(task._end);
+            if (task_end_values.slice(3).every(d => d === 0)) {
+                task._end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(task._end, 24, 'hour');
+            }
+
+            // invalid flag
+            if (!task.start || !task.end) {
+                task.invalid = true;
+            }
+
+            // dependencies
+            if (typeof task.dependencies === 'string' || !task.dependencies) {
+                let deps = [];
+                if (task.dependencies) {
+                    deps = task.dependencies
+                        .split(',')
+                        .map(d => d.trim())
+                        .filter(d => d);
+                }
+                task.dependencies = deps;
+            }
+
+            // uids
+            if (!task.id) {
+                task.id = generate_id(task);
+            }
+
+            return task;
+        });
+
+        this.setup_dependencies();
+    }
+
+    setup_dependencies() {
+        this.dependency_map = {};
+        for (let t of this.tasks) {
+            for (let d of t.dependencies) {
+                this.dependency_map[d] = this.dependency_map[d] || [];
+                this.dependency_map[d].push(t.id);
+            }
+        }
+    }
+
+    refresh(tasks) {
+        this.setup_tasks(tasks);
+        this.change_view_mode();
+    }
+
+    change_view_mode(mode = this.options.view_mode) {
+        this.update_view_scale(mode);
+        this.setup_dates();
+        this.render();
+        // fire viewmode_change event
+        this.trigger_event('view_change', [mode]);
+    }
+
+    update_view_scale(view_mode) {
+        this.options.view_mode = view_mode;
+
+        if (view_mode === VIEW_MODE.DAY) {
+            this.options.step = 24;
+            this.options.column_width = 38;
+        } else if (view_mode === VIEW_MODE.HALF_DAY) {
+            this.options.step = 24 / 2;
+            this.options.column_width = 38;
+        } else if (view_mode === VIEW_MODE.QUARTER_DAY) {
+            this.options.step = 24 / 4;
+            this.options.column_width = 38;
+        } else if (view_mode === VIEW_MODE.WEEK) {
+            this.options.step = 24 * 7;
+            this.options.column_width = 140;
+        } else if (view_mode === VIEW_MODE.MONTH) {
+            this.options.step = 24 * 30;
+            this.options.column_width = 120;
+        } else if (view_mode === VIEW_MODE.YEAR) {
+            this.options.step = 24 * 365;
+            this.options.column_width = 120;
+        }
+    }
+
+    setup_dates() {
+        this.setup_gantt_dates();
+        this.setup_date_values();
+    }
+
+    setup_gantt_dates() {
+        this.gantt_start = this.gantt_end = null;
+
+        for (let task of this.tasks) {
+            // set global start and end date
+            if (!this.gantt_start || task._start < this.gantt_start) {
+                this.gantt_start = task._start;
+            }
+            if (!this.gantt_end || task._end > this.gantt_end) {
+                this.gantt_end = task._end;
+            }
+        }
+
+        this.gantt_start = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].start_of(this.gantt_start, 'day');
+        this.gantt_end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].start_of(this.gantt_end, 'day');
+
+        // add date padding on both sides
+        if (this.view_is([VIEW_MODE.QUARTER_DAY, VIEW_MODE.HALF_DAY])) {
+            this.gantt_start = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(this.gantt_start, -7, 'day');
+            this.gantt_end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(this.gantt_end, 7, 'day');
+        } else if (this.view_is(VIEW_MODE.MONTH)) {
+            this.gantt_start = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].start_of(this.gantt_start, 'year');
+            this.gantt_end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(this.gantt_end, 1, 'year');
+        } else if (this.view_is(VIEW_MODE.YEAR)) {
+            this.gantt_start = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(this.gantt_start, -2, 'year');
+            this.gantt_end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(this.gantt_end, 2, 'year');
+        } else {
+            this.gantt_start = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(this.gantt_start, -1, 'month');
+            this.gantt_end = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(this.gantt_end, 1, 'month');
+        }
+    }
+
+    setup_date_values() {
+        this.dates = [];
+        let cur_date = null;
+
+        while (cur_date === null || cur_date < this.gantt_end) {
+            if (!cur_date) {
+                cur_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].clone(this.gantt_start);
+            } else {
+                if (this.view_is(VIEW_MODE.YEAR)) {
+                    cur_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(cur_date, 1, 'year');
+                } else if (this.view_is(VIEW_MODE.MONTH)) {
+                    cur_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(cur_date, 1, 'month');
+                } else {
+                    cur_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(
+                        cur_date,
+                        this.options.step,
+                        'hour'
+                    );
+                }
+            }
+            this.dates.push(cur_date);
+        }
+    }
+
+    bind_events() {
+        this.bind_grid_click();
+        this.bind_bar_events();
+    }
+
+    render() {
+        this.clear();
+        this.setup_layers();
+        this.make_grid();
+        this.make_dates();
+        this.make_bars();
+        this.make_arrows();
+        this.map_arrows_on_bars();
+        this.set_width();
+        this.set_scroll_position();
+    }
+
+    setup_layers() {
+        this.layers = {};
+        const layers = ['grid', 'date', 'arrow', 'progress', 'bar', 'details'];
+        // make group layers
+        for (let layer of layers) {
+            this.layers[layer] = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('g', {
+                class: layer,
+                append_to: this.$svg
+            });
+        }
+    }
+
+    make_grid() {
+        this.make_grid_background();
+        this.make_grid_rows();
+        this.make_grid_header();
+        this.make_grid_ticks();
+        this.make_grid_highlights();
+    }
+
+    make_grid_background() {
+        const grid_width = this.dates.length * this.options.column_width;
+        const grid_height =
+            this.options.header_height +
+            this.options.padding +
+            (this.options.bar_height + this.options.padding) *
+                this.tasks.length;
+
+        Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('rect', {
+            x: 0,
+            y: 0,
+            width: grid_width,
+            height: grid_height,
+            class: 'grid-background',
+            append_to: this.layers.grid
+        });
+
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].attr(this.$svg, {
+            height: grid_height + this.options.padding + 100,
+            width: '100%'
+        });
+    }
+
+    make_grid_rows() {
+        const rows_layer = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('g', { append_to: this.layers.grid });
+        const lines_layer = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('g', { append_to: this.layers.grid });
+
+        const row_width = this.dates.length * this.options.column_width;
+        const row_height = this.options.bar_height + this.options.padding;
+
+        let row_y = this.options.header_height + this.options.padding / 2;
+
+        for (let task of this.tasks) {
+            Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('rect', {
+                x: 0,
+                y: row_y,
+                width: row_width,
+                height: row_height,
+                class: 'grid-row',
+                append_to: rows_layer
+            });
+
+            Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('line', {
+                x1: 0,
+                y1: row_y + row_height,
+                x2: row_width,
+                y2: row_y + row_height,
+                class: 'row-line',
+                append_to: lines_layer
+            });
+
+            row_y += this.options.bar_height + this.options.padding;
+        }
+    }
+
+    make_grid_header() {
+        const header_width = this.dates.length * this.options.column_width;
+        const header_height = this.options.header_height + 10;
+        Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('rect', {
+            x: 0,
+            y: 0,
+            width: header_width,
+            height: header_height,
+            class: 'grid-header',
+            append_to: this.layers.grid
+        });
+    }
+
+    make_grid_ticks() {
+        let tick_x = 0;
+        let tick_y = this.options.header_height + this.options.padding / 2;
+        let tick_height =
+            (this.options.bar_height + this.options.padding) *
+            this.tasks.length;
+
+        for (let date of this.dates) {
+            let tick_class = 'tick';
+            // thick tick for monday
+            if (this.view_is(VIEW_MODE.DAY) && date.getDate() === 1) {
+                tick_class += ' thick';
+            }
+            // thick tick for first week
+            if (
+                this.view_is(VIEW_MODE.WEEK) &&
+                date.getDate() >= 1 &&
+                date.getDate() < 8
+            ) {
+                tick_class += ' thick';
+            }
+            // thick ticks for quarters
+            if (this.view_is(VIEW_MODE.MONTH) && (date.getMonth() + 1) % 3 === 0) {
+                tick_class += ' thick';
+            }
+
+            Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('path', {
+                d: `M ${tick_x} ${tick_y} v ${tick_height}`,
+                class: tick_class,
+                append_to: this.layers.grid
+            });
+
+            if (this.view_is(VIEW_MODE.MONTH)) {
+                tick_x +=
+                    _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].get_days_in_month(date) *
+                    this.options.column_width /
+                    30;
+            } else {
+                tick_x += this.options.column_width;
+            }
+        }
+    }
+
+    make_grid_highlights() {
+        // highlight today's date
+        if (this.view_is(VIEW_MODE.DAY)) {
+            const x =
+                _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].diff(_date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].today(), this.gantt_start, 'hour') /
+                this.options.step *
+                this.options.column_width;
+            const y = 0;
+
+            const width = this.options.column_width;
+            const height =
+                (this.options.bar_height + this.options.padding) *
+                    this.tasks.length +
+                this.options.header_height +
+                this.options.padding / 2;
+
+            Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('rect', {
+                x,
+                y,
+                width,
+                height,
+                class: 'today-highlight',
+                append_to: this.layers.grid
+            });
+        }
+    }
+
+    make_dates() {
+        for (let date of this.get_dates_to_draw()) {
+            Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('text', {
+                x: date.lower_x,
+                y: date.lower_y,
+                innerHTML: date.lower_text,
+                class: 'lower-text',
+                append_to: this.layers.date
+            });
+
+            if (date.upper_text) {
+                const $upper_text = Object(_svg_utils__WEBPACK_IMPORTED_MODULE_1__["createSVG"])('text', {
+                    x: date.upper_x,
+                    y: date.upper_y,
+                    innerHTML: date.upper_text,
+                    class: 'upper-text',
+                    append_to: this.layers.date
+                });
+
+                // remove out-of-bound dates
+                if (
+                    $upper_text.getBBox().x2 > this.layers.grid.getBBox().width
+                ) {
+                    $upper_text.remove();
+                }
+            }
+        }
+    }
+
+    get_dates_to_draw() {
+        let last_date = null;
+        const dates = this.dates.map((date, i) => {
+            const d = this.get_date_info(date, last_date, i);
+            last_date = date;
+            return d;
+        });
+        return dates;
+    }
+
+    get_date_info(date, last_date, i) {
+        if (!last_date) {
+            last_date = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].add(date, 1, 'year');
+        }
+        const date_text = {
+            'Quarter Day_lower': _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(
+                date,
+                'HH',
+                this.options.language
+            ),
+            'Half Day_lower': _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(
+                date,
+                'HH',
+                this.options.language
+            ),
+            Day_lower:
+                date.getDate() !== last_date.getDate()
+                    ? _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'D', this.options.language)
+                    : '',
+            Week_lower:
+                date.getMonth() !== last_date.getMonth()
+                    ? _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'D MMM', this.options.language)
+                    : _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'D', this.options.language),
+            Month_lower: _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'MMMM', this.options.language),
+            Year_lower: _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'YYYY', this.options.language),
+            'Quarter Day_upper':
+                date.getDate() !== last_date.getDate()
+                    ? _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'D MMM', this.options.language)
+                    : '',
+            'Half Day_upper':
+                date.getDate() !== last_date.getDate()
+                    ? date.getMonth() !== last_date.getMonth()
+                      ? _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'D MMM', this.options.language)
+                      : _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'D', this.options.language)
+                    : '',
+            Day_upper:
+                date.getMonth() !== last_date.getMonth()
+                    ? _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'MMMM', this.options.language)
+                    : '',
+            Week_upper:
+                date.getMonth() !== last_date.getMonth()
+                    ? _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'MMMM', this.options.language)
+                    : '',
+            Month_upper:
+                date.getFullYear() !== last_date.getFullYear()
+                    ? _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'YYYY', this.options.language)
+                    : '',
+            Year_upper:
+                date.getFullYear() !== last_date.getFullYear()
+                    ? _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].format(date, 'YYYY', this.options.language)
+                    : ''
+        };
+
+        const base_pos = {
+            x: i * this.options.column_width,
+            lower_y: this.options.header_height,
+            upper_y: this.options.header_height - 25
+        };
+
+        const x_pos = {
+            'Quarter Day_lower': this.options.column_width * 4 / 2,
+            'Quarter Day_upper': 0,
+            'Half Day_lower': this.options.column_width * 2 / 2,
+            'Half Day_upper': 0,
+            Day_lower: this.options.column_width / 2,
+            Day_upper: this.options.column_width * 30 / 2,
+            Week_lower: 0,
+            Week_upper: this.options.column_width * 4 / 2,
+            Month_lower: this.options.column_width / 2,
+            Month_upper: this.options.column_width * 12 / 2,
+            Year_lower: this.options.column_width / 2,
+            Year_upper: this.options.column_width * 30 / 2
+        };
+
+        return {
+            upper_text: date_text[`${this.options.view_mode}_upper`],
+            lower_text: date_text[`${this.options.view_mode}_lower`],
+            upper_x: base_pos.x + x_pos[`${this.options.view_mode}_upper`],
+            upper_y: base_pos.upper_y,
+            lower_x: base_pos.x + x_pos[`${this.options.view_mode}_lower`],
+            lower_y: base_pos.lower_y
+        };
+    }
+
+    make_bars() {
+        this.bars = this.tasks.map(task => {
+            const bar = new _bar__WEBPACK_IMPORTED_MODULE_2__["default"](this, task);
+            this.layers.bar.appendChild(bar.group);
+            return bar;
+        });
+    }
+
+    make_arrows() {
+        this.arrows = [];
+        for (let task of this.tasks) {
+            let arrows = [];
+            arrows = task.dependencies
+                .map(task_id => {
+                    const dependency = this.get_task(task_id);
+                    if (!dependency) return;
+                    const arrow = new _arrow__WEBPACK_IMPORTED_MODULE_3__["default"](
+                        this,
+                        this.bars[dependency._index], // from_task
+                        this.bars[task._index] // to_task
+                    );
+                    this.layers.arrow.appendChild(arrow.element);
+                    return arrow;
+                })
+                .filter(Boolean); // filter falsy values
+            this.arrows = this.arrows.concat(arrows);
+        }
+    }
+
+    map_arrows_on_bars() {
+        for (let bar of this.bars) {
+            bar.arrows = this.arrows.filter(arrow => {
+                return (
+                    arrow.from_task.task.id === bar.task.id ||
+                    arrow.to_task.task.id === bar.task.id
+                );
+            });
+        }
+    }
+
+    set_width() {
+        const cur_width = this.$svg.getBoundingClientRect().width;
+        const actual_width = this.$svg
+            .querySelector('.grid .grid-row')
+            .getAttribute('width');
+        if (cur_width < actual_width) {
+            this.$svg.setAttribute('width', actual_width);
+        }
+    }
+
+    set_scroll_position() {
+        const parent_element = this.$svg.parentElement;
+        if (!parent_element) return;
+
+        const hours_before_first_task = _date_utils__WEBPACK_IMPORTED_MODULE_0__["default"].diff(
+            this.get_oldest_starting_date(),
+            this.gantt_start,
+            'hour'
+        );
+
+        const scroll_pos =
+            hours_before_first_task /
+                this.options.step *
+                this.options.column_width -
+            this.options.column_width;
+
+        parent_element.scrollLeft = scroll_pos;
+    }
+
+    bind_grid_click() {
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(
+            this.$svg,
+            this.options.popup_trigger,
+            '.grid-row, .grid-header',
+            () => {
+                this.unselect_all();
+                this.hide_popup();
+            }
+        );
+    }
+
+    bind_bar_events() {
+        let is_dragging = false;
+        let x_on_start = 0;
+        let y_on_start = 0;
+        let is_resizing_left = false;
+        let is_resizing_right = false;
+        let parent_bar_id = null;
+        let bars = []; // instanceof Bar
+        this.bar_being_dragged = null;
+
+        function action_in_progress() {
+            return is_dragging || is_resizing_left || is_resizing_right;
+        }
+
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(this.$svg, 'mousedown', '.bar-wrapper, .handle', (e, element) => {
+            const bar_wrapper = _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].closest('.bar-wrapper', element);
+
+            if (element.classList.contains('left')) {
+                is_resizing_left = true;
+            } else if (element.classList.contains('right')) {
+                is_resizing_right = true;
+            } else if (element.classList.contains('bar-wrapper')) {
+                is_dragging = true;
+            }
+
+            bar_wrapper.classList.add('active');
+
+            x_on_start = e.offsetX;
+            y_on_start = e.offsetY;
+
+            parent_bar_id = bar_wrapper.getAttribute('data-id');
+            const ids = [
+                parent_bar_id,
+                ...this.get_all_dependent_tasks(parent_bar_id)
+            ];
+            bars = ids.map(id => this.get_bar(id));
+
+            this.bar_being_dragged = parent_bar_id;
+
+            bars.forEach(bar => {
+                const $bar = bar.$bar;
+                $bar.ox = $bar.getX();
+                $bar.oy = $bar.getY();
+                $bar.owidth = $bar.getWidth();
+                $bar.finaldx = 0;
+            });
+        });
+
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(this.$svg, 'mousemove', e => {
+            if (!action_in_progress()) return;
+            const dx = e.offsetX - x_on_start;
+            const dy = e.offsetY - y_on_start;
+
+            bars.forEach(bar => {
+                const $bar = bar.$bar;
+                $bar.finaldx = this.get_snap_position(dx);
+
+                if (is_resizing_left) {
+                    if (parent_bar_id === bar.task.id) {
+                        bar.update_bar_position({
+                            x: $bar.ox + $bar.finaldx,
+                            width: $bar.owidth - $bar.finaldx
+                        });
+                    } else {
+                        bar.update_bar_position({
+                            x: $bar.ox + $bar.finaldx
+                        });
+                    }
+                } else if (is_resizing_right) {
+                    if (parent_bar_id === bar.task.id) {
+                        bar.update_bar_position({
+                            width: $bar.owidth + $bar.finaldx
+                        });
+                    }
+                } else if (is_dragging) {
+                    bar.update_bar_position({ x: $bar.ox + $bar.finaldx });
+                }
+            });
+        });
+
+        document.addEventListener('mouseup', e => {
+            if (is_dragging || is_resizing_left || is_resizing_right) {
+                bars.forEach(bar => bar.group.classList.remove('active'));
+            }
+
+            is_dragging = false;
+            is_resizing_left = false;
+            is_resizing_right = false;
+        });
+
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(this.$svg, 'mouseup', e => {
+            this.bar_being_dragged = null;
+            bars.forEach(bar => {
+                const $bar = bar.$bar;
+                if (!$bar.finaldx) return;
+                bar.date_changed();
+                bar.set_action_completed();
+            });
+        });
+
+        this.bind_bar_progress();
+    }
+
+    bind_bar_progress() {
+        let x_on_start = 0;
+        let y_on_start = 0;
+        let is_resizing = null;
+        let bar = null;
+        let $bar_progress = null;
+        let $bar = null;
+
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(this.$svg, 'mousedown', '.handle.progress', (e, handle) => {
+            is_resizing = true;
+            x_on_start = e.offsetX;
+            y_on_start = e.offsetY;
+
+            const $bar_wrapper = _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].closest('.bar-wrapper', handle);
+            const id = $bar_wrapper.getAttribute('data-id');
+            bar = this.get_bar(id);
+
+            $bar_progress = bar.$bar_progress;
+            $bar = bar.$bar;
+
+            $bar_progress.finaldx = 0;
+            $bar_progress.owidth = $bar_progress.getWidth();
+            $bar_progress.min_dx = -$bar_progress.getWidth();
+            $bar_progress.max_dx = $bar.getWidth() - $bar_progress.getWidth();
+        });
+
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(this.$svg, 'mousemove', e => {
+            if (!is_resizing) return;
+            let dx = e.offsetX - x_on_start;
+            let dy = e.offsetY - y_on_start;
+
+            if (dx > $bar_progress.max_dx) {
+                dx = $bar_progress.max_dx;
+            }
+            if (dx < $bar_progress.min_dx) {
+                dx = $bar_progress.min_dx;
+            }
+
+            const $handle = bar.$handle_progress;
+            _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].attr($bar_progress, 'width', $bar_progress.owidth + dx);
+            _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].attr($handle, 'points', bar.get_progress_polygon_points());
+            $bar_progress.finaldx = dx;
+        });
+
+        _svg_utils__WEBPACK_IMPORTED_MODULE_1__["$"].on(this.$svg, 'mouseup', () => {
+            is_resizing = false;
+            if (!($bar_progress && $bar_progress.finaldx)) return;
+            bar.progress_changed();
+            bar.set_action_completed();
+        });
+    }
+
+    get_all_dependent_tasks(task_id) {
+        let out = [];
+        let to_process = [task_id];
+        while (to_process.length) {
+            const deps = to_process.reduce((acc, curr) => {
+                acc = acc.concat(this.dependency_map[curr]);
+                return acc;
+            }, []);
+
+            out = out.concat(deps);
+            to_process = deps.filter(d => !to_process.includes(d));
+        }
+
+        return out.filter(Boolean);
+    }
+
+    get_snap_position(dx) {
+        let odx = dx,
+            rem,
+            position;
+
+        if (this.view_is(VIEW_MODE.WEEK)) {
+            rem = dx % (this.options.column_width / 7);
+            position =
+                odx -
+                rem +
+                (rem < this.options.column_width / 14
+                    ? 0
+                    : this.options.column_width / 7);
+        } else if (this.view_is(VIEW_MODE.MONTH)) {
+            rem = dx % (this.options.column_width / 30);
+            position =
+                odx -
+                rem +
+                (rem < this.options.column_width / 60
+                    ? 0
+                    : this.options.column_width / 30);
+        } else {
+            rem = dx % this.options.column_width;
+            position =
+                odx -
+                rem +
+                (rem < this.options.column_width / 2
+                    ? 0
+                    : this.options.column_width);
+        }
+        return position;
+    }
+
+    unselect_all() {
+        [...this.$svg.querySelectorAll('.bar-wrapper')].forEach(el => {
+            el.classList.remove('active');
+        });
+    }
+
+    view_is(modes) {
+        if (typeof modes === 'string') {
+            return this.options.view_mode === modes;
+        }
+
+        if (Array.isArray(modes)) {
+            return modes.some(mode => this.options.view_mode === mode);
+        }
+
+        return false;
+    }
+
+    get_task(id) {
+        return this.tasks.find(task => {
+            return task.id === id;
+        });
+    }
+
+    get_bar(id) {
+        return this.bars.find(bar => {
+            return bar.task.id === id;
+        });
+    }
+
+    show_popup(options) {
+        if (!this.popup) {
+            this.popup = new _popup__WEBPACK_IMPORTED_MODULE_4__["default"](
+                this.popup_wrapper,
+                this.options.custom_popup_html
+            );
+        }
+        this.popup.show(options);
+    }
+
+    hide_popup() {
+        this.popup && this.popup.hide();
+    }
+
+    trigger_event(event, args) {
+        if (this.options['on_' + event]) {
+            this.options['on_' + event].apply(null, args);
+        }
+    }
+
+    /**
+     * Gets the oldest starting date from the list of tasks
+     *
+     * @returns Date
+     * @memberof Gantt
+     */
+    get_oldest_starting_date() {
+        return this.tasks
+            .map(task => task._start)
+            .reduce(
+                (prev_date, cur_date) =>
+                    cur_date <= prev_date ? cur_date : prev_date
+            );
+    }
+
+    /**
+     * Clear all elements from the parent svg element
+     *
+     * @memberof Gantt
+     */
+    clear() {
+        this.$svg.innerHTML = '';
+    }
+}
+
+Gantt.VIEW_MODE = VIEW_MODE;
+
+function generate_id(task) {
+    return (
+        task.name +
+        '_' +
+        Math.random()
+            .toString(36)
+            .slice(2, 12)
+    );
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/frappe-gantt/src/popup.js":
+/*!************************************************!*\
+  !*** ./node_modules/frappe-gantt/src/popup.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Popup; });
+class Popup {
+    constructor(parent, custom_html) {
+        this.parent = parent;
+        this.custom_html = custom_html;
+        this.make();
+    }
+
+    make() {
+        this.parent.innerHTML = `
+            <div class="title"></div>
+            <div class="subtitle"></div>
+            <div class="pointer"></div>
+        `;
+
+        this.hide();
+
+        this.title = this.parent.querySelector('.title');
+        this.subtitle = this.parent.querySelector('.subtitle');
+        this.pointer = this.parent.querySelector('.pointer');
+    }
+
+    show(options) {
+        if (!options.target_element) {
+            throw new Error('target_element is required to show popup');
+        }
+        if (!options.position) {
+            options.position = 'left';
+        }
+        const target_element = options.target_element;
+
+        if (this.custom_html) {
+            let html = this.custom_html(options.task);
+            html += '<div class="pointer"></div>';
+            this.parent.innerHTML = html;
+            this.pointer = this.parent.querySelector('.pointer');
+        } else {
+            // set data
+            this.title.innerHTML = options.title;
+            this.subtitle.innerHTML = options.subtitle;
+            this.parent.style.width = this.parent.clientWidth + 'px';
+        }
+
+        // set position
+        let position_meta;
+        if (target_element instanceof HTMLElement) {
+            position_meta = target_element.getBoundingClientRect();
+        } else if (target_element instanceof SVGElement) {
+            position_meta = options.target_element.getBBox();
+        }
+
+        if (options.position === 'left') {
+            this.parent.style.left =
+                position_meta.x + (position_meta.width + 10) + 'px';
+            this.parent.style.top = position_meta.y + 'px';
+
+            this.pointer.style.transform = 'rotateZ(90deg)';
+            this.pointer.style.left = '-7px';
+            this.pointer.style.top = '2px';
+        }
+
+        // show
+        this.parent.style.opacity = 1;
+    }
+
+    hide() {
+        this.parent.style.opacity = 0;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/frappe-gantt/src/svg_utils.js":
+/*!****************************************************!*\
+  !*** ./node_modules/frappe-gantt/src/svg_utils.js ***!
+  \****************************************************/
+/*! exports provided: $, createSVG, animateSVG */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "$", function() { return $; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSVG", function() { return createSVG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animateSVG", function() { return animateSVG; });
+function $(expr, con) {
+    return typeof expr === 'string'
+        ? (con || document).querySelector(expr)
+        : expr || null;
+}
+
+function createSVG(tag, attrs) {
+    const elem = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (let attr in attrs) {
+        if (attr === 'append_to') {
+            const parent = attrs.append_to;
+            parent.appendChild(elem);
+        } else if (attr === 'innerHTML') {
+            elem.innerHTML = attrs.innerHTML;
+        } else {
+            elem.setAttribute(attr, attrs[attr]);
+        }
+    }
+    return elem;
+}
+
+function animateSVG(svgElement, attr, from, to) {
+    const animatedSvgElement = getAnimationElement(svgElement, attr, from, to);
+
+    if (animatedSvgElement === svgElement) {
+        // triggered 2nd time programmatically
+        // trigger artificial click event
+        const event = document.createEvent('HTMLEvents');
+        event.initEvent('click', true, true);
+        event.eventName = 'click';
+        animatedSvgElement.dispatchEvent(event);
+    }
+}
+
+function getAnimationElement(
+    svgElement,
+    attr,
+    from,
+    to,
+    dur = '0.4s',
+    begin = '0.1s'
+) {
+    const animEl = svgElement.querySelector('animate');
+    if (animEl) {
+        $.attr(animEl, {
+            attributeName: attr,
+            from,
+            to,
+            dur,
+            begin: 'click + ' + begin // artificial click
+        });
+        return svgElement;
+    }
+
+    const animateElement = createSVG('animate', {
+        attributeName: attr,
+        from,
+        to,
+        dur,
+        begin,
+        calcMode: 'spline',
+        values: from + ';' + to,
+        keyTimes: '0; 1',
+        keySplines: cubic_bezier('ease-out')
+    });
+    svgElement.appendChild(animateElement);
+
+    return svgElement;
+}
+
+function cubic_bezier(name) {
+    return {
+        ease: '.25 .1 .25 1',
+        linear: '0 0 1 1',
+        'ease-in': '.42 0 1 1',
+        'ease-out': '0 0 .58 1',
+        'ease-in-out': '.42 0 .58 1'
+    }[name];
+}
+
+$.on = (element, event, selector, callback) => {
+    if (!callback) {
+        callback = selector;
+        $.bind(element, event, callback);
+    } else {
+        $.delegate(element, event, selector, callback);
+    }
+};
+
+$.off = (element, event, handler) => {
+    element.removeEventListener(event, handler);
+};
+
+$.bind = (element, event, callback) => {
+    event.split(/\s+/).forEach(function(event) {
+        element.addEventListener(event, callback);
+    });
+};
+
+$.delegate = (element, event, selector, callback) => {
+    element.addEventListener(event, function(e) {
+        const delegatedTarget = e.target.closest(selector);
+        if (delegatedTarget) {
+            e.delegatedTarget = delegatedTarget;
+            callback.call(this, e, delegatedTarget);
+        }
+    });
+};
+
+$.closest = (selector, element) => {
+    if (!element) return null;
+
+    if (element.matches(selector)) {
+        return element;
+    }
+
+    return $.closest(selector, element.parentNode);
+};
+
+$.attr = (element, attr, value) => {
+    if (!value && typeof attr === 'string') {
+        return element.getAttribute(attr);
+    }
+
+    if (typeof attr === 'object') {
+        for (let key in attr) {
+            $.attr(element, key, attr[key]);
+        }
+        return;
+    }
+
+    element.setAttribute(attr, value);
+};
 
 
 /***/ }),
@@ -37438,6 +39687,515 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/lib/addStyles.js":
+/*!****************************************************!*\
+  !*** ./node_modules/style-loader/lib/addStyles.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getTarget = function (target, parent) {
+  if (parent){
+    return parent.querySelector(target);
+  }
+  return document.querySelector(target);
+};
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(target, parent) {
+                // If passing function in options, then use it for resolve "head" element.
+                // Useful for Shadow Root style i.e
+                // {
+                //   insertInto: function () { return document.querySelector("#foo").shadowRoot }
+                // }
+                if (typeof target === 'function') {
+                        return target();
+                }
+                if (typeof memo[target] === "undefined") {
+			var styleTarget = getTarget.call(this, target, parent);
+			// Special case to return head of iframe instead of iframe itself
+			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+				try {
+					// This will throw an exception if access to iframe is blocked
+					// due to cross-origin restrictions
+					styleTarget = styleTarget.contentDocument.head;
+				} catch(e) {
+					styleTarget = null;
+				}
+			}
+			memo[target] = styleTarget;
+		}
+		return memo[target]
+	};
+})();
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(/*! ./urls */ "./node_modules/style-loader/lib/urls.js");
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+        if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
+		var nextSibling = getElement(options.insertAt.before, target);
+		target.insertBefore(style, nextSibling);
+	} else {
+		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	if(options.attrs.type === undefined) {
+		options.attrs.type = "text/css";
+	}
+
+	if(options.attrs.nonce === undefined) {
+		var nonce = getNonce();
+		if (nonce) {
+			options.attrs.nonce = nonce;
+		}
+	}
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	if(options.attrs.type === undefined) {
+		options.attrs.type = "text/css";
+	}
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function getNonce() {
+	if (false) {}
+
+	return __webpack_require__.nc;
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = typeof options.transform === 'function'
+		 ? options.transform(obj.css) 
+		 : options.transform.default(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/lib/urls.js":
+/*!***********************************************!*\
+  !*** ./node_modules/style-loader/lib/urls.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/timers-browserify/main.js":
 /*!************************************************!*\
   !*** ./node_modules/timers-browserify/main.js ***!
@@ -49741,7 +52499,10 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! frappe-gantt */ "./node_modules/frappe-gantt/src/index.js");
+
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+window.gantt = __webpack_require__(/*! frappe-gantt */ "./node_modules/frappe-gantt/src/index.js");
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

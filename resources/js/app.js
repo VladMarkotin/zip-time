@@ -5,8 +5,10 @@
  */
 
 require('./bootstrap');
+require('frappe-gantt');
 
-window.Vue = require('vue');
+window.Vue   = require('vue');
+window.gantt = require('frappe-gantt');
 
 /**
  * The following block of code may be used to automatically register your

@@ -13,8 +13,10 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "laravel/ui": "2.4",
+        "markrogoyski/math-php": "1.*",
         "nesbot/carbon": "^2.32",
-        "markrogoyski/math-php": "1.*"
+        "swatkins/laravel-gantt": "^1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
