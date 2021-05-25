@@ -2,10 +2,11 @@
 
 @section('content')
 <div class="container">
+<v-app>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header" style="background-color: #A10000; color:#FFFFFF">Create your day plan!</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,11 +15,12 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
-                    {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                    <plan-component>
+                    </plan-component>
                 </div>
             </div>
         </div>
     </div>
+</v-app>
 </div>
 @endsection

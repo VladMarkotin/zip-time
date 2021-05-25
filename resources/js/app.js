@@ -7,6 +7,16 @@
 require('./bootstrap');
 
 window.Vue = require('vue').default;
+import Vuetify from 'vuetify';
+import "vuetify/dist/vuetify.min.css";
+import '@mdi/font/css/materialdesignicons.css';
+import colors from 'vuetify/lib/util/colors';
+
+import { mdiPlex } from '@mdi/js';
+
+Vue.use(Vuetify)
+
+const opts = {}
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,6 +31,8 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('facebook-component', require('./components/FacebookComponent.vue').default);
+Vue.component('plan-component', require('./components/PlanComponent.vue').default);
+Vue.component('task_table-component', require('./components/TaskTableComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -30,4 +42,7 @@ Vue.component('facebook-component', require('./components/FacebookComponent.vue'
 
 const app = new Vue({
     el: '#app',
+    vuetify: new Vuetify(),
+    loader: 'vue-loader',
+    components: {app}
 });

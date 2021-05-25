@@ -25,6 +25,9 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "vue-facebook-login-component": "^4.0.2"
+        "@mdi/font": "^5.9.55",
+        "@mdi/js": "^5.9.55",
+        "vue-facebook-login-component": "^4.0.2",
+        "vuetify": "^2.5.0"
     }
 }

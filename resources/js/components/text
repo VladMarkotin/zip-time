@@ -1,0 +1,140 @@
+
+
+
+                                  <input type="text"
+                                     :placeholder=" placeholder "
+                                     :value="inputValue2"
+                                     @input="inputChangeHandler"
+                                     @keypress.enter = "addTask"
+                                     />
+
+
+
+
+                                         <div class="card center">
+                                                 <div class="form-control">
+                                                     <input type="text"
+                                                           :placeholder=" placeholder "
+                                                           :value="inputValue2"
+                                                           @input="inputChangeHandler"
+                                                           @keypress.enter = "addTask"
+                                                      />
+
+                                                      <v-flex xs12 sm6 d-flex>
+                                                              <v-select
+                                                                :items="items"
+                                                                name="item"
+                                                                item-text="name"
+                                                                label="Standard"
+                                                              >
+                                                                   <template slot="selection-item" slot-scope="item">
+                                                                        {{item.name}}
+                                                                   </template>
+                                                              </v-select>
+                                                      </v-flex>
+                                                 </div>
+                                                 <div class="text-center">
+                                                      <v-btn
+                                                         @click = "addHandler"
+                                                         color="blue"
+                                                      >
+                                                         Добавить
+                                                      </v-btn>
+                                                     <hr/>
+                                                 </div>
+
+                                                 <ul v-if="notes.length" class="list">
+                                                     <li class="list-item"  v-for="note, index in notes" ref="refWord">
+                                                         {{ note }}
+                                                         &nbsp
+                                                         <button class="btn btn-danger"  v-on:click = "delNote(index)">Удалить</button>
+                                                     </li>
+                                                     <li>
+                                                         <p>Количество записей: {{ getLength() }} | Удвоенное количество: {{ getDoubleLength }}</p>
+                                                     </li>
+                                                 </ul>
+                                                 <p class="primary" v-else>Заметок пока нет. Добавьте первую!</p>
+                                             </div>
+
+
+
+                                             <v-col
+                                                                       cols="2"
+                                                                     >
+                                                                       <v-menu
+                                                                         ref="menu"
+                                                                         v-model="menu2"
+                                                                         :close-on-content-click="false"
+                                                                         :nudge-right="40"
+                                                                         :return-value.sync="time"
+                                                                         transition="scale-transition"
+                                                                         offset-y
+                                                                         max-width="290px"
+                                                                         min-width="290px"
+                                                                       >
+
+                                                                         <v-time-picker
+                                                                           v-if="menu2"
+                                                                           v-model="time"
+                                                                           full-width
+                                                                           @click:minute="$refs.menu.save(time)"
+                                                                         ></v-time-picker>
+                                                                       </v-menu>
+                                                                     </v-col>
+                                                                     <v-spacer></v-spacer>
+                                                                     <v-col
+                                                                       cols="11"
+                                                                       sm="5"
+                                                                     >
+                                                                       <v-dialog
+                                                                         ref="dialog"
+                                                                         v-model="modal2"
+                                                                         :return-value.sync="time"
+                                                                         persistent
+                                                                         width="290px"
+                                                                       >
+                                                                         <template v-slot:activator="{ on, attrs }">
+                                                                           <v-text-field
+                                                                             v-model="time"
+                                                                             label="Picker in dialog"
+                                                                             prepend-icon="mdi-clock-time-four-outline"
+                                                                             readonly
+                                                                             v-bind="attrs"
+                                                                             v-on="on"
+                                                                           ></v-text-field>
+                                                                         </template>
+                                                                         <v-time-picker
+                                                                           v-if="modal2"
+                                                                           v-model="time"
+                                                                           full-width
+                                                                         >
+                                                                           <v-spacer></v-spacer>
+                                                                           <v-btn
+                                                                             text
+                                                                             color="primary"
+                                                                             @click="modal2 = false"
+                                                                           >
+                                                                             Cancel
+                                                                           </v-btn>
+                                                                           <v-btn
+                                                                             text
+                                                                             color="primary"
+                                                                             @click="$refs.dialog.save(time)"
+                                                                           >
+                                                                             OK
+                                                                           </v-btn>
+                                                                         </v-time-picker>
+                                                                       </v-dialog>
+                                                                     </v-col>
+                                                                   </v-row>
+
+
+/*Delete button*/
+                     <v-btn icon v-on:click="deleteItem(item)" color="#000000">
+                        <v-icon>
+                         {{ icons.mdiDelete }}
+                        </v-icon>
+                      </v-btn>
+
+                      { text: 'Time', value: 'category', align: 'right' },
+                                      { text: 'Status', value: 'dairy', align: 'right' },
