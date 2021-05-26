@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,4 +24,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
+
+Route::post('/addPlan', function (Request $request) {
+    die("test!");
+});
 
