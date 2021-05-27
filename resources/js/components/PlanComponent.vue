@@ -3,21 +3,6 @@
     <v-container >
 
 
-    <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-            >
-              Left
-            </v-btn>
-          </template>
-          <span>Left tooltip</span>
-        </v-tooltip>
-
-
         <v-select
               :items="dayStatuses"
               label="Day status"
@@ -33,18 +18,63 @@
 
       <v-row align="center" class="d-flex justify-start mb-6">
         <v-col cols="1" md="1" v-if="defaultSelected.hash == '#'">
-        <v-tooltip left>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon >
-                               <v-icon md="1"
-                                    color="#D71700"
-                                    v-on:click="addTask"> {{icons.mdiPlus}}
+        <template>
+          <div class="text-center">
+            <v-dialog
+              v-model="dialog"
+              width="500"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="red lighten-2"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  Click Me
+                </v-btn>
+              </template>
 
-                                </v-icon>
-                    </v-btn>
-                 </template>
-                           <span>Left tooltip</span>
-         </v-tooltip>
+              <v-card>
+                <v-card-title class="headline grey lighten-2">
+                  Privacy Policy
+                </v-card-title>
+
+                <v-card-text>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="primary"
+                    text
+                    @click="dialog = false"
+                  >
+                    I accept
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </div>
+        </template>
+            <v-tooltip left>
+                    <template v-slot:activator="{ on }">
+
+                    <div v-on="on">
+                        <v-btn icon >
+                                   <v-icon md="1"
+                                        color="#D71700"
+                                        > {{icons.mdiPlus}}
+
+                                    </v-icon>
+                        </v-btn>
+                        </div>
+                     </template>
+                               <span>Add hash-code to task for quick access</span>
+             </v-tooltip>
 
 
         </v-col>
@@ -91,7 +121,7 @@
                 <v-text-field
                       v-model="defaultSelected.time"
                       label="Time for task"
-                    >{{icons.mdiAlarm}}</v-text-field>
+                    >00:00</v-text-field>
             </v-col>
             <v-col cols="1" md="1">
                  <v-textarea
@@ -108,18 +138,24 @@
              <v-col cols="1" md="1">
                 <v-text-field
                                 :placeholder=" placeholders[5] "
-                                required
-                                v-model = "defaultSelected.notes"
+                                v-model="defaultSelected.notes"
                                 @keypress.enter = "addTask"
                 ></v-text-field>
              </v-col>
         <v-col cols="1" md="1">
-            <v-btn icon>
-                       <v-icon md="1"
-                            color="#D71700"
-                            v-on:click="addTask"> {{icons.mdiPlex}}
-                        </v-icon>
-            </v-btn>
+           <v-tooltip right>
+             <template v-slot:activator="{ on }">
+                <div v-on="on">
+                    <v-btn icon>
+                               <v-icon md="1"
+                                    color="#D71700"
+                                    v-on:click="addTask"> {{icons.mdiPlex}}
+                                </v-icon>
+                    </v-btn>
+                </div>
+                </template>
+                <span>Add task to day plan</span>
+            </v-tooltip>
         </v-col>
 
       </v-row>
@@ -132,12 +168,21 @@
                 <div style="display:'block';width:800px;margin:auto;">
                     <v-data-table
                         :headers="headers"
-                        :items="readyTasks"
-                        item-key="task"
+                        :items="items"
                         class="elevation-1"
-                        @dblclick:row="deleteItem"
+                        @dblclick:tr="deleteItem"
                       >
-
+                        <template v-slot:item="props">
+                            <tr align="center" @dblclick:tr="deleteItem">
+                                <td>{{ props.item.hash }}</td>
+                                <td>{{ props.item.inputValue }}</td>
+                                <td>{{ props.item.defaultTaskType }}</td>
+                                <td>{{ props.item.defaultPriority }}</td>
+                                <td>{{ props.item.time }}</td>
+                                <td>{{ props.item.details }}</td>
+                                <td>{{ props.item.notes }}</td>
+                            </tr>
+                        </template>
                 </v-data-table>
 
                 </div>
@@ -228,15 +273,13 @@ import {
                    value: '',
                    align: 'right'
                 },
+                {
+                   text: 'Notes',
+                   value: '',
+                   align: 'right'
+                },
        ],
-
-       icons: {
-
-                     mdiPlex,
-                     mdiPencil,
-                     mdiShareVariant,
-                     mdiDelete,
-             },
+       items: [],
       icons: {
                     mdiAccount,
                     mdiPlex,
@@ -251,10 +294,12 @@ import {
       taskTypes: ['required job','non required job','required task', 'task', 'reminder'],
       taskPriority: ['1', '2', '3'],
       dayStatuses: ['Work Day', 'Weekend', 'Holiday', 'Emergency'],
-      time: '00:00',
-      note: '',
+      time: '',
+      notes: '',
+      details: '',
       tasks: [],
       taskObject: {name: '', type: '', priority: '', time: '', details: '', notes: ''},
+      dialog: false,
       dialogDelete: false,
     }),
     methods: {
@@ -266,14 +311,14 @@ import {
             this.taskName.hash = "#test";
             this.taskName.task = this.inputValue ;
             this.defaultSelected.inputValue = this.inputValue ;
-            this.defaultSelected.time = this.time
-            //this.defaultSelected.notes = this.note
+            //this.defaultSelected.time = this.time
             /*мне нужно каждому полю из моего стартового меню присвоить модель и запихнуть значение в taskName
             * тогда я получу json-объект для отправки на серсер
             */
             this.tasks.push(this.defaultSelected);
+            this.items.push(this.defaultSelected);
             /*check*/
-                console.log(this.tasks);
+                console.log(this.notes);
             /*end*/
             this.inputValue = '';
             this.taskName = {}
@@ -282,7 +327,7 @@ import {
                     hash: '#',
                     hashCodes: ['#', '#one'],
                     inputValue: '',
-                    time: '',
+                    time: '00:00',
                     defaultTaskType: 'required job',
                     defaultPriority: '1',
                     details: '',
