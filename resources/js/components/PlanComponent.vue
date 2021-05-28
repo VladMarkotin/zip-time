@@ -18,61 +18,57 @@
 
       <v-row align="center" class="d-flex justify-start mb-6">
         <v-col cols="1" md="1" v-if="defaultSelected.hash == '#'">
-        <template>
-          <div class="text-center">
-            <v-dialog
-              v-model="dialog"
-              width="500"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="red lighten-2"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  Click Me
-                </v-btn>
-              </template>
-
-              <v-card>
-                <v-card-title class="headline grey lighten-2">
-                  Privacy Policy
-                </v-card-title>
-
-                <v-card-text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    color="primary"
-                    text
-                    @click="dialog = false"
-                  >
-                    I accept
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </div>
-        </template>
             <v-tooltip left>
+
                     <template v-slot:activator="{ on }">
 
-                    <div v-on="on">
-                        <v-btn icon >
-                                   <v-icon md="1"
+                             <div class="text-center">
+                                <v-dialog
+                                  v-model="dialog"
+                                  width="500"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-btn icon
+                                      color="red lighten-2"
+                                      dark
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    >
+                                     <v-icon md="1"
                                         color="#D71700"
-                                        > {{icons.mdiPlus}}
+                                     > {{icons.mdiPlus}}
 
-                                    </v-icon>
-                        </v-btn>
-                        </div>
-                     </template>
+                                     </v-icon>
+                                    </v-btn>
+                                  </template>
+
+                                  <v-card>
+                                    <v-card-title class="headline grey lighten-2" >
+                                      Add #code for this task
+                                    </v-card-title>
+
+                                    <v-card-text>
+                                      <v-text-field
+                                        v-model="newHashCode"
+                                        placeholder="#"></v-text-field>
+                                    </v-card-text>
+
+                                    <v-divider></v-divider>
+
+                                    <v-card-actions>
+                                      <v-spacer></v-spacer>
+                                      <v-btn
+                                        color="#D71700"
+                                        text
+                                        @click="dialog = false"
+                                      >
+                                        Add
+                                      </v-btn>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog>
+                              </div>
+                              </template>
                                <span>Add hash-code to task for quick access</span>
              </v-tooltip>
 
@@ -173,7 +169,7 @@
                         @dblclick:tr="deleteItem"
                       >
                         <template v-slot:item="props">
-                            <tr align="center" @dblclick:tr="deleteItem">
+                            <tr align="center"  ref="refWord">
                                 <td>{{ props.item.hash }}</td>
                                 <td>{{ props.item.inputValue }}</td>
                                 <td>{{ props.item.defaultTaskType }}</td>
@@ -181,6 +177,7 @@
                                 <td>{{ props.item.time }}</td>
                                 <td>{{ props.item.details }}</td>
                                 <td>{{ props.item.notes }}</td>
+                                <td><v-btn @click="deleteItem(props.item)">Delete task</v-btn></td>
                             </tr>
                         </template>
                 </v-data-table>
@@ -189,7 +186,7 @@
 
             </div>
 
-              <div v-if="tasks.length > 1">
+              <div v-if="items.length > 1">
                     <v-row align="center" class="d-flex justify-start mb-6">
                          <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()">
                            <v-icon md="1"
@@ -230,6 +227,7 @@ import {
       inputValue: '',
       taskName: {},
       readyTasks: [],
+      newHashCode: '',
       defaultSelected: {
         value: 'Work Day',
         hash: '#',
@@ -277,6 +275,11 @@ import {
                    text: 'Notes',
                    value: '',
                    align: 'right'
+                },
+                {
+                     text: 'Action',
+                     value: '',
+                     align: 'center'
                 },
        ],
        items: [],
@@ -335,9 +338,8 @@ import {
                   }
         },
         deleteItem (item) {
-            var index = this.tasks.indexOf(item)
-            this.tasks.splice(index, 1);
-            console.log(index);
+            var index = this.items.indexOf(item)
+            this.items.splice(index, 1);
         },
 
         formSubmit(e) {
