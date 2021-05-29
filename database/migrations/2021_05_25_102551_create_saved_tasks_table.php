@@ -18,12 +18,12 @@ class CreateSavedTasksTable extends Migration
             $table->char('hash_code',6); //хеш-код состоит из #..... Должен быть уникален в пределах пользователя
             $table->unsignedBigInteger("user_id"); //связь с пользователем
 
-            $table->string("task_name");
-            $table->tinyInteger('type')->default(4); //тип задания: 4 - обязательное задание,3-необязательное задание, 2-обязательная задача, 1 - задача,0-напоминание
+            $table->string("task_name")->nullable();
+            $table->tinyInteger('type')->nullable()->default(4); //тип задания: 4 - обязательное задание,3-необязательное задание, 2-обязательная задача, 1 - задача,0-напоминание
             $table->tinyInteger('priority')->default(0);//0-без приоритета,1-приоритет,2-двойной приоритет,3-тройной
             $table->text("details")->nullable(); //детали
-            $table->string("time"); //примерное время
-            $table->string("note"); //заметки
+            $table->string("time")->nullable(); //примерное время
+            $table->string("note")->nullable(); //заметки
             $table->timestamps();
 
             $table->foreign("user_id")->references("id")->on('users')->onDelete('cascade');;

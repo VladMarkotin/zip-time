@@ -29,3 +29,5 @@ Route::post('/addPlan', function (Request $request) {
     die("test!");
 });
 
+Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);
+

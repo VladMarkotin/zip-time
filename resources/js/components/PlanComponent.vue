@@ -50,6 +50,7 @@
                                     <v-card-text>
                                       <v-text-field
                                         v-model="newHashCode"
+                                        @keypress.enter = "addNewHashCode()"
                                         placeholder="#"></v-text-field>
                                     </v-card-text>
 
@@ -60,7 +61,8 @@
                                       <v-btn
                                         color="#D71700"
                                         text
-                                        @click="dialog = false"
+                                        @click = "addNewHashCode()"
+
                                       >
                                         Add
                                       </v-btn>
@@ -342,6 +344,19 @@ import {
             this.items.splice(index, 1);
         },
 
+        addNewHashCode(){
+            if( (this.newHashCode.length <= 6) && (this.newHashCode.length >= 3) ){
+                  if(this.newHashCode.indexOf('#') !== -1){
+                        console.log(this.newHashCode);
+                        this.addNewHashCodePost();
+                        this.dialog = false;
+                  }else{
+                       this.newHashCode = '#' +  this.newHashCode
+                       console.log(this.newHashCode);
+                  }
+            }
+        },
+
         formSubmit(e) {
              //e.preventDefault();
              let currentObj = this;
@@ -352,6 +367,17 @@ import {
                  .catch(function (error) {
                      currentObj.output = error;
                  });
+        },
+
+        addNewHashCodePost(){
+            let currentObj = this;
+            axios.post('/addHashCode',{'hash': this.newHashCode})
+               .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                currentObj.output = error;
+            });
         }
     }
   }
