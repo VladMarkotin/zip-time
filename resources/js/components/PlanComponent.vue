@@ -233,7 +233,7 @@ import {
       defaultSelected: {
         value: 'Work Day',
         hash: '#',
-        hashCodes: ['#', '#one'],
+        hashCodes: [],
         inputValue: '',
         time: '00:00',
         defaultTaskType: 'required job',
@@ -294,7 +294,7 @@ import {
                     mdiAlarm,
                     mdiPlus,
             },
-      hash: ['#', '#One'],
+      hashCodes: [],
       hashNames: '#',
       taskTypes: ['required job','non required job','required task', 'task', 'reminder'],
       taskPriority: ['1', '2', '3'],
@@ -363,6 +363,7 @@ import {
              axios.post('/addPlan',this.defaultSelected)
                  .then(function (response) {
                      console.log(response);
+
                  })
                  .catch(function (error) {
                      currentObj.output = error;
@@ -378,7 +379,24 @@ import {
             .catch(function (error) {
                 currentObj.output = error;
             });
-        }
+        },
+    },
+    created() {
+         console.log("Mounted");
+         let currentObj = this;
+         axios.post('/getSavedTasks')
+              .then(function (response) {
+                    currentObj.defaultSelected.hashCodes = response.data.hash_codes;
+                    let length = response.data.hash_codes.length;
+                    console.log(length);
+                    for (let i = 0; i < length; i++){
+                        currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
+                    }
+                    console.log(currentObj.defaultSelected.hashCodes[0]);
+              })
+              .catch(function (error) {
+                   currentObj.output = error;
+              });
     }
   }
 </script>

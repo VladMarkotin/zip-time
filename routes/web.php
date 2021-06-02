@@ -29,5 +29,5 @@ Route::post('/addPlan', function (Request $request) {
     die("test!");
 });
 
-Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);
-
+Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
+Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);

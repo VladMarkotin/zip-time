@@ -48,3 +48,5 @@ const app = new Vue({
     loader: 'vue-loader',
     components: {app}
 });
+
+app.$mount();
