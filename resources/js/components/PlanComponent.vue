@@ -84,6 +84,7 @@
                 :items="defaultSelected.hashCodes"
                 :value="defaultSelected.hashCodes[0]"
                 v-model="defaultSelected.hash"
+                @change="onChange"
                 required>
 
             </v-select>
@@ -311,6 +312,38 @@ import {
         inputChangeHandler(){
 
         },
+
+         onChange(event) {
+             //console.log(event)
+             let currentObj = this;
+             axios.post('/getSavedTask', {hash_code: event})
+                  .then(function (response) {
+
+                        //console.log(response.data[4]);
+                        currentObj.inputValue = response.data[0];
+                        currentObj.defaultSelected.defaultTaskType = response.data[1];
+                        currentObj.defaultSelected.defaultPriority = response.data[2];
+                        currentObj.defaultSelected.time = response.data[4];
+                        currentObj.defaultSelected.details = response.data[3];
+                        currentObj.defaultSelected.notes = response.data[5];
+                         /*{
+                            value: 'Work Day',
+                            hash: event,
+                            hashCodes: ['#', '#one'],
+                            inputValue: response.event['taskName'],
+                            time: '00:00',
+                            defaultTaskType: 'required job',
+                            defaultPriority: '1',
+                            details: '',
+                            notes  : '',
+                          }*/
+                  })
+                  .catch(function (error) {
+                      currentObj.output = error;
+                  });
+
+         },
+
         addTask(value) {
             this.taskObject.name = this.inputValue;
             this.taskName.hash = "#test";
@@ -323,7 +356,7 @@ import {
             this.tasks.push(this.defaultSelected);
             this.items.push(this.defaultSelected);
             /*check*/
-                console.log(this.notes);
+                //console.log(this.notes);
             /*end*/
             this.inputValue = '';
             this.taskName = {}
@@ -347,12 +380,12 @@ import {
         addNewHashCode(){
             if( (this.newHashCode.length <= 6) && (this.newHashCode.length >= 3) ){
                   if(this.newHashCode.indexOf('#') !== -1){
-                        console.log(this.newHashCode);
+                        //console.log(this.newHashCode);
                         this.addNewHashCodePost();
                         this.dialog = false;
                   }else{
                        this.newHashCode = '#' +  this.newHashCode
-                       console.log(this.newHashCode);
+                       //console.log(this.newHashCode);
                   }
             }
         },
@@ -362,7 +395,8 @@ import {
              let currentObj = this;
              axios.post('/addPlan',this.defaultSelected)
                  .then(function (response) {
-                     console.log(response);
+                     //console.log(response);
+
 
                  })
                  .catch(function (error) {
@@ -374,7 +408,7 @@ import {
             let currentObj = this;
             axios.post('/addHashCode',{'hash': this.newHashCode})
                .then(function (response) {
-                console.log(response);
+                //console.log(response);
             })
             .catch(function (error) {
                 currentObj.output = error;
@@ -388,11 +422,9 @@ import {
               .then(function (response) {
                     currentObj.defaultSelected.hashCodes = response.data.hash_codes;
                     let length = response.data.hash_codes.length;
-                    console.log(length);
                     for (let i = 0; i < length; i++){
                         currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
                     }
-                    console.log(currentObj.defaultSelected.hashCodes[0]);
               })
               .catch(function (error) {
                    currentObj.output = error;

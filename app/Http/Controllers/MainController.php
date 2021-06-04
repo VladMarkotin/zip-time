@@ -37,4 +37,23 @@ class MainController
             'hash_codes' => $hashCodes,
         ]);//
     }
+
+    public function getSavedTaskByHashCode(Request $request)
+    {
+        $hash_code = $request->get('hash_code');
+        $params = ['id' => '', 'hash_code' => ''];
+        $finalResult = [];
+        if($hash_code){
+            $params['id'] = Auth::id();
+            $params['hash_code'] = $hash_code;
+            $savedTask = $this->savedTaskRepository->getSavedTaskByHashCode($params);
+            foreach ($savedTask as $val){
+                foreach ($val as $i => $v){
+                    $finalResult[] = $val->$i;
+                }
+            }
+        }
+
+        return response()->json($finalResult);//
+    }
 } 
