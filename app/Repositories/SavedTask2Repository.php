@@ -31,4 +31,10 @@ class SavedTask2Repository
 
         return $savedTask;
     }
+
+    public function saveNewHashCode(array $data)
+    {
+        $query = '';
+        DB::table('saved_tasks')->insert($data);
+    }
 }

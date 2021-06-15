@@ -406,9 +406,17 @@ import {
 
         addNewHashCodePost(){
             let currentObj = this;
-            axios.post('/addHashCode',{'hash': this.newHashCode})
+            axios.post('/addHashCode',{
+               'hash': this.newHashCode,
+               'taskName': this.inputValue,
+               'time' : this.defaultSelected.time,
+               'type' : this.defaultSelected.defaultTaskType,
+               'priority' : this.defaultSelected.defaultPriority,
+               'details' : this.defaultSelected.details,
+               'notes' : this.defaultSelected.notes,
+              })
                .then(function (response) {
-                //console.log(response);
+                console.log(response);
             })
             .catch(function (error) {
                 currentObj.output = error;

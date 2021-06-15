@@ -12,19 +12,37 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\SavedTask2Repository;
+use App\Http\Controllers\Services\HashCodeService;
 
 class MainController
 {
     private $savedTaskRepository = null;
+    private $savedTaskService    = null;
 
-    public function __construct(SavedTask2Repository $taskRepository )
+    public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService )
     {
         $this->savedTaskRepository = $taskRepository;
+        $this->savedTaskService    = $codeService;
     }
 
     public function addHashCode(Request $request)
     {
-        dd($request->input('hash'));
+        $params = [];
+        $params['hash_code']         = $request->input('hash');
+        $params['user_id']      = Auth::id();
+        $params['task_name']     = $request->input('taskName');
+        $params['time']         = $request->input('time');
+        $params['type']         = $request->input('type');
+        $params['priority']     = $request->input('priority');
+        $params['details']      = $request->input('details');
+        $params['note']        = $request->input('notes');
+
+        $flag = $this->savedTaskService->checkNewHashCode($params['hash_code']);
+        if($flag){
+            $transformData = $this->savedTaskService->transformDataForDb($params);
+            $this->savedTaskRepository->saveNewHashCode($transformData);
+        }
+        //die(var_dump($flag));//ok
     }
 
     public function getSavedTasks()
