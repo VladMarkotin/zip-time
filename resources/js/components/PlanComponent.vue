@@ -189,7 +189,7 @@
 
             </div>
 
-              <div v-if="items.length > 1">
+              <div v-if="items.length > 0">
                     <v-row align="center" class="d-flex justify-start mb-6">
                          <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()">
                            <v-icon md="1"
@@ -320,7 +320,7 @@ import {
         },
 
          onChange(event) {
-             //console.log(event)
+
              let currentObj = this;
              axios.post('/getSavedTask', {hash_code: event})
                   .then(function (response) {
@@ -332,17 +332,6 @@ import {
                         currentObj.defaultSelected.time = response.data[4];
                         currentObj.defaultSelected.details = response.data[3];
                         currentObj.defaultSelected.notes = response.data[5];
-                         /*{
-                            value: 'Work Day',
-                            hash: event,
-                            hashCodes: ['#', '#one'],
-                            inputValue: response.event['taskName'],
-                            time: '00:00',
-                            defaultTaskType: 'required job',
-                            defaultPriority: '1',
-                            details: '',
-                            notes  : '',
-                          }*/
                   })
                   .catch(function (error) {
                       currentObj.output = error;
@@ -398,9 +387,13 @@ import {
         },
 
         formSubmit(e) {
-             //e.preventDefault();
              let currentObj = this;
-             axios.post('/addPlan',this.defaultSelected)
+             for(let i = 0; i < this.tasks.length; i++){
+                this.tasks[i].hashCodes = null;
+             }
+
+             console.log(this.tasks[0].hashCodes);
+             axios.post('/addPlan',this.tasks)
                  .then(function (response) {
                      //console.log(response);
 

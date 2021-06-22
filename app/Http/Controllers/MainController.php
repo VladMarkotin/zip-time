@@ -13,16 +13,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\SavedTask2Repository;
 use App\Http\Controllers\Services\HashCodeService;
+use App\Http\Controllers\Services\AddPlanService;
 
 class MainController
 {
     private $savedTaskRepository = null;
     private $savedTaskService    = null;
+    private $planService         = null;
 
-    public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService )
+    public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService, AddPlanService $addPlanService)
     {
         $this->savedTaskRepository = $taskRepository;
         $this->savedTaskService    = $codeService;
+        $this->planService = $addPlanService;
     }
 
     public function addHashCode(Request $request)
@@ -73,5 +76,13 @@ class MainController
         }
 
         return response()->json($finalResult);//
+    }
+
+    public function addPlan(Request $request)
+    {
+        //die(print_r($request->all()));
+        $data = $request->all();
+        $this->planService->checkPlan($data);
+
     }
 } 
