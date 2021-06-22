@@ -27,8 +27,8 @@
                                   v-model="dialog"
                                   width="500"
                                 >
-                                  <template v-slot:activator="{ on, attrs }">
-                                    <v-btn icon
+                                  <template  v-slot:activator="{ on, attrs }">
+                                    <v-btn icon v-show="showIcon > 3"
                                       color="red lighten-2"
                                       dark
                                       v-bind="attrs"
@@ -227,10 +227,12 @@ import {
   export default {
     data: () => ({
       placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
+      showPlusIcon: 0,
       inputValue: '',
       taskName: {},
       readyTasks: [],
       newHashCode: '',
+      showIcon: 0,
       defaultSelected: {
         value: 'Work Day',
         hash: '#',
@@ -310,6 +312,10 @@ import {
     }),
     methods: {
         inputChangeHandler(){
+            if(this.showIcon < 4){
+                this.showIcon += 1
+                //console.log(this.showIcon)
+            }
 
         },
 
@@ -359,6 +365,7 @@ import {
                 //console.log(this.notes);
             /*end*/
             this.inputValue = '';
+            this.showIcon   = 0;
             this.taskName = {}
             this.defaultSelected = {
                     value: 'Work Day',
@@ -437,6 +444,13 @@ import {
               .catch(function (error) {
                    currentObj.output = error;
               });
+    },
+    watch:{
+        inputValue: function (){
+             //++this.showIcon;
+        }
     }
+
+
   }
 </script>
