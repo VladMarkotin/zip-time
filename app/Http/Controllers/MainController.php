@@ -80,8 +80,8 @@ class MainController
 
     public function addPlan(Request $request)
     {
-        //die(print_r($request->all()));
-        $data = $request->all();
+        die(print_r($request->json()->all()));
+        $data = $request->json()->all();
         $this->planService->checkPlan($data);
 
     }
