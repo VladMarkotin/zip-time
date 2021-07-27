@@ -34,7 +34,7 @@ class AddPlanService
         $flags = [];
         /*В зависимости от типа задания, буду вызывать соотв проверку*/
         $task = $this->getNumValuesOfStrValues($task);
-        $flag[] = $this->checkName($task['inputValue']);
+        $flag[] = $this->checkName($task['taskName']);
         $flag[] = $this->checkDetails($task['details']);
         $flag[] = $this->checkDetails($task['time']);
         //if($flag)
@@ -49,16 +49,16 @@ class AddPlanService
     /*Преобразую здесь строковые значения в плане на день (e.g 'required task') в код, который пишется в базу (e.g 4)*/
     private function getNumValuesOfStrValues($task)
     {
-        switch($task['defaultTaskType']){
-            case 'required job': $task['defaultTaskType'] = 4;
+        switch($task['type']){
+            case 'required job': $task['type'] = 4;
                 return $task;
-            case 'non required job': $task['defaultTaskType'] = 3;
+            case 'non required job': $task['type'] = 3;
                 return $task;
-            case 'required task': $task['defaultTaskType'] = 2;
+            case 'required task': $task['type'] = 2;
                 return $task;
-            case 'task': $task['defaultTaskType'] = 1;
+            case 'task': $task['type'] = 1;
                 return $task;
-            case 'reminder': $task['defaultTaskType'] = 0;
+            case 'reminder': $task['type'] = 0;
                 return $task;
         }
 

@@ -13,4 +13,8 @@ npm-debug.log
 yarn-error.log
 git_inf.txt
 /.idea
+<<<<<<< HEAD
 
+=======
+_meta_
+>>>>>>> child
