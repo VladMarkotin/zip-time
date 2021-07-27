@@ -26,9 +26,8 @@ Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->na
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
 
-Route::post('/addPlan', function (Request $request) {
-    die("test!");
-});
+Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
 
 Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
 Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
+Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode']);

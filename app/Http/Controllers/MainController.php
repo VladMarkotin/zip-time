@@ -12,19 +12,40 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\SavedTask2Repository;
+use App\Http\Controllers\Services\HashCodeService;
+use App\Http\Controllers\Services\AddPlanService;
 
 class MainController
 {
     private $savedTaskRepository = null;
+    private $savedTaskService    = null;
+    private $planService         = null;
 
-    public function __construct(SavedTask2Repository $taskRepository )
+    public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService, AddPlanService $addPlanService)
     {
         $this->savedTaskRepository = $taskRepository;
+        $this->savedTaskService    = $codeService;
+        $this->planService = $addPlanService;
     }
 
     public function addHashCode(Request $request)
     {
-        dd($request->input('hash'));
+        $params = [];
+        $params['hash_code']         = $request->input('hash');
+        $params['user_id']      = Auth::id();
+        $params['task_name']     = $request->input('taskName');
+        $params['time']         = $request->input('time');
+        $params['type']         = $request->input('type');
+        $params['priority']     = $request->input('priority');
+        $params['details']      = $request->input('details');
+        $params['note']        = $request->input('notes');
+
+        $flag = $this->savedTaskService->checkNewHashCode($params['hash_code']);
+        if($flag){
+            $transformData = $this->savedTaskService->transformDataForDb($params);
+            $this->savedTaskRepository->saveNewHashCode($transformData);
+        }
+        //die(var_dump($flag));//ok
     }
 
     public function getSavedTasks()
@@ -36,5 +57,32 @@ class MainController
             'id' => $id,
             'hash_codes' => $hashCodes,
         ]);//
+    }
+
+    public function getSavedTaskByHashCode(Request $request)
+    {
+        $hash_code = $request->get('hash_code');
+        $params = ['id' => '', 'hash_code' => ''];
+        $finalResult = [];
+        if($hash_code){
+            $params['id'] = Auth::id();
+            $params['hash_code'] = $hash_code;
+            $savedTask = $this->savedTaskRepository->getSavedTaskByHashCode($params);
+            foreach ($savedTask as $val){
+                foreach ($val as $i => $v){
+                    $finalResult[] = $val->$i;
+                }
+            }
+        }
+
+        return response()->json($finalResult);//
+    }
+
+    public function addPlan(Request $request)
+    {
+        //die(print_r($request->all()));
+        $data = $request->all();
+        $this->planService->checkPlan($data);
+
     }
 } 

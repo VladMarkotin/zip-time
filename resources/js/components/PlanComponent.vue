@@ -27,8 +27,8 @@
                                   v-model="dialog"
                                   width="500"
                                 >
-                                  <template v-slot:activator="{ on, attrs }">
-                                    <v-btn icon
+                                  <template  v-slot:activator="{ on, attrs }">
+                                    <v-btn icon v-show="showIcon > 3"
                                       color="red lighten-2"
                                       dark
                                       v-bind="attrs"
@@ -84,6 +84,7 @@
                 :items="defaultSelected.hashCodes"
                 :value="defaultSelected.hashCodes[0]"
                 v-model="defaultSelected.hash"
+                @change="onChange"
                 required>
 
             </v-select>
@@ -188,7 +189,7 @@
 
             </div>
 
-              <div v-if="items.length > 1">
+              <div v-if="items.length > 0">
                     <v-row align="center" class="d-flex justify-start mb-6">
                          <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()">
                            <v-icon md="1"
@@ -226,10 +227,12 @@ import {
   export default {
     data: () => ({
       placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
+      showPlusIcon: 0,
       inputValue: '',
       taskName: {},
       readyTasks: [],
       newHashCode: '',
+      showIcon: 0,
       defaultSelected: {
         value: 'Work Day',
         hash: '#',
@@ -309,8 +312,33 @@ import {
     }),
     methods: {
         inputChangeHandler(){
+            if(this.showIcon < 4){
+                this.showIcon += 1
+                //console.log(this.showIcon)
+            }
 
         },
+
+         onChange(event) {
+
+             let currentObj = this;
+             axios.post('/getSavedTask', {hash_code: event})
+                  .then(function (response) {
+
+                        //console.log(response.data[4]);
+                        currentObj.inputValue = response.data[0];
+                        currentObj.defaultSelected.defaultTaskType = response.data[1];
+                        currentObj.defaultSelected.defaultPriority = response.data[2];
+                        currentObj.defaultSelected.time = response.data[4];
+                        currentObj.defaultSelected.details = response.data[3];
+                        currentObj.defaultSelected.notes = response.data[5];
+                  })
+                  .catch(function (error) {
+                      currentObj.output = error;
+                  });
+
+         },
+
         addTask(value) {
             this.taskObject.name = this.inputValue;
             this.taskName.hash = "#test";
@@ -323,9 +351,10 @@ import {
             this.tasks.push(this.defaultSelected);
             this.items.push(this.defaultSelected);
             /*check*/
-                console.log(this.notes);
+                //console.log(this.notes);
             /*end*/
             this.inputValue = '';
+            this.showIcon   = 0;
             this.taskName = {}
             this.defaultSelected = {
                     value: 'Work Day',
@@ -347,22 +376,27 @@ import {
         addNewHashCode(){
             if( (this.newHashCode.length <= 6) && (this.newHashCode.length >= 3) ){
                   if(this.newHashCode.indexOf('#') !== -1){
-                        console.log(this.newHashCode);
+                        //console.log(this.newHashCode);
                         this.addNewHashCodePost();
                         this.dialog = false;
                   }else{
                        this.newHashCode = '#' +  this.newHashCode
-                       console.log(this.newHashCode);
+                       //console.log(this.newHashCode);
                   }
             }
         },
 
         formSubmit(e) {
-             //e.preventDefault();
              let currentObj = this;
-             axios.post('/addPlan',this.defaultSelected)
+             for(let i = 0; i < this.tasks.length; i++){
+                this.tasks[i].hashCodes = null;
+             }
+
+             console.log(this.tasks[0].hashCodes);
+             axios.post('/addPlan',this.tasks)
                  .then(function (response) {
-                     console.log(response);
+                     //console.log(response);
+
 
                  })
                  .catch(function (error) {
@@ -372,7 +406,15 @@ import {
 
         addNewHashCodePost(){
             let currentObj = this;
-            axios.post('/addHashCode',{'hash': this.newHashCode})
+            axios.post('/addHashCode',{
+               'hash': this.newHashCode,
+               'taskName': this.inputValue,
+               'time' : this.defaultSelected.time,
+               'type' : this.defaultSelected.defaultTaskType,
+               'priority' : this.defaultSelected.defaultPriority,
+               'details' : this.defaultSelected.details,
+               'notes' : this.defaultSelected.notes,
+              })
                .then(function (response) {
                 console.log(response);
             })
@@ -388,15 +430,20 @@ import {
               .then(function (response) {
                     currentObj.defaultSelected.hashCodes = response.data.hash_codes;
                     let length = response.data.hash_codes.length;
-                    console.log(length);
                     for (let i = 0; i < length; i++){
                         currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
                     }
-                    console.log(currentObj.defaultSelected.hashCodes[0]);
               })
               .catch(function (error) {
                    currentObj.output = error;
               });
+    },
+    watch:{
+        inputValue: function (){
+             //++this.showIcon;
+        }
     }
+
+
   }
 </script>
