@@ -18,8 +18,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 /*Socialite ex https://medium.com/@Alabuja/social-login-in-laravel-with-socialite-90dbf14ee0ab*/
 
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
