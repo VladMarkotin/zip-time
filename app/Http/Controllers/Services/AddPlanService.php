@@ -20,13 +20,15 @@ class AddPlanService
     public function checkPlan(array $data)
     {
         $flags = [];
-        //отсюда буду вызывать метод checkTask для каждого заданиия
-        foreach ($data as &$v){
-            $v = $this->checkTask($v);
-
+        $quantity = $this->checkRequiredTaskQuantity($data['plan']);//проверяем кол.во заданий
+        if ($quantity) {
+            //отсюда буду вызывать метод checkTask для каждого заданиия
+            foreach ($data['plan'] as $v) {
+                $flags[] = $this->checkTask($v);
+            }
         }
-        //Наверноне надо выполнять цикл до тех пор пока checkTask() возвращает массив, а не false
-        die(print_r($data));
+        //die(var_dump($flags).__LINE__);
+        return $flags;
     }
 
     private function checkTask($task)
@@ -34,16 +36,20 @@ class AddPlanService
         $flags = [];
         /*В зависимости от типа задания, буду вызывать соотв проверку*/
         $task = $this->getNumValuesOfStrValues($task);
-        $flag[] = $this->checkName($task['taskName']);
-        $flag[] = $this->checkDetails($task['details']);
-        $flag[] = $this->checkDetails($task['time']);
+        $flags[] = $this->checkName($task['taskName']);
+        $flags[] = $this->checkDetails($task['details']);
+        $flags[] = $this->checkDetails($task['time']);
         //if($flag)
-        return $task;
+        return $flags;
     }
 
-    private function checkRequiredTaskQuantity()
+    private function checkRequiredTaskQuantity(array $tasks)
     {
+        if(count($tasks) > 1){
+            return true;
+        }
 
+        return false;
     }
 
     /*Преобразую здесь строковые значения в плане на день (e.g 'required task') в код, который пишется в базу (e.g 4)*/
@@ -93,4 +99,4 @@ class AddPlanService
         return true;
     }
 
-} 
+}

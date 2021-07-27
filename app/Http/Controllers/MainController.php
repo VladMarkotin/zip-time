@@ -80,9 +80,17 @@ class MainController
 
     public function addPlan(Request $request)
     {
-        die(print_r($request->json()->all()));
+        //die(print_r($request->json()->all()));
         $data = $request->json()->all();
-        $this->planService->checkPlan($data);
-
+        $response = $this->planService->checkPlan($data);
+        foreach($response as $val){
+            foreach($val as $v){
+                if(!$v){
+                   die("error");
+                }
+            }
+        }
+        //return response()->json(['error_with' => $v]);
+        die("checked");
     }
-} 
+}
