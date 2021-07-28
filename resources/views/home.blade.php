@@ -4,7 +4,7 @@
 <div class="container">
 <v-app>
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header" style="background-color: #A10000; color:#FFFFFF">Create your day plan!</div>
 

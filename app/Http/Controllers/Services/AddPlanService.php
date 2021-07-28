@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AddPlanService
 {
-    public function __construct()
-    {
-
-    }
-
     public function checkPlan(array $data)
     {
         $flags = [];
@@ -36,9 +31,9 @@ class AddPlanService
         $flags = [];
         /*В зависимости от типа задания, буду вызывать соотв проверку*/
         $task = $this->getNumValuesOfStrValues($task);
-        $flags[] = $this->checkName($task['taskName']);
-        $flags[] = $this->checkDetails($task['details']);
-        $flags[] = $this->checkDetails($task['time']);
+        $flags["checkTaskName"] = $this->checkName($task['taskName']);
+        $flags["checkDetails"] = $this->checkDetails($task['details']);
+        $flags["checkTime"] = $this->checkTime($task['time']);
         //if($flag)
         return $flags;
     }

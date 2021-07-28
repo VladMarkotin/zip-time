@@ -83,14 +83,18 @@ class MainController
         //die(print_r($request->json()->all()));
         $data = $request->json()->all();
         $response = $this->planService->checkPlan($data);
-        foreach($response as $val){
-            foreach($val as $v){
-                if(!$v){
-                   die("error");
+        if($response) {
+            foreach ($response as $val) {
+                foreach ($val as $k => $v) {
+                    if (!$v) {
+                        return response()->json(['error_with' => $k]);
+                    }
                 }
             }
+        }else{
+            return response()->json(['error_with' => "-1"]);//недостаточно заданий в плане
         }
-        //return response()->json(['error_with' => $v]);
+        //
         die("checked");
     }
 }
