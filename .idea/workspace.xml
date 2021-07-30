@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="48483ed9-4fdd-4f38-afce-dd37779cfc6e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Services/AddPlanService.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Services/AddPlanService.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MainController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MainController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/js/components/PlanComponent.vue" afterPath="$PROJECT_DIR$/resources/js/components/PlanComponent.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js" afterPath="$PROJECT_DIR$/public/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/git_inf" afterPath="$PROJECT_DIR$/git_inf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="zip-time.in.iws" />
@@ -54,25 +49,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainController.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MainController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.76923" vertical-offset="736" max-vertical-offset="1377">
+            <state vertical-scroll-proportion="0.78205127" vertical-offset="736" max-vertical-offset="1377">
               <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
               <folding>
                 <element signature="e#121#184#0#PHP" expanded="true" />
                 <element signature="e#2226#2843#0#PHP" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="git_inf" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/git_inf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.15692307" vertical-offset="0" max-vertical-offset="650">
-              <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -430,10 +415,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.241342" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.241342" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -837,17 +822,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MainController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.76923" vertical-offset="736" max-vertical-offset="1377">
-          <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
-          <folding>
-            <element signature="e#121#184#0#PHP" expanded="true" />
-            <element signature="e#2226#2843#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Services/AddPlanService.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="11.961538" vertical-offset="1161" max-vertical-offset="1887">
@@ -863,6 +837,17 @@
         <state vertical-scroll-proportion="0.15692307" vertical-offset="0" max-vertical-offset="650">
           <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MainController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.78205127" vertical-offset="736" max-vertical-offset="1377">
+          <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="8" />
+          <folding>
+            <element signature="e#121#184#0#PHP" expanded="true" />
+            <element signature="e#2226#2843#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
