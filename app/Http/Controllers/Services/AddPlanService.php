@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Services;
 
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class AddPlanService
 {
@@ -21,12 +22,17 @@ class AddPlanService
     {
         $flags = [];
         //отсюда буду вызывать метод checkTask для каждого заданиия
-        foreach ($data as &$v){
-            $v = $this->checkTask($v);
-
+        foreach ($data as $v){
+            $flags[] = $this->checkTask($v);
         }
-        //Наверноне надо выполнять цикл до тех пор пока checkTask() возвращает массив, а не false
-        die(print_r($data));
+        foreach($flags as $v){
+            foreach($v as $k => $val) {
+                if (!$val) return response()->json(['status' => 'error', 'message' => 'Invalid day plan! Error has
+                    happend with '.$k]);
+            }
+        }
+
+        return response()->json(['status' => 'success', 'message' => '']);
     }
 
     private function checkTask($task)
@@ -34,11 +40,12 @@ class AddPlanService
         $flags = [];
         /*В зависимости от типа задания, буду вызывать соотв проверку*/
         $task = $this->getNumValuesOfStrValues($task);
-        $flag[] = $this->checkName($task['inputValue']);
-        $flag[] = $this->checkDetails($task['details']);
-        $flag[] = $this->checkDetails($task['time']);
-        //if($flag)
-        return $task;
+        $flag["task name"] = $this->checkName(isset($task['inputValue']) ? $task['inputValue']: '');
+        $flag["details"] = $this->checkDetails(isset($task['details']) ? $task['details']   : '');
+        $flag["time"] = $this->checkTime(isset($task['time'])       ? $task['time'] : '');
+        $flag["notes"] = $this->checkNote(isset($task['notes'])      ? $task['notes'] : '');
+
+        return $flag;
     }
 
     private function checkRequiredTaskQuantity()
@@ -67,7 +74,7 @@ class AddPlanService
 
     private function checkName($task)
     {
-        if( strlen($task) > 3){
+        if( strlen($task) > 3 && (strlen($task) < 255) ){
             return true;
         }
 
@@ -83,14 +90,22 @@ class AddPlanService
         return false;
     }
 
-    private function checkTime($task)
+    private function checkTime($time)
     {
-        /* Пока не знаю как проверять
-         * if( strlen($task) < 256){
+        if(preg_match("/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/", $time)){
             return true;
-        }*/
+        }
 
-        return true;
+        return false;
+    }
+
+    private function checkNote($note)
+    {
+        if( strlen($note) < 256){
+            return true;
+        }
+
+        return false;
     }
 
 } 

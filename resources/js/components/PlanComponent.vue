@@ -371,6 +371,7 @@ import {
         deleteItem (item) {
             var index = this.items.indexOf(item)
             this.items.splice(index, 1);
+            this.tasks.splice(index, 1);
         },
 
         addNewHashCode(){

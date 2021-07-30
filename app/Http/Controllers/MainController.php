@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Repositories\DayPlanRepository\CreateDayPlanRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\SavedTask2Repository;
@@ -20,12 +21,17 @@ class MainController
     private $savedTaskRepository = null;
     private $savedTaskService    = null;
     private $planService         = null;
+    private $dayPlan             = null;
 
-    public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService, AddPlanService $addPlanService)
+    public function __construct(SavedTask2Repository $taskRepository,
+                                HashCodeService $codeService,
+                                AddPlanService $addPlanService,
+                                CreateDayPlanRepository $createDayPlanRepository)
     {
         $this->savedTaskRepository = $taskRepository;
         $this->savedTaskService    = $codeService;
-        $this->planService = $addPlanService;
+        $this->planService         = $addPlanService;
+        $this->dayPlan             = $createDayPlanRepository;
     }
 
     public function addHashCode(Request $request)
@@ -80,9 +86,13 @@ class MainController
 
     public function addPlan(Request $request)
     {
-        //die(print_r($request->all()));
         $data = $request->all();
-        $this->planService->checkPlan($data);
+        $response = $this->planService->checkPlan($data);
+        $responseString = $response->content();
 
+        //here the condition for checking $responseString has to be
+
+        $this->dayPlan->createDayPlan($data);
+        die(var_dump((explode(",", $responseString)) ) );
     }
 } 
