@@ -92,7 +92,8 @@ class MainController
 
         //here the condition for checking $responseString has to be
 
-        $this->dayPlan->createDayPlan($data);
-        die(var_dump((explode(",", $responseString)) ) );
+        $this->dayPlan->createDayPlan($data); //разобраться с проверкой
+
+        die(var_dump($data) );
     }
 } 

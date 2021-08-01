@@ -54,7 +54,7 @@ class AddPlanService
     }
 
     /*Преобразую здесь строковые значения в плане на день (e.g 'required task') в код, который пишется в базу (e.g 4)*/
-    private function getNumValuesOfStrValues($task)
+    public function getNumValuesOfStrValues($task)
     {
         switch($task['defaultTaskType']){
             case 'required job': $task['defaultTaskType'] = 4;
