@@ -1,7 +1,3 @@
 git remote add origin https://github.com/VladMarkotin/zip-time.git
 git branch -M main
 git push -u origin main
-
-1)Изменить формат ответа от сервера на тот, который хотел Женя ++-
-    1a)проверка времени +
-2)Запись плана в базу +

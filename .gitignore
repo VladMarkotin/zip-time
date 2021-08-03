@@ -12,5 +12,9 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 git_inf.txt
-.idea
+/.idea
+<<<<<<< HEAD
 
+=======
+_meta_
+>>>>>>> child

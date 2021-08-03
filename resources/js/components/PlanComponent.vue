@@ -6,7 +6,7 @@
         <v-select
               :items="dayStatuses"
               label="Day status"
-              v-model="defaultSelected.value"
+              v-model="day_status"
               required
             ></v-select>
             <v-divider></v-divider>
@@ -81,8 +81,8 @@
           md="1"
         >
             <v-select
-                :items="defaultSelected.hashCodes"
-                :value="defaultSelected.hashCodes[0]"
+                :items="[]"
+                value=""
                 v-model="defaultSelected.hash"
                 @change="onChange"
                 required>
@@ -94,7 +94,7 @@
                 :placeholder=" placeholders[0] "
                 :counter="25"
                 required
-                v-model="inputValue"
+                v-model="defaultSelected.taskName"
                 @input="inputChangeHandler"
                 @keypress.enter = "addTask"
             ></v-text-field>
@@ -104,7 +104,7 @@
                    :label="placeholders[1]"
                    required
                    :items="taskTypes"
-                   v-model="defaultSelected.defaultTaskType"
+                   v-model="defaultSelected.type"
              ></v-select>
             </v-col>
             <v-col cols="1" md="1">
@@ -112,7 +112,7 @@
                                    :label="placeholders[2]"
                                    required
                                    :items="taskPriority"
-                                   v-model="defaultSelected.defaultPriority"
+                                   v-model="defaultSelected.priority"
 
                 ></v-select>
             </v-col>
@@ -174,9 +174,9 @@
                         <template v-slot:item="props">
                             <tr align="center"  ref="refWord">
                                 <td>{{ props.item.hash }}</td>
-                                <td>{{ props.item.inputValue }}</td>
-                                <td>{{ props.item.defaultTaskType }}</td>
-                                <td>{{ props.item.defaultPriority }}</td>
+                                <td>{{ props.item.taskName }}</td>
+                                <td>{{ props.item.type }}</td>
+                                <td>{{ props.item.priority }}</td>
                                 <td>{{ props.item.time }}</td>
                                 <td>{{ props.item.details }}</td>
                                 <td>{{ props.item.notes }}</td>
@@ -228,19 +228,16 @@ import {
     data: () => ({
       placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
       showPlusIcon: 0,
-      inputValue: '',
-      taskName: {},
       readyTasks: [],
       newHashCode: '',
       showIcon: 0,
+      day_status: 'Work Day',
       defaultSelected: {
-        value: 'Work Day',
         hash: '#',
-        hashCodes: [],
-        inputValue: '',
+        taskName: '',
         time: '00:00',
-        defaultTaskType: 'required job',
-        defaultPriority: '1',
+        type: 'required job',
+        priority: '1',
         details: '',
         notes  : ''
       },
@@ -297,7 +294,7 @@ import {
                     mdiAlarm,
                     mdiPlus,
             },
-      hashCodes: [],
+      // hashCodes: [],
       hashNames: '#',
       taskTypes: ['required job','non required job','required task', 'task', 'reminder'],
       taskPriority: ['1', '2', '3'],
@@ -305,16 +302,20 @@ import {
       time: '',
       notes: '',
       details: '',
-      tasks: [],
-      taskObject: {name: '', type: '', priority: '', time: '', details: '', notes: ''},
       dialog: false,
       dialogDelete: false,
     }),
     methods: {
+        getPostParams(){
+            return JSON.stringify({
+                date: new Date().toISOString().substr(0,10),
+                day_status: this.dayStatuses.indexOf(this.day_status),
+                plan: this.items
+             })
+        },
         inputChangeHandler(){
             if(this.showIcon < 4){
                 this.showIcon += 1
-                //console.log(this.showIcon)
             }
 
         },
@@ -325,10 +326,9 @@ import {
              axios.post('/getSavedTask', {hash_code: event})
                   .then(function (response) {
 
-                        //console.log(response.data[4]);
-                        currentObj.inputValue = response.data[0];
-                        currentObj.defaultSelected.defaultTaskType = response.data[1];
-                        currentObj.defaultSelected.defaultPriority = response.data[2];
+                        currentObj.defaultSelected.taskName = response.data[0];
+                        currentObj.defaultSelected.type = response.data[1];
+                        currentObj.defaultSelected.priority = response.data[2];
                         currentObj.defaultSelected.time = response.data[4];
                         currentObj.defaultSelected.details = response.data[3];
                         currentObj.defaultSelected.notes = response.data[5];
@@ -339,31 +339,20 @@ import {
 
          },
 
-        addTask(value) {
-            this.taskObject.name = this.inputValue;
-            this.taskName.hash = "#test";
-            this.taskName.task = this.inputValue ;
-            this.defaultSelected.inputValue = this.inputValue ;
-            //this.defaultSelected.time = this.time
+        addTask(e) {
             /*мне нужно каждому полю из моего стартового меню присвоить модель и запихнуть значение в taskName
             * тогда я получу json-объект для отправки на серсер
             */
-            this.tasks.push(this.defaultSelected);
             this.items.push(this.defaultSelected);
             /*check*/
-                //console.log(this.notes);
             /*end*/
-            this.inputValue = '';
             this.showIcon   = 0;
-            this.taskName = {}
             this.defaultSelected = {
-                    value: 'Work Day',
                     hash: '#',
-                    hashCodes: ['#', '#one'],
-                    inputValue: '',
+                    taskName: '',
                     time: '00:00',
-                    defaultTaskType: 'required job',
-                    defaultPriority: '1',
+                    type: 'required job',
+                    priority: '1',
                     details: '',
                     notes  : ''
                   }
@@ -371,32 +360,26 @@ import {
         deleteItem (item) {
             var index = this.items.indexOf(item)
             this.items.splice(index, 1);
-            this.tasks.splice(index, 1);
         },
 
         addNewHashCode(){
             if( (this.newHashCode.length <= 6) && (this.newHashCode.length >= 3) ){
                   if(this.newHashCode.indexOf('#') !== -1){
-                        //console.log(this.newHashCode);
                         this.addNewHashCodePost();
                         this.dialog = false;
                   }else{
                        this.newHashCode = '#' +  this.newHashCode
-                       //console.log(this.newHashCode);
                   }
             }
         },
 
         formSubmit(e) {
              let currentObj = this;
-             for(let i = 0; i < this.tasks.length; i++){
-                this.tasks[i].hashCodes = null;
-             }
-
-             console.log(this.tasks[0].hashCodes);
-             axios.post('/addPlan',this.tasks)
+             // for(let i = 0; i < this.tasks.length; i++){
+                // this.tasks[i].hashCodes = null;
+             // }z
+             axios.post('/addPlan',this.getPostParams())
                  .then(function (response) {
-                     //console.log(response);
 
 
                  })
@@ -409,15 +392,14 @@ import {
             let currentObj = this;
             axios.post('/addHashCode',{
                'hash': this.newHashCode,
-               'taskName': this.inputValue,
+               'taskName': this.defaultSelected.taskName,
                'time' : this.defaultSelected.time,
-               'type' : this.defaultSelected.defaultTaskType,
-               'priority' : this.defaultSelected.defaultPriority,
+               'type' : this.defaultSelected.type,
+               'priority' : this.defaultSelected.priority,
                'details' : this.defaultSelected.details,
                'notes' : this.defaultSelected.notes,
               })
                .then(function (response) {
-                console.log(response);
             })
             .catch(function (error) {
                 currentObj.output = error;
@@ -425,11 +407,10 @@ import {
         },
     },
     created() {
-         console.log("Mounted");
          let currentObj = this;
          axios.post('/getSavedTasks')
               .then(function (response) {
-                    currentObj.defaultSelected.hashCodes = response.data.hash_codes;
+                    // currentObj.defaultSelected.hashCodes = response.data.hash_codes;
                     let length = response.data.hash_codes.length;
                     for (let i = 0; i < length; i++){
                         currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
@@ -440,7 +421,7 @@ import {
               });
     },
     watch:{
-        inputValue: function (){
+        taskName: function (){
              //++this.showIcon;
         }
     }

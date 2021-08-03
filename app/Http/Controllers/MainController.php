@@ -9,12 +9,12 @@
 namespace App\Http\Controllers;
 
 
-use App\Repositories\DayPlanRepository\CreateDayPlanRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\SavedTask2Repository;
 use App\Http\Controllers\Services\HashCodeService;
 use App\Http\Controllers\Services\AddPlanService;
+use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 
 class MainController
 {
@@ -23,8 +23,7 @@ class MainController
     private $planService         = null;
     private $dayPlan             = null;
 
-    public function __construct(SavedTask2Repository $taskRepository,
-                                HashCodeService $codeService,
+    public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
                                 CreateDayPlanRepository $createDayPlanRepository)
     {
@@ -86,14 +85,27 @@ class MainController
 
     public function addPlan(Request $request)
     {
-        $data = $request->all();
+        //die(print_r($request->json()->all()));
+        $data = $request->json()->all();
+        //die(var_dump($data));
         $response = $this->planService->checkPlan($data);
-        $responseString = $response->content();
+        //die(var_dump($response->content()));
+        $responseArray = json_decode($response->content());
+        //die(var_dump($responseArray->status));
+        if($responseArray->status == 'success') {
+            /*foreach ($response as $val) {
+                foreach ($val as $k => $v) {
+                    if (!$v) {
+                        return response()->json(['error_with:' => $k]);
+                    }
+                }
+            }*/
 
-        //here the condition for checking $responseString has to be
-
-        $this->dayPlan->createDayPlan($data); //разобраться с проверкой
-
-        die(var_dump($data) );
+            $this->dayPlan->createDayPlan($data); //разобраться с проверкой
+        }else{
+            return response()->json(['error_with' => "-1"]);//недостаточно заданий в плане
+        }
+        //
+        die("checked");
     }
-} 
+}
