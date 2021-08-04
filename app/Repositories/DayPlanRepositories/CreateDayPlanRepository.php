@@ -28,7 +28,6 @@ class CreateDayPlanRepository
 
     public function createDayPlan(array $data)
     {
-        //die(var_dump($data));
         $dataForDayPlanCreation["user_id"]          = Auth::id();
         $dataForDayPlanCreation["date"]             = Carbon::today();
         $dataForDayPlanCreation["day_status"]       = $this->getNumValuesOfStrValues($data["day_status"]);//temporary variant. day_status has to be general!!! Now it would not working
@@ -36,33 +35,38 @@ class CreateDayPlanRepository
         $dataForDayPlanCreation["own_estimation"]   = 0;
 
         $dataForTasks = [];
-        //die(var_dump($data));
-        foreach($data as $i => $val) {
-            if (is_array($val)) {
-
-                foreach ($val as $v) {
-                    if (is_array($v)) {
-                        foreach($v as $v2){
-                            //die(var_dump($v));
-                            $dataForTasks[$i]['hash_code'] = $v['hash'];
-                            $dataForTasks[$i]['task_name'] = $v['taskName'];
-                            $dataForTasks[$i]['type'] = $this->getNumValueOfTaskTypes($v);
-                            $dataForTasks[$i]['priority'] = $v['priority'];
-                            $dataForTasks[$i]['details'] = $v['details'];
-                            $dataForTasks[$i]['time'] = $v['time'];
-                            $dataForTasks[$i]['mark'] = -1;
-                            $dataForTasks[$i]['note'] = $v['notes'];
-                        }
-
-                    }
-               }
-            }
-        }
-        //die(var_dump($dataForTasks)); //$data с нужными мне параметрами
         try{
+            //Save ifo about timetable
             $this->model->fill($dataForDayPlanCreation);
             $this->model->save();
-            //$this->tasks->fill()
+            /*test*/
+            foreach($data as $i => $val) {
+                if (is_array($val)) {
+
+                    foreach ($val as $index => $v) {
+                        if (is_array($v)) {
+                            foreach($v as $v2){
+                                //die(var_dump($v));
+                                $dataForTasks[$index]['timetable_id'] = $this->getLastTimetableId();
+                                $dataForTasks[$index]['hash_code'] = $v['hash'];
+                                $dataForTasks[$index]['task_name'] = $v['taskName'];
+                                $dataForTasks[$index]['type'] = $this->getNumValueOfTaskTypes($v);
+                                $dataForTasks[$index]['priority'] = $v['priority'];
+                                $dataForTasks[$index]['details'] = $v['details'];
+                                $dataForTasks[$index]['time'] = $v['time'];
+                                $dataForTasks[$index]['mark'] = -1;
+                                $dataForTasks[$index]['note'] = $v['notes'];
+                            }
+
+                        }
+                    }
+                }
+            }
+            /*end test*/
+
+            //Save info about tasks
+            Tasks::insert($dataForTasks);
+
         } catch(Exception $e){
             return response()->json([
                 'status' => 'error',
@@ -102,6 +106,15 @@ class CreateDayPlanRepository
         }
 
         return 4;
+    }
+
+    private function getLastTimetableId()
+    {
+        $timetable = DB::table('timetables')
+            ->select(DB::raw('id'))
+            ->max('id');
+
+        return $timetable;
     }
 }
 
