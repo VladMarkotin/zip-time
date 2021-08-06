@@ -85,27 +85,15 @@ class MainController
 
     public function addPlan(Request $request)
     {
-        //die(print_r($request->json()->all()));
         $data = $request->json()->all();
-        //die(var_dump($data));
         $response = $this->planService->checkPlan($data);
-        //die(var_dump($response->content()));
         $responseArray = json_decode($response->content());
-        //die(var_dump($responseArray->status));
         if($responseArray->status == 'success') {
-            /*foreach ($response as $val) {
-                foreach ($val as $k => $v) {
-                    if (!$v) {
-                        return response()->json(['error_with:' => $k]);
-                    }
-                }
-            }*/
-
             $this->dayPlan->createDayPlan($data); //разобраться с проверкой
+
+            return $responseArray->status;
         }else{
-            return response()->json(['error_with' => "-1"]);//недостаточно заданий в плане
+            return $responseArray->message;//недостаточно заданий в плане
         }
-        //
-        die("checked");
     }
 }
