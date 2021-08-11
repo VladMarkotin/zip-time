@@ -327,8 +327,8 @@ import {
              axios.post('/getSavedTask', {hash_code: event})
                   .then(function (response) {
                         currentObj.defaultSelected.taskName = response.data[0];
-                        currentObj.defaultSelected.type = response.data[1];
-                        currentObj.defaultSelected.priority = response.data[2];
+                        currentObj.defaultSelected.type = currentObj.taskTypes[response.data[1]];
+                        currentObj.defaultSelected.priority = `${response.data[2]}`;
                         currentObj.defaultSelected.time = response.data[4];
                         currentObj.defaultSelected.details = response.data[3];
                         currentObj.defaultSelected.notes = response.data[5];
