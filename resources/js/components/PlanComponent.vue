@@ -348,6 +348,7 @@ import {
             /*end*/
             this.showIcon   = 0;
             this.defaultSelected = {
+                    hashCodes : this.defaultSelected.hashCodes,
                     hash: '#',
                     taskName: '',
                     time: '00:00',
