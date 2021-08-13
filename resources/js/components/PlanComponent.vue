@@ -81,8 +81,8 @@
           md="1"
         >
             <v-select
-                :items="[]"
-                value=""
+                :items="defaultSelected.hashCodes"
+                value="defaultSelected.hashCodes[0]"
                 v-model="defaultSelected.hash"
                 @change="onChange"
                 required>
@@ -234,6 +234,7 @@ import {
       day_status: 'Work Day',
       defaultSelected: {
         hash: '#',
+        hashCodes: [],
         taskName: '',
         time: '00:00',
         type: 'required job',
@@ -294,7 +295,7 @@ import {
                     mdiAlarm,
                     mdiPlus,
             },
-      // hashCodes: [],
+      hashCodes: [],
       hashNames: '#',
       taskTypes: ['required job','non required job','required task', 'task', 'reminder'],
       taskPriority: ['1', '2', '3'],
@@ -325,10 +326,9 @@ import {
              let currentObj = this;
              axios.post('/getSavedTask', {hash_code: event})
                   .then(function (response) {
-
                         currentObj.defaultSelected.taskName = response.data[0];
-                        currentObj.defaultSelected.type = response.data[1];
-                        currentObj.defaultSelected.priority = response.data[2];
+                        currentObj.defaultSelected.type = currentObj.taskTypes[response.data[1]];
+                        currentObj.defaultSelected.priority = `${response.data[2]}`;
                         currentObj.defaultSelected.time = response.data[4];
                         currentObj.defaultSelected.details = response.data[3];
                         currentObj.defaultSelected.notes = response.data[5];
@@ -348,6 +348,7 @@ import {
             /*end*/
             this.showIcon   = 0;
             this.defaultSelected = {
+                    hashCodes : this.defaultSelected.hashCodes,
                     hash: '#',
                     taskName: '',
                     time: '00:00',
@@ -375,9 +376,6 @@ import {
 
         formSubmit(e) {
              let currentObj = this;
-             // for(let i = 0; i < this.tasks.length; i++){
-                // this.tasks[i].hashCodes = null;
-             // }z
              axios.post('/addPlan',this.getPostParams())
                  .then(function (response) {
 
@@ -410,7 +408,7 @@ import {
          let currentObj = this;
          axios.post('/getSavedTasks')
               .then(function (response) {
-                    // currentObj.defaultSelected.hashCodes = response.data.hash_codes;
+                    currentObj.defaultSelected.hashCodes = response.data.hash_codes;
                     let length = response.data.hash_codes.length;
                     for (let i = 0; i < length; i++){
                         currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
