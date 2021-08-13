@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 class HashCodeService
 {
     private $savedTaskRepository = null;
-    private $newHashCode = null;
     private $dataForTransformForDb = [
         'type' => [
             'required job' => 4,
@@ -44,14 +43,14 @@ class HashCodeService
     {
         $dataForDb = $data;
         $dataForDb['type'] = $this->dataForTransformForDb['type'][$dataForDb['type']];
-        //die(var_dump($dataForDb));
+
         return $dataForDb;
     }
 
     private function isUniqueForUser($hashCode)
     {
         $hashCodes = $this->savedTaskRepository->getUserHashCodes(Auth::id());
-        //die(print_r($hashCodes));
+
         foreach($hashCodes as $i){
             if($i->hash_code == $hashCode){
                 return false;
@@ -70,4 +69,4 @@ class HashCodeService
 
         return false;
     }
-} 
+}

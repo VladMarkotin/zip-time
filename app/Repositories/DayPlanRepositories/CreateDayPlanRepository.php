@@ -36,36 +36,39 @@ class CreateDayPlanRepository
 
         $dataForTasks = [];
         try{
-            //Save ifo about timetable
-            $this->model->fill($dataForDayPlanCreation);
-            $this->model->save();
-            /*test*/
-            foreach($data as $i => $val) {
-                if (is_array($val)) {
+            DB::transaction(function () use ($dataForDayPlanCreation, $data) {
+                //Save ifo about timetable
+                $this->model->fill($dataForDayPlanCreation);
+                $this->model->save();
+                /*test*/
+                foreach($data as $i => $val) {
+                    if (is_array($val)) {
 
-                    foreach ($val as $index => $v) {
-                        if (is_array($v)) {
-                            foreach($v as $v2){
-                                //die(var_dump($v));
-                                $dataForTasks[$index]['timetable_id'] = $this->getLastTimetableId();
-                                $dataForTasks[$index]['hash_code'] = $v['hash'];
-                                $dataForTasks[$index]['task_name'] = $v['taskName'];
-                                $dataForTasks[$index]['type'] = $this->getNumValueOfTaskTypes($v);
-                                $dataForTasks[$index]['priority'] = $v['priority'];
-                                $dataForTasks[$index]['details'] = $v['details'];
-                                $dataForTasks[$index]['time'] = $v['time'];
-                                $dataForTasks[$index]['mark'] = -1;
-                                $dataForTasks[$index]['note'] = $v['notes'];
+                        foreach ($val as $index => $v) {
+                            if (is_array($v)) {
+                                foreach($v as $v2){
+                                    //die(var_dump($v));
+                                    $dataForTasks[$index]['timetable_id'] = $this->getLastTimetableId();
+                                    $dataForTasks[$index]['hash_code'] = $v['hash'];
+                                    $dataForTasks[$index]['task_name'] = $v['taskName'];
+                                    $dataForTasks[$index]['type'] = $this->getNumValueOfTaskTypes($v);
+                                    $dataForTasks[$index]['priority'] = $v['priority'];
+                                    $dataForTasks[$index]['details'] = $v['details'];
+                                    $dataForTasks[$index]['time'] = $v['time'];
+                                    $dataForTasks[$index]['mark'] = -1;
+                                    $dataForTasks[$index]['note'] = $v['notes'];
+                                }
+
                             }
-
                         }
                     }
                 }
-            }
+                //Save info about tasks
+                Tasks::insert($dataForTasks);
+            });
             /*end test*/
 
-            //Save info about tasks
-            Tasks::insert($dataForTasks);
+
 
         } catch(Exception $e){
             return response()->json([
