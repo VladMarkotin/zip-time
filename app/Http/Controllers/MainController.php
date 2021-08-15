@@ -9,12 +9,14 @@
 namespace App\Http\Controllers;
 
 
+use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\SavedTask2Repository;
 use App\Http\Controllers\Services\HashCodeService;
 use App\Http\Controllers\Services\AddPlanService;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
+use App\Http\Controllers\Services\NotesService;
 
 class MainController
 {
@@ -22,15 +24,21 @@ class MainController
     private $savedTaskService    = null;
     private $planService         = null;
     private $dayPlan             = null;
+    private $notesService        = null;
+    private $notesRepository     = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
-                                CreateDayPlanRepository $createDayPlanRepository)
+                                CreateDayPlanRepository $createDayPlanRepository,
+                                NotesService $notesService,
+                                AddNoteToSavedTask $addNoteToSavedTask)
     {
         $this->savedTaskRepository = $taskRepository;
         $this->savedTaskService    = $codeService;
         $this->planService         = $addPlanService;
         $this->dayPlan             = $createDayPlanRepository;
+        $this->notesService        = $notesService;
+        $this->notesRepository     = $addNoteToSavedTask;
     }
 
     public function addHashCode(Request $request)
@@ -49,6 +57,10 @@ class MainController
         if($flag){
             $transformData = $this->savedTaskService->transformDataForDb($params);
             $this->savedTaskRepository->saveNewHashCode($transformData);
+            $response = $this->notesService->addNoteForSavedTask($params);
+            if($response){
+                $this->notesRepository->addSavedNote($params);
+            }
         }
         //die(var_dump($flag));//ok
     }

@@ -23,6 +23,7 @@ class SavedTask2Repository
     public function getSavedTaskByHashCode(array $params)
     {
         //array with object saved_task
+        //Here I have to add code for loading last note from table notes
         $savedTask = DB::table('saved_tasks')
             ->select('task_name', 'type', 'priority', 'details', 'time', 'note')
             ->where('user_id',   '=', $params['id'])

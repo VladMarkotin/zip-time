@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class SavedNotes extends Model
+{
+    use HasFactory;
+
+    protected $table = 'notes';
+    protected $fillable = ['saved_task_id', 'note'];
+}
