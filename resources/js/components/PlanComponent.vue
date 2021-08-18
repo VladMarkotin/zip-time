@@ -184,7 +184,7 @@
                             </tr>
                         </template>
                 </v-data-table>
-
+                
                 </div>
 
             </div>
@@ -367,6 +367,7 @@ import {
             if( (this.newHashCode.length <= 6) && (this.newHashCode.length >= 3) ){
                   if(this.newHashCode.indexOf('#') !== -1){
                         this.addNewHashCodePost();
+                        this.defaultSelected.hashCodes.unshift(this.newHashCode);
                         this.dialog = false;
                   }else{
                        this.newHashCode = '#' +  this.newHashCode
