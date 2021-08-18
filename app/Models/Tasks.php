@@ -11,5 +11,5 @@ class Tasks extends Model
 
     protected $table = 'tasks';
     protected $fillable = ['timetable_id', 'hash_code', 'task_name', 'type', 'priority', 'details', 'time', 'mark',
-        'note'];
+        'note', 'created_at', 'updated_at'];
 }

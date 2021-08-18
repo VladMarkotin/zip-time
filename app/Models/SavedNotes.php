@@ -10,5 +10,5 @@ class SavedNotes extends Model
     use HasFactory;
 
     protected $table = 'notes';
-    protected $fillable = ['saved_task_id', 'note'];
+    protected $fillable = ['saved_task_id', 'note', 'created_at', 'updated_at'];
 }

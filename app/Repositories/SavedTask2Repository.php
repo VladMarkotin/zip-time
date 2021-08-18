@@ -3,12 +3,15 @@ namespace App\Repositories;
 
 
 use Illuminate\Support\Facades\DB;
+use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 
 class SavedTask2Repository
 {
-    public function __construct()
+    private $notesRepository = null;
+
+    public function __construct(AddNoteToSavedTask $addNoteToSavedTask)
     {
-        //
+        $this->notesRepository = $addNoteToSavedTask;
     }
 
     public function getUserHashCodes($id)
@@ -22,20 +25,28 @@ class SavedTask2Repository
 
     public function getSavedTaskByHashCode(array $params)
     {
-        //array with object saved_task
-        //Here I have to add code for loading last note from table notes
+        $paramsForNotes = [
+            'user_id'   => $params['id'],
+            'hash_code' => $params['hash_code']
+        ];
+        $lastNoteArray = $this->notesRepository->getLastNote($paramsForNotes);//возвращает последнюю заметку,но ее надо как-то + в savedTask
+
+
         $savedTask = DB::table('saved_tasks')
             ->select('task_name', 'type', 'priority', 'details', 'time', 'note')
             ->where('user_id',   '=', $params['id'])
             ->where('hash_code', '=', $params['hash_code'])
             ->get()->toArray();
+        if($lastNoteArray){
+            $lastNote = $lastNoteArray[0]['note'];
+            $savedTask[0]->note = $lastNote;
+        }
 
         return $savedTask;
     }
 
     public function saveNewHashCode(array $data)
     {
-        $query = '';
         DB::table('saved_tasks')->insert($data);
     }
 }

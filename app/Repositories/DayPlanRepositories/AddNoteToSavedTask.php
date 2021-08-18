@@ -38,6 +38,15 @@ class AddNoteToSavedTask {
         SavedNotes::insert($data);
     }
 
+    public function getLastNote(array $params)
+    {
+        $savedTaskId = $this->getSavedTaskId($params);
+        $lastNote = SavedNotes::where('saved_task_id', $savedTaskId)->get(['note'])->toArray();
+        //it has to be a check of lastNote
+        return $lastNote;
+
+    }
+
     private function getSavedTaskId(array $params)
     {
         //die(var_dump($params));
