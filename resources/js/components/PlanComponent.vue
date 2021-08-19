@@ -308,6 +308,7 @@ import {
     }),
     methods: {
         getPostParams(){
+            debugger
             return JSON.stringify({
                 date: new Date().toISOString().substr(0,10),
                 day_status: this.dayStatuses.indexOf(this.day_status),
@@ -327,7 +328,7 @@ import {
              axios.post('/getSavedTask', {hash_code: event})
                   .then(function (response) {
                         currentObj.defaultSelected.taskName = response.data[0];
-                        currentObj.defaultSelected.type = currentObj.taskTypes[response.data[1]];
+                        currentObj.defaultSelected.type = ['required job','non required job','required task', 'task', 'reminder'].reverse()[response.data[1]];
                         currentObj.defaultSelected.priority = `${response.data[2]}`;
                         currentObj.defaultSelected.time = response.data[4];
                         currentObj.defaultSelected.details = response.data[3];
