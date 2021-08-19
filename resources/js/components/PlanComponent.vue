@@ -200,6 +200,10 @@
 
                          </v-btn>
                          </v-row >
+                         <v-alert
+                          :value="showAlert"
+                          :type="alertType"
+                        >{{serverMessage}}</v-alert>
               </div>
             </tr>
         </table>
@@ -303,12 +307,14 @@ import {
       time: '',
       notes: '',
       details: '',
+      serverMessage: '',
+      showAlert: false,
+      alertType: 'success',
       dialog: false,
       dialogDelete: false,
     }),
     methods: {
         getPostParams(){
-            debugger
             return JSON.stringify({
                 date: new Date().toISOString().substr(0,10),
                 day_status: this.dayStatuses.indexOf(this.day_status),
@@ -380,8 +386,10 @@ import {
              let currentObj = this;
              axios.post('/addPlan',this.getPostParams())
                  .then(function (response) {
-
-
+                    currentObj.alertType = response.status;
+                    currentObj.serverMessage = response.message;
+                    currentObj.showAlert = true;
+                    setTimeout(() => currentObj.showAlert = false,5e3)
                  })
                  .catch(function (error) {
                      currentObj.output = error;
