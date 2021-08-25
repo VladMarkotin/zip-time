@@ -67,14 +67,11 @@ class CreateDayPlanRepository
                 Tasks::insert($dataForTasks);
             });
             /*end test*/
-
-
-
-        } catch(Exception $e){
-            return response()->json([
+        } catch(\Exception $e){
+            echo response()->json([
                 'status' => 'error',
                 'message' => 'Plan for this day has been already created!'
-            ]);//
+            ]);
         }
 
 

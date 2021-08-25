@@ -21,7 +21,6 @@ class AddPlanService
     public function checkPlan(array $data)
     {
         $flags = [];
-        //die(var_dump($data));
         if($this->checkRequiredTaskQuantity($data)) {
             //отсюда буду вызывать метод checkTask для каждого заданиия
             foreach ($data['plan'] as $v) {
@@ -29,16 +28,19 @@ class AddPlanService
             }
             foreach ($flags as $v) {
                 foreach ($v as $k => $val) {
-                    if (!$val) return response()->json(['status' => 'error', 'message' => 'Invalid day plan! Error has
-                    happend with ' . $k]);
+                    if (!$val) return response()->json([
+                        'status' => 'error',
+                        'message' => 'Invalid day plan! Error has happend with ' . $k]);
                 }
             }
 
-            return response()->json(['status' => 'success', 'message' => '']);
+            return response()->json(['status' => 'success', 'message' => 'Plan has been successfully added! Good luck :)']);
         }
 
-        return response()->json(['status' => 'error', 'message' => 'Invalid day plan! Too few tasks! It has to be 2 or
-                                     more required tasks.']);
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Invalid day plan! Too few tasks! It has to be 2 or more required tasks.'
+        ]);
     }
 
     private function checkTask($task)
