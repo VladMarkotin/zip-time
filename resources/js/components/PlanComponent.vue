@@ -175,28 +175,55 @@
                                         <td>{{ props.item.time }}</td>
                                         <td>{{ props.item.details }}</td>
                                         <td>{{ props.item.notes }}</td>
-                                        <td><v-btn @click="deleteItem(props.item)">Delete task</v-btn></td>
+                                        <td><v-tooltip right>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="deleteItem(props.item)" v-bind="attrs"
+                                        v-on="on">
+                                       <v-icon md="1"
+                                               color="#D71700"
+                                       >
+                                        {{icons.mdiDelete}}
+                                       </v-icon>
+
+                                     </v-btn>
+        </template>
+        <span>Delete task</span>
+      </v-tooltip></td>
                                     </tr>
                                 </template>
                         </v-data-table>
                         
                       <div v-if="items.length > 0">
-    <div class=" d-flex text-left">
+    <div class=" d-flex justify-space-between mt-3">
       <v-tooltip right>
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
                                         v-on="on">
                                        <v-icon md="1"
                                                color="#D71700"
+                                               large
                                        >
                                         {{icons.mdiStarThreePointsOutline}}
                                        </v-icon>
 
                                      </v-btn>
         </template>
-        <span>Submit</span>
+        <span>Create plan</span>
       </v-tooltip>
-  
+   <v-tooltip right>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="" v-bind="attrs"
+                                        v-on="on">
+                                       <v-icon md="1"
+                                               color="#D71700"
+                                       >
+                                        {{icons.mdiCarEmergency}}
+                                       </v-icon>
+
+                                     </v-btn>
+        </template>
+        <span>Emergency call</span>
+      </v-tooltip>
     
     </div>
 
@@ -222,6 +249,7 @@ import {
     mdiDelete,
     mdiStarThreePointsOutline,
     mdiAlarm,
+    mdiCarEmergency,
     mdiPlus
   } from '@mdi/js'
 
@@ -295,6 +323,7 @@ import {
                     mdiStarThreePointsOutline,
                     mdiAlarm,
                     mdiPlus,
+                    mdiCarEmergency,
             },
       hashCodes: [],
       hashNames: '#',
