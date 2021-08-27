@@ -15,29 +15,25 @@
 
               <v-row align="center" class="d-flex mb-6">
                 <v-col cols="1" md="1" v-if="defaultSelected.hash == '#'">
-                    <v-tooltip left>
-
-                            <template v-slot:activator="{ on }">
 
                                      <div class="text-center">
                                         <v-dialog
                                           v-model="dialog"
                                           width="500"
                                         >
-                                          <template  v-slot:activator="{ on, attrs }">
-                                            <v-btn icon v-show="showIcon > 3"
-                                              color="red lighten-2"
-                                              dark
-                                              v-bind="attrs"
-                                              v-on="on"
-                                            >
-                                             <v-icon md="1"
+                                        <template #activator="{ on: dialog }">
+                                       <v-tooltip right>
+                     <template v-slot:activator="{ on:tooltip  }">
+                            <v-btn icon v-on="{ ...tooltip, ...dialog }" v-show="showIcon > 3">
+                                       <v-icon md="1"
                                                 color="#D71700"
                                              > {{icons.mdiPlus}}
-
-                                             </v-icon>
-                                            </v-btn>
-                                          </template>
+                                        </v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Add hash-code to task for quick access</span>
+                    </v-tooltip>
+                        </template>
 
                                           <v-card>
                                             <v-card-title class="headline grey lighten-2" >
@@ -67,9 +63,6 @@
                                           </v-card>
                                         </v-dialog>
                                       </div>
-                                      </template>
-                                       <span>Add hash-code to task for quick access</span>
-                     </v-tooltip>
 
                 </v-col>
                 <v-col

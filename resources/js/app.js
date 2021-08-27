@@ -34,7 +34,6 @@ const opts = {}
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('facebook-component', require('./components/FacebookComponent.vue').default);
 Vue.component('plan-component', require('./components/PlanComponent.vue').default);
-Vue.component('task_table-component', require('./components/TaskTableComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
