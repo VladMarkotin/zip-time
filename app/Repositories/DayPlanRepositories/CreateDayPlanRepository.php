@@ -65,16 +65,21 @@ class CreateDayPlanRepository
                 }
                 //Save info about tasks
                 Tasks::insert($dataForTasks);
+
+
             });
             /*end test*/
         } catch(\Exception $e){
-            echo response()->json([
+            return response()->json([
                 'status' => 'error',
-                'message' => 'Plan for this day has been already created!'
+                'message' => 'Error! Plan for this day has been already created!'
             ]);
         }
 
-
+        return response()->json([
+            'status' => 'success!',
+            'message' => 'Plan has been successfully created! We wish you to realize conceived :) '
+        ]);
     }
 
     private function getNumValuesOfStrValues($data)

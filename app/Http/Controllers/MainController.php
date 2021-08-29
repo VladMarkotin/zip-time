@@ -101,9 +101,9 @@ class MainController
         $response = $this->planService->checkPlan($data);
         $responseArray = json_decode($response->content());
         if($responseArray->status == 'success') {
-            $this->dayPlan->createDayPlan($data); //разобраться с проверкой
+            $responseArray = $this->dayPlan->createDayPlan($data); //разобраться с проверкой
 
-            return $responseArray->status;
+            return $responseArray->getData()->message;
         }else{
             return $responseArray->message;//недостаточно заданий в плане
         }
