@@ -34,7 +34,7 @@ class AddPlanService
                 }
             }
 
-            return response()->json(['status' => 'success', 'message' => 'Plan has been successfully added! Good luck :)']);
+            return response()->json(['status' => 'success']);
         }
 
         return response()->json([
@@ -58,8 +58,6 @@ class AddPlanService
     {
         if(is_array($data['plan']) ) {
             $taskQuantity = count($data['plan']);
-            //die(var_dump($data['plan'])); required_job
-            //die(var_dump($data["day_status"]));
             switch ($data["day_status"]) {
                 case 0:
                     if($taskQuantity > 1){
