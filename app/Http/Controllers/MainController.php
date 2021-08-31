@@ -17,6 +17,7 @@ use App\Http\Controllers\Services\HashCodeService;
 use App\Http\Controllers\Services\AddPlanService;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Http\Controllers\Services\NotesService;
+use Illuminate\Http\Response;
 
 class MainController
 {
@@ -103,7 +104,7 @@ class MainController
         if($responseArray->status == 'success') {
             $responseArray = $this->dayPlan->createDayPlan($data); //разобраться с проверкой
 
-            return $responseArray->getData()->message;
+            return json_encode($responseArray->getData());
         }else{
             return $responseArray->message;//недостаточно заданий в плане
         }
