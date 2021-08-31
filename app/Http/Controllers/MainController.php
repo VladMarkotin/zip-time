@@ -103,8 +103,8 @@ class MainController
         $responseArray = json_decode($response->content());
         if($responseArray->status == 'success') {
             $responseArray = $this->dayPlan->createDayPlan($data); //разобраться с проверкой
-
-            return json_encode($responseArray->getData());
+            //die(var_dump($responseArray->getData()));
+            return response()->json($responseArray->getData());
         }else{
             return json_encode($responseArray->getData());//недостаточно заданий в плане
         }
