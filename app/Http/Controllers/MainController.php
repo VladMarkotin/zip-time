@@ -106,7 +106,7 @@ class MainController
             //die(var_dump($responseArray->getData()));
             return response()->json($responseArray->getData());
         }else{
-            return json_encode($responseArray->getData());//недостаточно заданий в плане
+            return response()->json($responseArray->getData());//недостаточно заданий в плане
         }
     }
 }
