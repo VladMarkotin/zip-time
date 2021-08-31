@@ -399,8 +399,8 @@ import {
              let currentObj = this;
              axios.post('/addPlan',this.getPostParams())
                  .then(function (response) {
-                    currentObj.alertType = response.status;
-                    currentObj.serverMessage = response.message;
+                    currentObj.alertType = response.data.status;
+                    currentObj.serverMessage = response.data.message;
                     currentObj.showAlert = true;
                     setTimeout(() => currentObj.showAlert = false,5e3)
                  })
