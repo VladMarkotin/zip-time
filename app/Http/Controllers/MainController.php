@@ -101,12 +101,14 @@ class MainController
         $data = $request->json()->all();
         $response = $this->planService->checkPlan($data);
         $responseArray = json_decode($response->content());
+        //die(var_dump($responseArray->status));
         if($responseArray->status == 'success') {
             $responseArray = $this->dayPlan->createDayPlan($data); //разобраться с проверкой
             //die(var_dump($responseArray->getData()));
             return response()->json($responseArray->getData());
         }else{
-            return response()->json($responseArray->getData());//недостаточно заданий в плане
+            $response = response()->json($responseArray);
+            return $response;//недостаточно заданий в плане
         }
     }
 }
