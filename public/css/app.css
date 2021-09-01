@@ -10942,4 +10942,12 @@ a.text-dark:focus {
   }
 }
 
+/*Test Vlad_Shpilevskii*/
 
+@media (max-width: 1260px) {
+
+    .time-for-task .v-text-field .v-label--active {
+        max-width: 200%;
+    }
+
+}

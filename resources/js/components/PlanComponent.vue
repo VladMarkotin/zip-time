@@ -14,90 +14,92 @@
             <div>
 
               <v-row align="center" class="d-flex mb-6">
-                <v-col cols="1" md="1" v-if="defaultSelected.hash == '#'">
 
-                                     <div class="text-center">
-                                        <v-dialog
-                                          v-model="dialog"
-                                          width="500"
-                                        >
-                                        <template #activator="{ on: dialog }">
-                                       <v-tooltip right>
-                     <template v-slot:activator="{ on:tooltip  }">
-                            <v-btn icon v-on="{ ...tooltip, ...dialog }" v-show="showIcon > 3">
-                                       <v-icon md="1"
-                                                color="#D71700"
-                                             > {{icons.mdiPlus}}
-                                        </v-icon>
-                            </v-btn>
-                        </template>
-                        <span>Add hash-code to task for quick access</span>
-                    </v-tooltip>
-                        </template>
+                    <v-col cols="1" md="1" v-if="defaultSelected.hash == '#'">
 
-                                          <v-card>
-                                            <v-card-title class="headline grey lighten-2" >
-                                              Add #code for this task
-                                            </v-card-title>
+                                         <div class="text-center">
+                                            <v-dialog
+                                              v-model="dialog"
+                                              width="500"
+                                            >
+                                            <template #activator="{ on: dialog }">
+                                           <v-tooltip right>
+                         <template v-slot:activator="{ on:tooltip  }">
+                                <v-btn icon v-on="{ ...tooltip, ...dialog }" v-show="showIcon > 3">
+                                           <v-icon md="1"
+                                                    color="#D71700"
+                                                 > {{icons.mdiPlus}}
+                                            </v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Add hash-code to task for quick access</span>
+                        </v-tooltip>
+                            </template>
 
-                                            <v-card-text>
-                                              <v-text-field
-                                                v-model="newHashCode"
-                                                @keypress.enter = "addNewHashCode()"
-                                                placeholder="#"></v-text-field>
-                                            </v-card-text>
+                                              <v-card>
+                                                <v-card-title class="headline grey lighten-2" >
+                                                  Add #code for this task
+                                                </v-card-title>
 
-                                            <v-divider></v-divider>
+                                                <v-card-text>
+                                                  <v-text-field
+                                                    v-model="newHashCode"
+                                                    @keypress.enter = "addNewHashCode()"
+                                                    placeholder="#"></v-text-field>
+                                                </v-card-text>
 
-                                            <v-card-actions>
-                                              <v-spacer></v-spacer>
-                                              <v-btn
-                                                color="#D71700"
-                                                text
-                                                @click = "addNewHashCode()"
+                                                <v-divider></v-divider>
 
-                                              >
-                                                Add
-                                              </v-btn>
-                                            </v-card-actions>
-                                          </v-card>
-                                        </v-dialog>
-                                      </div>
+                                                <v-card-actions>
+                                                  <v-spacer></v-spacer>
+                                                  <v-btn
+                                                    color="#D71700"
+                                                    text
+                                                    @click = "addNewHashCode()"
 
-                </v-col>
-                <v-col
-                  cols="3"
-                  md="2"
-                  :offset="defaultSelected.hash == '#' ? 0 : 1"
-                  :offset-md="defaultSelected.hash == '#' ? 0 : 1"
-                >
-                    <v-select
-                        :items="defaultSelected.hashCodes"
-                        value="defaultSelected.hashCodes[0]"
-                        v-model="defaultSelected.hash"
-                        @change="onChange"
-                        required>
+                                                  >
+                                                    Add
+                                                  </v-btn>
+                                                </v-card-actions>
+                                              </v-card>
+                                            </v-dialog>
+                                          </div>
 
-                    </v-select>
-                </v-col>
-                <v-col cols="4" md="3">
-                    <v-text-field
-                        :placeholder=" placeholders[0] "
-                        :counter="25"
-                        required
-                        v-model="defaultSelected.taskName"
-                        @input="inputChangeHandler"
-                        @keypress.enter = "addTask"
-                    ></v-text-field>
                     </v-col>
-                    <v-col cols="1" md="3">
-                    <v-select
-                           :label="placeholders[1]"
-                           required
-                           :items="taskTypes"
-                           v-model="defaultSelected.type"
-                     ></v-select>
+                    <v-col
+                      cols="3"
+                      md="2"
+                      :offset="defaultSelected.hash == '#' ? 0 : 1"
+                      :offset-md="defaultSelected.hash == '#' ? 0 : 1"
+                    >
+                        <v-select
+                            :items="defaultSelected.hashCodes"
+                            value="defaultSelected.hashCodes[0]"
+                            v-model="defaultSelected.hash"
+                            @change="onChange"
+                            required>
+
+                        </v-select>
                     </v-col>
+                    <v-col cols="4" md="3">
+                        <v-text-field
+                            :placeholder=" placeholders[0] "
+                            :counter="25"
+                            required
+                            v-model="defaultSelected.taskName"
+                            @input="inputChangeHandler"
+                            @keypress.enter = "addTask"
+                        ></v-text-field>
+
+                        </v-col>
+                        <v-col cols="1" md="3">
+                        <v-select
+                               :label="placeholders[1]"
+                               required
+                               :items="taskTypes"
+                               v-model="defaultSelected.type"
+                         ></v-select>
+                        </v-col>
                     <v-col cols="1" md="1">
                         <v-select
                                            :label="placeholders[2]"
@@ -107,8 +109,8 @@
 
                         ></v-select>
                     </v-col>
-                    <v-col cols="1" md="1">
-                        <v-text-field
+                    <v-col cols="1" md="1" class="time-for-task">
+                            <v-text-field
                               v-model="defaultSelected.time"
                               label="Time for task"
                             >00:00</v-text-field>
@@ -185,7 +187,7 @@
                                     </tr>
                                 </template>
                         </v-data-table>
-                        
+
                       <div v-if="items.length > 0">
     <div class=" d-flex justify-space-between mt-3">
       <v-tooltip right>
@@ -217,7 +219,7 @@
         </template>
         <span>Emergency call</span>
       </v-tooltip>
-    
+
     </div>
 
                       </div>
