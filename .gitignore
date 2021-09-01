@@ -5,14 +5,14 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
-.env.backup
+.envkup
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+.env.bac
 git_inf.txt
 /.idea
 <<<<<<< HEAD
