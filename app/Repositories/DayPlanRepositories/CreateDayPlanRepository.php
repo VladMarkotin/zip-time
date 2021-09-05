@@ -77,8 +77,8 @@ class CreateDayPlanRepository
         }
 
         return response()->json([
-            'status' => 'success!',
-            'message' => 'Plan has been successfully created! We wish you to realize conceived :) '
+            'status' => 'success.',
+            'message' => 'Plan has been successfully created. We wish you to realize conceived :) '
         ]);
     }
 
@@ -96,7 +96,6 @@ class CreateDayPlanRepository
 
     private function getNumValueOfTaskTypes($task)
     {
-        //die(var_dump($task));
         switch($task['type']){
             case 'required job':
                 return 4;

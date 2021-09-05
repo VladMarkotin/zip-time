@@ -10,5 +10,5 @@ class DayPlanModel extends Model
     use HasFactory;
 
     protected $table = 'timetables';
-    protected $fillable = ['user_id', 'date', 'day_status', 'final_estimation', 'own_estimation', 'created_at', 'updated_at'];
+    protected $fillable = ['id','user_id', 'date', 'day_status', 'final_estimation', 'own_estimation', 'created_at', 'updated_at'];
 }

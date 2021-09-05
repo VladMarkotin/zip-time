@@ -8,19 +8,30 @@
 namespace App\Http\Controllers\Services;
 
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use App\Repositories\DayPlanRepositories\GetPlanRepository;
 
 class AddPlanService
 {
-    public function __construct()
-    {
 
+    private $getPlanRepository = null;
+
+    public function __construct(GetPlanRepository $getPlanRepository)
+    {
+        $this->getPlanRepository = $getPlanRepository;
     }
 
     public function checkPlan(array $data)
     {
         $flags = [];
+        if($this->hasPlanAlreadyBeenCreated()){
+            return response()->json([
+                'status'=> "error",
+                'message' => "Plan has already been created"
+            ]);
+        }
         if($this->checkRequiredTaskQuantity($data)) {
             //отсюда буду вызывать метод checkTask для каждого заданиия
             foreach ($data['plan'] as $v) {
@@ -30,7 +41,8 @@ class AddPlanService
                 foreach ($v as $k => $val) {
                     if (!$val) return response()->json([
                         'status' => 'error',
-                        'message' => 'Invalid day plan! Error has happend with ' . $k]);
+                        'message' => 'Invalid day plan! Error has happend with ' . $k
+                    ]);
                 }
             }
 
@@ -151,6 +163,15 @@ class AddPlanService
         }
 
         return false;
+    }
+
+    private function hasPlanAlreadyBeenCreated()
+    {
+        $params['date'] = Carbon::today()->toDateString();
+        $params['id'] = Auth::id();
+        $response = $this->getPlanRepository->getDateOfLastTimetable($params);
+
+        return $response;
     }
 
 } 
