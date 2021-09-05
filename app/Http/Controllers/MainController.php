@@ -10,7 +10,9 @@ namespace App\Http\Controllers;
 
 
 use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
+use App\Repositories\DayPlanRepositories\GetPlanRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\SavedTask2Repository;
 use App\Http\Controllers\Services\HashCodeService;
@@ -27,12 +29,14 @@ class MainController
     private $dayPlan             = null;
     private $notesService        = null;
     private $notesRepository     = null;
+    private $currentPlanInfo     = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
                                 CreateDayPlanRepository $createDayPlanRepository,
                                 NotesService $notesService,
-                                AddNoteToSavedTask $addNoteToSavedTask)
+                                AddNoteToSavedTask $addNoteToSavedTask,
+                                GetPlanRepository $getPlanRepository)
     {
         $this->savedTaskRepository = $taskRepository;
         $this->savedTaskService    = $codeService;
@@ -40,19 +44,20 @@ class MainController
         $this->dayPlan             = $createDayPlanRepository;
         $this->notesService        = $notesService;
         $this->notesRepository     = $addNoteToSavedTask;
+        $this->currentPlanInfo     = $getPlanRepository;
     }
 
     public function addHashCode(Request $request)
     {
         $params = [];
-        $params['hash_code']         = $request->input('hash');
+        $params['hash_code']    = $request->input('hash');
         $params['user_id']      = Auth::id();
-        $params['task_name']     = $request->input('taskName');
+        $params['task_name']    = $request->input('taskName');
         $params['time']         = $request->input('time');
         $params['type']         = $request->input('type');
         $params['priority']     = $request->input('priority');
         $params['details']      = $request->input('details');
-        $params['note']        = $request->input('notes');
+        $params['note']         = $request->input('notes');
 
         $flag = $this->savedTaskService->checkNewHashCode($params['hash_code']);
         if($flag){
@@ -63,7 +68,6 @@ class MainController
                 $this->notesRepository->addSavedNote($params);
             }
         }
-        //die(var_dump($flag));//ok
     }
 
     public function getSavedTasks()
@@ -101,13 +105,25 @@ class MainController
         $data = $request->json()->all();
         $response = $this->planService->checkPlan($data);
         $responseArray = json_decode($response->content());
-        //die(var_dump($responseArray->status));
         if($responseArray->status == 'success') {
-            $responseArray = $this->dayPlan->createDayPlan($data); //разобраться с проверкой
-            //die(var_dump($responseArray->getData()));
-            return response()->json($responseArray->getData());
+
+            $responseArrayAsArray["status"]  = $responseArray->status;
+
+            $responseArray = $this->dayPlan->createDayPlan($data);
+            $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
+            $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
+
+            $jsonPlanForDay = $planForDay;
+            $finalResponseArray = [
+                "plan" => $jsonPlanForDay,
+                "status" => "success",
+                "message" => 'Plan has been successfully created! We wish you to realize conceived :) '
+            ];
+
+            return $finalResponseArray;
         }else{
             $response = response()->json($responseArray);
+
             return $response;//недостаточно заданий в плане
         }
     }
