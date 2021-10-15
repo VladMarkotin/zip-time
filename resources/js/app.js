@@ -8,6 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 import Vuetify from 'vuetify';
+import Vuelidate from 'vuelidate';
 import "vuetify/dist/vuetify.min.css";
 import '@mdi/font/css/materialdesignicons.css';
 import colors from 'vuetify/lib/util/colors';
@@ -16,6 +17,7 @@ import { mdiPlex } from '@mdi/js';
 import VTooltip from "v-tooltip";
 
 Vue.use(Vuetify)
+Vue.use(Vuelidate)
 Vue.use(VTooltip)
 
 const opts = {}
@@ -34,7 +36,7 @@ const opts = {}
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('facebook-component', require('./components/FacebookComponent.vue').default);
 Vue.component('plan-component', require('./components/PlanComponent.vue').default);
-
+Vue.component('ready-day-plan-component', require('./components/ReadyDayPlanComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -45,7 +47,21 @@ const app = new Vue({
     el: '#app',
     vuetify: new Vuetify(),
     loader: 'vue-loader',
-    components: {app}
+    components: {app},
+    data : {
+        currComponent : "plan-component",
+        currComponentProps : {}
+    },
+    computed : {
+        component()
+        {
+            return this.currComponent
+        },
+        componentProps()
+        {
+            return this.currComponentProps
+        }
+    }
 });
 
 app.$mount();
