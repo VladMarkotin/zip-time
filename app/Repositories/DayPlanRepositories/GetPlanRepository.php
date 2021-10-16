@@ -45,7 +45,7 @@ class GetPlanRepository
         return true;
     }
 
-    private function getLastTimetableId($data)
+    public function getLastTimetableId($data)
     {
         $dayPlan = DB::table('timetables')->where('date', '=', $data['date'])
             ->where('user_id', '=', $data['id'])

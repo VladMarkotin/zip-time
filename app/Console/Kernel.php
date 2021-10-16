@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Repositories\EstimationRepository;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,7 +25,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            new EstimationRepository();
+        })
+            ->timezone('Europe/Minsk')
+            ->dailyAt("16:55")
+            //->everyMinute()
+            ->appendOutputTo(storage_path('logs/inspire.log'));
     }
 
     /**
