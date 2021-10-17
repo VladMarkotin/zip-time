@@ -3,8 +3,13 @@
 @section('content')
 <div class="container">
     <v-app>
-        <plan-component>
-        </plan-component>       
+        <component v-bind:is="component" v-bind:params="componentProps"></component>   
     </v-app>
 </div>
 @endsection
+<style type="text/css">
+    #app
+    {
+        background: initial;
+    }
+</style>
