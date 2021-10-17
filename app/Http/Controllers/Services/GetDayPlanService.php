@@ -20,7 +20,8 @@ class GetDayPlanService
 
     public function getPlan(array $data)
     {
-        $response = $this->dayPlanRepository->getTimetable($data);
-        dd( $response);
+        $response = $this->dayPlanRepository->getLastDayPlan($data);
+
+        return $response;
     }
 } 

@@ -51,8 +51,11 @@ class GetPlanRepository
             ->where('user_id', '=', $data['id'])
             ->get()
             ->toArray();
+        if($dayPlan){
+            return $dayPlan[0]->id;
+        }
 
-        return $dayPlan[0]->id;
+        return null;
     }
 
     private function getTasksForLastTimetable($timetableId)
