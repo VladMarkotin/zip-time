@@ -22,7 +22,11 @@ class EstimationRepository
         foreach ($ids as $id){
             //получаю последний timetable_id текущего юзера
             $currentTimetableId = function () use ($id, $date){
-                $response = TimetableModel::where('user_id', $id)->where('date', $date)->pluck('id')->toArray();
+                $response = TimetableModel::where('user_id', $id)
+                    ->where('date', $date)
+                    ->where('day_status', 2)
+                    ->pluck('id')
+                    ->toArray();
 
                 return $response[0];
             };
