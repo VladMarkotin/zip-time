@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Controllers\Services\GetDayPlanService;
 use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 use App\Repositories\DayPlanRepositories\GetPlanRepository;
 use Illuminate\Http\Request;
@@ -30,13 +31,15 @@ class MainController
     private $notesService        = null;
     private $notesRepository     = null;
     private $currentPlanInfo     = null;
+    private $getDayPlanService   = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
                                 CreateDayPlanRepository $createDayPlanRepository,
                                 NotesService $notesService,
                                 AddNoteToSavedTask $addNoteToSavedTask,
-                                GetPlanRepository $getPlanRepository)
+                                GetPlanRepository $getPlanRepository,
+                                GetDayPlanService $getDayPlanService)
     {
         $this->savedTaskRepository = $taskRepository;
         $this->savedTaskService    = $codeService;
@@ -45,6 +48,7 @@ class MainController
         $this->notesService        = $notesService;
         $this->notesRepository     = $addNoteToSavedTask;
         $this->currentPlanInfo     = $getPlanRepository;
+        $this->getDayPlanService   = $getDayPlanService;
     }
 
     public function addHashCode(Request $request)
@@ -126,5 +130,19 @@ class MainController
 
             return $response;//недостаточно заданий в плане
         }
+    }
+
+    public function getCreatedPlanIfExists()
+    {
+        $data = [
+            "id"      => Auth::id(),
+            "date"    => Carbon::today()
+        ];
+        $createdDayPlan = ($this->getDayPlanService->getPlan($data));//plan which has been already created if it exists
+        if($createdDayPlan){
+            return response()->json($createdDayPlan);
+        }
+
+        return response()->json("");
     }
 }

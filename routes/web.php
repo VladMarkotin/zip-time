@@ -26,8 +26,10 @@ Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->na
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
 
-Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
+Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] )->middleware('auth');
 
-Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
-Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
-Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode']);
+Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode'])->middleware('auth');//
+Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks'])->middleware('auth');
+Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode'])->middleware('auth');
+
+Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists'])->middleware('auth');//check whether timetable exists

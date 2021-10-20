@@ -29,14 +29,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data = [
-            "id" => Auth::id(),
-            "date"    => Carbon::today()
-        ];
-        $createdDayPlan = ($this->getDayPlanService->getPlan($data));//plan which has been already created if it exists
-        if($createdDayPlan){
-            return view('home')->with(['created_plan' => $createdDayPlan]);
-        }
         return view('home');
     }
 }
