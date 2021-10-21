@@ -140,7 +140,7 @@ class MainController
         ];
         $createdDayPlan = ($this->getDayPlanService->getPlan($data));//plan which has been already created if it exists
         if($createdDayPlan){
-            return response()->json($createdDayPlan);
+            return json_encode($createdDayPlan, JSON_UNESCAPED_UNICODE);
         }
 
         return response()->json("");
