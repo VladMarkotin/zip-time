@@ -23,13 +23,29 @@
                      <v-list-item>
                         <v-list-item-content>Details:</v-list-item-content>
                         <v-list-item-content class="align-end">
-                           {{ item.details }}
+                           <v-textarea
+                              outlined
+                              rows="2"
+                              row-height="4"
+                              shaped
+                              placeholder="Details"
+                              counter="256"
+                              :value="item.details"
+                           ></v-textarea>
                         </v-list-item-content>
                      </v-list-item>
                      <v-list-item>
                         <v-list-item-content>Note:</v-list-item-content>
                         <v-list-item-content class="align-end">
-                           {{ item.notes }}
+                           <v-textarea
+                              outlined
+                              rows="2"
+                              row-height="4"
+                              shaped
+                              placeholder="Notes"
+                              counter="256"
+                              :value="item.notes"
+                           ></v-textarea>
                         </v-list-item-content>
                      </v-list-item>
                   </v-list>

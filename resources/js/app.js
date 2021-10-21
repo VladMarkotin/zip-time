@@ -49,7 +49,7 @@ const app = new Vue({
     loader: 'vue-loader',
     components: {app},
     data : {
-        currComponent : "plan-component",
+        currComponent : "",
         currComponentProps : {}
     },
     computed : {
@@ -60,6 +60,18 @@ const app = new Vue({
         componentProps()
         {
             return this.currComponentProps
+        }
+    },
+    async created() {
+        const response = await axios.post('/ifexists')
+        if (response.data.length > 0)
+        {
+            this.currComponentProps.plan = response.data
+            this.currComponent = 'ready-day-plan-component'
+        }
+        else
+        {
+            this.currComponent = 'plan-component'
         }
     }
 });
