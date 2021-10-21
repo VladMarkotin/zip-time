@@ -143,8 +143,10 @@ class MainController
             "date"    => Carbon::today()
         ];
         $createdDayPlan = ($this->getDayPlanService->getPlan($data));//plan which has been already created if it exists
-        $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
+
         if($createdDayPlan){
+            $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
+
             return json_encode($transformData, JSON_UNESCAPED_UNICODE);
         }
 
