@@ -29,8 +29,8 @@ class Kernel extends ConsoleKernel
             new EstimationRepository();
         })
             ->timezone('Europe/Minsk')
-            //->dailyAt("23:59")
-            ->everyMinute()
+            ->dailyAt("23:59")
+            //->everyMinute()
             ->appendOutputTo(storage_path('logs/inspire.log'));
     }
 

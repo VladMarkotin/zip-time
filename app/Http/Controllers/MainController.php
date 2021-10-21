@@ -20,18 +20,20 @@ use App\Http\Controllers\Services\HashCodeService;
 use App\Http\Controllers\Services\AddPlanService;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Http\Controllers\Services\NotesService;
+use App\Http\Controllers\Services\DataTransformationService;
 use Illuminate\Http\Response;
 
 class MainController
 {
-    private $savedTaskRepository = null;
-    private $savedTaskService    = null;
-    private $planService         = null;
-    private $dayPlan             = null;
-    private $notesService        = null;
-    private $notesRepository     = null;
-    private $currentPlanInfo     = null;
-    private $getDayPlanService   = null;
+    private $savedTaskRepository       = null;
+    private $savedTaskService          = null;
+    private $planService               = null;
+    private $dayPlan                   = null;
+    private $notesService              = null;
+    private $notesRepository           = null;
+    private $currentPlanInfo           = null;
+    private $getDayPlanService         = null;
+    private $dataTransformationService = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -39,16 +41,18 @@ class MainController
                                 NotesService $notesService,
                                 AddNoteToSavedTask $addNoteToSavedTask,
                                 GetPlanRepository $getPlanRepository,
-                                GetDayPlanService $getDayPlanService)
+                                GetDayPlanService $getDayPlanService,
+                                DataTransformationService $dataTransformationService)
     {
-        $this->savedTaskRepository = $taskRepository;
-        $this->savedTaskService    = $codeService;
-        $this->planService         = $addPlanService;
-        $this->dayPlan             = $createDayPlanRepository;
-        $this->notesService        = $notesService;
-        $this->notesRepository     = $addNoteToSavedTask;
-        $this->currentPlanInfo     = $getPlanRepository;
-        $this->getDayPlanService   = $getDayPlanService;
+        $this->savedTaskRepository       = $taskRepository;
+        $this->savedTaskService          = $codeService;
+        $this->planService               = $addPlanService;
+        $this->dayPlan                   = $createDayPlanRepository;
+        $this->notesService              = $notesService;
+        $this->notesRepository           = $addNoteToSavedTask;
+        $this->currentPlanInfo           = $getPlanRepository;
+        $this->getDayPlanService         = $getDayPlanService;
+        $this->dataTransformationService = $dataTransformationService;
     }
 
     public function addHashCode(Request $request)
@@ -139,8 +143,9 @@ class MainController
             "date"    => Carbon::today()
         ];
         $createdDayPlan = ($this->getDayPlanService->getPlan($data));//plan which has been already created if it exists
+        $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
         if($createdDayPlan){
-            return json_encode($createdDayPlan, JSON_UNESCAPED_UNICODE);
+            return json_encode($transformData, JSON_UNESCAPED_UNICODE);
         }
 
         return response()->json("");
