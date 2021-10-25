@@ -66,7 +66,7 @@ const app = new Vue({
         const response = await axios.post('/ifexists')
         if (response.data.length > 0)
         {
-            this.currComponentProps.plan = response.data
+            this.currComponentProps = response.data
             this.currComponent = 'ready-day-plan-component'
         }
         else
