@@ -49,14 +49,21 @@
                <v-divider></v-divider>
                <v-card-title class="subheading font-weight-bold">
                   <form class="d-flex align-center">
-                     <div>Mark</div> 
-                     <v-text-field style="width : 54px;" class="ml-1">
-                        <v-icon
-                           slot="append"
-                           >
-                           mdi-percent
-                        </v-icon>
-                     </v-text-field>
+                     <template v-if="[4,3].includes(item.type)">
+                        <div>Mark</div> 
+                        <v-text-field style="width : 54px;" class="ml-1">
+                           <v-icon
+                              slot="append"
+                              >
+                              mdi-percent
+                           </v-icon>
+                        </v-text-field>
+                     </template>
+                     <template v-else-if="[2,1].includes(item.type)">
+                        <div>Ready?</div> 
+                        <v-checkbox>
+                        </v-checkbox>
+                     </template>
                   </form>
                </v-card-title>
             </v-card>
