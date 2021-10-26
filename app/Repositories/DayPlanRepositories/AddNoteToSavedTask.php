@@ -23,8 +23,7 @@ class AddNoteToSavedTask {
 
     public function addSavedNote(array $params)
     {
-        //die(var_dump($params));
-        //Need hash_code and user_id
+        //Need hash_code and user_id, note
         $savedTask = [
             "hash_code" => $params['hash_code'],
             "user_id"   => $params['user_id']
@@ -41,7 +40,9 @@ class AddNoteToSavedTask {
     public function getLastNote(array $params)
     {
         $savedTaskId = $this->getSavedTaskId($params);
-        $lastNote = SavedNotes::where('saved_task_id', $savedTaskId)->get(['note'])->toArray();
+        $lastNoteId  = SavedNotes::where('saved_task_id', $savedTaskId)->max('id');//
+        $lastNote    = SavedNotes::where('id', $lastNoteId)->get(['note'])->toArray();
+
         //it has to be a check of lastNote
         return $lastNote;
 
@@ -49,7 +50,6 @@ class AddNoteToSavedTask {
 
     private function getSavedTaskId(array $params)
     {
-        //die(var_dump($params));
         $savedTaskId = DB::table('saved_tasks')
             ->select(DB::raw('id'))
             ->where('hash_code', '=', $params['hash_code'])
