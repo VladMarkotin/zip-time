@@ -37,7 +37,7 @@ class SavedTask2Repository
             ->where('user_id',   '=', $params['id'])
             ->where('hash_code', '=', $params['hash_code'])
             ->get()->toArray();
-        if($lastNoteArray){
+        if(count($lastNoteArray) > 0){
             $lastNote = $lastNoteArray[0]['note'];
             $savedTask[0]->note = $lastNote;
         }

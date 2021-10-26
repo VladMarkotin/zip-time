@@ -12,14 +12,17 @@ namespace App\Repositories\DayPlanRepositories;
 use App\Models\DayPlanModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 
 class GetPlanRepository
 {
-    private $dayPlanModel = null;
+    private $dayPlanModel                 = null;
+    private $addNoteToSavedTaskRepository = null;
 
-    public function __construct(DayPlanModel $dayPlanModel)
+    public function __construct(DayPlanModel $dayPlanModel, AddNoteToSavedTask $addNoteToSavedTask)
     {
-        $this->dayPlanModel = $dayPlanModel;
+        $this->dayPlanModel                 = $dayPlanModel;
+        $this->addNoteToSavedTaskRepository = $addNoteToSavedTask;
     }
 
     public function getLastDayPlan(array $data)
@@ -51,16 +54,23 @@ class GetPlanRepository
             ->where('user_id', '=', $data['id'])
             ->get()
             ->toArray();
+        if($dayPlan){
+            return $dayPlan[0]->id;
+        }
 
-        return $dayPlan[0]->id;
+        return null;
     }
 
     private function getTasksForLastTimetable($timetableId)
     {
-        $tasks = DB::table('tasks')->join('timetables','tasks.timetable_id', '=', 'timetables.id')
+        $tasks = DB::table('tasks')
+                ->join('timetables','tasks.timetable_id', '=', 'timetables.id')
                 ->select('tasks.*') //потом заменить звездочку на конкретные поля
                 ->where('timetables.user_id', '=', Auth::id())
                 ->where('timetables.id', '=', $timetableId)
+                ->orderBy('tasks.type', 'desc')
+                ->orderBy('tasks.priority', 'desc')
+                ->orderBy('tasks.time', 'desc')
                 ->get()
                 ->toArray();
 
