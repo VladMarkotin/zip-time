@@ -21,6 +21,7 @@ use App\Http\Controllers\Services\AddPlanService;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Http\Controllers\Services\NotesService;
 use App\Http\Controllers\Services\DataTransformationService;
+use App\Http\Controllers\Services\EstimationService;
 use Illuminate\Http\Response;
 
 class MainController
@@ -34,6 +35,7 @@ class MainController
     private $currentPlanInfo           = null;
     private $getDayPlanService         = null;
     private $dataTransformationService = null;
+    private $estimationService         = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -42,7 +44,8 @@ class MainController
                                 AddNoteToSavedTask $addNoteToSavedTask,
                                 GetPlanRepository $getPlanRepository,
                                 GetDayPlanService $getDayPlanService,
-                                DataTransformationService $dataTransformationService)
+                                DataTransformationService $dataTransformationService,
+                                EstimationService $estimationService)
     {
         $this->savedTaskRepository       = $taskRepository;
         $this->savedTaskService          = $codeService;
@@ -53,6 +56,7 @@ class MainController
         $this->currentPlanInfo           = $getPlanRepository;
         $this->getDayPlanService         = $getDayPlanService;
         $this->dataTransformationService = $dataTransformationService;
+        $this->estimationService         = $estimationService;
     }
 
     public function addHashCode(Request $request)
@@ -151,5 +155,21 @@ class MainController
         }
 
         return response()->json("");
+    }
+
+    //---------------Estimation of tasks-----------------
+    /**
+     * I am waiting: {task_id: <id>, action: <>, own_mark: <>, comment: "" }
+     */
+    public function estimateTask(Request $request)
+    {
+        $data = [
+            "task_id"  => $request->get('task_id'),
+            "action"   => $request->get('action'),
+            "own_mark" => $request->get('own_mark'),
+            "comment"  => $request->get('comment')
+        ];
+        $data = $this->estimationService->handleEstimationRequest($data);
+        //to be continued..
     }
 }
