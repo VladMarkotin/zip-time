@@ -19,7 +19,7 @@ class DataTransformationService
         if($way == 1){
             $response = $this->fromDbToFront($data);
         }else if($way == 2){
-            //later
+            //later from front to db ?
         }
 
         return ($response) ? $response : $data;

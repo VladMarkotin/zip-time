@@ -32,3 +32,6 @@ Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getS
 Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode'])->middleware('auth');
 Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists'])->middleware('auth');//check whether timetable exists
 Route::post('/estimate', [App\Http\Controllers\MainController::class, 'estimateTask'])->middleware('auth');
+
+//History
+Route::get('/hist', [App\Http\Controllers\HistController::class, 'index'])->middleware('auth');
