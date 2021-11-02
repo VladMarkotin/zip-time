@@ -5,9 +5,9 @@
          :items="['temp']"
          hide-default-footer
          >
-         <SectionComponent title="Required tasks:" :items="plan.filter((item) => [4,2].includes(item.type))"></SectionComponent>
+         <CardComponent title="Required tasks:" :items="plan.filter((item) => [4,2].includes(item.type))"></CardComponent>
          <v-divider></v-divider>
-         <SectionComponent title="Non required tasks:" :items="plan.filter((item) => [3,1].includes(item.type))"></SectionComponent>
+         <CardComponent title="Non required tasks:" :items="plan.filter((item) => [3,1].includes(item.type))"></CardComponent>
       </v-data-iterator>
       <div class=" d-flex justify-space-between mt-3">
          <v-tooltip right>
@@ -42,7 +42,7 @@
 </template>
 <script>
    import AddJobComponent from './AddJobComponent.vue'
-   import SectionComponent from './SectionComponent.vue'
+   import CardComponent from './CardComponent.vue'
    import { minLength,maxLength } from 'vuelidate/lib/validators'
    import {
        mdiSendClock,
@@ -51,7 +51,7 @@
    export default {
    components: {
       AddJobComponent,
-      SectionComponent
+      CardComponent
    },
      props : ['plan'],
          data: () => ({
