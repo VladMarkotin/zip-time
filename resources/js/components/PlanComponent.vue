@@ -389,7 +389,7 @@ export default {
                     setTimeout(() => {
                         currentObj.showAlert = false
                         const data = JSON.parse(response.config.data)
-                        currentObj.$root.currComponentProps.plan = data.plan
+                        currentObj.$root.currComponentProps = data.plan
                         currentObj.$root.currComponent = "ready-day-plan-component"
                     }, 5e3)
                 })

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <v-app>
-        <component v-bind:is="component" v-bind:params="componentProps"></component>   
+        <component v-bind:is="component" v-bind:plan="componentProps"></component>   
     </v-app>
 </div>
 @endsection
