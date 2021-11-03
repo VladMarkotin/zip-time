@@ -27,30 +27,43 @@ class EstimationService
 
             return $data;
         };
-        $makeCommentValid = function () use ($data){
-            $data['comment'] = htmlspecialchars($data['comment']);
-            if(strlen($data['comment']) > 65535){ //max size of type text in mysql
-                $diff = strlen($data['comment']) - 65535;
-                $data['comment'] = substr($data['comment'], 0, -$diff);
+        $makeCommentValid = function ($data) use ($data){
+            $data = htmlspecialchars($data);
+            if(strlen($data) > 65535){ //max size of type text in mysql
+                $diff = strlen($data) - 65535;
+                $data = substr($data, 0, -$diff);
             }
-            else if(strlen($data['comment']) < 5 && ($data['action'] == 0)){
+            else if(strlen($data) < 5 && ($data['action'] == 0)){
                 $data['comment'] = "You have activated emergency call with no explanation! We hope everything is good.";
             }
 
             return $data;
         };
+        $makeNoteValid    = function () use ($data){
+            $data['note'] = (isset($data['note'])) ? $data['note'] : '';
+            $data['note'] = htmlspecialchars($data['note']);
+            if(strlen($data["note"]) > 255){
+                $diff = strlen($data['note']) - 255;
+                $data['note'] = substr($data['comment'], 0, -$diff);
+            }
+
+            return $data;
+        };
         switch($data['action']){
-            case 1: //user wants to finish day plan
-                $data = $makeMarkValid();
-                $data = $makeCommentValid();
+            case '2': //user wants to finish day plan
+                $data = $makeMarkValid($data['mark']);
+                $data = $makeCommentValid($data['comment']);
 
                 return $data;
-            case 0:
-                $data = $makeCommentValid();
-
-                return $data;
-            case -1:
+            case '1': //for estimation of task?tasks
+                $data['note'] = $makeNoteValid();
                 break;
+            case '0': //for emergency
+                $data = $makeCommentValid();
+
+                return $data;
+            /*case -1:
+                break;*/
         }
 
         return false;

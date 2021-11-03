@@ -159,15 +159,33 @@ class MainController
 
     //---------------Estimation of tasks-----------------
     /**
-     * I am waiting: {task_id: <id>, action: <>, own_mark: <>, comment: "" }
+     * I am waiting: {own_mark: <>, comment: "" }
+     */
+    public function estimateDay(Request $request)
+    {
+        $data = [
+            "user_id"  => Auth::id(),
+            "date"     => Carbon::today()->toDateString(),
+            "own_mark" => $request->get('own_mark'),
+            "comment"  => $request->get('comment'),
+            "action"   => '2', //it means that user try to finish day plan
+        ];
+        $data = $this->estimationService->handleEstimationRequest($data);
+        //to be continued..
+    }
+
+    /**
+     * I am waiting: {task_id: <id>, mark: <>, details: "", note: "" }
      */
     public function estimateTask(Request $request)
     {
+        //$request->json()->all(); type of array
         $data = [
             "task_id"  => $request->get('task_id'),
-            "action"   => $request->get('action'),
-            "own_mark" => $request->get('own_mark'),
-            "comment"  => $request->get('comment')
+            "mark"     => $request->get('mark'),
+            "details"  => $request->get('details'),
+            "note"     => $request->get('note'),
+            "action"   => '1', //it means that user try to estimate one task
         ];
         $data = $this->estimationService->handleEstimationRequest($data);
         //to be continued..
