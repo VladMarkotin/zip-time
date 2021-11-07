@@ -19,25 +19,25 @@ class EstimationService
     public function handleEstimationRequest(array $data)
     {
         $makeMarkValid = function () use  ($data) {
-            if( ($data['own_mark'] < 0) ) {
-                $data['own_mark'] = 0;
-            } else if(($data['own_mark'] > 100)){
-                $data['own_mark'] = 100;
+            if( ($data['mark'] < 50) ) {
+                $data['mark'] = 50;
+            } else if(($data['mark'] > 99)){
+                $data['mark'] = 99;
             }
 
-            return $data;
+            return $data['mark'];
         };
-        $makeCommentValid = function ($data) use ($data){
-            $data = htmlspecialchars($data);
-            if(strlen($data) > 65535){ //max size of type text in mysql
-                $diff = strlen($data) - 65535;
-                $data = substr($data, 0, -$diff);
+        $makeCommentValid = function () use ($data){
+            $data['comment'] = htmlspecialchars($data['comment']);
+            if(strlen($data['comment']) > 65535){ //max size of type text in mysql
+                $diff = strlen($data['comment']) - 65535;
+                $data['comment'] = substr($data['comment'], 0, -$diff);
             }
             else if(strlen($data) < 5 && ($data['action'] == 0)){
                 $data['comment'] = "You have activated emergency call with no explanation! We hope everything is good.";
             }
 
-            return $data;
+            return $data['comment'];
         };
         $makeNoteValid    = function () use ($data){
             $data['note'] = (isset($data['note'])) ? $data['note'] : '';
@@ -47,7 +47,16 @@ class EstimationService
                 $data['note'] = substr($data['comment'], 0, -$diff);
             }
 
-            return $data;
+            return $data['note'];
+        };
+        $makeDetailsValid = function () use ($data){
+            $data['details'] = htmlspecialchars($data['details']);
+            if(strlen($data['details']) > 65535){ //max size of type text in mysql
+                $diff = strlen($data['details']) - 65535;
+                $data['details'] = substr($data['details'], 0, -$diff);
+            }
+
+            return $data['details'];
         };
         switch($data['action']){
             case '2': //user wants to finish day plan
@@ -55,9 +64,13 @@ class EstimationService
                 $data = $makeCommentValid($data['comment']);
 
                 return $data;
-            case '1': //for estimation of task?tasks
-                $data['note'] = $makeNoteValid();
-                break;
+            case '1': //for estimation of task
+                $data['mark']    = $makeMarkValid();
+                $data['note']    = $makeNoteValid();
+                $data['details'] = $makeDetailsValid();
+                unset($data['action']);
+
+                return $data;
             case '0': //for emergency
                 $data = $makeCommentValid();
 

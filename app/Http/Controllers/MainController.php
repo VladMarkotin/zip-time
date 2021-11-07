@@ -22,6 +22,7 @@ use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Http\Controllers\Services\NotesService;
 use App\Http\Controllers\Services\DataTransformationService;
 use App\Http\Controllers\Services\EstimationService;
+use App\Models\Tasks;
 use Illuminate\Http\Response;
 
 class MainController
@@ -179,15 +180,21 @@ class MainController
      */
     public function estimateTask(Request $request)
     {
-        //$request->json()->all(); type of array
+        //"is_ready" => ($request->get('is_ready')) ? ,
         $data = [
-            "task_id"  => $request->get('task_id'),
-            "mark"     => $request->get('mark'),
+            "id"  => $request->get('task_id'),
             "details"  => $request->get('details'),
+            "mark"     => $request->get('mark'),
             "note"     => $request->get('note'),
             "action"   => '1', //it means that user try to estimate one task
         ];
-        $data = $this->estimationService->handleEstimationRequest($data);
+        //die(var_dump($data));
+        $checkedData = $this->estimationService->handleEstimationRequest($data);
+        Tasks::whereId($data['id'])->update($checkedData); //update($checkedData);
+        $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
+        $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
+
+        return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
         //to be continued..
     }
 }
