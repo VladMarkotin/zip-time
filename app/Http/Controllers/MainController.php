@@ -182,7 +182,7 @@ class MainController
     {
         //"is_ready" => ($request->get('is_ready')) ? ,
         $data = [
-            "id"  => $request->get('task_id'),
+            "id"       => $request->get('task_id'),
             "details"  => $request->get('details'),
             "mark"     => $request->get('mark'),
             "note"     => $request->get('note'),
