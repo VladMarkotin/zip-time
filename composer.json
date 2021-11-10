@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "nesbot/carbon": "^2.46",
+        "richjenks/stats": "^1.0",
         "socialiteproviders/facebook": "^4.1"
     },
     "require-dev": {
@@ -25,7 +26,8 @@
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3",
-        "theanik/laravel-more-command": "^1.1"
+        "theanik/laravel-more-command": "^1.1",
+        "wnx/laravel-stats": "^2.5"
     },
     "autoload": {
         "psr-4": {

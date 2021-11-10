@@ -197,4 +197,6 @@ class MainController
         return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
         //to be continued..
     }
+
+    /*Stat lib: https://github.com/stefanzweifel/laravel-stats*/
 }
