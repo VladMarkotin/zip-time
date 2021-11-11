@@ -43,14 +43,14 @@
         </v-dialog>
         <AddJobComponent></AddJobComponent>
         <v-data-iterator v-bind:items="['temp']" hide-default-footer>
-            <CardComponent title="Required tasks:" v-bind:items="plan.filter((item) => [4,2].includes(item.type))"></CardComponent>
+            <CardsComponent title="Required tasks:" v-bind:items="plan.filter((item) => [4,2].includes(item.type))"></CardsComponent>
             <v-divider></v-divider>
-            <CardComponent title="Non required tasks:" v-bind:items="plan.filter((item) => [3,1].includes(item.type))"></CardComponent>
+            <CardsComponent title="Non required tasks:" v-bind:items="plan.filter((item) => [3,1].includes(item.type))"></CardsComponent>
         </v-data-iterator>
         <div class="d-flex justify-space-between mt-3">
             <v-tooltip right>
                 <template v-slot:activator="{on,attrs}">
-                    <v-btn color="#D71700" style="text-color : #ffffff" icon v-bind="attrs" v-on:click="" v-on="on">
+                    <v-btn color="#D71700" style="text-color : #ffffff" icon v-bind="attrs" v-on:click="showDialog()" v-on="on">
                         <v-icon md="1" color="#D71700" large>{{icons.mdiSendClock}}</v-icon>
                     </v-btn>
                 </template>
@@ -69,12 +69,12 @@
 </template>
 <script>
     import AddJobComponent from './AddJobComponent.vue'
-    import CardComponent from './CardComponent.vue'
+    import CardsComponent from './CardsComponent.vue'
     import {minLength,maxLength} from 'vuelidate/lib/validators'
     import {mdiSendClock,mdiCarEmergency,mdiCancel} from '@mdi/js'
     export default
     {
-        components : {AddJobComponent,CardComponent},
+        components : {AddJobComponent,CardsComponent},
         props : ['plan'],
         data()
         {
