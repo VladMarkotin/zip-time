@@ -9,8 +9,16 @@
 namespace App\Http\Controllers\Services;
 
 
+use App\Repositories\EstimateTaskRepository;
+
 class EstimationService
 {
+    private $estimateTaskRepository = null;
+
+    public function __construct(EstimateTaskRepository $estimateTaskRepository)
+    {
+        $this->estimateTaskRepository = $estimateTaskRepository;
+    }
     /**
      * @param array $data
      * @return bool
@@ -18,7 +26,7 @@ class EstimationService
      */
     public function handleEstimationRequest(array $data)
     {
-        $makeMarkValid = function () use  ($data) {
+        $makeMarkValid    = function () use  ($data) {
             if( ($data['mark'] < 50) ) {
                 $data['mark'] = 50;
             } else if(($data['mark'] > 99)){
@@ -44,7 +52,7 @@ class EstimationService
             $data['note'] = htmlspecialchars($data['note']);
             if(strlen($data["note"]) > 255){
                 $diff = strlen($data['note']) - 255;
-                $data['note'] = substr($data['comment'], 0, -$diff);
+                $data['note'] = substr($data['note'], 0, -$diff);
             }
 
             return $data['note'];
@@ -68,8 +76,9 @@ class EstimationService
                 $data['mark']    = $makeMarkValid();
                 $data['note']    = $makeNoteValid();
                 $data['details'] = $makeDetailsValid();
+                $this->estimateTaskRepository->estimateTask($data);
                 unset($data['action']);
-
+                die(var_dump($data));
                 return $data;
             case '0': //for emergency
                 $data = $makeCommentValid();

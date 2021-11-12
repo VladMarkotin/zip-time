@@ -190,7 +190,8 @@ class MainController
         ];
         //die(var_dump($data));
         $checkedData = $this->estimationService->handleEstimationRequest($data);
-        Tasks::whereId($data['id'])->update($checkedData); //update($checkedData);
+        //Tasks::whereId($data['id'])->update($checkedData); //DELETE THIS LINE! I DO IT WITH ESTIMATETASKREPOSITORY;
+
         $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
         $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
 
