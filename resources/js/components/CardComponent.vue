@@ -29,22 +29,43 @@
             <form class="d-flex align-center">
                 <template v-if="[4,3].includes(item.type)">
                     <div>Mark</div>
-                    <v-text-field v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)" style="width : 54px;" class="ml-1">
+                    <v-text-field v-model="item.mark" style="width : 54px;" class="ml-1">
                         <v-icon slot="append">mdi-percent</v-icon>
                     </v-text-field>
+                    <v-tooltip right>
+                        <template v-slot:activator="{on,attrs}">
+                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="sendMark(item)" v-bind="attrs" v-on="on">
+                                <v-icon md="1" color="#D71700">{{icons.mdiUpdate}}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Update</span>
+                    </v-tooltip>
                 </template>
                 <template v-else-if="[2,1].includes(item.type)">
                     <div>Ready?</div>
-                    <v-checkbox v-model="item.is_ready" v-on:change="sendIsReadyState(item)"></v-checkbox>
+                    <v-checkbox v-model="item.is_ready"></v-checkbox>
+                    <v-tooltip right>
+                        <template v-slot:activator="{on,attrs}">
+                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="sendIsReadyState(item)" v-bind="attrs" v-on="on">
+                                <v-icon md="1" color="#D71700">{{icons.mdiUpdate}}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Update</span>
+                    </v-tooltip>
                 </template>
             </form>
         </v-card-title>
     </v-card>
 </template>
 <script>
+    import {mdiUpdate} from '@mdi/js'
     export default
     {
         props : ['item'],
+        data()
+        {
+            return {icons : {mdiUpdate}}
+        },
         methods :
         {
             sendIsReadyState(item)
