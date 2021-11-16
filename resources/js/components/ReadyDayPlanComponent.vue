@@ -1,6 +1,46 @@
 <template>
     <div>
-        <v-dialog v-model="dialog" persistent max-width="650px">
+        <v-dialog v-model="closeDayDialog" persistent max-width="650px">
+            <v-card>
+                <v-card-title class="subheading font-weight-bold" style="background-color : #A10000;color : white">Close Day</v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row class="d-flex justify-center">
+                            <v-col cols="3">
+                                <v-text-field v-model="ownMark" label="Own Mark" class="ml-1">
+                                    <v-icon slot="append">mdi-percent</v-icon>
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-textarea outlined rows="2" row-height="4" shaped label="Comment" counter="256" v-model="closeDayComment"></v-textarea>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions class="justify-space-between">
+                    <v-tooltip right>
+                        <template v-slot:activator="{on,attrs}">
+                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="closeDay()" v-bind="attrs" v-on="on">
+                                <v-icon md="1" color="#D71700">{{icons.mdiSendClock}}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Close Day</span>
+                    </v-tooltip>
+                    <v-tooltip right>
+                        <template v-slot:activator="{on,attrs}">
+                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="hideCloseDayDialog()" v-bind="attrs" v-on="on">
+                                <v-icon md="1" color="#D71700">{{icons.mdiCancel}}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Cancel</span>
+                    </v-tooltip>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="emergencyCallDialog" persistent max-width="650px">
             <v-card>
                 <v-card-title class="subheading font-weight-bold" style="background-color : #A10000;color : white">Emergency call</v-card-title>
                 <v-card-text>
@@ -15,7 +55,7 @@
                         </v-row>                            
                         <v-row>
                             <v-col cols="12">
-                                <v-textarea outlined rows="2" row-height="4" shaped placeholder="Comment" counter="256" v-model="comment"></v-textarea>
+                                <v-textarea outlined rows="2" row-height="4" shaped label="Comment" counter="256" v-model="emergencyCallComment"></v-textarea>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -32,7 +72,7 @@
                     </v-tooltip>
                     <v-tooltip right>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="hideDialog()" v-bind="attrs" v-on="on">
+                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="hideEmergencyCallDialog()" v-bind="attrs" v-on="on">
                                 <v-icon md="1" color="#D71700">{{icons.mdiCancel}}</v-icon>
                             </v-btn>
                         </template>
@@ -50,7 +90,7 @@
         <div class="d-flex justify-space-between mt-3">
             <v-tooltip right>
                 <template v-slot:activator="{on,attrs}">
-                    <v-btn color="#D71700" style="text-color : #ffffff" icon v-bind="attrs" v-on:click="showDialog()" v-on="on">
+                    <v-btn color="#D71700" style="text-color : #ffffff" icon v-bind="attrs" v-on:click="showCloseDayDialog()" v-on="on">
                         <v-icon md="1" color="#D71700" large>{{icons.mdiSendClock}}</v-icon>
                     </v-btn>
                 </template>
@@ -58,7 +98,7 @@
             </v-tooltip>
             <v-tooltip right>
                 <template v-slot:activator="{on,attrs}">
-                    <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="showDialog()" v-bind="attrs" v-on="on">
+                    <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="showEmergencyCallDialog()" v-bind="attrs" v-on="on">
                         <v-icon md="1" color="#D71700">{{icons.mdiCarEmergency}}</v-icon>
                     </v-btn>
                 </template>
@@ -79,7 +119,15 @@
         data()
         {
             const currDate = new Date()
-            return {icons : {mdiSendClock,mdiCarEmergency,mdiCancel},dialog : false,dates : [currDate.toEnStr(),currDate.addDays(10).toEnStr()],comment : ''}
+            return {
+                    icons : {mdiSendClock,mdiCarEmergency,mdiCancel},
+                    emergencyCallDialog : false,
+                    closeDayDialog : false,
+                    dates : [currDate.toEnStr(),currDate.addDays(2).toEnStr()],
+                    ownMark : '',
+                    closeDayComment : '',
+                    emergencyCallComment : ''
+                }
         },
         computed :
         {
@@ -90,17 +138,31 @@
         },
         methods :
         {
+            async closeDay()
+            {
+                const response = await axios.post('/closeDay',{ownMark : this.ownMark,comment : this.closeDayComment})
+                this.hideCloseDayDialog()
+            },
             async callEmergency()
             {
-                const response = await axios.post('/emergency',{from : this.dates[0],to : this.dates[1],comment : this.comment})
+                const response = await axios.post('/emergency',{from : this.dates[0],to : this.dates[1],comment : this.emergencyCallComment})
+                this.hideEmergencyCallDialog()
             },
-            showDialog()
+            showCloseDayDialog()
             {
-                this.dialog = true
+                this.closeDayDialog = true
             },
-            hideDialog()
+            hideCloseDayDialog()
             {
-                this.dialog = false
+                this.closeDayDialog = false
+            },
+            showEmergencyCallDialog()
+            {
+                this.emergencyCallDialog = true
+            },
+            hideEmergencyCallDialog()
+            {
+                this.emergencyCallDialog = false
             }
         }
     }
