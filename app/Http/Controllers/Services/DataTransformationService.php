@@ -39,6 +39,9 @@ class DataTransformationService
             $transformData[$k]['details']  = $v->details;
             $transformData[$k]['mark']     = ($v->mark != -1) ? $v->mark: "";
             $transformData[$k]['notes']    = $v->note;
+            if( ($v->type == 1) ||($v->type == 2) ){
+                $transformData[$k]['is_ready'] = $v->mark;
+            }
         }
 
         return $transformData;

@@ -35,3 +35,6 @@ Route::post('/estimate', [App\Http\Controllers\MainController::class, 'estimateT
 
 //History
 Route::get('/hist', [App\Http\Controllers\HistController::class, 'index'])->middleware('auth');
+
+//emergency
+Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index'])->middleware('auth');

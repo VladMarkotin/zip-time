@@ -27,6 +27,7 @@ class EstimationService
     public function handleEstimationRequest(array $data)
     {
         $makeMarkValid    = function () use  ($data) {
+            //die(var_dump($data));
             if( ($data['mark'] < 50) ) {
                 $data['mark'] = 50;
             } else if(($data['mark'] > 99)){
@@ -72,14 +73,17 @@ class EstimationService
                 $data = $makeCommentValid($data['comment']);
 
                 return $data;
-            case '1': //for estimation of task
+            case '1': //for estimation of job & task
                 $data['mark']    = $makeMarkValid();
                 $data['note']    = $makeNoteValid();
                 $data['details'] = $makeDetailsValid();
-                $this->estimateTaskRepository->estimateTask($data);
+                $response = $this->estimateTaskRepository->estimateTask($data);
                 unset($data['action']);
-                die(var_dump($data));
-                return $data;
+                if($response === true){
+                    return $data;
+                }
+
+                return false;
             case '0': //for emergency
                 $data = $makeCommentValid();
 

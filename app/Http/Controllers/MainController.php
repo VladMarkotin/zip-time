@@ -180,23 +180,25 @@ class MainController
      */
     public function estimateTask(Request $request)
     {
-        //"is_ready" => ($request->get('is_ready')) ? ,
+        $isReady = ($request->get('is_ready'));
+        $isReady = ( ($isReady) ? 99 : 50);
         $data = [
             "id"       => $request->get('task_id'),
             "details"  => $request->get('details'),
             "mark"     => $request->get('mark'),
+            "is_ready" => $isReady,
             "note"     => $request->get('note'),
             "action"   => '1', //it means that user try to estimate one task
         ];
-        //die(var_dump($data));
         $checkedData = $this->estimationService->handleEstimationRequest($data);
-        //Tasks::whereId($data['id'])->update($checkedData); //DELETE THIS LINE! I DO IT WITH ESTIMATETASKREPOSITORY;
+        if($checkedData){
+            $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
+            $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
+            //die(var_dump($planForDay));
+            return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
+        }
 
-        $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
-        $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
-
-        return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
-        //to be continued..
+        return json_encode("{status: fail, message: 'Error during estimation.'}", JSON_UNESCAPED_UNICODE);
     }
 
     /*Stat lib: https://github.com/stefanzweifel/laravel-stats*/

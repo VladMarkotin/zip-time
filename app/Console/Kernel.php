@@ -26,11 +26,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            new EstimationRepository();
+            $repository = new EstimationRepository();
+            $repository->estimate();
         })
             ->timezone('Europe/Minsk')
-            //->dailyAt("23:59")
-            ->everyMinute()
+            ->dailyAt("23:59")
+            //->everyMinute()
             ->appendOutputTo(storage_path('logs/inspire.log'));
     }
 

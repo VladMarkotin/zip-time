@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\TimetableModel;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EstimationRepository
@@ -11,10 +12,10 @@ class EstimationRepository
 
     public function __construct()
     {
-        $this->estimate();
+        //$this->estimate();
     }
 
-    private function estimate()
+    public function estimate()
     {
         $ids  = $this->getIds();//Получаю id всех пользователей  с составленным на сегодня планом
         //Here I get ids of bad guys
@@ -67,6 +68,36 @@ class EstimationRepository
                 $this->fillTimetablesTable($data, $badIds, 1);
             }
         }
+    }
+
+    public function getEmergencyCall(array $data)
+    {
+        $mutable = Carbon::now();
+        $id = Auth::id();
+        $dataForDayPlanCreation["user_id"]          = $id;
+        $dataForDayPlanCreation["date"]             = $mutable->add(1, 'day');
+        $dataForDayPlanCreation["day_status"]       = 0;
+        $dataForDayPlanCreation["final_estimation"] = 0;
+        $dataForDayPlanCreation["own_estimation"]   = 0;
+        $dataForDayPlanCreation["comment"]          = $data['comment'];
+        for($i = 0; $i < $data['term']; $i++){
+            if(!$i){
+                DB::table('timetables')->where([ ['date', '=', Carbon::today()->toDateString()], ["user_id", '=', $id ] ] )
+                    ->update(array(
+                        'time_of_day_plan' => '00:00',
+                        'final_estimation' => 0,
+                        'own_estimation'   => 0,
+                        'day_status'       => 0,
+                        'comment'          => $data['comment'],
+                        'necessary'        => '',
+                        'for_tomorrow'     => ''
+                    ));
+            }
+            TimetableModel::insert($dataForDayPlanCreation);
+            $dataForDayPlanCreation["date"] = $mutable->add(1, 'day');
+        }
+
+        return $data;
     }
 
     /*Get id of users who has created plan on today*/
