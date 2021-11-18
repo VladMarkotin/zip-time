@@ -29,12 +29,12 @@
             <form class="d-flex align-center">
                 <template v-if="[4,3].includes(item.type)">
                     <div>Mark</div>
-                    <v-text-field v-model="item.mark" style="width : 54px;" class="ml-1">
+                    <v-text-field class="ml-1" style="width : 54px" v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)">
                         <v-icon slot="append">mdi-percent</v-icon>
                     </v-text-field>
                     <v-tooltip right>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="sendMark(item)" v-bind="attrs" v-on="on">
+                            <v-btn color="#D71700" icon style="text-color : #ffffff;margin-left: 24px" v-bind="attrs" v-on="on" v-on:click="sendMark(item)">
                                 <v-icon md="1" color="#D71700">{{icons.mdiUpdate}}</v-icon>
                             </v-btn>
                         </template>
@@ -46,7 +46,7 @@
                     <v-checkbox v-model="item.is_ready"></v-checkbox>
                     <v-tooltip right>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="sendIsReadyState(item)" v-bind="attrs" v-on="on">
+                            <v-btn color="#D71700" icon style="text-color : #ffffff;margin-left: 24px" v-bind="attrs" v-on="on" v-on:click="sendIsReadyState(item)">
                                 <v-icon md="1" color="#D71700">{{icons.mdiUpdate}}</v-icon>
                             </v-btn>
                         </template>
