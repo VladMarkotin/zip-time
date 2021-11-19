@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            new EstimationRepository();
+            $repository = new EstimationRepository();
+            $repository->estimate();
         })
             ->timezone('Europe/Minsk')
             ->dailyAt("23:59")

@@ -4,17 +4,22 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('./bootstrap')
 
-window.Vue = require('vue').default;
-import Vuetify from 'vuetify';
-import Vuelidate from 'vuelidate';
-import "vuetify/dist/vuetify.min.css";
-import '@mdi/font/css/materialdesignicons.css';
-import colors from 'vuetify/lib/util/colors';
+window.Vue = require('vue').default
+import Vuetify from 'vuetify'
+import Vuelidate from 'vuelidate'
+import "vuetify/dist/vuetify.min.css"
+import '@mdi/font/css/materialdesignicons.css'
+import colors from 'vuetify/lib/util/colors'
 
-import { mdiPlex } from '@mdi/js';
+<<<<<<< HEAD
+import {  mdiPlex  } from '@mdi/js';
 import VTooltip from "v-tooltip";
+=======
+import { mdiPlex } from '@mdi/js'
+import VTooltip from "v-tooltip"
+>>>>>>> d599dc937f6076ee3b6828437b46fed2345e9be2
 
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
@@ -33,47 +38,60 @@ const opts = {}
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('facebook-component', require('./components/FacebookComponent.vue').default);
-Vue.component('plan-component', require('./components/PlanComponent.vue').default);
-Vue.component('ready-day-plan-component', require('./components/ReadyDayPlanComponent.vue').default);
+Vue.component('example-component',require('./components/ExampleComponent.vue').default)
+Vue.component('facebook-component',require('./components/FacebookComponent.vue').default)
+Vue.component('plan-component',require('./components/PlanComponent.vue').default)
+Vue.component('ready-day-plan-component',require('./components/ReadyDayPlanComponent.vue').default)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-const app = new Vue({
-    el: '#app',
-    vuetify: new Vuetify(),
-    loader: 'vue-loader',
-    components: {app},
-    data : {
-        currComponent : "",
-        currComponentProps : {}
-    },
-    computed : {
-        component()
-        {
-            return this.currComponent
-        },
-        componentProps()
-        {
-            return this.currComponentProps
-        }
-    },
-    async created() {
-        const response = await axios.post('/ifexists')
-        if (response.data.length > 0)
-        {
-            this.currComponentProps.plan = response.data
-            this.currComponent = 'ready-day-plan-component'
-        }
-        else
-        {
-            this.currComponent = 'plan-component'
-        }
+Date.prototype.addDays =
+    function (days)
+    {
+        this.setDate(this.getDate() + days)
+        return this
     }
-});
+Date.prototype.toEnStr =
+    function ()
+    {
+        return this.toISOString().substr(0,10)
+    }
+const app =
+    new Vue
+        (
+            {
+                el : '#app',
+                vuetify : new Vuetify(),
+                loader : 'vue-loader',
+                components : {app},
+                data : {currComponent : "",currComponentProps : {}},
+                computed :
+                {
+                    component()
+                    {
+                        return this.currComponent
+                    },
+                    componentProps()
+                    {
+                        return this.currComponentProps
+                    }
+                },
+                async created()
+                {
+                    const response = await axios.post('/ifexists')
+                    if (response.data.length > 0)
+                    {
+                        this.currComponentProps = response.data
+                        this.currComponent = 'ready-day-plan-component'
+                    }
+                    else
+                    {
+                        this.currComponent = 'plan-component'
+                    }
+                }
+            }
+    )
 
-app.$mount();
+app.$mount()

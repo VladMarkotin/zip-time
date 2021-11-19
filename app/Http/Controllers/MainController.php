@@ -21,6 +21,8 @@ use App\Http\Controllers\Services\AddPlanService;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Http\Controllers\Services\NotesService;
 use App\Http\Controllers\Services\DataTransformationService;
+use App\Http\Controllers\Services\EstimationService;
+use App\Models\Tasks;
 use Illuminate\Http\Response;
 
 class MainController
@@ -34,6 +36,7 @@ class MainController
     private $currentPlanInfo           = null;
     private $getDayPlanService         = null;
     private $dataTransformationService = null;
+    private $estimationService         = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -42,7 +45,8 @@ class MainController
                                 AddNoteToSavedTask $addNoteToSavedTask,
                                 GetPlanRepository $getPlanRepository,
                                 GetDayPlanService $getDayPlanService,
-                                DataTransformationService $dataTransformationService)
+                                DataTransformationService $dataTransformationService,
+                                EstimationService $estimationService)
     {
         $this->savedTaskRepository       = $taskRepository;
         $this->savedTaskService          = $codeService;
@@ -53,6 +57,7 @@ class MainController
         $this->currentPlanInfo           = $getPlanRepository;
         $this->getDayPlanService         = $getDayPlanService;
         $this->dataTransformationService = $dataTransformationService;
+        $this->estimationService         = $estimationService;
     }
 
     public function addHashCode(Request $request)
@@ -152,4 +157,49 @@ class MainController
 
         return response()->json("");
     }
+
+    //---------------Estimation of tasks-----------------
+    /**
+     * I am waiting: {own_mark: <>, comment: "" }
+     */
+    public function estimateDay(Request $request)
+    {
+        $data = [
+            "user_id"  => Auth::id(),
+            "date"     => Carbon::today()->toDateString(),
+            "own_mark" => $request->get('own_mark'),
+            "comment"  => $request->get('comment'),
+            "action"   => '2', //it means that user try to finish day plan
+        ];
+        $data = $this->estimationService->handleEstimationRequest($data);
+        //to be continued..
+    }
+
+    /**
+     * I am waiting: {task_id: <id>, mark: <>, details: "", note: "" }
+     */
+    public function estimateTask(Request $request)
+    {
+        $isReady = ($request->get('is_ready'));
+        $isReady = ( ($isReady) ? 99 : 50);
+        $data = [
+            "id"       => $request->get('task_id'),
+            "details"  => $request->get('details'),
+            "mark"     => $request->get('mark'),
+            "is_ready" => $isReady,
+            "note"     => $request->get('note'),
+            "action"   => '1', //it means that user try to estimate one task
+        ];
+        $checkedData = $this->estimationService->handleEstimationRequest($data);
+        if($checkedData){
+            $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
+            $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
+            //die(var_dump($planForDay));
+            return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
+        }
+
+        return json_encode("{status: fail, message: 'Error during estimation.'}", JSON_UNESCAPED_UNICODE);
+    }
+
+    /*Stat lib: https://github.com/stefanzweifel/laravel-stats*/
 }
