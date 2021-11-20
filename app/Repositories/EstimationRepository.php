@@ -15,6 +15,7 @@ class EstimationRepository
         //$this->estimate();
     }
 
+    /*This method will be executing automaticly for all users with unclosed plan in the end of the day (23:59) */
     public function estimate()
     {
         $ids  = $this->getIds();//Получаю id всех пользователей  с составленным на сегодня планом
@@ -68,6 +69,50 @@ class EstimationRepository
                 $this->fillTimetablesTable($data, $badIds, 1);
             }
         }
+    }
+
+    /*This method will be executing for concrete user on demand*/
+    public function closeDay(array $data)
+    {
+        //
+        $currentTimetableId = function () use ($data){
+            $response = TimetableModel::where('user_id', $data['user_id'])
+                ->where('date', $data['date'])
+                ->pluck('id')
+                ->toArray();
+
+            return $response[0];
+        };
+        $timetableId = $currentTimetableId();
+        $finalMark = $this->sumMarks($timetableId); //считаю оценку каждого юзера
+        if($finalMark >= 50){
+            $data = [
+                "id"               => $timetableId,
+                "user_id"          => $data['user_id'],
+                "time_of_day_plan" => ($finalMark >= 50) ? $this->sumTime($timetableId): '00:00',
+                "final_estimation" => $finalMark,
+                "own_estimation"   => $data['mark'],
+                "comment"          => $data['comment'],
+                "date"             => Carbon::today()->toDateString(),
+                "day_status"       => ($finalMark >= 50) ? 3 : -1,
+            ];
+            /*This code could be placed in own method for optimization later*/
+            DB::table('timetables')->where([ ['id', '=', $data['id']], ["user_id", '=', $data['user_id'] ] ] )
+                ->update(array(
+                    'time_of_day_plan' => $data['time_of_day_plan'], //time of plan info. Fix it later!!
+                    'final_estimation' => $data['final_estimation'], //-2 - признак того, что день под статусом Вых
+                    'own_estimation'   => $data['own_estimation'],
+                    'day_status'       => $data["day_status"],
+                    'comment'          => $data['comment'],
+                    'necessary'        => '',
+                    'for_tomorrow'     => ''
+                ));
+
+            return true;
+        }
+
+        return false;
+
     }
 
     public function getEmergencyCall(array $data)
