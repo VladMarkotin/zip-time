@@ -10,14 +10,18 @@ namespace App\Http\Controllers\Services;
 
 
 use App\Repositories\EstimateTaskRepository;
+use App\Repositories\EstimationRepository;
 
 class EstimationService
 {
     private $estimateTaskRepository = null;
+    private $estimateDayRepository  = null;
 
-    public function __construct(EstimateTaskRepository $estimateTaskRepository)
+    public function __construct(EstimateTaskRepository $estimateTaskRepository,
+                                EstimationRepository $estimationRepository)
     {
         $this->estimateTaskRepository = $estimateTaskRepository;
+        $this->estimateDayRepository  = $estimationRepository;
     }
     /**
      * @param array $data
@@ -26,12 +30,20 @@ class EstimationService
      */
     public function handleEstimationRequest(array $data)
     {
-        $makeMarkValid    = function () use  ($data) {
+        $makeMarkValid    = function ($arg = null) use  ($data) {
             //die(var_dump($data));
-            if( ($data['mark'] < 50) ) {
-                $data['mark'] = 50;
-            } else if(($data['mark'] > 99)){
-                $data['mark'] = 99;
+            if(!$arg) {
+                if (($data['mark'] < 50)) {
+                    $data['mark'] = 50;
+                } else if (($data['mark'] > 99)) {
+                    $data['mark'] = 99;
+                }
+            } else{
+                if (($data['mark'] < 1)) {
+                    $data['mark'] = 1;
+                } else if (($data['mark'] > 200)) {
+                    $data['mark'] = 200;
+                }
             }
 
             return $data['mark'];
@@ -42,7 +54,7 @@ class EstimationService
                 $diff = strlen($data['comment']) - 65535;
                 $data['comment'] = substr($data['comment'], 0, -$diff);
             }
-            else if(strlen($data) < 5 && ($data['action'] == 0)){
+            else if(strlen($data['comment']) < 5 && ($data['action'] == 0)){
                 $data['comment'] = "You have activated emergency call with no explanation! We hope everything is good.";
             }
 
@@ -68,11 +80,17 @@ class EstimationService
             return $data['details'];
         };
         switch($data['action']){
-            case '2': //user wants to finish day plan
-                $data = $makeMarkValid($data['mark']);
-                $data = $makeCommentValid($data['comment']);
 
-                return $data;
+            case '2': //user wants to finish day plan
+                $data['mark'] = $makeMarkValid(2); //it means that user gives an own mark for checking
+                $data['comment'] = $makeCommentValid($data['comment']);
+                $response = $this->estimateDayRepository->closeDay($data);
+                if($response){
+                    return ["status" => "success", "message" => "Your day plan is completed :) Good work!"];
+                }
+
+                return ["status" => "fail", "message" => "Your day plan isn`t done yet. You still have some
+                         required jobs/tasks incomplete! "];
             case '1': //for estimation of job & task
                 $data['mark']    = $makeMarkValid();
                 $data['note']    = $makeNoteValid();

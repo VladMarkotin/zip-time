@@ -167,12 +167,13 @@ class MainController
         $data = [
             "user_id"  => Auth::id(),
             "date"     => Carbon::today()->toDateString(),
-            "own_mark" => $request->get('own_mark'),
+            "mark"     => $request->get('ownMark'),
             "comment"  => $request->get('comment'),
             "action"   => '2', //it means that user try to finish day plan
         ];
-        $data = $this->estimationService->handleEstimationRequest($data);
-        //to be continued..
+        $response = $this->estimationService->handleEstimationRequest($data);
+
+        return response()->json($response);
     }
 
     /**
