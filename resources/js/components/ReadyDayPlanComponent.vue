@@ -1,13 +1,13 @@
 <template>
     <div>
-        <v-dialog v-model="closeDayDialog" persistent max-width="650px">
+        <v-dialog persistent max-width="650px" v-model="closeDayDialog">
             <v-card>
                 <v-card-title class="subheading font-weight-bold" style="background-color : #A10000;color : white">Close Day</v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row class="d-flex justify-center">
                             <v-col cols="3">
-                                <v-text-field v-model="ownMark" label="Own Mark" class="ml-1">
+                                <v-text-field label="Own Mark" class="ml-1" v-model="ownMark">
                                     <v-icon slot="append">mdi-percent</v-icon>
                                 </v-text-field>
                             </v-col>
@@ -23,7 +23,7 @@
                 <v-card-actions class="justify-space-between">
                     <v-tooltip right>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="closeDay()" v-bind="attrs" v-on="on">
+                            <v-btn color="#D71700" icon style="text-color : #ffffff" v-bind="attrs" v-on="on" v-on:click="closeDay()">
                                 <v-icon md="1" color="#D71700">{{icons.mdiSendClock}}</v-icon>
                             </v-btn>
                         </template>
@@ -31,7 +31,7 @@
                     </v-tooltip>
                     <v-tooltip right>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="hideCloseDayDialog()" v-bind="attrs" v-on="on">
+                            <v-btn color="#D71700" icon style="text-color : #ffffff" v-bind="attrs" v-on="on" v-on:click="hideCloseDayDialog()">
                                 <v-icon md="1" color="#D71700">{{icons.mdiCancel}}</v-icon>
                             </v-btn>
                         </template>
@@ -40,17 +40,17 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="emergencyCallDialog" persistent max-width="650px">
+        <v-dialog persistent max-width="650px" v-model="emergencyCallDialog">
             <v-card>
                 <v-card-title class="subheading font-weight-bold" style="background-color : #A10000;color : white">Emergency call</v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12" sm="7">
-                                <v-date-picker v-model="dates" style="height : 325px" color="#A10000" range></v-date-picker>
+                                <v-date-picker color="#A10000" range style="height : 325px" v-model="dates"></v-date-picker>
                             </v-col>
                             <v-col cols="12" sm="5">
-                                <v-text-field v-model="dateRangeText" label="Date period" prepend-icon="mdi-calendar" readonly></v-text-field>
+                                <v-text-field label="Date period" prepend-icon="mdi-calendar" readonly v-model="dateRangeText"></v-text-field>
                             </v-col>
                         </v-row>                            
                         <v-row>
@@ -64,7 +64,7 @@
                 <v-card-actions class="justify-space-between">
                     <v-tooltip right>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="callEmergency()" v-bind="attrs" v-on="on">
+                            <v-btn color="#D71700" icon style="text-color : #ffffff" v-bind="attrs" v-on="on" v-on:click="callEmergency()">
                                 <v-icon md="1" color="#D71700">{{icons.mdiCarEmergency}}</v-icon>
                             </v-btn>
                         </template>
@@ -72,7 +72,7 @@
                     </v-tooltip>
                     <v-tooltip right>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="hideEmergencyCallDialog()" v-bind="attrs" v-on="on">
+                            <v-btn color="#D71700" icon style="text-color : #ffffff" v-bind="attrs" v-on="on" v-on:click="hideEmergencyCallDialog()">
                                 <v-icon md="1" color="#D71700">{{icons.mdiCancel}}</v-icon>
                             </v-btn>
                         </template>
@@ -82,7 +82,7 @@
             </v-card>
         </v-dialog>
         <AddJobComponent></AddJobComponent>
-        <v-data-iterator v-bind:items="['temp']" hide-default-footer>
+        <v-data-iterator hide-default-footer v-bind:items="['temp']">
             <CardsComponent title="Required tasks:" v-bind:items="plan.filter((item) => [4,2].includes(item.type))"></CardsComponent>
             <v-divider></v-divider>
             <CardsComponent title="Non required tasks:" v-bind:items="plan.filter((item) => [3,1].includes(item.type))"></CardsComponent>
@@ -90,7 +90,7 @@
         <div class="d-flex justify-space-between mt-3">
             <v-tooltip right>
                 <template v-slot:activator="{on,attrs}">
-                    <v-btn color="#D71700" style="text-color : #ffffff" icon v-bind="attrs" v-on:click="showCloseDayDialog()" v-on="on">
+                    <v-btn color="#D71700" icon style="text-color : #ffffff"  v-bind="attrs" v-on="on" v-on:click="showCloseDayDialog()">
                         <v-icon md="1" color="#D71700" large>{{icons.mdiSendClock}}</v-icon>
                     </v-btn>
                 </template>
@@ -98,7 +98,7 @@
             </v-tooltip>
             <v-tooltip right>
                 <template v-slot:activator="{on,attrs}">
-                    <v-btn color="#D71700" style="text-color : #ffffff" icon v-on:click="showEmergencyCallDialog()" v-bind="attrs" v-on="on">
+                    <v-btn color="#D71700" icon style="text-color : #ffffff" v-bind="attrs" v-on="on" v-on:click="showEmergencyCallDialog()">
                         <v-icon md="1" color="#D71700">{{icons.mdiCarEmergency}}</v-icon>
                     </v-btn>
                 </template>

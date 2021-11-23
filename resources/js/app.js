@@ -13,13 +13,8 @@ import "vuetify/dist/vuetify.min.css"
 import '@mdi/font/css/materialdesignicons.css'
 import colors from 'vuetify/lib/util/colors'
 
-<<<<<<< HEAD
-import {  mdiPlex  } from '@mdi/js';
-import VTooltip from "v-tooltip";
-=======
-import { mdiPlex } from '@mdi/js'
+import {mdiPlex} from '@mdi/js'
 import VTooltip from "v-tooltip"
->>>>>>> d599dc937f6076ee3b6828437b46fed2345e9be2
 
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
