@@ -199,35 +199,18 @@ class EstimationRepository
 
             return 1;
         });
-
         $r = $response();
         if($r){
-            /*Query for required jobs*/
-            $query  = "SELECT SUM(mark) S   FROM tasks JOIN timetables T ON timetable_id = $timetableId WHERE T.date = "." '$today' "." AND type = 4 GROUP BY(tasks.id) WITH ROLLUP";
-            /*Query for non-required jobs*/
-            $query2 = "SELECT SUM(mark) S2  FROM tasks  JOIN timetables T ON timetable_id = $timetableId WHERE T.date = "." '$today' "." AND type = 3 AND mark <> -1.00 GROUP BY(tasks.id) WITH ROLLUP";
-            /*Query for required tasks*/
-            $query3 = "SELECT SUM(mark) S3  FROM tasks  JOIN timetables T ON timetable_id = $timetableId WHERE T.date = "." '$today' "." AND type = 2 GROUP BY(tasks.id) WITH ROLLUP";
 
+            $query  = "SELECT SUM(mark) S   FROM tasks JOIN timetables T ON timetable_id = $timetableId WHERE T.date = "." '$today' "." AND type = 4 GROUP BY(tasks.id) WITH ROLLUP";
+            $query2 = "SELECT SUM(mark) S2  FROM tasks  JOIN timetables T ON timetable_id = $timetableId WHERE T.date = "." '$today' "." AND type = 3 AND mark <> -1.00 GROUP BY(tasks.id) WITH ROLLUP";
             $avgMark = DB::select($query);
             $avgMark2 = DB::select($query2);
-            $avgMark3 = DB::select($query3);
-
-            /*Checking of required tasks*/
-            $avgMarkCount3 = count($avgMark3) - 1;
-            if($avgMarkCount3 > -1){
-                if( ($avgMark3[array_key_last($avgMark3)]->S3 / $avgMarkCount3) != 99){
-                    return -1;
-                }
-            }
-            /*end*/
-
             $avgMarkCount = count($avgMark) - 1;
-            /*Calc final mark (count only required jobs)*/
             $avgMark = ($avgMark[array_key_last($avgMark)]->S / $avgMarkCount);
             if($avgMark2){
-                $avgMarkCount2 = count($avgMark2) - 1; //It has to be 2 or more non-required tasks to use them
-                if($avgMarkCount2 > 1){ /*We sum $avgMark and $avgMark2 only if user has 2 or more non-required tasks*/
+                $avgMarkCount2 = count($avgMark2) - 1; //It has to be 2 or more unrequired tasks to use them
+                if($avgMarkCount2 > 1){
                     $avgMark2 = ($avgMark2[array_key_last($avgMark2)]->S2 / $avgMarkCount2);
                     $avgMark += $avgMark2;
                     $avgMark /= 2;

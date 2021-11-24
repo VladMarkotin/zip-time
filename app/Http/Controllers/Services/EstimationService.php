@@ -89,7 +89,8 @@ class EstimationService
                     return ["status" => "success", "message" => "Your day plan is completed :) Good work!"];
                 }
 
-                return ["status" => "fail", "message" => "Your day plan isn`t done yet. Some required jobs/tasks are incomplete! "];
+                return ["status" => "fail", "message" => "Your day plan isn`t done yet. You still have some
+                         required jobs/tasks incomplete! "];
             case '1': //for estimation of job & task
                 $data['mark']    = $makeMarkValid();
                 $data['note']    = $makeNoteValid();
