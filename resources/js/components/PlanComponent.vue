@@ -303,7 +303,7 @@ export default {
         hashNames: '#',
         taskTypes: ['required job', 'non required job', 'required task', 'task', 'reminder'],
         taskPriority: ['1', '2', '3'],
-        dayStatuses: ['Work Day', 'Weekend', 'Holiday', 'Emergency'],
+        dayStatuses: ['Work Day', 'Weekend'],
         time: '',
         notes: '',
         details: '',
