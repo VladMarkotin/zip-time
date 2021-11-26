@@ -202,5 +202,13 @@ class MainController
         return json_encode("{status: fail, message: 'Error during estimation.'}", JSON_UNESCAPED_UNICODE);
     }
 
+    /*
+     * For adding job/task after creation of day plan
+     * {"hash_code":<string>, "name": <string>, "type": <string>, "priority": <int>, "time": <string>}*/
+    public function addJob(Request $request)
+    {
+        die(var_dump($request->all()));
+    }
+
     /*Stat lib: https://github.com/stefanzweifel/laravel-stats*/
 }

@@ -35,8 +35,14 @@ Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreate
 Route::post('/estimate', [App\Http\Controllers\MainController::class, 'estimateTask'])->middleware('auth');
 Route::post('/closeDay', [App\Http\Controllers\MainController::class, 'estimateDay'])->middleware('auth');
 
+//Add job
+Route::post('/addJob', [App\Http\Controllers\MainController::class, 'addJob'])->middleware('auth');
+
 //History
-Route::get('/hist', [App\Http\Controllers\HistController::class, 'index'])->middleware('auth');
+Route::get('/hist', [App\Http\Controllers\HistController::class, 'index'])->middleware('auth');\
+
+//Statistics
+Route::get('/stat', [App\Http\Controllers\StatController::class, 'index'])->middleware('auth');
 
 //emergency
 Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index'])->middleware('auth');
