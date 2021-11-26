@@ -173,7 +173,7 @@ class MainController
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
 
-        return response()->json($response);
+        return response()->json($response); //comment
     }
 
     /**
