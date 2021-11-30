@@ -10,9 +10,9 @@
 			<EmergencyCall v-on:hideEmergencyCallDialog="hideEmergencyCallDialog()"/>
 		</template>
 		<v-data-iterator hide-default-footer v-bind:items="plan">
-			<Cards title="Required tasks:" v-bind:items="plan.filter((item) => [4,2].includes(item.type))"/>
+			<Cards title="Required tasks:" v-if="this.isExistsRequiredTasks(plan)" v-bind:items="this.getRequiredTasks(plan)"/>
 			<v-divider></v-divider>
-			<Cards title="Non required tasks:" v-bind:items="plan.filter((item) => [3,1].includes(item.type))"/>
+			<Cards title="Non required tasks:" v-if="this.isExistsNonRequiredTasks(plan)" v-bind:items="this.getNonRequiredTasks(plan)"/>
 		</v-data-iterator>
 		<div class="d-flex justify-space-between mt-3">
 			<v-tooltip right>
@@ -58,6 +58,22 @@
 		},
 		methods :
 		{
+			getRequiredTasks(plan)
+			{
+				return plan.filter((item) => [4,2].includes(item.type))
+			},
+			isExistsRequiredTasks(plan)
+			{
+				return this.getRequiredTasks(plan).length > 0
+			},
+			getNonRequiredTasks(plan)
+			{
+				return plan.filter((item) => [3,1].includes(item.type))
+			},
+			isExistsNonRequiredTasks(plan)
+			{
+				return this.getNonRequiredTasks(plan).length > 0
+			},
 			showAddJobTaskDialog()
 			{
 				this.isShowAddJobTaskDialog = true
