@@ -25,6 +25,25 @@ class DataTransformationService
         return ($response) ? $response : $data;
     }
 
+    /*Преобразую здесь строковые значения в плане на день (e.g 'required task') в код, который пишется в базу (e.g 4)*/
+    public function getNumValuesOfStrValues($task)
+    {
+        switch($task['type']){
+            case 'required job'    : $task['type'] = 4;
+                return $task;
+            case 'non required job': $task['type'] = 3;
+                return $task;
+            case 'required task'   : $task['type'] = 2;
+                return $task;
+            case 'task'            : $task['type'] = 1;
+                return $task;
+            case 'reminder'        : $task['type'] = 0;
+                return $task;
+        }
+
+        return $task;
+    }
+
     private function fromDbToFront(array $data)
     {
         $transformData = [];

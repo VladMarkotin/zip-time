@@ -37,6 +37,7 @@ class MainController
     private $getDayPlanService         = null;
     private $dataTransformationService = null;
     private $estimationService         = null;
+    private $taskModel                 = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -46,7 +47,8 @@ class MainController
                                 GetPlanRepository $getPlanRepository,
                                 GetDayPlanService $getDayPlanService,
                                 DataTransformationService $dataTransformationService,
-                                EstimationService $estimationService)
+                                EstimationService $estimationService,
+                                Tasks $tasks)
     {
         $this->savedTaskRepository       = $taskRepository;
         $this->savedTaskService          = $codeService;
@@ -58,6 +60,7 @@ class MainController
         $this->getDayPlanService         = $getDayPlanService;
         $this->dataTransformationService = $dataTransformationService;
         $this->estimationService         = $estimationService;
+        $this->taskModel                 = $tasks;
     }
 
     public function addHashCode(Request $request)
@@ -207,7 +210,39 @@ class MainController
      * {"hash_code":<string>, "name": <string>, "type": <string>, "priority": <int>, "time": <string>}*/
     public function addJob(Request $request)
     {
-        die(var_dump($request->all()));
+        $data = [
+            "taskName" => $request->get('name'),
+            "type"     => $request->get('type'),
+            "priority" => $request->get('priority'),
+            "time"     => $request->get('time'),
+            "notes"    => '',
+        ];
+        $response = $this->planService->checkExtraJob($data);
+        $data = $this->dataTransformationService->getNumValuesOfStrValues($data);
+        if($response['status'] == 'success'){
+            $dataForTasks = [
+                "timetable_id" => $this->getLastTimetableId(),
+                "hash_code"    => '#',
+                "task_name"    => $data['taskName'],
+                "type"         => $data['type'],
+                "priority"     => $data['priority'],
+                "time"         => $data['time'],
+                "mark"         => -1,
+                "created_at"   => null,
+                "updated_at"   => null
+            ];
+            Tasks::insert($dataForTasks);
+        }
+
+        return $response;
+    }
+
+    private function getLastTimetableId()
+    {
+        $params          = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
+        $lastTimeTableId = $this->currentPlanInfo->getLastTimetableId($params);
+
+        return $lastTimeTableId;
     }
 
     /*Stat lib: https://github.com/stefanzweifel/laravel-stats*/

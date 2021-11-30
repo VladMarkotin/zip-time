@@ -55,6 +55,27 @@ class AddPlanService
         ]);
     }
 
+    public function checkExtraJob(array $data)
+    {
+        ;
+        $flags[] = $this->checkTask($data);
+        foreach ($flags as $v) {
+            foreach ($v as $k => $val) {
+                if (!$val) return [
+                    'status' => false,
+                    'message' => 'Invalid day plan! Error has happend with ' . $k
+                ];
+            }
+        }
+        $response = [
+            'status' => true,
+            'message' => 'Task has been successfully added.'
+        ];
+
+        return $response;
+    }
+
+
     private function checkTask($task)
     {
         $task = $this->getNumValuesOfStrValues($task);
