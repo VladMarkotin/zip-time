@@ -1,6 +1,7 @@
 require('./bootstrap')
 import Vuetify from 'vuetify'
 import Vuelidate from 'vuelidate'
+import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/dist/vuetify.min.css'
 window.Vue = require('vue').default
 Vue.use(Vuetify)

@@ -8,7 +8,7 @@
 				<v-select label="Priority" v-bind:items="task.priorities" v-model="task.priority"></v-select>
 				<v-menu ref="v-menu" v-bind:close-on-content-click="false" v-model="menu">
 					<template v-slot:activator="{on}">
-						<v-text-field label="Time" v-model="task.time" v-on="on"></v-text-field>
+						<v-text-field label="Time" prepend-icon="mdi-clock-time-four-outline" readonly v-model="task.time" v-on="on"></v-text-field>
 					</template>
 					<v-time-picker color="#D71700" v-on:click:minute="$refs['v-menu'].save(task.time)" v-model="task.time"></v-time-picker>
 				</v-menu>
@@ -48,7 +48,7 @@
 								name : '',
 								type : 'required job',
 								priority : 1,
-								time : '',
+								time : '01:00',
 
 								types : ['required job','non required job','required task','task','reminder'],
 								priorities : [1,2,3]
