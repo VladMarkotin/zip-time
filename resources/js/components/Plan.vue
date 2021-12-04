@@ -84,7 +84,7 @@
                      :label="placeholders[1]"
                      required
                      :items="taskTypes"
-                     v-model="defaultSelected.type"
+                     v-model="defaultTaskType"
                      ></v-select>
                </v-col>
                <v-col cols="1" md="1">
@@ -96,10 +96,16 @@
                      ></v-select>
                </v-col>
                <v-col cols="1" md="1">
-                  <v-text-field
-                     v-model="defaultSelected.time"
-                     label="Time for task"
-                     >00:00</v-text-field>
+                  <v-menu ref="v-menu" v-bind:close-on-content-click="false" v-model="menu">
+                     <template v-slot:activator="{on}">
+                        <v-text-field label="Time" prepend-icon="mdi-clock-time-four-outline" readonly v-model="defaultSelected.time" v-on="on"></v-text-field>
+                     </template>
+                     <v-time-picker
+                        color="#D71700"
+                        v-on:click:minute="$refs['v-menu'].save(defaultSelected.time)"
+                        v-model="defaultSelected.time">
+                     </v-time-picker>
+                  </v-menu>
                </v-col>
             <!-- </v-row> -->
             <!-- <v-row> -->
@@ -194,6 +200,7 @@
                         v-on="on">
                         <v-icon md="1"
                            color="#D71700"
+                           large
                            >
                            {{icons.mdiCarEmergency}}
                         </v-icon>
@@ -236,11 +243,12 @@ export default {
         newHashCode: '',
         showIcon: 0,
         day_status: 'Work Day',
+        menu: false/*for defaultSelected.time*/,
         defaultSelected: {
             hash: '#',
             hashCodes: [],
             taskName: '',
-            time: '00:00',
+            time: '01:00',
             type: 'required job',
             priority: '1',
             details: '',
@@ -301,7 +309,6 @@ export default {
         },
         hashCodes: [],
         hashNames: '#',
-        taskTypes: ['required job', 'non required job', 'required task', 'task', 'reminder'],
         taskPriority: ['1', '2', '3'],
         dayStatuses: ['Work Day', 'Weekend'],
         time: '',
@@ -313,6 +320,15 @@ export default {
         dialog: false,
         dialogDelete: false,
     }),
+    computed : {
+        taskTypes() {
+            return this.
+               day_status == 'Weekend' ? ['non required job', 'task', 'reminder'] : ['required job', 'non required job', 'required task', 'task', 'reminder']
+        },
+        defaultTaskType() {
+            return this.day_status == 'Weekend' ? 'non required job' : 'required job'
+        }
+    },
     methods: {
         getPostParams() {
             return JSON.stringify({
