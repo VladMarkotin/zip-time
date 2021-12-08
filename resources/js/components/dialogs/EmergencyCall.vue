@@ -1,5 +1,5 @@
 <template>
-	<v-dialog max-width="650px" v-model="dialog">
+	<v-dialog max-width="650px" persistent v-model="isShow">
 		<v-card>
 			<v-card-title class="font-weight-bold v-card-title">Emergency call</v-card-title>
 			<v-card-text>
@@ -23,7 +23,7 @@
 			<v-card-actions class="justify-space-between v-card-actions">
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="callEmergency()">
+						<v-btn icon v-on="on" v-on:click="callEmergency">
 							<v-icon color="#D71700" large>{{icons.mdiCarEmergency}}</v-icon>
 						</v-btn>
 					</template>
@@ -31,7 +31,7 @@
 				</v-tooltip>
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="hide()">
+						<v-btn icon v-on="on" v-on:click="toggle">
 							<v-icon color="#D71700" large>{{icons.mdiCancel}}</v-icon>
 						</v-btn>
 					</template>
@@ -48,7 +48,7 @@
 			data()
 			{
 				const currDate = new Date()
-				return {dialog : true,dates : [currDate.toEnStr(),currDate.addDays(2).toEnStr()],comment : '',icons : {mdiCarEmergency,mdiCancel}}
+				return {dates : [currDate.toEnStr(),currDate.addDays(2).toEnStr()],comment : '',icons : {mdiCarEmergency,mdiCancel}, isShow : true}
 			},
 			computed :
 			{
@@ -59,14 +59,14 @@
 			},
 			methods :
 			{
-				async callEmergency()
+				callEmergency()
 				{
-					const response = await axios.post('/emergency',{from : this.dates[0],to : this.dates[1],comment : this.comment})
-					this.hide()
+					axios.post('/emergency',{from : this.dates[0],to : this.dates[1],comment : this.comment})
+					this.toggle()
 				},
-				hide()
+				toggle()
 				{
-					this.$emit('hideEmergencyCallDialog')
+					this.$emit('toggleEmergencyCallDialog')
 				}
 			}
 		}

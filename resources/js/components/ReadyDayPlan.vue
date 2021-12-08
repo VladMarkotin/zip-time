@@ -1,14 +1,14 @@
 <template>
 	<div>
 		<template v-if="isShowAddJobTaskDialog">
-			<AddJobTask v-on:hideAddJobTaskDialog="hideAddJobTaskDialog()"/>
+			<AddJobTask v-on:toggleAddJobTaskDialog="toggleAddJobTaskDialog"/>
 		</template>
 		<template v-if="isShowCloseDayDialog">
-			<CloseDay v-on:hideCloseDayDialog="hideCloseDayDialog()"/>
+			<CloseDay v-on:toggleCloseDayDialog="toggleCloseDayDialog"/>
 		</template>
 		<template v-if="isShowEmergencyCallDialog">
-			<EmergencyCall v-on:hideEmergencyCallDialog="hideEmergencyCallDialog()"/>
-		</template>
+			<EmergencyCall v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
+		</template> 
 		<v-data-iterator hide-default-footer v-bind:items="plan">
 			<Cards title="Required tasks:" v-if="this.isExistsRequiredTasks(plan)" v-bind:items="this.getRequiredTasks(plan)"/>
 			<v-divider></v-divider>
@@ -17,7 +17,7 @@
 		<div class="d-flex justify-space-between mt-3">
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="showAddJobTaskDialog()">
+					<v-btn icon v-on="on" v-on:click="toggleAddJobTaskDialog">
 						<v-icon color="#D71700" large>{{icons.mdiPlusBox}}</v-icon>
 					</v-btn>
 				</template>
@@ -25,7 +25,7 @@
 			</v-tooltip>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="showCloseDayDialog()">
+					<v-btn icon v-on="on" v-on:click="toggleCloseDayDialog">
 						<v-icon color="#D71700" large>{{icons.mdiSendClock}}</v-icon>
 					</v-btn>
 				</template>
@@ -33,12 +33,12 @@
 			</v-tooltip>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="showEmergencyCallDialog()">
+					<v-btn icon v-on="on" v-on:click="toggleEmergencyCallDialog">
 						<v-icon color="#D71700" large>{{icons.mdiCarEmergency}}</v-icon>
 					</v-btn>
 				</template>
 				<span>Emergency call</span>
-			</v-tooltip>
+			</v-tooltip> 
 		</div>
 	</div>
 </template>
@@ -54,7 +54,13 @@
 		props : ['plan'],
 		data()
 		{
-			return {isShowAddJobTaskDialog : false,isShowCloseDayDialog : false,isShowEmergencyCallDialog : false,icons : {mdiCarEmergency,mdiPlusBox,mdiSendClock}}
+			return {
+					icons : {mdiCarEmergency,mdiPlusBox,mdiSendClock},
+
+					isShowAddJobTaskDialog : false,
+					isShowCloseDayDialog : false,
+					isShowEmergencyCallDialog : false
+				}
 		},
 		methods :
 		{
@@ -66,6 +72,7 @@
 			{
 				return this.getRequiredTasks(plan).length > 0
 			},
+
 			getNonRequiredTasks(plan)
 			{
 				return plan.filter((item) => [3,1].includes(item.type))
@@ -74,29 +81,18 @@
 			{
 				return this.getNonRequiredTasks(plan).length > 0
 			},
-			showAddJobTaskDialog()
+
+			toggleAddJobTaskDialog()
 			{
-				this.isShowAddJobTaskDialog = true
+				this.isShowAddJobTaskDialog = !this.isShowAddJobTaskDialog
 			},
-			hideAddJobTaskDialog()
+			toggleCloseDayDialog()
 			{
-				this.isShowAddJobTaskDialog = false
+				this.isShowCloseDayDialog = !this.isShowCloseDayDialog
 			},
-			showCloseDayDialog()
+			toggleEmergencyCallDialog()
 			{
-				this.isShowCloseDayDialog = true
-			},
-			hideCloseDayDialog()
-			{
-				this.isShowCloseDayDialog = false
-			},
-			showEmergencyCallDialog()
-			{
-				this.isShowEmergencyCallDialog = true
-			},
-			hideEmergencyCallDialog()
-			{
-				this.isShowEmergencyCallDialog = false
+				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
 			}
 		}
 	}

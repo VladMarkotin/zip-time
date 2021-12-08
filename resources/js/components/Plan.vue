@@ -84,7 +84,7 @@
                      :label="placeholders[1]"
                      required
                      :items="taskTypes"
-                     v-model="defaultTaskType"
+                     v-model="defaultSelected.type"
                      ></v-select>
                </v-col>
                <v-col cols="1" md="1">
@@ -324,9 +324,6 @@ export default {
         taskTypes() {
             return this.
                day_status == 'Weekend' ? ['non required job', 'task', 'reminder'] : ['required job', 'non required job', 'required task', 'task', 'reminder']
-        },
-        defaultTaskType() {
-            return this.day_status == 'Weekend' ? 'non required job' : 'required job'
         }
     },
     methods: {
@@ -371,7 +368,7 @@ export default {
                 hash: '#',
                 taskName: '',
                 time: '00:00',
-                type: 'required job',
+                type: this.day_status == 'Weekend' ? 'non required job' : 'required job',
                 priority: '1',
                 details: '',
                 notes: ''
