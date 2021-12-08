@@ -1,12 +1,12 @@
 <template>
-	<v-dialog max-width="650px" v-model="dialog">
+	<v-dialog max-width="650px" persistent v-model="isShow">
 		<v-card>
 			<v-card-title class="font-weight-bold v-card-title">Close day</v-card-title>
 			<v-card-text>
 				<v-container>
 					<v-row class="justify-center">
 						<v-col cols="3">
-							<v-text-field label="Own Mark" v-model="ownMark">
+							<v-text-field label="Own Mark" required v-model="ownMark">
 								<v-icon slot="append">mdi-percent</v-icon>
 							</v-text-field>
 						</v-col>
@@ -22,7 +22,7 @@
 			<v-card-actions class="justify-space-between v-card-actions">
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="closeDay()">
+						<v-btn icon v-on="on" v-on:click="closeDay">
 							<v-icon color="#D71700" large>{{icons.mdiSendClock}}</v-icon>
 						</v-btn>
 					</template>
@@ -30,7 +30,7 @@
 				</v-tooltip>
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="hide()">
+						<v-btn icon v-on="on" v-on:click="toggle">
 							<v-icon color="#D71700" large>{{icons.mdiCancel}}</v-icon>
 						</v-btn>
 					</template>
@@ -46,18 +46,18 @@
 		{
 			data()
 			{
-				return {dialog : true,ownMark : '',comment : '',icons : {mdiCancel,mdiSendClock}}
+				return {ownMark : '',comment : '',icons : {mdiCancel,mdiSendClock}, isShow : true}
 			},
 			methods :
 			{
-				async closeDay()
+				closeDay()
 				{
-					const response = await axios.post('/closeDay',{ownMark : this.ownMark,comment : this.comment})
-					this.hide()
+					axios.post('/closeDay',{ownMark : this.ownMark,comment : this.comment})
+					this.toggle()
 				},
-				hide()
+				toggle()
 				{
-					this.$emit('hideCloseDayDialog')
+					this.$emit('toggleCloseDayDialog')
 				}
 			}
 		}
