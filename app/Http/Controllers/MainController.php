@@ -119,13 +119,20 @@ class MainController
     public function addPlan(Request $request)
     {
         $data = $request->json()->all();
+        //die(var_dump($data)); good!
         $response = $this->planService->checkPlan($data);
         $responseArray = json_decode($response->content());
         if($responseArray->status == 'success') {
 
             $responseArrayAsArray["status"]  = $responseArray->status;
-
+            /*This is for creating weekend*/
+            if($this->planService->getTransformWeekendPlan()){ //That is a shame and I apologise for this ): This code must be modified.But later
+                $data = $this->planService->getTransformWeekendPlan();
+            }
+            //die(var_dump($data));
             $responseArray = $this->dayPlan->createDayPlan($data);
+
+            /*Logic after adding plan in DB*/
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
             $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
 

@@ -19,25 +19,26 @@ class EstimationRepository
     public function estimate()
     {
         $ids  = $this->getIds();//Получаю id всех пользователей  с составленным на сегодня планом
+        //Here I get all weekend guys
+        $weekendIds = $this->getWeekendIds();
         //Here I get ids of bad guys
         $badIds = $this->getBadIds();//получаю id тех юзеров, кто вообще не составил на сегодня план
         //end
         $date = Carbon::today()->toDateString();
         if(count($ids) != 0){
-            /*Теперь для каждого пользователя мне надо рассчитать итоговую оценку*/
+            /*Count final mark for every user with plan*/
             foreach ($ids as $id){
-                //получаю timetable_id текущего юзера на сегодня
+                //get timetable_id of current user for today
                 $currentTimetableId = function () use ($id, $date){
                     $response = TimetableModel::
                           where('user_id', $id)
                         ->where('date', $date)
+                        ->where('day_status', 2)
                         ->pluck('id')
                         ->toArray();
 
                     return $response[0];
                 };
-
-                /*Here I have to check either guy */
 
                 $timetableId = $currentTimetableId();
                 $finalMark = $this->sumMarks($timetableId); //считаю оценку каждого юзера
@@ -45,8 +46,9 @@ class EstimationRepository
                     "timetable_id"     => $timetableId,
                     "user_id"          => $id,
                     "final_time"       => ($finalMark >= 50) ? $this->sumTime($timetableId): '00:00',
-                    "final_estimation" => $finalMark,
-                    "own_estimation"   => 0.00,
+                    "final_estimation" => ($finalMark >= 50) ? $finalMark : 0,
+                    "own_estimation"   => $finalMark,
+                    "comment"          => "Closed automatically",
                     "date"             => Carbon::today()->toDateString(),
                     "day_status"       => ($finalMark >= 50) ? 3 : -1,
                 ];
@@ -63,10 +65,42 @@ class EstimationRepository
                         "final_estimation" => -101,
                         "own_estimation"   => -101,
                         "date"             => Carbon::today()->toDateString(),
+                        "comment"          => "It looks like the day was wasted :(",
                         "day_status"       => -1,
                     ];
 
                 $this->fillTimetablesTable($data, $badIds, 1);
+            }
+        }
+        if(count($weekendIds) > 0){
+
+            foreach ($weekendIds as $id){
+                $currentTimetableId = function () use ($id, $date){
+                    $response = TimetableModel::
+                    where('user_id', $id)
+                        ->where('date', $date)
+                        ->where('day_status', 1)
+                        ->pluck('id')
+                        ->toArray();
+
+                    return $response[0];
+                };
+
+                /*Here I have to check either guy */
+
+                $timetableId = $currentTimetableId();
+                $data = [
+                    "timetable_id"     =>  $timetableId,
+                    "user_id"          => $id,
+                    "final_time"       => $this->sumTime($timetableId),
+                    "final_estimation" => 0,
+                    "own_estimation"   => 50,
+                    "date"             => Carbon::today()->toDateString(),
+                    "day_status"       => 1,
+                    'comment'          => 'Closed automatically at '.Carbon::now()->toDateTimeString()
+                ];
+
+                $this->fillTimetablesTable($data, $weekendIds, 0);
             }
         }
     }
@@ -74,7 +108,7 @@ class EstimationRepository
     /*This method will be executing for concrete user on demand*/
     public function closeDay(array $data)
     {
-        //
+        //die(var_dump($data));
         $currentTimetableId = function () use ($data){
             $response = TimetableModel::where('user_id', $data['user_id'])
                 ->where('date', $data['date'])
@@ -83,7 +117,28 @@ class EstimationRepository
 
             return $response[0];
         };
-        $timetableId = $currentTimetableId();
+        $timetableId        = $currentTimetableId();
+        $getDayStatus       = function () use ($timetableId){
+            $response = TimetableModel::where('id', $timetableId)
+                ->pluck('day_status')
+                ->toArray();
+
+            return $response[0];
+        };
+        if($getDayStatus() == 1){
+            DB::table('timetables')->where( [ ['id', '=', $timetableId], ["user_id", '=', $data['user_id']] ] )
+                ->update(array(
+                    'time_of_day_plan' => $this->sumTime($timetableId), //time of plan info. Fix it later!!
+                    'final_estimation' => 0, //-2 - признак того, что день под статусом Вых
+                    'own_estimation'   => $data['mark'],
+                    'day_status'       => 1,
+                    'comment'          => $data['comment'],
+                    'necessary'        => '',
+                    'for_tomorrow'     => ''
+                ));
+
+            return true;
+        }
         $finalMark = $this->sumMarks($timetableId); //считаю оценку каждого юзера
         if($finalMark >= 50){
             $data = [
@@ -180,13 +235,31 @@ class EstimationRepository
         return $badIds;
     }
 
-    private function sumMarks($timetableId)
+    private function getWeekendIds()
     {
         $today = Carbon::today()->toDateString();
-        $response = (function () use ($today, $timetableId){
+        $query = "SELECT users.id FROM users JOIN timetables ON users.id = timetables.user_id
+                         WHERE timetables.day_status = 1
+                         AND timetables.own_estimation = 0
+                         AND timetables.date = '". $today."'";
+        $idsArr = DB::select($query); //Array of all user`s id
+        $ids = [];
+        foreach ($idsArr as $v){
+            $ids[] = $v->id;
+        }
+
+        return $ids;
+    }
+
+    private function sumMarks($timetableId, $dayStatus = 2)
+    {
+        $today = Carbon::today()->toDateString();
+        $response = (function () use ($today, $timetableId, $dayStatus){
+            $taskType = 4;//
             $query = "SELECT mark  FROM tasks JOIN timetables ON tasks.timetable_id = timetables.id WHERE timetables.date = "."'$today'"."
                        AND tasks.timetable_id = $timetableId AND tasks.type = 4
-                       AND timetables.day_status = 2";
+                       AND timetables.day_status = $dayStatus";
+            //die($query); //empty in weekend
             $marks = DB::select($query);
             foreach ($marks as $m){
                 foreach($m as $mark){
@@ -242,7 +315,7 @@ class EstimationRepository
                         'final_estimation' => $data['final_estimation'], //-2 - признак того, что день под статусом Вых
                         'own_estimation'   => $data['own_estimation'],
                         'day_status'       => $data["day_status"],
-                        'comment'          => '',
+                        'comment'          => $data['comment'],
                         'necessary'        => '',
                         'for_tomorrow'     => ''
                     ));
@@ -254,6 +327,7 @@ class EstimationRepository
                 $dataForDayPlanCreation["day_status"]       = -1;
                 $dataForDayPlanCreation["final_estimation"] = 0;
                 $dataForDayPlanCreation["own_estimation"]   = 0;
+                $dataForDayPlanCreation["comment"]   = $data['comment'];
                 TimetableModel::insert($dataForDayPlanCreation);
             }
         }

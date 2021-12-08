@@ -12,15 +12,20 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Repositories\DayPlanRepositories\GetPlanRepository;
+use App\Http\Controllers\Services\DataTransformationService;
 
 class AddPlanService
 {
 
-    private $getPlanRepository = null;
+    private $getPlanRepository         = null;
+    private $dataTransformationService = null;
+    private $transformWeekendData      = null; //here will store transform data for weekend.You have to get it when create day plan for weekend
 
-    public function __construct(GetPlanRepository $getPlanRepository)
+    public function __construct(GetPlanRepository $getPlanRepository,
+                                DataTransformationService $dataTransformationService)
     {
-        $this->getPlanRepository = $getPlanRepository;
+        $this->getPlanRepository         = $getPlanRepository;
+        $this->dataTransformationService = $dataTransformationService;
     }
 
     public function checkPlan(array $data)
@@ -31,6 +36,15 @@ class AddPlanService
                 'status'=> "error",
                 'message' => "Plan has already been created"
             ]);
+        }
+//        Here I need an ex6tra condition for weekend
+        if($data['day_status'] == 1){
+            //die(var_dump($data));//good
+            $transformData = $this->dataTransformationService->transformDataForWeekendRequest($data);//Not a $data['plan']!!!
+            $this->transformWeekendData = $transformData; //this all cause I need to save tranform data for weekend
+            $this->transformWeekendData['day_status'] = 'Weekend';
+
+            return response()->json(['status' => 'success']);
         }
         if($this->checkRequiredTaskQuantity($data)) {
             //отсюда буду вызывать метод checkTask для каждого заданиия
@@ -75,6 +89,11 @@ class AddPlanService
         return $response;
     }
 
+    public function getTransformWeekendPlan()
+    {
+        return $this->transformWeekendData;
+    }
+
 
     private function checkTask($task)
     {
@@ -91,8 +110,9 @@ class AddPlanService
     {
         if(is_array($data['plan']) ) {
             $taskQuantity = count($data['plan']);
+            //die(var_dump($data["day_status"]));
             switch ($data["day_status"]) {
-                case 0:
+                case 0: //Work Day
                     if($taskQuantity > 1){
                         /* Check quantity of required tasks. In this case it has to be more than 1! */
                         $i = 0;
@@ -108,8 +128,8 @@ class AddPlanService
                         return false;
                     }
                     return false;
-                case 1:
-                    if($taskQuantity == 1){
+                case 1: //Weekend
+                    if($taskQuantity > 0){
                         return true;
                     }
                     return false;

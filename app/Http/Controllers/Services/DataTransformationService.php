@@ -13,6 +13,29 @@ use Illuminate\Support\Facades\Auth;
 
 class DataTransformationService
 {
+    public function transformDataForWeekendRequest(array $data)
+    {
+        $transformJobsToNonRequired  = function ($data){
+             //working
+            if($data['plan']){
+                foreach($data['plan'] as $k => &$val){
+                    foreach ($val as $i => &$v){
+                        if($i == 'type'){
+                            //die(var_dump($val['type']));?? Why $val['type']
+                            ($val['type'] == 'required job')  ?: $v = 'non required job';
+                            ($val['type'] == 'required task') ?: $v = 'task';
+                        }
+                    }
+                }
+            }
+            //die(var_dump($data).__FILE__);
+            return $data;
+        };
+        $response = $transformJobsToNonRequired($data);
+
+        return $response;
+    }
+
     public function transformData(array $data, $way = 1) //1)db->front
     {
         $response = null;
