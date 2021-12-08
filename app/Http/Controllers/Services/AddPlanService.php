@@ -76,13 +76,13 @@ class AddPlanService
         foreach ($flags as $v) {
             foreach ($v as $k => $val) {
                 if (!$val) return [
-                    'status' => false,
+                    'status' => 'fail',
                     'message' => 'Invalid day plan! Error has happend with ' . $k
                 ];
             }
         }
         $response = [
-            'status' => true,
+            'status' => 'success',
             'message' => 'Task has been successfully added.'
         ];
 

@@ -66,9 +66,10 @@ class MainController
     public function addHashCode(Request $request)
     {
         $params = [];
+        $taskName = $request->input('taskName');
         $params['hash_code']    = $request->input('hash');
         $params['user_id']      = Auth::id();
-        $params['task_name']    = $request->input('taskName');
+        $params['task_name']    = ($taskName) ? $request->input('taskName') : $request->input('name');
         $params['time']         = $request->input('time');
         $params['type']         = $request->input('type');
         $params['priority']     = $request->input('priority');
@@ -217,7 +218,9 @@ class MainController
      * {"hash_code":<string>, "name": <string>, "type": <string>, "priority": <int>, "time": <string>}*/
     public function addJob(Request $request)
     {
+        //die(var_dump($request->all() ));
         $data = [
+            "hash" => '',
             "taskName" => $request->get('name'),
             "type"     => $request->get('type'),
             "priority" => $request->get('priority'),
