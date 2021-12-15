@@ -9,8 +9,6 @@
 namespace App\Http\Controllers\Services;
 
 
-use Illuminate\Support\Facades\Auth;
-
 class DataTransformationService
 {
     public function transformDataForWeekendRequest(array $data)
@@ -72,7 +70,6 @@ class DataTransformationService
         $transformData = [];
         foreach($data as $k => $v){
             $transformData[$k]["taskId"]   = $v->id;
-            $transformData[$k]["userId"]   = Auth::id();
             $transformData[$k]["hash"]     = $v->hash_code;
             $transformData[$k]['taskName'] = $v->task_name;
             $transformData[$k]['time']     = $v->time;

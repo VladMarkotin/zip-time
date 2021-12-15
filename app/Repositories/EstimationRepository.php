@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class EstimationRepository
 {
-
-    public function __construct()
-    {
-        //$this->estimate();
-    }
-
     /*This method will be executing automaticly for all users with unclosed plan in the end of the day (23:59) */
     public function estimate()
     {
@@ -108,7 +102,6 @@ class EstimationRepository
     /*This method will be executing for concrete user on demand*/
     public function closeDay(array $data)
     {
-        //die(var_dump($data));
         $currentTimetableId = function () use ($data){
             $response = TimetableModel::where('user_id', $data['user_id'])
                 ->where('date', $data['date'])
@@ -180,6 +173,7 @@ class EstimationRepository
         $dataForDayPlanCreation["final_estimation"] = 0;
         $dataForDayPlanCreation["own_estimation"]   = 0;
         $dataForDayPlanCreation["comment"]          = $data['comment'];
+        $dataForDayPlanCreation["updated_at"]       = DB::raw('CURRENT_TIMESTAMP(0)');
         for($i = 0; $i < $data['term']; $i++){
             if(!$i){
                 DB::table('timetables')->where([ ['date', '=', Carbon::today()->toDateString()], ["user_id", '=', $id ] ] )
@@ -327,7 +321,8 @@ class EstimationRepository
                 $dataForDayPlanCreation["day_status"]       = -1;
                 $dataForDayPlanCreation["final_estimation"] = 0;
                 $dataForDayPlanCreation["own_estimation"]   = 0;
-                $dataForDayPlanCreation["comment"]   = $data['comment'];
+                $dataForDayPlanCreation["comment"]          = $data['comment'];
+                $dataForDayPlanCreation["updated_at"]       = DB::raw('CURRENT_TIMESTAMP(0)');
                 TimetableModel::insert($dataForDayPlanCreation);
             }
         }

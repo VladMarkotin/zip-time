@@ -15,7 +15,7 @@ class HashCodeService
     private $savedTaskRepository = null;
     private $dataForTransformForDb = [
         'type' => [
-            'required job' => 4,
+            'required job'     => 4,
             'non required job' => 3,
             'required task'    => 2,
             'task'             => 1,
@@ -63,7 +63,7 @@ class HashCodeService
     private function isHashCodeCorrect($hashCode)
     {
         $length = strlen($hashCode);
-        if(($length < 6) && ($length > 1)){
+        if(($length < 7) && ($length > 1)){
             return true;
         }
 

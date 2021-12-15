@@ -23,7 +23,7 @@ use App\Http\Controllers\Services\NotesService;
 use App\Http\Controllers\Services\DataTransformationService;
 use App\Http\Controllers\Services\EstimationService;
 use App\Models\Tasks;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class MainController
 {
@@ -218,8 +218,8 @@ class MainController
      * {"hash_code":<string>, "name": <string>, "type": <string>, "priority": <int>, "time": <string>}*/
     public function addJob(Request $request)
     {
-        $hash = $request->get('hash'); //hashCode
-        $hash = (isset($hash)) ? $request->get('hash') : '#';
+        $hash = $request->get('hash_code'); //hashCode
+        $hash = (isset($hash)) ? $request->get('hash_code') : '#';
         $data = [
             "hash"     => $hash,
             "taskName" => $request->get('name'),
@@ -233,16 +233,18 @@ class MainController
         if($response['status'] == 'success'){
             $dataForTasks = [
                 "timetable_id" => $this->getLastTimetableId(),
-                "hash_code"    => '#',
+                "hash_code"    => $hash,
                 "task_name"    => $data['taskName'],
                 "type"         => $data['type'],
                 "priority"     => $data['priority'],
                 "time"         => $data['time'],
                 "mark"         => -1,
-                "created_at"   => null,
-                "updated_at"   => null
+                "created_at"   => DB::raw('CURRENT_TIMESTAMP(0)'),
+                "updated_at"   => DB::raw('CURRENT_TIMESTAMP(0)')
             ];
+            //It would be better if I make it like transaction
             Tasks::insert($dataForTasks);
+            $response['task_id'] = DB::getPdo()->lastInsertId();
         }
 
         return $response;

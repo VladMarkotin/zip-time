@@ -72,6 +72,8 @@ class CreateDayPlanRepository
                                     $dataForTasks[$index]['time']         = $v['time'];
                                     $dataForTasks[$index]['mark']         = -1;
                                     $dataForTasks[$index]['note']         = $v['notes'];
+                                    $dataForTasks[$index]['created_at']   = DB::raw('CURRENT_TIMESTAMP(0)');
+                                    $dataForTasks[$index]['updated_at']   = DB::raw('CURRENT_TIMESTAMP(0)');
                                     /* !!! Add note in notes if hash_code and note are existing*/
                                     //Но сначала мне надо получить saved_task_id
                                     if( ($dataForTasks[$index]['hash_code']) && ($dataForTasks[$index]['note'] && (!$k)) ){
