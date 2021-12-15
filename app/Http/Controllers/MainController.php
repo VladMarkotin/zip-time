@@ -67,7 +67,7 @@ class MainController
     {
         $params = [];
         $taskName = $request->input('taskName');
-        $params['hash_code']    = $request->input('hash');
+        $params['hash_code']    = $request->input('hash'); //hashCode
         $params['user_id']      = Auth::id();
         $params['task_name']    = ($taskName) ? $request->input('taskName') : $request->input('name');
         $params['time']         = $request->input('time');
@@ -152,6 +152,7 @@ class MainController
 
     public function getCreatedPlanIfExists()
     {
+
         $data = [
             "id"      => Auth::id(),
             "date"    => Carbon::today()
@@ -205,7 +206,8 @@ class MainController
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
             $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
 
-            return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
+            //return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
+            return json_encode("{status: success, message: 'Task has been updated.'}", JSON_UNESCAPED_UNICODE);
         }
 
         return json_encode("{status: fail, message: 'Error during estimation.'}", JSON_UNESCAPED_UNICODE);
@@ -216,7 +218,7 @@ class MainController
      * {"hash_code":<string>, "name": <string>, "type": <string>, "priority": <int>, "time": <string>}*/
     public function addJob(Request $request)
     {
-        $hash = $request->get('hash');
+        $hash = $request->get('hash'); //hashCode
         $hash = (isset($hash)) ? $request->get('hash') : '#';
         $data = [
             "hash"     => $hash,

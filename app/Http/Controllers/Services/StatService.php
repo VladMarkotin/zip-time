@@ -29,11 +29,16 @@ class StatService
     public function getStat(array $period = null)
     {
         if(!$period){
-            //$period["type"]           = 0; //?
+            //$period["type"]         = 0; //?
             $period["from"]           = $this->carbon->startOfWeek()->toDateString();
             $period["to"]             = $this->carbon->endOfWeek()->toDateString();
+            //$period['date']       = Carbon::today();
+            if(!isset($period['date'])){ //later change the condition (delete "!")
+                $period['date']       = Carbon::today();
+            }
         }
         $response = $this->statRepository->getStat($period);
+        //Have to count statistic here
 
         return ( json_encode($response, JSON_UNESCAPED_UNICODE));
     }

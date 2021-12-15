@@ -20,12 +20,13 @@ class StatController extends Controller
             $response = $this->statService->getStat();
             dd($response);
         } else{
-            $data["from"] = $request->get('from');
-            $data["to"]   = $request->get('to');
-            $data["with_failed"]   = $request->get('with_failed');
-            $data["with_weekend"]   = $request->get('with_weekend');
-            $data["with_emergency"]   = $request->get('with_emergency');
-            $response = $this->statService->getStat($data);
+            $data["from"]            = $request->get('from');
+            $data["to"]              = $request->get('to');
+            $data["date"]            = ($data["date"]) ? $request->get('date') : null;
+            $data["with_failed"]     = $request->get('with_failed');
+            $data["with_weekend"]    = $request->get('with_weekend');
+            $data["with_emergency"]  = $request->get('with_emergency');
+            $response                = $this->statService->getStat($data);
             dd($response);
         }
     }
