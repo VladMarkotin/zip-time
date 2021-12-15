@@ -244,7 +244,7 @@ class MainController
             ];
             //It would be better if I make it like transaction
             Tasks::insert($dataForTasks);
-            $response['task_id'] = DB::getPdo()->lastInsertId();
+            $response['taskId'] = DB::getPdo()->lastInsertId();
         }
 
         return $response;
