@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<template v-if="isShowAddJobTaskDialog">
-			<AddJobTask v-on:toggleAddJobTaskDialog="toggleAddJobTaskDialog"/>
+			<AddJobTask v-on:setAlertData="setAlertData" v-on:toggleAddJobTaskDialog="toggleAddJobTaskDialog" v-on:toggleAlertDialog="toggleAlertDialog"/>
 		</template>
 		<template v-if="isShowCloseDayDialog">
 			<CloseDay v-on:toggleCloseDayDialog="toggleCloseDayDialog"/>
@@ -9,6 +9,9 @@
 		<template v-if="isShowEmergencyCallDialog">
 			<EmergencyCall v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
 		</template> 
+		<template v-if="isShowAlertDialog">
+			<Alert v-bind:type="this.alert.type" v-bind:text="this.alert.text" v-on:toggleAlertDialog="toggleAlertDialog"/>
+		</template>
 		<v-data-iterator hide-default-footer v-bind:items="plan">
 			<Cards title="Required tasks:" v-if="this.isExistsRequiredTasks(plan)" v-bind:items="this.getRequiredTasks(plan)"/>
 			<v-divider></v-divider>
@@ -43,14 +46,16 @@
 	</div>
 </template>
 <script>
+	import Alert from './dialogs/Alert.vue'
 	import AddJobTask from './dialogs/AddJobTask.vue'
 	import CloseDay from './dialogs/CloseDay.vue'
 	import Cards from './cards/Cards.vue'
 	import EmergencyCall from './dialogs/EmergencyCall.vue'
 	import {mdiCarEmergency,mdiPlusBox,mdiSendClock} from '@mdi/js'
+
 	export default
 	{
-		components : {AddJobTask,CloseDay,Cards,EmergencyCall},
+		components : {Alert,AddJobTask,CloseDay,Cards,EmergencyCall},
 		props : ['plan'],
 		data()
 		{
@@ -59,7 +64,10 @@
 
 					isShowAddJobTaskDialog : false,
 					isShowCloseDayDialog : false,
-					isShowEmergencyCallDialog : false
+					isShowEmergencyCallDialog : false,
+					isShowAlertDialog : false,
+
+					alert : {type : '',text : ''}
 				}
 		},
 		methods :
@@ -93,6 +101,16 @@
 			toggleEmergencyCallDialog()
 			{
 				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
+			},
+
+			setAlertData(type,text)
+			{
+				this.alert.type = type
+				this.alert.text = text
+			},
+			toggleAlertDialog()
+			{
+				this.isShowAlertDialog = !this.isShowAlertDialog
 			}
 		}
 	}
