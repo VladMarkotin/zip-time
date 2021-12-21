@@ -210,7 +210,7 @@ class MainController
             return json_encode("{status: success, message: 'Task has been updated.'}", JSON_UNESCAPED_UNICODE);
         }
 
-        return json_encode("{status: fail, message: 'Error during estimation.'}", JSON_UNESCAPED_UNICODE);
+        return json_encode("{status: error, message: 'Error during estimation.'}", JSON_UNESCAPED_UNICODE);
     }
 
     /*

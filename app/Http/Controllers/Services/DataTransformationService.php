@@ -71,7 +71,7 @@ class DataTransformationService
         $transformData = [];
         foreach($data as $k => $v){
             $transformData[$k]["taskId"]   = $v->id;
-            $transformData[$k]["hash"]     = $v->hash_code;
+            $transformData[$k]["hash"]     = $v->hash_code; //Must be hashCode
             $transformData[$k]['taskName'] = $v->task_name;
             $transformData[$k]['time']     = $v->time;
             $transformData[$k]['type']     = $v->type;
@@ -80,14 +80,14 @@ class DataTransformationService
             $transformData[$k]['mark']     = ($v->mark != -1) ? $v->mark: "";
             $transformData[$k]['notes']    = $v->note;
             if( ($v->type == 1) ||($v->type == 2) ){
-                $transformData[$k]['is_ready'] = $v->mark;
+                $transformData[$k]['is_ready'] = $v->mark; //Must Be isReady
             }
         }
-/*      Эту информацию мне нужно добавить в итоговый ответ
+        //Эту информацию мне нужно добавить в итоговый ответ
         $transformData["dayStatus"]    = $data[0]->day_status;
         $transformData["dayFinalMark"] = $data[0]->final_estimation;
         $transformData["dayOwnMark"]   = $data[0]->own_estimation;
-        $transformData["comment"]   = $data[0]->comment;*/
+        $transformData["comment"]      = $data[0]->comment;
 
         return $transformData;
     }
