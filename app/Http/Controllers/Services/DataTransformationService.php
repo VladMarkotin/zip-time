@@ -70,17 +70,17 @@ class DataTransformationService
         //die(var_dump($data).__FILE__.__LINE__);
         $transformData = [];
         foreach($data as $k => $v){
-            $transformData[$k]["taskId"]   = $v->id;
-            $transformData[$k]["hash"]     = $v->hash_code; //Must be hashCode
-            $transformData[$k]['taskName'] = $v->task_name;
-            $transformData[$k]['time']     = $v->time;
-            $transformData[$k]['type']     = $v->type;
-            $transformData[$k]['priority'] = $v->priority;
-            $transformData[$k]['details']  = $v->details;
-            $transformData[$k]['mark']     = ($v->mark != -1) ? $v->mark: "";
-            $transformData[$k]['notes']    = $v->note;
-            if( ($v->type == 1) ||($v->type == 2) ){
-                $transformData[$k]['is_ready'] = $v->mark; //Must Be isReady
+            $transformData["plan"][$k]["taskId"]   = $v->id;
+            $transformData["plan"][$k]["hash"]     = $v->hash_code; //Must be hashCode
+            $transformData["plan"][$k]['taskName'] = $v->task_name;
+            $transformData["plan"][$k]['time']     = $v->time;
+            $transformData["plan"][$k]['type']     = $v->type;
+            $transformData["plan"][$k]['priority'] = $v->priority;
+            $transformData["plan"][$k]['details']  = $v->details;
+            $transformData["plan"][$k]['mark']     = ($v->mark != -1) ? $v->mark: "";
+            $transformData["plan"][$k]['notes']    = $v->note;
+            if( ($v->type == 1) || ($v->type == 2) ){
+                $transformData["plan"][$k]['is_ready'] = $v->mark; //Must Be isReady
             }
         }
         //Эту информацию мне нужно добавить в итоговый ответ
@@ -88,6 +88,9 @@ class DataTransformationService
         $transformData["dayFinalMark"] = $data[0]->final_estimation;
         $transformData["dayOwnMark"]   = $data[0]->own_estimation;
         $transformData["comment"]      = $data[0]->comment;
+
+        /*$transformData["plan"] = $transformData;
+        die(var_dump($transformData));*/
 
         return $transformData;
     }
