@@ -62,7 +62,7 @@ const app =
 							}
 							else
 							{
-								this.currComponentProps = response.data
+								this.currComponentProps = response.data.plan
 								this.currComponent = 'ReadyDayPlan'
 							}
 						}
