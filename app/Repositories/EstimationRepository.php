@@ -45,6 +45,7 @@ class EstimationRepository
                     "comment"          => "Closed automatically",
                     "date"             => Carbon::today()->toDateString(),
                     "day_status"       => ($finalMark >= 50) ? 3 : -1,
+                    "updated_at"       => Carbon::now(),
                 ];
                 $this->fillTimetablesTable($data, $ids);
             }
@@ -61,6 +62,7 @@ class EstimationRepository
                         "date"             => Carbon::today()->toDateString(),
                         "comment"          => "It looks like the day was wasted :(",
                         "day_status"       => -1,
+                        "updated_at"       => Carbon::now(),
                     ];
 
                 $this->fillTimetablesTable($data, $badIds, 1);
@@ -91,7 +93,8 @@ class EstimationRepository
                     "own_estimation"   => 50,
                     "date"             => Carbon::today()->toDateString(),
                     "day_status"       => 1,
-                    'comment'          => 'Closed automatically at '.Carbon::now()->toDateTimeString()
+                    'comment'          => 'Closed automatically at '.Carbon::now()->toDateTimeString(),
+                    "updated_at"       => Carbon::now(),
                 ];
 
                 $this->fillTimetablesTable($data, $weekendIds, 0);
@@ -127,7 +130,8 @@ class EstimationRepository
                     'day_status'       => 1,
                     'comment'          => $data['comment'],
                     'necessary'        => '',
-                    'for_tomorrow'     => ''
+                    'for_tomorrow'     => '',
+                    "updated_at"       => Carbon::now(),
                 ));
 
             return true;
@@ -143,6 +147,7 @@ class EstimationRepository
                 "comment"          => $data['comment'],
                 "date"             => Carbon::today()->toDateString(),
                 "day_status"       => ($finalMark >= 50) ? 3 : -1,
+                "updated_at"       => Carbon::now(),
             ];
             /*This code could be placed in own method for optimization later*/
             DB::table('timetables')->where([ ['id', '=', $data['id']], ["user_id", '=', $data['user_id'] ] ] )
@@ -153,7 +158,8 @@ class EstimationRepository
                     'day_status'       => $data["day_status"],
                     'comment'          => $data['comment'],
                     'necessary'        => '',
-                    'for_tomorrow'     => ''
+                    'for_tomorrow'     => '',
+                    "updated_at"       => Carbon::now(),
                 ));
 
             return true;
@@ -311,7 +317,8 @@ class EstimationRepository
                         'day_status'       => $data["day_status"],
                         'comment'          => $data['comment'],
                         'necessary'        => '',
-                        'for_tomorrow'     => ''
+                        'for_tomorrow'     => '',
+                        "updated_at"       => Carbon::now(),
                     ));
             }
         } else {

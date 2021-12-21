@@ -28,11 +28,12 @@ class EstimateTaskRepository
     public function estimateTask(array $data)
     {
         $dataForTasks  =   [
-            "id"       => $data['id'],
-            "user_id"  => Auth::id(),
-            "details"  => $data['details'],
-            "mark"     => $data['mark'],
-            "note"     => $data['note'],
+            "id"         => $data['id'],
+            "user_id"    => Auth::id(),
+            "details"    => $data['details'],
+            "mark"       => $data['mark'],
+            "note"       => $data['note'],
+            "updated_at" =>  Carbon::now(),
         ];
         $hash = Tasks::select('hash_code', 'type')->where('id', $data['id'])->get()->toArray();
 
