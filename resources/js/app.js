@@ -53,18 +53,17 @@ const app =
 						const response = await axios.post('/ifexists')
 						if (response.data.dayStatus == 3)
 						{
-
 						}
 						else if (response.data.dayStatus == 2)
 						{
-							if (response.data.length > 0)
+							if (JSON.stringify(response.data) === JSON.stringify({}))
 							{
-								this.currComponentProps = response.data
-								this.currComponent = 'ReadyDayPlan'
+								this.currComponent = 'Plan'
 							}
 							else
 							{
-								this.currComponent = 'Plan'
+								this.currComponentProps = response.data
+								this.currComponent = 'ReadyDayPlan'
 							}
 						}
 					}
