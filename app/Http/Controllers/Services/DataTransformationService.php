@@ -67,6 +67,7 @@ class DataTransformationService
 
     private function fromDbToFront(array $data)
     {
+        //die(var_dump($data).__FILE__.__LINE__);
         $transformData = [];
         foreach($data as $k => $v){
             $transformData[$k]["taskId"]   = $v->id;
@@ -82,6 +83,11 @@ class DataTransformationService
                 $transformData[$k]['is_ready'] = $v->mark;
             }
         }
+/*      Эту информацию мне нужно добавить в итоговый ответ
+        $transformData["dayStatus"]    = $data[0]->day_status;
+        $transformData["dayFinalMark"] = $data[0]->final_estimation;
+        $transformData["dayOwnMark"]   = $data[0]->own_estimation;
+        $transformData["comment"]   = $data[0]->comment;*/
 
         return $transformData;
     }
