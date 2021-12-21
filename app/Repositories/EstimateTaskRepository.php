@@ -28,11 +28,12 @@ class EstimateTaskRepository
     public function estimateTask(array $data)
     {
         $dataForTasks  =   [
-            "id"       => $data['id'],
-            "user_id"  => Auth::id(),
-            "details"  => $data['details'],
-            "mark"     => $data['mark'],
-            "note"     => $data['note'],
+            "id"         => $data['id'],
+            "user_id"    => Auth::id(),
+            "details"    => $data['details'],
+            "mark"       => $data['mark'],
+            "note"       => $data['note'],
+            "updated_at" =>  Carbon::now(),
         ];
         $hash = Tasks::select('hash_code', 'type')->where('id', $data['id'])->get()->toArray();
 
@@ -115,12 +116,15 @@ class EstimateTaskRepository
                        'details' => $dataForSavedTasks['details']
                     ));
                 //Finally I update (or insert) note in notes table
+
                 $savedNote =  DB::table('notes')
                     ->select('id', 'note')
                     ->where('saved_task_id',   '=', $dataForNotesTable['saved_task_id'])
                     ->get()->toArray();
-                $savedNote = (isset($savedNote[0]->note)) ? $savedNote[0]->note : null ;
-                if( (!$savedNote) || ($savedNote != trim($dataForNotesTable['note'], "\xC2\xA0\n") )){
+
+                $savedNote = (isset($savedNote[count($savedNote) - 1]->note))
+                    ? $savedNote[count($savedNote) - 1]->note : null ;
+                if( (!$savedNote) || ($savedNote != trim($dataForNotesTable['note']) )){
                     SavedNotes::insert($dataForNotesTable);
                 }
             });
@@ -128,4 +132,4 @@ class EstimateTaskRepository
             Log::error('Error has happened with complex update: '. $e->getFile(). " ". $e->getLine(). " ".$e->getMessage());
         }
     }
-} 
+}

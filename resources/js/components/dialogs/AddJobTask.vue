@@ -125,19 +125,21 @@
 				async addJob()
 				{
 					const response =
-						await
-							axios.
-							post
-								(
-									'/addJob',
-									{
-										hash_code : this.task.hashCode,
-										name : this.task.name,
-										type : this.task.type,
-										priority : this.task.priority,
-										time : this.task.time
-									}
-								)
+						(
+							await
+								axios.
+								post
+									(
+										'/addJob',
+										{
+											hash_code : this.task.hashCode,
+											name : this.task.name,
+											type : this.task.type,
+											priority : this.task.priority,
+											time : this.task.time
+										}
+									)
+						).data
 					if (response.status == 'success')
 					{
 						this.

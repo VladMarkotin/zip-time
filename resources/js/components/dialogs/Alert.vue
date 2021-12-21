@@ -4,7 +4,7 @@
 			<v-card-title class="font-weight-bold v-card-title">Message</v-card-title>
 			<v-card-text>
 				<v-container>
-					<v-alert v-bind:type="type" color="#404040" text class="elevation-1" v-bind:value="true">{{text}}</v-alert>
+					<v-alert color="#404040" text class="elevation-1" v-bind:type="type" v-bind:value="true">{{text}}</v-alert>
 				</v-container>
 			</v-card-text>
 			<v-divider></v-divider>
