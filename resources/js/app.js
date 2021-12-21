@@ -51,14 +51,21 @@ const app =
 					if (window.user != '')
 					{
 						const response = await axios.post('/ifexists')
-						if (response.data.length > 0)
+						if (response.data.dayStatus == 3)
 						{
-							this.currComponentProps = response.data
-							this.currComponent = 'ReadyDayPlan'
+
 						}
-						else
+						else if (response.data.dayStatus == 2)
 						{
-							this.currComponent = 'Plan'
+							if (response.data.length > 0)
+							{
+								this.currComponentProps = response.data
+								this.currComponent = 'ReadyDayPlan'
+							}
+							else
+							{
+								this.currComponent = 'Plan'
+							}
 						}
 					}
 				}
