@@ -38,7 +38,7 @@ class NotesService
     private function checkNote($note)
     {
         if(strlen($note) < 255 && (strlen($note) > 0)){
-            return true;
+            return $note;
         }
 
         return false;

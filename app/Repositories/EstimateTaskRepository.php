@@ -120,7 +120,7 @@ class EstimateTaskRepository
                     ->where('saved_task_id',   '=', $dataForNotesTable['saved_task_id'])
                     ->get()->toArray();
                 $savedNote = (isset($savedNote[0]->note)) ? $savedNote[0]->note : null ;
-                if( (!$savedNote) || ($savedNote != trim($dataForNotesTable['note']) )){
+                if( (!$savedNote) || ($savedNote != trim($dataForNotesTable['note'], "\xC2\xA0\n") )){
                     SavedNotes::insert($dataForNotesTable);
                 }
             });
