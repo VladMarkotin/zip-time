@@ -23,7 +23,7 @@ use App\Http\Controllers\Services\NotesService;
 use App\Http\Controllers\Services\DataTransformationService;
 use App\Http\Controllers\Services\EstimationService;
 use App\Models\Tasks;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class MainController
 {
@@ -37,6 +37,7 @@ class MainController
     private $getDayPlanService         = null;
     private $dataTransformationService = null;
     private $estimationService         = null;
+    private $taskModel                 = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -46,7 +47,8 @@ class MainController
                                 GetPlanRepository $getPlanRepository,
                                 GetDayPlanService $getDayPlanService,
                                 DataTransformationService $dataTransformationService,
-                                EstimationService $estimationService)
+                                EstimationService $estimationService,
+                                Tasks $tasks)
     {
         $this->savedTaskRepository       = $taskRepository;
         $this->savedTaskService          = $codeService;
@@ -58,14 +60,16 @@ class MainController
         $this->getDayPlanService         = $getDayPlanService;
         $this->dataTransformationService = $dataTransformationService;
         $this->estimationService         = $estimationService;
+        $this->taskModel                 = $tasks;
     }
 
     public function addHashCode(Request $request)
     {
         $params = [];
-        $params['hash_code']    = $request->input('hash');
+        $taskName = $request->input('taskName');
+        $params['hash_code']    = $request->input('hash'); //hashCode
         $params['user_id']      = Auth::id();
-        $params['task_name']    = $request->input('taskName');
+        $params['task_name']    = ($taskName) ? $request->input('taskName') : $request->input('name');
         $params['time']         = $request->input('time');
         $params['type']         = $request->input('type');
         $params['priority']     = $request->input('priority');
@@ -121,8 +125,13 @@ class MainController
         if($responseArray->status == 'success') {
 
             $responseArrayAsArray["status"]  = $responseArray->status;
-
+            /*This is for creating weekend*/
+            if($this->planService->getTransformWeekendPlan()){ //That is a shame and I apologise for this ): This code must be modified.But later
+                $data = $this->planService->getTransformWeekendPlan();
+            }
             $responseArray = $this->dayPlan->createDayPlan($data);
+
+            /*Logic after adding plan in DB*/
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
             $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
 
@@ -143,6 +152,7 @@ class MainController
 
     public function getCreatedPlanIfExists()
     {
+
         $data = [
             "id"      => Auth::id(),
             "date"    => Carbon::today()
@@ -173,7 +183,7 @@ class MainController
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
 
-        return response()->json($response);
+        return response()->json($response); //comment
     }
 
     /**
@@ -195,11 +205,57 @@ class MainController
         if($checkedData){
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
             $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
-            //die(var_dump($planForDay));
-            return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
+
+            //return json_encode($planForDay, JSON_UNESCAPED_UNICODE);//json  с обновленными данными!
+            return json_encode("{status: success, message: 'Task has been updated.'}", JSON_UNESCAPED_UNICODE);
         }
 
         return json_encode("{status: fail, message: 'Error during estimation.'}", JSON_UNESCAPED_UNICODE);
+    }
+
+    /*
+     * For adding job/task after creation of day plan
+     * {"hash_code":<string>, "name": <string>, "type": <string>, "priority": <int>, "time": <string>}*/
+    public function addJob(Request $request)
+    {
+        $hash = $request->get('hash_code'); //hashCode
+        $hash = (isset($hash)) ? $request->get('hash_code') : '#';
+        $data = [
+            "hash"     => $hash,
+            "taskName" => $request->get('name'),
+            "type"     => $request->get('type'),
+            "priority" => $request->get('priority'),
+            "time"     => $request->get('time'),
+            "notes"    => '',
+        ];
+        $response = $this->planService->checkExtraJob($data);
+        $data = $this->dataTransformationService->getNumValuesOfStrValues($data);
+        if($response['status'] == 'success'){
+            $dataForTasks = [
+                "timetable_id" => $this->getLastTimetableId(),
+                "hash_code"    => $hash,
+                "task_name"    => $data['taskName'],
+                "type"         => $data['type'],
+                "priority"     => $data['priority'],
+                "time"         => $data['time'],
+                "mark"         => -1,
+                "created_at"   => DB::raw('CURRENT_TIMESTAMP(0)'),
+                "updated_at"   => DB::raw('CURRENT_TIMESTAMP(0)')
+            ];
+            //It would be better if I make it like transaction
+            Tasks::insert($dataForTasks);
+            $response['taskId'] = DB::getPdo()->lastInsertId();
+        }
+
+        return $response;
+    }
+
+    private function getLastTimetableId()
+    {
+        $params          = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
+        $lastTimeTableId = $this->currentPlanInfo->getLastTimetableId($params);
+
+        return $lastTimeTableId;
     }
 
     /*Stat lib: https://github.com/stefanzweifel/laravel-stats*/

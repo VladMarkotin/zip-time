@@ -34,7 +34,7 @@ class EstimationService
             //die(var_dump($data));
             if(!$arg) {
                 if (($data['mark'] < 50)) {
-                    $data['mark'] = 50;
+                    $data['mark'] = -1;
                 } else if (($data['mark'] > 99)) {
                     $data['mark'] = 99;
                 }
@@ -89,7 +89,7 @@ class EstimationService
                     return ["status" => "success", "message" => "Your day plan is completed :) Good work!"];
                 }
 
-                return ["status" => "fail", "message" => "Your day plan isn`t done yet. You still have some
+                return ["status" => "fail", "message" => "Your day plan hasn`t been done yet. You still have some
                          required jobs/tasks incomplete! "];
             case '1': //for estimation of job & task
                 $data['mark']    = $makeMarkValid();

@@ -20,11 +20,11 @@ class HistController extends Controller
             $response = $this->histService->getHist();
             dd($response);
         } else{
-            $data["from"] = $request->get('from');
-            $data["to"]   = $request->get('to');
-            $data["with_failed"]   = $request->get('with_failed');
+            $data["from"]           = $request->get('from');
+            $data["to"]             = $request->get('to');
+            $data["with_failed"]    = $request->get('with_failed');
             $data["with_weekend"]   = $request->get('with_weekend');
-            $data["with_emergency"]   = $request->get('with_emergency');
+            $data["with_emergency"] = $request->get('with_emergency');
             $response = $this->histService->getHist($data);
             dd($response);
         }

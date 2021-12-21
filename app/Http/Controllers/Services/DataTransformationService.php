@@ -9,10 +9,31 @@
 namespace App\Http\Controllers\Services;
 
 
-use Illuminate\Support\Facades\Auth;
-
 class DataTransformationService
 {
+    public function transformDataForWeekendRequest(array $data)
+    {
+        $transformJobsToNonRequired  = function ($data){
+             //working
+            if($data['plan']){
+                foreach($data['plan'] as $k => &$val){
+                    foreach ($val as $i => &$v){
+                        if($i == 'type'){
+                            //die(var_dump($val['type']));?? Why $val['type']
+                            ($val['type'] == 'required job')  ?: $v = 'non required job';
+                            ($val['type'] == 'required task') ?: $v = 'task';
+                        }
+                    }
+                }
+            }
+            //die(var_dump($data).__FILE__);
+            return $data;
+        };
+        $response = $transformJobsToNonRequired($data);
+
+        return $response;
+    }
+
     public function transformData(array $data, $way = 1) //1)db->front
     {
         $response = null;
@@ -25,12 +46,30 @@ class DataTransformationService
         return ($response) ? $response : $data;
     }
 
+    /*Преобразую здесь строковые значения в плане на день (e.g 'required task') в код, который пишется в базу (e.g 4)*/
+    public function getNumValuesOfStrValues($task)
+    {
+        switch($task['type']){
+            case 'required job'    : $task['type'] = 4;
+                return $task;
+            case 'non required job': $task['type'] = 3;
+                return $task;
+            case 'required task'   : $task['type'] = 2;
+                return $task;
+            case 'task'            : $task['type'] = 1;
+                return $task;
+            case 'reminder'        : $task['type'] = 0;
+                return $task;
+        }
+
+        return $task;
+    }
+
     private function fromDbToFront(array $data)
     {
         $transformData = [];
         foreach($data as $k => $v){
             $transformData[$k]["taskId"]   = $v->id;
-            $transformData[$k]["userId"]   = Auth::id();
             $transformData[$k]["hash"]     = $v->hash_code;
             $transformData[$k]['taskName'] = $v->task_name;
             $transformData[$k]['time']     = $v->time;

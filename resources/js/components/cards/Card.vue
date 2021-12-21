@@ -35,7 +35,7 @@
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
 							<v-btn icon v-on="on" v-on:click="sendMark(item)">
-								<v-icon color="#D71700" large>{{icons.mdiUpdate}}</v-icon>
+								<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
 							</v-btn>
 						</template>
 						<span>Update</span>
@@ -47,7 +47,7 @@
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
 							<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
-								<v-icon color="#D71700" large>{{icons.mdiUpdate}}</v-icon>
+								<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
 							</v-btn>
 						</template>
 						<span>Update</span>

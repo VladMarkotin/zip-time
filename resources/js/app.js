@@ -1,13 +1,19 @@
 require('./bootstrap')
+
 import Vuetify from 'vuetify'
 import Vuelidate from 'vuelidate'
+import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/dist/vuetify.min.css'
+
 window.Vue = require('vue').default
+
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
+
 Vue.component('Facebook',require('./components/Facebook.vue').default)
 Vue.component('Plan',require('./components/Plan.vue').default)
 Vue.component('ReadyDayPlan',require('./components/ReadyDayPlan.vue').default)
+
 Date.prototype.addDays =
 	function (days)
 	{
@@ -19,15 +25,16 @@ Date.prototype.toEnStr =
 	{
 		return this.toISOString().substr(0,10)
 	}
+
 const app =
 	new Vue
 		(
 			{
 				el : '#app',
-				vuetify : new Vuetify(),
 				loader : 'vue-loader',
+				vuetify : new Vuetify(),
 				components : {app},
-				data : {currComponent : "",currComponentProps : {}},
+				data : {alertDelay : 5e3,currComponent : '',currComponentProps : {}},
 				computed :
 				{
 					component()
@@ -41,15 +48,18 @@ const app =
 				},
 				async created()
 				{
-					const response = await axios.post('/ifexists')
-					if (response.data.length > 0)
+					if (window.user != '')
 					{
-						this.currComponentProps = response.data
-						this.currComponent = 'ReadyDayPlan'
-					}
-					else
-					{
-						this.currComponent = 'Plan'
+						const response = await axios.post('/ifexists')
+						if (response.data.length > 0)
+						{
+							this.currComponentProps = response.data
+							this.currComponent = 'ReadyDayPlan'
+						}
+						else
+						{
+							this.currComponent = 'Plan'
+						}
 					}
 				}
 			}
