@@ -51,20 +51,17 @@ const app =
 					if (window.user != '')
 					{
 						const response = await axios.post('/ifexists')
-						if (response.data.dayStatus == 3)
+						if (response.data.dayStatus == 3/*day is closed*/)
 						{
 						}
-						else if (response.data.dayStatus == 2)
+						else if (response.data.dayStatus == 2/*day is opened*/)
 						{
-							if (JSON.stringify(response.data) === JSON.stringify({}))
-							{
-								this.currComponent = 'Plan'
-							}
-							else
-							{
-								this.currComponentProps = response.data.plan
-								this.currComponent = 'ReadyDayPlan'
-							}
+							this.currComponentProps = response.data.plan
+							this.currComponent = 'ReadyDayPlan'
+						}
+						else/*no plan*/
+						{
+							this.currComponent = 'Plan'
 						}
 					}
 				}
