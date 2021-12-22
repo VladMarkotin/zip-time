@@ -165,7 +165,7 @@ class MainController
             return json_encode($transformData, JSON_UNESCAPED_UNICODE);
         }
 
-        return response()->json("");
+        return "";
     }
 
     //---------------Estimation of tasks-----------------
