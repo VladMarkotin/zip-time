@@ -43,7 +43,7 @@
 				</template>
 				<template v-else-if="[2,1].includes(item.type)">
 					<div>Ready?</div>
-					<v-checkbox v-model="item.is_ready"></v-checkbox>
+					<v-checkbox color="#D71700" v-model="item.is_ready == 99 ? true : item.is_ready <= 50 ? false : true"></v-checkbox>
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
 							<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
