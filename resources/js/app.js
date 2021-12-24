@@ -10,6 +10,7 @@ window.Vue = require('vue').default
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
 
+Vue.component('ClosedReadyDayPlan',require('./components/ClosedReadyDayPlan.vue').default)
 Vue.component('Facebook',require('./components/Facebook.vue').default)
 Vue.component('Plan',require('./components/Plan.vue').default)
 Vue.component('ReadyDayPlan',require('./components/ReadyDayPlan.vue').default)
@@ -53,6 +54,7 @@ const app =
 						const response = await axios.post('/ifexists')
 						if (response.data.dayStatus == 3/*day is closed*/)
 						{
+							this.currComponent = 'ClosedReadyDayPlan'
 						}
 						else if (response.data.dayStatus == 2/*day is opened*/)
 						{
