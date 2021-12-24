@@ -32,8 +32,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
     Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode']);
     Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
-
+    //get info about closed day
+    Route::post('/getClosedPlanInfo', [App\Http\Controllers\MainController::class, 'getClosedDayInfo']);
+    //estimate Task
     Route::post('/estimate', [App\Http\Controllers\MainController::class, 'estimateTask']);
+    //Estimate day
     Route::post('/closeDay', [App\Http\Controllers\MainController::class, 'estimateDay']);
 
 //Add job
