@@ -216,6 +216,16 @@ class EstimationRepository
         return $ids;
     }
 
+    /*This method returns all final info about day: final_mark, own_mark, comment */
+    public function getFinalInfoForTheDay(array $data)
+    {
+        $query = "SELECT time_of_day_plan, final_estimation, own_estimation, comment FROM timetables WHERE
+                   date = '".$data['date']."' AND user_id = ".$data['id']."";
+        $response = DB::select($query);
+
+        return $response;
+    }
+
     /*Get id of users who has`t created plan on today*/
     private function getBadIds()
     {
