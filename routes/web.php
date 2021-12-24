@@ -26,23 +26,25 @@ Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->na
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
 
-Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] )->middleware('auth');
-Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode'])->middleware('auth');//
-Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks'])->middleware('auth');
-Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode'])->middleware('auth');
-Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists'])->middleware('auth');//check whether timetable exists
+Route::middleware(['auth'])->group(function () {
+    Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
+    Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
+    Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
+    Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode']);
+    Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
 
-Route::post('/estimate', [App\Http\Controllers\MainController::class, 'estimateTask'])->middleware('auth');
-Route::post('/closeDay', [App\Http\Controllers\MainController::class, 'estimateDay'])->middleware('auth');
+    Route::post('/estimate', [App\Http\Controllers\MainController::class, 'estimateTask']);
+    Route::post('/closeDay', [App\Http\Controllers\MainController::class, 'estimateDay']);
 
 //Add job
-Route::post('/addJob', [App\Http\Controllers\MainController::class, 'addJob'])->middleware('auth');
+    Route::post('/addJob', [App\Http\Controllers\MainController::class, 'addJob']);
 
 //History
-Route::get('/hist', [App\Http\Controllers\HistController::class, 'index'])->middleware('auth');\
+    Route::get('/hist', [App\Http\Controllers\HistController::class, 'index']);
 
 //Statistics
-Route::get('/stat', [App\Http\Controllers\StatController::class, 'index'])->middleware('auth');
+    Route::get('/stat', [App\Http\Controllers\StatController::class, 'index']);
 
 //emergency
-Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index'])->middleware('auth');
+    Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index']);
+});
