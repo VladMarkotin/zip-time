@@ -161,7 +161,7 @@ class MainController
 
         if($createdDayPlan){
             $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
-            //die(var_dump($transformData));
+
             return json_encode($transformData, JSON_UNESCAPED_UNICODE);
         }
 
