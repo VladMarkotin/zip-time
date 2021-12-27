@@ -83,7 +83,10 @@ class EstimateTaskRepository
             $savedTaskId = $savedTaskId[0]->id;
             $dataForNotes = [
                 'saved_task_id' => $savedTaskId,
-                'note'          => $data['note']
+                'note'          => $data['note'],
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
+
             ];
             $dataForLastTimeTableId = [
                 "date"    => Carbon::today(),
