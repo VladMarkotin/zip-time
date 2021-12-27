@@ -124,7 +124,9 @@ class EstimateTaskRepository
 
                 $savedNote = (isset($savedNote[count($savedNote) - 1]->note))
                     ? $savedNote[count($savedNote) - 1]->note : null ;
-                if( (!$savedNote) || (($savedNote != trim($dataForNotesTable['note']) && ($dataForNotesTable['note']) )) ){
+                if( (!$savedNote && ($dataForNotesTable['note'] != ''))
+                    || (($savedNote != trim($dataForNotesTable['note'])
+                        && ($dataForNotesTable['note'] != '') )) ){
                     SavedNotes::insert($dataForNotesTable);
                 }
             });
