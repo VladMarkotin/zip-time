@@ -22,6 +22,7 @@ use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Http\Controllers\Services\NotesService;
 use App\Http\Controllers\Services\DataTransformationService;
 use App\Http\Controllers\Services\EstimationService;
+use App\Repositories\EstimationRepository;
 use App\Models\Tasks;
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,7 @@ class MainController
     private $dataTransformationService = null;
     private $estimationService         = null;
     private $taskModel                 = null;
+    private $estimationRepository      = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -48,6 +50,7 @@ class MainController
                                 GetDayPlanService $getDayPlanService,
                                 DataTransformationService $dataTransformationService,
                                 EstimationService $estimationService,
+                                EstimationRepository $estimationRepository,
                                 Tasks $tasks)
     {
         $this->savedTaskRepository       = $taskRepository;
@@ -60,6 +63,7 @@ class MainController
         $this->getDayPlanService         = $getDayPlanService;
         $this->dataTransformationService = $dataTransformationService;
         $this->estimationService         = $estimationService;
+        $this->estimationRepository      = $estimationRepository;
         $this->taskModel                 = $tasks;
     }
 
@@ -161,11 +165,25 @@ class MainController
 
         if($createdDayPlan){
             $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
-            //die(var_dump($transformData));
+
             return json_encode($transformData, JSON_UNESCAPED_UNICODE);
         }
 
         return "";
+    }
+
+    /*This method will execute for the card wich displays final information of the day */
+    public function getClosedDayInfo()
+    {
+        $data = [
+            "id"      => Auth::id(),
+            "date"    => Carbon::today()
+        ];
+
+        //Here I would return json with day final info (final_estimation etc)
+        $closedDayPlanInfo = $this->estimationRepository->getFinalInfoForTheDay($data);
+
+        return json_encode($closedDayPlanInfo, JSON_UNESCAPED_UNICODE);
     }
 
     //---------------Estimation of tasks-----------------
