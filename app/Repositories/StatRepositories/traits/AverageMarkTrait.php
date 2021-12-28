@@ -19,7 +19,7 @@ trait AverageMarkTrait
     {
         $data['id'] = Auth::id();
         $query = $query = "SELECT AVG(final_estimation) avgMark FROM `timetables` WHERE final_estimation <> 0.00
-                            (AND day_status = 3
+                            AND (day_status = 3
                              OR  day_status = -1)
                             AND user_id = $data[id] ";
         if(is_array($period)){
