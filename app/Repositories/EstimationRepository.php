@@ -57,8 +57,8 @@ class EstimationRepository
                     $data = [
                         "user_id"          => $id,
                         "final_time"       => '00:00',
-                        "final_estimation" => -101,
-                        "own_estimation"   => -101,
+                        "final_estimation" => -1,
+                        "own_estimation"   => -1,
                         "date"             => Carbon::today()->toDateString(),
                         "comment"          => "It looks like the day was wasted :(",
                         "day_status"       => -1,

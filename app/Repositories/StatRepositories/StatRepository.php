@@ -8,8 +8,7 @@
 namespace App\Repositories\StatRepositories;
 
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Repositories\StatRepositories\traits\AverageMarkTrait;
 
 class StatRepository
 {
@@ -30,23 +29,12 @@ class StatRepository
 
     private function getStatForPeriod($period)
     {
-        if(is_array($period)){
-            $getReadyQuery = function ($period){
-                return $query = "SELECT * FROM `tasks` JOIN `timetables` ON `tasks`.`timetable_id` = `timetables`.`id`
-                                    WHERE timetables.date BETWEEN '$period[from]'
-                                     AND '$period[to]'
-                                     AND timetables.user_id = 1";
-            };
-        }else{
-            $getReadyQuery = function ($period){
-                $query = "SELECT * FROM tasks JOIN timetables ON tasks.timetable_id = timetables.id WHERE
-                            timetables.date = '". $period ."'"." AND timetables.user_id = ".Auth::id();
-
-                return $query;
-            };
-        }
-        $query    = $getReadyQuery($period);
-        $response = DB::select($query);
+        /*Get stat for the period. Stat means: AVG mark, AVG personal mark, Max Mark, Min Mark, Median Mark*/
+        $response['avgMark']    = AverageMarkTrait::getAvgMark($period);
+        $response['ownAvgMark'] = AverageMarkTrait::getOwnAvgMark($period);
+        $response['medianMark'] = AverageMarkTrait::getMedianValue($period);
+        $response['maxMark']    = AverageMarkTrait::getMaxMark($period);
+        $response['minMark']    = AverageMarkTrait::getMinMark($period);
 
         return $response;
     }

@@ -28,18 +28,17 @@ class StatService
 
     public function getStat(array $period = null)
     {
+        $currentDate = \Carbon\Carbon::now();
         if(!$period){
             //$period["type"]         = 0; //?
-            $period["from"]           = $this->carbon->startOfWeek()->toDateString();
-            $period["to"]             = $this->carbon->endOfWeek()->toDateString();
-            //$period['date']       = Carbon::today();
-            if(!isset($period['date'])){ //later change the condition (delete "!")
+            $period["from"]           = $this->carbon->startOfWeek()->subDays(7)->toDateString();
+            $period["to"]             = $this->carbon->endOfWeek()->subDays(1)->toDateString();
+            if(isset($period['date'])){ //later change the condition (delete "!")
                 $period['date']       = Carbon::today();
             }
         }
         $response = $this->statRepository->getStat($period);
-        //Have to count statistic here
-
-        return ( json_encode($response, JSON_UNESCAPED_UNICODE));
+        die(var_dump($response) .__FILE__. __LINE__);
+        return $response;
     }
 } 

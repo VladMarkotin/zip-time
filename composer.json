@@ -14,6 +14,7 @@
         "laravel/socialite": "^5.2",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "markrogoyski/math-php": "2.*",
         "nesbot/carbon": "^2.46",
         "richjenks/stats": "^1.0",
         "socialiteproviders/facebook": "^4.1"
@@ -61,7 +62,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
