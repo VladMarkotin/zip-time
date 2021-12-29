@@ -59,6 +59,7 @@ trait AverageMarkTrait
             $query .= "AND date = '$period' ";
         }
         $response = DB::select($query);
+        $medianValues = [];
         foreach ($response as $v){
             ($type == 1) ? $medianValues[] = $v->fE
                           : $medianValues[] = $v->oE;
@@ -72,7 +73,8 @@ trait AverageMarkTrait
     {
         $data['id'] = Auth::id();
         if($type == 1){
-            $query = "SELECT MAX(final_estimation) maxMark FROM `timetables` WHERE user_id = $data[id] ";
+            $query = "SELECT MAX(final_estimation) maxMark FROM `timetables` WHERE user_id = $data[id]
+                                                                               AND day_status = 3 ";
         } else{
             $query = "SELECT MIN(final_estimation) minMark FROM `timetables` WHERE user_id = $data[id]
                                                                                AND day_status = 3";
