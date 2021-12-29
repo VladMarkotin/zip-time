@@ -64,7 +64,8 @@ trait AverageMarkTrait
             ($type == 1) ? $medianValues[] = $v->fE
                           : $medianValues[] = $v->oE;
         }
-        $median = Average::median($medianValues);
+        ($medianValues) ? $median = Average::median($medianValues) : $median = 0;
+
 
         return $median;
     }
