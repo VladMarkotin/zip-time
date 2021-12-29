@@ -40,6 +40,7 @@ trait AverageMarkTrait
         } else{
             $mark = $response[0]->ownMark;
         }
+        (!$response) ?: $mark = 0;
 
         return $mark;
     }
@@ -66,7 +67,6 @@ trait AverageMarkTrait
         }
         ($medianValues) ? $median = Average::median($medianValues) : $median = 0;
 
-
         return $median;
     }
 
@@ -87,8 +87,9 @@ trait AverageMarkTrait
             $query .= "AND date = '$period' ";
         }
         $response = DB::select($query);
-        ($type == 1) ? $response = $response[0]->maxMark : $response = $response[0]->minMark;
+        ($type == 1) ? $mark = $response[0]->maxMark : $mark = $response[0]->minMark;
+        (!$response) ?: $mark = 0 ;
 
-        return $response;
+        return $mark;
     }
 }
