@@ -68,7 +68,7 @@ trait AverageMarkTrait
         return $median;
     }
 
-    function getExtremum($period, $type = 1)
+    function getExtremum($period, $type = 1) //1-max, 2-min
     {
         $data['id'] = Auth::id();
         if($type == 1){
