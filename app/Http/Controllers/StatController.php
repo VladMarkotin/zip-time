@@ -18,7 +18,6 @@ class StatController extends Controller
     {
         if(!$request){
             $response = $this->statService->getStat();
-            dd($response);
         } else{
             $data["from"]            = $request->get('from');
             $data["to"]              = $request->get('to');
@@ -27,7 +26,9 @@ class StatController extends Controller
             $data["with_weekend"]    = $request->get('with_weekend');
             $data["with_emergency"]  = $request->get('with_emergency');
             $response                = $this->statService->getStat($data);
-            dd($response);
         }
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        dd($response);
+        return $response;
     }
 }

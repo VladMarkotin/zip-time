@@ -275,6 +275,4 @@ class MainController
 
         return $lastTimeTableId;
     }
-
-    /*Stat lib: https://github.com/stefanzweifel/laravel-stats*/
 }

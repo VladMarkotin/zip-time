@@ -28,7 +28,6 @@ class StatService
 
     public function getStat(array $period = null)
     {
-        $currentDate = \Carbon\Carbon::now();
         if(!$period){
             //$period["type"]         = 0; //?
             $period["from"]           = $this->carbon->startOfWeek()->subDays(7)->toDateString();
@@ -37,8 +36,9 @@ class StatService
                 $period['date']       = Carbon::today();
             }
         }
-        $response = $this->statRepository->getStat($period);
-        die(var_dump($response) .__FILE__. __LINE__);
+        $response['marks'] = $this->statRepository->getStat($period, 0);
+        $response['mainStat'] = $this->statRepository->getStat($period, 1);
+
         return $response;
     }
-} 
+}

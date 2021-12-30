@@ -40,7 +40,7 @@ trait AverageMarkTrait
         } else{
             $mark = $response[0]->ownMark;
         }
-        (!$response) ?: $mark = 0;
+        if(is_null($mark)) { $mark = 0; }
 
         return $mark;
     }
@@ -88,7 +88,7 @@ trait AverageMarkTrait
         }
         $response = DB::select($query);
         ($type == 1) ? $mark = $response[0]->maxMark : $mark = $response[0]->minMark;
-        (!$response) ?: $mark = 0 ;
+        if(is_null($mark)){ $mark = 0 ;}
 
         return $mark;
     }
