@@ -15,10 +15,14 @@ trait TransformHistTrait
     {
         $finalArray = [
             "userId" => Auth::id(),
-            "from"   => $period['from'],
-            "to"     => $period['to'],
-            "plans"  => [],
+            "plans" => [],
         ];
+        if(isset($period['date'])){
+            $finalArray["date"] = $period['date'];
+        }else {
+            $finalArray["from"] = $period['from'];
+            $finalArray["to"] = $period['to'];
+        }
         /*
          * I have to get this structure:
          * [

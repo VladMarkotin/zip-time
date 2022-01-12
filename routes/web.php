@@ -42,8 +42,12 @@ Route::middleware(['auth'])->group(function () {
 //Add job
     Route::post('/addJob', [App\Http\Controllers\MainController::class, 'addJob']);
 
-//History
-    Route::get('/hist', [App\Http\Controllers\HistController::class, 'index']);
+    //History routes
+    Route::prefix('hist')->group(function () {
+        Route::get('/', [App\Http\Controllers\HistController::class, 'index']);
+        Route::get('/{date}', [App\Http\Controllers\HistController::class, 'histOnDate']);
+    });
+    //end History routes
 
 //Statistics
     Route::get('/stat', [App\Http\Controllers\StatController::class, 'index']);
