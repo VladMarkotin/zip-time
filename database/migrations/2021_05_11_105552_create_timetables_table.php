@@ -17,7 +17,7 @@ class CreateTimetablesTable extends Migration
             $table->id(); //id
             $table->unsignedBigInteger("user_id"); //связь с пользователем
             $table->date("date"); //дата плана
-            $table->tinyInteger("day_status")->default(2); //Статус дня ("4-holiday","3 - finished","2 - work","1 - weekend","0 - emergency", "-1  - Fine)
+            $table->tinyInteger("day_status")->default(2); //Статус дня ("4-holiday(?)","3 - finished","2 - work","1 - weekend","0 - emergency", "-1 - Fine)
             $table->float("final_estimation"); //оценка за день
             $table->float("own_estimation"); //личная оценка за день
             $table->text("comment")->nullable(); //комментарий
