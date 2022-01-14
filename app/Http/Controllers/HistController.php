@@ -18,7 +18,6 @@ class HistController extends Controller
     {
         if(!$request){
             $response = $this->histService->getHist();
-            dd($response);
         } else{
             $data["from"]           = $request->get('from');
             $data["to"]             = $request->get('to');
@@ -26,8 +25,17 @@ class HistController extends Controller
             $data["with_weekend"]   = $request->get('with_weekend');
             $data["with_emergency"] = $request->get('with_emergency');
             $response = $this->histService->getHist($data);
-            dd($response);
         }
 
+        return $response;
+
+    }
+
+    public function histOnDate(Request $request)
+    {
+        $data = $request->route()->parameters();
+        $response = $this->histService->getHist($data);
+
+        return $response;
     }
 }
