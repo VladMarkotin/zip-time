@@ -27,16 +27,17 @@ class EstimateTaskRepository
     /*Estimate task and update it dependencies if there is a hash_code. Better to upgrade logic of this method in future*/
     public function estimateTask(array $data)
     {
+        $dataForLastTimetable = ["date" => Carbon::today(), "id" => Auth::id()];
         $dataForTasks  =   [
             "id"         => $data['id'],
-            "user_id"    => Auth::id(),
+            "timetable_id"    => $this->getPlanRepository->getLastTimetableId($dataForLastTimetable),
             "details"    => $data['details'],
-            "mark"       => $data['mark'],
+            "mark"       => floatval($data['mark']),
             "note"       => $data['note'],
-            "updated_at" =>  Carbon::now(),
+            "updated_at" =>  Carbon::now()->toDateTimeString(),
         ];
         $hash = Tasks::select('hash_code', 'type')->where('id', $data['id'])->get()->toArray();
-
+        //dd($dataForTasks);
         /*This condition for all tasks.*/
         if( ( ($hash[0]['type'] === 1) || ($hash[0]['type'] === 2) ) ){
             $dataForTasks['mark'] = $data['is_ready'];
@@ -70,9 +71,14 @@ class EstimateTaskRepository
 
         } else if(($hash[0]['hash_code'] == '#') && ($hash[0]['type'] == 3 || $hash[0]['type'] == 4)){ //This condition for job with no hash code
             try{
-                Tasks::whereId($data['id'])->update($dataForTasks);
+                //die(var_dump($dataForTasks));
+                //Tasks::whereId($data['id'])->update($dataForTasks);
+                //dd(DB::table('tasks')->toSql());
+                $query = "update tasks SET mark = $dataForTasks[mark] WHERE timetable_id = $dataForTasks[timetable_id] AND id = $data[id]";
+                //dd($query);
+                DB::update($query);
             } catch (\Exception $e){
-                Log::error('Error has happened: '. $e->getFile(). " ". $e->getLine(). " ");
+                Log::error('Error has happened 76: '. $e->getFile(). " ". $e->getLine(). " ");
             }
         } else{ //This one is for job with hash_code
             $savedTaskId =  DB::table('saved_tasks')
