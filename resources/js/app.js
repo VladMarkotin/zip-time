@@ -21,6 +21,12 @@ Date.prototype.addDays =
 		this.setDate(this.getDate() + days)
 		return this
 	}
+Date.prototype.subtractDays =
+	function (days)
+	{
+		this.setDate(this.getDate() - days)
+		return this
+	}
 Date.prototype.toEnStr =
 	function ()
 	{
@@ -35,16 +41,16 @@ const app =
 				loader : 'vue-loader',
 				vuetify : new Vuetify(),
 				components : {app},
-				data : {alertDelay : 5e3,currComponent : '',currComponentProps : {}},
+				data : {alertDelay : 5e3,currComponent : {name : '',props : {}}},
 				computed :
 				{
-					component()
+					currComponentName()
 					{
-						return this.currComponent
+						return this.currComponent.name
 					},
-					componentProps()
+					currComponentProps()
 					{
-						return this.currComponentProps
+						return this.currComponent.props
 					}
 				},
 				async created()
@@ -54,16 +60,17 @@ const app =
 						const response = await axios.post('/ifexists')
 						if (response.data.dayStatus == 3/*day is closed*/)
 						{
-							this.currComponent = 'ClosedReadyDayPlan'
+							this.currComponent.props = response.data
+							this.currComponent.name = 'ClosedReadyDayPlan'
 						}
 						else if (response.data.dayStatus == 2/*day is opened*/)
 						{
-							this.currComponentProps = response.data.plan
-							this.currComponent = 'ReadyDayPlan'
+							this.currComponent.props = response.data.plan
+							this.currComponent.name = 'ReadyDayPlan'
 						}
 						else/*no plan*/
 						{
-							this.currComponent = 'Plan'
+							this.currComponent.name = 'Plan'
 						}
 					}
 				}
