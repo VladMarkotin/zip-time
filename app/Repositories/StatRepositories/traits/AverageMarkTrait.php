@@ -92,4 +92,17 @@ trait AverageMarkTrait
 
         return $mark;
     }
+
+    function getTotalTime($period)
+    {
+        $data['id'] = Auth::id();
+        //$query =  "SELECT SUM(time_of_day_plan) total_time FROM `timetables` WHERE user_id = $data[id] AND time_of_day_plan IS NOT NULL ";
+        $query = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_of_day_plan))) total_time FROM `timetables` WHERE user_id = $data[id] AND day_status = 3 ";
+        if(is_array($period)){
+            $query .= " AND date BETWEEN '$period[from]' AND '$period[to]' ";
+        }
+        $response = DB::select($query);
+
+        return $response[0]->total_time;
+    }
 }

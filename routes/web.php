@@ -49,8 +49,12 @@ Route::middleware(['auth'])->group(function () {
     });
     //end History routes
 
-//Statistics
-    Route::get('/stat', [App\Http\Controllers\StatController::class, 'index']);
+    //Statistics
+    Route::prefix('stat')->group(function () {
+        Route::get('/', [App\Http\Controllers\StatController::class, 'index']);
+        // ??? Route::get('/{date}', [App\Http\Controllers\HistController::class, 'histOnDate']);
+    });
+    //end statistic
 
 //emergency
     Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index']);

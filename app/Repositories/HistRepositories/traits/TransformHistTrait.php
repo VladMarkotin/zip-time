@@ -77,11 +77,12 @@ trait TransformHistTrait
     {
         $i = 0;
         foreach($data as $k => $v){
-            $finalArray["plans"][$v->date]['timetableId']                   = $v->id;
+            $finalArray["plans"][$v->date]['timetableId']                   = $v->t_id;
             $finalArray["plans"][$v->date]['dayStatus']                     = $v->day_status;
-            $finalArray["plans"][$v->date]['finalEstimation']               = $v->final_estimation;
-            $finalArray["plans"][$v->date]['ownEstimation']                 = $v->own_estimation;
+            $finalArray["plans"][$v->date]['dayFinalMark']                  = $v->final_estimation;
+            $finalArray["plans"][$v->date]['dayOwnMark']                    = $v->own_estimation;
             $finalArray["plans"][$v->date]['comment']                       = $v->comment;
+            $finalArray["plans"][$v->date]['tasks'][$k]['taskId']           = $v->id;//?
             $finalArray["plans"][$v->date]['tasks'][$i]["hashCode"]         = $v->hash_code;
             $finalArray["plans"][$v->date]['tasks'][$i]["taskName"]         = $v->task_name;
             $finalArray["plans"][$v->date]['tasks'][$i]["type"]             = $v->type;
@@ -89,7 +90,7 @@ trait TransformHistTrait
             $finalArray["plans"][$v->date]['tasks'][$i]["details"]          = $v->details;
             $finalArray["plans"][$v->date]['tasks'][$i]["time"]             = $v->time;
             $finalArray["plans"][$v->date]['tasks'][$i]["mark"]             = $v->mark;
-            $finalArray["plans"][$v->date]['tasks'][$i]["note"]             = $v->note;
+            $finalArray["plans"][$v->date]['tasks'][$i]["notes"]            = $v->note;
             $i++;
         }
 
