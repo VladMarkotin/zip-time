@@ -37,6 +37,7 @@ class StatRepository
         /*Get stat for the period. Stat means: AVG mark, AVG personal mark, Max Mark, Min Mark, Median Mark*/
         $response['from']          = $period['from'];
         $response['to']            = $period['to'];
+        $response['totalTime']     = AverageMarkTrait::getTotalTime($period);
         $response['avgMark']       = AverageMarkTrait::getAvgMark($period, 1);
         $response['ownAvgMark']    = AverageMarkTrait::getAvgMark($period, 2);
         $response['medianMark']    = AverageMarkTrait::getMedianValue($period);
