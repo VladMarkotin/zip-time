@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
 	<v-app>
-		<component v-bind:is="component" v-bind:plan="componentProps"/>
+		<component v-bind:is="currComponentName" v-bind:data="currComponentProps"/>
 	</v-app>
 </div>
 @endsection

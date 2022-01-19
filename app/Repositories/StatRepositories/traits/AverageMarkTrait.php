@@ -19,12 +19,12 @@ trait AverageMarkTrait
     {
         $data['id'] = Auth::id();
         if($type == 1){
-            $query = $query = "SELECT AVG(final_estimation) avgMark FROM `timetables` WHERE final_estimation <> 0.00
+            $query = $query = "SELECT ROUND(AVG(final_estimation),2) avgMark FROM `timetables` WHERE final_estimation <> 0.00
                             AND (day_status = 3
                              OR  day_status = -1)
                             AND user_id = $data[id] ";
         } else{
-            $query = "SELECT AVG(own_estimation) ownMark FROM `timetables` WHERE day_status = 3
+            $query = "SELECT ROUND(AVG(own_estimation), 2) ownMark FROM `timetables` WHERE day_status = 3
                               AND own_estimation <> 0.00
                               AND user_id = $data[id] ";
         }
@@ -49,10 +49,10 @@ trait AverageMarkTrait
     {
         $data['id'] = Auth::id();
         if($type == 1){
-            $query = "SELECT final_estimation fE FROM `timetables` WHERE final_estimation <> 0.00
+            $query = "SELECT ROUND(final_estimation, 2) fE FROM `timetables` WHERE final_estimation <> 0.00
                         AND user_id = $data[id] ";
         } else{
-            $query = "SELECT own_estimation oE FROM `timetables` WHERE own_estimation <> 0.00 AND user_id = $data[id] ";
+            $query = "SELECT ROUND(own_estimation, 2) oE FROM `timetables` WHERE own_estimation <> 0.00 AND user_id = $data[id] ";
         }
         if(is_array($period)){
             $query .= " AND date BETWEEN '$period[from]' AND '$period[to]' ";
@@ -66,6 +66,7 @@ trait AverageMarkTrait
                           : $medianValues[] = $v->oE;
         }
         ($medianValues) ? $median = Average::median($medianValues) : $median = 0;
+        $median = number_format($median, 2);
 
         return $median;
     }
@@ -74,10 +75,10 @@ trait AverageMarkTrait
     {
         $data['id'] = Auth::id();
         if($type == 1){
-            $query = "SELECT MAX(final_estimation) maxMark FROM `timetables` WHERE user_id = $data[id]
+            $query = "SELECT ROUND(MAX(final_estimation),2) maxMark FROM `timetables` WHERE user_id = $data[id]
                                                                                AND day_status = 3 ";
         } else{
-            $query = "SELECT MIN(final_estimation) minMark FROM `timetables` WHERE user_id = $data[id]
+            $query = "SELECT ROUND(MIN(final_estimation)) minMark FROM `timetables` WHERE user_id = $data[id]
                                                                                AND day_status = 3";
         }
 
@@ -96,8 +97,7 @@ trait AverageMarkTrait
     function getTotalTime($period)
     {
         $data['id'] = Auth::id();
-        //$query =  "SELECT SUM(time_of_day_plan) total_time FROM `timetables` WHERE user_id = $data[id] AND time_of_day_plan IS NOT NULL ";
-        $query = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_of_day_plan))) total_time FROM `timetables` WHERE user_id = $data[id] AND day_status = 3 ";
+        $query = "SELECT SEC_TO_TIME(ROUND(SUM(TIME_TO_SEC(time_of_day_plan)))) total_time FROM `timetables` WHERE user_id = $data[id] AND day_status = 3 ";
         if(is_array($period)){
             $query .= " AND date BETWEEN '$period[from]' AND '$period[to]' ";
         }

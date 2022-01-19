@@ -10,12 +10,12 @@
 			<EmergencyCall v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
 		</template> 
 		<template v-if="isShowAlertDialog">
-			<Alert v-bind:type="this.alert.type" v-bind:text="this.alert.text" v-on:toggleAlertDialog="toggleAlertDialog"/>
+			<Alert v-bind:type="alert.type" v-bind:text="alert.text" v-on:toggleAlertDialog="toggleAlertDialog"/>
 		</template>
-		<v-data-iterator hide-default-footer v-bind:items="plan">
-			<Cards title="Required tasks:" v-if="this.isExistsRequiredTasks(plan)" v-bind:items="this.getRequiredTasks(plan)"/>
+		<v-data-iterator hide-default-footer v-bind:items="data">
+			<Cards title="Required tasks:" v-if="isExistsRequiredTasks(data)" v-bind:items="getRequiredTasks(data)"/>
 			<v-divider></v-divider>
-			<Cards title="Non required tasks:" v-if="this.isExistsNonRequiredTasks(plan)" v-bind:items="this.getNonRequiredTasks(plan)"/>
+			<Cards title="Non required tasks:" v-if="isExistsNonRequiredTasks(data)" v-bind:items="getNonRequiredTasks(data)"/>
 		</v-data-iterator>
 		<div class="d-flex justify-space-between mt-3">
 			<v-tooltip right>
@@ -41,7 +41,7 @@
 					</v-btn>
 				</template>
 				<span>Emergency call</span>
-			</v-tooltip> 
+			</v-tooltip>
 		</div>
 	</div>
 </template>
@@ -56,7 +56,7 @@
 	export default
 	{
 		components : {Alert,AddJobTask,CloseDay,Cards,EmergencyCall},
-		props : ['plan'],
+		props : ['data'],
 		data()
 		{
 			return {
@@ -72,22 +72,22 @@
 		},
 		methods :
 		{
-			getRequiredTasks(plan)
+			getRequiredTasks(data)
 			{
-				return plan.filter((item) => [4,2].includes(item.type))
+				return data.filter((item) => [4,2].includes(item.type))
 			},
-			isExistsRequiredTasks(plan)
+			isExistsRequiredTasks(data)
 			{
-				return this.getRequiredTasks(plan).length > 0
+				return this.getRequiredTasks(data).length > 0
 			},
 
-			getNonRequiredTasks(plan)
+			getNonRequiredTasks(data)
 			{
-				return plan.filter((item) => [3,1].includes(item.type))
+				return data.filter((item) => [3,1].includes(item.type))
 			},
-			isExistsNonRequiredTasks(plan)
+			isExistsNonRequiredTasks(data)
 			{
-				return this.getNonRequiredTasks(plan).length > 0
+				return this.getNonRequiredTasks(data).length > 0
 			},
 
 			toggleAddJobTaskDialog()

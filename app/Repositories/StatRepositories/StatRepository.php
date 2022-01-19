@@ -10,6 +10,7 @@ namespace App\Repositories\StatRepositories;
 
 use App\Repositories\StatRepositories\traits\AverageMarkTrait;
 use App\Repositories\StatRepositories\traits\GetInfoForGraficTrait;
+use App\Repositories\StatRepositories\traits\GeneralinfoTrait;
 
 class StatRepository
 {
@@ -35,15 +36,26 @@ class StatRepository
     private function getStatForPeriod($period)
     {
         /*Get stat for the period. Stat means: AVG mark, AVG personal mark, Max Mark, Min Mark, Median Mark*/
-        $response['from']          = $period['from'];
-        $response['to']            = $period['to'];
-        $response['totalTime']     = AverageMarkTrait::getTotalTime($period);
-        $response['avgMark']       = AverageMarkTrait::getAvgMark($period, 1);
-        $response['ownAvgMark']    = AverageMarkTrait::getAvgMark($period, 2);
-        $response['medianMark']    = AverageMarkTrait::getMedianValue($period);
-        $response['medianOwnMark'] = AverageMarkTrait::getMedianValue($period, 2);
-        $response['maxMark']       = AverageMarkTrait::getExtremum($period);
-        $response['minMark']       = AverageMarkTrait::getExtremum($period, 2);
+        $response['from']           = $period['from'];
+        $response['to']             = $period['to'];
+        $response['completedDays']  = GeneralinfoTrait::getStat($period, 3);
+        $response['failedDays']     = GeneralinfoTrait::getStat($period, -1);
+        $response['emergencyModes'] = GeneralinfoTrait::getStat($period, 0);
+        $response['weekends']       = GeneralinfoTrait::getStat($period, 1);
+        $response['totalTime']      = AverageMarkTrait::getTotalTime($period);
+        $response['avgMark']        = AverageMarkTrait::getAvgMark($period, 1);
+        $response['ownAvgMark']     = AverageMarkTrait::getAvgMark($period, 2);
+        $response['medianMark']     = AverageMarkTrait::getMedianValue($period);
+        $response['medianOwnMark']  = AverageMarkTrait::getMedianValue($period, 2);
+        $response['maxMark']        = AverageMarkTrait::getExtremum($period);
+        $response['minMark']        = AverageMarkTrait::getExtremum($period, 2);
+        /*
+         * I have steal need to count:
+         * Completed days quantity
+         * Failed days quantity
+         * Emergency calls quantity
+         * Weekends quantity
+         *  */
 
         return $response;
     }
