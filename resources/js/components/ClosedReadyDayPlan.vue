@@ -8,11 +8,11 @@
 		<v-list>
 			<v-list-item>
 				<v-list-item-content class="key">Final mark:</v-list-item-content>
-				<v-list-item-content class="align-end">{{data.dayFinalMark}}</v-list-item-content>
+				<v-list-item-content class="align-end">{{data.dayFinalMark}} %</v-list-item-content>
 			</v-list-item>
 			<v-list-item>
 				<v-list-item-content class="key">Own mark:</v-list-item-content>
-				<v-list-item-content class="align-end">{{data.dayOwnMark}}</v-list-item-content>
+				<v-list-item-content class="align-end">{{data.dayOwnMark}} %</v-list-item-content>
 			</v-list-item>
 			<v-list-item>
 				<v-list-item-content class="key">Comment:</v-list-item-content>
@@ -73,8 +73,8 @@
 							'-1' : 'Fine (Day was not completed)',
 							'0' : 'Emergency mode',
 							'1' : 'Weekend mode',
-							'2' : 'Day plan in progress',
-							'3' : 'Completed (Day was successfully completed)'
+							'2' : 'In progress',
+							'3' : 'Success'
 						}[status]
 				}
 			}
