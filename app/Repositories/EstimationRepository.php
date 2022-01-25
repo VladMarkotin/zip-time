@@ -137,7 +137,10 @@ class EstimationRepository
             return true;
         }
         $finalMark = $this->sumMarks($timetableId); //считаю оценку каждого юзера
-        if($finalMark >= 50){
+        //Здесь надо проверить выполнены ли обязательные задачи, если они есть
+        $areRequiredTasksComplete = $this->checkRequiredTasks($timetableId);
+
+        if( ($finalMark >= 50) && ($areRequiredTasksComplete)){
             $data = [
                 "id"               => $timetableId,
                 "user_id"          => $data['user_id'],
@@ -166,7 +169,6 @@ class EstimationRepository
         }
 
         return false;
-
     }
 
     public function getEmergencyCall(array $data)
@@ -315,6 +317,19 @@ class EstimationRepository
         return $timeOfPlan[0]->Sum_Of_time;
     }
 
+    private function checkRequiredTasks($timetableId)
+    {
+        $response = (function () use ($timetableId){
+            $query = "SELECT SUM(tasks.mark)/COUNT(tasks.id) result  FROM tasks JOIN timetables ON tasks.timetable_id = timetables.id
+                       WHERE tasks.timetable_id = $timetableId AND tasks.type = 2";
+            $result = DB::select($query);
+            //die(var_dump($result));
+            return (($result[0]->result < 99) && (!is_null($result[0]->result))) ? false: true;
+        });
+
+        return $response();
+    }
+
     private function fillTimetablesTable(array $data, array $ids, $badFlag = 0)
     {
         if(!$badFlag){
@@ -328,7 +343,7 @@ class EstimationRepository
                         'comment'          => $data['comment'],
                         'necessary'        => '',
                         'for_tomorrow'     => '',
-                        "updated_at"       => Carbon::now(),
+                        "updated_at"       => DB::raw('CURRENT_TIMESTAMP(0)'),
                     ));
             }
         } else {
