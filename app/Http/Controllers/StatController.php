@@ -28,7 +28,7 @@ class StatController extends Controller
             $response                = $this->statService->getStat($data);
         }
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-        dd($response);
+
         return $response;
     }
 }
