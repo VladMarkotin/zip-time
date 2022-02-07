@@ -8,8 +8,10 @@
 namespace App\Repositories\HistRepositories;
 
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\HistRepositories\traits\TransformHistTrait;
+use Carbon\Carbon;
 
 class HistRepository
 {
@@ -17,25 +19,76 @@ class HistRepository
 
     public function getHist(array $period)
     {
+        //temp var! Later I will get it as element of $period array
+        $period['direction'] = -1; //direction of movement (-1 - back, 1 - forward)
+        $directionSign = function (array $period){
+            return ($period['direction'] < 0) ? '<' : '>';
+        };
         $this->period = $period;
+        $response     = [];
         /*It means that we have time period NOT a concrete date*/
         if(!isset($period["date"])){
             $response     = $this->getDataFromDB();
         }else{ //we got concrete date
-           $response = $this->getDataFromDB(1);
+            //check whether we have plan on this date
+            $data['id'] = Auth::id();
+            $data['date'] = $period['date'];
+            $data['direction'] = $directionSign($period);
+            //find quantity of plans according to date
+            $userHistLength = $this->userHistLength($data);
+            if($this->doWeHaveHist(['currentDate' => $period['date'] ])) {
+                $response = $this->getDataFromDB(1);
+                $response['histLength'] = $userHistLength = $this->userHistLength($data);
+            }else {
+                //try to find closest date with plan
+                if ($userHistLength > 0) {
+                    $i = 0;
+                    $currentDate = Carbon::createFromDate($period['date']);
+                    while ($i < $userHistLength) {
+                        if ($this->doWeHaveHist(['currentDate' => $currentDate->toDateString()]) !== 0) {
+                            //in query creation $this->period plays role of date,so I have to change it
+                            $this->period['date'] = $currentDate->toDateString();
+                            $response = $this->getDataFromDB(1);
+                            $response['histLength'] = $userHistLength;
+                        }
+                        $currentDate = $currentDate->subDay();
+                        $i++;
+                    }
+                }else{
+                    $response["histLength"] = 0;
+                }
+            }
         }
-
 
         return $response;
     }
 
+    private function doWeHaveHist(array $data) //$data = ['currentDate'=>'','timeDirection'=>'<|>']
+    {
+        $query = "SELECT COUNT(date) flag FROM `timetables` WHERE date =
+                   '{$data['currentDate']}'";
+        $response = DB::select($query);
+        $histLength = $response[0]->flag;
+
+        return $histLength;
+    }
+
+    private function userHistLength(array $data)
+    {
+        $query = "SELECT COUNT(id) flag FROM timetables WHERE user_id = $data[id] AND date $data[direction] '$data[date]' ";
+        $response = DB::select($query);
+
+        return $response[0]->flag;
+    }
+
     private function getDataFromDB($flag = 0)
     {
-        $query = "SELECT  timetables.id as t_id, timetables.user_id, timetables.date, timetables.day_status, timetables.final_estimation, timetables.own_estimation,
+        $_this = $this;
+        $query = "SELECT  timetables.id as t_id, timetables.user_id, timetables.date, timetables.day_status,
+                     timetables.final_estimation, timetables.own_estimation,
                     timetables.comment, tasks.id, tasks.hash_code, tasks.task_name, tasks.type, tasks.priority, tasks.details,
                      tasks.time, tasks.mark, tasks.note FROM timetables JOIN tasks ON timetables.id = tasks.timetable_id";
         if(!$flag){
-            $_this = $this;
             $addClosedDays = function () {
                 return " AND timetables.day_status = 3 ";
             };
@@ -77,4 +130,4 @@ class HistRepository
 
         return $history;
     }
-} 
+}
