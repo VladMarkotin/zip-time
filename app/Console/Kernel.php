@@ -30,8 +30,8 @@ class Kernel extends ConsoleKernel
             $repository->estimate();
         })
             ->timezone('Europe/Minsk')
-            ->dailyAt("14:46")
-            //->everyMinute()
+            //->dailyAt("14:46")
+            ->everyMinute()
             ->appendOutputTo(storage_path('logs/inspire.log'));
     }
 

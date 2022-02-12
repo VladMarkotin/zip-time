@@ -31,33 +31,15 @@ class HistRepository
             $response     = $this->getDataFromDB();
         }else{ //we got concrete date
             //check whether we have plan on this date
-            $data['id'] = Auth::id();
-            $data['date'] = $period['date'];
+            $data['id']        = Auth::id();
+            $data['date']      = $period['date'];
             $data['direction'] = $directionSign($period);
             //find quantity of plans according to date
             $userHistLength = $this->userHistLength($data);
             if($this->doWeHaveHist(['currentDate' => $period['date'] ])) {
                 $response = $this->getDataFromDB(1);
-                $response['histLength'] = $userHistLength = $this->userHistLength($data);
-            }else {
-                //try to find closest date with plan
-                if ($userHistLength > 0) {
-                    $i = 0;
-                    $currentDate = Carbon::createFromDate($period['date']);
-                    while ($i < $userHistLength) {
-                        if ($this->doWeHaveHist(['currentDate' => $currentDate->toDateString()]) !== 0) {
-                            //in query creation $this->period plays role of date,so I have to change it
-                            $this->period['date'] = $currentDate->toDateString();
-                            $response = $this->getDataFromDB(1);
-                            $response['histLength'] = $userHistLength;
-                        }
-                        $currentDate = $currentDate->subDay();
-                        $i++;
-                    }
-                }else{
-                    $response["histLength"] = 0;
-                }
             }
+            $response['histLength'] = $userHistLength;
         }
 
         return $response;
@@ -75,7 +57,8 @@ class HistRepository
 
     private function userHistLength(array $data)
     {
-        $query = "SELECT COUNT(id) flag FROM timetables WHERE user_id = $data[id] AND date $data[direction] '$data[date]' ";
+        $query = "SELECT COUNT(id) flag FROM timetables WHERE user_id = $data[id]
+                    AND date $data[direction] '$data[date]' ";
         $response = DB::select($query);
 
         return $response[0]->flag;
@@ -83,7 +66,6 @@ class HistRepository
 
     private function getDataFromDB($flag = 0)
     {
-        $_this = $this;
         $query = "SELECT  timetables.id as t_id, timetables.user_id, timetables.date, timetables.day_status,
                      timetables.final_estimation, timetables.own_estimation,
                     timetables.comment, tasks.id, tasks.hash_code, tasks.task_name, tasks.type, tasks.priority, tasks.details,
@@ -92,7 +74,7 @@ class HistRepository
             $addClosedDays = function () {
                 return " AND timetables.day_status = 3 ";
             };
-            $addWeekends = function () use ($_this){
+            $addWeekends = function (){
                 $query = "";
                 if($this->period['with_weekend']){
                     $query = " OR timetables.day_status = 1 ";
@@ -100,7 +82,7 @@ class HistRepository
 
                 return $query;
             };
-            $addWithFailed = function () use ($_this){
+            $addWithFailed = function (){
                 $query = "";
                 if($this->period['with_weekend']){
                     $query = " OR timetables.day_status = -1 ";
