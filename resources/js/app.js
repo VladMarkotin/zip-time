@@ -1,14 +1,12 @@
 require('./bootstrap')
 
 import Vuetify from 'vuetify'
-import Vuelidate from 'vuelidate'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/dist/vuetify.min.css'
 
 window.Vue = require('vue').default
 
 Vue.use(Vuetify)
-Vue.use(Vuelidate)
 
 Vue.component('ClosedReadyDayPlan',require('./components/ClosedReadyDayPlan.vue').default)
 Vue.component('Facebook',require('./components/Facebook.vue').default)
