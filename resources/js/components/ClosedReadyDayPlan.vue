@@ -3,7 +3,7 @@
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>Date: {{date.toEnStr()}}</span>
 			<span>Finished</span>
-			<span>Status: {{getDayStatus(data.dayStatus)}}</span>
+			<span>Status: {{getDayStatusName(data.dayStatus)}}</span>
 		</v-card-title>
 		<v-list>
 			<v-list-item>
@@ -22,7 +22,7 @@
 		<v-card-actions class="d-flex justify-space-between">
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDataByDate(date = date.subtractDays(1))">
+					<v-btn icon v-on="on" v-on:click="setData(date = date.subtractDays(1),-1)" v-bind:disabled="disabled.prevButton">
 						<v-icon color="#D71700" large>{{icons.mdiArrowLeft}}</v-icon>
 					</v-btn>
 				</template>
@@ -30,7 +30,7 @@
 			</v-tooltip>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDataByDate(date = new Date())">
+					<v-btn icon v-on="on" v-on:click="setData(date = new Date(),0)">
 						<v-icon color="#D71700" large>{{icons.mdiCalendarToday}}</v-icon>
 					</v-btn>
 				</template>
@@ -38,7 +38,7 @@
 			</v-tooltip>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDataByDate(date = date.addDays(1))">
+					<v-btn icon v-on="on" v-on:click="setData(date = date.addDays(1),1)" v-bind:disabled="disabled.nextButton">
 						<v-icon color="#D71700" large>{{icons.mdiArrowRight}}</v-icon>
 					</v-btn>
 				</template>
@@ -54,20 +54,22 @@
 		props : ['data'],
 		data()
 		{
-			return {date : new Date(),icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight}}
+			return {date : new Date(),icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight},disabled : {prevButton : false,nextButton : true}}
 		},
 		methods :
 			{
-				async setDataByDate(date)
+				async setData(date,direction)
 				{
 					const strDate = date.toEnStr()
-					const response = await axios.get(`/hist/${strDate}`)
-					this.data.dayStatus = response.data.plans[strDate].dayStatus
-					this.data.dayFinalMark = response.data.plans[strDate].dayFinalMark
-					this.data.dayOwnMark = response.data.plans[strDate].dayOwnMark
-					this.data.comment = response.data.plans[strDate].comment
+					const data = (await axios.get(`/hist/${strDate}`,{params : {direction}})).data
+					this.data.dayStatus = data.plans[strDate].dayStatus
+					this.data.dayFinalMark = data.plans[strDate].dayFinalMark
+					this.data.dayOwnMark = data.plans[strDate].dayOwnMark
+					this.data.comment = data.plans[strDate].comment
+					this.disabled.prevButton = data.histLength == 0 
+					this.disabled.nextButton = date.toEnStr() == new Date().toEnStr()
 				},
-				getDayStatus(status)
+				getDayStatusName(statusCode)
 				{
 					return {
 							'-1' : 'Fine (Day was not completed)',
@@ -75,7 +77,7 @@
 							'1' : 'Weekend mode',
 							'2' : 'In progress',
 							'3' : 'Success'
-						}[status]
+						}[statusCode]
 				}
 			}
 	}
