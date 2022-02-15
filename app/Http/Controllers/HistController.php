@@ -34,6 +34,7 @@ class HistController extends Controller
     public function histOnDate(Request $request)
     {
         $data = $request->route()->parameters();
+        $data["direction"] = $request->input('direction');
         $response = $this->histService->getHist($data);
 
         return $response;

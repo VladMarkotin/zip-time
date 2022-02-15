@@ -19,10 +19,15 @@ class HistRepository
 
     public function getHist(array $period)
     {
-        //temp var! Later I will get it as element of $period array
-        $period['direction'] = -1; //direction of movement (-1 - back, 1 - forward)
+        //direction of movement (-1 - back, 1 - forward)
         $directionSign = function (array $period){
-            return ($period['direction'] < 0) ? '<' : '>';
+            if($period['direction'] < 0){
+                return '<';
+            }elseif($period['direction'] == 0){
+                return '=';
+            }else{
+                return '>';
+            }
         };
         $this->period = $period;
         $response     = [];
@@ -34,6 +39,7 @@ class HistRepository
             $data['id']        = Auth::id();
             $data['date']      = $period['date'];
             $data['direction'] = $directionSign($period);
+
             //find quantity of plans according to date
             $userHistLength = $this->userHistLength($data);
             if($this->doWeHaveHist(['currentDate' => $period['date'] ])) {
@@ -98,17 +104,17 @@ class HistRepository
 
                 return $query;
             };
-            $closedDays = $addClosedDays();
-            $weekend    = $addWeekends();
-            $withFailed = $addWithFailed();
+            $closedDays    = $addClosedDays();
+            $weekend       = $addWeekends();
+            $withFailed    = $addWithFailed();
             $withEmergency = $addWithEmergency();
-            $query .= " WHERE timetables.date BETWEEN '".$this->period['from'] ."' AND '".$this->period['to']."'$closedDays $weekend $withFailed $withEmergency";
-            $response = DB::select($query);
+            $query        .= " WHERE timetables.date BETWEEN '".$this->period['from'] ."' AND '".$this->period['to']."'$closedDays $weekend $withFailed $withEmergency";
+            $response      = DB::select($query);
         }else{ //Here we take history on concrete day
-            $query .=  " WHERE timetables.date = '".$this->period['date'] ."'";
-            $response = DB::select($query);
+            $query        .=  " WHERE timetables.date = '".$this->period['date'] ."'";
+            $response      = DB::select($query);
         }
-        $history = TransformHistTrait::transformData($response, $this->period);
+        $history           = TransformHistTrait::transformData($response, $this->period);
 
         return $history;
     }
