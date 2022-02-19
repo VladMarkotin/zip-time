@@ -16,8 +16,10 @@
         "laravel/ui": "^3.2",
         "markrogoyski/math-php": "2.*",
         "nesbot/carbon": "^2.46",
+        "pusher/pusher-php-server": "^7.0",
         "richjenks/stats": "^1.0",
-        "socialiteproviders/facebook": "^4.1"
+        "socialiteproviders/facebook": "^4.1",
+        "ext-pthreads": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

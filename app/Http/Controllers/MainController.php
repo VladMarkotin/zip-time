@@ -25,6 +25,10 @@ use App\Http\Controllers\Services\EstimationService;
 use App\Repositories\EstimationRepository;
 use App\Models\Tasks;
 use Illuminate\Support\Facades\DB;
+/* Dependencies for notifications */
+use Thread;
+use App\Notifications\UserNotification;
+/* end */
 
 class MainController
 {
@@ -40,6 +44,7 @@ class MainController
     private $estimationService         = null;
     private $taskModel                 = null;
     private $estimationRepository      = null;
+    private $userNotification          = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -51,7 +56,8 @@ class MainController
                                 DataTransformationService $dataTransformationService,
                                 EstimationService $estimationService,
                                 EstimationRepository $estimationRepository,
-                                Tasks $tasks)
+                                Tasks $tasks,
+                                UserNotification $userNotification)
     {
         $this->savedTaskRepository       = $taskRepository;
         $this->savedTaskService          = $codeService;
@@ -65,6 +71,7 @@ class MainController
         $this->estimationService         = $estimationService;
         $this->estimationRepository      = $estimationRepository;
         $this->taskModel                 = $tasks;
+        $this->userNotification          = $userNotification;
     }
 
     public function addHashCode(Request $request)
@@ -266,6 +273,13 @@ class MainController
         }
 
         return $response;
+    }
+
+    /*
+     * Method for getting notifications */
+    public function getNotifications(Request $request, Thread $thread)
+    {
+        \auth()->user()->notify($this->userNotification);
     }
 
     private function getLastTimetableId()
