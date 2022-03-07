@@ -8,22 +8,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User as User;
+use App\Models\RemindModel;
 
 class UserNotification extends Notification
 {
     use Queueable;
 
-    private $user;
+    private $remindModel = null;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user)//$user
+    public function __construct(RemindModel $remindModel)//$user
     {
-        $this->user = $user;
+        $this->remindModel = $remindModel;
     }
 
     /**
@@ -48,9 +48,11 @@ class UserNotification extends Notification
         //This array responsible for containing fields which will storage in db
         //So I need to place notification info here
         return [
-            'id'    => Auth::id(),
-            'text'  => $this->user->name,
-            'time'  => ''
+            'userId'   => Auth::id(),
+            'date'     => $this->remindModel->date,
+            'time'     => $this->remindModel->time,
+            'text'     => $this->remindModel->text,
+            'isActive' => $this->remindModel->is_active
         ];
     }
     /**
@@ -62,7 +64,12 @@ class UserNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'userNotifyTime' => Carbon::now()
+            'userId'   => Auth::id(),
+            'date'     => $this->remindModel->date,
+            'time'     => $this->remindModel->time,
+            'text'     => $this->remindModel->text,
+            'isActive' => $this->remindModel->is_active,
+            'userNotifyTime' => Carbon::now(),
         ];
     }
 }

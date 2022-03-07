@@ -16,6 +16,7 @@ class CreateRemindModelsTable extends Migration
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id"); //связь с пользователем
+            $table->boolean('is_active')->default(1);//активно ли напоминание
             $table->date('date'); //дата, когда сработает напоминание
             $table->time('time'); //время, когда сработает напоминание
             $table->string('text'); //текст напоминания
