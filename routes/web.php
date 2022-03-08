@@ -56,6 +56,11 @@ Route::middleware(['auth'])->group(function () {
     });
     //end statistic
 
-//emergency
+    //emergency
     Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index']);
+
+    Route::resource('notify', 'App\Http\Controllers\RemindModelController', ['except' => []]);
 });
+
+
+

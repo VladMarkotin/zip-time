@@ -8,6 +8,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\UserNotify;
 use App\Listeners\SendUserNotification;
+use App\Notifications\UserNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -20,8 +21,8 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        UserNotify::class => [
-            SendUserNotification::class,
+        SendUserNotification::class => [
+            UserNotification::class,
         ],
     ];
 
@@ -32,6 +33,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        parent::boot();
         //
     }
 }

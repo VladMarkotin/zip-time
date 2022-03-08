@@ -21,7 +21,7 @@ class UserNotification extends Notification
      *
      * @return void
      */
-    public function __construct(RemindModel $remindModel)//$user
+    public function __construct($remindModel = null)//$remind
     {
         $this->remindModel = $remindModel;
     }
@@ -48,28 +48,10 @@ class UserNotification extends Notification
         //This array responsible for containing fields which will storage in db
         //So I need to place notification info here
         return [
-            'userId'   => Auth::id(),
-            'date'     => $this->remindModel->date,
-            'time'     => $this->remindModel->time,
-            'text'     => $this->remindModel->text,
-            'isActive' => $this->remindModel->is_active
-        ];
-    }
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            'userId'   => Auth::id(),
-            'date'     => $this->remindModel->date,
-            'time'     => $this->remindModel->time,
-            'text'     => $this->remindModel->text,
-            'isActive' => $this->remindModel->is_active,
-            'userNotifyTime' => Carbon::now(),
+            'type'    => '1', //0-system, 1 - user`s
+            'data'    => $this->remindModel['text'],
+            'date'    => $this->remindModel['date'],
+            'time'    => $this->remindModel['time'],
         ];
     }
 }
