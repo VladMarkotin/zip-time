@@ -1,46 +1,28 @@
 require('./bootstrap')
 
+import Vue from 'vue'
 import Vuetify from 'vuetify'
+import functions from './functions'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/dist/vuetify.min.css'
 
-window.Vue = require('vue').default
-
 Vue.use(Vuetify)
-
-Vue.component('ClosedReadyDayPlan',require('./components/ClosedReadyDayPlan.vue').default)
-Vue.component('Facebook',require('./components/Facebook.vue').default)
-Vue.component('Plan',require('./components/Plan.vue').default)
-Vue.component('ReadyDayPlan',require('./components/ReadyDayPlan.vue').default)
-
-Date.prototype.addDays =
-	function (days)
-	{
-		this.setDate(this.getDate() + days)
-		return this
-	}
-Date.prototype.subtractDays =
-	function (days)
-	{
-		this.setDate(this.getDate() - days)
-		return this
-	}
-Date.prototype.toEnStr =
-	function ()
-	{
-		return this.toISOString().substr(0,10)
-	}
+Vue.component('ClosedReadyDayPlan', require('./components/cards/ClosedReadyDayPlan.vue').default)
+Vue.component('Plan', require('./components/cards/Plan.vue').default)
+Vue.component('Stat', require('./components/cards/Stat.vue').default)
+Vue.component('Facebook', require('./components/Facebook.vue').default)
+Vue.component('ReadyDayPlan', require('./components/ReadyDayPlan.vue').default)
 
 const app =
 	new Vue
 		(
 			{
-				el : '#app',
-				loader : 'vue-loader',
-				vuetify : new Vuetify(),
-				components : {app},
-				data : {alertDelay : 5e3,currComponent : {name : '',props : {}}},
-				computed :
+				el: '#app',
+				loader: 'vue-loader',
+				vuetify: new Vuetify(),
+				components: {app},
+				data: {alertDelay: 5e3, currComponent: {name: '', props: {}}},
+				computed:
 				{
 					currComponentName()
 					{

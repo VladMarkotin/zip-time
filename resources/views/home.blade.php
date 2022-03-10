@@ -2,13 +2,14 @@
 @section('content')
 <div class="container">
 	<v-app>
-		<component v-bind:is="currComponentName" v-bind:data="currComponentProps"/>
+		<button style="text-decoration: underline;" v-on:click="currComponent.name = 'Stat'">Statistics</button>
+		<component v-bind:is="currComponentName" v-bind:data="currComponentProps">
 	</v-app>
 </div>
 @endsection
-<style type="text/css">
+<style>
 	#app
 	{
-		background : initial
+		background: initial;
 	}
 </style>
