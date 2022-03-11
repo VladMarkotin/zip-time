@@ -13,46 +13,47 @@
             <v-row align="center" class="d-flex mb-6">
                <v-col cols="1" md="1" v-if="defaultSelected.hash == '#'">
                   <div class="text-center">
-                     <v-dialog
-                        v-model="dialog"
-                        width="500"
-                        >
+                     <v-dialog max-width="650px" persistent v-model="dialog">
                         <template #activator="{ on: dialog }">
                            <v-tooltip right>
                               <template v-slot:activator="{ on:tooltip  }">
                                  <v-btn icon v-on="{ ...tooltip, ...dialog }" v-show="showIcon > 3">
                                     <v-icon md="1"
                                        color="#D71700"
-                                       > {{icons.mdiPlus}}
+                                       > {{icons.mdiPlusBox}}
                                     </v-icon>
                                  </v-btn>
                               </template>
                               <span>Add hash-code to task for quick access</span>
                            </v-tooltip>
+                           
                         </template>
-                        <v-card>
-                           <v-card-title class="headline grey lighten-2" >
-                              Add #code for this task
-                           </v-card-title>
-                           <v-card-text>
-                              <v-text-field
-                                 v-model="newHashCode"
-                                 @keypress.enter = "addNewHashCode()"
-                                 placeholder="#"></v-text-field>
-                           </v-card-text>
-                           <v-divider></v-divider>
-                           <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn
-                                 color="#D71700"
-                                 text
-                                 @click = "addNewHashCode()"
-                                 >
-                                 Add
-                              </v-btn>
-                           </v-card-actions>
-                        </v-card>
-                     </v-dialog>
+		<v-card>
+			<v-card-title class="font-weight-bold v-card-title">Add #code</v-card-title>
+			<v-card-text>
+				<v-text-field label="#code" required v-model="newHashCode"></v-text-field>
+			</v-card-text>
+			<v-divider></v-divider>
+			<v-card-actions class="justify-space-between v-card-actions">
+				<v-tooltip right>
+					<template v-slot:activator="{on}">
+						<v-btn icon v-on="on" v-on:click="addHashCode">
+							<v-icon color="#D71700" large>{{icons.mdiPlusBox}}</v-icon>
+						</v-btn>
+					</template>
+					<span>Add #code</span>
+				</v-tooltip>
+            <v-tooltip right>
+					<template v-slot:activator="{on}">
+						<v-btn icon v-on="on" v-on:click="cleanHashCode">
+							<v-icon color="#D71700" large>{{icons.mdiCancel}}</v-icon>
+						</v-btn>
+					</template>
+					<span>Cancel</span>
+				</v-tooltip>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>
                   </div>
                </v-col>
                <v-col
@@ -232,7 +233,9 @@ import {
     mdiStarThreePointsOutline,
     mdiAlarm,
     mdiCarEmergency,
-    mdiPlus
+    mdiPlus,
+    mdiPlusBox,
+    mdiCancel
 } from '@mdi/js'
 
 export default {
@@ -305,6 +308,8 @@ export default {
             mdiStarThreePointsOutline,
             mdiAlarm,
             mdiPlus,
+            mdiPlusBox,
+            mdiCancel,
             mdiCarEmergency,
         },
         hashCodes: [],
@@ -379,17 +384,28 @@ export default {
             this.items.splice(index, 1);
         },
 
-        addNewHashCode() {
-            if ((this.newHashCode.length <= 6) && (this.newHashCode.length >= 3)) {
-                if (this.newHashCode.indexOf('#') !== -1) {
-                    this.addNewHashCodePost();
-                    this.defaultSelected.hashCodes.unshift(this.newHashCode);
-                    this.dialog = false;
-                } else {
-                    this.newHashCode = '#' + this.newHashCode
-                }
-            }
-        },
+        addHashCode()
+				{
+               debugger
+					if (this.newHashCode.length >= 3 && this.newHashCode.length <= 6)
+					{
+						if (this.newHashCode.includes('#'))
+						{
+							this.addNewHashCodePost();
+							this.defaultSelected.hashCodes.unshift(this.newHashCode);
+                     this.dialog = false;
+						}
+						else
+						{
+							this.newHashCode = `#${this.newHashCode}`
+						}
+					}
+				},
+         cleanHashCode()
+				{
+               this.newHashCode = ``
+					this.dialog = false;
+				},
 
         formSubmit(e) {
             let currentObj = this;
