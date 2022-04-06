@@ -31,12 +31,13 @@ class StatService
         if(!$period){
             //$period["type"]         = 0; //?
             $period["from"]           = $this->carbon->startOfWeek()->subDays(7)->toDateString();
+            //$period["from"]           = Carbon::createFromFormat('Y-m-d' , $period['from']);
             $period["to"]             = $this->carbon->endOfWeek()->subDays(1)->toDateString();
             if(isset($period['date'])){ //later change the condition (delete "!")
                 $period['date']       = Carbon::today();
             }
         }
-        $response['marks'] = $this->statRepository->getStat($period, 0);
+        $response['marks']    = $this->statRepository->getStat($period, 0);
         $response['mainStat'] = $this->statRepository->getStat($period, 1);
 
         return $response;
