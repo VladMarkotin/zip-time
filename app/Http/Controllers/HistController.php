@@ -28,7 +28,6 @@ class HistController extends Controller
         }
 
         return $response;
-
     }
 
     public function histOnDate(Request $request)

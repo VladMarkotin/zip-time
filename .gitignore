@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
+composer.lock
 .env
 .env.backup
 .phpunit.result.cache
@@ -15,8 +16,4 @@ npm-debug.log
 yarn-error.log
 git_inf.txt
 /.idea
-<<<<<<< HEAD
-
-=======
-_meta_
->>>>>>> child
+/_meta_

@@ -18,7 +18,9 @@ class SavedTask2Repository
     {
         $savedTasks = DB::table('saved_tasks')
             ->select(DB::raw('hash_code'))
-            ->where('user_id','=', $id)->get()->toArray();
+            ->where('user_id','=', $id)
+            ->where('status', 1)
+            ->get()->toArray();
 
         return ($savedTasks);
     }
