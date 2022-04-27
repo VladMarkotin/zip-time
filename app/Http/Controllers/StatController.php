@@ -21,7 +21,7 @@ class StatController extends Controller
         } else{
             $data["from"]            = $request->get('from');
             $data["to"]              = $request->get('to');
-            $data["date"]            = ($data["date"]) ? $request->get('date') : null;
+            //$data["date"]            = ($data["date"]) ? $request->get('date') : null;
             $data["with_failed"]     = $request->get('with_failed');
             $data["with_weekend"]    = $request->get('with_weekend');
             $data["with_emergency"]  = $request->get('with_emergency');
