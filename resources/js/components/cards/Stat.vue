@@ -2,29 +2,63 @@
 	<v-card>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>Set Timeframe:</span>
-			<div>
-				From:
-				<v-text-field></v-text-field>
-				To:
-				<v-text-field></v-text-field>
-			</div>
+			<table>
+				<tr>
+					<td>From:</td>
+					<td>
+						<v-text-field/>
+					</td>
+				</tr>
+				<tr>
+					<td>To:</td>
+					<td>
+						<v-text-field/>
+					</td>
+				</tr>
+			</table>
 			<v-btn>Apply</v-btn>
 		</v-card-title>
-		<v-list>
-			<v-list-item>
-				<v-list-item-content>@Key:</v-list-item-content>
-				<v-list-item-content class="align-end">@val</v-list-item-content>
-			</v-list-item>
-			<v-list-item>
-				<v-list-item-content>@Key2:</v-list-item-content>
-				<v-list-item-content class="align-end">@val2</v-list-item-content>
-			</v-list-item>
-		</v-list>
-		<v-divider></v-divider>
-		<v-card-title class="font-weight-bold">
-		</v-card-title>
+		<v-card-text>
+			<Chart v-bind:finalMarks="finalMarks" v-bind:ownMarks="ownMarks"/>
+		</v-card-text>
+		<!-- Хз почему без этой строки не отображается график -->
+		{{finalMarks.unknownVar}}
 	</v-card>
 </template>
 <script>
-	export default {}
+	import Chart from '../Chart.vue';
+	export default
+		{
+			components: {Chart},
+			data()
+			{
+				return {finalMarks: null, ownMarks: null};
+			},
+			methods:
+				{
+					async loadMarks()
+					{
+						const data = (await axios.get('/stat')).data;
+						this.finalMarks = data.marks.finalMarks;
+						this.ownMarks = data.marks.ownMarks;
+					}
+				},
+			beforeMount()
+			{
+				this.loadMarks();
+			}
+		};
 </script>
+<style scoped>
+	.v-card-title
+	{
+		background-color: #A10000;
+		color: white;
+	}
+	td
+	{
+		background-color: #A10000;
+		color: white;
+		font-weight: bold;
+	}
+</style>
