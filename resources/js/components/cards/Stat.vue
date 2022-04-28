@@ -19,10 +19,48 @@
 			<v-btn>Apply</v-btn>
 		</v-card-title>
 		<v-card-text>
+			<v-list>
+				<v-list-item>
+					<v-list-item-content>Completed days:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.completedDays}}</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>Failed days:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.failedDays}}</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>Emergency calls:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.emergencyModes}}</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>Weekends:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.weekends}}</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>Total time:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.totalTime}}</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>Average mark:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.avgMark}}</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>Average own mark:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.ownAvgMark}}</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>Max mark:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.maxMark}}</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>Min mark:</v-list-item-content>
+					<v-list-item-content class="align-end">{{mainStat.minMark}}</v-list-item-content>
+				</v-list-item>
+			</v-list>
+		</v-card-text>
+		<v-card-text>
 			<Chart v-bind:finalMarks="finalMarks" v-bind:ownMarks="ownMarks"/>
 		</v-card-text>
-		<!-- Хз почему без этой строки не отображается график -->
-		{{finalMarks.unknownVar}}
 	</v-card>
 </template>
 <script>
@@ -32,13 +70,14 @@
 			components: {Chart},
 			data()
 			{
-				return {finalMarks: null, ownMarks: null};
+				return {mainStat: null, finalMarks: null, ownMarks: null};
 			},
 			methods:
 				{
 					async loadMarks()
 					{
 						const data = (await axios.get('/stat')).data;
+						this.mainStat = data.mainStat;
 						this.finalMarks = data.marks.finalMarks;
 						this.ownMarks = data.marks.ownMarks;
 					}
