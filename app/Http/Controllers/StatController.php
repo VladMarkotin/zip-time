@@ -23,6 +23,8 @@ class StatController extends Controller
             $data["to"]              = $request->get('to');
             $response                = $this->statService->getStat($data);
         }
+        $response["marks"]["finalMarks"] = array_values($response["marks"]["finalMarks"]);
+        $response["marks"]["ownMarks"]   = array_values($response["marks"]["ownMarks"]);
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
 
         return $response;
