@@ -73,15 +73,18 @@ class StatRepository
         $response['ownMarks']   = GetInfoForGraficTrait::getInfoForGraphics($period, 2);
         if(count($response['finalMarks']) > 0){
             foreach($response['finalMarks'] as $index =>$obj){
-                array_push($response['finalMarks'],Carbon::createFromFormat('Y-m-d' , $obj->date)->timestamp . "000",
-                            $obj->final_estimation);
+                $tempArr[] = intval(Carbon::createFromFormat('Y-m-d' , $obj->date)->timestamp . "000");
+                $tempArr[] = $obj->final_estimation;
+                array_push($response['finalMarks'], $tempArr);
                 unset($response['finalMarks'][$index]);
             }
         }
         if(count($response['ownMarks']) > 0){
             foreach ($response['ownMarks'] as $index => $obj){
-                array_push($response['ownMarks'], Carbon::createFromFormat('Y-m-d' , $obj->date)->timestamp."000", 
-                            $obj->own_estimation);//$obj->date
+                $tempArr = [];
+                $tempArr[] = intval(Carbon::createFromFormat('Y-m-d' , $obj->date)->timestamp . "000");
+                $tempArr[] = $obj->own_estimation;
+                array_push($response['ownMarks'], $tempArr);//$obj->date
                 unset($response['ownMarks'][$index]);
             }
         }
