@@ -78,7 +78,7 @@ trait AverageMarkTrait
             $query = "SELECT ROUND(MAX(final_estimation),2) maxMark FROM `timetables` WHERE user_id = $data[id]
                                                                                AND day_status = 3 ";
         } else{
-            $query = "SELECT ROUND(MIN(final_estimation)) minMark FROM `timetables` WHERE user_id = $data[id]
+            $query = "SELECT ROUND(MIN(final_estimation), 2) minMark FROM `timetables` WHERE user_id = $data[id]
                                                                                AND day_status = 3";
         }
 
