@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "beyondcode/laravel-websockets": "^1.13",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -16,6 +17,7 @@
         "laravel/ui": "^3.2",
         "markrogoyski/math-php": "2.*",
         "nesbot/carbon": "^2.46",
+        "pusher/pusher-php-server": "~3.0",
         "richjenks/stats": "^1.0",
         "socialiteproviders/facebook": "^4.1"
     },

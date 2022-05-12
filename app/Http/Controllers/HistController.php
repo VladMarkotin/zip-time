@@ -28,12 +28,12 @@ class HistController extends Controller
         }
 
         return $response;
-
     }
 
     public function histOnDate(Request $request)
     {
         $data = $request->route()->parameters();
+        $data["direction"] = $request->input('direction');
         $response = $this->histService->getHist($data);
 
         return $response;

@@ -11,6 +11,7 @@ namespace App\Repositories\StatRepositories;
 use App\Repositories\StatRepositories\traits\AverageMarkTrait;
 use App\Repositories\StatRepositories\traits\GetInfoForGraficTrait;
 use App\Repositories\StatRepositories\traits\GeneralinfoTrait;
+use Carbon\Carbon;
 
 class StatRepository
 {
@@ -36,8 +37,10 @@ class StatRepository
     private function getStatForPeriod($period)
     {
         /*Get stat for the period. Stat means: AVG mark, AVG personal mark, Max Mark, Min Mark, Median Mark*/
-        $response['from']           = $period['from'];
-        $response['to']             = $period['to'];
+        //$response['from']           = $period['from'];
+        $response['from']           = Carbon::createFromFormat('Y-m-d' , $period['from'])->timestamp;
+        //$response['to']             = $period['to'];
+        $response['to']             = Carbon::createFromFormat('Y-m-d' , $period['to'])->timestamp;
         $response['completedDays']  = GeneralinfoTrait::getStat($period, 3);
         $response['failedDays']     = GeneralinfoTrait::getStat($period, -1);
         $response['emergencyModes'] = GeneralinfoTrait::getStat($period, 0);
@@ -70,13 +73,20 @@ class StatRepository
         $response['ownMarks']   = GetInfoForGraficTrait::getInfoForGraphics($period, 2);
         if(count($response['finalMarks']) > 0){
             foreach($response['finalMarks'] as $index =>$obj){
-                $response['finalMarks'][$obj->date] = $obj->final_estimation;
+                $tempArr[] = intval(Carbon::createFromFormat('Y-m-d' , $obj->date)->timestamp . "000");
+                $tempArr[] = $obj->final_estimation;
+                array_push($response['finalMarks'], $tempArr);
+                $tempArr = [];
                 unset($response['finalMarks'][$index]);
             }
         }
         if(count($response['ownMarks']) > 0){
             foreach ($response['ownMarks'] as $index => $obj){
-                $response['ownMarks'][$obj->date] = $obj->own_estimation;
+                $tempArr = [];
+                $tempArr[] = intval(Carbon::createFromFormat('Y-m-d' , $obj->date)->timestamp . "000");
+                $tempArr[] = $obj->own_estimation;
+                array_push($response['ownMarks'], $tempArr);
+                $tempArr = [];
                 unset($response['ownMarks'][$index]);
             }
         }

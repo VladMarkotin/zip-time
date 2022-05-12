@@ -116,6 +116,8 @@
 								notes : ''
 							}
 						)
+					this.hashCodes.unshift(hashCode)
+					this.task.hashCode = hashCode
 				},
 				toggleAddHashCodeDialog()
 				{

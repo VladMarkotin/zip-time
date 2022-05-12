@@ -11,7 +11,7 @@
 						<v-col cols="12" sm="5">
 							<v-text-field label="Date period" prepend-icon="mdi-calendar" readonly v-model="dateRangeText"></v-text-field>
 						</v-col>
-					</v-row>							
+					</v-row>
 					<v-row>
 						<v-col cols="12">
 							<v-textarea counter="256" label="Comment" rows="2" outlined shaped v-model="comment" style="margin-top : -25px"></v-textarea>
