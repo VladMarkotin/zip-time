@@ -76,6 +76,7 @@ class StatRepository
                 $tempArr[] = intval(Carbon::createFromFormat('Y-m-d' , $obj->date)->timestamp . "000");
                 $tempArr[] = $obj->final_estimation;
                 array_push($response['finalMarks'], $tempArr);
+                $tempArr = [];
                 unset($response['finalMarks'][$index]);
             }
         }
@@ -84,11 +85,11 @@ class StatRepository
                 $tempArr = [];
                 $tempArr[] = intval(Carbon::createFromFormat('Y-m-d' , $obj->date)->timestamp . "000");
                 $tempArr[] = $obj->own_estimation;
-                array_push($response['ownMarks'], $tempArr);//$obj->date
+                array_push($response['ownMarks'], $tempArr);
+                $tempArr = [];
                 unset($response['ownMarks'][$index]);
             }
         }
-        //dd($response);
 
         return $response;
     }
