@@ -59,12 +59,13 @@ Route::middleware(['auth'])->group(function () {
 //emergency
     Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index']);
 
-    //statistic
-    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index']);
-    Route::get('/settings/{setting}', [App\Http\Controllers\SettingsController::class, 'index']);
+    
 
 
 });
+//settings
+Route::get('/settings',  [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
+Route::get('/settings/{setting}', [App\Http\Controllers\SettingsController::class, 'index']);
 
 Route::get('/event', function (){
     event(new \App\Events\MessageNotification('test broadcast'));
