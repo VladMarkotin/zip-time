@@ -41,7 +41,11 @@
                   <td>{{$sT->details}}</td>
                   <td>{{$sT->time}}</td>
                   <td><button class="btn btn-light" style="background-color: #f5f4f2;">Edit</button></td>
-                  <td><button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger">Delete</button></td>
+                  @if(!$sT->status)
+                     <td><button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button></td>
+                  @else
+                      <td><button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger">Disable</button></td>
+                  @endif
                 </tr>
                
           @endforeach

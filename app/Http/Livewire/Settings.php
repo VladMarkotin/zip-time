@@ -17,8 +17,7 @@ class Settings extends Component
     {
         $this->savedTasks = $savedTask->where('user_id', Auth::id())
             ->paginate(5);
-            //->toArray();
-        //dd($this->savedTasks);
+
         return view('livewire.settings', [
             "savedTasks" => $this->savedTasks
         ]);
@@ -26,13 +25,13 @@ class Settings extends Component
 
     public function destroy(SavedTask $savedTask)
     {
-        if($savedTask){
-           $savedTask->delete(); 
+        if($savedTask->status){
+            $savedTask->status = 0;
+            $savedTask->save();
+        }else{
+            $savedTask->status = 1;
+            $savedTask->save();
         }
-        /*if($id){
-            $sT = SavedTask::where('id', $id)->where('user_id', Auth::id());
-            ($sT) ? $sT->delete() : '';
-        }*/
     }
 
     public function edit($id)
