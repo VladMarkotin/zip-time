@@ -12,6 +12,8 @@ class Settings extends Component
     use WithPagination;
 
     private $savedTasks = [];
+    public $sT = null;
+    public $taskName, $type, $priority, $time, $taskId;
 
     public function render(SavedTask $savedTask)
     {
@@ -37,8 +39,34 @@ class Settings extends Component
     public function edit($id)
     {
         if($id){
-            $sT = SavedTask::where('id', $id)->where('user_id', Auth::id());
-            
+            $this->sT = SavedTask::where('id', $id)->where('user_id', Auth::id())->get()->toArray();
+            //dd($this->sT[0]['task_name']);
+            $this->taskName = $this->sT[0]['task_name'];
+            $this->priority = $this->sT[0]['priority'];
+            $this->type     = $this->sT[0]['type'];
+            $this->time     = $this->sT[0]['time'];
+            $this->taskId   = $id;
+        }
+    }
+
+    public function update()
+    {
+        //dd($this->taskName);
+        /*$validatedDate = $this->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+        ]);*/
+
+        if (Auth::id()) { //check the condithion
+            $savedTask = SavedTask::find($this->taskId);
+            //dd($savedTask);
+            $savedTask->update([
+                'task_name' => $this->taskName,
+                'type'      => $this->type,
+                'priority'  => $this->priority,
+                'time'      => $this->time
+            ]);
+            session()->flash('message', 'Users Updated Successfully.');
         }
     }
 }

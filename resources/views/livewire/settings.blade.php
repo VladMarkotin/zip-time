@@ -1,4 +1,5 @@
 <div class="container" style="display:flex; justify-content:space-around;">
+   @include('livewire.update')
   <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
            aria-controls="v-pills-home" aria-selected="true">
@@ -40,7 +41,12 @@
                   <td>{{$sT->priority}}</td>
                   <td>{{$sT->details}}</td>
                   <td>{{$sT->time}}</td>
-                  <td><button class="btn btn-light" style="background-color: #f5f4f2;">Edit</button></td>
+                  <td>
+                    <button class="btn btn-light" style="background-color: #f5f4f2;"
+                        data-toggle="modal" data-target="#updateModal" wire:click="edit({{ $sT['id'] }})">
+                        Edit
+                      </button>
+                  </td>
                   @if(!$sT->status)
                      <td><button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button></td>
                   @else

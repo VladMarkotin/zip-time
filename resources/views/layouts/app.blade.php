@@ -87,5 +87,10 @@
     </div>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @livewireScripts
+    <script type="text/javascript">
+        window.livewire.on('userStore', () => {
+            $('#exampleModal').modal('hide');
+        });
+    </script>
 </body>
 </html>
