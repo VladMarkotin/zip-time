@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
     //Statistics
     Route::prefix('stat')->group(function () {
         Route::get('/', [App\Http\Controllers\StatController::class, 'index']);
-        Route::post('/', [App\Http\Controllers\StatController::class, 'index']);
+        Route::post('/', [App\Http\Controllers\StatController::class, 'getStatInfo']);
     });
     //end statistic
 
