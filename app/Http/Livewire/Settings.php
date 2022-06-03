@@ -6,6 +6,7 @@ use Livewire\Component;
 use  App\Models\SavedTask;
 use Auth;
 use Livewire\WithPagination;
+use App\Http\Livewire\LWServices\TaskStatService as TSS;
 
 class Settings extends Component
 {
@@ -13,7 +14,7 @@ class Settings extends Component
 
     private $savedTasks = [];
     public $sT = null;
-    public $taskName, $type, $priority, $time, $taskId;
+    public $taskName, $type, $priority, $time, $taskId; //for updates
 
     public function render(SavedTask $savedTask)
     {
@@ -68,5 +69,10 @@ class Settings extends Component
             ]);
             session()->flash('message', 'Users Updated Successfully.');
         }
+    }
+
+    public function getInfo($id)
+    {
+        TSS::getInfo($id);        
     }
 }
