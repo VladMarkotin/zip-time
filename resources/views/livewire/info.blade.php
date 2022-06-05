@@ -2,45 +2,31 @@
 <div wire:ignore.self class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit saved task</h5>
+            <div class="modal-header bg-danger mb-3">
+                <h5 class="modal-title" style="color:white;"  id="exampleModalLabel">Info about saved task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
+                    <span aria-hidden="true" style="color:white;">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <input type="hidden" wire:model="userId">
-                        <label for="exampleFormControlInput1">Task Name</label>
-                        <input type="text" class="form-control" wire:model="taskName" id="exampleFormControlInput1" placeholder="Enter Name">
-                        @error('name') <span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput2">Type</label>
-                        <input type="email" class="form-control" wire:model="type" 
-                           id="exampleFormControlInput2" placeholder="Choose task`s type">
-                        @error('email') <span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="exampleFormControlInput4">Priority</label>
-                        <input type="" class="form-control" wire:model="priority" id="exampleFormControlInput4"
-                            placeholder="Choose default priority">
-                        @error('type') <span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
 
-                    <div class="form-group">
-                        <label for="exampleFormControlInput5">Time</label>
-                        <input type="time" class="form-control" wire:model="time" id="exampleFormControlInput5"  
-                            placeholder="Set default time">
-                        @error('type') <span class="text-danger">{{ $message }}</span>@enderror
+                <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                <div class="card-header">Statistic</div>
+                    <div wire:loading>Loading info..</div>
+                    <div class="card-body">
+                        <!--<h5 class="card-title">Danger card title</h5>-->
+                        <div class="center">
+                            @foreach($info as $key => $v)
+                            <div>{{$key}}: {{$info[$key]}}</div>
+                            @endforeach
+                        </div>
                     </div>
-                </form>
+                </div>
+
             </div>
             <div class="modal-footer">
-                <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                <button type="button" style="background: #FCFCFB;color:#747474;" class="btn btn-secondary" 
+                        data-dismiss="modal">Close</button>
             </div>
        </div>
     </div>

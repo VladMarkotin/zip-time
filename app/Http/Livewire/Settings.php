@@ -13,6 +13,7 @@ class Settings extends Component
     use WithPagination;
 
     private $savedTasks = [];
+    public $info        = [];
     public $sT = null;
     public $taskName, $type, $priority, $time, $taskId; //for updates
 
@@ -73,6 +74,7 @@ class Settings extends Component
 
     public function getInfo($id)
     {
-        TSS::getInfo($id);        
+        $this->info = TSS::getInfo($id);
+        //dd($this->info);        
     }
 }

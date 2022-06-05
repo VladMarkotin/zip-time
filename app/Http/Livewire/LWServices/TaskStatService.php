@@ -19,13 +19,14 @@ class TaskStatService
             "hash"   => $sT[0]['hash_code'],
             "userId" => Auth::id()
         ];
+        $data["hash"]       = $sT[0]['hash_code'];
         $data["avgMark"]    = self::getAvgMark($requestData);
         $data["totalTime"]  = self::getTotalTime($requestData);
         $data["medianMark"] = self::getMedianMark($requestData);
         $data["totalUse"]   = self::getTotalUse($requestData);
         $data["completed"]  = self::getCompletedFailedValue($requestData, 1);
-        $data["failed"]     = self::getCompletedFailedValue($requestData, 0);
-        dd($data);
+        $data["undone"]     = self::getCompletedFailedValue($requestData, 0);
+        //dd($data);
         return $data;
     }
 
