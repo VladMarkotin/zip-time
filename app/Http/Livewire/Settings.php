@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use  App\Models\SavedTask;
+use App\Models\SavedNotes;
+use DB;
 use Auth;
 use Livewire\WithPagination;
 use App\Http\Livewire\LWServices\TaskStatService as TSS;
@@ -14,7 +16,8 @@ class Settings extends Component
 
     private $savedTasks = [];
     public $info        = [];
-    public $sT = null;
+    public $notes       = [];
+    public $sT          = null;
     public $taskName, $type, $priority, $time, $taskId; //for updates
 
     public function render(SavedTask $savedTask)
@@ -76,5 +79,24 @@ class Settings extends Component
     {
         $this->info = TSS::getInfo($id);
         //dd($this->info);        
+    }
+
+    public function getNotes($id) //id of saved task
+    {
+        //dd($id);
+        $this->notes = DB::table('notes')
+                ->select('note')
+                ->distinct()
+                ->where('saved_task_id', $id)
+                ->get()
+                ->toArray();
+        //dd($this->notes);
+    }
+
+    public function clearNotes($id) //id of saved task
+    {
+        if (Auth::id()) { //check the condithion
+            $savedTask = SavedTask::find($this->taskId);
+        }
     }
 }
