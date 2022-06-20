@@ -67,7 +67,7 @@ class EstimationService
                 $diff = strlen($data['note']) - 255;
                 $data['note'] = substr($data['note'], 0, -$diff);
             }
-
+            //die(var_dump($data['note']));
             return $data['note'];
         };
         $makeDetailsValid = function () use ($data){
@@ -106,8 +106,11 @@ class EstimationService
                 $data = $makeCommentValid();
 
                 return $data;
-            /*case -1:
-                break;*/
+            case '3':
+                $data['note']    = $makeNoteValid();
+                $data['details'] = $makeDetailsValid();
+
+                return $data;
         }
 
         return false;

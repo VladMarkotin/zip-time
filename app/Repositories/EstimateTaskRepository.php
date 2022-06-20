@@ -29,15 +29,16 @@ class EstimateTaskRepository
     {
         $dataForLastTimetable = ["date" => Carbon::today(), "id" => Auth::id()];
         $dataForTasks  =   [
-            "id"         => $data['id'],
+            "id"              => $data['id'],
             "timetable_id"    => $this->getPlanRepository->getLastTimetableId($dataForLastTimetable),
-            "details"    => $data['details'],
-            "mark"       => floatval($data['mark']),
-            "note"       => $data['note'],
-            "updated_at" =>  Carbon::now()->toDateTimeString(),
+            "details"         => $data['details'],
+            "mark"            => floatval($data['mark']),
+            "note"            => $data['note'],
+            "updated_at"      => Carbon::now()->toDateTimeString(),
         ];
         $hash = Tasks::select('hash_code', 'type')->where('id', $data['id'])->get()->toArray();
         //dd($dataForTasks);
+        //dd($hash);
         /*This condition for all tasks.*/
         if( ( ($hash[0]['type'] === 1) || ($hash[0]['type'] === 2) ) ){
             $dataForTasks['mark'] = $data['is_ready'];
@@ -71,11 +72,10 @@ class EstimateTaskRepository
 
         } else if(($hash[0]['hash_code'] == '#') && ($hash[0]['type'] == 3 || $hash[0]['type'] == 4)){ //This condition for job with no hash code
             try{
-                //die(var_dump($dataForTasks));
-                //Tasks::whereId($data['id'])->update($dataForTasks);
-                //dd(DB::table('tasks')->toSql());
-                $query = "update tasks SET mark = $dataForTasks[mark] WHERE timetable_id = $dataForTasks[timetable_id] AND id = $data[id]";
-                //dd($query);
+                $query = "update tasks SET mark = $dataForTasks[mark], 
+                           details='$dataForTasks[details]', note='$dataForTasks[note]'
+                            WHERE timetable_id = $dataForTasks[timetable_id] AND id = $data[id]";
+                 //dd($query);
                 DB::update($query);
             } catch (\Exception $e){
                 Log::error('Error has happened 76: '. $e->getFile(). " ". $e->getLine(). " ");
