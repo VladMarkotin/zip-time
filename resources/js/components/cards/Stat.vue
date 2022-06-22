@@ -7,7 +7,7 @@
 					<td>
 						<v-dialog ref="v-dialog-dates-from-val" width="290px" persistent v-bind:return-value.sync="dates.from.val" v-model="dates.from.modal">
 							<template v-slot:activator="{on}">
-								<v-text-field label="From" prepend-icon="mdi-calendar" readonly v-model="dates.from.val" v-on="on"></v-text-field>
+								<v-text-field label="From" prepend-icon="mdi-calendar" dark readonly v-model="dates.from.val" v-on="on"></v-text-field>
 							</template>
 							<v-date-picker color="#D71700" v-model="dates.from.val">
 								<v-spacer></v-spacer>
@@ -21,7 +21,7 @@
 					<td>
 						<v-dialog ref="v-dialog-dates-to-val" width="290px" persistent v-bind:return-value.sync="dates.to.val" v-model="dates.to.modal">
 							<template v-slot:activator="{on}">
-								<v-text-field label="To" prepend-icon="mdi-calendar" readonly v-model="dates.to.val" v-on="on"></v-text-field>
+								<v-text-field label="To" prepend-icon="mdi-calendar" dark readonly v-model="dates.to.val" v-on="on"></v-text-field>
 							</template>
 							<v-date-picker color="#D71700" v-model="dates.to.val">
 								<v-spacer></v-spacer>
@@ -117,10 +117,12 @@
 		background-color: #A10000;
 		color: white;
 	}
+	.v-label
+	{
+		color: white !important;
+	}
 	td
 	{
-		background-color: #A10000;
-		color: white;
 		font-weight: bold;
 	}
 </style>

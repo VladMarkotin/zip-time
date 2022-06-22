@@ -115,3 +115,14 @@
 		}
 	}
 </script>
+<style>
+	.v-card-actions
+	{
+		margin-top : -20px
+	}
+	.v-card-title
+	{
+		background-color : #A10000;
+		color : white
+	}
+</style>
