@@ -1,6 +1,7 @@
 <div class="container" style="display:flex; justify-content:space-around;">
    @include('livewire.update')
    @include('livewire.info')
+   @include('livewire.notes')
   <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
            aria-controls="v-pills-home" aria-selected="true">
@@ -32,6 +33,7 @@
               <th scope="col"></th>
               <th scope="col"></th>
               <th scope="col"></th>
+              <th scope="col"></th>
             </tr>
           </thead>
           @foreach($savedTasks as $sT)
@@ -51,10 +53,17 @@
                   </td>
                   <td>
                     <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;"
+                        data-toggle="modal" data-target="#noteModal" wire:click="edit({{ $sT['id'] }})">
+                        Notes
+                      </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;"
                         data-toggle="modal" data-target="#updateModal" wire:click="edit({{ $sT['id'] }})">
                         Edit
                       </button>
                   </td>
+                  
                   @if(!$sT->status)
                      <td><button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button></td>
                   @else
