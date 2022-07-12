@@ -4,19 +4,35 @@
 			<span>Set Timeframe:</span>
 			<table>
 				<tr>
-					<td>From:</td>
 					<td>
-						<v-text-field/>
+						<v-dialog ref="v-dialog-dates-from-val" width="290px" persistent v-bind:return-value.sync="dates.from.val" v-model="dates.from.modal">
+							<template v-slot:activator="{on}">
+								<v-text-field label="From" prepend-icon="mdi-calendar" dark readonly v-model="dates.from.val" v-on="on"></v-text-field>
+							</template>
+							<v-date-picker color="#D71700" v-model="dates.from.val">
+								<v-spacer></v-spacer>
+								<v-btn color="#D71700" text v-on:click="$refs['v-dialog-dates-from-val'].save(dates.from.val)">OK</v-btn>
+								<v-btn color="#D71700" text v-on:click="dates.from.modal = false">Cancel</v-btn>
+							</v-date-picker>
+						</v-dialog>
 					</td>
 				</tr>
 				<tr>
-					<td>To:</td>
 					<td>
-						<v-text-field/>
+						<v-dialog ref="v-dialog-dates-to-val" width="290px" persistent v-bind:return-value.sync="dates.to.val" v-model="dates.to.modal">
+							<template v-slot:activator="{on}">
+								<v-text-field label="To" prepend-icon="mdi-calendar" dark readonly v-model="dates.to.val" v-on="on"></v-text-field>
+							</template>
+							<v-date-picker color="#D71700" v-model="dates.to.val">
+								<v-spacer></v-spacer>
+								<v-btn color="#D71700" text v-on:click="$refs['v-dialog-dates-to-val'].save(dates.to.val)">OK</v-btn>
+								<v-btn color="#D71700" text v-on:click="dates.to.modal = false">Cancel</v-btn>
+							</v-date-picker>
+						</v-dialog>
 					</td>
 				</tr>
 			</table>
-			<v-btn>Apply</v-btn>
+			<v-btn v-on:click="loadMarksFromPeriod(dates.from.val, dates.to.val)">Apply</v-btn>
 		</v-card-title>
 		<v-card-text>
 			<v-list>
@@ -59,7 +75,7 @@
 			</v-list>
 		</v-card-text>
 		<v-card-text>
-			<Chart v-bind:finalMarks="finalMarks" v-bind:ownMarks="ownMarks"/>
+			<Chart ref="chart" v-bind:marks="marks"/>
 		</v-card-text>
 	</v-card>
 </template>
@@ -70,7 +86,8 @@
 			components: {Chart},
 			data()
 			{
-				return {mainStat: null, finalMarks: null, ownMarks: null};
+				const currDate = new Date().toEnStr();
+				return {dates: {from: {modal: false, val: currDate}, to: {modal: false, val: currDate}}, mainStat: null, marks: null};
 			},
 			methods:
 				{
@@ -78,8 +95,14 @@
 					{
 						const data = (await axios.get('/stat')).data;
 						this.mainStat = data.mainStat;
-						this.finalMarks = data.marks.finalMarks;
-						this.ownMarks = data.marks.ownMarks;
+						this.marks = {...{final: data.marks.finalMarks, own: data.marks.ownMarks}};
+					},
+					async loadMarksFromPeriod(from, to)
+					{
+						const data = (await axios.post('/stat', {from, to})).data;
+						this.mainStat = data.mainStat;
+						this.marks = {...{final: data.marks.finalMarks, own: data.marks.ownMarks}};
+						this.$refs.chart.redraw(this.marks);
 					}
 				},
 			beforeMount()
@@ -94,10 +117,12 @@
 		background-color: #A10000;
 		color: white;
 	}
+	.v-label
+	{
+		color: white !important;
+	}
 	td
 	{
-		background-color: #A10000;
-		color: white;
 		font-weight: bold;
 	}
 </style>
