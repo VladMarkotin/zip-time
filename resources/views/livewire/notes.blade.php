@@ -14,6 +14,9 @@
 
             </div>
             <div class="modal-footer">
+                <button type="button" style="color: #ffffff;" class="btn btn-danger" 
+                        data-dismiss="modal">Clear notes</button>
+                
                 <button type="button" style="background: #FCFCFB;color:#747474;" class="btn btn-secondary" 
                         data-dismiss="modal">Close</button>
             </div>
