@@ -10,14 +10,7 @@
             </div>
             <div class="modal-body">
 
-                <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-                <div class="card-header">Statistic</div>
-                    <div wire:loading>Loading info..</div>
-                    <div class="card-body">
-                        
-                       
-                    </div>
-                </div>
+
 
             </div>
             <div class="modal-footer">
