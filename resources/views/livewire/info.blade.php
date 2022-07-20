@@ -11,10 +11,10 @@
             <div class="modal-body">
 
                 <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-                <div class="card-header">Statistic</div>
+                <div class="card-header">Statistics</div>
                     <div wire:loading>Loading info..</div>
                     <div class="card-body">
-                        <!--<h5 class="card-title">Danger card title</h5>-->
+                   {{-- <!--<h5 class="card-title">Danger card title</h5>--> --}}
                         <div class="center">
                             @foreach($info as $key => $v)
                             <div>{{$key}}: {{$info[$key]}}</div>

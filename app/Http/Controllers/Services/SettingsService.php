@@ -18,6 +18,7 @@ class SettingsService
         $this->settingsRepository = $settingsRepository;
     }
 
+    
     public function getAllSettings(array $params)
     {
         $currentSettings = $this->settingsRepository->getCurrentSettings($params);

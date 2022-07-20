@@ -53,7 +53,7 @@
                   </td>
                   <td>
                     <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;"
-                        data-toggle="modal" data-target="#noteModal" wire:click="edit({{ $sT['id'] }})">
+                        data-toggle="modal" data-target="#noteModal" wire:click="getNote({{ $sT['id'] }})">
                         Notes
                       </button>
                   </td>
