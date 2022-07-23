@@ -11,15 +11,18 @@
             </div>
             <div class="modal-body">
                 <div class="card text-white bg-danger mb-15" style="max-width: 18rem;">
-                    <div class="card-header">Notes</div>
-                    <div wire:loading>Loading info..</div>
+                    <div class="card-header"> <input type="checkbox"  wire:model="selectAll"> Notes</div>
+                    
                     <div class="card-body">
                         <div class="center">
-
-                            @php $saved_task_id=''; @endphp    <!--variable to store task_id-->
+ 
+                            @php $saved_task_id=''; $Sn = 1; @endphp    <!--variable to store task_id-->
                             @foreach ($notes as $savedNotes)
-                                - {{ $savedNotes->note }}
-                                @php $saved_task_id = $savedNotes->saved_task_id @endphp   <!-- store task_id-->
+                            
+                           <input type="checkbox" wire:model="selectedNotes" value="{{$savedNotes->id}}" >    @php echo $Sn++; @endphp. <b> {{$savedNotes->note }}</b>
+                                  <!-- store task_id-->
+
+                              
                                 <hr>
                             @endforeach
                         </div>
@@ -27,8 +30,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" style="color: #ffffff;" class="btn btn-danger"
-                    wire:click="clearNotes({{ $saved_task_id }})">Clear notes</button>  
+                <button type="submit" style="color: #ffffff;" class="btn btn-danger"
+                    wire:click="clearNotes()">Clear notes</button>  
+               
+               
                 <button type="button" style="background: #FCFCFB;color:#747474;" class="btn btn-secondary"
                     data-dismiss="modal">Close</button>
             </div>

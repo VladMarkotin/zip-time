@@ -17,6 +17,8 @@ class Settings extends Component
     private $savedTasks = [];
     public $info = [];
     public $notes = [];
+    public $selectedNotes = [];   // store single selected note ids
+    public $selectAll = false;  // store muti selected note ids
     public $sT = null;
     public $taskName, $type, $priority, $time, $taskId; //for updates
 
@@ -92,15 +94,23 @@ class Settings extends Component
         // dd($this->notes );
     }
 
-    public function clearNotes($id=null)
+    public function clearNotes()
     {
-        if($id != null)
-        {
-            SNS::clearNotes($id);
-            $this->notes = SNS::getNote($id)->except($id);
-        }else{
+        if ($this->selectedNotes != null) {
+            SNS::clearNotes($this->selectedNotes);
+            $this->notes = SNS::getNote()->except($this->selectedNotes);
+        } else {
             return;
         }
-        
+        $this->selectedNotes = [];
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedNotes = SNS::selectAll();
+        } else {
+            $this->selectedNotes = [];
+        }
     }
 }

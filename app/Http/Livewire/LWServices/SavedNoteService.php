@@ -3,19 +3,23 @@ namespace App\Http\Livewire\LWServices;
 
 use App\Models\SavedNotes;
 
-
 class SavedNoteService
 {
-
-    public static function getNote($id)
+    public static function getNote()
     {
-        $notes = SavedNotes::where('saved_task_id', $id)->get();
+        $notes = SavedNotes::all();
         return $notes;
     }
 
-    public static function clearNotes($id)
+    public static function selectAll()
     {
-         SavedNotes::where('saved_task_id', $id)->first()->delete();
+        $notes = SavedNotes::pluck('id');
+        return $notes;
     }
 
+    public static function clearNotes($selectedNotes)
+    {
+        SavedNotes::wherein('id', $selectedNotes)->delete();
+        // dd($selectedNotes);
+    }
 }
