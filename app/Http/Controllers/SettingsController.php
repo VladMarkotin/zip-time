@@ -18,7 +18,9 @@ class SettingsController extends Controller
 
     public function index(Request $request)
     {
-        $setting = ($request->route()->parameters());
+
+        return view('settings');
+        /*$setting = ($request->route()->parameters());
         $params = ['id' => Auth::id()];
         $response = null;
         if($setting) {
@@ -26,6 +28,6 @@ class SettingsController extends Controller
             $response = $this->settingsService->getAllSettings($params);
         }
 
-        return json_encode($response, JSON_UNESCAPED_UNICODE);
+        return json_encode($response, JSON_UNESCAPED_UNICODE);*/
     }
 }
