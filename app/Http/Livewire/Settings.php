@@ -14,11 +14,13 @@ class Settings extends Component
 {
     use WithPagination;
 
-    private $savedTasks = [];
+    public $noteID;
     public $info = [];
     public $notes = [];
-    public $selectedNotes = [];   // store single selected note ids
-    public $selectAll = false;  // store muti selected note ids
+    private $savedTasks = [];
+    public $selectedNotes = []; // store single selected note ids
+    public $selectAll = false; // store muti selected note ids
+    public $removeDeletedNote;
     public $sT = null;
     public $taskName, $type, $priority, $time, $taskId; //for updates
 
@@ -90,15 +92,19 @@ class Settings extends Component
 
     public function getNote($id)
     {
+        $this->noteID = $id;
         $this->notes = SNS::getNote($id);
-        // dd($this->notes );
+        $this->removeDeletedNote = SNS::getNote($id);
+        //dd($this->notes1 );
     }
 
     public function clearNotes()
     {
-        if ($this->selectedNotes != null) {
+        if ($this->selectedNotes !== null) {
             SNS::clearNotes($this->selectedNotes);
-            $this->notes = SNS::getNote()->except($this->selectedNotes);
+            $this->notes = $this->removeDeletedNote->except(
+                $this->selectedNotes
+            );
         } else {
             return;
         }
@@ -108,7 +114,7 @@ class Settings extends Component
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->selectedNotes = SNS::selectAll();
+            $this->selectedNotes = SNS::selectAll($this->noteID);
         } else {
             $this->selectedNotes = [];
         }
