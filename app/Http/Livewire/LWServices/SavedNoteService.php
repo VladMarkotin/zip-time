@@ -5,21 +5,29 @@ use App\Models\SavedNotes;
 
 class SavedNoteService
 {
-    public static function getNote()
+
+    public static function getNote($id)
     {
-        $notes = SavedNotes::all();
+        $notes = SavedNotes::where('saved_task_id', $id)->get();
         return $notes;
     }
 
-    public static function selectAll()
+    public static function selectAll($id)
     {
-        $notes = SavedNotes::pluck('id');
+        $notes = SavedNotes::where('saved_task_id', $id)->pluck('id')->toArray();
         return $notes;
-    }
 
+    }
+    
     public static function clearNotes($selectedNotes)
     {
-        SavedNotes::wherein('id', $selectedNotes)->delete();
-        // dd($selectedNotes);
+        //dd(gettype($selectedNotes));
+        if($selectedNotes !== null)
+        {
+             SavedNotes::wherein('id', $selectedNotes)->delete();
+        }else{
+            return;
+        }
+        $selectedNotes = [];
     }
 }

@@ -11,18 +11,18 @@
             </div>
             <div class="modal-body">
                 <div class="card text-white bg-danger mb-15" style="max-width: 18rem;">
-                    <div class="card-header"> <input type="checkbox"  wire:model="selectAll"> Notes</div>
+                    <div class="card-header"> <input type="checkbox"  wire:model="selectAll" > Notes</div>
+                    <div wire:loading wire:target="getNote" wire:key="getNote"><i class="fa fa-spinner fa-spin mt-2 ml-2"></i> loading...</div>
                     
                     <div class="card-body">
                         <div class="center">
  
-                            @php $saved_task_id=''; $Sn = 1; @endphp    <!--variable to store task_id-->
+                            @php $Sn = 1; @endphp    <!--variable to store task_id-->
                             @foreach ($notes as $savedNotes)
                             
-                           <input type="checkbox" wire:model="selectedNotes" value="{{$savedNotes->id}}" >    @php echo $Sn++; @endphp. <b> {{$savedNotes->note }}</b>
-                                  <!-- store task_id-->
-
-                              
+                           <input type="checkbox" wire:model="selectedNotes" value="{{$savedNotes->id}}" >
+                              @php echo $Sn++; @endphp. 
+                              <b> {{$savedNotes->note }}</b>
                                 <hr>
                             @endforeach
                         </div>
