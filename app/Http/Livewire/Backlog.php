@@ -81,6 +81,7 @@ class Backlog extends Component
     public function destroyBacklogInfo()
     {
         Savedlogs::find($this->backlog_id)->delete();
+        $this->backlogs = [];
         $this->dispatchBrowserEvent('close-modal');
         $this->resetInput();
     }

@@ -34,35 +34,29 @@
                     data-bs-target="#deleteBacklogModal">
                     <i class="fa fa-trash text-danger" style="padding:0px 5px;"></i>
                 </a>
-
-
             </div>
         </div>
-
         <div class="content-text">
             <p>
-                {{ $backlog->content }}
+            {{ $backlog->content }}
             </p>
-
         </div>
         @endforeach
     </div>
 
-    @forelse ($backlogTitles as $backlogTitle)
-        <a wire:click="getBacklogContentByTitle({{ $backlogTitle->id }})">
+         @forelse ($backlogTitles as $backlogTitle)
             <div class="backlog-title">
+                <a wire:click="getBacklogContentByTitle({{ $backlogTitle->id }})">
 
                 <h5>{{ $backlogTitle->title }}</h5>
-
+            </a>
+            </div>      
+        @empty
+            <div class="backlog-title">
+                <h5>No Backlogs to display</h5>
             </div>
-        </a>
-    @empty
-        <div class="backlog-title">
-            <h5>No Backlogs to display</h5>
-        </div>
-    @endforelse
-
-</div>
+        @endforelse
+    </div>
 </div>
 
 {{-- modal pop up --}}
