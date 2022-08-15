@@ -25,9 +25,14 @@ class Backlog extends Component
          $this->task_id = null;
      }
 
+     public function updated($propertyName)
+     {
+         $this->validateOnly($propertyName);
+     }
+
     public function storeBacklogInfo()
     {
-        
+        $validatedData = $this->validate();
         Savedlogs::create([
             'user_id' => Auth::id(),
             'title' => $this->title,
