@@ -4,11 +4,12 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Savedlogs;
+use App\Models\SavedTask;
 use Illuminate\Support\Facades\Auth;
 
 class Backlog extends Component
 {
-    public $title, $task_id, $content;
+    public $title, $task_id, $content, $backlog_id, $backlogs = [];
 
      public function rules()
      {
@@ -36,7 +37,7 @@ class Backlog extends Component
         Savedlogs::create([
             'user_id' => Auth::id(),
             'title' => $this->title,
-            'task_id' => $this->task_id,
+            'saved_task_id' => $this->task_id,
             'content' => $this->content,
            
         ]);
@@ -44,25 +45,58 @@ class Backlog extends Component
         $this->resetInput();
     }
 
+    public function editBacklogInfo($backlog_id)
+    {
+      
+        $this->backlog_id = $backlog_id;
+
+        $backlog = Savedlogs::findOrfail($backlog_id);
+        $this->title = $backlog->title;
+        $this->task_id = $backlog->task_id;
+        $this->content = $backlog->content;
+    }
+
+
     public function updateBacklogInfo()
     {
-        // $this->brand_id = $brand_id;
+        
+        $validatedData = $this->validate();
+        Savedlogs::findOrFail($this->backlog_id)
+        ->update([
+            'user_id' => Auth::id(),
+            'title' => $this->title,
+            'saved_task_id' => $this->task_id,
+            'content' => $this->content,
+           
+        ]);
+        $this->dispatchBrowserEvent('close-modal');
+        $this->resetInput();
+    }
 
-        // $brand = Brand::findOrfail($brand_id);
-        // $this->name = $brand->name;
-        // $this->slug = $brand->slug;
-        // $this->status = $brand->status;
+    public function deleteBacklogInfo($backlog_id)
+    {
+        $this->backlog_id = $backlog_id;
     }
 
     public function destroyBacklogInfo()
     {
-        // Brand::find($this->brand_id)->delete();
-        // $this->dispatchBrowserEvent('close-modal');
-        // $this->resetInput();
+        Savedlogs::find($this->backlog_id)->delete();
+        $this->dispatchBrowserEvent('close-modal');
+        $this->resetInput();
+    }
+
+    public function getBacklogContentByTitle($backlog_id)
+    {
+        $backlogs = Savedlogs::where('id', $backlog_id)->get();
+        $this->backlogs = $backlogs;
     }
 
     public function render()
     {
-        return view('livewire.backlog');
+        
+        $backlogs = $this->backlogs;
+        $tasks = SavedTask::where('user_id', Auth::id())->get();
+        $backlogTitles = Savedlogs::where('user_id', Auth::id())->get();
+        return view('livewire.backlog', compact('tasks', 'backlogs', 'backlogTitles'));
     }
 }
