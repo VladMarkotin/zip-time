@@ -131,7 +131,8 @@ class MainController
     public function addPlan(Request $request)
     {
         $data = $request->json()->all();
-        $response = $this->planService->checkPlan($data);
+        //die(var_dump($data));
+        $response = $this->planService->checkPlan($data); //проблема здесь
         $responseArray = json_decode($response->content());
         if($responseArray->status == 'success') {
 
@@ -141,6 +142,7 @@ class MainController
                 $data = $this->planService->getTransformWeekendPlan();
             }
             $responseArray = $this->dayPlan->createDayPlan($data);
+            //die(var_dump($responseArray));
 
             /*Logic after adding plan in DB*/
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
