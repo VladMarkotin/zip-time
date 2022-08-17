@@ -132,6 +132,7 @@ class MainController
     {
         $data = $request->json()->all();
         $response = $this->planService->checkPlan($data);
+        //die(var_dump($response));
         $responseArray = json_decode($response->content());
         if($responseArray->status == 'success') {
 

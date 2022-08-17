@@ -51,6 +51,7 @@ class AddPlanService
             foreach ($data['plan'] as $v) {
                 $flags[] = $this->checkTask($v);
             }
+            //die(var_dump($flags));
             foreach ($flags as $v) {
                 foreach ($v as $k => $val) {
                     if (!$val) return response()->json([
@@ -134,7 +135,7 @@ class AddPlanService
                     }
                     return false;
                 case 2:
-                    if($taskQuantity == 0){
+                    if($taskQuantity > 1){
                         return true;
                     }
                     return false;

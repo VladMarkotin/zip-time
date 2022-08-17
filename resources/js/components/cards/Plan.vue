@@ -335,7 +335,8 @@ export default {
         getPostParams() {
             return JSON.stringify({
                 date: new Date().toISOString().substr(0, 10),
-                day_status: this.dayStatuses.indexOf(this.day_status),
+                //day_status: this.dayStatuses.indexOf(this.day_status),
+                day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
                 plan: this.items
             })
         },
