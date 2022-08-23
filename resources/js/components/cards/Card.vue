@@ -1,9 +1,11 @@
-<template>
+<template>  
 	<v-card>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>{{item.hash}}</span>
 			<span>{{item.taskName}}</span>
-			<span v-if="item.priority > 1"> ! </span>
+			<span v-if="item.priority == 1"> </span>
+			<span v-else-if="item.priority == 2">!</span>
+			<span v-else-if="item.priority == 3">!!</span>
 			<span v-else>  </span>
 		</v-card-title>
 		<v-list>
@@ -25,6 +27,7 @@
 			</v-list-item>
 		</v-list>
 		<v-divider></v-divider>
+		<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
 		<v-card-title class="font-weight-bold">
 			<form class="d-flex align-center">
 				<template v-if="[4,3].includes(item.type)">
@@ -34,13 +37,14 @@
 					</v-text-field>
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="sendMark(item)">
+							<v-btn icon v-on="on" v-on:click="sendMark(item, num)">
 								<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
 							</v-btn>
 						</template>
 						<span>Update</span>
 					</v-tooltip>
 				</template>
+				
 				<template v-else-if="[2,1].includes(item.type)">
 					<div>Ready?</div>
 					<v-checkbox color="#D71700" v-model="item.is_ready == 99 ? true : item.is_ready <= 50 ? false : true"></v-checkbox>
@@ -59,23 +63,50 @@
 </template>
 <script>
 	import {mdiUpdate} from '@mdi/js'
+	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
-		props : ['item'],
+		props : ['item', 'num'],
 		data()
 		{
-			return {icons : {mdiUpdate}}
+			return {icons      : {mdiUpdate},
+			        isShowAlert: false ,
+					alert      : {type: 'success', text: 'success'},
+					num        : 0
+			}
 		},
+		components : {Alert},
 		methods :
 		{
 			sendIsReadyState(item)
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,is_ready : item.is_ready,type : item.type})
+				.then(function (){
+					alert("Success");
+				  })
 			},
-			sendMark(item)
+			sendMark(item, num)
 			{
+
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
-			}
+				.then((response) => {
+					//(response.data)
+					this.isShowAlert = true;
+					this.setAlertData(response.data.status, response.data.message)
+					//message.style = 'display:inline;';
+					//message.textContent = response.data.message
+				  })
+			},
+			toggleAlertDialog()
+			{
+				this.isShowAlert = !this.isShowAlert
+			},
+			
+			setAlertData(type,text)
+			{
+				this.alert.type = type
+				this.alert.text = text
+			},
 		}
 	}
 </script>
