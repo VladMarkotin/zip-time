@@ -81,20 +81,27 @@
 			sendIsReadyState(item)
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,is_ready : item.is_ready,type : item.type})
-				.then(function (){
-					alert("Success");
+				.then((response) => {
+					this.isShowAlert = true;
+					this.setAlertData(response.data.status, response.data.message)
+					setTimeout( () => {
+						console.log(this)
+						this.isShowAlert = false;
+						//debugger;
+					},3000)
 				  })
 			},
-			sendMark(item, num)
+			sendMark(item)
 			{
 
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
 				.then((response) => {
-					//(response.data)
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
-					//message.style = 'display:inline;';
-					//message.textContent = response.data.message
+					setTimeout( () => {
+						console.log(this)
+						this.isShowAlert = false;
+					},3000)
 				  })
 			},
 			toggleAlertDialog()
