@@ -31,20 +31,28 @@ class EstimationService
     public function handleEstimationRequest(array $data)
     {
         $makeMarkValid    = function ($arg = null) use  ($data) {
-            //die(var_dump($data['mark']));
+            if($data['mark'] == '') {
+               $data['mark'] = -1;
+            }
+            if($data['mark'] == '0') {
+                $data['mark'] = -1;
+            }
             $data['mark'] = intval($data['mark']);
             if(is_int($data['mark'])){
                 if(!$arg) {
-                    if (($data['mark'] < 50 && $data['mark'] != 0)) {
+                    if (($data['mark'] < 50 && $data['mark'] != 0 && ($data['mark'] != -1))) {
                         $data['mark'] = -1;
                         return false;
                     } else if (($data['mark'] > 99)) {
                         $data['mark'] = -1;
                         return false;
-                    } else if($data['mark']  == 0){
+                    } else if($data['mark']  === 0){
                         $data['mark'] = -1;
-                        //die(var_dump($data['mark']));
                         return false;
+                    } else if($data['mark']  == -1){
+                        $data['mark'] = -1;
+                        
+                        return $data['mark'];
                     }
                 } else{
                     if (($data['mark'] < 1)) {
@@ -93,7 +101,6 @@ class EstimationService
             return $data['details'];
         };
         $isTaskReady = function () use ($data){
-            //die(var_dump($data));
             $data['is_ready'] = intval($data['is_ready']);
         };
         switch($data['action']){
@@ -112,9 +119,7 @@ class EstimationService
                 if(!$data['mark'] && ($data['is_ready'])){
                     $data['mark'] = $data['is_ready'];
                 }
-                //isset($data['is_ready']) ?:  $isTaskReady();
                 $data['mark']     = $makeMarkValid();
-                //die(var_dump($data['mark']));
                 $data['note']     = $makeNoteValid();
                 $data['details']  = $makeDetailsValid();
                 if($data['mark'] !== false){

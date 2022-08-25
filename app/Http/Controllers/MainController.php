@@ -219,14 +219,11 @@ class MainController
     public function estimateTask(Request $request)
     {
         $isReady = ($request->get('is_ready'));
-        //die(var_dump($isReady));
         $isReady = ($isReady == 99) ? 50 : -1;
         $isReady = ($isReady == -1) ? 99 : 50;
-        //die(var_dump($isReady));
         $data = [
             "id"       => $request->get('task_id'),
             "details"  => $request->get('details'),
-            //"mark"     => $request->get('mark'),
             "is_ready" => $isReady,
             "note"     => $request->get('note'),
             "action"   => '1', //it means that user try to estimate one task
