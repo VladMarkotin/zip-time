@@ -31,13 +31,20 @@ class EstimationService
     public function handleEstimationRequest(array $data)
     {
         $makeMarkValid    = function ($arg = null) use  ($data) {
+            //die(var_dump($data['mark']));
             $data['mark'] = intval($data['mark']);
             if(is_int($data['mark'])){
                 if(!$arg) {
-                    if (($data['mark'] < 50)) {
-                        $data['mark'] = false;
+                    if (($data['mark'] < 50 && $data['mark'] != 0)) {
+                        $data['mark'] = -1;
+                        return false;
                     } else if (($data['mark'] > 99)) {
-                        $data['mark'] = false;
+                        $data['mark'] = -1;
+                        return false;
+                    } else if($data['mark']  == 0){
+                        $data['mark'] = -1;
+                        //die(var_dump($data['mark']));
+                        return false;
                     }
                 } else{
                     if (($data['mark'] < 1)) {
@@ -48,9 +55,11 @@ class EstimationService
                 }
 
                 return $data['mark'];
+            }else{
+                return false;
             }
 
-            return true;
+            return false;
         };
         $makeCommentValid = function () use ($data){
             $data['comment'] = htmlspecialchars($data['comment']);
@@ -83,6 +92,10 @@ class EstimationService
 
             return $data['details'];
         };
+        $isTaskReady = function () use ($data){
+            //die(var_dump($data));
+            $data['is_ready'] = intval($data['is_ready']);
+        };
         switch($data['action']){
 
             case '2': //user wants to finish day plan
@@ -96,9 +109,14 @@ class EstimationService
                 return ["status" => "error", "message" => "Your day plan hasn`t been done yet. You still have some
                          required jobs/tasks incomplete! "];
             case '1': //for estimation of job & task
-                $data['mark']    = $makeMarkValid();
-                $data['note']    = $makeNoteValid();
-                $data['details'] = $makeDetailsValid();
+                if(!$data['mark'] && ($data['is_ready'])){
+                    $data['mark'] = $data['is_ready'];
+                }
+                //isset($data['is_ready']) ?:  $isTaskReady();
+                $data['mark']     = $makeMarkValid();
+                //die(var_dump($data['mark']));
+                $data['note']     = $makeNoteValid();
+                $data['details']  = $makeDetailsValid();
                 if($data['mark'] !== false){
                     $response = $this->estimateTaskRepository->estimateTask($data);
                     unset($data['action']);
