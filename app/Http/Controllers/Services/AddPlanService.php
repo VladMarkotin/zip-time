@@ -42,7 +42,7 @@ class AddPlanService
             //die(var_dump($data));//good
             $transformData = $this->dataTransformationService->transformDataForWeekendRequest($data);//Not a $data['plan']!!!
             $this->transformWeekendData = $transformData; //this all cause I need to save tranform data for weekend
-            $this->transformWeekendData['day_status'] = 'Weekend';
+            $this->transformWeekendData['day_status'] = 1;
 
             return response()->json(['status' => 'success']);
         }
