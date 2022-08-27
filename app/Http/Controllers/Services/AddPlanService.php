@@ -135,7 +135,8 @@ class AddPlanService
                     }
                     return false;
                 case 2:
-                    if($taskQuantity > 1){
+
+                    if($taskQuantity >= 2){
                         return true;
                     }
                     return false;

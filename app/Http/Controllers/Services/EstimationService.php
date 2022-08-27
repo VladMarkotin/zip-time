@@ -31,22 +31,43 @@ class EstimationService
     public function handleEstimationRequest(array $data)
     {
         $makeMarkValid    = function ($arg = null) use  ($data) {
-            //die(var_dump($data));
-            if(!$arg) {
-                if (($data['mark'] < 50)) {
-                    $data['mark'] = -1;
-                } else if (($data['mark'] > 99)) {
-                    $data['mark'] = 99;
+            if($data['mark'] == '') {
+               $data['mark'] = -1;
+            }
+            if($data['mark'] == '0') {
+                $data['mark'] = -1;
+            }
+            $data['mark'] = intval($data['mark']);
+            if(is_int($data['mark'])){
+                if(!$arg) {
+                    if (($data['mark'] < 50 && $data['mark'] != 0 && ($data['mark'] != -1))) {
+                        $data['mark'] = -1;
+                        return false;
+                    } else if (($data['mark'] > 99)) {
+                        $data['mark'] = -1;
+                        return false;
+                    } else if($data['mark']  === 0){
+                        $data['mark'] = -1;
+                        return false;
+                    } else if($data['mark']  == -1){
+                        $data['mark'] = -1;
+                        
+                        return $data['mark'];
+                    }
+                } else{
+                    if (($data['mark'] < 1)) {
+                        $data['mark'] = 1;
+                    } else if (($data['mark'] > 200)) {
+                        $data['mark'] = 200;
+                    }
                 }
-            } else{
-                if (($data['mark'] < 1)) {
-                    $data['mark'] = 1;
-                } else if (($data['mark'] > 200)) {
-                    $data['mark'] = 200;
-                }
+
+                return $data['mark'];
+            }else{
+                return false;
             }
 
-            return $data['mark'];
+            return false;
         };
         $makeCommentValid = function () use ($data){
             $data['comment'] = htmlspecialchars($data['comment']);
@@ -79,6 +100,9 @@ class EstimationService
 
             return $data['details'];
         };
+        $isTaskReady = function () use ($data){
+            $data['is_ready'] = intval($data['is_ready']);
+        };
         switch($data['action']){
 
             case '2': //user wants to finish day plan
@@ -89,16 +113,21 @@ class EstimationService
                     return ["status" => "success", "message" => "Your day plan is completed :) Good work!"];
                 }
 
-                return ["status" => "fail", "message" => "Your day plan hasn`t been done yet. You still have some
+                return ["status" => "error", "message" => "Your day plan hasn`t been done yet. You still have some
                          required jobs/tasks incomplete! "];
             case '1': //for estimation of job & task
-                $data['mark']    = $makeMarkValid();
-                $data['note']    = $makeNoteValid();
-                $data['details'] = $makeDetailsValid();
-                $response = $this->estimateTaskRepository->estimateTask($data);
-                unset($data['action']);
-                if($response === true){
-                    return $data;
+                if(!$data['mark'] && ($data['is_ready'])){
+                    $data['mark'] = $data['is_ready'];
+                }
+                $data['mark']     = $makeMarkValid();
+                $data['note']     = $makeNoteValid();
+                $data['details']  = $makeDetailsValid();
+                if($data['mark'] !== false){
+                    $response = $this->estimateTaskRepository->estimateTask($data);
+                    unset($data['action']);
+                    if($response === true){
+                        return $data;
+                    }
                 }
 
                 return false;

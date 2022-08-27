@@ -410,7 +410,8 @@ export default {
 
         formSubmit(e) {
             let currentObj = this;
-
+            //let test = currentObj.getPostParams()
+            //debugger;
             axios.post('/addPlan', currentObj.getPostParams())
                 .then(function(response) {
                     currentObj.alertType = response.data.status;
