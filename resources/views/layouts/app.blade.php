@@ -10,13 +10,17 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/backlog/backlog.js') }}" defer></script>
 
 
     <!-- Fonts -->
             <link rel="dns-prefetch" href="//fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css/">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" >
              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+             
+         
+             
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -90,15 +94,20 @@
         </main>
     </div>
    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
   
+
+    {{-- hide backlog modal --}}
     <script type="text/javascript">
         window.livewire.on('userStore', () => {
             $('#exampleModal').modal('hide');
         });
     </script>
+
+
      @livewireScripts
      @stack('script')
 </body>

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Backlog extends Component
 {
-    public $title, $task_id, $content, $backlog_id, $backlogs = [];
+    public $title, $task_id, $content, $backlog_id;
 
      public function rules()
      {
@@ -81,23 +81,15 @@ class Backlog extends Component
     public function destroyBacklogInfo()
     {
         Savedlogs::find($this->backlog_id)->delete();
-        $this->backlogs = [];
         $this->dispatchBrowserEvent('close-modal');
         $this->resetInput();
-    }
-
-    public function getBacklogContentByTitle($backlog_id)
-    {
-        $backlogs = Savedlogs::where('id', $backlog_id)->get();
-        $this->backlogs = $backlogs;
     }
 
     public function render()
     {
         
-        $backlogs = $this->backlogs;
+        $backlogs = Savedlogs::where('user_id', Auth::id())->get();
         $tasks = SavedTask::where('user_id', Auth::id())->get();
-        $backlogTitles = Savedlogs::where('user_id', Auth::id())->get();
-        return view('livewire.backlog', compact('tasks', 'backlogs', 'backlogTitles'));
+        return view('livewire.backlog', compact('tasks', 'backlogs'));
     }
 }
