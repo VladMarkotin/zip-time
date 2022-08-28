@@ -8,7 +8,7 @@
    
 
     <div class="row ">
-        <div class="col-md-7 mx-auto">
+        <div class="col-md-6 mx-auto">
             <div class="card">
                 <div class="card-header">
                     <h4>
@@ -20,9 +20,9 @@
        
     <div id="aspect-content ">
         @foreach ($backlogs as $backlog)
-        <div class="aspect-tab shadow-sm">
-          <input id="item-18" type="checkbox" class="aspect-input" name="aspect">
-          <label for="item-18" class="aspect-label"></label>
+        <div class="aspect-tab shadow-sm border">
+          <input id="item-18{{$backlog->id  }}" type="checkbox" class="aspect-input" name="aspect">
+          <label for="item-18{{$backlog->id  }}" class="aspect-label"></label>
           <div class="aspect-content">
               <div class="aspect-info">
                   <div class="chart-pie negative over50">
