@@ -5,38 +5,45 @@
             <div class="card-header">
                 <h3 style="color: #f93b3b;">
                     Backlog
+
                     <button type="button" class="btn btn-primary float-end text-white" data-bs-toggle="modal"
                         data-bs-target="#AddbacklogModal">
                         Add Log
                     </button>
+
                 </h3>
             </div>
             <div class="card-body ">
-              <div class="panel ">
+                <div class="panel ">
                     @foreach ($backlogs as $backlog)
-                        <details >
+                        <details class="add" id={{ $backlog->id }}>
                             <summary>
                                 <ul>
                                     <li class="date"> {{ $backlog->created_at->format('d.m.Y') }}</li>
                                     <li class="title">
                                         @if ($backlog->saved_task_id !== null)
-                                            #{{ $backlog->savedTasks->task_name }}->
+                                            <span style=" font-weight:normal;">
+                                                #{{ $backlog->savedTasks->task_name }}-></span>
                                             {{ $backlog->title }}
                                         @else
                                             {{ $backlog->title }}
                                         @endif
                                     </li>
-                                    <li class="actions"  >
-                                        <div class="action-content ">
-                                            <a href="#" wire:click="editBacklogInfo({{ $backlog->id }})"
-                                                data-bs-toggle="modal" data-bs-target="#editBacklogModal">
-                                                <i class="fa fa-square text-secondary  "></i>
+                                    <li class="actions">
+
+                                        <div class="action-content action{{ $backlog->id }}" style="display: none">
+                                            <a class="text-dark p-1" href="#"
+                                                wire:click="editBacklogInfo({{ $backlog->id }})" data-bs-toggle="modal"
+                                                data-bs-target="#editBacklogModal">
+                                                Edit</i>
                                             </a>
-                                            <a href="#" wire:click="deleteBacklogInfo({{ $backlog->id }})"
+                                            <a class="text-danger fst-italic" href="#"
+                                                wire:click="deleteBacklogInfo({{ $backlog->id }})"
                                                 data-bs-toggle="modal" data-bs-target="#deleteBacklogModal">
-                                                <i class="fa fa-trash text-secondary "></i>
+                                                delete</i>
                                             </a>
                                         </div>
+
                                     </li>
                                 </ul>
                             </summary>
