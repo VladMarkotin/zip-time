@@ -12,14 +12,15 @@ aria-hidden="true">
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Title:</label>
-                    <input type="text" class="form-control" id="recipient-name" wire:model.defer="title">
+                    <input type="text" class="form-control" id="recipient-name" wire:model="title">
+                    @error('title') <span class="error text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Choose a saved task that connected with
                         your thoughts</label>
 
-                    <select name="task_id" id="" class="form-control">
+                    <select  wire:model.defer="task_id" id="" class="form-control">
                         <option value="">#Tasks</option>
                         @foreach ($tasks as $task)
                         <option value="{{ $task->id}}">{{ $task->task_name }}</option>
@@ -30,12 +31,13 @@ aria-hidden="true">
                 <div class="mb-3">
                     <label for="message-text" class="col-form-label">Content:</label>
                     <textarea class="form-control" id="message-text" wire:model.defer="content" rows="5"></textarea>
+                    @error('content') <span class="error text-danger">{{ $message }}</span> @enderror
                 </div>
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save Log</button>
+                <button id="refresh"  type="submit" class="btn btn-primary">Save Log</button>
             </div>
         </form>
     </div>
@@ -60,7 +62,8 @@ aria-hidden="true">
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Title:</label>
-                    <input type="text" class="form-control" id="recipient-name" wire:model.defer="title">
+                    <input type="text" class="form-control" id="recipient-name" wire:model="title">
+                    @error('title') <span class="error text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-3">
@@ -78,6 +81,7 @@ aria-hidden="true">
                 <div class="mb-3">
                     <label for="message-text" class="col-form-label">Content:</label>
                     <textarea class="form-control" id="message-text" wire:model.defer="content" rows="5"></textarea>
+                    @error('content') <span class="error text-danger">{{ $message }}</span> @enderror
                 </div>
 
             </div>

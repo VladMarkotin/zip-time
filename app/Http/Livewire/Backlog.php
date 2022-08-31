@@ -14,7 +14,7 @@ class Backlog extends Component
      public function rules()
      {
         return[
-            'title' =>'required|string',
+            'title' =>'required|string|max:40',
             'content'  =>'required|string'
         ];
      }
@@ -41,8 +41,9 @@ class Backlog extends Component
             'content' => $this->content,
            
         ]);
-        $this->dispatchBrowserEvent('close-modal');
         $this->resetInput();
+        $this->dispatchBrowserEvent('close-modal');
+       
     }
 
     public function editBacklogInfo($backlog_id)
@@ -87,7 +88,6 @@ class Backlog extends Component
 
     public function render()
     {
-        
         $backlogs = Savedlogs::where('user_id', Auth::id())->get();
         $tasks = SavedTask::where('user_id', Auth::id())->get();
         return view('livewire.backlog', compact('tasks', 'backlogs'));
