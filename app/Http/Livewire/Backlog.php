@@ -14,7 +14,7 @@ class Backlog extends Component
      public function rules()
      {
         return[
-            'title' =>'required|string|max:40',
+            'title' =>'required|string|max:80',
             'content'  =>'required|string'
         ];
      }
