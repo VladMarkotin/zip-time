@@ -11,25 +11,25 @@ class Backlog extends Component
 {
     public $title, $task_id, $content, $backlog_id;
 
-     public function rules()
-     {
-        return[
-            'title' =>'required|string|max:80',
-            'content'  =>'required|string'
+    public function rules()
+    {
+        return [
+            'title' => 'required|string|max:80',
+            'content' => 'required|string',
         ];
-     }
+    }
 
-     public function resetInput()
-     {
-         $this->title = null;
-         $this->content = null;
-         $this->task_id = null;
-     }
+    public function resetInput()
+    {
+        $this->title = null;
+        $this->content = null;
+        $this->task_id = null;
+    }
 
-     public function updated($propertyName)
-     {
-         $this->validateOnly($propertyName);
-     }
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
 
     public function storeBacklogInfo()
     {
@@ -39,36 +39,29 @@ class Backlog extends Component
             'title' => $this->title,
             'saved_task_id' => $this->task_id,
             'content' => $this->content,
-           
         ]);
         $this->resetInput();
         $this->dispatchBrowserEvent('close-modal');
-       
     }
 
     public function editBacklogInfo($backlog_id)
     {
-      
         $this->backlog_id = $backlog_id;
 
         $backlog = Savedlogs::findOrfail($backlog_id);
         $this->title = $backlog->title;
-        $this->task_id = $backlog->task_id;
+        $this->task_id = $backlog->saved_task_id;
         $this->content = $backlog->content;
     }
 
-
     public function updateBacklogInfo()
     {
-        
         $validatedData = $this->validate();
-        Savedlogs::findOrFail($this->backlog_id)
-        ->update([
+        Savedlogs::findOrFail($this->backlog_id)->update([
             'user_id' => Auth::id(),
             'title' => $this->title,
             'saved_task_id' => $this->task_id,
             'content' => $this->content,
-           
         ]);
         $this->dispatchBrowserEvent('close-modal');
         $this->resetInput();
@@ -88,7 +81,9 @@ class Backlog extends Component
 
     public function render()
     {
-        $backlogs = Savedlogs::where('user_id', Auth::id())->get();
+        $backlogs = Savedlogs::where('user_id', Auth::id())
+            ->orderBy('created_at', 'DESC')
+            ->get();
         $tasks = SavedTask::where('user_id', Auth::id())->get();
         return view('livewire.backlog', compact('tasks', 'backlogs'));
     }
