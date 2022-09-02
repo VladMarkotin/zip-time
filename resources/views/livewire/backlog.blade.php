@@ -4,8 +4,8 @@
         <div class="card rounded-5 ">
             <div class="card-header ">
                 <h4 style="color: #D40000;">
-                    Backlog
-                    <button type="button" class="btn btn-primary float-end text-white" data-bs-toggle="modal"
+                  Backlog
+                    <button type="button" class="btn btn-secondary float-end text-white" data-bs-toggle="modal"
                         data-bs-target="#AddbacklogModal">
                         Add Log
                     </button>
