@@ -1,0 +1,170 @@
+
+
+
+
+div.panel {
+    max-width: 99%;
+    margin: auto;
+   
+   
+}
+
+details {
+    background: #fff;
+    font-size: 16px;
+    transition: 0.9s;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.24), 0 2px 4px rgba(0, 0, 0, 0.24);
+    display: flex;
+}
+
+details:hover {
+    background-color: rgb(247, 245, 245);
+}
+
+details div.content {
+    padding: 0px 30px 30px 30px;
+    font-size: 14px;
+}
+
+details[open] summary:after {
+    color: #9e9e9e;
+    content: "expand_less";
+    transition: 0.9s;
+    font-family: "Material Icons";
+}
+
+
+details[open] summary ~ * {
+    animation: sweep 0.5s ease-in-out;
+}
+
+@keyframes sweep {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+details[open] {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border: none;
+    border-radius: 11px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.24), 0 3px 5px rgba(0, 0, 0, 0.24);
+}
+details[open]:first-child {
+    margin-top: 0;
+    margin-bottom: 16px;
+    border: none;
+}
+details[open]:last-child {
+    margin-top: 16px;
+    margin-bottom: 0px;
+    border: none;
+}
+
+details:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+details:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+summary {
+    list-style: none;
+    outline: none;
+    cursor: pointer;
+    padding: 3px 2px;
+    color: #212121;
+    position: relative;
+    font-size: 13px;
+}
+
+summary ul {
+    list-style: none;
+    display: flex;
+    line-height: 15px;
+    justify-content: space-between;
+    display: -webkit-flex;
+}
+
+summary ul li {
+    margin-top: 14px;
+    
+}
+
+.date
+{
+    color: #D40000; 
+    font-size:12px
+}
+
+.title
+{
+    color: #D40000; 
+    width:400px; 
+    margin-right:1em
+}
+
+summary::after {
+    content: "expand_more";
+    font-family: "Material Icons";
+    color: #656565;
+    font-size: 1.5em;
+    padding: 10;
+    text-align: center;
+    margin-top: 0;
+    position: absolute;
+    top: calc(50% - 17px);
+    bottom: 0;
+    right: 0;
+    width: 11%;
+}
+
+  @media only screen and (min-width: 360px) and (max-width: 768px) {
+
+    summary ul {
+      
+        display: block;
+        line-height: 15px;
+        padding-left: 25px;
+        flex-wrap: wrap;
+      
+    }
+
+    .title
+    {
+    color: #D40000; 
+    width:250px; 
+    
+    }
+
+    summary::after {
+        content: "expand_more";
+        font-family: "Material Icons";
+        color: #656565;
+        font-size: 1em;
+        padding: 10;
+        text-align: center;
+        margin-top: 0;
+        position: absolute;
+        top: calc(50% - 12px);
+        bottom: 0;
+        right: 0;
+        width: 11%;
+    }
+
+    details div.content {
+        padding: 0px 25px 25px 25px;
+        font-size: 13px;
+    }
+  }
+  
