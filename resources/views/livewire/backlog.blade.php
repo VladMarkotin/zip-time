@@ -5,7 +5,7 @@
             <div class="card-header ">
                 <h4 style="color: #D40000;">
                   Backlog
-                    <button type="button" class="btn btn-primary float-end text-white " data-bs-toggle="modal"
+                    <button type="button" class="btn btn-danger float-end text-white " data-bs-toggle="modal"
                         data-bs-target="#AddbacklogModal">
                         Add Log
                     </button>
@@ -42,7 +42,7 @@
                                             <a class="btn btn-outline-secondary  p-0" href="#"
                                                 wire:click="deleteBacklogInfo({{ $backlog->id }})"
                                                 data-bs-toggle="modal" data-bs-target="#deleteBacklogModal">
-                                                <i class="fa fa-trash p-1 "> <span class="text-danger fst-italic"> delete</span>  </i>
+                                                <i class="fa fa-trash p-1 "> <span class="text-danger "> delete</span>  </i>
                                               
                                             </a>
                                         </div>
