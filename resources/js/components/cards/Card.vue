@@ -11,7 +11,7 @@
 		<v-list>
 			<v-list-item>
 				<v-list-item-content>Time:</v-list-item-content>
-				<v-list-item-content class="align-end">{{item.time}}</v-list-item-content>
+				<v-list-item-content class="align-end">{{item.time}} hours</v-list-item-content>
 			</v-list-item>
 			<v-list-item>
 				<v-list-item-content>Details:</v-list-item-content>

@@ -19,6 +19,7 @@
 				</v-container>
 			</v-card-text>
 			<v-divider></v-divider>
+			<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
 			<v-card-actions class="justify-space-between v-card-actions">
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
@@ -42,23 +43,43 @@
 </template>
 <script>
 	import {mdiCancel,mdiSendClock} from '@mdi/js'
+	import Alert from '../dialogs/Alert.vue'
 	export default
 		{
 			data()
 			{
-				return {ownMark : '',comment : '',icons : {mdiCancel,mdiSendClock}, isShow : true}
+				return {ownMark : '',comment : '',
+				  isShowAlert: false,
+				  icons : {mdiCancel,mdiSendClock},
+				  isShow : true,
+				  alert      : {type: 'success', text: 'success'},}
 			},
+			components : {Alert},
 			methods :
 			{
 				closeDay()
 				{
 					axios.post('/closeDay',{ownMark : this.ownMark,comment : this.comment})
-					this.toggle()
+					.then((response) => {
+						this.isShowAlert = true;
+						this.setAlertData(response.data.status, response.data.message)
+						if(response.data.status){
+							setTimeout( () => {
+									this.isShowAlert = false;
+									this.toggle()
+							},5000)
+					    }
+				  })
 				},
 				toggle()
 				{
 					this.$emit('toggleCloseDayDialog')
-				}
+				},
+				setAlertData(type,text)
+				{
+					this.alert.type = type
+					this.alert.text = text
+				},
 			}
 		}
 </script>
