@@ -182,7 +182,7 @@ class AddPlanService
 
     private function checkDetails($task)
     {
-        if( strlen($task) < 256){
+        if( strlen($task) < 1500){
             return true;
         }
 

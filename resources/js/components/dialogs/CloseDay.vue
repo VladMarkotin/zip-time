@@ -29,6 +29,17 @@
 					</template>
 					<span>Close day</span>
 				</v-tooltip>
+				<v-progress-circular
+					:rotate="90"
+					:size="100"
+					:width="5"
+					:value="value"
+					color="red"
+					class="v-progress-circular"
+					v-if="isShowProgress"
+				>
+					{{ value }}
+				</v-progress-circular>
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
 						<v-btn icon v-on="on" v-on:click="toggle">
@@ -52,7 +63,11 @@
 				  isShowAlert: false,
 				  icons : {mdiCancel,mdiSendClock},
 				  isShow : true,
-				  alert      : {type: 'success', text: 'success'},}
+				  alert      : {type: 'success', text: 'success'},
+				  interval: {},
+                  value: 0,
+				  isShowProgress: false
+				}
 			},
 			components : {Alert},
 			methods :
@@ -63,12 +78,28 @@
 					.then((response) => {
 						this.isShowAlert = true;
 						this.setAlertData(response.data.status, response.data.message)
-						if(response.data.status){
+						if(response.data.status != "error"){
+							this.isShowProgress = true;
+							this.interval = setInterval(() => {
+							if (this.value === 100) {
+								clearInterval(this.interval)
+								return (this.value = 100)
+							}
+								this.value += 20
+							}, 500)
 							setTimeout( () => {
-									this.isShowAlert = false;
+									this.isShowAlert    = false;
+									this.isShowProgress = false;
+									this.toggle()
+									document.location.reload();
+							},5000)
+					    }else{
+							setTimeout( () => {
+									this.isShowAlert    = false;
+									this.isShowProgress = false;
 									this.toggle()
 							},5000)
-					    }
+						}
 				  })
 				},
 				toggle()
@@ -83,3 +114,9 @@
 			}
 		}
 </script>
+<style scoped>
+	.v-progress-circular{
+		width: 50px;
+		margin: auto;
+	}
+</style>
