@@ -37,7 +37,7 @@ aria-hidden="true">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="refresh"  type="submit" class="btn btn-primary">Save Log</button>
+                <button id="refresh"  type="submit" class="btn btn-danger">Save Log</button>
             </div>
         </form>
     </div>
@@ -87,7 +87,7 @@ aria-hidden="true">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save Log</button>
+                <button type="submit" class="btn btn-danger">Save Log</button>
             </div>
         </form>
     </div>
@@ -112,7 +112,7 @@ aria-hidden="true">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Yes, Delete</button>
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
             </div>
         </form>
     </div>

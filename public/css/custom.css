@@ -1,6 +1,22 @@
 
 
-
+.flash-message
+{
+   
+    background-color: #D40000;
+    padding: 15px;
+    width: 250px;
+    color: white;
+    border-radius: 3px;
+    text-align: center;
+    font-weight: 900;
+    position: fixed;
+    bottom: 2%;
+    right: 3%;
+    float: right;
+    margin-top: 10em;
+ 
+}
 
 div.panel {
     max-width: 99%;
@@ -114,6 +130,7 @@ summary ul li {
     margin-right:1em
 }
 
+
 summary::after {
     content: "expand_more";
     font-family: "Material Icons";
@@ -128,6 +145,7 @@ summary::after {
     right: 0;
     width: 11%;
 }
+
 
   @media only screen and (min-width: 360px) and (max-width: 768px) {
 
@@ -166,5 +184,23 @@ summary::after {
         padding: 0px 25px 25px 25px;
         font-size: 13px;
     }
+
+    
+.flash-message
+{
+    font-size: 13px;
+    background-color: #D40000;
+    padding: 15px;
+    width: 200px;
+    color: white;
+    border-radius: 3px;
+    text-align: center;
+    font-weight: 900;
+    position: fixed;
+    bottom: 2%;
+    right: 10%;
+    float: right;
+    margin-top: 10em;
+}
   }
   

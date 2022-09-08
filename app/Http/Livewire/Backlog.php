@@ -7,6 +7,8 @@ use App\Models\Savedlogs;
 use App\Models\SavedTask;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPSTORM_META\type;
+
 class Backlog extends Component
 {
     public $title, $task_id, $content, $backlog_id;
@@ -42,6 +44,9 @@ class Backlog extends Component
         ]);
         $this->resetInput();
         $this->dispatchBrowserEvent('close-modal');
+        $this->dispatchBrowserEvent('message', [
+            'text' => 'Log Added Successfully',
+        ]);
     }
 
     public function editBacklogInfo($backlog_id)
@@ -64,6 +69,10 @@ class Backlog extends Component
             'content' => $this->content,
         ]);
         $this->dispatchBrowserEvent('close-modal');
+        $this->dispatchBrowserEvent('message', [
+            'text' => 'Log Updated Successfully',
+        ]);
+
         $this->resetInput();
     }
 
@@ -76,7 +85,9 @@ class Backlog extends Component
     {
         Savedlogs::find($this->backlog_id)->delete();
         $this->dispatchBrowserEvent('close-modal');
-        $this->resetInput();
+        $this->dispatchBrowserEvent('message', [
+            'text' => 'Log Deleted Successfully',
+        ]);
     }
 
     public function render()
