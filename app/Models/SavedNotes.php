@@ -11,4 +11,6 @@ class SavedNotes extends Model
 
     protected $table = 'notes';
     protected $fillable = ['saved_task_id', 'note', 'created_at', 'updated_at'];
+
+
 }
