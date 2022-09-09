@@ -27,6 +27,9 @@
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
         @livewireStyles
 </head>
 <body>
@@ -96,10 +99,17 @@
     </div>
    
     <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+   
     
-  
+    <script>
+        window.addEventListener('message', event => {
+            alertify.notify(event.detail.text);
+        });
+
+        
+    </script>
 
     {{-- hide backlog modal --}}
     <script type="text/javascript">
@@ -107,8 +117,6 @@
             $('#exampleModal').modal('hide');
         });
     </script>
-
-
      @livewireScripts
      @stack('script')
 </body>

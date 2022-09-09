@@ -1,10 +1,11 @@
 <div>
     @include('livewire.backlog-modal')
+
     <div class="col-md-7 mx-auto rounded">
         <div class="card rounded-5 ">
             <div class="card-header ">
                 <h4 style="color: #D40000;">
-                  Backlog
+                    Backlog
                     <button type="button" class="btn btn-danger float-end text-white " data-bs-toggle="modal"
                         data-bs-target="#AddbacklogModal">
                         Add Log
@@ -14,7 +15,7 @@
             <div class="card-body ">
                 <div class="panel ">
                     @foreach ($backlogs as $backlog)
-                        <details class="add" id={{ $backlog->id }}>
+                        <details class="show_edit_delete" id={{ $backlog->id }}>
                             <summary>
                                 <ul>
                                     <li class="date">
@@ -42,8 +43,9 @@
                                             <a class="btn btn-outline-secondary  p-0" href="#"
                                                 wire:click="deleteBacklogInfo({{ $backlog->id }})"
                                                 data-bs-toggle="modal" data-bs-target="#deleteBacklogModal">
-                                                <i class="fa fa-trash p-1 "> <span class="text-danger "> delete</span>  </i>
-                                              
+                                                <i class="fa fa-trash p-1 "> <span class="text-danger "> delete</span>
+                                                </i>
+
                                             </a>
                                         </div>
 
