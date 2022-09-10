@@ -54,9 +54,9 @@ class EstimationService
                         
                         return $data['mark'];
                     }
-                } else{
+                } else{ //here own estimation is checking
                     if (($data['mark'] < 1)) {
-                        $data['mark'] = 1;
+                        $data['mark'] = 50;
                     } else if (($data['mark'] > 200)) {
                         $data['mark'] = 200;
                     }
