@@ -66,6 +66,9 @@
                             @endif
                         @else
                             <li class="nav-item">
+                               <span class="nav-link" style="cursor:pointer;" v-on:click="currComponent.name = 'Stat'">Statistics</span>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
                             </li>
                             <li class="nav-item dropdown">
