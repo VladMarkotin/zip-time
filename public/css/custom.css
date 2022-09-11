@@ -132,8 +132,20 @@ summary::after {
     float: right;
     margin-top: 10em;
     transition: transform .2s;
-   
+    -webkit-animation: bounce .3s infinite alternate;
+  -moz-animation: bounce 1s infinite alternate;
+  animation: bounce 1s infinite alternate;
 }
+@-webkit-keyframes bounce {
+  to { -webkit-transform: scale(1.2); }
+}
+@-moz-keyframes bounce {
+  to { -moz-transform: scale(1.2); }
+}
+@keyframes bounce {
+  to { transform: scale(1.2); }
+}
+
 
 .backlog-add-button:hover
 {
