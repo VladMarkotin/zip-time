@@ -1,28 +1,12 @@
-
-
-.flash-message
-{
-   
-    background-color: #D40000;
-    padding: 15px;
-    width: 250px;
-    color: white;
-    border-radius: 3px;
-    text-align: center;
-    font-weight: 900;
-    position: fixed;
-    bottom: 2%;
-    right: 3%;
-    float: right;
-    margin-top: 10em;
- 
+.form-control:focus {
+    border-color: #a10000;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
 
 div.panel {
     max-width: 99%;
     margin: auto;
-   
-   
 }
 
 details {
@@ -49,7 +33,6 @@ details[open] summary:after {
     transition: 0.9s;
     font-family: "Material Icons";
 }
-
 
 details[open] summary ~ * {
     animation: sweep 0.5s ease-in-out;
@@ -114,22 +97,18 @@ summary ul {
 
 summary ul li {
     margin-top: 14px;
-    
 }
 
-.date
-{
-    color: #D40000; 
-    font-size:12px
+.date {
+    color: #d40000;
+    font-size: 12px;
 }
 
-.title
-{
-    color: #D40000; 
-    width:400px; 
-    margin-right:1em
+.title {
+    color: #d40000;
+    width: 400px;
+    margin-right: 1em;
 }
-
 
 summary::after {
     content: "expand_more";
@@ -146,23 +125,33 @@ summary::after {
     width: 11%;
 }
 
+.backlog-add-button {
+    position: fixed;
+    bottom: 50%;
+    right: 5%;
+    float: right;
+    margin-top: 10em;
+    transition: transform .2s;
+   
+}
 
-  @media only screen and (min-width: 360px) and (max-width: 768px) {
+.backlog-add-button:hover
+{
+    transform: scale(1.5);
+    transition: 0.5s;
+}
 
+@media only screen and (min-width: 360px) and (max-width: 768px) {
     summary ul {
-      
         display: block;
         line-height: 15px;
         padding-left: 25px;
         flex-wrap: wrap;
-      
     }
 
-    .title
-    {
-    color: #D40000; 
-    width:250px; 
-    
+    .title {
+        color: #d40000;
+        width: 250px;
     }
 
     summary::after {
@@ -184,23 +173,4 @@ summary::after {
         padding: 0px 25px 25px 25px;
         font-size: 13px;
     }
-
-    
-.flash-message
-{
-    font-size: 13px;
-    background-color: #D40000;
-    padding: 15px;
-    width: 200px;
-    color: white;
-    border-radius: 3px;
-    text-align: center;
-    font-weight: 900;
-    position: fixed;
-    bottom: 2%;
-    right: 10%;
-    float: right;
-    margin-top: 10em;
 }
-  }
-  

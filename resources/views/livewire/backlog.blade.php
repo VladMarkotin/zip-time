@@ -2,18 +2,20 @@
     @include('livewire.backlog-modal')
 
     <div class="col-md-7 mx-auto rounded">
+
         <div class="card rounded-5 ">
-            <div class="card-header ">
-                <h4 style="color: #D40000;">
+            <div class="card-header " style="background-color: #A10000;">
+                <h3 class="text-white fw-semibold">
                     Backlog
-                    <button type="button" class="btn btn-danger float-end text-white " data-bs-toggle="modal"
-                        data-bs-target="#AddbacklogModal">
-                        Add Log
-                    </button>
-                </h4>
+                    <a type="submit" class=" btn btn-outline-secondary float-end text-white" data-bs-toggle="modal"
+                        data-bs-target="#AddbacklogModal" style="text-decoration: none">
+                      Add Log 
+                </a>
+                </h3>
             </div>
+
             <div class="card-body ">
-                <div class="panel ">
+                <div class="panel pt-3">
                     @foreach ($backlogs as $backlog)
                         <details class="show_edit_delete" id={{ $backlog->id }}>
                             <summary>
