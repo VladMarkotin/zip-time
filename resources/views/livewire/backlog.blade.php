@@ -4,10 +4,10 @@
     <div class="col-md-7 mx-auto rounded">
 
         <div class="card rounded-5 ">
-            <div class="card-header " style="background-color: #A10000;">
-                <h3 class="text-white fw-semibold">
+            <div class="card-header ">
+                <h3 class="text-danger fw-semibold">
                     Backlog
-                    <a type="submit" class=" btn btn-outline-secondary float-end text-white" data-bs-toggle="modal"
+                    <a type="submit" class=" btn btn-danger float-end text-white" data-bs-toggle="modal"
                         data-bs-target="#AddbacklogModal" style="text-decoration: none">
                       Add Log 
                 </a>
