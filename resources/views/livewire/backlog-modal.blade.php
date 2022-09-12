@@ -2,11 +2,11 @@
 <div wire:ignore.self class="modal fade" id="AddbacklogModal" tabindex="-1" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLabel"> Add useful thoughts or whatever you want here</h4>
+    <div class="modal-content ">
+        <div class="modal-header " style="background-color:#A10000;">
+            <h5 class="modal-title text-white " id="exampleModalLabel"> Add useful thoughts or whatever you want here</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+        </div> 
 
         <form wire:submit.prevent="storeBacklogInfo">
             <div class="modal-body">
@@ -36,8 +36,8 @@ aria-hidden="true">
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="refresh"  type="submit" class="btn btn-danger">Save Log</button>
+                <button type="button" class="btn btn-secondary text-white p-2" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="text-white p-2 rounded"  style="background-color: #A10000;">Save Log</button>
             </div>
         </form>
     </div>
@@ -53,10 +53,10 @@ aria-hidden="true">
 aria-hidden="true">
 <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLabel"> Add useful thoughts or whatever you want here</h4>
+        <div class="modal-header " style="background-color:#A10000;">
+            <h5 class="modal-title text-white " id="exampleModalLabel"> Update Logs</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+        </div> 
 
         <form wire:submit.prevent="updateBacklogInfo">
             <div class="modal-body">
@@ -86,8 +86,8 @@ aria-hidden="true">
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger">Save Log</button>
+                <button type="button" class="btn btn-secondary text-white p-2" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="text-white p-2 rounded"  style="background-color: #A10000;">Update Log</button>
             </div>
         </form>
     </div>
@@ -99,10 +99,10 @@ aria-hidden="true">
 aria-hidden="true">
 <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Log delete</h5>
+        <div class="modal-header " style="background-color:#A10000;">
+            <h5 class="modal-title text-white " id="exampleModalLabel"> Delete Logs</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+        </div> 
 
 
         <form wire:submit.prevent="destroyBacklogInfo">
@@ -111,8 +111,8 @@ aria-hidden="true">
                 <h6>Are you sure you wanna delete?</h6>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <button type="button" class="btn btn-secondary text-white p-2" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="text-white p-2 rounded"  style="background-color: #A10000;">Yes, Delete</button>
             </div>
         </form>
     </div>

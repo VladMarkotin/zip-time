@@ -18,8 +18,8 @@ class Settings extends Component
     public $info = [];
     public $notes = [];
     private $savedTasks = [];
-    public $selectedNotes = []; // store single selected note ids
-    public $selectAll = false; // store muti selected note ids
+    public $selectedNotes = []; 
+    public $selectAll = false; 
     public $removeDeletedNote;
     public $sT = null;
     public $taskName, $type, $priority, $time, $taskId; //for updates
