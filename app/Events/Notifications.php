@@ -11,22 +11,20 @@ class Notifications implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $notification_id;
-
     public $type;
-
     public $data;
+    public $date;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($notification_id, $type, $data)
+    public function __construct($type, $data, $date)
     {
-        $this->notification_id = $notification_id;
         $this->type = $type;
         $this->data  = $data;
+        $this->date  = $date;
     }
 
     /**

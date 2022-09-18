@@ -34,9 +34,13 @@ class HomeController extends Controller
         $id = auth()->id();
         $ldate = date('Y-m-d');
         $count_notifications = Notification::all()->where('user_id', $id)->where('notification_date', '<=', $ldate)->where('read_at', 0)->count();
-
+        $notifications = Notification::all()
+            ->where('user_id', $id)
+            ->where('notification_date', '<=', $ldate)
+            ->where('read_at', 0)->all();
         return view('home', [
             'count_notifications' => $count_notifications,
+            'notifications' => $notifications,
         ]);
 
     }

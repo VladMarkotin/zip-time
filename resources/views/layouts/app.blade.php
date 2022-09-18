@@ -36,19 +36,141 @@
 
             @if (Route::has('login'))
                 @auth
+
+                    <!-- Button Notification -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-light dropdown-toggle" id="main_notification_button" data-toggle="dropdown"
+                        <button type="button" class="btn btn-light dropdown-toggle" id="main_notification_button"
+                                data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false">
                             Уведомления ( {{$count_notifications}} )
                         </button>
                         <div class="dropdown-menu notifications">
-                            {{--                            <div class="dropdown-divider"></div>--}}
-                            {{--                            <a class="dropdown-item" href="#">Separated link</a>--}}
+                            @foreach ($notifications as $notification)
+                                <div class="dropdown-item notification"><b>{{$notification->data}}</b></div>
+                            @endforeach
                         </div>
                         <input type="hidden" name="_token" id="_token" value={{ csrf_token() }}>
-                        {{--                        <button class="btn btn-warning" id="send_notification">Отправить</button>--}}
                     </div>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#addNotification">
+                        Создать уведомление
+                    </button>
+
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sendToPusher">
+                        Отправить через Pusher
+                    </button>
+
+                    <!-- Modal Создать уведомление-->
+                    <div class="modal fade" id="addNotification" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Новое уведомление</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Тип уведомления:</strong>
+                                                <input id="typeNotification" type="text" name="typeNotification"
+                                                       class="form-control"
+                                                       placeholder='Придумайте тип напоминания (например "Важное")'>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Текст уведомления:</strong>
+                                                <input id="dataNotification" type="text" name="dataNotification"
+                                                       class="form-control"
+                                                       placeholder="Напишите текст уведомления">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Дата уведомления:</strong>
+                                                <input id="dateNotification" type="date" name="dateNotification"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                            <p></p>
+                                            <button id="saveNotification" class="btn btn-light">
+                                                Сохранить уведомление
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Отправить через Pusher-->
+                    <div class="modal fade" id="sendToPusher" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Отправить через Pusher</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Тип уведомления:</strong>
+                                                <input id="typeNotificationPusher" type="text" name="typeNotification"
+                                                       class="form-control" value="Pusher"
+                                                       readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Текст уведомления:</strong>
+                                                <input id="dataNotificationPusher" type="text" name="dataNotification"
+                                                       class="form-control"
+                                                       placeholder="Напишите текст уведомления">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Дата уведомления:</strong>
+                                                <input id="dateNotificationPusher" type="date" name="dateNotification"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                            <p></p>
+                                            <button id="sendNotification" class="btn btn-light">
+                                                Отправить уведомление
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 @endauth
             @endif
 
@@ -128,35 +250,82 @@
 
     var channel = pusher.subscribe('notifications');
     // Pusher.logToConsole = true;
-    channel.bind('App\\Events\\Notifications', function (data) {
+    channel.bind('App\\Events\\Notifications', function (i) {
 
-        $('.notifications').append('<div class="dropdown-item notification">' + data.data + '</div>')
+        if (i.type == 'Pusher') {
 
+            let token = $('#_token').val();
+            let type = i.type;
+            let notification_data = i.data;
+            let notification_date = i.date;
+
+            $.post('/save_notification', {
+                _token: token,
+                type: type,
+                data: notification_data,
+                notification_date: notification_date
+            }, function () {
+            }).done(function (response) {
+
+            })
+        }
     });
 
 </script>
 
 <script>
     window.addEventListener("load", function () {
-        let token = $('#_token').val();
-        $.post('/send_notification', {_token: token}, function () {
-        }).done(function (response) {
+        $('body').on('click', '#saveNotification', function () {
+            let token = $('#_token').val();
+            let type = $('#typeNotification').val();
+            let data = $('#dataNotification').val();
+            let notification_date = $('#dateNotification').val();
 
+            $.post('/save_notification', {
+                _token: token,
+                type: type,
+                data: data,
+                notification_date: notification_date
+            }, function () {
+            }).done(function (response) {
+                $('#addNotification').modal('hide');
+            })
         })
     })
 </script>
 
 <script>
     window.addEventListener("load", function () {
+        $('body').on('click', '#sendNotification', function () {
+            let token = $('#_token').val();
+            let type = $('#typeNotificationPusher').val();
+            let data = $('#dataNotificationPusher').val();
+            let notification_date = $('#dateNotificationPusher').val();
+
+            $.post('/send_notification', {
+                _token: token,
+                type: type,
+                data: data,
+                notification_date: notification_date
+            }, function () {
+            }).done(function (response) {
+                $('#sendToPusher').modal('hide');
+            })
+        })
+    })
+</script>
+
+
+<script>
+    window.addEventListener("load", function () {
         document.querySelector('.notifications').addEventListener('click', e => {
             let content = e.target.innerHTML;
+            e.target.outerHTML = content;
             let token = $('#_token').val();
-            // alert(content);
             $.post('/read_notification', {_token: token, notification_content: content}, function () {
             }).done(function (response) {
 
                 let message = JSON.parse(response)
-
                 var text_button_notification = "Уведомления ( " + message.count_notifications + " ) ";
                 $('#main_notification_button').text(text_button_notification);
 
@@ -165,18 +334,6 @@
     })
 </script>
 
-
-{{--<script>--}}
-{{--    window.addEventListener("load", function () {--}}
-{{--        $('body').on('click', '#send_notification', function () {--}}
-{{--            let token = $('#_token').val();--}}
-{{--            $.post('/send_notification', {_token: token}, function () {--}}
-{{--            }).done(function (response) {--}}
-
-{{--            })--}}
-{{--        })--}}
-{{--    })--}}
-{{--</script>--}}
 
 @livewireScripts
 
