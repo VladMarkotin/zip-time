@@ -127,12 +127,12 @@ summary::after {
 
 .backlog-add-button {
     position: fixed;
-    bottom:67.5%;
+    bottom:66.8%;
     background-color: #A10000;
     color: white; 
     padding: 10px;
     right: 0;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 7px 7px 0px 0px;
     -moz-transform:rotate(-90deg);
     -ms-transform:rotate(-90deg);
     -o-transform:rotate(-90deg);
