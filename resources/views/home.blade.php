@@ -1,13 +1,14 @@
 @extends('layouts.app')
 @section('content')
 
-@livewire('add-log')
+    @livewire('add-log')
 
-	@if (Auth::check())
-	 <a class = "backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
-        <i type="submit" class="fa fa-plus-square" style="color: #A10000; font-size: 35px; margin-left: 155px;"></i>
-    </a>	
-	@endif 
+    @if (Auth::check())
+        <a class="backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
+
+            add-log </a>
+    @endif
+
     <div class="container">
         <v-app>
             <button style="text-decoration: underline;" v-on:click="currComponent.name = 'Stat'">Statistics</button>
