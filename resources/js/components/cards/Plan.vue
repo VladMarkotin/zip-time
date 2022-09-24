@@ -195,7 +195,10 @@
                   </template>
                   <span>Create plan</span>
                </v-tooltip>
-               <v-tooltip right>
+              
+            </div>
+         </div>
+         <v-tooltip right>
                   <template v-slot:activator="{ on, attrs }">
                      <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="" v-bind="attrs"
                         v-on="on">
@@ -207,17 +210,28 @@
                         </v-icon>
                      </v-btn>
                   </template>
-                  <span>Emergency call</span>
+                  <span>Emergency mode</span>
                </v-tooltip>
-            </div>
-         </div>
          <v-alert
             color="#404040"
             text
             class="elevation-1"
             :value="showAlert"
             :type="alertType"
-            >{{serverMessage}}</v-alert>
+            >{{serverMessage}}
+         </v-alert>
+         <div class="v-progress-circular" v-if="isShowProgress == true">
+            <v-progress-circular
+                  :rotate="90"
+                  :size="100"
+                  :width="5"
+                  :value="value"
+                  color="red"
+                  class="v-progress-circular"
+               >
+                  {{ value }}
+               </v-progress-circular>
+         </div>
       </v-container>
    </v-card>
 </template>
@@ -324,6 +338,9 @@ export default {
         alertType: 'success',
         dialog: false,
         dialogDelete: false,
+        isShowProgress: false,
+        value: 0,
+        interval: {}
     }),
     computed : {
         taskTypes() {
@@ -387,7 +404,6 @@ export default {
 
         addHashCode()
 				{
-               debugger
 					if (this.newHashCode.length >= 3 && this.newHashCode.length <= 6)
 					{
 						if (this.newHashCode.includes('#'))
@@ -410,19 +426,29 @@ export default {
 
         formSubmit(e) {
             let currentObj = this;
-            //let test = currentObj.getPostParams()
-            //debugger;
+            currentObj.isShowProgress = true
             axios.post('/addPlan', currentObj.getPostParams())
                 .then(function(response) {
                     currentObj.alertType = response.data.status;
                     currentObj.serverMessage = response.data.message;
                     currentObj.showAlert = true;
+                    currentObj.isShowProgress = true
+                    currentObj.interval = setInterval(() => {
+							if (currentObj.value === 100) {
+								clearInterval(currentObj.interval)
+								return (currentObj.value = 100)
+							}
+                        currentObj.value += 20
+							}, 500)
                     setTimeout(() => {
                         currentObj.showAlert = false
+                        currentObj.isShowProgress = false
+                        document.location.reload();
                         if (response.data.status == 'success') {
                            const data = JSON.parse(response.config.data)
                            currentObj.$root.currComponentProps = data.plan
                            currentObj.$root.currComponent = "ReadyDayPlan"
+                           
                         }
                     }, 5e3)
                 })
@@ -465,3 +491,9 @@ export default {
 
 }
 </script>
+<style scoped>
+	.v-progress-circular{
+		width: 50px;
+		margin: auto;
+	}
+</style>

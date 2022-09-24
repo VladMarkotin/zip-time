@@ -11,7 +11,15 @@
 		<v-list>
 			<v-list-item>
 				<v-list-item-content>Time:</v-list-item-content>
-				<v-list-item-content class="align-end">{{item.time}} hours</v-list-item-content>
+				<v-list-item-content class="align-end" v-if="item.time.includes('00:')">{{item.time}}
+					 minutes
+				</v-list-item-content>
+                <v-list-item-content class="align-end" v-else-if="item.time.includes('01:00')">{{item.time}}
+					 hour
+				</v-list-item-content>
+				<v-list-item-content class="align-end" v-else>{{item.time}}
+					 hours
+				</v-list-item-content>
 			</v-list-item>
 			<v-list-item>
 				<v-list-item-content>Details:</v-list-item-content>
