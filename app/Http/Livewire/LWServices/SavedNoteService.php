@@ -8,9 +8,11 @@ class SavedNoteService
 
     public static function getNote($id)
     {
+
         $notes = SavedNotes::where('saved_task_id', $id)
         ->orderBy('created_at', 'DESC')
             ->get();
+            sleep(1);
         return $notes;
     }
 
