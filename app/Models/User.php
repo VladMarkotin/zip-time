@@ -24,6 +24,7 @@ class User extends Authenticatable
         'image',
         'provider',
         'provider_id',
+        'rating',
     ];
 
     /**
