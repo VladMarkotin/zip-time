@@ -9,25 +9,26 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Controllers\Services\GetDayPlanService;
-use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
-use App\Repositories\DayPlanRepositories\GetPlanRepository;
+use Thread;
+use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
-use App\Repositories\SavedTask2Repository;
-use App\Http\Controllers\Services\HashCodeService;
-use App\Http\Controllers\Services\AddPlanService;
-use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
-use App\Http\Controllers\Services\NotesService;
-use App\Http\Controllers\Services\DataTransformationService;
-use App\Http\Controllers\Services\EstimationService;
-use App\Repositories\EstimationRepository;
-use App\Models\Tasks;
 use Illuminate\Support\Facades\DB;
-/* Dependencies for notifications */
-use Thread;
+use Illuminate\Support\Facades\Auth;
 use App\Notifications\UserNotification;
+use App\Repositories\EstimationRepository;
+use App\Repositories\SavedTask2Repository;
+use App\Http\Controllers\Services\NotesService;
+use App\Http\Controllers\Services\RatingService;
+use App\Http\Controllers\Services\AddPlanService;
+use App\Http\Controllers\Services\HashCodeService;
+use App\Http\Controllers\Services\EstimationService;
+use App\Http\Controllers\Services\GetDayPlanService;
+use App\Repositories\DayPlanRepositories\GetPlanRepository;
+/* Dependencies for notifications */
+use App\Http\Controllers\Services\DataTransformationService;
+use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
+use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 /* end */
 
 class MainController
@@ -45,6 +46,7 @@ class MainController
     private $taskModel                 = null;
     private $estimationRepository      = null;
     private $userNotification          = null;
+    private $userRatings               = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -57,8 +59,10 @@ class MainController
                                 EstimationService $estimationService,
                                 EstimationRepository $estimationRepository,
                                 Tasks $tasks,
-                                UserNotification $userNotification)
+                                UserNotification $userNotification,
+                                RatingService $userRatings)
     {
+        
         $this->savedTaskRepository       = $taskRepository;
         $this->savedTaskService          = $codeService;
         $this->planService               = $addPlanService;
@@ -72,6 +76,7 @@ class MainController
         $this->estimationRepository      = $estimationRepository;
         $this->taskModel                 = $tasks;
         $this->userNotification          = $userNotification;
+        $this->userRatings               = $userRatings;
     }
 
     public function addHashCode(Request $request)
