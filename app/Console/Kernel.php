@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\EstimateDayCommand',
     ];
 
     /**
@@ -25,15 +25,24 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            $repository = new EstimationRepository();
-            $repository->estimate();
-        })
+        // $schedule->call(function () {
+        //     $repository = new EstimationRepository();
+        //     $repository->estimate();
+        // })
+        //     ->timezone('Europe/Minsk')
+        //     //->dailyAt("14:46")
+        //     ->everyMinute()
+        //     ->appendOutputTo(storage_path('logs/inspire.log'));
+
+
+            $schedule->command('estimateDay') 
             ->timezone('Europe/Minsk')
             //->dailyAt("14:46")
             ->everyMinute()
-            ->appendOutputTo(storage_path('logs/inspire.log'));
+            ->appendOutputTo(storage_path('logs/inspire.log'));;
     }
+
+
 
     /**
      * Register the commands for the application.

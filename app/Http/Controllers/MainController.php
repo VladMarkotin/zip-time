@@ -215,7 +215,7 @@ class MainController
             "action"   => '2', //it means that user try to finish day plan
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
-
+       // $this->userRatings->getUserRatings(2);
         return response()->json($response); //comment
     }
 

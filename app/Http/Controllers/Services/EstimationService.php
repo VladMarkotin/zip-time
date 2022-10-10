@@ -16,12 +16,15 @@ class EstimationService
 {
     private $estimateTaskRepository = null;
     private $estimateDayRepository  = null;
+    private $userRatings   = null;     
 
     public function __construct(EstimateTaskRepository $estimateTaskRepository,
-                                EstimationRepository $estimationRepository)
+                                EstimationRepository $estimationRepository,
+                                RatingService $userRatings)
     {
         $this->estimateTaskRepository = $estimateTaskRepository;
         $this->estimateDayRepository  = $estimationRepository;
+        $this->userRatings               = $userRatings;
     }
     /**
      * @param array $data
@@ -110,11 +113,15 @@ class EstimationService
                 $data['comment'] = $makeCommentValid($data['comment']);
                 $response = $this->estimateDayRepository->closeDay($data);
                 if($response){
+                  $this->userRatings-> rateCompletedDay(2) ;  //  get rating as day completed
                     return ["status" => "success", "message" => "Your day plan is completed :) Good work!"];
+                    
                 }
 
                 return ["status" => "error", "message" => "Your day plan hasn`t been done yet. You still have some
                          required jobs/tasks incomplete! "];
+
+
             case '1': //for estimation of job & task
                 if(!$data['mark'] && ($data['is_ready'])){
                     $data['mark'] = $data['is_ready'];
