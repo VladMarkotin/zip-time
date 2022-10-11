@@ -37,8 +37,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-       $this->estimateDayRepository->estimate();
-      
         return view('home');
     }
 }
