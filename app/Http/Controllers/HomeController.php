@@ -15,15 +15,15 @@ class HomeController extends Controller
 
     private $estimateDayRepository = null;
     private $getDayPlanService = null;
-    private $userRatings = null; 
+  
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(GetDayPlanService $getDayPlanService, RatingService $userRatings, EstimationRepository $estimationRepository)
+    public function __construct(GetDayPlanService $getDayPlanService, EstimationRepository $estimationRepository)
     {
-        $this->userRatings = $userRatings;
+     
         $this->estimateDayRepository = $estimationRepository;
         
         $this->middleware('auth');

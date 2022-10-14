@@ -13,78 +13,112 @@ use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\EstimationRepository;
+
 
 class RatingService
 {
     private $Ra; // 100 by default
     private $Rb = 1000; // 1000 by default
-    private $Ea;
-    private $Eb;
     private $Sa;
-    public $NRa;
-    public $NRb;
+    public $newRating;
     public $dayStatus;
 
-    public function rateCompletedDay($dayStatus)  //  get rating when close day button is clicked
+    public function rateCompletedDay($dayStatus)
     {
-        $newRating = $this->estimateRating($dayStatus);
-        $completedDayIds = $this->getCompletedDayIds();
-        if (count($completedDayIds) != 0) {
-            $users = User::whereIn('id', $completedDayIds)->get();
-            foreach ($users as $user) {
-               
-                if(  $user->rating > 0 )
-                {
-                    $user->rating += $newRating;
-                    $user->update();  
-                }
-                
+        //  get rating when close day button is clicked by d user
+        $k = $this->setKCoefficient();
+        $newRating = $this->estimateRating($dayStatus, $k);
+        $user = User::where('id', Auth::id())->first();
+        if ($user->rating > 0) {
+            $user->rating += $newRating;
+            $user->update();
+        }
+    }
+
+    public function estimateActiveDayrating($dayStatus)
+    {
+        //  get day rating for users with an uncompleted plan by cron script at day end
+        $usersUnder30Days  = [];
+        $usersAbove180Days = [];
+        $usersBtw30_90Days = [];
+        $usersBtw90_180Days= [];
+
+        $activeUsers = $this->idsToBeRated();
+
+        foreach ($activeUsers as $users => $days) {
+            if ($days <= 30) {
+                $k = 40;
+                $usersUnder30Days[] = $users;
+                $newRating = $this->estimateRating($dayStatus, $k);
+                $users = User::whereIn('id', $usersUnder30Days)->get();
+                $this->saveToDB($users, $newRating);
+            }
+            if ($days > 30 && $days < 90) {
+                $k = 20;
+                $usersBtw30_90Days[] = $users;
+                $newRating = $this->estimateRating($dayStatus, $k);
+                $users = User::whereIn('id', $usersBtw30_90Days)->get();
+                $this->saveToDB($users, $newRating);
+            }
+
+            if ($days >= 90 && $days < 180) {
+                $k = 10;
+                $usersBtw90_180Days[] = $users;
+                $newRating = $this->estimateRating($dayStatus, $k);
+                $users = User::whereIn('id', $usersBtw90_180Days)->get();
+                $this->saveToDB($users, $newRating);
+            }
+            if ($days > 180) {
+                $k = 5;
+                $usersAbove180Days[] = $users;
+                $newRating = $this->estimateRating($dayStatus, $k);
+                $users = User::whereIn('id', $usersAbove180Days)->get();
+                $this->saveToDB($users, $newRating);
             }
         }
     }
 
-    public function rateCompletedDayAuto($dayStatus)  //  get rating when shedule script runs.
+    public function estimateLazyDayrating($dayStatus)
     {
-        $newRating = $this->estimateRating($dayStatus);
+        //  get day rating for lazy users without a plan by cron script at day end
+        $userUnder30Days  = [];
+        $userAbove180Days = [];
+        $userBtw30_90Days = [];
+        $userBtw90_180Days= [];
 
-        $ids = $this->getIds();
-        $weekendIds = $this->getWeekendIds();
-        $badIds = $this->getBadIds();
-        // var_dump($ids);
-        // var_dump($weekendIds);
-        // var_dump($badIds);
+        $lazyUsers = $this->getBadIds();
 
-        if (count($ids) != 0) {
-            $users = User::whereIn('id', $ids)->get();
-            foreach ($users as $user) {
-                if(  $user->rating > 0 )
-                {
-                $user->rating += $newRating;
-                $user->update();
-                }
+        foreach ($lazyUsers as $users => $days) {
+            if ($days <= 30) {
+                $k = 40;
+                $userUnder30Days[] = $users;
+                $newRating = $this->estimateRating($dayStatus, $k);
+                $users = User::whereIn('id', $userUnder30Days)->get();
+                $this->saveToDB($users, $newRating);
             }
-        }
 
-        if (count($badIds) != 0) {
-            $users = User::whereIn('id', $badIds)->get();
-            foreach ($users as $user) {
-                if(  $user->rating > 0 )
-                {
-                $user->rating += $newRating;
-                $user->update();
-                }
+            if ($days > 30 && $days < 90) {
+                $k = 20;
+                $userBtw30_90Days[] = $users;
+                $newRating = $this->estimateRating($dayStatus, $k);
+                $users = User::whereIn('id', $userBtw30_90Days)->get();
+                $this->saveToDB($users, $newRating);
             }
-        }
 
-        if (count($weekendIds) > 0) {
-            $users = User::whereIn('id', $weekendIds)->get();
-            foreach ($users as $user) {
-                if(  $user->rating > 0 )
-                {
-                $user->rating += $newRating;
-                $user->update();
-                }
+            if ($days >= 90 && $days < 180) {
+                $k = 10;
+                $userBtw90_180Days[] = $users;
+                $newRating = $this->estimateRating($dayStatus, $k);
+                $users = User::whereIn('id', $userBtw90_180Days)->get();
+                $this->saveToDB($users, $newRating);
+            }
+
+            if ($days > 180) {
+                $k = 5;
+                $userAbove180Days[] = $users;
+                $newRating = $this->estimateRating($dayStatus, $k);
+                $users = User::whereIn('id', $userAbove180Days)->get();
+                $this->saveToDB($users, $newRating);
             }
         }
     }
@@ -103,6 +137,7 @@ class RatingService
 
     private function setKCoefficient()
     {
+        // set K for logged in user
         if ($this->userSinceInDays() <= 30) {
             $k = 40;
         } elseif (
@@ -121,25 +156,26 @@ class RatingService
         return $k;
     }
 
-    private function estimateRating($dayStatus)
+    private function estimateRating($dayStatus, $k)
     {
+        // rating clculator
         $Ea = 1 / ((1 + 10) ^ (($this->Rb - $this->Ra) / 400));
 
         switch ($dayStatus) {
             case 2: // completed day status
                 $this->Sa = 1;
-                $NRa = $this->Ra + $this->setKCoefficient() * ($this->Sa - $Ea); //  Sa = 1  день успешно закрыт(пользователь)
+                $newRating = $this->Ra + $k * ($this->Sa - $Ea); //  Sa = 1  день успешно закрыт(пользователь)
                 break;
 
             case 1: // 'weekend'
                 $this->Sa = 0.5;
-                $NRa = $this->Ra + $this->setKCoefficient() * ($this->Sa - $Ea); //  Sa = 0.5  двзят выходной (пользователь)
+                $newRating = $this->Ra + $k * ($this->Sa - $Ea); //  Sa = 0.5  двзят выходной (пользователь)
 
                 break;
 
             case 0: // wasted day:
                 $this->Sa = 0;
-                $NRa = $this->Ra + $this->setKCoefficient() * ($this->Sa - $Ea); //  Sa = 0  день день провален (пользователь)
+                $newRating = $this->Ra + $k * ($this->Sa - $Ea); //  Sa = 0  день день провален (пользователь)
 
                 break;
 
@@ -148,20 +184,41 @@ class RatingService
                 break;
         }
 
-        // $result = [
-        //     $this->Ra,
-        //     $NRa,
-        //     $this->NRb,
-        //     $this->setKCoefficient(),
-        //     $this->userSinceInDays(),
-        //     $this->Sa,
-        // ];
+        return $newRating;
+    }
 
-        return $NRa;
+    private function idsToBeRated()
+    {
+        //  get all unrated users from timetable .
+        $today = Carbon::today()->toDateString();
+
+        $query =
+            "SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
+                                     WHERE timetables.day_status = 2 
+                                         OR  timetables.day_status = 1 
+                                             OR   timetables.day_status = -1 
+                                                 AND  timetables.date = '" .
+            $today .
+            "'";
+
+        $idsArr = DB::select($query); //Array of all user`s id
+        $ids = [];
+        foreach ($idsArr as $v) {
+            $ids[] = $v->id;
+        }
+        $idsToBeRated = [];
+        $now = Carbon::now();
+        $users = User::whereIn('id', $ids)->get();
+        foreach ($users as $user) {
+            $idsToBeRated[$user->id] = $user->created_at->diff($now)->days;
+        }
+
+        return $idsToBeRated;
     }
 
     private function getBadIds()
     {
+        // get lazy guys without a day plan
         $today = Carbon::today()->toDateString();
         $query =
             "SELECT users.id FROM users WHERE
@@ -178,63 +235,23 @@ class RatingService
             $badIds[] = $v->id;
         }
 
-        return $badIds;
-    }
-
-    private function getWeekendIds()
-    {
-        $today = Carbon::today()->toDateString();
-        $query =
-            "SELECT users.id FROM users JOIN timetables ON users.id = timetables.user_id
-                         WHERE timetables.day_status = 1
-                         AND timetables.own_estimation = 0
-                         AND timetables.date = '" .
-            $today .
-            "'";
-        $idsArr = DB::select($query); //Array of all user`s id
-        $ids = [];
-        foreach ($idsArr as $v) {
-            $ids[] = $v->id;
+        $idsToBeRated = [];
+        $now = Carbon::now();
+        $users = User::whereIn('id', $badIds)->get();
+        foreach ($users as $user) {
+            $idsToBeRated[$user->id] = $user->created_at->diff($now)->days;
         }
 
-        return $ids;
+        return $idsToBeRated;
     }
 
-    private function getIds()
+    private function saveToDB($users, $newRating)
     {
-        $today = Carbon::today()->toDateString();
-
-        $query =
-            "SELECT users.id FROM users JOIN timetables ON users.id = timetables.user_id WHERE
-                        timetables.day_status = 2 AND
-                        timetables.date = '" .
-            $today .
-            "'";
-        $idsArr = DB::select($query); //Array of all user`s id
-        $ids = [];
-        foreach ($idsArr as $v) {
-            $ids[] = $v->id;
+        foreach ($users as $user) {
+            if ($user->rating > 0) {
+                $user->rating += $newRating;
+                $user->update();
+            }
         }
-
-        return $ids;
-    }
-
-    private function getCompletedDayIds()
-    {
-        $today = Carbon::today()->toDateString();
-
-        $query =
-            "SELECT users.id FROM users JOIN timetables ON users.id = timetables.user_id WHERE
-                        timetables.day_status = 3 OR  timetables.day_status = 1 AND
-                        timetables.date = '" .
-            $today .
-            "'";
-        $idsArr = DB::select($query); //Array of all user`s id
-        $ids = [];
-        foreach ($idsArr as $v) {
-            $ids[] = $v->id;
-        }
-
-        return $ids;
     }
 }

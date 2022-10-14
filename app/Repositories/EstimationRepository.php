@@ -60,7 +60,7 @@ class EstimationRepository
                     "updated_at"       => Carbon::now(),
                 ];
 
-                ($finalMark >= 50) ?  $this->userRatings->rateCompletedDayAuto(2) :  $this->userRatings->rateCompletedDayAuto(0);
+                ($finalMark >= 50) ?  $this->userRatings->estimateActiveDayrating(2) :  $this->userRatings->estimateActiveDayrating(0);
                
                 $this->fillTimetablesTable($data, $ids);
             }
@@ -83,7 +83,7 @@ class EstimationRepository
                         "updated_at"       => Carbon::now(),
                     ];
 
-                $this->userRatings->rateCompletedDayAuto(0);
+                $this->userRatings->estimateLazyDayrating(0);
                 $this->fillTimetablesTable($data, $badIds, 1);
             }
           
@@ -116,7 +116,7 @@ class EstimationRepository
                     'comment'          => 'Closed automatically at '.Carbon::now()->toDateTimeString(),
                     "updated_at"       => Carbon::now(),
                 ];
-                $this->userRatings->rateCompletedDayAuto(1);
+                $this->userRatings->estimateActiveDayrating(1);
                 $this->fillTimetablesTable($data, $weekendIds, 0);
             }
 
