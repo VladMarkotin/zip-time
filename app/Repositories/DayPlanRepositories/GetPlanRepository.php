@@ -36,10 +36,14 @@ class GetPlanRepository
         $plan = $this->getTasksForLastTimetable($timetableId);
         //die(var_dump($plan));
         //Теперь надо получить статус текущего дня и если он = 3 -> добавить информацию об итоговой оценке и тд
-        /*$planState = $this->getPlanState($timetableId);
-        if($planState[0]->day_status == 3){
-            //$plan[""]
-        }*/
+        $planState = $this->getPlanState($timetableId);
+        //die(var_dump($planState));
+        if(isset($planState[0])){
+            if($planState[0]->day_status == 0){
+                
+                return $planState;
+            }
+        }
 
         return $plan;
     }
@@ -95,7 +99,6 @@ class GetPlanRepository
             ->where('id', '=', $timetableId)
             ->get()
             ->toArray();
-        //die(var_dump($timetableInfo));
 
         return $timetableInfo;
     }

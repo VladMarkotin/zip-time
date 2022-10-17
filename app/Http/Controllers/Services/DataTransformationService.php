@@ -34,6 +34,23 @@ class DataTransformationService
         return $response;
     }
 
+    public function transformDataForEmergencyRequest(array $data)
+    {
+        $transformStatus  = function ($data){
+            //working
+            $dataAsArray = [
+                "date"      => $data[0]->date,
+                "dayStatus" => $data[0]->day_status,
+                "comment"   => $data[0]->comment,
+            ];
+           //die(var_dump($data).__FILE__);
+           return $dataAsArray;
+       };
+       $response = $transformStatus($data);
+
+       return $response;
+    }
+
     public function transformData(array $data, $way = 1) //1)db->front
     {
         $response = null;

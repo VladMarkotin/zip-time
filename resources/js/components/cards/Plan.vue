@@ -200,7 +200,7 @@
          </div>
          <v-tooltip right>
                   <template v-slot:activator="{ on, attrs }">
-                     <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="" v-bind="attrs"
+                     <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="toggleEmergencyCallDialog" v-bind="attrs"
                         v-on="on">
                         <v-icon md="1"
                            color="#D71700"
@@ -232,12 +232,15 @@
                   {{ value }}
                </v-progress-circular>
          </div>
+         <template v-if="isShowEmergencyCallDialog">
+	         <EmergencyCall  v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
+         </template>
       </v-container>
    </v-card>
 </template>
 <script>
 import Vuetify from 'vuetify/lib'
-
+import EmergencyCall from '../dialogs/EmergencyCall.vue'
 import {
     mdiAccount,
     mdiPlex,
@@ -253,6 +256,7 @@ import {
 } from '@mdi/js'
 
 export default {
+   components : {EmergencyCall},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
@@ -261,6 +265,7 @@ export default {
         showIcon: 0,
         day_status: 'Work Day',
         menu: false/*for defaultSelected.time*/,
+        isShowEmergencyCallDialog : false,
         defaultSelected: {
             hash: '#',
             hashCodes: [],
@@ -357,6 +362,9 @@ export default {
                 plan: this.items
             })
         },
+        toggleEmergencyCallDialog(){
+				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
+			},
         inputChangeHandler() {
             if (this.showIcon < 4) {
                 this.showIcon += 1
