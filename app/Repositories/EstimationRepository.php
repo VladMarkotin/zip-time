@@ -176,7 +176,7 @@ class EstimationRepository
         $mutable = Carbon::now();
         $id = Auth::id();
         $dataForDayPlanCreation["user_id"]          = $id;
-        $dataForDayPlanCreation["date"]             = $mutable->add(1, 'day');
+        $dataForDayPlanCreation["date"]             = $mutable;//->add(1, 'day');
         $dataForDayPlanCreation["day_status"]       = 0;
         $dataForDayPlanCreation["final_estimation"] = 0;
         $dataForDayPlanCreation["own_estimation"]   = 0;
