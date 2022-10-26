@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,24 +15,24 @@
 
 
     <!-- Fonts -->
-            <link rel="dns-prefetch" href="//fonts.gstatic.com">
-            <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" >
-             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-             rel="stylesheet">
-             
-         
-             
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-        <!-- Default theme -->
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-        @livewireStyles
+
+
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+    @livewireStyles
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -39,7 +40,9 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -58,7 +61,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
-                            
+
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
@@ -66,20 +69,30 @@
                             @endif
                         @else
                             <li class="nav-item">
-                               <span class="nav-link" style="cursor:pointer;" v-on:click="currComponent.name = 'Stat'">Statistics</span>
+                                <span class="nav-link" style="cursor:pointer;"
+                                    v-on:click="currComponent.name = 'Stat'">Statistics</span>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span style="color: rgb(94, 155, 94); font-weight: bold">[  rating: {{ \app\models\User::where('id', Auth::id())->pluck('rating')->first();}} ]  </span> 
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span style="color: rgb(94, 155, 94); font-weight: bold">
+                                        [ rating: @php
+                                            $rating = 
+                                                \app\models\User::where('id', Auth::id())
+                                                    ->pluck('rating')
+                                                    ->first();
+                                            
+                                            echo $rating;
+                                        @endphp ] </span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('settings') }}">Settings</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
@@ -97,28 +110,50 @@
 
         <main class="py-4">
             @yield('content')
-           
+
         </main>
     </div>
-   
+
     <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    
+
+
     <script>
         window.addEventListener('message', event => {
             alertify.notify(event.detail.text);
-        }); 
+        });
     </script>
 
 
     <script>
-    !function(Gleap,t,i){if(!(Gleap=window.Gleap=window.Gleap||[]).invoked){for(window.GleapActions=[],Gleap.invoked=!0,Gleap.methods=["identify","clearIdentity","attachCustomData","setCustomData","removeCustomData","clearCustomData","registerCustomAction","logEvent","log","preFillForm","sendSilentCrashReport","startFeedbackFlow","setAppBuildNumber","setAppVersionCode","preFillForm","setApiUrl","setFrameUrl","isOpened","open","close","on","setLanguage","setOfflineMode","initialize"],Gleap.f=function(e){return function(){var t=Array.prototype.slice.call(arguments);window.GleapActions.push({e:e,a:t})}},t=0;t<Gleap.methods.length;t++)Gleap[i=Gleap.methods[t]]=Gleap.f(i);Gleap.load=function(){var t=document.getElementsByTagName("head")[0],i=document.createElement("script");i.type="text/javascript",i.async=!0,i.src="https://sdk.gleap.io/latest/index.js",t.appendChild(i)},Gleap.load(),
-        Gleap.initialize("MMrWTm1w4laW6B2JsT1qPwMxqb1dsyzI")
-    }}();
+        ! function(Gleap, t, i) {
+            if (!(Gleap = window.Gleap = window.Gleap || []).invoked) {
+                for (window.GleapActions = [], Gleap.invoked = !0, Gleap.methods = ["identify", "clearIdentity",
+                        "attachCustomData", "setCustomData", "removeCustomData", "clearCustomData", "registerCustomAction",
+                        "logEvent", "log", "preFillForm", "sendSilentCrashReport", "startFeedbackFlow", "setAppBuildNumber",
+                        "setAppVersionCode", "preFillForm", "setApiUrl", "setFrameUrl", "isOpened", "open", "close", "on",
+                        "setLanguage", "setOfflineMode", "initialize"
+                    ], Gleap.f = function(e) {
+                        return function() {
+                            var t = Array.prototype.slice.call(arguments);
+                            window.GleapActions.push({
+                                e: e,
+                                a: t
+                            })
+                        }
+                    }, t = 0; t < Gleap.methods.length; t++) Gleap[i = Gleap.methods[t]] = Gleap.f(i);
+                Gleap.load = function() {
+                        var t = document.getElementsByTagName("head")[0],
+                            i = document.createElement("script");
+                        i.type = "text/javascript", i.async = !0, i.src = "https://sdk.gleap.io/latest/index.js", t
+                            .appendChild(i)
+                    }, Gleap.load(),
+                    Gleap.initialize("MMrWTm1w4laW6B2JsT1qPwMxqb1dsyzI")
+            }
+        }();
     </script>
-    
+
 
     {{-- hide backlog modal --}}
     <script type="text/javascript">
@@ -126,7 +161,8 @@
             $('#exampleModal').modal('hide');
         });
     </script>
-     @livewireScripts
-     @stack('script')
+    @livewireScripts
+    @stack('script')
 </body>
+
 </html>

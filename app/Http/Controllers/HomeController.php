@@ -12,7 +12,7 @@ use App\Http\Controllers\Services\GetDayPlanService;
 
 class HomeController extends Controller
 {
-
+    private $userRatings   = null;
     private $estimateDayRepository = null;
     private $getDayPlanService = null;
   
@@ -21,8 +21,8 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct(GetDayPlanService $getDayPlanService, EstimationRepository $estimationRepository)
-    {
+    public function __construct(GetDayPlanService $getDayPlanService, EstimationRepository $estimationRepository, RatingService $userRatings  )
+    { $this->userRatings = $userRatings;
      
         $this->estimateDayRepository = $estimationRepository;
         
@@ -37,6 +37,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // $this->userRatings->estimateLazyDayrating(0);
         return view('home');
     }
 }

@@ -7,6 +7,18 @@
  * Time: 8:30
  */
 
+
+
+
+
+
+
+
+
+
+ //сhange formalar and fix rb for combuter
+
+
 namespace App\Http\Controllers\Services;
 
 use App\Models\User;
@@ -25,18 +37,22 @@ class RatingService
 
     public function rateCompletedDay($dayStatus)
     {
+       
         //  get rating when close day button is clicked by d user
-        $k = $this->setKCoefficient();
-        $newRating = $this->estimateRating($dayStatus, $k);
+        $array = $this->setKCoefficient();
+        $k = $array[0];
+        $rb = $array[1];
+       $newRating = $this->estimateRating($dayStatus, $k, $rb);
         $user = User::where('id', Auth::id())->first();
         if ($user->rating > 0) {
             $user->rating += $newRating;
             $user->update();
-        }
+       }
     }
 
     public function estimateActiveDayrating($dayStatus)
     {
+       
         //  get day rating for users with an uncompleted plan by cron script at day end
         $usersUnder30Days  = [];
         $usersAbove180Days = [];
@@ -47,31 +63,31 @@ class RatingService
 
         foreach ($activeUsers as $users => $days) {
             if ($days <= 30) {
-                $k = 40;
+                $k = 40; $rb = 20;
                 $usersUnder30Days[] = $users;
-                $newRating = $this->estimateRating($dayStatus, $k);
+                $newRating = $this->estimateRating($dayStatus, $k, $rb);
                 $users = User::whereIn('id', $usersUnder30Days)->get();
                 $this->saveToDB($users, $newRating);
             }
             if ($days > 30 && $days < 90) {
-                $k = 20;
+                $k = 20; $rb = 15;
                 $usersBtw30_90Days[] = $users;
-                $newRating = $this->estimateRating($dayStatus, $k);
+                $newRating = $this->estimateRating($dayStatus, $k, $rb);
                 $users = User::whereIn('id', $usersBtw30_90Days)->get();
                 $this->saveToDB($users, $newRating);
             }
 
             if ($days >= 90 && $days < 180) {
-                $k = 10;
+                $k = 10; $rb = 10;
                 $usersBtw90_180Days[] = $users;
-                $newRating = $this->estimateRating($dayStatus, $k);
+                $newRating = $this->estimateRating($dayStatus, $k, $rb);
                 $users = User::whereIn('id', $usersBtw90_180Days)->get();
                 $this->saveToDB($users, $newRating);
             }
             if ($days > 180) {
-                $k = 5;
+                $k = 5; $rb = 5;
                 $usersAbove180Days[] = $users;
-                $newRating = $this->estimateRating($dayStatus, $k);
+                $newRating = $this->estimateRating($dayStatus, $k, $rb);
                 $users = User::whereIn('id', $usersAbove180Days)->get();
                 $this->saveToDB($users, $newRating);
             }
@@ -80,6 +96,7 @@ class RatingService
 
     public function estimateLazyDayrating($dayStatus)
     {
+     
         //  get day rating for lazy users without a plan by cron script at day end
         $userUnder30Days  = [];
         $userAbove180Days = [];
@@ -87,36 +104,37 @@ class RatingService
         $userBtw90_180Days= [];
 
         $lazyUsers = $this->getBadIds();
+        
 
         foreach ($lazyUsers as $users => $days) {
             if ($days <= 30) {
-                $k = 40;
+                $k = 40; $rb = 20;
                 $userUnder30Days[] = $users;
-                $newRating = $this->estimateRating($dayStatus, $k);
+                $newRating = $this->estimateRating($dayStatus, $k, $rb);
                 $users = User::whereIn('id', $userUnder30Days)->get();
                 $this->saveToDB($users, $newRating);
             }
 
             if ($days > 30 && $days < 90) {
-                $k = 20;
+                $k = 20; $rb = 15;
                 $userBtw30_90Days[] = $users;
-                $newRating = $this->estimateRating($dayStatus, $k);
+                $newRating = $this->estimateRating($dayStatus, $k, $rb);
                 $users = User::whereIn('id', $userBtw30_90Days)->get();
                 $this->saveToDB($users, $newRating);
             }
 
             if ($days >= 90 && $days < 180) {
-                $k = 10;
+                $k = 10; $rb = 10;
                 $userBtw90_180Days[] = $users;
-                $newRating = $this->estimateRating($dayStatus, $k);
+                $newRating = $this->estimateRating($dayStatus, $k, $rb);
                 $users = User::whereIn('id', $userBtw90_180Days)->get();
                 $this->saveToDB($users, $newRating);
             }
 
             if ($days > 180) {
-                $k = 5;
+                $k = 5; $rb = 5;
                 $userAbove180Days[] = $users;
-                $newRating = $this->estimateRating($dayStatus, $k);
+                $newRating = $this->estimateRating($dayStatus, $k, $rb);
                 $users = User::whereIn('id', $userAbove180Days)->get();
                 $this->saveToDB($users, $newRating);
             }
@@ -139,27 +157,27 @@ class RatingService
     {
         // set K for logged in user
         if ($this->userSinceInDays() <= 30) {
-            $k = 40;
+            $k = 40; $rb = 20;
         } elseif (
             $this->userSinceInDays() > 30 &&
             $this->userSinceInDays() < 90
         ) {
-            $k = 20;
+            $k = 20; $rb = 15;
         } elseif (
             $this->userSinceInDays() > 90 &&
             $this->userSinceInDays() < 180
         ) {
-            $k = 10;
+            $k = 10; $rb = 10;
         } else {
-            $k = 5;
+            $k = 5; $rb = 5;
         }
-        return $k;
+        return [$k, $rb];
     }
 
-    private function estimateRating($dayStatus, $k)
+    private function estimateRating($dayStatus, $k, $rb)
     {
         // rating clculator
-        $Ea = 1 / ((1 + 10) ^ (($this->Rb - $this->Ra) / 400));
+        $Ea = 1 / (1 + pow(10 , (($this->Rb + $rb) - $this->Ra) / 400));
 
         switch ($dayStatus) {
             case 2: // completed day status
@@ -169,7 +187,7 @@ class RatingService
 
             case 1: // 'weekend'
                 $this->Sa = 0.5;
-                $newRating = $this->Ra + $k * ($this->Sa - $Ea); //  Sa = 0.5  двзят выходной (пользователь)
+                $newRating = $this->Ra + $k * ( $this->Sa- $Ea); //  Sa = 0.5  двзят выходной (пользователь)
 
                 break;
 
@@ -247,6 +265,8 @@ class RatingService
 
     private function saveToDB($users, $newRating)
     {
+       
+       // dd(floor($newRating));
         foreach ($users as $user) {
             if ($user->rating > 0) {
                 $user->rating += $newRating;
