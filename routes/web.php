@@ -51,9 +51,10 @@ Route::middleware(['auth'])->group(function () {
 
     //Statistics
     Route::prefix('stat')->group(function () {
-        Route::get('/', [App\Http\Controllers\StatController::class, 'index']);
+        Route::get('/', [App\Http\Controllers\StatController::class, 'index'])->name('stat');
         Route::post('/', [App\Http\Controllers\StatController::class, 'getStatInfo']);
     });
+    Route::get('/get-stat-data', [App\Http\Controllers\StatController::class, 'getStatData'])->name('get-stat-data');
     //end statistic
 
 //emergency

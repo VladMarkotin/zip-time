@@ -87,13 +87,13 @@
 			data()
 			{
 				const currDate = new Date().toEnStr();
-				return {dates: {from: {modal: false, val: currDate}, to: {modal: false, val: currDate}}, mainStat: null, marks: null};
+				return {dates: {from: {modal: false, val: currDate}, to: {modal: false, val: currDate}}, mainStat: {}, marks: []};
 			},
 			methods:
 				{
 					async loadMarks()
 					{
-						const data = (await axios.get('/stat')).data;
+						const data = (await axios.get('get-stat-data')).data;
 						this.mainStat = data.mainStat;
 						this.marks = {...{final: data.marks.finalMarks, own: data.marks.ownMarks}};
 					},
