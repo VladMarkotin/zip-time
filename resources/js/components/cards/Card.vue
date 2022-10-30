@@ -93,7 +93,6 @@
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					setTimeout( () => {
-						console.log(this)
 						this.isShowAlert = false;
 						//debugger;
 					},3000)
@@ -107,7 +106,6 @@
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					setTimeout( () => {
-						console.log(this)
 						this.isShowAlert = false;
 					},3000)
 				  })

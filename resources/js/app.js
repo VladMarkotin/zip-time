@@ -41,7 +41,6 @@ const app =
 					if (window.user != '')
 					{
 						const data = (await axios.post('/ifexists')).data;
-						console.log(data)
 						if (data.dayStatus == 3 || (data.dayOwnMark > 0) || (data.dayStatus == 0) ) /*day is closed || (|| (data[0].day_status === 0) data[0].day_status === 0)*/
 						{
 							this.currComponent.props = data;

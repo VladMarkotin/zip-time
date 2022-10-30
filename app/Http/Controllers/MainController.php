@@ -24,6 +24,7 @@ use App\Http\Controllers\Services\DataTransformationService;
 use App\Http\Controllers\Services\EstimationService;
 use App\Repositories\EstimationRepository;
 use App\Models\Tasks;
+use App\Repositories\WeekendRepository;
 use Illuminate\Support\Facades\DB;
 /* Dependencies for notifications */
 use Thread;
@@ -45,6 +46,7 @@ class MainController
     private $taskModel                 = null;
     private $estimationRepository      = null;
     private $userNotification          = null;
+    private $weekendRepository         = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -57,7 +59,8 @@ class MainController
                                 EstimationService $estimationService,
                                 EstimationRepository $estimationRepository,
                                 Tasks $tasks,
-                                UserNotification $userNotification)
+                                UserNotification $userNotification,
+                                WeekendRepository $weekendRepository)
     {
         $this->savedTaskRepository       = $taskRepository;
         $this->savedTaskService          = $codeService;
@@ -72,6 +75,7 @@ class MainController
         $this->estimationRepository      = $estimationRepository;
         $this->taskModel                 = $tasks;
         $this->userNotification          = $userNotification;
+        $this->weekendRepository         = $weekendRepository;
     }
 
     public function addHashCode(Request $request)
@@ -106,6 +110,26 @@ class MainController
         return response()->json([
             'id' => $id,
             'hash_codes' => $hashCodes,
+        ]);//
+    }
+
+    public function isWeekendAvailable()
+    {
+        /*
+         * По умолчанию 1 выходной в неделю
+         * нужен репозитоий, который проверит, брались ли выходные за эту неделю и сколько раз
+         * можно применить к селекту с типами дней @change="имя метода" для определения есть ли возможность
+         * взять выходной*/
+        $id       = Auth::id();
+        $response = $this->weekendRepository->isWeekendAvailable();
+        $isWeekendAvailable = false;
+        if(count($response) > 0){
+            $isWeekendAvailable = true;
+        }
+
+        return response()->json([
+            'id'                 => $id,
+            'isWeekendAvailable' => $isWeekendAvailable,
         ]);//
     }
 

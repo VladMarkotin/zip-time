@@ -3,9 +3,13 @@
       <v-card-title style="background-color: #A10000;color: white;">Create your day plan!</v-card-title>
       <v-container>
          <v-select
-            :items="dayStatuses"
+            :items="dayStatuses2"
             label="Day status"
             v-model="day_status"
+            @change="isWeekendAvailable"
+           
+            item-disabled="disable"
+            item-text="status"
             required
             ></v-select>
          <v-divider></v-divider>
@@ -335,6 +339,16 @@ export default {
         hashNames: '#',
         taskPriority: ['1', '2', '3'],
         dayStatuses: ['Work Day', 'Weekend'],
+        dayStatuses2: [
+         {
+            status: 'Work Day',
+            disable: false,
+         },
+          {
+            status: 'Weekend',
+            disable:false,
+          }
+         ],
         time: '',
         notes: '',
         details: '',
@@ -354,6 +368,7 @@ export default {
         }
     },
     methods: {
+       
         getPostParams() {
             return JSON.stringify({
                 date: new Date().toISOString().substr(0, 10),
@@ -369,6 +384,19 @@ export default {
             if (this.showIcon < 4) {
                 this.showIcon += 1
             }
+
+        },
+        isWeekendAvailable(item){
+            let currentObj = this;
+            axios.post('/isWeekendAvailable', {
+                    //hash_code: event
+            })
+            .then(function(response) {
+                  currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
+             })
+            .catch(function(error) {
+                    currentObj.output = error;
+            });
 
         },
 
@@ -495,6 +523,14 @@ export default {
             .catch(function(error) {
                 currentObj.output = error;
             });
+
+         axios.post('/isWeekendAvailable')
+         .then(function(response) {
+            currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
+         })
+         .catch(function(error) {
+            currentObj.output = error;
+         });
     }
 
 }
