@@ -29,21 +29,29 @@
 				<v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
 					<v-card color="grey lighten-4" min-width="350px" flat>
 						<v-toolbar :color="selectedEvent.color" dark>
-							<v-btn icon>
-								<v-icon>mdi-pencil</v-icon>
-							</v-btn>
-							<v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+							<v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
 							<v-spacer></v-spacer>
-							<v-btn icon>
-								<v-icon>mdi-heart</v-icon>
-							</v-btn>
-							<v-btn icon>
-								<v-icon>mdi-dots-vertical</v-icon>
-							</v-btn>
 						</v-toolbar>
 						<v-card-text>
-							<span v-html="selectedEvent.details"></span>
+							<v-data-table :headers="headers" :items="selectedEvent.tasks" class="elevation-1"
+								hide-default-footer>
+							</v-data-table>
 						</v-card-text>
+						<v-divider></v-divider>
+						<v-list>
+							<v-list-item>
+								<v-list-item-content>Final mark:</v-list-item-content>
+								<v-list-item-content>{{ selectedEvent.dayFinalMark }}</v-list-item-content>
+							</v-list-item>
+							<v-list-item>
+								<v-list-item-content>Own mark:</v-list-item-content>
+								<v-list-item-content>{{ selectedEvent.dayOwnMark }}</v-list-item-content>
+							</v-list-item>
+							<v-list-item>
+								<v-list-item-content>Comment:</v-list-item-content>
+								<v-list-item-content>{{ selectedEvent.comment }}</v-list-item-content>
+							</v-list-item>
+						</v-list>
 						<v-card-actions>
 							<v-btn text color="secondary" @click="selectedOpen = false">
 								Cancel
@@ -65,6 +73,12 @@ export default
 				selectedEvent: {},
 				selectedElement: null,
 				selectedOpen: false,
+				headers: [
+					{ text: '#hash', value: 'hashCode' },
+					{ text: 'Task name', value: 'taskName' },
+					{ text: 'Details', value: 'details' },
+					{ text: 'Mark', value: 'mark' }
+				],
 				events: []
 			}
 		},
@@ -102,16 +116,19 @@ export default
 				nativeEvent.stopPropagation()
 			},
 			async updateRange(period) {
-				const history = await axios.get('/hist');
+				const history = await axios.get('/hist')
+				this.events = []
 				for (const date in history.data.plans) {
-					this.events = [
-						{
-							name: history.data.plans[date].tasks[0].taskName,
-							start: new Date(date),
-							end: new Date(date),
-							color: '#A10000'
-						}
-					];
+					this.events.push({
+						start: new Date(date),
+						end: new Date(date),
+						name: `Day status:\t${history.data.plans[date].dayStatus}`,
+						color: '#A10000',
+						dayFinalMark: history.data.plans[date].dayFinalMark,
+						dayOwnMark: history.data.plans[date].dayOwnMark,
+						comment: history.data.plans[date].comment,
+						tasks: history.data.plans[date].tasks
+					})
 				}
 			}
 		}
