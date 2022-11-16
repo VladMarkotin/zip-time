@@ -75,7 +75,8 @@ class HistRepository
         $query = "SELECT  timetables.id as t_id, timetables.user_id, timetables.date, timetables.day_status,
                      timetables.final_estimation, timetables.own_estimation,
                     timetables.comment, tasks.id, tasks.hash_code, tasks.task_name, tasks.type, tasks.priority, tasks.details,
-                     tasks.time, tasks.mark, tasks.note FROM timetables JOIN tasks ON timetables.id = tasks.timetable_id";
+                     tasks.time, tasks.mark, tasks.note FROM timetables JOIN tasks
+                      ON timetables.id = tasks.timetable_id";
         if(!$flag){
             $addClosedDays = function () {
                 return " AND timetables.day_status = 3 ";
@@ -108,7 +109,10 @@ class HistRepository
             $weekend       = $addWeekends();
             $withFailed    = $addWithFailed();
             $withEmergency = $addWithEmergency();
-            $query        .= " WHERE timetables.date BETWEEN '".$this->period['from'] ."' AND '".$this->period['to']."'$closedDays $weekend $withFailed $withEmergency";
+            $query        .= " WHERE timetables.date BETWEEN '".$this->period['from'] .
+            "' AND '".$this->period['to']."' AND timetables.day_status IN (-1,0,1,3)";
+            //$closedDays $weekend $withFailed $withEmergency
+            //die($query);
             $response      = DB::select($query);
         }else{ //Here we take history on concrete day
             $query        .=  " WHERE timetables.date = '".$this->period['date'] ."'";

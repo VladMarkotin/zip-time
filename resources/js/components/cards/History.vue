@@ -116,7 +116,9 @@ export default
 				nativeEvent.stopPropagation()
 			},
 			async updateRange(period) {
-				const history = await axios.get('/hist')
+				const history = await axios.post('/hist', {
+					start_date: period.start.date
+				})
 				this.events = []
 				for (const date in history.data.plans) {
 					this.events.push({
