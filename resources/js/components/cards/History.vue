@@ -101,8 +101,10 @@ export default
 			},
 			showEvent({ nativeEvent, event }) {
 				const open = () => {
+					console.log("test")
 					this.selectedEvent = event
 					this.selectedElement = nativeEvent.target
+					console.log(event)
 					requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
 				}
 

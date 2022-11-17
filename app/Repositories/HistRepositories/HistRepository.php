@@ -109,8 +109,10 @@ class HistRepository
             $weekend       = $addWeekends();
             $withFailed    = $addWithFailed();
             $withEmergency = $addWithEmergency();
+            $userId        = Auth::id();
             $query        .= " WHERE timetables.date BETWEEN '".$this->period['from'] .
-            "' AND '".$this->period['to']."' AND timetables.day_status IN (-1,0,1,3)";
+            "' AND '".$this->period['to']."' AND timetables.day_status IN (-1,0,1,3) 
+            AND timetables.user_id = $userId";
             //$closedDays $weekend $withFailed $withEmergency
             //die($query);
             $response      = DB::select($query);
