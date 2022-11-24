@@ -12,7 +12,7 @@ class SavedNoteService
         $notes = SavedNotes::where('saved_task_id', $id)
         ->orderBy('created_at', 'DESC')
             ->get();
-            sleep(1);
+            sleep(0);
         return $notes;
     }
 

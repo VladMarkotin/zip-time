@@ -1,3 +1,5 @@
+/*section Backlog*/
+
 .form-control:focus {
     border-color: #a10000;
     box-shadow: none;
@@ -127,10 +129,10 @@ summary::after {
 
 .backlog-add-button {
     position: fixed;
-    bottom:66.8%;
+    bottom:67.5%;
     background-color: #A10000;
     color: white; 
-    padding: 10px;
+    padding:5px 10px;
     right: 0;
     border-radius: 7px 7px 0px 0px;
     -moz-transform:rotate(-90deg);
@@ -141,31 +143,12 @@ summary::after {
     
 }
 
-
-
 .backlog-add-button:hover
 {
     text-decoration: none;
     color: white; 
     cursor: pointer;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @media only screen and (min-width: 360px) and (max-width: 768px) {
     summary ul {
