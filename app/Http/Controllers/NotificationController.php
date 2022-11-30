@@ -24,12 +24,13 @@ class NotificationController extends Controller
     public function readNotification(Request $request)
     {
         $id = auth()->id();
+        $ldate = date('Y-m-d');
         $notification_content = [$request->input('notification_content')];
         Notification::where('user_id', $id)
             ->where('data', $notification_content)
             ->update(['read_at' => 1]);
 
-        $count_notifications = Notification::all()->where('user_id', $id)->where('read_at', 0)->count();
+        $count_notifications = Notification::all()->where('user_id', $id)->where('notification_date', '<=', $ldate)->where('read_at', 0)->count();
 
         $notificationInfo = ['count_notifications' => $count_notifications];
         echo json_encode($notificationInfo);
