@@ -1,12 +1,12 @@
 <?php
 namespace App\Http\Livewire;
 
-use Auth;
 
 use Livewire\Component;
 use App\Models\SavedTask;
 use App\Models\SavedNotes;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\LWServices\TaskStatService as TSS;
 use App\Http\Livewire\LWServices\SavedNoteService as SNS;
 
