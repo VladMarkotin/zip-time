@@ -9997,3 +9997,68 @@ h3 {
     border-color: #dee2e6;
   }
 }
+
+
+
+svg {
+  width: 1.6em;
+  height: 1.6em;
+  position: absolute;
+  bottom: -1;
+  right: 20;
+  
+}
+
+
+.notification--num {
+  position: absolute;
+  left: 9%;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  background-color: #a10000;
+  color: #fff;
+  
+}
+
+@keyframes bell {
+  0%, 25%, 75%, 100% {
+    transform: rotate(0deg);
+ }
+  40% {
+    transform: rotate(10deg);
+ }
+  45% {
+    transform: rotate(-10deg);
+ }
+  55% {
+    transform: rotate(8deg);
+ }
+  60% {
+    transform: rotate(-8deg);
+ }
+}
+@keyframes bellClapper {
+  0%, 25%, 75%, 100% {
+    transform: translateX(0);
+ }
+  40% {
+    transform: translateX(-0.15em);
+ }
+  45% {
+    transform: translateX(0.15em);
+ }
+  55% {
+    transform: translateX(-0.1em);
+ }
+  60% {
+    transform: translateX(0.1em);
+ }
+}
+@keyframes notification {
+  0%, 25%, 75%, 100% {
+    opacity: 1;
+ }
+  30%, 70% {
+    opacity: 0;
+ }
+}
