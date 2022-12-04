@@ -4,14 +4,25 @@ namespace App\Repositories;
 
 use App\Models\TimetableModel;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Services\RatingService;
 
 class EstimationRepository
 {
+   
+    private $userRatings   = null;
+
+    public function __construct( RatingService $userRatings)
+    {
+        $this->userRatings = $userRatings;
+    }
+
+
     /*This method will be executing automaticly for all users with unclosed plan in the end of the day (23:59) */
     public function estimate()
-    {
+    { 
+       
         $ids  = $this->getIds();//Получаю id всех пользователей  с составленным на сегодня планом
         //Here I get all weekend guys
         $weekendIds = $this->getWeekendIds();
@@ -20,6 +31,7 @@ class EstimationRepository
         //end
         $date = Carbon::today()->toDateString();
         if(count($ids) != 0){
+           
             /*Count final mark for every user with plan*/
             foreach ($ids as $id){
                 //get timetable_id of current user for today
@@ -47,10 +59,16 @@ class EstimationRepository
                     "day_status"       => ($finalMark >= 50) ? 3 : -1,
                     "updated_at"       => Carbon::now(),
                 ];
+
+                ($finalMark >= 50) ?  $this->userRatings->estimateActiveDayrating(2) :  $this->userRatings->estimateActiveDayrating(0);
+               
                 $this->fillTimetablesTable($data, $ids);
             }
+
+          
         }
         if(count($badIds) != 0){
+           
             /*Estimate lazy guys*/
             foreach ($badIds as $id){
 
@@ -65,11 +83,13 @@ class EstimationRepository
                         "updated_at"       => Carbon::now(),
                     ];
 
+                $this->userRatings->estimateLazyDayrating(0);
                 $this->fillTimetablesTable($data, $badIds, 1);
             }
+          
         }
         if(count($weekendIds) > 0){
-
+          
             foreach ($weekendIds as $id){
                 $currentTimetableId = function () use ($id, $date){
                     $response = TimetableModel::
@@ -96,9 +116,11 @@ class EstimationRepository
                     'comment'          => 'Closed automatically at '.Carbon::now()->toDateTimeString(),
                     "updated_at"       => Carbon::now(),
                 ];
-
+                $this->userRatings->estimateActiveDayrating(1);
                 $this->fillTimetablesTable($data, $weekendIds, 0);
             }
+
+          
         }
     }
 
