@@ -78,3 +78,7 @@ Route::get('/event', function (){
 Route::get('/listen', function (){
     return view('listen');
 });
+
+Route::get('/markov-index', function (){
+  return view('markov-index');
+});
