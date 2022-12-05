@@ -18,7 +18,7 @@ class HistController extends Controller
     {
         $startDate = $request->start_date;
         $response = $this->histService->getHist($startDate);
-
+        //die(var_dump($response));
         return $response;
     }
 

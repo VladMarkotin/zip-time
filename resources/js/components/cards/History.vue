@@ -122,6 +122,8 @@ export default
 					start_date: period.start.date
 				})
 				this.events = []
+				//let v = history.data.plans['2022-09-02'].tasks;
+				//debugger
 				for (const date in history.data.plans) {
 					this.events.push({
 						start: new Date(date),
@@ -133,6 +135,10 @@ export default
 						comment: history.data.plans[date].comment,
 						tasks: history.data.plans[date].tasks
 					})
+					/*if (date == '2022-09-01') {
+						console.log(history.data.plans[date])
+						debugger
+					}*/
 				}
 			}
 		}

@@ -29,9 +29,8 @@ class HistService
         $period["with_failed"]    = 0;
         $period["with_weekend"]   = 1;
         $period["with_emergency"] = 0;
-
         $response = $this->histRepository->getHist($period);
-
+        die(json_encode($response, JSON_UNESCAPED_UNICODE));
         return ( json_encode($response, JSON_UNESCAPED_UNICODE));
     }
 }

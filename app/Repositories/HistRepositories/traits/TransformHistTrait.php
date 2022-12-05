@@ -76,22 +76,39 @@ trait TransformHistTrait
     function createPlanArray(array $data, array $finalArray)
     {
         $i = 0;
+        //
         foreach($data as $k => $v){
-            $finalArray["plans"][$v->date]['timetableId']                   = $v->t_id;
-            $finalArray["plans"][$v->date]['dayStatus']                     = $v->day_status;
-            $finalArray["plans"][$v->date]['dayFinalMark']                  = $v->final_estimation;
-            $finalArray["plans"][$v->date]['dayOwnMark']                    = $v->own_estimation;
+            $finalArray["plans"][$v->date]['dayStatus']                   = $v->dayStatus;
+            
+            $finalArray["plans"][$v->date]['dayFinalMark']                  = $v->dayFinalMark;
+            $finalArray["plans"][$v->date]['dayOwnMark']                    = $v->dayOwnMark;
             $finalArray["plans"][$v->date]['comment']                       = $v->comment;
-            $finalArray["plans"][$v->date]['tasks'][$k]['taskId']           = $v->id;//?
-            $finalArray["plans"][$v->date]['tasks'][$i]["hashCode"]         = $v->hash_code;
-            $finalArray["plans"][$v->date]['tasks'][$i]["taskName"]         = $v->task_name;
-            $finalArray["plans"][$v->date]['tasks'][$i]["type"]             = $v->type;
-            $finalArray["plans"][$v->date]['tasks'][$i]["priority"]         = $v->priority;
-            $finalArray["plans"][$v->date]['tasks'][$i]["details"]          = $v->details;
-            $finalArray["plans"][$v->date]['tasks'][$i]["time"]             = $v->time;
-            $finalArray["plans"][$v->date]['tasks'][$i]["mark"]             = $v->mark;
-            $finalArray["plans"][$v->date]['tasks'][$i]["notes"]            = $v->note;
+            $finalArray["plans"][$v->date]['tasks'] = [];
+            /*for($j = 0; $j < 9; $j++){
+                $finalArray["plans"][$v->date]['tasks'][$j]['taskId']           = $v->taskId;//?
+                $finalArray["plans"][$v->date]['tasks'][$j]["hashCode"]         = $v->hashCode;
+                $finalArray["plans"][$v->date]['tasks'][$j]["taskName"]         = $v->taskName;
+                $finalArray["plans"][$v->date]['tasks'][$j]["type"]             = $v->type;
+                $finalArray["plans"][$v->date]['tasks'][$j]["priority"]         = $v->priority;
+                $finalArray["plans"][$v->date]['tasks'][$j]["details"]          = $v->details;
+                $finalArray["plans"][$v->date]['tasks'][$j]["time"]             = $v->time;
+                $finalArray["plans"][$v->date]['tasks'][$j]["mark"]             = $v->mark;
+                $finalArray["plans"][$v->date]['tasks'][$j]["notes"]            = $v->notes;
+            }*/
             $i++;
+        }
+        foreach($data as $k => $v){
+            $j = 0;
+            $finalArray["plans"][$v->date]['tasks'][$j]['taskId']           = $v->taskId;//?
+            $finalArray["plans"][$v->date]['tasks'][$j]["hashCode"]         = $v->hashCode;
+            $finalArray["plans"][$v->date]['tasks'][$j]["taskName"]         = $v->taskName;
+            $finalArray["plans"][$v->date]['tasks'][$j]["type"]             = $v->type;
+            $finalArray["plans"][$v->date]['tasks'][$j]["priority"]         = $v->priority;
+            $finalArray["plans"][$v->date]['tasks'][$j]["details"]          = $v->details;
+            $finalArray["plans"][$v->date]['tasks'][$j]["time"]             = $v->time;
+            $finalArray["plans"][$v->date]['tasks'][$j]["mark"]             = $v->mark;
+            $finalArray["plans"][$v->date]['tasks'][$j]["notes"]            = $v->notes;
+            $j++;
         }
 
         return $finalArray;
