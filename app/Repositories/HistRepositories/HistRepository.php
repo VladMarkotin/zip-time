@@ -19,6 +19,7 @@ class HistRepository
 
     public function getHist(array $period)
     {
+       
         //direction of movement (-1 - back, 1 - forward)
         $directionSign = function (array $period){
             if($period['direction'] < 0){
@@ -134,6 +135,7 @@ class HistRepository
         }
         $history           = TransformHistTrait::transformData($response, $this->period);
 
-        return $history;
+        //dd( $history   );
+       return $history;
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,6 +55,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [App\Http\Controllers\StatController::class, 'index'])->name('stat');
         Route::post('/', [App\Http\Controllers\StatController::class, 'getStatInfo']);
     });
+
+    
+    
+
+
     Route::get('/get-stat-data', [App\Http\Controllers\StatController::class, 'getStatData'])->name('get-stat-data');
     //end statistic
 

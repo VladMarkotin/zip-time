@@ -74,7 +74,7 @@ export default
 				selectedElement: null,
 				selectedOpen: false,
 				headers: [
-					{ text: '#hash', value: 'hashCode' },
+					{ text: ' hash', value: 'hashCode' },
 					{ text: 'Task name', value: 'taskName' },
 					{ text: 'Details', value: 'details' },
 					{ text: 'Mark', value: 'mark' }
