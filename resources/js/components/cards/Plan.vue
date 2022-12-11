@@ -280,6 +280,15 @@ export default {
             details: '',
             notes: ''
         },
+        preparedTask: {
+            hash: '#',
+            taskName: '',
+            time: '01:00',
+            type: 'required job',
+            priority: '1',
+            details: '',
+            notes: ''
+        },
         headers: [{
                 text: '#code',
                 value: '',
@@ -370,6 +379,8 @@ export default {
     methods: {
        
         getPostParams() {
+            //console.log(this.items)
+            //debugger;
             return JSON.stringify({
                 date: new Date().toISOString().substr(0, 10),
                 //day_status: this.dayStatuses.indexOf(this.day_status),
@@ -406,12 +417,13 @@ export default {
                     hash_code: event
                 })
                 .then(function(response) {
-                    currentObj.defaultSelected.taskName = response.data[0];
-                    currentObj.defaultSelected.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[1]];
-                    currentObj.defaultSelected.priority = `${response.data[2]}`;
-                    currentObj.defaultSelected.time = response.data[4];
-                    currentObj.defaultSelected.details = response.data[3];
-                    currentObj.defaultSelected.notes = response.data[5];
+                  console.log(response.data)
+                    currentObj.defaultSelected.taskName = response.data[1];
+                    currentObj.defaultSelected.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[2]];
+                    currentObj.defaultSelected.priority = `${response.data[3]}`;
+                    currentObj.defaultSelected.time = response.data[5];
+                    currentObj.defaultSelected.details = response.data[4];
+                    currentObj.defaultSelected.notes = response.data[6];
                 })
                 .catch(function(error) {
                     currentObj.output = error;
@@ -514,7 +526,7 @@ export default {
         let currentObj = this;
         axios.post('/getSavedTasks')
             .then(function(response) {
-                currentObj.defaultSelected.hashCodes = response.data.hash_codes;
+                 currentObj.defaultSelected.hashCodes = response.data.hash_codes;
                 let length = response.data.hash_codes.length;
                 for (let i = 0; i < length; i++) {
                     currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
@@ -527,6 +539,25 @@ export default {
          axios.post('/isWeekendAvailable')
          .then(function(response) {
             currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
+         })
+         .catch(function(error) {
+            currentObj.output = error;
+         });
+
+         axios.post('/getPreparedPlan')
+         .then(function(response) {
+            console.log(response.data)
+            //currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
+            if(response){
+               currentObj.preparedTask.hash = response.data[0].hash_code;
+               currentObj.preparedTask.taskName = response.data[0].task_name;
+               currentObj.preparedTask.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
+               currentObj.preparedTask.priority = `${response.data[0].priority}`;
+               currentObj.preparedTask.time = response.data[0].time;
+               currentObj.preparedTask.details = response.data[0].details;
+               currentObj.preparedTask.notes = response.data[0].note;
+               currentObj.items.push(currentObj.preparedTask);
+            }
          })
          .catch(function(error) {
             currentObj.output = error;

@@ -143,16 +143,18 @@ class EstimationRepository
 
             return $response[0];
         };
+        $tagsForTomorow = ($data['tomorow']) ? implode($data['tomorow'], ';') : '';//need to move it into service class
+        $tagsForTomorow = rtrim($tagsForTomorow, ";");
         if($getDayStatus() == 1){
             DB::table('timetables')->where( [ ['id', '=', $timetableId], ["user_id", '=', $data['user_id']] ] )
                 ->update(array(
                     'time_of_day_plan' => $this->sumTime($timetableId), //time of plan info. Fix it later!!
-                    'final_estimation' => 0, //-2 - признак того, что день под статусом Вых
+                    'final_estimation' => 0, //0 признак того, что день под статусом Вых
                     'own_estimation'   => $data['mark'],
                     'day_status'       => 1,
                     'comment'          => $data['comment'],
                     'necessary'        => '',
-                    'for_tomorrow'     => '',
+                    'for_tomorrow'     => $tagsForTomorow,
                     "updated_at"       => Carbon::now(),
                 ));
 
@@ -183,7 +185,7 @@ class EstimationRepository
                     'day_status'       => $data["day_status"],
                     'comment'          => $data['comment'],
                     'necessary'        => '',
-                    'for_tomorrow'     => '',
+                    'for_tomorrow'     => $tagsForTomorow,
                     "updated_at"       => Carbon::now(),
                 ));
 

@@ -16,6 +16,31 @@
 							<v-textarea counter="256" label="Comment" rows="2" outlined shaped v-model="comment"></v-textarea>
 						</v-col>
 					</v-row>
+					<v-row justify="space-around">
+						<v-col
+						cols="12"
+						sm="10"
+						md="8"
+						>
+						<v-sheet
+							elevation="20"
+							class="py-4 px-1"
+						>
+							<v-chip-group
+							multiple
+							active-class="primary--text"
+							v-model="chosenChips"
+							>
+							<v-chip
+								v-for="tag in tags"
+								:key="tag"
+							>
+								{{ tag }}
+							</v-chip>
+							</v-chip-group>
+						</v-sheet>
+						</v-col>
+					</v-row>
 				</v-container>
 			</v-card-text>
 			<v-divider></v-divider>
@@ -57,24 +82,29 @@
 	import Alert from '../dialogs/Alert.vue'
 	export default
 		{
-			data()
-			{
-				return {ownMark : '',comment : '',
-				  isShowAlert: false,
-				  icons : {mdiCancel,mdiSendClock},
-				  isShow : true,
-				  alert      : {type: 'success', text: 'success'},
-				  interval: {},
-                  value: 0,
-				  isShowProgress: false
-				}
-			},
+			data: () => ({
+				ownMark : '',comment : '',
+				isShowAlert: false,
+				icons : {mdiCancel,mdiSendClock},
+				isShow : true,
+				alert      : {type: 'success', text: 'success'},
+				interval: {},
+				value: 0,
+				isShowProgress: false,
+				tags: [],
+				chosenChips: []
+				
+			}),
 			components : {Alert},
 			methods :
 			{
 				closeDay()
 				{
-					axios.post('/closeDay',{ownMark : this.ownMark,comment : this.comment})
+					let chosenChipValues = [];
+					for(let i = 0; i < this.chosenChips.length; i++){
+                        chosenChipValues.push(this.tags[this.chosenChips[i] ])
+					}
+					axios.post('/closeDay',{ownMark : this.ownMark,comment : this.comment, tomorow: chosenChipValues})
 					.then((response) => {
 						this.isShowAlert = true;
 						this.setAlertData(response.data.status, response.data.message)
@@ -110,7 +140,21 @@
 				{
 					this.alert.type = type
 					this.alert.text = text
-				},
+				}
+			},
+			created() {
+				//console.log('close day2222') getSavedTasks
+				let currentObj = this;
+				axios.post('/getSavedTasks')
+					.then((response) => {
+						currentObj.hashCodes = response.data.hash_codes;
+						let length = response.data.hash_codes.length;
+						for (let i = 0; i < length; i++) {
+							currentObj.tags[i] = currentObj.hashCodes[i].hash_code
+						}
+						//console.log(currentObj.tags.value)
+				    }
+				)
 			}
 		}
 </script>

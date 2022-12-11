@@ -31,6 +31,7 @@ use App\Repositories\DayPlanRepositories\GetPlanRepository;
 use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 /* end */
+use App\Models\TimetableModel;
 
 class MainController
 {
@@ -49,6 +50,7 @@ class MainController
     private $userNotification          = null;
     private $weekendRepository         = null;
     private $userRatings               = null;
+    private $timetableModel            = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -63,7 +65,8 @@ class MainController
                                 Tasks $tasks,
                                 UserNotification $userNotification,
                                 WeekendRepository $weekendRepository,
-                                RatingService $userRatings)
+                                RatingService $userRatings,
+                                TimetableModel $timetableModel)
     {
         
         $this->savedTaskRepository       = $taskRepository;
@@ -81,6 +84,7 @@ class MainController
         $this->userNotification          = $userNotification;
         $this->weekendRepository         = $weekendRepository;
         $this->userRatings               = $userRatings;
+        $this->timetableModel            = $timetableModel;
     }
 
     public function addHashCode(Request $request)
@@ -157,6 +161,33 @@ class MainController
         return response()->json($finalResult);//
     }
 
+    private function getSavedTasksByHashCode(array $hashCodes)
+    {
+        $savedTask = [];
+        if ($hashCodes) {
+           //?
+           foreach($hashCodes as $val) {
+                if (is_array($val)) {
+                    foreach($val as $v){
+                        $params['user_id'] = Auth::id();
+                        $params['hash_code'] = explode(';', $v);
+                        foreach($params['hash_code'] as $hash){
+                            $savedTask[] = $this->savedTaskRepository->getSavedTaskByHashCode(
+                                [
+                                    'user_id' => Auth::id(),
+                                    'hash_code' => $hash
+                                ]
+                            );   
+                        }
+                    }
+                }
+           }
+        }
+        
+        return $savedTask[0];//
+    }
+
+
     public function addPlan(Request $request)
     {
         $data = $request->json()->all();
@@ -172,7 +203,6 @@ class MainController
                 $data = $this->planService->getTransformWeekendPlan();
             }
             $responseArray = $this->dayPlan->createDayPlan($data);
-            //die(var_dump($responseArray));
 
             /*Logic after adding plan in DB*/
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
@@ -240,8 +270,10 @@ class MainController
             "date"     => Carbon::today()->toDateString(),
             "mark"     => $request->get('ownMark'),
             "comment"  => $request->get('comment'),
+            "tomorow"  => $request->get('tomorow'),
             "action"   => '2', //it means that user try to finish day plan
         ];
+        //die(var_dump($data['tomorow'] )); //ok
         $response = $this->estimationService->handleEstimationRequest($data);
        // $this->userRatings->getUserRatings(2);
         return response()->json($response); //comment
@@ -316,6 +348,25 @@ class MainController
     public function getNotifications(Request $request, Thread $thread)
     {
         \auth()->user()->notify($this->userNotification);
+    }
+
+    public function getPreparedPlan(Request $request)
+    {
+        /*Here we get code for getting prepared plan*/
+        //1)get plan from repository
+        $yestrdayDate = Carbon::yesterday();
+        $preparedPlan = TimetableModel::where([
+            ['user_id', Auth::id()],
+            ['date', $yestrdayDate],
+        ])
+        ->get(['for_tomorrow'])
+        ->toArray();
+        if($preparedPlan){
+            //$preparedPlan = explode(';', $preparedPlan);
+            $preparedTasks = $this->getSavedTasksByHashCode($preparedPlan);
+        }
+        //die(var_dump($preparedTasks) );
+        return ($preparedTasks);
     }
 
     private function getLastTimetableId()

@@ -11,6 +11,6 @@ class TimetableModel extends Model
 
     protected $table    = "timetables";
     protected $fillable = ["day_status", "time_of_day_plan", "final_estimation", "own_estimation", "comment",
-        "created_at", "updated_at"
+        "for_tomorrow", "created_at", "updated_at"
     ];
 }

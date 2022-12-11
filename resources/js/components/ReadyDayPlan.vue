@@ -96,6 +96,7 @@
 			},
 			toggleCloseDayDialog()
 			{
+				console.log('toggleCloseDayDialog')
 				this.isShowCloseDayDialog = !this.isShowCloseDayDialog
 			},
 			toggleEmergencyCallDialog()

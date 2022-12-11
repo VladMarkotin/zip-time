@@ -41,13 +41,11 @@ class CreateDayPlanRepository
 
     public function createDayPlan(array $data)
     {
-        //die(var_dump($data).__FILE__);
         $dataForDayPlanCreation["user_id"]          = Auth::id();
-        $dataForDayPlanCreation["date"]             = Carbon::today();
+        $dataForDayPlanCreation["date"]             = Carbon::now()->format('Y-m-d');;//Carbon::today();
         $dataForDayPlanCreation["day_status"]       = $data["day_status"];//$this->getNumValuesOfStrValues($data["day_status"]);//temporary variant. day_status has to be general!!! Now it would not working
         $dataForDayPlanCreation["final_estimation"] = 0;
         $dataForDayPlanCreation["own_estimation"]   = 0;
-        //die(var_dump($dataForDayPlanCreation["day_status"]));
         $dataForTasks = [];
         try{
             DB::transaction(function () use ($dataForDayPlanCreation, $data) {
@@ -95,6 +93,7 @@ class CreateDayPlanRepository
                         }
                     }
                 }
+                //var_dump($dataForTasks);
                 //Save info about tasks
                 Tasks::insert($dataForTasks);
             });
