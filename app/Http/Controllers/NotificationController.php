@@ -32,8 +32,8 @@ class NotificationController extends Controller
             ->update(['read_at' => 1]);
 
         $count_notifications = Notification::all()->where('user_id', $id)->where('notification_date', '<=', $ldate)->where('read_at', 0)->count();
-
-        $notificationInfo = ['count_notifications' => $count_notifications];
+        $content = implode( $notification_content);
+        $notificationInfo = ['count_notifications' => $count_notifications, 'content' => $content];
         echo json_encode($notificationInfo);
 
     }
@@ -41,8 +41,9 @@ class NotificationController extends Controller
     public function saveNotification(Request $request)
     {
         $request->validate([
-            'type' => 'filled|required',
-            'data' => 'filled|required',
+            'type' => 'filled|required', 
+            'type' => 'filled|required', 
+            'data' => 'filled|required', 'max:60',
             'notification_date' => 'filled|required',
         ]);
 
@@ -55,6 +56,13 @@ class NotificationController extends Controller
         $notification->notification_date = $request->notification_date;
         $notification->read_at = 0;
         $notification->save();
+
+        $ldate = date('Y-m-d');
+        $count_notifications = Notification::all()->where('user_id', $id)->where('notification_date', '<=', $ldate)->where('read_at', 0)->count();
+
+
+        $notificationInfo = ['count_notifications' => $count_notifications];
+        echo json_encode($notificationInfo);
 
     }
 

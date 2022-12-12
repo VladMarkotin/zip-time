@@ -10018,9 +10018,15 @@ svg {
   padding: 0.1px 5px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
-
-  
 }
 
+#notification_panel {
 
+   display: none; 
+  z-index: 2147483647;
+  position: absolute;
+  top:5.5em;
+  left: 17.5em
+  
+}
 
