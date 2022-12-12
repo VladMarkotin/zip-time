@@ -53,7 +53,7 @@
 
                                 
                                 <svg class="nav-link" xmlns="http://www.w3.org/2000/svg"  fill="currentColor"
-                                class="bi bi-bell" viewBox="0 0 16 16" id>
+                                class="bi bi-bell" viewBox="0 0 16 16" data-bs-toggle="dropdown">
                                 <path
                               
                                 

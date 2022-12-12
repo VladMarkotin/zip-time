@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -75,7 +76,7 @@ Route::get('/settings',  [App\Http\Controllers\SettingsController::class, 'index
 Route::get('/settings/{setting}', [App\Http\Controllers\SettingsController::class, 'index']);
 
 Route::get('/event', function (){
-    event(new \App\Events\MessageNotification('test broadcast'));
+    event(new App\Events\MessageNotification('test broadcast'));
 });
 
 Route::get('/listen', function (){
