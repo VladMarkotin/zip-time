@@ -9965,10 +9965,7 @@ h3 {
     display: none;
   }
 
-  .badge {
-    border: 1px solid #000;
-  }
-
+ 
   .table {
     border-collapse: collapse !important;
   }
@@ -10001,64 +9998,29 @@ h3 {
 
 
 svg {
-  width: 1.6em;
-  height: 1.6em;
+  width: 2em;
+  height: 2em;
   position: absolute;
-  bottom: -6;
-  right: 20;
+  bottom: 2;
+  right: -35;
+  margin-right: 20px;
+  cursor:pointer;
   
 }
 
 
 .notification--num {
   position: absolute;
-  left: 9%;
+  right: -13;
+  top: 5;
   border-radius: 50%;
-  font-size: 0.7rem;
-  background-color: #a10000;
-  color: #fff;
+  font-size: 9px;
+  padding: 0.1px 5px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+
   
 }
 
-@keyframes bell {
-  0%, 25%, 75%, 100% {
-    transform: rotate(0deg);
- }
-  40% {
-    transform: rotate(10deg);
- }
-  45% {
-    transform: rotate(-10deg);
- }
-  55% {
-    transform: rotate(8deg);
- }
-  60% {
-    transform: rotate(-8deg);
- }
-}
-@keyframes bellClapper {
-  0%, 25%, 75%, 100% {
-    transform: translateX(0);
- }
-  40% {
-    transform: translateX(-0.15em);
- }
-  45% {
-    transform: translateX(0.15em);
- }
-  55% {
-    transform: translateX(-0.1em);
- }
-  60% {
-    transform: translateX(0.1em);
- }
-}
-@keyframes notification {
-  0%, 25%, 75%, 100% {
-    opacity: 1;
- }
-  30%, 70% {
-    opacity: 0;
- }
-}
+
+

@@ -5,8 +5,9 @@
             <button style="text-decoration: underline;" v-on:click="currComponent.name = 'Stat'">Statistics</button>
             <component v-bind:is="currComponentName" v-bind:data="currComponentProps">
         </v-app>
-    </div>
 
+
+    </div>
 @endsection
 <style>
     #app {

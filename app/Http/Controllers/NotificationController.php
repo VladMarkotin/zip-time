@@ -23,6 +23,7 @@ class NotificationController extends Controller
 
     public function readNotification(Request $request)
     {
+        
         $id = auth()->id();
         $ldate = date('Y-m-d');
         $notification_content = [$request->input('notification_content')];
