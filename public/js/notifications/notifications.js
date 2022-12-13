@@ -135,13 +135,7 @@ $(document).ready(function () {
 
     });
 
-   
-$(document).mouseup(function(e) 
-{
-    var container = $("#notification_panel");    
-        container.fadeOut('slow'); 
-    
-});
+
 
 });
 
