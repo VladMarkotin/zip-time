@@ -12,7 +12,8 @@
 
             <div class="list-group">
 
-                @foreach ($notifications as $notification)
+                @if (Auth::check())
+                     @foreach ($notifications as $notification)
                     <span class="notification" id="{{ $notification->id }}">
                         <input type="hidden" id="data" name="data" value="{{ $notification->data }}">
 
@@ -37,6 +38,9 @@
                         </a>
                     </span>
                     @endforeach
+                @endif
+
+               
             </div>
         </div>
 

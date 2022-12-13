@@ -47,6 +47,9 @@
                         @if (Route::has('login'))
                         <div class="navbar-nav" id="notification_section">
                             <div class="dropdown" >
+                                @if (Auth::check())
+                                    
+                               
                                 <a class="nav-link notification_panel" type="button">
                                   Notifications
                                 </a>
@@ -84,6 +87,7 @@
                             </a>
                     
                         </div>
+                        @endif
                         @endif   
                       </div>
                     </div>
