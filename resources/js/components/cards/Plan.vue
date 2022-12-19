@@ -546,17 +546,22 @@ export default {
 
          axios.post('/getPreparedPlan')
          .then(function(response) {
-            console.log(response.data)
-            //currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
             if(response){
-               currentObj.preparedTask.hash = response.data[0].hash_code;
-               currentObj.preparedTask.taskName = response.data[0].task_name;
-               currentObj.preparedTask.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
-               currentObj.preparedTask.priority = `${response.data[0].priority}`;
-               currentObj.preparedTask.time = response.data[0].time;
-               currentObj.preparedTask.details = response.data[0].details;
-               currentObj.preparedTask.notes = response.data[0].note;
-               currentObj.items.push(currentObj.preparedTask);
+               console.log(response.data.length)
+               for(let i = 0; i < response.data.length; i++){
+                  for(let j = 0; j < response.data[i].length; j++){
+                     currentObj.preparedTask.hash = response.data[i][0].hash_code;
+                     currentObj.preparedTask.taskName = response.data[i][0].task_name;
+                     currentObj.preparedTask.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
+                     currentObj.preparedTask.priority = `${response.data[i][0].priority}`;
+                     currentObj.preparedTask.time = response.data[i][0].time;
+                     currentObj.preparedTask.details = response.data[i][0].details;
+                     currentObj.preparedTask.notes = response.data[i][0].note;
+                  }
+                  currentObj.items.push(currentObj.preparedTask);
+                  currentObj.preparedTask = null;
+               }
+               console.log(currentObj.items)
             }
          })
          .catch(function(error) {

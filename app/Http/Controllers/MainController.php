@@ -166,6 +166,7 @@ class MainController
         $savedTask = [];
         if ($hashCodes) {
            //?
+           //die(var_dump($hashCodes));
            foreach($hashCodes as $val) {
                 if (is_array($val)) {
                     foreach($val as $v){
@@ -180,11 +181,18 @@ class MainController
                             );   
                         }
                     }
+                } else {
+                    $savedTask[] = $this->savedTaskRepository->getSavedTaskByHashCode(
+                        [
+                            'user_id' => Auth::id(),
+                            'hash_code' => $val
+                        ]
+                    );   
                 }
            }
         }
         
-        return $savedTask[0];//
+        return $savedTask;//
     }
 
 
@@ -361,11 +369,12 @@ class MainController
         ])
         ->get(['for_tomorrow'])
         ->toArray();
+        $preparedPlan = $preparedPlan[0]['for_tomorrow'];
         if($preparedPlan){
-            //$preparedPlan = explode(';', $preparedPlan);
+            $preparedPlan = explode(';', $preparedPlan);
             $preparedTasks = $this->getSavedTasksByHashCode($preparedPlan);
         }
-        //die(var_dump($preparedTasks) );
+        
         return ($preparedTasks);
     }
 
