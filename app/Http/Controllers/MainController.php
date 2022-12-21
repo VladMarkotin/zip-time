@@ -166,30 +166,43 @@ class MainController
         $savedTask = [];
         if ($hashCodes) {
            //?
-           //die(var_dump($hashCodes));
            foreach($hashCodes as $val) {
                 if (is_array($val)) {
                     foreach($val as $v){
                         $params['user_id'] = Auth::id();
                         $params['hash_code'] = explode(';', $v);
+                        $finalResult = [];
                         foreach($params['hash_code'] as $hash){
-                            $savedTask[] = $this->savedTaskRepository->getSavedTaskByHashCode(
+                            $savedTask = $this->savedTaskRepository->getSavedTaskByHashCode(
                                 [
                                     'user_id' => Auth::id(),
                                     'hash_code' => $hash
                                 ]
-                            );   
+                            );
+                            foreach ($savedTask as $val){
+                                foreach ($val as $i => $v){
+                                    $finalResult[] = $val->$i;
+                                }
+                            }
                         }
                     }
+                    return response()->json($finalResult);
                 } else {
-                    $savedTask[] = $this->savedTaskRepository->getSavedTaskByHashCode(
+                    $savedTask = $this->savedTaskRepository->getSavedTaskByHashCode(
                         [
                             'user_id' => Auth::id(),
                             'hash_code' => $val
                         ]
-                    );   
+                    );  
+                    foreach ($savedTask as $val){
+                        foreach ($val as $i => $v){
+                            $finalResult[] = $val->$i;
+                        }
+                    } 
                 }
            }
+           
+            //die(var_dump($finalResult));
         }
         
         return $savedTask;//

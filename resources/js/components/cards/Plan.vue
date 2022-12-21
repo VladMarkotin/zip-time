@@ -547,21 +547,32 @@ export default {
          axios.post('/getPreparedPlan')
          .then(function(response) {
             if(response){
-               console.log(response.data.length)
+               //
+               console.log(response);
+               response = [
+                              {hash_code: '#exc'},
+                              {hash_code: '#bitr'},
+                              {hash_code: '#exc2'}
+                           ]
+               //
+               /*console.log(response.data.length)
                for(let i = 0; i < response.data.length; i++){
-                  for(let j = 0; j < response.data[i].length; j++){
-                     currentObj.preparedTask.hash = response.data[i][0].hash_code;
-                     currentObj.preparedTask.taskName = response.data[i][0].task_name;
+                  for(let j = 0; j < response.data[i].length; j++){*/
+                     //currentObj.preparedTask.hash = response.data[i][0].hash_code;
+                     /*currentObj.preparedTask.taskName = response.data[i][0].task_name;
                      currentObj.preparedTask.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
                      currentObj.preparedTask.priority = `${response.data[i][0].priority}`;
                      currentObj.preparedTask.time = response.data[i][0].time;
                      currentObj.preparedTask.details = response.data[i][0].details;
-                     currentObj.preparedTask.notes = response.data[i][0].note;
-                  }
-                  currentObj.items.push(currentObj.preparedTask);
-                  currentObj.preparedTask = null;
-               }
-               console.log(currentObj.items)
+                     currentObj.preparedTask.notes = response.data[i][0].note;*/
+                  //}
+                  //currentObj.items.push(currentObj.preparedTask);
+                  currentObj.items.push({hash:response[0].hash_code});
+                  currentObj.items.push({hash:response[1].hash_code});
+                  currentObj.items.push({hash:response[2].hash_code});
+                  //currentObj.preparedTask = null;
+               //}
+               //console.log(currentObj.items)
             }
          })
          .catch(function(error) {
