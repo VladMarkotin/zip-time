@@ -90,11 +90,11 @@
 				async hashCodeChangeHandler(hashCode)
 				{
 					const data = (await axios.post('/getSavedTask',{hash_code : hashCode})).data
-					this.task.name = data[0]
+					this.task.name = data[1]
 					const types = this.types.slice()
-					this.task.type = types.reverse()[data[1]]
-					this.task.priority = data[2]
-					this.task.time = data[4]
+					this.task.type = types.reverse()[data[2]]
+					this.task.priority = data[3]
+					this.task.time = data[5]
 				},
 				async loadHashCodes()
 				{
