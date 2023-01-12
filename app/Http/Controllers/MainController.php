@@ -199,10 +199,9 @@ class MainController
     public function addPlan(Request $request)
     {
         $data = $request->json()->all();
-
-        //die(var_dump($data));
         $response = $this->planService->checkPlan($data); //проблема здесь
         $responseArray = json_decode($response->content());
+        
         if($responseArray->status == 'success') {
 
             $responseArrayAsArray["status"]  = $responseArray->status;

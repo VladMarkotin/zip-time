@@ -280,7 +280,7 @@ export default {
             details: '',
             notes: ''
         },
-        preparedTask: {
+        /*preparedTask: {
             hash: '#',
             taskName: '',
             time: '01:00',
@@ -288,7 +288,8 @@ export default {
             priority: '1',
             details: '',
             notes: ''
-        },
+        },*/
+        preparedTask: [],
         headers: [{
                 text: '#code',
                 value: '',
@@ -491,7 +492,7 @@ export default {
                     setTimeout(() => {
                         currentObj.showAlert = false
                         currentObj.isShowProgress = false
-                        document.location.reload();
+                        //document.location.reload();
                         if (response.data.status == 'success') {
                            const data = JSON.parse(response.config.data)
                            currentObj.$root.currComponentProps = data.plan
@@ -549,17 +550,21 @@ export default {
             if(response){
                console.log(response.data.length)
                for(let i = 0; i < response.data.length; i++){
+                  console.log(response.data[i])
                   for(let j = 0; j < response.data[i].length; j++){
                      currentObj.preparedTask.hash = response.data[i][0].hash_code;
                      currentObj.preparedTask.taskName = response.data[i][0].task_name;
-                     currentObj.preparedTask.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
+                     currentObj.preparedTask.type = response.data[i][0].type;//['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
                      currentObj.preparedTask.priority = `${response.data[i][0].priority}`;
                      currentObj.preparedTask.time = response.data[i][0].time;
                      currentObj.preparedTask.details = response.data[i][0].details;
                      currentObj.preparedTask.notes = response.data[i][0].note;
+                     
+                     currentObj.items.push(currentObj.preparedTask);
+                     currentObj.preparedTask = {};
                   }
-                  currentObj.items.push(currentObj.preparedTask);
-                  currentObj.preparedTask = null;
+                  //currentObj.items.push(currentObj.preparedTask);
+                  //currentObj.preparedTask = null;
                }
                console.log(currentObj.items)
             }
