@@ -59,7 +59,6 @@ class CreateDayPlanRepository
                         foreach ($val as $index => $v) {
                             if (is_array($v)) {
                                 $k = 0;//Counter for excluding copies
-//                                die(var_dump($v));
                                 foreach($v as $v2){
                                     $dataForTasks[$index]['timetable_id'] = $this->getLastTimetableId();
                                     $dataForTasks[$index]['hash_code']    = $v['hash'];
@@ -136,7 +135,7 @@ class CreateDayPlanRepository
                 return 0;
         }
 
-        return 4;
+        return $task['type'];
     }
 
     private function getLastTimetableId()

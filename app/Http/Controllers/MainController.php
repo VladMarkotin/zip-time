@@ -199,6 +199,7 @@ class MainController
     public function addPlan(Request $request)
     {
         $data = $request->json()->all();
+        //die(var_dump($data));//уже тут первый элемент пропадает
         $response = $this->planService->checkPlan($data); //проблема здесь
         $responseArray = json_decode($response->content());
         
@@ -209,6 +210,7 @@ class MainController
             if($this->planService->getTransformWeekendPlan()){ //That is a shame and I apologise for this ): This code must be modified.But later
                 $data = $this->planService->getTransformWeekendPlan();
             }
+            //die(var_dump($data));//здесь уже первый элемент пропадает
             $responseArray = $this->dayPlan->createDayPlan($data);
 
             /*Logic after adding plan in DB*/

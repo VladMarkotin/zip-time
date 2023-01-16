@@ -111,7 +111,6 @@ class AddPlanService
     {
         if(is_array($data['plan']) ) {
             $taskQuantity = count($data['plan']);
-            //die(var_dump($data["day_status"]));
             switch ($data["day_status"]) {
                 case 0: //Work Day
                     if($taskQuantity > 1){
@@ -135,7 +134,22 @@ class AddPlanService
                     }
                     return false;
                 case 2:
+                    if($taskQuantity > 1){
+                        /* Check quantity of required tasks. In this case it has to be more than 1! */
+                        $i = 0;
+                        array_filter($data['plan'], function ($v) use(&$i){
+                            //if($this->getNumValuesOfStrValues( $v )['type'] == 4 ){
+                            if($this->getNumValuesOfStrValues( $v ) == 4 ){
+                                $i += 1;
+                            }
+                        });
+                        
+                        if($i > 1){
+                            return true;
+                        }
 
+                        return false;
+                    }
                     if($taskQuantity >= 2){
                         return true;
                     }
@@ -169,7 +183,7 @@ class AddPlanService
             }
         }
 
-        return $task;
+        return $task['type'];
     }
 
     private function checkName($task)

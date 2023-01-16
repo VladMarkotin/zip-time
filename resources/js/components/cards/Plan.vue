@@ -289,7 +289,7 @@ export default {
             details: '',
             notes: ''
         },*/
-        preparedTask: [],
+        preparedTask: {},
         headers: [{
                 text: '#code',
                 value: '',
@@ -380,14 +380,19 @@ export default {
     methods: {
        
         getPostParams() {
-            //console.log(this.items)
-            //debugger;
-            return JSON.stringify({
+            /*console.log(this.items)
+            debugger; *///здесь задание еще есть
+            
+            /*return JSON.stringify({
                 date: new Date().toISOString().substr(0, 10),
-                //day_status: this.dayStatuses.indexOf(this.day_status),
                 day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
                 plan: this.items
-            })
+            })*/
+            return {
+                date: new Date().toISOString().substr(0, 10),
+                day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
+                plan: this.items
+            };
         },
         toggleEmergencyCallDialog(){
 				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
@@ -418,7 +423,6 @@ export default {
                     hash_code: event
                 })
                 .then(function(response) {
-                  console.log(response.data)
                     currentObj.defaultSelected.taskName = response.data[1];
                     currentObj.defaultSelected.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[2]];
                     currentObj.defaultSelected.priority = `${response.data[3]}`;
@@ -548,9 +552,7 @@ export default {
          axios.post('/getPreparedPlan')
          .then(function(response) {
             if(response){
-               console.log(response.data.length)
                for(let i = 0; i < response.data.length; i++){
-                  console.log(response.data[i])
                   for(let j = 0; j < response.data[i].length; j++){
                      currentObj.preparedTask.hash = response.data[i][0].hash_code;
                      currentObj.preparedTask.taskName = response.data[i][0].task_name;
@@ -563,10 +565,7 @@ export default {
                      currentObj.items.push(currentObj.preparedTask);
                      currentObj.preparedTask = {};
                   }
-                  //currentObj.items.push(currentObj.preparedTask);
-                  //currentObj.preparedTask = null;
                }
-               console.log(currentObj.items)
             }
          })
          .catch(function(error) {
