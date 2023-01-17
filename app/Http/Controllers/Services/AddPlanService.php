@@ -98,12 +98,17 @@ class AddPlanService
 
     private function checkTask($task)
     {
-        $task = $this->getNumValuesOfStrValues($task);
-        $flag["taskName"] = $this->checkName(isset($task['taskName'])  ? $task['taskName']  : '');
-        $flag["details"] = $this->checkDetails(isset($task['details']) ? $task['details']   : '');
-        $flag["time"] = $this->checkTime(isset($task['time'])          ? $task['time']      : '');
-        $flag["notes"] = $this->checkNote(isset($task['notes'])        ? $task['notes']     : '');
+       
+        $taskName = $task['taskName'];
+        $time = $task['time'];
+        $details = $task['details'];
+        $notes = $task['notes'];
 
+        $task = $this->getNumValuesOfStrValues($task);
+        $flag['taskName'] = $this->checkName(isset($taskName) ? $taskName : '');
+        $flag['details'] = $this->checkDetails(isset($details) ? $details : '');
+        $flag['time'] = $this->checkTime(isset($time) ? $time : '');
+        $flag['notes'] = $this->checkNote(isset($notes) ? $notes : '');
         return $flag;
     }
 
