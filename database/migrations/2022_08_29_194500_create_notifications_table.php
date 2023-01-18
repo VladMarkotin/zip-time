@@ -14,11 +14,15 @@ class CreateNotificationsTable extends Migration
     public function up()
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('type');
             $table->text('data');
-            $table->timestamp('read_at')->nullable();
+            $table->date('notification_date');
+            $table->boolean('read_at');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

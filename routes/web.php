@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
+
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 /*Socialite ex https://medium.com/@Alabuja/social-login-in-laravel-with-socialite-90dbf14ee0ab*/
@@ -28,6 +30,11 @@ Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'r
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::post('/send_notification', [App\Http\Controllers\NotificationController::class, 'sendNotification']);
+    Route::post('/read_notification', [App\Http\Controllers\NotificationController::class, 'readNotification']);
+    Route::post('/save_notification', [App\Http\Controllers\NotificationController::class, 'saveNotification']);
+
     Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
     Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
     Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
@@ -68,6 +75,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings/{setting}', [App\Http\Controllers\SettingsController::class, 'index']);
     //Backlog
     Route::get('backlog', [App\Http\Controllers\BackLogController::class, 'index'])->name('backlog');
+
+
 
 
 });
