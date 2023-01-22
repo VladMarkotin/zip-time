@@ -496,7 +496,7 @@ export default {
                     setTimeout(() => {
                         currentObj.showAlert = false
                         currentObj.isShowProgress = false
-                        //document.location.reload();
+                        document.location.reload();
                         if (response.data.status == 'success') {
                            const data = JSON.parse(response.config.data)
                            currentObj.$root.currComponentProps = data.plan
