@@ -19,6 +19,7 @@ class HistRepository
 
     public function getHist(array $period)
     {
+       
         //direction of movement (-1 - back, 1 - forward)
         $directionSign = function (array $period){
             if($period['direction'] < 0){
@@ -72,10 +73,24 @@ class HistRepository
 
     private function getDataFromDB($flag = 0)
     {
-        $query = "SELECT  timetables.id as t_id, timetables.user_id, timetables.date, timetables.day_status,
-                     timetables.final_estimation, timetables.own_estimation,
-                    timetables.comment, tasks.id, tasks.hash_code, tasks.task_name, tasks.type, tasks.priority, tasks.details,
-                     tasks.time, tasks.mark, tasks.note FROM timetables JOIN tasks ON timetables.id = tasks.timetable_id";
+        $query = "SELECT  timetables.id as timetableId,
+                          timetables.user_id AS userId,
+                          timetables.date,
+                          timetables.day_status dayStatus,
+                          timetables.final_estimation dayFinalMark,
+                          timetables.own_estimation AS dayOwnMark,
+                          timetables.comment AS comment,
+                          tasks.id taskId,
+                          tasks.hash_code hashCode,
+                          tasks.task_name taskName,
+                          tasks.type AS type, 
+                          tasks.priority AS priority, 
+                          tasks.details AS details,
+                          tasks.time AS time, 
+                          tasks.mark mark, 
+                          tasks.note notes 
+                          FROM timetables JOIN tasks
+                      ON timetables.id = tasks.timetable_id";
         if(!$flag){
             $addClosedDays = function () {
                 return " AND timetables.day_status = 3 ";
@@ -108,14 +123,19 @@ class HistRepository
             $weekend       = $addWeekends();
             $withFailed    = $addWithFailed();
             $withEmergency = $addWithEmergency();
-            $query        .= " WHERE timetables.date BETWEEN '".$this->period['from'] ."' AND '".$this->period['to']."'$closedDays $weekend $withFailed $withEmergency";
+            $userId        = Auth::id();
+            $query        .= " WHERE timetables.date BETWEEN '".$this->period['from'] .
+            "' AND '".$this->period['to']."' AND timetables.day_status IN (-1,0,1,3) 
+            AND timetables.user_id = $userId";
             $response      = DB::select($query);
+            //die(var_dump($response));
         }else{ //Here we take history on concrete day
             $query        .=  " WHERE timetables.date = '".$this->period['date'] ."'";
             $response      = DB::select($query);
         }
         $history           = TransformHistTrait::transformData($response, $this->period);
 
-        return $history;
+        //dd( $history   );
+       return $history;
     }
 }

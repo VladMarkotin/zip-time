@@ -14,7 +14,12 @@ class StatController extends Controller
         $this->statService = $statService;
     }
 
-    public function index(Request $request = null)
+    public function index()
+    {
+        return view('stat');
+    }
+
+    public function getStatData(Request $request = null)
     {
         if(!$request){
             $response = $this->statService->getStat();
