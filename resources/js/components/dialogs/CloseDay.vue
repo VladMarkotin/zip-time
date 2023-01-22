@@ -140,21 +140,41 @@
 				{
 					this.alert.type = type
 					this.alert.text = text
-				}
+				},
+
+				async loadHashCodes()
+				{
+					const response = (await axios.post('/getSavedTasks')).data; //.map((item) => item.hash_code)
+					debugger;
+/*
+: 
+Array(13)
+0
+: 
+{hash_code: '#exc'}
+1
+: 
+{hash_code: '#sys'}
+*/
+
+					//this.tags = [response[0].hash_code,2,3]
+					//this.hashCodes = response.data.hash_codes;
+					let length = response.data.hash_codes.length;
+					debugger	
+					for (let i = 0; i < length; i++) {
+							this.tags[i] = response.data.hash_codes[i].hash_code; //this.hashCodes[i].hash_code
+							;
+							//console.log(currentObj.tags.value)
+					}
+				} 
 			},
-			created() {
-				//console.log('close day2222') getSavedTasks
-				let currentObj = this;
-				axios.post('/getSavedTasks')
-					.then((response) => {
-						currentObj.hashCodes = response.data.hash_codes;
-						let length = response.data.hash_codes.length;
-						for (let i = 0; i < length; i++) {
-							currentObj.tags[i] = currentObj.hashCodes[i].hash_code
-						}
-						//console.log(currentObj.tags.value)
-				    }
-				)
+			async mounted() {
+				this.loadHashCodes()
+				//let currentObj = this;
+				/*axios.post('/getSavedTasks')
+				.then((response) => {
+					
+				})*/
 			}
 		}
 </script>

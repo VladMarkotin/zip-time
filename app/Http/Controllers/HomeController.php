@@ -46,6 +46,7 @@ class HomeController extends Controller
             ->where('user_id', $id)
             ->where('notification_date', '<=', $ldate)
             ->where('read_at', 0)->all();
+        //dd("error");
         return view('home', [
             'count_notifications' => $count_notifications,
             'notifications' => $notifications,
