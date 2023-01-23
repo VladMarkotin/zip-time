@@ -4,19 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Services\StatService;
+use App\Http\Controllers\Services\NotificationService;
 
 class StatController extends Controller
 {
     private $statService = null;
+    private $notificationService;
 
-    public function __construct(StatService $statService)
+    public function __construct(StatService $statService,  NotificationService $notificationService )
     {
+        $this->notificationService = $notificationService;
         $this->statService = $statService;
     }
 
     public function index()
     {
-        return view('stat');
+        $notificatiions = $this->notificationService->getNotifications();
+        return view('stat',  [
+
+            'count_notifications' => $notificatiions['count_notifications'],
+            'notifications' => $notificatiions['notifications'],
+        ]);
     }
 
     public function getStatData(Request $request = null)
