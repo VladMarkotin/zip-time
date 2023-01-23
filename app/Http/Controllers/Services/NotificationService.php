@@ -34,7 +34,8 @@ class NotificationService
             ->where('read_at', 0)
             ->count();
 
-        return $count_notifications;
+        $response = ['count_notifications' => $count_notifications];
+        return $response;
     }
 
     public function saveNotification(Request $request)

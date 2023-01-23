@@ -29,7 +29,8 @@ class HomeController extends Controller
         GetDayPlanService $getDayPlanService,
         EstimationRepository $estimationRepository,
         NotificationService $notificationService
-    ) {
+    ) 
+    {
         $this->notificationService = $notificationService;
 
         $this->estimateDayRepository = $estimationRepository;
