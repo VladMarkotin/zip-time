@@ -2,32 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\Notifications;
-use App\Models\Notification;
 use Carbon\Carbon;
 use App\Models\SavedTask;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Events\Notifications;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\EstimationRepository;
+use App\Http\Controllers\Services\NotificationService;
 use App\Http\Controllers\Services\RatingService;
 use App\Http\Controllers\Services\GetDayPlanService;
 
 class HomeController extends Controller
 {
-    private $userRatings   = null;
+    private $userRatings = null;
     private $estimateDayRepository = null;
     private $getDayPlanService = null;
-  
+    private $notificationService;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(GetDayPlanService $getDayPlanService, EstimationRepository $estimationRepository, RatingService $userRatings  )
-    { $this->userRatings = $userRatings;
-     
+    public function __construct(
+        GetDayPlanService $getDayPlanService,
+        EstimationRepository $estimationRepository,
+        NotificationService $notificationService
+    ) {
+        $this->notificationService = $notificationService;
+
         $this->estimateDayRepository = $estimationRepository;
-        
+
         $this->middleware('auth');
         $this->getDayPlanService = $getDayPlanService;
     }
@@ -39,18 +45,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $id = auth()->id();
-        $ldate = date('Y-m-d');
-        $count_notifications = Notification::all()->where('user_id', $id)->where('notification_date', '<=', $ldate)->where('read_at', 0)->count();
-        $notifications = Notification::all()
-            ->where('user_id', $id)
-            ->where('notification_date', '<=', $ldate)
-            ->where('read_at', 0)->all();
-        //dd("error");
-        return view('home', [
-            'count_notifications' => $count_notifications,
-            'notifications' => $notifications,
-        ]);
+        $notificatiions = $this->notificationService->getNotifications();
 
+        return view('home', [
+
+                'count_notifications' => $notificatiions['count_notifications'],
+                'notifications' => $notificatiions['notifications'],
+            ]
+        );
     }
 }
