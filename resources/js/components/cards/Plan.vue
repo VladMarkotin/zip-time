@@ -280,6 +280,16 @@ export default {
             details: '',
             notes: ''
         },
+        /*preparedTask: {
+            hash: '#',
+            taskName: '',
+            time: '01:00',
+            type: 'required job',
+            priority: '1',
+            details: '',
+            notes: ''
+        },*/
+        preparedTask: {},
         headers: [{
                 text: '#code',
                 value: '',
@@ -370,12 +380,19 @@ export default {
     methods: {
        
         getPostParams() {
-            return JSON.stringify({
+            /*console.log(this.items)
+            debugger; *///здесь задание еще есть
+            
+            /*return JSON.stringify({
                 date: new Date().toISOString().substr(0, 10),
-                //day_status: this.dayStatuses.indexOf(this.day_status),
                 day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
                 plan: this.items
-            })
+            })*/
+            return {
+                date: new Date().toISOString().substr(0, 10),
+                day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
+                plan: this.items
+            };
         },
         toggleEmergencyCallDialog(){
 				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
@@ -406,12 +423,12 @@ export default {
                     hash_code: event
                 })
                 .then(function(response) {
-                    currentObj.defaultSelected.taskName = response.data[0];
-                    currentObj.defaultSelected.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[1]];
-                    currentObj.defaultSelected.priority = `${response.data[2]}`;
-                    currentObj.defaultSelected.time = response.data[4];
-                    currentObj.defaultSelected.details = response.data[3];
-                    currentObj.defaultSelected.notes = response.data[5];
+                    currentObj.defaultSelected.taskName = response.data[1];
+                    currentObj.defaultSelected.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[2]];
+                    currentObj.defaultSelected.priority = `${response.data[3]}`;
+                    currentObj.defaultSelected.time = response.data[5];
+                    currentObj.defaultSelected.details = response.data[4];
+                    currentObj.defaultSelected.notes = response.data[6];
                 })
                 .catch(function(error) {
                     currentObj.output = error;
@@ -514,7 +531,7 @@ export default {
         let currentObj = this;
         axios.post('/getSavedTasks')
             .then(function(response) {
-                currentObj.defaultSelected.hashCodes = response.data.hash_codes;
+                 currentObj.defaultSelected.hashCodes = response.data.hash_codes;
                 let length = response.data.hash_codes.length;
                 for (let i = 0; i < length; i++) {
                     currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
@@ -527,6 +544,29 @@ export default {
          axios.post('/isWeekendAvailable')
          .then(function(response) {
             currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
+         })
+         .catch(function(error) {
+            currentObj.output = error;
+         });
+
+         axios.post('/getPreparedPlan')
+         .then(function(response) {
+            if(response){
+               for(let i = 0; i < response.data.length; i++){
+                  for(let j = 0; j < response.data[i].length; j++){
+                     currentObj.preparedTask.hash = response.data[i][0].hash_code;
+                     currentObj.preparedTask.taskName = response.data[i][0].task_name;
+                     currentObj.preparedTask.type = response.data[i][0].type;//['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
+                     currentObj.preparedTask.priority = `${response.data[i][0].priority}`;
+                     currentObj.preparedTask.time = response.data[i][0].time;
+                     currentObj.preparedTask.details = response.data[i][0].details;
+                     currentObj.preparedTask.notes = response.data[i][0].note;
+                     
+                     currentObj.items.push(currentObj.preparedTask);
+                     currentObj.preparedTask = {};
+                  }
+               }
+            }
          })
          .catch(function(error) {
             currentObj.output = error;

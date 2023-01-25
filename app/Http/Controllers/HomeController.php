@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Notifications;
+use App\Models\Notification;
 use Carbon\Carbon;
 use App\Models\SavedTask;
 use Illuminate\Http\Request;
@@ -37,7 +39,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $this->userRatings->estimateLazyDayrating(0);
-        return view('home');
+        $id = auth()->id();
+        $ldate = date('Y-m-d');
+        $count_notifications = Notification::all()->where('user_id', $id)->where('notification_date', '<=', $ldate)->where('read_at', 0)->count();
+        $notifications = Notification::all()
+            ->where('user_id', $id)
+            ->where('notification_date', '<=', $ldate)
+            ->where('read_at', 0)->all();
+        //dd("error");
+        return view('home', [
+            'count_notifications' => $count_notifications,
+            'notifications' => $notifications,
+        ]);
+
     }
 }

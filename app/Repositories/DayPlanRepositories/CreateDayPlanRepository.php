@@ -41,13 +41,11 @@ class CreateDayPlanRepository
 
     public function createDayPlan(array $data)
     {
-        //die(var_dump($data).__FILE__);
         $dataForDayPlanCreation["user_id"]          = Auth::id();
-        $dataForDayPlanCreation["date"]             = Carbon::today();
+        $dataForDayPlanCreation["date"]             = Carbon::now()->format('Y-m-d');;//Carbon::today();
         $dataForDayPlanCreation["day_status"]       = $data["day_status"];//$this->getNumValuesOfStrValues($data["day_status"]);//temporary variant. day_status has to be general!!! Now it would not working
         $dataForDayPlanCreation["final_estimation"] = 0;
         $dataForDayPlanCreation["own_estimation"]   = 0;
-        //die(var_dump($dataForDayPlanCreation["day_status"]));
         $dataForTasks = [];
         try{
             DB::transaction(function () use ($dataForDayPlanCreation, $data) {
@@ -61,7 +59,6 @@ class CreateDayPlanRepository
                         foreach ($val as $index => $v) {
                             if (is_array($v)) {
                                 $k = 0;//Counter for excluding copies
-//                                die(var_dump($v));
                                 foreach($v as $v2){
                                     $dataForTasks[$index]['timetable_id'] = $this->getLastTimetableId();
                                     $dataForTasks[$index]['hash_code']    = $v['hash'];
@@ -95,6 +92,7 @@ class CreateDayPlanRepository
                         }
                     }
                 }
+                //var_dump($dataForTasks);
                 //Save info about tasks
                 Tasks::insert($dataForTasks);
             });
@@ -137,7 +135,7 @@ class CreateDayPlanRepository
                 return 0;
         }
 
-        return 4;
+        return $task['type'];
     }
 
     private function getLastTimetableId()

@@ -11,6 +11,8 @@ namespace App\Repositories\DayPlanRepositories;
 
 use App\Models\SavedNotes;
 use Illuminate\Support\Facades\DB;
+use Auth;
+
 
 class AddNoteToSavedTask {
 
@@ -53,8 +55,11 @@ class AddNoteToSavedTask {
         $savedTaskId = DB::table('saved_tasks')
             ->select(DB::raw('id'))
             ->where('hash_code', '=', $params['hash_code'])
-            ->where('user_id', '=', $params['user_id'])->get(["id"])->toArray();
+            ->where('user_id', '=', Auth::id())->get(["id"])->toArray();
+        if($savedTaskId){
+            return $savedTaskId[0]->id;
+        }
 
-        return $savedTaskId[0]->id;
+        return $savedTaskId;
     }
 } 

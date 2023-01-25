@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\DB;
 use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
+use Auth;
 
 class SavedTask2Repository
 {
@@ -28,15 +29,14 @@ class SavedTask2Repository
     public function getSavedTaskByHashCode(array $params)
     {
         $paramsForNotes = [
-            'user_id'   => $params['id'],
+            'user_id'   => Auth::id(),
             'hash_code' => $params['hash_code']
         ];
         $lastNoteArray = $this->notesRepository->getLastNote($paramsForNotes);//возвращает последнюю заметку,но ее надо как-то + в savedTask
-
-
+        
         $savedTask = DB::table('saved_tasks')
-            ->select('task_name', 'type', 'priority', 'details', 'time', 'note')
-            ->where('user_id',   '=', $params['id'])
+            ->select('hash_code','task_name', 'type', 'priority', 'details', 'time', 'note')
+            ->where('user_id',   '=', Auth::id())
             ->where('hash_code', '=', $params['hash_code'])
             ->get()->toArray();
         if(count($lastNoteArray) > 0){

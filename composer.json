@@ -18,7 +18,7 @@
         "livewire/livewire": "^2.10",
         "markrogoyski/math-php": "2.*",
         "nesbot/carbon": "^2.46",
-        "pusher/pusher-php-server": "~3.0",
+        "pusher/pusher-php-server": "^7.0",
         "richjenks/stats": "^1.0",
         "socialiteproviders/facebook": "^4.1"
     },

@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
+
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 /*Socialite ex https://medium.com/@Alabuja/social-login-in-laravel-with-socialite-90dbf14ee0ab*/
@@ -28,10 +30,16 @@ Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'r
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::post('/send_notification', [App\Http\Controllers\NotificationController::class, 'sendNotification']);
+    Route::post('/read_notification', [App\Http\Controllers\NotificationController::class, 'readNotification']);
+    Route::post('/save_notification', [App\Http\Controllers\NotificationController::class, 'saveNotification']);
+
     Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
     Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
     Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
     Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode']);
+    Route::post('/getPreparedPlan', [App\Http\Controllers\MainController::class, 'getPreparedPlan']);//check whether we got prepared plan
     Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
     Route::post('isWeekendAvailable',[App\Http\Controllers\MainController::class, 'isWeekendAvailable']);
     
@@ -48,24 +56,33 @@ Route::middleware(['auth'])->group(function () {
     //History routes
     Route::prefix('hist')->group(function () {
         Route::get('/', [App\Http\Controllers\HistController::class, 'index']);
-        Route::get('/{date}', [App\Http\Controllers\HistController::class, 'histOnDate']);
+        Route::post('/', [App\Http\Controllers\HistController::class, 'index']);
     });
     //end History routes
 
     //Statistics
     Route::prefix('stat')->group(function () {
-        Route::get('/', [App\Http\Controllers\StatController::class, 'index']);
+        Route::get('/', [App\Http\Controllers\StatController::class, 'index'])->name('stat');
         Route::post('/', [App\Http\Controllers\StatController::class, 'getStatInfo']);
     });
+
+    
+    
+
+
+    Route::get('/get-stat-data', [App\Http\Controllers\StatController::class, 'getStatData'])->name('get-stat-data');
     //end statistic
 
 //emergency
     Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index']);
+//
 //settings
     Route::get('/settings',  [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
     Route::get('/settings/{setting}', [App\Http\Controllers\SettingsController::class, 'index']);
     //Backlog
     Route::get('backlog', [App\Http\Controllers\BackLogController::class, 'index'])->name('backlog');
+
+
 
 
 });

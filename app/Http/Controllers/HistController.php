@@ -14,19 +14,12 @@ class HistController extends Controller
         $this->histService = $histService;
     }
 
-    public function index(Request $request = null)
+    public function index(Request $request)
     {
-        if(!$request){
-            $response = $this->histService->getHist();
-        } else{
-            $data["from"]           = $request->get('from');
-            $data["to"]             = $request->get('to');
-            $data["with_failed"]    = $request->get('with_failed');
-            $data["with_weekend"]   = $request->get('with_weekend');
-            $data["with_emergency"] = $request->get('with_emergency');
-            $response = $this->histService->getHist($data);
-        }
-
+        
+        $startDate = $request->start_date;
+        $response = $this->histService->getHist($startDate);
+        //die(var_dump($response));
         return $response;
     }
 
