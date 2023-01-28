@@ -144,37 +144,21 @@
 
 				async loadHashCodes()
 				{
-					const response = (await axios.post('/getSavedTasks')).data; //.map((item) => item.hash_code)
-					debugger;
-/*
-: 
-Array(13)
-0
-: 
-{hash_code: '#exc'}
-1
-: 
-{hash_code: '#sys'}
-*/
-
-					//this.tags = [response[0].hash_code,2,3]
-					//this.hashCodes = response.data.hash_codes;
+					const response = (await axios.post('/getSavedTasks')).data;
 					let length = response.data.hash_codes.length;
-					debugger	
 					for (let i = 0; i < length; i++) {
-							this.tags[i] = response.data.hash_codes[i].hash_code; //this.hashCodes[i].hash_code
-							;
-							//console.log(currentObj.tags.value)
-					}
+						this.tags[i] = response.data.hash_codes[i].hash_code;
+						;
+					}	
+					
 				} 
 			},
-			async mounted() {
-				this.loadHashCodes()
-				//let currentObj = this;
-				/*axios.post('/getSavedTasks')
+			async created() {
+				await axios.post('/getSavedTasks')
 				.then((response) => {
+					this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
 					
-				})*/
+				})
 			}
 		}
 </script>
