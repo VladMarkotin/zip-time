@@ -60,7 +60,7 @@
                         <div class="btn-group" id="notification_section">
                             <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                             уведомления
+                             Notifications
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-bell" viewBox="0 0 16 16">
                                     <path  @if ($notifications)
@@ -90,7 +90,7 @@
 
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-light" data-toggle="modal" data-target="#addNotification">
-                            Создать уведомление
+                            Create notification
                         </button>
 
                         @if (Auth::user()->role_as == 1)
@@ -106,7 +106,7 @@
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Новое уведомление</h5>
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Create notification</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -117,7 +117,7 @@
 
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="form-group">
-                                                    <strong>Тип уведомления:</strong>
+                                                    <strong>Notification`s type:</strong>
                                                     <input id="typeNotification" type="text" name="typeNotification"
                                                         class="form-control"
                                                         placeholder='Придумайте тип напоминания (например "Важное")'>
@@ -126,15 +126,15 @@
 
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="form-group">
-                                                    <strong>Текст уведомления:</strong>
+                                                    <strong>Notification`s text:</strong>
                                                     <input id="dataNotification" type="text" name="dataNotification"
-                                                        class="form-control" placeholder="Напишите текст уведомления">
+                                                        class="form-control" placeholder="Notification`s text">
                                                 </div>
                                             </div>
 
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="form-group">
-                                                    <strong>Дата уведомления:</strong>
+                                                    <strong>Notification`s date:</strong>
                                                     <input id="dateNotification" type="date" name="dateNotification"
                                                         class="form-control">
                                                 </div>
@@ -143,7 +143,7 @@
                                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                                                 <p></p>
                                                 <button id="saveNotification" class="btn btn-light">
-                                                    Сохранить уведомление
+                                                   Save
                                                 </button>
                                             </div>
 
@@ -179,16 +179,16 @@
 
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="form-group">
-                                                    <strong>Текст уведомления:</strong>
+                                                    <strong>Notification`s text:</strong>
                                                     <input id="dataNotificationPusher" type="text"
                                                         name="dataNotification" class="form-control"
-                                                        placeholder="Напишите текст уведомления">
+                                                        placeholder="Notification`s text">
                                                 </div>
                                             </div>
 
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="form-group">
-                                                    <strong>Дата уведомления:</strong>
+                                                    <strong>Notification`s date:</strong>
                                                     <input id="dateNotificationPusher" type="date"
                                                         name="dateNotification" class="form-control">
                                                 </div>
@@ -197,7 +197,7 @@
                                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                                                 <p></p>
                                                 <button id="sendNotification" class="btn btn-light">
-                                                    Отправить уведомление
+                                                Send notification
                                                 </button>
                                             </div>
                                         </div>
