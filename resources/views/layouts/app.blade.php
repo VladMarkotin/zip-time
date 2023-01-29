@@ -60,7 +60,6 @@
                         <div class="btn-group" id="notification_section">
                             <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                             Notifications
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-bell" viewBox="0 0 16 16">
                                     <path  @if ($notifications)
@@ -72,7 +71,7 @@
                                 style="background: #a10000; color:white;  animation: notification 2.2s linear infinite;"
                                 @endif > 
  
-                                 <span id="main_notification_button">{{ $count_notifications }}</span></span>
+                                 <span id="main_notification_button" @if (!$notifications) style="color: #BFBABA;"@endif>{{ $count_notifications }}</span></span>
 
                     
                             </button>
@@ -90,7 +89,7 @@
 
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-light" data-toggle="modal" data-target="#addNotification">
-                            Create notification
+                            <span class="mdi mdi-pencil-outline"></span>
                         </button>
 
                         @if (Auth::user()->role_as == 1)
