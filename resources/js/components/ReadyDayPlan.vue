@@ -40,7 +40,7 @@
 						<v-icon color="#D71700" large>{{icons.mdiCarEmergency}}</v-icon>
 					</v-btn>
 				</template>
-				<span>Emergency call</span>
+				<span>Emergency mode</span>
 			</v-tooltip>
 		</div>
 	</div>

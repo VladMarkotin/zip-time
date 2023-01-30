@@ -101,10 +101,8 @@ export default
 			},
 			showEvent({ nativeEvent, event }) {
 				const open = () => {
-					console.log("test")
 					this.selectedEvent = event
 					this.selectedElement = nativeEvent.target
-					console.log(event)
 					requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
 				}
 
@@ -122,23 +120,40 @@ export default
 					start_date: period.start.date
 				})
 				this.events = []
-				//let v = history.data.plans['2022-09-02'].tasks;
-				//debugger
+				let status;
+				let color = '#A10000';
 				for (const date in history.data.plans) {
+					status = '';
+					
+					switch(history.data.plans[date].dayStatus ){
+						case 3: 
+							status = "Success"
+							color = '#A10000';
+							break;
+						case 1:
+							status = "Weekend"
+							color = '#ffcfcf'
+							break;
+						case 0:
+							status = "Emergency mode"
+							color = '#fff7f7';
+							break;
+						default:
+							status = "Fail !";
+							color = "#474747";
+							break;
+
+					}
 					this.events.push({
 						start: new Date(date),
 						end: new Date(date),
-						name: `Day status:\t${history.data.plans[date].dayStatus}`,
-						color: '#A10000',
-						dayFinalMark: history.data.plans[date].dayFinalMark,
-						dayOwnMark: history.data.plans[date].dayOwnMark,
+						name: `Day status:\t${status}`,//history.data.plans[date].dayStatus
+						color: color,//'#A10000',
+						dayFinalMark: history.data.plans[date].dayFinalMark +'%',
+						dayOwnMark: history.data.plans[date].dayOwnMark +'%',
 						comment: history.data.plans[date].comment,
 						tasks: history.data.plans[date].tasks
 					})
-					/*if (date == '2022-09-01') {
-						console.log(history.data.plans[date])
-						debugger
-					}*/
 				}
 			}
 		}
