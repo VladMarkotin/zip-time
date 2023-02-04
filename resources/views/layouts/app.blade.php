@@ -45,7 +45,9 @@
         <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
-                    {{ config('app.name', 'Laravel') }}
+                  <div class="nameSite">
+                    <span>Qui</span><span>ck </span><span>pl</span><span>an</span>
+                  </div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"

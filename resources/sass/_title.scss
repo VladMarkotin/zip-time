@@ -1,0 +1,112 @@
+/*QUIPLE-style*/
+
+.menu{
+  background-color: #c02020;
+  background-size: contain;
+}
+
+/* защита от выделения баннера */
+.nameSite span::selection {
+  background: transparent;
+}
+.nameSite span::-moz-selection {
+  background: transparent;
+}
+
+.nameSite{
+  margin: 5px 15px 15px 15px;
+  font-family: "Constantine";
+  display: inline-flex;
+  font-size: 100px;
+  color: #ffffff;
+  text-shadow: 2px    2px    5px  #5e5e5e,
+               1px    1px    0    #000000,
+              -1px   -1px    0    #000000,
+              -1px    1px    0    #000000,
+               1px   -1px    0    #000000;
+  position: relative;
+}
+
+.nameSite span:nth-child(2),
+.nameSite span:nth-child(4)
+{
+  color: #ffffff;
+  animation-duration: 1.5s;
+  animation-name: slideOut;
+  opacity: 0;
+}
+
+@keyframes slideOut {
+  0% { opacity: 1; }
+  25% { opacity: 1; }
+  100% { opacity: 0; }
+}
+/* спец.позиция для последнего элемента */
+.nameSite span:nth-child(4)
+{
+  position: absolute;
+  left: 450px;
+}
+
+.nameSite span:nth-child(3){
+  left: 190px;
+  position: absolute;
+  animation-duration: 1.5s;
+  animation-name: go;
+}
+@keyframes go{
+  0% { left: 342px; }
+  75% { left: 342px; }
+  100% { left: 190px; }
+}
+
+.nameSite:hover>span:nth-child(2),
+.nameSite:hover>span:nth-child(4)
+{
+  display: inline;
+  /* анимация выделения */
+  animation-duration: 1.5s;
+  animation-name: slideIn;
+  opacity: 1;
+}
+
+@keyframes slideIn {
+  0% { opacity: 0; }
+  25% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.nameSite:hover>span:nth-child(3){
+  left: 342px;
+  position: absolute;
+  animation-duration: 1.5s;
+  animation-name: goto;
+}
+
+@keyframes goto{
+  0% { left: 190px; }
+  25% { left: 342px; }
+  100% { left: 342px; }
+}
+
+/*Hidden-style*/
+
+section {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 100vh;
+}
+
+.hidden {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateX(-10%);
+  transition: all 1s;
+}
+
+.show {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateX(0);
+}
