@@ -26,6 +26,9 @@
 							elevation="20"
 							class="py-4 px-1"
 						>
+						<p style="text-align: center;">
+							You can choose tasks for tomorrow`s plan
+						</p>
 							<v-chip-group
 							multiple
 							active-class="primary--text"
