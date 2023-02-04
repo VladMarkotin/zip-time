@@ -96,6 +96,5 @@ Route::get('/listen', function (){
     return view('listen');
 });
 
-Route::get('/markov-index', function (){
-  return view('markov-index');
-});
+
+Route::get('/markov-index', [App\Http\Controllers\HomeController::class, 'markovIndex'])->name('markov-index');

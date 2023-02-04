@@ -1,0 +1,44 @@
+/*Section-style*/
+
+section {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 100vh;
+}
+
+// Define full size to element (100%)
+.smooth-full{
+    width:100%;
+    height:100%
+}
+
+//navigation elements-style
+
+.smooth-navigation-menu{
+  position: fixed;
+  right: 0px;
+  bottom: 50%;
+  list-style: none;
+  padding: 20px;
+}
+
+.smooth-navigation-item{
+    transition: .4s;
+    width: 20px;
+    height: 20px;
+    background: #ff6363;
+    margin: 5px;
+    border-radius: 90px;
+    cursor: pointer;
+  }
+
+.smooth-navigation-item:hover{
+    background: #ff0000;
+    scale: 1.1;
+}
+
+.smooth-navigation-item:active{
+    transition: .1s;
+    background: #ff9900;
+}

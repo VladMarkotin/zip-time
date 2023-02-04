@@ -53,4 +53,21 @@ class HomeController extends Controller
         ]);
 
     }
+
+    public function markovIndex()
+    {
+        $id = auth()->id();
+        $ldate = date('Y-m-d');
+        $count_notifications = Notification::all()->where('user_id', $id)->where('notification_date', '<=', $ldate)->where('read_at', 0)->count();
+        $notifications = Notification::all()
+            ->where('user_id', $id)
+            ->where('notification_date', '<=', $ldate)
+            ->where('read_at', 0)->all();
+        //dd("error");
+        return view('markov-index', [
+            'count_notifications' => $count_notifications,
+            'notifications' => $notifications,
+        ]);
+
+    }
 }

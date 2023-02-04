@@ -13,4 +13,12 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .vue()
-    .sass('resources/sass/app.scss', 'public/css');
+    .sass('resources/sass/app.scss', 'public/css')
+
+	mix.scripts([
+    'resources/js/smooth.js',
+    'resources/js/hidden.js',
+    'resources/js/faq.js',
+], 'public/js/style-index.js');
+
+mix.sass('resources/sass/index-style.scss', 'public/css/index.css')

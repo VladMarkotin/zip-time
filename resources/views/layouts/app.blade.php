@@ -36,12 +36,13 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <!-- Default theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
     @livewireStyles
 </head>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
                     {{ config('app.name', 'Laravel') }}
@@ -271,10 +272,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-
-        </main>
+        @yield('content')
     </div>
 
     <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -430,6 +428,7 @@
             });
         })
     </script>
+    <script defer src="js/style-index.js"></script>
 
 
     @livewireScripts

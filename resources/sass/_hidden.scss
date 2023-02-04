@@ -1,0 +1,14 @@
+/*Hidden-style*/
+
+.hidden {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateX(-10%);
+  transition: all 1s;
+}
+
+.show {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateX(0);
+}
