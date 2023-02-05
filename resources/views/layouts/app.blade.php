@@ -385,8 +385,13 @@
                 }, function() {}).done(function(response) {
                     $('#addNotification').modal('hide');
                     $("#notification_section").load(" #notification_section");
+<<<<<<< Updated upstream
                      alertify.set('notifier','position', 'bottom-right');
                      alertify.notify('Notification Added Successfuly');
+=======
+                    alertify.set('notifier','position', 'bottom-right');
+                    alertify.notify('Notification Added Successfully');
+>>>>>>> Stashed changes
                     
                 })
             })

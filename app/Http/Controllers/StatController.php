@@ -25,15 +25,19 @@ class StatController extends Controller
 
     public function getStatData(Request $request = null)
     {
-        if(!$request){
+        if (!$request) {
             $response = $this->statService->getStat();
-        } else{
-            $data["from"]            = $request->get('from');
-            $data["to"]              = $request->get('to');
-            $response                = $this->statService->getStat($data);
+        } else {
+            $data['from'] = $request->get('from');
+            $data['to'] = $request->get('to');
+            $response = $this->statService->getStat($data);
         }
-        $response["marks"]["finalMarks"] = array_values($response["marks"]["finalMarks"]);
-        $response["marks"]["ownMarks"]   = array_values($response["marks"]["ownMarks"]);
+        $response['marks']['finalMarks'] = array_values(
+            $response['marks']['finalMarks']
+        );
+        $response['marks']['ownMarks'] = array_values(
+            $response['marks']['ownMarks']
+        );
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
 
         return $response;
@@ -42,15 +46,19 @@ class StatController extends Controller
     public function getStatInfo(Request $request)
     {
         //dd($request->get('from'));
-        if(!$request){
+        if (!$request) {
             $response = $this->statService->getStat();
-        } else{
-            $data["from"]            = $request->get('from');
-            $data["to"]              = $request->get('to');
-            $response                = $this->statService->getStat($data);
+        } else {
+            $data['from'] = $request->get('from');
+            $data['to'] = $request->get('to');
+            $response = $this->statService->getStat($data);
         }
-        $response["marks"]["finalMarks"] = array_values($response["marks"]["finalMarks"]);
-        $response["marks"]["ownMarks"]   = array_values($response["marks"]["ownMarks"]);
+        $response['marks']['finalMarks'] = array_values(
+            $response['marks']['finalMarks']
+        );
+        $response['marks']['ownMarks'] = array_values(
+            $response['marks']['ownMarks']
+        );
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
 
         return $response;
