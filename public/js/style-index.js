@@ -205,7 +205,7 @@ class Faq {
       el.classList.remove('faq_item_slidedown')
       elBody.classList.add('collapse')
       el.classList.add('faq_item_show')
-      elBody.style['display'] = ''
+      elBody.style['display'] = 'block'
       elBody.style['height'] = ''
       elBody.style['transition'] = ''
       elBody.style['overflow'] = ''
@@ -240,5 +240,5 @@ class Faq {
 }
 
 new Faq(document.querySelector('.faq'), {
-  alwaysOpen: true
+  alwaysOpen: false
 })
