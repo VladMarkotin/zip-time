@@ -34,6 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/send_notification', [App\Http\Controllers\NotificationController::class, 'sendNotification']);
     Route::post('/read_notification', [App\Http\Controllers\NotificationController::class, 'readNotification']);
     Route::post('/save_notification', [App\Http\Controllers\NotificationController::class, 'saveNotification']);
+    Route::post('/notification_history', [App\Http\Controllers\NotificationController::class, 'notification_history']);
 
     Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
     Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//

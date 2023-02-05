@@ -16,7 +16,11 @@ class StatController extends Controller
 
     public function index()
     {
-        return view('stat');
+        $notifications = [];
+        $count_notifications ='';
+        return view('stat',['notifications' => $notifications,
+                             'count_notifications' => $count_notifications    
+                            ]);
     }
 
     public function getStatData(Request $request = null)

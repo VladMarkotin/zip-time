@@ -231,6 +231,9 @@
                                 </li>
                             @endif
                         @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('notification_history') }}">Notifications</a>
+                        </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('stat') }}">Statistics</a>
                             </li>
@@ -382,6 +385,8 @@
                 }, function() {}).done(function(response) {
                     $('#addNotification').modal('hide');
                     $("#notification_section").load(" #notification_section");
+                     alertify.set('notifier','position', 'bottom-right');
+                     alertify.notify('Notification Added Successfuly');
                     
                 })
             })
