@@ -92,4 +92,7 @@
     </div>
   </section>
 
+  <script defer src="js/style-index.js"></script>
+  <script defer src="js/title.js"></script>
+
 @endsection
