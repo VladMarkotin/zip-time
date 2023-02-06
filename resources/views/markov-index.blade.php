@@ -2,14 +2,14 @@
 
 @section('content')
 
-  <section class="smooth-section smooth-full smooth-parallax">
+  <section class="smooth-section">
     <div class="hidden">
       <h2>Hi Vlad & Kate!</h2>
       <p>This is a QUIPL index page presentation</p>
     </div>
   </section>
   
-  <section class="smooth-section smooth-full smooth-parallax">
+  <section class="smooth-section">
     <div class="hidden">
       <h2>Features #1</h2>
       <h3>Title</h3>
@@ -21,7 +21,7 @@
     </div>
   </section>
 
-  <section class="smooth-section smooth-full smooth-parallax">
+  <section class="smooth-section">
     <div class="hidden">
       <h2>Features #2</h2>
       <p>По мере прокрутки текста блоки появляются из "невидимости" эффектом смещения и блюра.</p>
@@ -30,7 +30,7 @@
     </div>
   </section>
 
-  <section class="smooth-section smooth-full smooth-parallax red">
+  <section class="smooth-section">
     <div class="hidden">
       <h2>Features #3</h2>
       <p>Страница представляет собой секции-слайды, по которым происходит плавный переход при прокрутке страницы.</p>
@@ -39,7 +39,7 @@
     </div>
   </section>
 
-  <section class="smooth-section smooth-full smooth-parallax white">
+  <section class="smooth-section">
     <div class="hidden">
       <h2>Features #4</h2>
       <h3>Accordion</h3>
@@ -85,7 +85,7 @@
     </div>
   </section>
 
-  <section class="smooth-section smooth-full smooth-parallax red">
+  <section class="smooth-section">
     <div class="hidden">
       <h2>Thank you for your attention</h2>
       <p>It's really good!</p>

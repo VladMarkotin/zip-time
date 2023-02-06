@@ -26,10 +26,6 @@ $(document).ready(function(){
         pageIndex = section;
     });
 
-
-    // Define CSS default styles...
-    $(this).defineCss();
-
 });
 
 
@@ -38,7 +34,6 @@ let time = new Date().getTime();
 
 // Scroll events (mouse and keys)
 $(window).bind("keydown.key40 DOMMouseScroll mousewheel",function(event){
-
 
     // Update time
     let now = new Date().getTime();
@@ -55,11 +50,9 @@ $(window).bind("keydown.key40 DOMMouseScroll mousewheel",function(event){
         // Down event
         if (event.originalEvent.detail > 0 || event.originalEvent.wheelDelta < 0 || event.keyCode == 40) {
             // Next section element
-            console.log('nextPage');
             $(".smooth-section").nextPage();
         } else if (event.originalEvent.detail < 0 || event.originalEvent.wheelDelta > 0 || event.keyCode == 38) {
             // Previous section element
-            console.log('prevPage');
             $(".smooth-section").prevPage();
         }
 
@@ -99,51 +92,4 @@ $.fn.prevPage = function () {
 
     }
 
-};
-
-
-
-// Define styles...
-$.fn.defineCss = function(){
-
-    // Width and Height 100% //
-    $("html, body").css({"width":"100%","height":"100%"});
-
-
-    // Remove scrollbar
-    $(".no-scroll").css({"overflow": "hidden"});
-
-
-    // Define small size to element (200px)
-    $(".smooth-small").each(function(){
-        $(this).css({"width":"100%","height":"200px"});
-    });
-
-
-    // Define middle size to element (50%)
-    $(".smooth-middle").each(function(){
-        $(this).css({"width":"100%","height":"50%"});
-    });
-
-
-    // Define full size to element (100%)
-    $(".smooth-full").each(function(){
-        $(this).css({"width":"100%","height":"100%"});
-    });
-
-
-    // Realize parallax effect
-    $(".smooth-parallax").each(function(){
-
-        let parallax = $(this);
-
-        $(window).scroll(function() {
-            var scrollPosition = -($(window).scrollTop() / 5);
-
-            var imagePosition = '50% '+ scrollPosition + 'px';
-
-            parallax.css('background-position', imagePosition );
-
-        });
-    });
 };
