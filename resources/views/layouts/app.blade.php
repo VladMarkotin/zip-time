@@ -68,17 +68,23 @@
                                     d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" />
                                 </svg>
                                 <span class="badge badge-pill notification--num" @if ($notifications)
-                                style="background: #a10000; color:white;  animation: notification 2.2s linear infinite;"
+                                style="background: #a10000; color:white;"
                                 @endif > 
  
                                  <span id="main_notification_button" @if (!$notifications) style="color: #BFBABA;"@endif>{{ $count_notifications }}</span></span>
 
                     
                             </button>
-                            <div class="dropdown-menu notifications">
+                            <div class="dropdown-menu notifications" style="padding: 0">
                                 @foreach ($notifications as $notification)
                                     <div class="dropdown-item notification"><b>{{ $notification->data }}</b></div>
                                 @endforeach
+                                
+                                <div class="view_all">
+                                    <a  href="notifications" class="  btn-block"><strong>View All</strong> </a>
+                                 
+                               </div>
+
                             </div>
                             <input type="hidden" name="_token" id="_token" value={{ csrf_token() }}>
                         </div>
@@ -231,9 +237,7 @@
                                 </li>
                             @endif
                         @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('notification_history') }}">Notifications</a>
-                        </li>
+                      
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('stat') }}">Statistics</a>
                             </li>
@@ -273,6 +277,33 @@
                 </div>
             </div>
         </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
         <main class="py-4">
             @yield('content')
@@ -385,13 +416,10 @@
                 }, function() {}).done(function(response) {
                     $('#addNotification').modal('hide');
                     $("#notification_section").load(" #notification_section");
-<<<<<<< Updated upstream
+
                      alertify.set('notifier','position', 'bottom-right');
                      alertify.notify('Notification Added Successfuly');
-=======
-                    alertify.set('notifier','position', 'bottom-right');
-                    alertify.notify('Notification Added Successfully');
->>>>>>> Stashed changes
+
                     
                 })
             })

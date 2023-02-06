@@ -1,5 +1,5 @@
 <div>
-    @include('livewire.backlog-modal')
+    @include('livewire.modals')
 
     <div class="col-md-7 mx-auto rounded">
 
