@@ -23,12 +23,14 @@ class BackLogController extends Controller
 
     public function index()
     {
+        $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
-
         return view('backlog', [
-            
+
+            'tasks'               =>  $tasks,
             'count_notifications' => $notificatiions['count_notifications'],
             'notifications' => $notificatiions['notifications'],
         ]);
+
     }
 }

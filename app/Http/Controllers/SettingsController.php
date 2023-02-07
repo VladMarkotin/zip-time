@@ -21,15 +21,16 @@ class SettingsController extends Controller
         $this->notificationService = $notificationService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request)  
     {
-   
+        $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
         return view('settings', [
 
+            'tasks'               =>  $tasks,
             'count_notifications' => $notificatiions['count_notifications'],
             'notifications' => $notificatiions['notifications'],
         ]);
-     
+
     }
-}
+    }

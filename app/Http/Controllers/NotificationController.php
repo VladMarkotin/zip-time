@@ -35,10 +35,10 @@ class NotificationController extends Controller
     
     public function notificationsHistory()
     {
-      
+        $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
         return view('notifications', [
-
+            'tasks'               =>  $tasks,
             'count_notifications' => $notificatiions['count_notifications'],
             'notifications' => $notificatiions['notifications'],
         ]);

@@ -4,13 +4,14 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Notification;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithPagination;
 
 class Notifications extends Component
 {
     use WithPagination;
+    
     public $type;
     public $data;
     public $endDate;
@@ -22,12 +23,28 @@ class Notifications extends Component
 
     public function mount(): void
     {
+     
         if (empty($this->sortNotifications)) {
             $this->sortNotifications[] = 'all';
         }
-
+       // $this->notifications = $notifications;
     }
 
+    public function period(): array
+    {
+        $period = [];
+        $period['startDate'] =   $this->startDate;
+        $period['endDate'] =   $this->startDate;
+        return $period;
+    }
+
+    // public function test(): array
+    // {
+    //     $this->period();
+    //   dd($this->period()['startDate']) ; 
+    // }
+
+    
     public function rules(): array
     {
         return [
@@ -47,23 +64,27 @@ class Notifications extends Component
         $this->validateOnly($propertyName);
     }
 
+ 
+        public function readNotification($id): void
+        {
+            dd($id);
+            $notification = Notification::findOrfail($id);
+    
+            if( $notification->read_at)
+            {
+                $notification->read_at = 1;
+            }
+            $notification->save;
+        }
+
+
+
     public function editNotification($notificationId): void
     {
         $this->notificationId = $notificationId;
         $notification = Notification::findOrfail($notificationId);
         $this->type = $notification->type;
         $this->data = $notification->data;
-    }
-
-    public function readNotification($id)
-    {
-        $notification = Notification::findOrfail($id);
-        if( $notification->read_at == 0)
-        {
-            $notification->read_at = 1;
-            $notification->update();
-        }
-      
     }
 
     public function updateNotification(): void
@@ -99,16 +120,26 @@ class Notifications extends Component
     {
         $notification = Notification::where('user_id', Auth::id())
 
-            ->when(
-                $this->startDate == $this->startDate &&
-                    $this->endDate == $this->endDate,
-                function ($e2) {
-                    $e2->whereBetween('notification_date', [
-                        $this->startDate,
-                        $this->endDate,
-                    ]);
-                }
-            )
+            // ->when(
+            //     $this->startDate == $this->startDate &&
+            //         $this->endDate == $this->endDate,
+            //     function ($e2) {
+            //         $e2->whereBetween('notification_date', [
+            //             $this->startDate,
+            //             $this->endDate,
+            //         ]);
+            //     }
+            // )
+
+            
+            // ->when($this->period()['startDate'] !== null || $this->period()['endDate'] !== null,
+            //     function ($e2) {
+            //         $e2->whereBetween('notification_date', [
+            //             $this->period()['startDate'],
+            //             $this->period()['endDate'],
+            //         ]);
+            //     }
+            // )
 
             ->when($this->sortNotifications, function ($e) {
                 $e
@@ -128,21 +159,11 @@ class Notifications extends Component
                         $e2->orderBy('notification_date', 'DESC');
                     });
             })
+        ->orderBy('notification_date', 'DESC')
+        ->paginate(4);
 
-            ->orderBy('notification_date', 'DESC')
-            ->paginate(4);
-            $count = Notification::where('user_id', Auth::id())->get();
-            $count_unread = $count->where('read_at', 0)->count();
-            $count_read = $count->where('read_at', 1)->count();
-            $total = $count->count();
-
-
-        return view('livewire.notifications', [
-            'notifications'=> $notification, 
-            'count_unread'=> $count_unread,
-            'count_read'=> $count_read,
-            'total'=> $total,
-        ]);
+        return view('livewire.notifications', ['notifications'=> $notification]
+        );
     }
 }
 

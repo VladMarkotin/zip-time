@@ -5,12 +5,17 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Savedlogs;
 use App\Models\SavedTask;
-use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 use function PHPSTORM_META\type;
+use Illuminate\Support\Facades\Auth;
 
 class Backlog extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    
+
     public $title, $task_id, $content, $backlog_id;
 
     public function rules()
@@ -94,7 +99,7 @@ class Backlog extends Component
     {
         $backlogs = Savedlogs::where('user_id', Auth::id())
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->paginate(5);
         $tasks = SavedTask::where('user_id', Auth::id())->get();
         return view('livewire.backlog', compact('tasks', 'backlogs'));
     }

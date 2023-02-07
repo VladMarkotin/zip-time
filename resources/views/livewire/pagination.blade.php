@@ -1,4 +1,4 @@
-
+<div>
 
 @if ($paginator->hasPages())
     <div class="d-flex justify-content-center">
@@ -38,3 +38,4 @@
     </div>
 
 @endif
+</div>

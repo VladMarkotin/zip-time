@@ -1,4 +1,8 @@
 <!-- Add backlogModal -->
+<div> 
+
+
+
 <div wire:ignore.self class="modal fade" id="AddbacklogModal" tabindex="-1" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <div class="modal-dialog">
@@ -179,4 +183,114 @@ aria-hidden="true">
         </form>
     </div>
 </div>
+</div>
+
+
+
+ <!-- Modal Создать уведомление-->
+ <div class="modal fade" id="addNotification" tabindex="-1" role="dialog"
+ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLongTitle">Create notification</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+         <div class="modal-body">
+
+             <div class="row">
+
+                 <div class="col-xs-12 col-sm-12 col-md-12">
+                     <div class="form-group">
+                         <strong>Notification`s type:</strong>
+                         <input id="typeNotification" type="text" name="typeNotification"
+                             class="form-control"
+                             placeholder='Придумайте тип напоминания (например "Важное")'>
+                     </div>
+                 </div>
+
+                 <div class="col-xs-12 col-sm-12 col-md-12">
+                     <div class="form-group">
+                         <strong>Notification`s text:</strong>
+                         <input id="dataNotification" type="text" name="dataNotification"
+                             class="form-control" placeholder="Notification`s text">
+                     </div>
+                 </div>
+
+                 <div class="col-xs-12 col-sm-12 col-md-12">
+                     <div class="form-group">
+                         <strong>Notification`s date:</strong>
+                         <input id="dateNotification" type="date" name="dateNotification"
+                             class="form-control">
+                     </div>
+                 </div>
+
+                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                     <p></p>
+                     <button id="saveNotification" class="btn btn-light">
+                         Save
+                     </button>
+                 </div>
+
+             </div>
+         </div>
+     </div>
+ </div>
+</div>
+
+<!-- Modal Отправить через Pusher-->
+<div class="modal fade" id="sendToPusher" tabindex="-1" role="dialog"
+ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLongTitle">Отправить через Pusher</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+         <div class="modal-body">
+
+             <div class="row">
+
+                 <div class="col-xs-12 col-sm-12 col-md-12">
+                     <div class="form-group">
+                         <strong>Тип уведомления:</strong>
+                         <input id="typeNotificationPusher" type="text"
+                             name="typeNotification" class="form-control" value="Pusher"
+                             readonly>
+                     </div>
+                 </div>
+
+                 <div class="col-xs-12 col-sm-12 col-md-12">
+                     <div class="form-group">
+                         <strong>Notification`s text:</strong>
+                         <input id="dataNotificationPusher" type="text"
+                             name="dataNotification" class="form-control"
+                             placeholder="Notification`s text">
+                     </div>
+                 </div>
+
+                 <div class="col-xs-12 col-sm-12 col-md-12">
+                     <div class="form-group">
+                         <strong>Notification`s date:</strong>
+                         <input id="dateNotificationPusher" type="date"
+                             name="dateNotification" class="form-control">
+                     </div>
+                 </div>
+
+                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                     <p></p>
+                     <button id="sendNotification" class="btn btn-light">
+                         Send notification
+                     </button>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+</div>
+
 </div>

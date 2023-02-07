@@ -50,14 +50,15 @@
             </div>
         </div>
     </div>
+    {{-- close backlog modal script --}}
+@push('script')
+<script>
+    window.addEventListener('close-modal', event => {
+        $('#AddbacklogModal').modal('hide');
+    });
+</script>
+@endpush
 </div>
 
 
-{{-- close backlog modal script --}}
-@push('script')
-    <script>
-        window.addEventListener('close-modal', event => {
-            $('#AddbacklogModal').modal('hide');
-        });
-    </script>
-@endpush
+

@@ -21,12 +21,15 @@ class StatController extends Controller
     
     public function index()
     {
+        $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
-        return view('stat',  [
+        return view('stat', [
 
+            'tasks'               =>  $tasks,
             'count_notifications' => $notificatiions['count_notifications'],
             'notifications' => $notificatiions['notifications'],
         ]);
+
     }
 
     public function getStatData(Request $request = null)
