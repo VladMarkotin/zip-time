@@ -73,7 +73,7 @@
                
           @endforeach
        </table>
-       {{ $savedTasks->links() }}
+       {{ $savedTasks->links('livewire.pagination') }}
     </div>
     <div class="tab-pane fade" id="v-pills-profile"
         role="tabpanel" aria-labelledby="v-pills-profile-tab">10</div>

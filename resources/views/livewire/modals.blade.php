@@ -1,4 +1,4 @@
-<!-- Add Modal -->
+<!-- Add backlogModal -->
 <div wire:ignore.self class="modal fade" id="AddbacklogModal" tabindex="-1" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <div class="modal-dialog">
@@ -48,7 +48,7 @@ aria-hidden="true">
 
 
 
-<!-- edit Modal -->
+<!-- edit backlogModal -->
 <div wire:ignore.self class="modal fade" id="editBacklogModal" tabindex="-1" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <div class="modal-dialog">
@@ -94,7 +94,7 @@ aria-hidden="true">
 </div>
 </div>
 
-<!-- delete Modal -->
+<!-- delete backlogModal -->
 <div wire:ignore.self class="modal fade" id="deleteBacklogModal" tabindex="-1" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
 <div class="modal-dialog">
@@ -119,4 +119,64 @@ aria-hidden="true">
 </div>
 </div>
 
+<!-- deletenotificationModal -->
+<div wire:ignore.self class="modal fade" id="deleteNotificationModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header " style="background-color:#A10000;">
+            <h5 class="modal-title text-white " id="exampleModalLabel"> Delete Notification</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div> 
 
+
+        <form wire:submit.prevent="destroyNotification">
+
+            <div class="modal-body">
+                <h6>Are you sure you wanna delete?</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary text-white p-2" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="text-white p-2 rounded"  style="background-color: #A10000;">Yes, Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+
+
+
+<!-- edit editNotificationModal -->
+<div wire:ignore.self class="modal fade" id="editNotificationModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header " style="background-color:#A10000;">
+            <h5 class="modal-title text-white " id="exampleModalLabel"> Update Notification</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div> 
+
+        <form wire:submit.prevent="updateNotification">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Title:</label>
+                    <input type="text" class="form-control" id="recipient-name" wire:model="type">
+                    @error('type') <span class="error text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Content:</label>
+                    <textarea class="form-control" id="message-text" wire:model.defer="data" rows="5"></textarea>
+                    @error('data') <span class="error text-danger">{{ $data }}</span> @enderror
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary text-white p-2" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="text-white p-2 rounded"  style="background-color: #A10000;">Update Notification</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>

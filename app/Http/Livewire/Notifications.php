@@ -25,7 +25,7 @@ class Notifications extends Component
         if (empty($this->sortNotifications)) {
             $this->sortNotifications[] = 'all';
         }
-       // $this->notifications = $notifications;
+
     }
 
     public function rules(): array
@@ -53,6 +53,17 @@ class Notifications extends Component
         $notification = Notification::findOrfail($notificationId);
         $this->type = $notification->type;
         $this->data = $notification->data;
+    }
+
+    public function readNotification($id)
+    {
+        $notification = Notification::findOrfail($id);
+        if( $notification->read_at == 0)
+        {
+            $notification->read_at = 1;
+            $notification->update();
+        }
+      
     }
 
     public function updateNotification(): void
@@ -120,8 +131,18 @@ class Notifications extends Component
 
             ->orderBy('notification_date', 'DESC')
             ->paginate(4);
+            $count = Notification::where('user_id', Auth::id())->get();
+            $count_unread = $count->where('read_at', 0)->count();
+            $count_read = $count->where('read_at', 1)->count();
+            $total = $count->count();
 
-        return view('livewire.notifications', ['notifications'=> $notification]);
+
+        return view('livewire.notifications', [
+            'notifications'=> $notification, 
+            'count_unread'=> $count_unread,
+            'count_read'=> $count_read,
+            'total'=> $total,
+        ]);
     }
 }
 

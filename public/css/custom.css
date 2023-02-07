@@ -130,7 +130,7 @@ summary::after {
     bottom:66.9%;
     background-color: #A10000;
     color: white; 
-    padding: 10px;
+    padding: 6px 10px;
     right: 0;
     border-radius: 7px 7px 0px 0px;
     -moz-transform:rotate(-90deg);
