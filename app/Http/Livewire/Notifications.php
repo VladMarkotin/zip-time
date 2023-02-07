@@ -6,17 +6,19 @@ use Livewire\Component;
 use App\Models\Notification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class Notifications extends Component
 {
+    use WithPagination;
     public $type;
     public $data;
     public $endDate;
     public $startDate;   
     public $notificationId;
     public $tasks             = [];
-    public $notifications     = [];
     public $sortNotifications = [];
+    protected $paginationTheme = 'bootstrap';
 
     public function mount(): void
     {
@@ -84,7 +86,7 @@ class Notifications extends Component
 
     public function render()
     {
-        $this->notifications = Notification::where('user_id', Auth::id())
+        $notification = Notification::where('user_id', Auth::id())
 
             // ->when(
             //     $this->startDate == $this->startDate &&
@@ -116,9 +118,10 @@ class Notifications extends Component
                     });
             })
 
-            ->get();
+            ->orderBy('notification_date', 'DESC')
+            ->paginate(4);
 
-        return view('livewire.notifications');
+        return view('livewire.notifications', ['notifications'=> $notification]);
     }
 }
 

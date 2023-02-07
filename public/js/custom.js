@@ -6,3 +6,8 @@ $(document).on("click", ".show_edit_delete", function (e) {
 
 });
 
+$(document).ready(function(){
+  $("#filter").click(function(){
+    $("#filter-content").slideToggle();
+  });
+});

@@ -74,16 +74,45 @@
 
 
 
- 
+    <div class="col-md-7 mx-auto rounded ">
+   
+           
     
     <section class="section-50">
         <div class="container">
-            <h3 class="m-b-50 heading-line">Notifications <i class="fa fa-bell text-muted"></i></h3>
-    
+            <div class="card-header border">
+            <h3 class=" heading-line">Notifications <i class="fa fa-bell text-muted"></i>
+                <a class="btn float-end text-white" style="background-color:  #A10000" id="filter" >
+                Filter
+            </a>
+            
+            
+            </h3>
+        </div>
+
+        <div wire:ignore.self class="card-header background white" id="filter-content" style="display:none">
+
+            <input type="radio" wire:model="sortNotifications" value="read" />Read &nbsp;&nbsp;
+
+            <input type="radio" wire:model="sortNotifications" value="unread" />Unread&nbsp;&nbsp;
+
+            <input type="radio" wire:model="sortNotifications" value="all" />All
+
+            <span style="float: right">
+                Start: &nbsp; <input type="date" wire:model="startDate">
+                End: &nbsp;<input type="date" wire:model="endDate">
+            </span>
+        </div>
+
+
+
+
+
+
+
+
+
             <div class="notification-ui_dd-content">
-
-
-
              @foreach ($notifications as $notification)
              
                 <div class="notification-list  {{$notification->read_at == 0 ?'notification-list--unread' : ''}}">
@@ -116,12 +145,13 @@
 
             </div>
     
-            <div class="text-center">
-                <a href="#!" class="dark-link">Load more activity</a>
-            </div>
-    
+            {{ $notifications->links('livewire.pagination') }}
         </div>
     </section>
+</div>
+    
+    
+
 
     @push('script')
         <script>
