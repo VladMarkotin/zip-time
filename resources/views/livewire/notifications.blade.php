@@ -11,7 +11,7 @@
                         <a class="btn float-end text-white" style="background-color:  #A10000" id="filter">
                             Filter
                         </a>
-                        <a class="btn btn-secondary  text-white ">
+                        <a class="btn btn-secondary float-end text-white mx-1">
                             <b> {{ $total }} Notifications [ {{ $count_unread }} Unread {{ $count_read }} Read ]</b>
                         </a>
 
@@ -19,20 +19,27 @@
                     </h3>
                 </div>
 
-                <div wire:ignore.self class="card-header background white" id="filter-content" style="display:none">
+                <div wire:ignore.self class="card-header filter " id="filter-content" >
 
-                    <input type="radio" wire:model="sortNotifications" value="read" />Read &nbsp;&nbsp;
+                    <div>
+                    <input type="radio" wire:model="sortNotifications" value="read" />Read &nbsp;
 
-                    <input type="radio" wire:model="sortNotifications" value="unread" />Unread&nbsp;&nbsp;
+                    <input type="radio" wire:model="sortNotifications" value="unread" />Unread&nbsp;
 
                     <input type="radio" wire:model="sortNotifications" value="all" />All
+                </div>
 
+         
+                    <input type="search" wire:model="search" placeholder="Search" class="  w-25">
+            
+
+            <div>
                     <span style="float: right">
-                        Start: &nbsp; <input type="date" wire:model="startDate">
+                        Start: &nbsp; <input type="date" wire:model="startDate" >
                         End: &nbsp;<input type="date" wire:model="endDate">
                     </span>
                 </div>
-
+            </div>
                 <div class="notification-ui_dd-content">
                     @foreach ($notifications as $notification)
                         <div

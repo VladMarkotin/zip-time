@@ -208,16 +208,29 @@ summary::after {
     color: #979797;
 }
 
-
-
-
-
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap);
 
 body {
     font-family: "Roboto", sans-serif;
 
 }
+
+.filter{
+
+display: flex;
+justify-content:space-between ;
+
+
+    
+}
+
+
+
+
+
+
+
+
 
 
 .m-b-50 {

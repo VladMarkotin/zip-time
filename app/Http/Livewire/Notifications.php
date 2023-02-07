@@ -13,19 +13,20 @@ class Notifications extends Component
     use WithPagination;
     public $type;
     public $data;
+    public $search;
     public $endDate;
-    public $startDate;   
+    public $startDate;
     public $notificationId;
-    public $tasks             = [];
+    public $tasks = [];
     public $sortNotifications = [];
     protected $paginationTheme = 'bootstrap';
 
     public function mount(): void
     {
+        $this->resetPage();
         if (empty($this->sortNotifications)) {
             $this->sortNotifications[] = 'all';
         }
-
     }
 
     public function rules(): array
@@ -58,12 +59,10 @@ class Notifications extends Component
     public function readNotification($id)
     {
         $notification = Notification::findOrfail($id);
-        if( $notification->read_at == 0)
-        {
+        if ($notification->read_at == 0) {
             $notification->read_at = 1;
             $notification->update();
         }
-      
     }
 
     public function updateNotification(): void
@@ -95,13 +94,28 @@ class Notifications extends Component
         ]);
     }
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSortNotifications()
+    {
+        $this->resetPage();
+    }
+    
+
     public function render()
     {
         $notification = Notification::where('user_id', Auth::id())
 
+            ->when($this->search !== null, function ($e2) {
+                $e2
+                    ->where('data', 'like', '%' . $this->search . '%')
+                    ->orWhere('type', 'like', '%' . $this->search . '%');
+            })
             ->when(
-                $this->startDate == $this->startDate &&
-                    $this->endDate == $this->endDate,
+                $this->startDate !== null && $this->endDate !== null,
                 function ($e2) {
                     $e2->whereBetween('notification_date', [
                         $this->startDate,
@@ -131,37 +145,16 @@ class Notifications extends Component
 
             ->orderBy('notification_date', 'DESC')
             ->paginate(4);
-            $count = Notification::where('user_id', Auth::id())->get();
-            $count_unread = $count->where('read_at', 0)->count();
-            $count_read = $count->where('read_at', 1)->count();
-            $total = $count->count();
-
+        $count = Notification::where('user_id', Auth::id())->get();
+        $count_unread = $count->where('read_at', 0)->count();
+        $count_read = $count->where('read_at', 1)->count();
+        $total = $count->count();
 
         return view('livewire.notifications', [
-            'notifications'=> $notification, 
-            'count_unread'=> $count_unread,
-            'count_read'=> $count_read,
-            'total'=> $total,
+            'notifications' => $notification,
+            'count_unread' => $count_unread,
+            'count_read' => $count_read,
+            'total' => $total,
         ]);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
