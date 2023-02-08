@@ -1,4 +1,5 @@
 <!-- Add backlogModal -->
+@auth
 <div> 
 
 
@@ -294,3 +295,4 @@ aria-hidden="true">
 </div>
 
 </div>
+@endauth
