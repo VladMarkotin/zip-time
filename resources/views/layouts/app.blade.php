@@ -172,7 +172,11 @@
     @stack('script')
 
     {{-- include all modals to appblade. --}}
-    @include('livewire.modals')
+
+ 
+         @include('livewire.modals')
+   
+   
 
     <script src="//js.pusher.com/3.1/pusher.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

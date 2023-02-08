@@ -4,42 +4,56 @@
     <div class="col-md-7 mx-auto rounded ">
         <section class="section-50">
             <div class="container">
-                <div class="card-header border">
+                <div class="card-header  border">
                     <h3 class=" heading-line">Notifications <i class="fa fa-bell text-muted"></i>
 
+                        <div wire:loading wire:target="sortNotifications" wire:key="sortNotifications"><i
+                                class="fa fa-spinner fa-spin  ml-2" style="color: #A10000;  font-size: 19px;"></i> </div>
+                        <div wire:loading wire:target="readNotification" wire:key="readNotification"><i
+                                class="fa fa-spinner fa-spin  ml-2" style="color: #A10000;  font-size: 19px;"></i>
+                        </div>
 
-                        <a class="btn float-end text-white" style="background-color:  #A10000" id="filter">
-                            Filter
-                        </a>
-                        <a class="btn btn-secondary float-end text-white mx-1">
-                            <b> {{ $total }} Notifications [ {{ $count_unread }} Unread {{ $count_read }} Read ]</b>
-                        </a>
+                        <div class="float-end">
+                            <a class="btn btn-secondary btn-sm  text-white ">
+                                <b> {{ $total }} Notifications [ {{ $count_unread }} Unread {{ $count_read }}
+                                    Read ]</b>
+                            </a>
 
+                            <a class="btn text-white btn-sm" style="background-color:  #A10000"
+                                data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                                aria-controls="collapseExample">
+                                Filter
+                            </a>
+                        </div>
 
                     </h3>
+
                 </div>
 
-                <div wire:ignore.self class="card-header filter " id="filter-content" >
+                <div wire:ignore.self class="collapse" id="collapseExample">
 
-                    <div>
-                    <input type="radio" wire:model="sortNotifications" value="read" />Read &nbsp;
+                    <div class="card-header d-flex justify-content-between">
 
-                    <input type="radio" wire:model="sortNotifications" value="unread" />Unread&nbsp;
+                        <div>
+                            <input type="radio" wire:model="sortNotifications" value="read" />Read &nbsp;
 
-                    <input type="radio" wire:model="sortNotifications" value="all" />All
+                            <input type="radio" wire:model="sortNotifications" value="unread" />Unread&nbsp;
+
+                            <input type="radio" wire:model="sortNotifications" value="all" />All
+                        </div>
+
+                        <input type="search" wire:model="search" placeholder="Search" class="  w-25">
+
+
+                        <div>
+                            <span style="float: right">
+                                Start: &nbsp; <input type="date" wire:model="startDate">
+                                End: &nbsp;<input type="date" wire:model="endDate">
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-         
-                    <input type="search" wire:model="search" placeholder="Search" class="  w-25">
-            
-
-            <div>
-                    <span style="float: right">
-                        Start: &nbsp; <input type="date" wire:model="startDate" >
-                        End: &nbsp;<input type="date" wire:model="endDate">
-                    </span>
-                </div>
-            </div>
                 <div class="notification-ui_dd-content">
                     @foreach ($notifications as $notification)
                         <div
@@ -90,13 +104,9 @@
         </section>
     </div>
 
-
-
-
     @push('script')
         <script>
             window.addEventListener('close-modal', event => {
-
                 $('#editNotificationModal').modal('hide');
                 $('#deleteNotificationModal').modal('hide');
             });

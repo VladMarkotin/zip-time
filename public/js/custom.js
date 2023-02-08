@@ -1,5 +1,6 @@
 $(document).ready(function () {
-hideFilter()
+
+
 /* Backlog */
 $(document).on("click", ".show_edit_delete", function (e) {
 
@@ -13,18 +14,6 @@ $(document).on("click", ".show_edit_delete", function (e) {
 
 /* Notifications */
 
-
-
-  $("#filter").click(function () {
-   // $("#filter-content").css("display", "flex");
-    $("#filter-content").slideToggle();
-  });
-
-
-function hideFilter()
-{
-  $("#filter-content").hide();
-}
 
 var pusher = new Pusher('20e6273b6c356e483906', {
   cluster: 'eu'

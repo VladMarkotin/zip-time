@@ -13,7 +13,8 @@ class Notifications extends Component
     use WithPagination;
     public $type;
     public $data;
-    public $search;
+    public $date;
+    public $search='';
     public $endDate;
     public $startDate;
     public $notificationId;
@@ -34,6 +35,7 @@ class Notifications extends Component
         return [
             'type' => 'required|string|max:80',
             'data' => 'required|string',
+            'date' => 'required|string',
         ];
     }
 
@@ -41,6 +43,7 @@ class Notifications extends Component
     {
         $this->type = null;
         $this->data = null;
+        $this->date = null;
     }
 
     public function updated($propertyName): void
@@ -54,6 +57,7 @@ class Notifications extends Component
         $notification = Notification::findOrfail($notificationId);
         $this->type = $notification->type;
         $this->data = $notification->data;
+        $this->date = $notification->notification_date;
     }
 
     public function readNotification($id)
@@ -72,6 +76,7 @@ class Notifications extends Component
             'user_id' => Auth::id(),
             'type' => $this->type,
             'data' => $this->data,
+            'notification_date' => $this->date,
         ]);
         $this->dispatchBrowserEvent('close-modal');
         $this->dispatchBrowserEvent('message', [
@@ -109,7 +114,7 @@ class Notifications extends Component
     {
         $notification = Notification::where('user_id', Auth::id())
 
-            ->when($this->search !== null, function ($e2) {
+            ->when($this->search , function ($e2) {
                 $e2
                     ->where('data', 'like', '%' . $this->search . '%')
                     ->orWhere('type', 'like', '%' . $this->search . '%');
@@ -149,7 +154,7 @@ class Notifications extends Component
         $count_unread = $count->where('read_at', 0)->count();
         $count_read = $count->where('read_at', 1)->count();
         $total = $count->count();
-
+            sleep(0.5);
         return view('livewire.notifications', [
             'notifications' => $notification,
             'count_unread' => $count_unread,
