@@ -1,3 +1,5 @@
+<div>
+  
 <div class="container" style="display:flex; justify-content:space-around;">
    @include('livewire.update')
    @include('livewire.info')
@@ -83,4 +85,5 @@
          role="tabpanel" aria-labelledby="v-pills-settings-tab">3</div>
   </div>
   
+</div>
 </div>

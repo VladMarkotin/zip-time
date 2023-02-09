@@ -1,13 +1,14 @@
 <div>
+
     @include('livewire.modals')
 
     <div class="col-md-7 mx-auto rounded ">
         <section class="section-50">
             <div class="container">
                 <div class="card-header  border">
-                    <h3 class=" heading-line">Notifications <i class="fa fa-bell text-muted"></i>
+                    <h3 class=" heading-line">Notifications <i class="fa fa-bell text-muted"></i> 
 
-                        <div wire:loading wire:target="sortNotifications" wire:key="sortNotifications"><i
+                     <div wire:loading wire:target="sortNotifications" wire:key="sortNotifications"><i
                                 class="fa fa-spinner fa-spin  ml-2" style="color: #A10000;  font-size: 19px;"></i> </div>
                         <div wire:loading wire:target="readNotification" wire:key="readNotification"><i
                                 class="fa fa-spinner fa-spin  ml-2" style="color: #A10000;  font-size: 19px;"></i>
@@ -28,7 +29,7 @@
 
                     </h3>
 
-                </div>
+                </div> 
 
                 <div wire:ignore.self class="collapse" id="collapseExample">
 
@@ -118,3 +119,4 @@
         </script>
     @endpush
 </div>
+

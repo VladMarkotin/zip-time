@@ -1,7 +1,7 @@
 <!-- Add backlogModal -->
-@auth
-<div> 
 
+<div> 
+    @auth
 
 
 <div wire:ignore.self class="modal fade" id="AddbacklogModal" tabindex="-1" aria-labelledby="exampleModalLabel"

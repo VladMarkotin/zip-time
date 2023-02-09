@@ -1,5 +1,6 @@
 <!-- Modal -->
-<div wire:ignore.self class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div>
+    <div wire:ignore.self class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -40,3 +41,5 @@
         </div>
     </div>
 </div>
+</div>
+

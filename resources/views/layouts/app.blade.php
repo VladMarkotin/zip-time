@@ -38,7 +38,7 @@
 
 
   
-    @livewireStyles
+    <livewire:styles />
 </head>
 
 <body>
@@ -172,7 +172,7 @@
         </main>
     </div>
 
-    @livewireScripts
+    <livewire:scripts />
     @stack('script')
 
     {{-- include all modals to appblade. --}}
