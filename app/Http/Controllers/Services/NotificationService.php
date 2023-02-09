@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Services;
 
+use App\Events\NotificationEvent;
 use App\Events\Notifications;
 use App\Models\Notification;
 use Illuminate\Http\Request;
@@ -16,8 +17,9 @@ class NotificationService
         $data = $notification['data'];
         $date = $notification['notification_date'];
 
-        event(new Notifications($type, $data, $date));
-    }
+         event(new NotificationEvent($type, $data, $date));
+
+     }
 
     public function readNotification(Request $request)
     {

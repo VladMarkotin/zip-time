@@ -165,19 +165,19 @@ aria-hidden="true">
         <form wire:submit.prevent="updateNotification">
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label">Title:</label>
+                    <label for="recipient-name" class="col-form-label">Notification Type:</label>
                     <input type="text" class="form-control" id="recipient-name" wire:model="type">
                     @error('type') <span class="error text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label">Date:</label>
+                    <label for="recipient-name" class="col-form-label">Notification Date:</label>
                     <input type="date" class="form-control" id="recipient-name" wire:model="date">
                     @error('date') <span class="error text-danger">{{ $date }}</span> @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label for="message-text" class="col-form-label">Content:</label>
+                    <label for="message-text" class="col-form-label"> Notification Data:</label>
                     <textarea class="form-control" id="message-text" wire:model.defer="data" rows="5"></textarea>
                     @error('data') <span class="error text-danger">{{ $data }}</span> @enderror
                 </div>

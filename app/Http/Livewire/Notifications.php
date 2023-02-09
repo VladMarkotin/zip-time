@@ -148,7 +148,7 @@ class Notifications extends Component
                     });
             })
 
-            ->orderBy('notification_date', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->paginate(4);
         $count = Notification::where('user_id', Auth::id())->get();
         $count_unread = $count->where('read_at', 0)->count();

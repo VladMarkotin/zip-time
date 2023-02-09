@@ -83,10 +83,15 @@
                                                 wire:click="deleteNotification({{ $notification->id }})"
                                                 data-bs-toggle="modal" data-bs-target="#deleteNotificationModal"><i
                                                     class="mdi mdi-delete"></i> Delete</button>
+
+
                                             <button class="dropdown-item" type="button"
                                                 wire:click="editNotification({{ $notification->id }})"
-                                                data-bs-toggle="modal" data-bs-target="#editNotificationModal"><i
+                                                data-bs-toggle="modal" data-bs-target="#editNotificationModal" {{ $notification->type == 'Pusher' ? 'disabled' : ''}}><i
                                                     class="mdi mdi-pen"></i> Edit</button>
+
+
+
                                         </div>
                                     </div>
                                     <br />

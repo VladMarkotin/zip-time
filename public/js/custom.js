@@ -15,31 +15,73 @@ $(document).on("click", ".show_edit_delete", function (e) {
 /* Notifications */
 
 
-var pusher = new Pusher('20e6273b6c356e483906', {
+// var pusher = new Pusher('20e6273b6c356e483906', {
+//   cluster: 'eu'
+// });
+
+// var channel = pusher.subscribe('notifications');
+// // Pusher.logToConsole = true;
+// channel.bind('App\\Events\\Notifications', function (i) {
+
+//   if (i.type == 'Pusher') {
+
+//     let token = $('#_token').val();
+//     let type = i.type;
+//     let notification_data = i.data;
+//     let notification_date = i.date;
+
+
+//     $.post('/save_notification', {
+//       _token: token,
+//       type: type,
+//       data: notification_data,
+//       notification_date: notification_date
+//     }, function () { }).done(function (response) {
+
+//     })
+//   }
+// });
+
+
+
+
+
+
+
+// Enable pusher logging - don't include this in production
+Pusher.logToConsole = true;
+
+var pusher = new Pusher('957e0c47c6b91b024fe3', {
   cluster: 'eu'
 });
 
-var channel = pusher.subscribe('notifications');
-// Pusher.logToConsole = true;
-channel.bind('App\\Events\\Notifications', function (i) {
+var channel = pusher.subscribe('ziptime');
+channel.bind('notice', function(data) {
+  
+     if (data.type == 'Pusher') {
 
-  if (i.type == 'Pusher') {
+        let token = $('#_token').val();
+        let type = data.type;
+        let notification_data = data.data;
+        let notification_date = data.date;
+        $.post('/save_notification', {
+          _token: token,
+          type: type,
+          data: notification_data,
+          notification_date: notification_date
+        }, function () { }).done(function (response) {
+    
 
-    let token = $('#_token').val();
-    let type = i.type;
-    let notification_data = i.data;
-    let notification_date = i.date;
+          
+        })
+      }
 
-    $.post('/save_notification', {
-      _token: token,
-      type: type,
-      data: notification_data,
-      notification_date: notification_date
-    }, function () { }).done(function (response) {
 
-    })
-  }
+
+
+
 });
+
 
 
 
