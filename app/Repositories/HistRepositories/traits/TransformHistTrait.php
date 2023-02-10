@@ -136,7 +136,7 @@ trait TransformHistTrait
 
 
 
-    function transformData(array $data, array $period)
+    public static function transformData(array $data, array $period)
     {
         // dd($data);
         $finalArray = [
@@ -163,7 +163,7 @@ trait TransformHistTrait
         return $finalArray;
     }
 
-    private function getTasksforDay(array $data, $date)
+    private static function getTasksforDay(array $data, $date)
     {
         $tasks = [];
         foreach ($data as $task) {

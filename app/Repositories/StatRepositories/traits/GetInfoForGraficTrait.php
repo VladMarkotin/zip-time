@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 trait GetInfoForGraficTrait
 {
-    function getInfoForGraphics(array $data, $opt = 1)//$opt = 1 - final_estimation, other - own_estimation
+    public static function getInfoForGraphics(array $data, $opt = 1)//$opt = 1 - final_estimation, other - own_estimation
     {
         $data['id'] = Auth::id();
         $requestedMark = ($opt == 1) ? 'final_estimation': 'own_estimation';

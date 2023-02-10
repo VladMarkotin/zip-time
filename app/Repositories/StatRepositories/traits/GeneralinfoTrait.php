@@ -14,7 +14,7 @@ trait GeneralinfoTrait
      * 1 - weekend quantity
      * 3 - Compl days
      */
-    function getStat(array $period, $indicator = -1)
+    public static function getStat(array $period, $indicator = -1)
     {
         $userId = Auth::id();
         $query = "SELECT COUNT(id) as 'indicator' FROM timetables WHERE user_id=$userId

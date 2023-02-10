@@ -15,7 +15,7 @@ use MathPHP\Statistics\Average;
 trait AverageMarkTrait
 {
     /*Получает среднюю оценку*/
-    function getAvgMark($period, $type = 1)
+    public static function getAvgMark($period, $type = 1)
     {
         $data['id'] = Auth::id();
         if($type == 1){
@@ -45,7 +45,7 @@ trait AverageMarkTrait
         return $mark;
     }
 
-    function getMedianValue($period, $type = 1) //type=1-final_estimation, type=2-own_estimation
+    public static function getMedianValue($period, $type = 1) //type=1-final_estimation, type=2-own_estimation
     {
         $data['id'] = Auth::id();
         if($type == 1){
@@ -71,7 +71,7 @@ trait AverageMarkTrait
         return $median;
     }
 
-    function getExtremum($period, $type = 1) //1-max, 2-min
+    public static function getExtremum($period, $type = 1) //1-max, 2-min
     {
         $data['id'] = Auth::id();
         if($type == 1){
@@ -94,7 +94,7 @@ trait AverageMarkTrait
         return $mark;
     }
 
-    function getTotalTime($period)
+    public static function getTotalTime($period)
     {
         $data['id'] = Auth::id();
         $query = "SELECT SEC_TO_TIME(ROUND(SUM(TIME_TO_SEC(time_of_day_plan)))) total_time FROM `timetables` WHERE user_id = $data[id] AND day_status = 3 ";
