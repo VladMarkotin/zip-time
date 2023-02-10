@@ -134,21 +134,21 @@ class Notifications extends Component
                     ->when($this->sortNotifications == 'read', function ($e2) {
                         $e2
                             ->where('read_at', 1)
-                            ->orderBy('notification_date', 'DESC');
+                            ->orderBy('created_at', 'DESC');
                     })
                     ->when($this->sortNotifications == 'unread', function (
                         $e2
                     ) {
                         $e2
                             ->where('read_at', 0)
-                            ->orderBy('notification_date', 'DESC');
+                            ->orderBy('created_at', 'DESC');
                     })
                     ->when($this->sortNotifications == 'all', function ($e2) {
-                        $e2->orderBy('notification_date', 'DESC');
+                        $e2->orderBy('created_at', 'DESC');
                     });
             })
 
-            ->orderBy('notification_date', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->paginate(4);
         $count = Notification::where('user_id', Auth::id())->get();
         $count_unread = $count->where('read_at', 0)->count();

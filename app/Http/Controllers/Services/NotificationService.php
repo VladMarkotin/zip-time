@@ -66,11 +66,12 @@ class NotificationService
             ->where('notification_date', '<=', $ldate)
             ->where('read_at', 0)
             ->count();
-        $notifications = Notification::all()
+        $notifications = Notification::take(13)
             ->where('user_id', $id)
             ->where('notification_date', '<=', $ldate)
             ->where('read_at', 0)
-            ->all();
+            ->orderBy('created_at', 'DESC')
+            ->get();
         //dd("error");
         return [
             'count_notifications' => $count_notifications,

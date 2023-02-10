@@ -15,7 +15,7 @@
 
                         <div class="float-end">
                             <a class="btn btn-secondary btn-sm  text-white ">
-                                <b> {{ $total }} Notifications [ {{ $count_unread }} Unread {{ $count_read }}
+                          <b> {{ $total }} Notifications [ {{ $count_unread }} Unread {{ $count_read }}
                                     Read ]</b>
                             </a>
 
@@ -65,7 +65,7 @@
                                         <p> <span style=" font-weight: 900;"> {{ $notification->type }}</span></p>
                                         <p class="text-muted"> {{ $notification->data }}</p>
                                         <p class="text-muted"><small>
-                                                {{ Carbon\Carbon::parse($notification->notification_date)->diffForHumans() }}</small>
+                                                {{ Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</small>
                                         </p>
                                     </div>
                                 </div>
@@ -85,7 +85,7 @@
                                                     class="mdi mdi-delete"></i> Delete</button>
                                             <button class="dropdown-item" type="button"
                                                 wire:click="editNotification({{ $notification->id }})"
-                                                data-bs-toggle="modal" data-bs-target="#editNotificationModal"><i
+                                                data-bs-toggle="modal" data-bs-target="#editNotificationModal" ><i
                                                     class="mdi mdi-pen"></i> Edit</button>
                                         </div>
                                     </div>
