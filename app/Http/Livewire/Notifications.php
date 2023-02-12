@@ -4,9 +4,10 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Notification;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithPagination;
+
 
 class Notifications extends Component
 {
@@ -30,6 +31,8 @@ class Notifications extends Component
         }
     }
 
+    
+    
     public function rules(): array
     {
         return [
@@ -50,6 +53,10 @@ class Notifications extends Component
     {
         $this->validateOnly($propertyName);
     }
+
+
+
+
 
     public function editNotification($notificationId): void
     {
@@ -129,6 +136,16 @@ class Notifications extends Component
                 }
             )
 
+            
+            // ->when($this->period()['startDate'] !== null || $this->period()['endDate'] !== null,
+            //     function ($e2) {
+            //         $e2->whereBetween('notification_date', [
+            //             $this->period()['startDate'],
+            //             $this->period()['endDate'],
+            //         ]);
+            //     }
+            // )
+
             ->when($this->sortNotifications, function ($e) {
                 $e
                     ->when($this->sortNotifications == 'read', function ($e2) {
@@ -147,19 +164,10 @@ class Notifications extends Component
                         $e2->orderBy('notification_date', 'DESC');
                     });
             })
+        ->orderBy('notification_date', 'DESC')
+        ->paginate(4);
 
-            ->orderBy('created_at', 'DESC')
-            ->paginate(4);
-        $count = Notification::where('user_id', Auth::id())->get();
-        $count_unread = $count->where('read_at', 0)->count();
-        $count_read = $count->where('read_at', 1)->count();
-        $total = $count->count();
-            sleep(0.5);
-        return view('livewire.notifications', [
-            'notifications' => $notification,
-            'count_unread' => $count_unread,
-            'count_read' => $count_read,
-            'total' => $total,
-        ]);
+        return view('livewire.notifications', ['notifications'=> $notification]
+        );
     }
 }

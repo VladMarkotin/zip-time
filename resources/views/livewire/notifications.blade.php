@@ -45,6 +45,13 @@
 
                         <input type="search" wire:model="search" placeholder="Search" class="  w-25">
 
+                
+            </div>
+
+            <a  wire:click="readNotification({{ 557 }}))">
+ghededghedghd
+            </a> 
+            <div class="notification-ui_dd-content">
 
                         <div>
                             <span style="float: right">
@@ -118,5 +125,8 @@
             });
         </script>
     @endpush
+   
 </div>
+
+
 

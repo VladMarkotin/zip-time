@@ -174,14 +174,10 @@ aria-hidden="true">
                     <label for="recipient-name" class="col-form-label">Notification Date:</label>
                     <input type="date" class="form-control" id="recipient-name" wire:model="date">
                     @error('date') <span class="error text-danger">{{ $date }}</span> @enderror
-                </div>
 
                 <div class="mb-3">
                     <label for="message-text" class="col-form-label"> Notification Data:</label>
                     <textarea class="form-control" id="message-text" wire:model.defer="data" rows="5"></textarea>
-                    @error('data') <span class="error text-danger">{{ $data }}</span> @enderror
-                </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary text-white p-2" data-bs-dismiss="modal">Close</button>
@@ -190,6 +186,7 @@ aria-hidden="true">
         </form>
     </div>
 </div>
+
 </div>
 
 
@@ -197,7 +194,6 @@ aria-hidden="true">
  <!-- Modal Создать уведомление-->
  <div class="modal fade" id="addNotification" tabindex="-1" role="dialog"
  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
- <div class="modal-dialog modal-dialog-centered" role="document">
      <div class="modal-content">
          <div class="modal-header">
              <h5 class="modal-title" id="exampleModalLongTitle">Create notification</h5>
@@ -302,3 +298,6 @@ aria-hidden="true">
 
 </div>
 @endauth
+
+</div>
+
