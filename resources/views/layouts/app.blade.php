@@ -61,7 +61,7 @@
 
                         <div class="btn-group" id="notification_section">
                             <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
+                                aria-haspopup="true" aria-expanded="false" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-bell" viewBox="0 0 16 16">
                                     <path
@@ -91,12 +91,12 @@
                         </div>
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#addNotification">
+                        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <span class="mdi mdi-pencil-outline"></span>
                         </button>
 
                         @if (Auth::user()->role_as == 1)
-                            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sendToPusher">
+                            <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                 Отправить через Pusher
                             </button>
                         @endif

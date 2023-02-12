@@ -85,51 +85,131 @@ channel.bind('notice', function(data) {
 
 
 
-window.addEventListener("load", function () {
-  $('body').on('click', '#saveNotification', function () {
+// window.addEventListener("load", function () {
+//   $('body').on('click', '#saveNotification', function () {
 
-    let token = $('#_token').val();
-    let type = $('#typeNotification').val();
-    let data = $('#dataNotification').val();
-    let notification_date = $('#dateNotification').val();
+//     let token = $('#_token').val();
+//     let type = $('#typeNotification').val();
+//     let data = $('#dataNotification').val();
+//     let notification_date = $('#dateNotification').val();
 
-    $.post('/save_notification', {
-      _token: token,
-      type: type,
-      data: data,
-      notification_date: notification_date
-    }, function () { }).done(function (response) {
-      $('#addNotification').modal('hide');
-      $("#notification_section").load(" #notification_section");
+//     $.post('/save_notification', {
+//       _token: token,
+//       type: type,
+//       data: data,
+//       notification_date: notification_date
+//     }, function () { }).done(function (response) {
+//       $('#addNotification').modal('hide');
+//       $("#notification_section").load(" #notification_section");
 
-      alertify.set('notifier', 'position', 'bottom-right');
-      alertify.notify('Notification Added Successfuly');
+//       alertify.set('notifier', 'position', 'bottom-right');
+//       alertify.notify('Notification Added Successfuly');
 
 
-    })
+//     })
+//   })
+// })
+
+
+
+$(document).on("click", '#saveNotification', function (e) {
+  let type = $('#typeNotification').val();
+  let data = $('#dataNotification').val();
+  let notification_date = $('#dateNotification').val();
+  $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+  });
+  $.ajax({
+      method: "POST",
+      url: "save_notification",
+      data: {
+
+          'type': type,
+          ' data': data,
+          'notification_date': notification_date
+      },
+      success: function (response) {
+        $('#exampleModal').modal('hide');
+          $("#notification_section").load(" #notification_section");
+          alertify.set('notifier', 'position', 'bottom-right');
+           alertify.notify('Notification Added Successfuly');
+
+      }
+
   })
-})
+
+});
+
+
+$(document).on("click", '#sendNotification', function (e) {
+  let type = $('#typeNotificationPusher').val();
+  let data = $('#dataNotificationPusher').val();
+  let notification_date = $('#dateNotificationPusher').val();
+  $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+  });
+  $.ajax({
+      method: "POST",
+      url: "send_notification",
+      data: {
+
+          'type': type,
+          ' data': data,
+          'notification_date': notification_date
+      },
+      success: function (response) {
+        $('#exampleModal2').modal('hide');
+          $("#notification_section").load(" #notification_section");
+          alertify.set('notifier', 'position', 'bottom-right');
+           alertify.notify('Notification Added Successfuly');
+
+      }
+
+  })
+
+});
 
 
 /* pusher */
 
-window.addEventListener("load", function () {
-  $('body').on('click', '#sendNotification', function () {
-    let token = $('#_token').val();
-    let type = $('#typeNotificationPusher').val();
-    let data = $('#dataNotificationPusher').val();
-    let notification_date = $('#dateNotificationPusher').val();
+// window.addEventListener("load", function () {
+//   $('body').on('click', '#sendNotification', function () {
+//     let token = $('#_token').val();
+//     let type = $('#typeNotificationPusher').val();
+//     let data = $('#dataNotificationPusher').val();
+//     let notification_date = $('#dateNotificationPusher').val();
 
-    $.post('/send_notification', {
-      _token: token,
-      type: type,
-      data: data,
-      notification_date: notification_date
-    }, function () { }).done(function (response) {
-      $('#sendToPusher').modal('hide');
-    })
-  })
-})
+//     $.post('/send_notification', {
+//       _token: token,
+//       type: type,
+//       data: data,
+//       notification_date: notification_date
+//     }, function () { }).done(function (response) {
+//       $('#sendToPusher').modal('hide');
+//     })
+//   })
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

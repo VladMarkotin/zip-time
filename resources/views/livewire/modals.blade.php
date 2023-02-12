@@ -174,10 +174,14 @@ aria-hidden="true">
                     <label for="recipient-name" class="col-form-label">Notification Date:</label>
                     <input type="date" class="form-control" id="recipient-name" wire:model="date">
                     @error('date') <span class="error text-danger">{{ $date }}</span> @enderror
+                </div>
 
                 <div class="mb-3">
                     <label for="message-text" class="col-form-label"> Notification Data:</label>
                     <textarea class="form-control" id="message-text" wire:model.defer="data" rows="5"></textarea>
+                    @error('data') <span class="error text-danger">{{ $data }}</span> @enderror
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary text-white p-2" data-bs-dismiss="modal">Close</button>
@@ -186,14 +190,14 @@ aria-hidden="true">
         </form>
     </div>
 </div>
-
 </div>
 
 
 
- <!-- Modal Создать уведомление-->
+ {{-- <!-- Modal Создать уведомление-->
  <div class="modal fade" id="addNotification" tabindex="-1" role="dialog"
  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered" role="document">
      <div class="modal-content">
          <div class="modal-header">
              <h5 class="modal-title" id="exampleModalLongTitle">Create notification</h5>
@@ -241,10 +245,117 @@ aria-hidden="true">
          </div>
      </div>
  </div>
+</div> --}}
+
+
+
+<!-- Modal Отправить через notification-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Create notification</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Notification`s type:</strong>
+                        <input id="typeNotification" type="text" name="typeNotification"
+                            class="form-control"
+                            placeholder='Придумайте тип напоминания (например "Важное")'>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Notification`s text:</strong>
+                        <input id="dataNotification" type="text" name="dataNotification"
+                            class="form-control" placeholder="Notification`s text">
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Notification`s date:</strong>
+                        <input id="dateNotification" type="date" name="dateNotification"
+                            class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                    <p></p>
+                    <button id="saveNotification" class="btn btn-light">
+                        Save
+                    </button>
+                </div>
+
+            </div>
+        </div>
+      
+    </div>
+    </div>
 </div>
 
+
+
 <!-- Modal Отправить через Pusher-->
-<div class="modal fade" id="sendToPusher" tabindex="-1" role="dialog"
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Отправить через Pusher</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Тип уведомления:</strong>
+                        <input id="typeNotificationPusher" type="text"
+                            name="typeNotification" class="form-control" value="Pusher"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Notification`s text:</strong>
+                        <input id="dataNotificationPusher" type="text"
+                            name="dataNotification" class="form-control"
+                            placeholder="Notification`s text">
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Notification`s date:</strong>
+                        <input id="dateNotificationPusher" type="date"
+                            name="dateNotification" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                    <p></p>
+                    <button id="sendNotification" class="btn btn-light">
+                        Send notification
+                    </button>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+    </div>
+</div>
+
+
+<!-- Modal Отправить через Pusher-->
+{{-- <div class="modal fade" id="sendToPusher" tabindex="-1" role="dialog"
  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
  <div class="modal-dialog modal-dialog-centered" role="document">
      <div class="modal-content">
@@ -294,10 +405,7 @@ aria-hidden="true">
          </div>
      </div>
  </div>
-</div>
+</div> --}}
 
 </div>
 @endauth
-
-</div>
-

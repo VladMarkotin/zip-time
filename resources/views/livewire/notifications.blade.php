@@ -45,13 +45,6 @@
 
                         <input type="search" wire:model="search" placeholder="Search" class="  w-25">
 
-                
-            </div>
-
-            <a  wire:click="readNotification({{ 557 }}))">
-ghededghedghd
-            </a> 
-            <div class="notification-ui_dd-content">
 
                         <div>
                             <span style="float: right">
@@ -73,7 +66,7 @@ ghededghedghd
                                         <p> <span style=" font-weight: 900;"> {{ $notification->type }}</span></p>
                                         <p class="text-muted"> {{ $notification->data }}</p>
                                         <p class="text-muted"><small>
-                                                {{ Carbon\Carbon::parse($notification->notification_date)->diffForHumans() }}</small>
+                                                {{ Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</small>
                                         </p>
                                     </div>
                                 </div>
@@ -125,8 +118,4 @@ ghededghedghd
             });
         </script>
     @endpush
-   
 </div>
-
-
-

@@ -12,6 +12,11 @@ class NotificationService
     public function sendNotification(Request $request)
     {
         $notification = $request->all();
+        $request->validate([
+         
+            'data' => 'filled|required',
+            'notification_date' => 'filled|required',
+        ]);
 
         $type = $notification['type'];
         $data = $notification['data'];
@@ -68,11 +73,12 @@ class NotificationService
             ->where('notification_date', '<=', $ldate)
             ->where('read_at', 0)
             ->count();
-        $notifications = Notification::all()
-            ->where('user_id', $id)
+        $notifications = Notification::
+              where('user_id', $id)
             ->where('notification_date', '<=', $ldate)
             ->where('read_at', 0)
-            ->all();
+            ->orderBy('created_at', 'DESC')
+            ->get();
         //dd("error");
         return [
             'count_notifications' => $count_notifications,
