@@ -14,13 +14,13 @@ class NotificationService
         $notification = $request->all();
         $request->validate([
          
-            'data' => 'filled|required',
-            'notification_date' => 'filled|required',
+            'data_pusher' => 'filled|required',
+            'notification_date_pusher' => 'filled|required',
         ]);
 
-        $type = $notification['type'];
-        $data = $notification['data'];
-        $date = $notification['notification_date'];
+        $type = $notification['type_pusher'];
+        $data = $notification['data_pusher'];
+        $date = $notification['notification_date_pusher'];
 
          event(new NotificationEvent($type, $data, $date));
 
@@ -47,11 +47,15 @@ class NotificationService
 
     public function saveNotification(Request $request)
     {
+          
+        
         $request->validate([
             'type' => 'filled|required',
             'data' => 'filled|required',
             'notification_date' => 'filled|required',
         ]);
+
+ 
 
         $id = auth()->id();
 

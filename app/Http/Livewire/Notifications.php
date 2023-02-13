@@ -108,7 +108,12 @@ class Notifications extends Component
     {
         $this->resetPage();
     }
-    
+    public function updatingEndDate()
+    {
+        $this->resetPage();
+    }
+
+ 
 
     public function render()
     {

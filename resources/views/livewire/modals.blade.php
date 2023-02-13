@@ -250,7 +250,7 @@ aria-hidden="true">
 
 
 <!-- Modal Отправить через notification-->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
@@ -258,31 +258,36 @@ aria-hidden="true">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-
+           
             <div class="row">
 
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Notification`s type:</strong>
-                        <input id="typeNotification" type="text" name="typeNotification"
+                        <input id="type" type="text" name="typeNotification"
                             class="form-control"
                             placeholder='Придумайте тип напоминания (например "Важное")'>
+                          
+                            
                     </div>
+                  
                 </div>
 
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Notification`s text:</strong>
-                        <input id="dataNotification" type="text" name="dataNotification"
+                        <input id="data" type="text" name="dataNotification"
                             class="form-control" placeholder="Notification`s text">
+                        
                     </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Notification`s date:</strong>
-                        <input id="dateNotification" type="date" name="dateNotification"
+                        <input id="notification_date" type="date" name="dateNotification"
                             class="form-control">
+                         
                     </div>
                 </div>
 
@@ -317,7 +322,7 @@ aria-hidden="true">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Тип уведомления:</strong>
-                        <input id="typeNotificationPusher" type="text"
+                        <input id="type_pusher" type="text"
                             name="typeNotification" class="form-control" value="Pusher"
                             readonly>
                     </div>
@@ -326,7 +331,7 @@ aria-hidden="true">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Notification`s text:</strong>
-                        <input id="dataNotificationPusher" type="text"
+                        <input id="data_pusher" type="text"
                             name="dataNotification" class="form-control"
                             placeholder="Notification`s text">
                     </div>
@@ -335,7 +340,7 @@ aria-hidden="true">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Notification`s date:</strong>
-                        <input id="dateNotificationPusher" type="date"
+                        <input id="notification_date_pusher" type="date"
                             name="dateNotification" class="form-control">
                     </div>
                 </div>

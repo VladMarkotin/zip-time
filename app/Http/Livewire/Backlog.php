@@ -95,8 +95,15 @@ class Backlog extends Component
         ]);
     }
 
+    public function mount()
+    {
+        $this->resetPage();
+    }
+   
+
     public function render()
     {
+        
         $backlogs = Savedlogs::where('user_id', Auth::id())
             ->orderBy('created_at', 'DESC')
             ->paginate(5);
