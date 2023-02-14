@@ -82,6 +82,7 @@ class NotificationService
             ->where('notification_date', '<=', $ldate)
             ->where('read_at', 0)
             ->orderBy('created_at', 'DESC')
+            ->take(15)
             ->get();
         //dd("error");
         return [

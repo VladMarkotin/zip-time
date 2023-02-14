@@ -69,18 +69,19 @@ $(document).ready(function () {
         'notification_date': notification_date
       },
       success: function (response) {
-        $('input').val('');
-        $('#exampleModal').modal('hide');
-        $('input').removeClass( "is-invalid");
+       
+        resetModalFields()   // Empty modal inputs on send
+        $('#exampleModal').modal('hide');   // hide modal
+        $('input').removeClass( "is-invalid");  // remove error class on success
         alertify.notify('Notification Added Successfuly');
-        $("#notification_section").load(" #notification_section");
+        $("#notification_section").load(" #notification_section");  //reload notification section on success
       },
       error: function (response) {
         var data = JSON.parse(response.responseText);
         alertify.notify(data.message);
         $.each(data, function (i, item) {
           $.each(data.errors, function (key, value) {
-            $('#' + key).attr("class", "form-control is-invalid");
+            $('#' + key).attr("class", "form-control is-invalid");  // add error class to input field if any errors
 
           });
         });
@@ -111,7 +112,7 @@ $(document).ready(function () {
         'notification_date_pusher': notification_date_pusher
       },
       success: function (response) {
-        $('input').val('');
+        resetModalFields()
         $('#exampleModal2').modal('hide');
         $('input').removeClass( "is-invalid");
         alertify.notify('Notification Sent Successfuly');
@@ -153,8 +154,22 @@ $(document).ready(function () {
   })
 
 
+
+/**
+ * RESET MODAL ENTRIES
+ */
+function resetModalFields()
+{
+  $('#type').val('');
+  $('#data').val('');
+  $('#data_pusher').val('');
+  $('#notification_date').val('');
+  $('#notification_date_pusher').val('');
+}
+
+
   /*
-    *Gleap get Feedback
+    *GLEAP FEEDBACK
    */
 
   ! function (Gleap, t, i) {
