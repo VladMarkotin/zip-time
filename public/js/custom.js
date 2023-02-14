@@ -4,9 +4,9 @@
 $(document).ready(function () {
   alertify.set('notifier', 'position', 'bottom-right');
 
- /**
-  * BACKLOG
-  */
+  /**
+   * BACKLOG
+   */
   $(document).on("click", ".show_edit_delete", function (e) {
 
     var log_id = $(this).attr("id");
@@ -15,9 +15,9 @@ $(document).ready(function () {
   });
 
 
-/**
- * PUSHER
- */
+  /**
+   * PUSHER
+   */
 
   // Enable pusher logging - don't include this in production
   Pusher.logToConsole = true;
@@ -69,10 +69,10 @@ $(document).ready(function () {
         'notification_date': notification_date
       },
       success: function (response) {
-       
+
         resetModalFields()   // Empty modal inputs on send
         $('#exampleModal').modal('hide');   // hide modal
-        $('input').removeClass( "is-invalid");  // remove error class on success
+        $('input').removeClass("is-invalid");  // remove error class on success
         alertify.notify('Notification Added Successfuly');
         $("#notification_section").load(" #notification_section");  //reload notification section on success
       },
@@ -114,7 +114,7 @@ $(document).ready(function () {
       success: function (response) {
         resetModalFields()
         $('#exampleModal2').modal('hide');
-        $('input').removeClass( "is-invalid");
+        $('input').removeClass("is-invalid");
         alertify.notify('Notification Sent Successfuly');
         $("#notification_section").load(" #notification_section");
       },
@@ -155,17 +155,16 @@ $(document).ready(function () {
 
 
 
-/**
- * RESET MODAL ENTRIES
- */
-function resetModalFields()
-{
-  $('#type').val('');
-  $('#data').val('');
-  $('#data_pusher').val('');
-  $('#notification_date').val('');
-  $('#notification_date_pusher').val('');
-}
+  /**
+   * RESET MODAL ENTRIES
+   */
+  function resetModalFields() {
+    $('#type').val('');
+    $('#data').val('');
+    $('#data_pusher').val('');
+    $('#notification_date').val('');
+    $('#notification_date_pusher').val('');
+  }
 
 
   /*
@@ -241,7 +240,7 @@ function resetModalFields()
 
 
 
-  
+
   /* Notifications */
 
 
@@ -272,7 +271,7 @@ function resetModalFields()
   //   }
   // });
 
-// window.addEventListener("load", function () {
+  // window.addEventListener("load", function () {
   //   $('body').on('click', '#saveNotification', function () {
 
   //     let token = $('#_token').val();
