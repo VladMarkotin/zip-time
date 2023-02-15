@@ -30,7 +30,7 @@ class HomeController extends Controller
      
         $this->estimateDayRepository = $estimationRepository;
         $this->notificationService = $notificationService;
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->getDayPlanService = $getDayPlanService;
     }
 
