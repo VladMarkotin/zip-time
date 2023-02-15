@@ -4,17 +4,18 @@
 
     @if (Auth::check())
         <a class="backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
-
-            add-log </a>
+            Add-log </a>
     @endif
     <div class="container">
+        @auth
         <v-app>
-            <div>
-            <button style="text-decoration: underline;" v-on:click="currComponent.name = 'Stat'">Statistics</button>
-            <button style="text-decoration: underline;" v-on:click="currComponent.name = 'History'">History</button>
-        </div>
             <component v-bind:is="currComponentName" v-bind:data="currComponentProps">
         </v-app>
+        @endauth
+        @guest
+        <h1>Index page</h1>
+        <p class="text">Go to Login Page</p>
+        @endguest
     </div>
 @endsection
 <style>

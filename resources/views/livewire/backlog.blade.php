@@ -1,5 +1,5 @@
 <div>
-    @include('livewire.backlog-modal')
+    @include('livewire.modals')
 
     <div class="col-md-7 mx-auto rounded">
 
@@ -9,8 +9,8 @@
                     Backlog
                     <a type="submit" class=" btn btn-danger float-end text-white" data-bs-toggle="modal"
                         data-bs-target="#AddbacklogModal" style="text-decoration: none">
-                      Add Log 
-                </a>
+                        Add Log
+                    </a>
                 </h3>
             </div>
 
@@ -64,17 +64,20 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-{{-- close backlog modal script --}}
+    </div>
+    {{ $backlogs->links('livewire.pagination') }}
+    {{-- close backlog modal script --}}
 
 @push('script')
-    <script>
-        window.addEventListener('close-modal', event => {
-            $('#AddbacklogModal').modal('hide');
-            $('#editBacklogModal').modal('hide');
-            $('#deleteBacklogModal').modal('hide');
-        });
-    </script>
+<script>
+    window.addEventListener('close-modal', event => {
+        $('#AddbacklogModal').modal('hide');
+        $('#editBacklogModal').modal('hide');
+        $('#deleteBacklogModal').modal('hide');
+    });
+</script>
 @endpush
+</div>
+
+

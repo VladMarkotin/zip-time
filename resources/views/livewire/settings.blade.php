@@ -1,3 +1,5 @@
+<div>
+  
 <div class="container" style="display:flex; justify-content:space-around;">
    @include('livewire.update')
    @include('livewire.info')
@@ -73,7 +75,7 @@
                
           @endforeach
        </table>
-       {{ $savedTasks->links() }}
+       {{ $savedTasks->links('livewire.pagination') }}
     </div>
     <div class="tab-pane fade" id="v-pills-profile"
         role="tabpanel" aria-labelledby="v-pills-profile-tab">10</div>
@@ -83,4 +85,5 @@
          role="tabpanel" aria-labelledby="v-pills-settings-tab">3</div>
   </div>
   
+</div>
 </div>

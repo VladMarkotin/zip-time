@@ -69,6 +69,8 @@ class StatRepository
          *$response['from']          = $period['from'];
           $response['to']            = $period['to'];
         */
+
+        
         $response['finalMarks'] = GetInfoForGraficTrait::getInfoForGraphics($period, 1);
         $response['ownMarks']   = GetInfoForGraficTrait::getInfoForGraphics($period, 2);
         if(count($response['finalMarks']) > 0){

@@ -34,7 +34,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/send_notification', [App\Http\Controllers\NotificationController::class, 'sendNotification']);
     Route::post('/read_notification', [App\Http\Controllers\NotificationController::class, 'readNotification']);
     Route::post('/save_notification', [App\Http\Controllers\NotificationController::class, 'saveNotification']);
-
+    Route::get('/notifications',      [App\Http\Controllers\NotificationController::class, 'notificationsHistory']);
+                      
     Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
     Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
     Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
@@ -55,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
 
     //History routes
     Route::prefix('hist')->group(function () {
-        Route::get('/', [App\Http\Controllers\HistController::class, 'index']);
+        Route::get('/', [App\Http\Controllers\HistController::class, 'displayHist'])->name('hist');
         Route::post('/', [App\Http\Controllers\HistController::class, 'index']);
     });
     //end History routes

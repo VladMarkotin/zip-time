@@ -26,6 +26,7 @@ class Settings extends Component
 
     public function render(SavedTask $savedTask)
     {
+        sleep(1);
         $this->savedTasks = $savedTask
             ->where('user_id', Auth::id())
             ->paginate(5);

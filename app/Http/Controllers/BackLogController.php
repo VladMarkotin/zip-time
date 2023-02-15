@@ -2,38 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\Notifications;
 use App\Models\Notification;
-use App\Notifications\UserNotification;
-use App\Http\Controllers\Services\RatingService;
 use Illuminate\Http\Request;
+use App\Events\Notifications;
+use App\Notifications\UserNotification;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Services\RatingService;
+use App\Http\Controllers\Services\NotificationService;
 
 class BackLogController extends Controller
 {
-    public function __construct(UserNotification $userNotification,
-                                RatingService $userRatings,
-                                NotificationController $notiController )
+    private $notificationService;
+
+
+    public function __construct(  NotificationService $notificationService)
     {
-        $this->userNotification          = $userNotification;
-        //dd($userNotification);
-        $this->userRatings               = $userRatings;
-        $this->notificationController    = $notiController;
+        $this->notificationService = $notificationService;
+
     }
 
     public function index()
     {
-        $id = auth()->id();
-        $ldate = date('Y-m-d');
-        $count_notifications = Notification::all()->where('user_id', $id)->where('notification_date', '<=', $ldate)->where('read_at', 0)->count();
-        $notifications = Notification::all()
-            ->where('user_id', $id)
-            ->where('notification_date', '<=', $ldate)
-            ->where('read_at', 0)->all();
-
+        $tasks = [];
+        $notificatiions = $this->notificationService->getNotifications();
         return view('backlog', [
-            'count_notifications' => $count_notifications,
-            'notifications' => $notifications,
+
+            'tasks'               =>  $tasks,
+            'count_notifications' => $notificatiions['count_notifications'],
+            'notifications' => $notificatiions['notifications'],
         ]);
+
     }
 }
