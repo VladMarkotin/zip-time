@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
 
     //History routes
     Route::prefix('hist')->group(function () {
-        Route::get('/', [App\Http\Controllers\HistController::class, 'index']);
+        Route::get('/', [App\Http\Controllers\HistController::class, 'displayHist'])->name('hist');
         Route::post('/', [App\Http\Controllers\HistController::class, 'index']);
     });
     //end History routes

@@ -4,14 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Services\HistService;
+use App\Http\Controllers\Services\NotificationService;
 
 class HistController extends Controller
 {
     private $histService = null;
 
-    public function __construct(HistService $histService)
+    public function __construct(HistService $histService,
+                                NotificationService $notificationService
+                                 )
     {
         $this->histService = $histService;
+        $this->notificationService = $notificationService;
+    }
+
+    public function displayHist()
+    {
+        $tasks = [];
+        $notificatiions = $this->notificationService->getNotifications();
+        return view('hist', [
+
+            'tasks'               =>  $tasks,
+            'count_notifications' => $notificatiions['count_notifications'],
+            'notifications' => $notificatiions['notifications'],
+        ]);
     }
 
     public function index(Request $request)

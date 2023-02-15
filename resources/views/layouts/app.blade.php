@@ -132,6 +132,9 @@
                                 <a class="nav-link" href="{{ route('stat') }}">Statistics</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('hist') }}">History</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
                             </li>
                             <li class="nav-item dropdown">
