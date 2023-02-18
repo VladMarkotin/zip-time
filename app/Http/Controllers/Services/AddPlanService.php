@@ -95,7 +95,6 @@ class AddPlanService
         return $this->transformWeekendData;
     }
 
-
     private function checkTask($task)
     {
         $task = $this->getNumValuesOfStrValues($task);

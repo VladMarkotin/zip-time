@@ -322,16 +322,28 @@ class MainController
     {
         $hash = $request->get('hash_code'); //hashCode
         $hash = (isset($hash)) ? $request->get('hash_code') : '#';
+        /*Have to get lastTimetableId to get day Status*/
+        $dayStatusArray = TimetableModel::where('user_id', Auth::id())
+        ->where('date', Carbon::today())
+        ->get()
+        ->toArray();
+        $jobType = $request->get('type');
+        /*check day status*/
+        if ($dayStatusArray[0]['day_status'] == 1) {
+            $jobType = 1;
+        }
+        /*end*/
         $data = [
             "hash"     => $hash,
             "taskName" => $request->get('name'),
-            "type"     => $request->get('type'),
+            "type"     => $jobType,
             "priority" => $request->get('priority'),
             "time"     => $request->get('time'),
             "notes"    => '',
         ];
         $response = $this->planService->checkExtraJob($data);
         $data = $this->dataTransformationService->getNumValuesOfStrValues($data);
+               
         if($response['status'] == 'success'){
             $dataForTasks = [
                 "timetable_id" => $this->getLastTimetableId(),
