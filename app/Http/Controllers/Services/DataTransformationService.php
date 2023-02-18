@@ -93,7 +93,7 @@ class DataTransformationService
             $transformData["plan"][$k]['time']     = $v->time;
             $transformData["plan"][$k]['type']     = $v->type;
             $transformData["plan"][$k]['priority'] = $v->priority;
-            $transformData["plan"][$k]['details']  = $v->details;
+            $transformData["plan"][$k]['details']  = htmlspecialchars_decode($v->details);
             $transformData["plan"][$k]['mark']     = ($v->mark != -1) ? $v->mark: "";
             $transformData["plan"][$k]['notes']    = $v->note;
             if( ($v->type == 1) || ($v->type == 2) ){
