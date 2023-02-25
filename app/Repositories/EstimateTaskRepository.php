@@ -32,19 +32,19 @@ class EstimateTaskRepository
             "id"              => $data['id'],
             "timetable_id"    => $this->getPlanRepository->getLastTimetableId($dataForLastTimetable),
             "details"         => $data['details'],
-            "mark"            => floatval($data['mark']),
             "note"            => $data['note'],
             "updated_at"      => Carbon::now()->toDateTimeString(),
         ];
         $hash = Tasks::select('hash_code', 'type')->where('id', $data['id'])->get()->toArray();
-        //dd($dataForTasks);
-        //dd($hash);
         /*This condition for all tasks.*/
         if( ( ($hash[0]['type'] === 1) || ($hash[0]['type'] === 2) ) ){
-            $dataForTasks['mark'] = $data['is_ready'];
+            /*Added this condithion cause user can just update task without estimation*/
+            if (isset($data['mark'])) {
+                $dataForTasks['mark'] = $data['mark'];
+            }
+            /*end */
             try{
                 unset($dataForTasks['user_id']);
-
                 Tasks::whereId($dataForTasks['id'])->update($dataForTasks);
                 if($hash[0]['hash_code'] != '#'){ //if task is saved
                     $savedTaskId =  DB::table('saved_tasks')
@@ -70,8 +70,10 @@ class EstimateTaskRepository
             }
 
 
-        } else if(($hash[0]['hash_code'] == '#') && ($hash[0]['type'] == 3 || $hash[0]['type'] == 4)){ //This condition for job with no hash code
+        } else if(($hash[0]['hash_code'] == '#') && ($hash[0]['type'] == 3
+         || $hash[0]['type'] == 4)){ //This condition for job with no hash code
             try{
+                $dataForTasks["mark"]            = floatval($data['mark']);
                 $query = "update tasks SET mark = $dataForTasks[mark], 
                            details='$dataForTasks[details]', note='$dataForTasks[note]'
                             WHERE timetable_id = $dataForTasks[timetable_id] AND id = $data[id]";

@@ -91,7 +91,7 @@ class EstimationService
                 $diff = strlen($data['note']) - 255;
                 $data['note'] = substr($data['note'], 0, -$diff);
             }
-            //die(var_dump($data['note']));
+            
             return $data['note'];
         };
         $makeDetailsValid = function () use ($data){
@@ -123,10 +123,13 @@ class EstimationService
 
 
             case '1': //for estimation of job & task
-                if(!$data['mark'] && ($data['is_ready'])){
+                if ($data['mark']) {
+                    $data['mark']     = $makeMarkValid();
+                }
+                if(!$data['mark'] && (isset($data['is_ready'])) ){
                     $data['mark'] = $data['is_ready'];
                 }
-                $data['mark']     = $makeMarkValid();
+                
                 $data['note']     = $makeNoteValid();
                 $data['details']  = $makeDetailsValid();
                 if($data['mark'] !== false){

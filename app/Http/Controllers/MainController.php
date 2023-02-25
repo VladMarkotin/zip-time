@@ -165,8 +165,6 @@ class MainController
     {
         $savedTask = [];
         if ($hashCodes) {
-           //?
-           //die(var_dump($hashCodes));
            foreach($hashCodes as $val) {
                 if (is_array($val)) {
                     foreach($val as $v){
@@ -199,7 +197,6 @@ class MainController
     public function addPlan(Request $request)
     {
         $data = $request->json()->all();
-        //die(var_dump($data));//уже тут первый элемент пропадает
         $response = $this->planService->checkPlan($data); //проблема здесь
         $responseArray = json_decode($response->content());
         
@@ -210,7 +207,6 @@ class MainController
             if($this->planService->getTransformWeekendPlan()){ //That is a shame and I apologise for this ): This code must be modified.But later
                 $data = $this->planService->getTransformWeekendPlan();
             }
-            //die(var_dump($data));//здесь уже первый элемент пропадает
             $responseArray = $this->dayPlan->createDayPlan($data);
 
             /*Logic after adding plan in DB*/
@@ -243,7 +239,7 @@ class MainController
         if($createdDayPlan){
             if($createdDayPlan[0]->day_status == 0){
                 $createdDayPlan = $this->dataTransformationService->transformDataForEmergencyRequest($createdDayPlan);
-                //die("transformDataForEmergencyRequest");
+                
                 return json_encode($createdDayPlan, JSON_UNESCAPED_UNICODE);
             }
             $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
@@ -282,7 +278,6 @@ class MainController
             "tomorow"  => $request->get('tomorow'),
             "action"   => '2', //it means that user try to finish day plan
         ];
-        //die(var_dump($data['tomorow'] )); //ok
         $response = $this->estimationService->handleEstimationRequest($data);
        // $this->userRatings->getUserRatings(2);
         return response()->json($response); //comment
@@ -293,17 +288,33 @@ class MainController
      */
     public function estimateTask(Request $request)
     {
-        $isReady = ($request->get('is_ready'));
-        $isReady = ($isReady == 99) ? 50 : -1;
-        $isReady = ($isReady == -1) ? 99 : 50;
-        $data = [
-            "id"       => $request->get('task_id'),
-            "details"  => $request->get('details'),
-            "is_ready" => $isReady,
-            "note"     => $request->get('note'),
-            "action"   => '1', //it means that user try to estimate one task
-        ];
-        $data['mark'] = ($request->get('mark') && (!$request->get('is_ready'))) ? $request->get('mark') : $request->get('is_ready');
+        $isReady = null;
+        $res = $request->get('is_ready');
+        if (isset($res)) {
+            $isReady = intval($request->get('is_ready'));
+            if ($isReady == 0)  {
+                $isReady = ($isReady == 99) ? 50 : 99;
+                $isReady = ($isReady == -1) ? 99 : -1;
+            }
+        }
+        if (isset($isRedy)) {
+            $data = [
+                "id"       => $request->get('task_id'),
+                "details"  => $request->get('details'),
+                "mark" => $isReady,
+                "note"     => $request->get('note'),
+                "action"   => '1', //it means that user try to estimate one task
+            ];
+        } else {
+            $data = [
+                "id"       => $request->get('task_id'),
+                "details"  => $request->get('details'),
+                "note"     => $request->get('note'),
+                "action"   => '1', //it means that user try to estimate one task
+            ];
+        }
+        $data['mark'] = ($request->get('mark') && (!$request->get('is_ready'))) ? 
+            $request->get('mark') : $request->get('is_ready');
         $checkedData = $this->estimationService->handleEstimationRequest($data);
         if($checkedData){
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];

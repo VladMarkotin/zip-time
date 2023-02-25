@@ -5,7 +5,7 @@
 			<span>{{item.taskName}}</span>
 			<span v-if="item.priority == 1"> </span>
 			<span v-else-if="item.priority == 2">!</span>
-			<span v-else-if="item.priority == 3">!!</span>
+			<span v-else-if="item.priority == 3">!!!</span>
 			<span v-else>  </span>
 		</v-card-title>
 		<v-list>
@@ -55,7 +55,14 @@
 				
 				<template v-else-if="[2,1].includes(item.type)">
 					<div>Ready?</div>
-					<v-checkbox color="#D71700" v-model="item.is_ready == 99 ? true : item.is_ready <= 50 ? false : true"></v-checkbox>
+					<v-checkbox color="#D71700" 
+					@change="updateIsReadyState(item)"
+					v-model="item.is_ready"
+					@input="checked = $event.target.checked"
+					:true-value=99
+					:false-value=-1
+					>
+					</v-checkbox>
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
 							<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
@@ -80,7 +87,8 @@
 			return {icons      : {mdiUpdate},
 			        isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
-					//num        : 0
+					isReady    : true,
+					checked: true,
 			}
 		},
 		components : {Alert},
@@ -88,13 +96,25 @@
 		{
 			sendIsReadyState(item)
 			{
-				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,is_ready : item.is_ready,type : item.type})
+				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
 				.then((response) => {
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					setTimeout( () => {
 						this.isShowAlert = false;
 						//debugger;
+					},3000)
+				  })
+			},
+			updateIsReadyState(item)
+			{
+				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,is_ready : item.is_ready,type : item.type})
+				.then((response) => {
+					this.isShowAlert = true;
+					this.setAlertData(response.data.status, response.data.message)
+					setTimeout( () => {
+						this.isShowAlert = false;
+						console.log(item.is_ready)
 					},3000)
 				  })
 			},

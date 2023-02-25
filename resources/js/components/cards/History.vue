@@ -41,11 +41,11 @@
 						<v-list>
 							<v-list-item>
 								<v-list-item-content>Final mark:</v-list-item-content>
-								<v-list-item-content>{{ selectedEvent.dayFinalMark }}</v-list-item-content>
+								<v-list-item-content>{{ selectedEvent.dayFinalMark }}%</v-list-item-content>
 							</v-list-item>
 							<v-list-item>
 								<v-list-item-content>Own mark:</v-list-item-content>
-								<v-list-item-content>{{ selectedEvent.dayOwnMark }}</v-list-item-content>
+								<v-list-item-content>{{ selectedEvent.dayOwnMark }}%</v-list-item-content>
 							</v-list-item>
 							<v-list-item>
 								<v-list-item-content>Comment:</v-list-item-content>
