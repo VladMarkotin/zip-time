@@ -28,6 +28,17 @@ class SavedTask2Repository
 
     public function getSavedTaskByHashCode(array $params)
     {
+        /*Must do it better (task`s types store in db)*/
+        $handleTypeOfTaskFromDb = function ($type) {
+            switch ($type) {
+                case 4: return "required job";
+                case 3: return "non required job";
+                case 2: return "required task";
+                case 1: return "task";
+            }
+
+            return $type;
+        };
         $paramsForNotes = [
             'user_id'   => Auth::id(),
             'hash_code' => $params['hash_code']
@@ -39,9 +50,16 @@ class SavedTask2Repository
             ->where('user_id',   '=', Auth::id())
             ->where('hash_code', '=', $params['hash_code'])
             ->get()->toArray();
+        /*Remove spechial chars here. Have to move it in another place (Service?)*/
+        foreach ($savedTask as $k => &$v) {
+            $v->task_name = htmlspecialchars_decode($v->task_name);
+            $v->details = htmlspecialchars_decode($v->details);
+            $v->type    = $handleTypeOfTaskFromDb($v->type);
+        }
+        /* end */
         if(count($lastNoteArray) > 0){
             $lastNote = $lastNoteArray[0]['note'];
-            $savedTask[0]->note = $lastNote;
+            $savedTask[0]->note = htmlspecialchars_decode($lastNote);
         }
 
         return $savedTask;
