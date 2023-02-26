@@ -37,7 +37,7 @@ class EstimateTaskRepository
         ];
         $hash = Tasks::select('hash_code', 'type')->where('id', $data['id'])->get()->toArray();
         /*This condition for all tasks.*/
-        if( ( ($hash[0]['type'] === 1) || ($hash[0]['type'] === 2) ) ){
+        if( ( ($hash[0]['type'] === 1) || ($hash[0]['type'] === 2) ) ) {
             /*Added this condithion cause user can just update task without estimation*/
             if (isset($data['mark'])) {
                 $dataForTasks['mark'] = $data['mark'];
@@ -102,6 +102,7 @@ class EstimateTaskRepository
             ];
             unset($dataForTasks['user_id']);
             $dataForTasks["timetable_id"] =  $this->getPlanRepository->getLastTimetableId($dataForLastTimeTableId);
+            $dataForTasks['mark'] = $data['mark'];
             $this->complexUpdate($dataForTasks, $dataForNotes);
         }
 
