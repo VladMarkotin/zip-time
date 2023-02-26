@@ -380,14 +380,6 @@ export default {
     methods: {
        
         getPostParams() {
-            /*console.log(this.items)
-            debugger; *///здесь задание еще есть
-            
-            /*return JSON.stringify({
-                date: new Date().toISOString().substr(0, 10),
-                day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
-                plan: this.items
-            })*/
             return {
                 date: new Date().toISOString().substr(0, 10),
                 day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
@@ -424,7 +416,7 @@ export default {
                 })
                 .then(function(response) {
                     currentObj.defaultSelected.taskName = response.data[1];
-                    currentObj.defaultSelected.type = ['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[2]];
+                    currentObj.defaultSelected.type = response.data[2];
                     currentObj.defaultSelected.priority = `${response.data[3]}`;
                     currentObj.defaultSelected.time = response.data[5];
                     currentObj.defaultSelected.details = response.data[4];

@@ -15,8 +15,8 @@ class EmergencyService
     {
         $makeCommentRight = function () use($data) {
              if(strlen($data['comment']) < 5){
-                 $data['comment'] = "Comment field is empty. Probably the reason of emergency call
-                        wasn`t really clear for the user himself";
+                 $data['comment'] = "Comment field is too short. Probably the reason of emergency call
+                        wasn`t really clear for the user himself (It has to be 5+ symbols )";
              }else if(strlen($data['comment']) > 65535){
                  $data['comment'] = substr($data['comment'], 0, 65534);
              }

@@ -92,7 +92,7 @@
 					const data = (await axios.post('/getSavedTask',{hash_code : hashCode})).data
 					this.task.name = data[1]
 					const types = this.types.slice()
-					this.task.type = types.reverse()[data[2]]
+					this.task.type = data[2] //types.reverse()[data[2]]
 					this.task.priority = data[3]
 					this.task.time = data[5]
 				},

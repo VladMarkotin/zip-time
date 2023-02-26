@@ -38,7 +38,7 @@ class EmergencyController extends Controller
         ];
         if($result){
             $response['status']  = "success";
-            $response['message'] = "Emergency regime has been successfully activated from $emergencyRequest[from] to $emergencyRequest[to].";
+            $response['message'] = "Emergency mode has been successfully activated from $emergencyRequest[from] to $emergencyRequest[to].";
 
             return json_encode($response);
         }
