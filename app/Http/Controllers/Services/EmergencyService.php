@@ -32,6 +32,7 @@ class EmergencyService
             } else if($term < 1){
                 $term = 1;
             }
+            $term = ($term != 1) ? $term + 1: $term; //get right duration of emergency mode
             $data['term'] = $term;
 
             return $data;
