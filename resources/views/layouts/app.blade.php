@@ -225,6 +225,9 @@
                 @endif
 
 
+                @guest
+                                    
+                                    
                 <!-- Начало. Верстка Header для индексной/логин страницы --->  
                 <header class="header">
                     <div class="header_top">Header top
@@ -243,7 +246,6 @@
                                     <!-- Right Side Of Navbar -->
                                 <ul class="navbar-nav ml-auto">
                                     <!-- Authentication Links -->
-                                    @guest
                                     Hello!
 
                                         @if (Route::has('login'))
