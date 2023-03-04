@@ -51,7 +51,6 @@ class AddPlanService
             foreach ($data['plan'] as $v) {
                 $flags[] = $this->checkTask($v);
             }
-            //die(var_dump($flags));
             foreach ($flags as $v) {
                 foreach ($v as $k => $val) {
                     if (!$val) return response()->json([
@@ -110,9 +109,8 @@ class AddPlanService
     {
         if(is_array($data['plan']) ) {
             $taskQuantity = count($data['plan']);
-            //die(var_dump($data["day_status"]));
             switch ($data["day_status"]) {
-                case 0: //Work Day
+                case 2: //Work Day
                     if($taskQuantity > 1){
                         /* Check quantity of required tasks. In this case it has to be more than 1! */
                         $i = 0;
@@ -130,17 +128,6 @@ class AddPlanService
                     return false;
                 case 1: //Weekend
                     if($taskQuantity > 0){
-                        return true;
-                    }
-                    return false;
-                case 2:
-
-                    if($taskQuantity >= 2){
-                        return true;
-                    }
-                    return false;
-                case 3:
-                    if($taskQuantity == 0){
                         return true;
                     }
                     return false;
