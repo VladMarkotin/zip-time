@@ -131,6 +131,7 @@ section {
 }
 
 /*QUIPLE-style*/
+
 .menu {
   background-color: #c02020;
   background-size: contain;
@@ -142,7 +143,7 @@ section {
 }
 .nameSite span::selection {
   background: transparent;
-}
+} 
 
 .nameSite span::-moz-selection {
   background: transparent;
@@ -166,7 +167,7 @@ section {
   -webkit-animation-name: slideOut;
           animation-name: slideOut;
   opacity: 0;
-}
+} 
 
 @-webkit-keyframes slideOut {
   0% {

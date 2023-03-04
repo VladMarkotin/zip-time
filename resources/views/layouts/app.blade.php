@@ -24,38 +24,51 @@
 
 
     <!-- Styles -->
+
+    <!-- Начало Styles Подключение стилей для страницы kate_index -->
+    <link href="{{ asset('css/style2_kate.css') }}" rel="stylesheet">
+    @livewireStyles
+    <!--Конец  Styles Подключение стилей для страницы kate_index -->
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-    @livewireStyles
-
-
+    @livewireStyles 
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <!-- Default theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
-    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
+  <!-- Здесь вкл/выкл эти стремные стили для QIPL  -->
+  <link href="{{ asset('css/index.css') }}" rel="stylesheet">
     @livewireStyles
 </head>
 
 <body>
     <div id="app">
-        <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
-                  <div class="nameSite">
-                    <span>Qui</span><span>ck </span><span>pl</span><span>an</span>
-                  </div>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
+        <!-- OK!!! -->
+        <!--  КУСОК КАКОЙ-ТО ДИЧИ, НЕПОНЯТНО ЧТО КУДА ПЕРЕНОСТИТЬ. ЭТО ВСЕ ДОЛЖНО БЫТЬ В ХЕДЕРЕ  -->
+           <!-- Перенесено в Хедер ниже, НО НЕ РАБОТАЕТ если это все удалить отсюда полностью. 
+        Если здесь не удалять эту часть, то работает то, что написано в <header> строка 230 (или ниже) и накладывается на эту эже часть-->
+    <!--  <nav class="smooth-section navbar navbar-expand-md navbar-light "> -->
+          <!-- Раскоментить и удалить верхнюю строку, если что-то не так будет
+           <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm"> -->
+
+             <!--   <div class="container"> -->
+              <!-- <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;"> 
+                   <div class="nameSite">
+                        <span>Qui</span><span>ck </span><span>pl</span><span>an</span>
+                    </div>
+                </a> 
+                   <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button> 
+              КОНЕЦ  -->
 
-                @if (Route::has('login'))
+               @if (Route::has('login'))
                     @auth
 
                         <!-- Button Notification -->
@@ -86,8 +99,7 @@
                             <input type="hidden" name="_token" id="_token" value={{ csrf_token() }}>
                         </div>
 
-
-                 
+                
                     
 
                         <!-- Button trigger modal -->
@@ -212,64 +224,119 @@
                     @endauth
                 @endif
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
 
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('stat') }}">Statistics</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span style="color: rgb(94, 155, 94); font-weight: bold">
-                                        [ rating: @php
-                                            $rating = 
-                                                \app\models\User::where('id', Auth::id())
-                                                    ->pluck('rating')
-                                                    ->first();
-                                            
-                                            echo $rating;
-                                        @endphp ] </span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('settings') }}">Settings</a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                <!-- Начало. Верстка Header для индексной/логин страницы --->  
+                <header class="header">
+                    <div class="header_top">Header top
+                        <div class="container">
+                            <div class="header_top_logo">
+                                <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;"> 
+                                        <div class="nameSite">
+                                            <span>Qui</span><span>ck </span><span>pl</span><span>an</span>
+                                        </div>
                                     </a>
+                            </div>
+                        <div class="header_top_contacts">
+                            <a href="#">info@reen.com</a>
+                        </div>
+                        <div class="header_top_nav-item">
+                                    <!-- Right Side Of Navbar -->
+                                <ul class="navbar-nav ml-auto">
+                                    <!-- Authentication Links -->
+                                    @guest
+                                    Hello!
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                                        @if (Route::has('login'))
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                            </li>
+                                        @endif
+                                        
+                                        @if (Route::has('register'))
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                            </li>
+                                        
+                                        @endif
+                                                                
+
+                                    @else
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('stat') }}">Statistics</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                                {{ Auth::user()->name }} <span style="color: rgb(94, 155, 94); font-weight: bold">
+                                                    [ rating: @php
+                                                        $rating = 
+                                                            \app\models\User::where('id', Auth::id())
+                                                                ->pluck('rating')
+                                                                ->first();
+                                                        
+                                                        echo $rating;
+                                                    @endphp ] </span>
+                                            </a>
+
+                                            
+
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                                <a class="dropdown-item" href="{{ route('settings') }}">Settings</a>
+                                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault();
+                                                                document.getElementById('logout-form').submit();">
+                                                    {{ __('Logout') }}
+                                                </a>
+
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                    class="d-none">
+                                                    
+                                                    @csrf
+                                                    
+                                                </form>
+                                                
+                                            </div>
+                                            
+                                        </li>                                             
+
+
+                                    @endguest
+                                </ul>
+                            </div>
+                
+
+
+                     <!--   <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm"> -->
+                                    
+
+                  
+                    </div>
+                </div>
+
+                
+               
+
+                    <div class="header_bot">Header bot
+                                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                                    aria-label="{{ __('Toggle navigation') }}">
+                                <span class="navbar-toggler-icon"></span>
+                                </button>
+                            </div>
+
+            </header>
+
+            <footer class="footer">
+                <div class="footer_top">Footer top</div>
+                <div class="footer_bot">Footer bot</div>
+                        </footer>
+
+   <!-- Конец. Верстка Header для индексной/логин страницы --->  
+
+
                 </div>
             </div>
         </nav>

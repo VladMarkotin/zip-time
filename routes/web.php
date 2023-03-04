@@ -98,3 +98,4 @@ Route::get('/listen', function (){
 
 
 Route::get('/markov-index', [App\Http\Controllers\HomeController::class, 'markovIndex'])->name('markov-index');
+Route::get('/index_k', [App\Http\Controllers\HomeController::class, 'markovIndex'])->name('markov-index');
