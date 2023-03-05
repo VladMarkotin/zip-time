@@ -12,7 +12,7 @@ class HistController extends Controller
 
     public function __construct(HistService $histService,
                                 NotificationService $notificationService
-                                 )
+                                )
     {
         $this->histService = $histService;
         $this->notificationService = $notificationService;

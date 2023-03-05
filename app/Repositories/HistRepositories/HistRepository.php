@@ -89,7 +89,7 @@ class HistRepository
                           tasks.time AS time, 
                           tasks.mark mark, 
                           tasks.note notes 
-                          FROM timetables JOIN tasks
+                          FROM timetables LEFT JOIN tasks
                       ON timetables.id = tasks.timetable_id";
         if(!$flag){
             $addClosedDays = function () {
@@ -126,16 +126,14 @@ class HistRepository
             $userId        = Auth::id();
             $query        .= " WHERE timetables.date BETWEEN '".$this->period['from'] .
             "' AND '".$this->period['to']."' AND timetables.day_status IN (-1,0,1,3) 
-            AND timetables.user_id = $userId";
+            AND timetables.user_id = $userId ORDER BY time DESC, priority DESC";
             $response      = DB::select($query);
-            //die(var_dump($response));
         }else{ //Here we take history on concrete day
             $query        .=  " WHERE timetables.date = '".$this->period['date'] ."'";
             $response      = DB::select($query);
         }
         $history           = TransformHistTrait::transformData($response, $this->period);
 
-        //dd( $history   );
-       return $history;
+        return $history;
     }
 }

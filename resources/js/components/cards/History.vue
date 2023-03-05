@@ -136,7 +136,7 @@ export default
 							break;
 						case 0:
 							status = "Emergency mode"
-							color = '#fff7f7';
+							color = '#ffcfcf';
 							break;
 						default:
 							status = "Fail !";
@@ -144,13 +144,23 @@ export default
 							break;
 
 					}
+					if (history.data.plans[date].dayFinalMark == 0) {
+						history.data.plans[date].dayFinalMark = '-';
+					} else {
+						history.data.plans[date].dayFinalMark = history.data.plans[date].dayFinalMark +'%';
+					}
+					if (history.data.plans[date].dayOwnMark == 0) {
+						history.data.plans[date].dayOwnMark = '-';
+					} else {
+						history.data.plans[date].dayOwnMark = history.data.plans[date].dayOwnMark +'%';
+					}
 					this.events.push({
 						start: new Date(date),
 						end: new Date(date),
 						name: `Day status:\t${status}`,//history.data.plans[date].dayStatus
 						color: color,//'#A10000',
-						dayFinalMark: history.data.plans[date].dayFinalMark +'%',
-						dayOwnMark: history.data.plans[date].dayOwnMark +'%',
+						dayFinalMark: history.data.plans[date].dayFinalMark,
+						dayOwnMark: history.data.plans[date].dayOwnMark,
 						comment: history.data.plans[date].comment,
 						tasks: history.data.plans[date].tasks
 					})
