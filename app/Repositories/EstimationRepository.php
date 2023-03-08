@@ -199,16 +199,19 @@ class EstimationRepository
     {
         $mutable = Carbon::now();
         $id = Auth::id();
+        $dataForDayPlanCreation["date"]  = Carbon::today();
         $dataForDayPlanCreation["user_id"]          = $id;
-        $dataForDayPlanCreation["date"]             = $mutable->add($data['term'], 'day');
         $dataForDayPlanCreation["day_status"]       = 0;
         $dataForDayPlanCreation["final_estimation"] = 0;
         $dataForDayPlanCreation["own_estimation"]   = 0;
         $dataForDayPlanCreation["comment"]          = $data['comment'];
         $dataForDayPlanCreation["updated_at"]       = DB::raw('CURRENT_TIMESTAMP(0)');
+        $timetableCount = count( DB::table('timetables')->where([['date', '=', Carbon::today()->toDateString() ],
+             ["user_id", '=', $id ]])->get()->toArray() );
         for($i = 0; $i < $data['term']; $i++){
-            if(!$i){
-                DB::table('timetables')->where([ ['date', '=', Carbon::today()->toDateString()], ["user_id", '=', $id ] ] )
+            if( (!$i) && ($timetableCount) ){
+                DB::table('timetables')->where([ ['date', '=', Carbon::today()->toDateString()],
+                     ["user_id", '=', $id ], ['day_status', '!=', 0] ] )
                     ->update(array(
                         'time_of_day_plan' => '00:00',
                         'final_estimation' => 0,
