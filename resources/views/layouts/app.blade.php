@@ -47,13 +47,8 @@
 
 <body>
     <div id="app">
-        <!-- OK!!! -->
-        <!--  КУСОК КАКОЙ-ТО ДИЧИ, НЕПОНЯТНО ЧТО КУДА ПЕРЕНОСТИТЬ. ЭТО ВСЕ ДОЛЖНО БЫТЬ В ХЕДЕРЕ  -->
-           <!-- Перенесено в Хедер ниже, НО НЕ РАБОТАЕТ если это все удалить отсюда полностью. 
-        Если здесь не удалять эту часть, то работает то, что написано в <header> строка 230 (или ниже) и накладывается на эту эже часть-->
-    <!--  <nav class="smooth-section navbar navbar-expand-md navbar-light "> -->
-          <!-- Раскоментить и удалить верхнюю строку, если что-то не так будет
-           <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm"> -->
+        
+   <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm">
 
              <!--   <div class="container"> -->
               <!-- <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;"> 
