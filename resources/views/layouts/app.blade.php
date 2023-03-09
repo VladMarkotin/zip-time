@@ -46,22 +46,17 @@
 </head>
 
 <body>
-    <div id="app">
-        
-   <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm">
-
-               <div class="container">
-              <!-- <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;"> 
-                   <div class="nameSite">
-                        <span>Qui</span><span>ck </span><span>pl</span><span>an</span>
-                    </div>
-                </a> 
-                   <button class="navbar-toggler" type="button" data-toggle="collapse"
+    <div id="app">        
+        <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
-                </button> 
-              КОНЕЦ  -->
+                </button>              
 
                @if (Route::has('login'))
                     @auth
@@ -241,7 +236,7 @@
                                     <!-- Right Side Of Navbar -->
                                 <ul class="navbar-nav ml-auto">
                                     <!-- Authentication Links -->
-                            </div>
+                            </div> 
                                     Hello!
                     </div>
                     <div class="header_bot">Header bot
@@ -259,6 +254,7 @@
                     <div class="footer_top">Footer top</div>
                     <div class="footer_bot">Footer bot</div>
                 </footer>
+                   <!-- Конец. Верстка Header/Footer для индексной/логин страницы --->  
 
                                         @if (Route::has('login'))
                                             <li class="nav-item">
@@ -318,32 +314,13 @@
 
 
                                     @endguest
-                                </ul>
-                            </div>
-                
-
-
-                     <!--   <nav class="smooth-section navbar navbar-expand-md navbar-light bg-white shadow-sm"> -->
-                                    
-
-                  
-                    </div>
-                </div>
-
-                               
-
-              
-        
-
-   <!-- Конец. Верстка Header для индексной/логин страницы --->  
-
-
-                </div>
-            </div>
-        </nav>
-
+                                </ul>                        
+            </div> <!-- OK div container -->
+        </nav> <!-- OK div nav -->
         @yield('content')
-    </div>
+    </div> <!-- OK div app -->
+
+
 
     <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
