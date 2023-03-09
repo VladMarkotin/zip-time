@@ -214,107 +214,105 @@
                     @endauth
                 @endif
 
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
 
-                @guest
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                         @guest
+                
                                     
                                     
-                <!-- Начало. Верстка Header для индексной/логин страницы --->  
-                <header class="header">
-                    <div class="header_top">Header top
-                      <!-- <div class="container"> -->
-                            <div class="header_top_logo">
-                                <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;"> 
-                                        <div class="nameSite">
-                                            <span>Qui</span><span>ck </span><span>pl</span><span>an</span>
+                            <!-- Начало. Верстка Header для индексной/логин страницы --->  
+                            <header class="header">
+                                <div class="header_top">Header top
+                                <!-- <div class="container"> -->
+                                        <div class="header_top_logo">
+                                            <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;"> 
+                                                    <div class="nameSite">
+                                                        <span>Qui</span><span>ck </span><span>pl</span><span>an</span>
+                                                    </div>
+                                                </a>
                                         </div>
-                                    </a>
-                            </div>
-                            <div class="header_top_contacts">
-                                <a href="#">info@reen.com</a>
-                            </div>
-                            <div class="header_top_nav-item">
-                                    <!-- Right Side Of Navbar -->
-                                <ul class="navbar-nav ml-auto">
-                                    <!-- Authentication Links -->
-                            </div> 
-                                    Hello!
-                    </div>
-                    <div class="header_bot">Header bot
-                        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                            aria-label="{{ __('Toggle navigation') }}">
-                        <span class="navbar-toggler-icon"></span>
-                        </button>
-                    </div>
-            
-                </header>
+                                        <div class="header_top_contacts">
+                                            <a href="#">info@reen.com</a>
+                                        </div>
+                                        <div class="header_top_nav-item">
+                                                <!-- Right Side Of Navbar -->
+                                            <ul class="navbar-nav ml-auto">
+                                                <!-- Authentication Links -->
+                                        </div> 
+                                                Hello!
+                                </div>
+                                <div class="header_bot">Header bot
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                                        aria-label="{{ __('Toggle navigation') }}">
+                                    <span class="navbar-toggler-icon"></span>
+                                    </button>
+                                </div>
+                        
+                            </header>
 
-                <footer class="footer">
-                        Footer!
-                    <div class="footer_top">Footer top</div>
-                    <div class="footer_bot">Footer bot</div>
-                </footer>
+                            <footer class="footer">
+                                    Footer!
+                                <div class="footer_top">Footer top</div>
+                                <div class="footer_bot">Footer bot</div>
+                            </footer>
                    <!-- Конец. Верстка Header/Footer для индексной/логин страницы --->  
 
-                                        @if (Route::has('login'))
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                            </li>
-                                        @endif
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
                                         
-                                        @if (Route::has('register'))
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                            </li>
-                                        
-                                        @endif
-                                                                
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                            @endif
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('stat') }}">Statistics</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span style="color: rgb(94, 155, 94); font-weight: bold">
+                                        [ rating: @php
+                                            $rating = 
+                                                \app\models\User::where('id', Auth::id())
+                                                    ->pluck('rating')
+                                                    ->first();
+                                            echo $rating;
+                                        @endphp ] </span>
+                                 </a>
 
-                                    @else
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('stat') }}">Statistics</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
-                                        </li>
-                                        <li class="nav-item dropdown">
-                                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                                {{ Auth::user()->name }} <span style="color: rgb(94, 155, 94); font-weight: bold">
-                                                    [ rating: @php
-                                                        $rating = 
-                                                            \app\models\User::where('id', Auth::id())
-                                                                ->pluck('rating')
-                                                                ->first();
-                                                        
-                                                        echo $rating;
-                                                    @endphp ] </span>
-                                            </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('settings') }}">Settings</a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
 
-                                            
-
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                                <a class="dropdown-item" href="{{ route('settings') }}">Settings</a>
-                                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault();
-                                                                document.getElementById('logout-form').submit();">
-                                                    {{ __('Logout') }}
-                                                </a>
-
-                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                    class="d-none">
-                                                    
-                                                    @csrf
-                                                    
-                                                </form>
-                                                
-                                            </div>
-                                            
-                                        </li>                                             
-
-
-                                    @endguest
-                                </ul>                        
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        lass="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>                                             
+                        @endguest
+                    </ul>
+                </div>   <!--OK div collapse navbar-collapse -->                     
             </div> <!-- OK div container -->
         </nav> <!-- OK div nav -->
         @yield('content')
