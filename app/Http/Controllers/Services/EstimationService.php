@@ -33,6 +33,7 @@ class EstimationService
      */
     public function handleEstimationRequest(array $data)
     {
+        //die(var_dump($data));
         $makeMarkValid    = function ($arg = null) use  ($data) {
             if($data['mark'] == '') {
                $data['mark'] = -1;
@@ -133,6 +134,7 @@ class EstimationService
                 $data['note']     = $makeNoteValid();
                 $data['details']  = $makeDetailsValid();
                 if($data['mark'] !== false){
+                    $data['mark'] = ($data['mark'] === "" || $data['mark'] == 0 ) ? -1 : $data['mark'];
                     $response = $this->estimateTaskRepository->estimateTask($data);
                     unset($data['action']);
                     if($response === true){

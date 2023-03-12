@@ -313,6 +313,7 @@ class MainController
                 "action"   => '1', //it means that user try to estimate one task
             ];
         }
+        $data['mark'] = -1;//default
         $data['mark'] = ($request->get('mark') && (!$request->get('is_ready'))) ? 
             $request->get('mark') : $request->get('is_ready');
         $checkedData = $this->estimationService->handleEstimationRequest($data);

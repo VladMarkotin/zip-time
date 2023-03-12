@@ -123,7 +123,8 @@ class EstimateTaskRepository
                     "details"       => $dataFotTasksTable['details'],
                 ];
                 //Then I update it
-                DB::table('saved_tasks')->where([ ['id', '=', $dataForSavedTasks['saved_task_id']], ["user_id", '=', $dataForSavedTasks['user_id'] ] ] )
+                DB::table('saved_tasks')->where([ ['id', '=', $dataForSavedTasks['saved_task_id']],
+                     ["user_id", '=', $dataForSavedTasks['user_id'] ] ] )
                     ->update(array(
                        'details' => $dataForSavedTasks['details']
                     ));
