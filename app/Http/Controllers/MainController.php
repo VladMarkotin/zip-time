@@ -289,15 +289,17 @@ class MainController
     public function estimateTask(Request $request)
     {
         $isReady = null;
+        $type = $request->get('type');
         $res = $request->get('is_ready');
-        if (isset($res)) {
+        if (isset($res) && (in_array($type, [1, 2]))) {
             $isReady = intval($request->get('is_ready'));
             if ($isReady == 0)  {
                 $isReady = ($isReady == 99) ? 50 : 99;
                 $isReady = ($isReady == -1) ? 99 : -1;
             }
+            //die(var_dump($isReady));
         }
-        if (isset($isRedy)) {
+        if (isset($isReady)) {
             $data = [
                 "id"       => $request->get('task_id'),
                 "details"  => $request->get('details'),
@@ -313,11 +315,20 @@ class MainController
                 "action"   => '1', //it means that user try to estimate one task
             ];
         }
-        $data['mark'] = -1;//default
+        //$data['mark'] = -1;//default
+        //estimateTask
+        //just update task
+        if (!$request->get('mark') && (!$request->get('is_ready'))
+             && (in_array($type, [1,2])) ) {
+            $data['action'] = '3';
+            $checkedData = $this->estimationService->handleEstimationRequest($data);
+            
+            return json_encode(['status' => 'success', 'message' => 'Task has been updated.'], JSON_UNESCAPED_UNICODE);
+        }
         $data['mark'] = ($request->get('mark') && (!$request->get('is_ready'))) ? 
             $request->get('mark') : $request->get('is_ready');
         $checkedData = $this->estimationService->handleEstimationRequest($data);
-        if($checkedData){
+        if($checkedData) {
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
             $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
 

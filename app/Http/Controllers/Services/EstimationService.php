@@ -147,9 +147,10 @@ class EstimationService
                 $data = $makeCommentValid();
 
                 return $data;
-            case '3':
+            case '3': //for update task without checked status
                 $data['note']    = $makeNoteValid();
                 $data['details'] = $makeDetailsValid();
+                $response = $this->estimateTaskRepository->estimateTask($data);
 
                 return $data;
         }
