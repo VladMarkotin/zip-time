@@ -18,19 +18,19 @@ class TimezoneRepository
         $currentTimezone = [];
         $timezones = $this->getUniqueTimezones();
         foreach ($timezones as $timezone) {
-            $date = Carbon::now($timezone);    
-            if ($date->hour === 00) {
-                array_push($currentTimezone, $date->getTimezone());   // if hour in that timezone == 00:00(end of day) push user to array
+            $time = Carbon::now($timezone);    
+            if ($time->hour === 23) {
+                array_push($currentTimezone, $time->getTimezone());   // if hour in that timezone == 23:59(end of day) push user to array
             }
         }
 
         $currentTimezone == []
             ? ($currentTimezone = null)
-            : ($currentTimezone = $currentTimezone);    // if no timezones at 00:00 return null
+            : ($currentTimezone = $currentTimezone);    // if no timezones in Db at 23:59 return null
         $users = User::where('timezone', $currentTimezone)
             ->pluck('id')
             ->toArray();
-       // dd($currentTimezone, $users);
+        //dd($currentTimezone, $users);
         return $users;
     }
 }

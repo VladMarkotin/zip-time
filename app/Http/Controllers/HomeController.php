@@ -14,20 +14,15 @@ use App\Repositories\TimezoneRepository;
 
 class HomeController extends Controller
 {
-  
-    private $estimateDayRepository = null;
-    private $timezoneRepository = null;
     private $notificationService;
-  
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(TimezoneRepository $timezoneRepository, EstimationRepository $estimationRepository, NotificationService $notificationService  )
-    { 
-        $this->timezoneRepository = $timezoneRepository;
-        $this->estimateDayRepository = $estimationRepository;
+    public function __construct(NotificationService $notificationService)
+    {
         $this->notificationService = $notificationService;
         $this->middleware('auth');
     }
@@ -39,16 +34,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $this->estimateDayRepository->getIds();
-        //$this->timezoneRepository->getUsersInTimezone();
         $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
         return view('home', [
-
-            'tasks'               =>  $tasks,
+            'tasks' => $tasks,
             'count_notifications' => $notificatiions['count_notifications'],
             'notifications' => $notificatiions['notifications'],
         ]);
-
     }
 }

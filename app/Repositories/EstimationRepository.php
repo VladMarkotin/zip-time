@@ -53,9 +53,9 @@ class EstimationRepository
                     'timetable_id' => $timetableId,
                     'user_id' => $id,
                     'final_time' =>
-                        $finalMark >= 50
-                            ? $this->sumTime($timetableId)
-                            : '00:00',
+                    $finalMark >= 50
+                        ? $this->sumTime($timetableId)
+                        : '00:00',
                     'final_estimation' => $finalMark >= 50 ? $finalMark : 0,
                     'own_estimation' => $finalMark,
                     'comment' => 'Closed automatically',
@@ -113,7 +113,7 @@ class EstimationRepository
                     'date' => Carbon::today()->toDateString(),
                     'day_status' => 1,
                     'comment' =>
-                        'Closed automatically at ' .
+                    'Closed automatically at ' .
                         Carbon::now()->toDateTimeString(),
                     'updated_at' => Carbon::now(),
                 ];
@@ -174,7 +174,7 @@ class EstimationRepository
                 'id' => $timetableId,
                 'user_id' => $data['user_id'],
                 'time_of_day_plan' =>
-                    $finalMark >= 50 ? $this->sumTime($timetableId) : '00:00',
+                $finalMark >= 50 ? $this->sumTime($timetableId) : '00:00',
                 'final_estimation' => $finalMark,
                 'own_estimation' => $data['mark'],
                 'comment' => $data['comment'],
