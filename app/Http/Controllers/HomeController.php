@@ -9,15 +9,14 @@ use Illuminate\Http\Request;
 use App\Events\Notifications;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\EstimationRepository;
-use App\Http\Controllers\Services\RatingService;
-use App\Http\Controllers\Services\GetDayPlanService;
 use App\Http\Controllers\Services\NotificationService;
+use App\Repositories\TimezoneRepository;
 
 class HomeController extends Controller
 {
-    private $userRatings   = null;
+  
     private $estimateDayRepository = null;
-    private $getDayPlanService = null;
+    private $timezoneRepository = null;
     private $notificationService;
   
     /**
@@ -25,13 +24,12 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct(GetDayPlanService $getDayPlanService, EstimationRepository $estimationRepository, RatingService $userRatings, NotificationService $notificationService  )
-    { $this->userRatings = $userRatings;
-     
+    public function __construct(TimezoneRepository $timezoneRepository, EstimationRepository $estimationRepository, NotificationService $notificationService  )
+    { 
+        $this->timezoneRepository = $timezoneRepository;
         $this->estimateDayRepository = $estimationRepository;
         $this->notificationService = $notificationService;
         $this->middleware('auth');
-        $this->getDayPlanService = $getDayPlanService;
     }
 
     /**
@@ -41,6 +39,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $this->estimateDayRepository->getIds();
+       // $this->timezoneRepository->getUsersInTimezone();
         $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
         return view('home', [

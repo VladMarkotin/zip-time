@@ -198,8 +198,10 @@ class MainController
 
     public function addPlan(Request $request)
     {
+
         $data = $request->json()->all();
         //die(var_dump($data));//уже тут первый элемент пропадает
+        
         $response = $this->planService->checkPlan($data); //проблема здесь
         $responseArray = json_decode($response->content());
         

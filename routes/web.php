@@ -54,12 +54,14 @@ Route::middleware(['auth'])->group(function () {
 //Add job
     Route::post('/addJob', [App\Http\Controllers\MainController::class, 'addJob']);
 
+
     //History routes
     Route::prefix('hist')->group(function () {
         Route::get('/', [App\Http\Controllers\HistController::class, 'index']);
         Route::post('/', [App\Http\Controllers\HistController::class, 'index']);
     });
     //end History routes
+
 
     //Statistics
     Route::prefix('stat')->group(function () {
@@ -74,25 +76,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-stat-data', [App\Http\Controllers\StatController::class, 'getStatData'])->name('get-stat-data');
     //end statistic
 
-//emergency
+    //emergency
     Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index']);
-//
-//settings
+    //
+    //settings
     Route::get('/settings',  [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
     Route::get('/settings/{setting}', [App\Http\Controllers\SettingsController::class, 'index']);
     //Backlog
     Route::get('backlog', [App\Http\Controllers\BackLogController::class, 'index'])->name('backlog');
 
-
-
-
+ 
 });
 
 
-Route::get('/event', function (){
-    event(new \App\Events\MessageNotification('test broadcast'));
-});
-
-Route::get('/listen', function (){
-    return view('listen');
-});
+// Route::get('/event', function (){
+//     event(new \App\Events\MessageNotification('test broadcast'));
+// });
+// Route::get('/listen', function (){
+//     return view('listen');
+// });

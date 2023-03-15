@@ -70,6 +70,7 @@ class NotificationService
 
     public function getNotifications()
     {
+  
         $id = auth()->id();
         $ldate = date('Y-m-d');
         $count_notifications = Notification::all()

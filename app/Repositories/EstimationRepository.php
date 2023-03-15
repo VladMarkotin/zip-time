@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
 use App\Models\TimetableModel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -10,12 +11,14 @@ use App\Http\Controllers\Services\RatingService;
 
 class EstimationRepository
 {
+    private $timezoneRepository = null;
    
     private $userRatings   = null;
 
-    public function __construct( RatingService $userRatings)
+    public function __construct( RatingService $userRatings, TimezoneRepository $timezoneRepository)
     {
         $this->userRatings = $userRatings;
+        $this->timezoneRepository = $timezoneRepository;
     }
 
 
@@ -229,16 +232,21 @@ class EstimationRepository
     /*Get id of users who has created plan on today*/
     public function getIds()
     {
+        $users =  $this->timezoneRepository->getUsersInTimezone();
         $today = Carbon::today()->toDateString();
-        $query = "SELECT users.id FROM users JOIN timetables ON users.id = timetables.user_id WHERE
+        $query = "SELECT users.id FROM users 
+                        JOIN timetables ON users.id = timetables.user_id WHERE
                         timetables.day_status = 2 AND
                         timetables.date = '". $today."'";
         $idsArr = DB::select($query); //Array of all user`s id
         $ids = [];
         foreach ($idsArr as $v){
-            $ids[] = $v->id;
+            if(in_array($v->id, $users) )
+            {
+                 $ids[] = $v->id;
+            }
+          
         }
-
         return $ids;
     }
 
@@ -255,6 +263,7 @@ class EstimationRepository
     /*Get id of users who has`t created plan on today*/
     private function getBadIds()
     {
+        $users =  $this->timezoneRepository->getUsersInTimezone();
         $today = Carbon::today()->toDateString();
         $query = "SELECT users.id FROM users WHERE
                         users.id NOT IN (select b.user_id
@@ -265,7 +274,11 @@ class EstimationRepository
         $idsArr = DB::select($query); //Array of all user`s id
         $badIds = [];
         foreach ($idsArr as $v){
-            $badIds[] = $v->id;
+            if(in_array($v->id, $users) )
+            {
+                 $badIds[] = $v->id;
+            }
+          
         }
 
         return $badIds;
@@ -273,6 +286,7 @@ class EstimationRepository
 
     private function getWeekendIds()
     {
+        $users =  $this->timezoneRepository->getUsersInTimezone();
         $today = Carbon::today()->toDateString();
         $query = "SELECT users.id FROM users JOIN timetables ON users.id = timetables.user_id
                          WHERE timetables.day_status = 1
@@ -281,7 +295,11 @@ class EstimationRepository
         $idsArr = DB::select($query); //Array of all user`s id
         $ids = [];
         foreach ($idsArr as $v){
-            $ids[] = $v->id;
+            if(in_array($v->id, $users) )
+            {
+                 $ids[] = $v->id;
+            }
+          
         }
 
         return $ids;
@@ -384,4 +402,6 @@ class EstimationRepository
         }
 
     }
+
+   
 }

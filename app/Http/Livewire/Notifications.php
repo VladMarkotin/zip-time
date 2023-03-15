@@ -2,11 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Notification;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithPagination;
 
 class Notifications extends Component
 {
@@ -117,6 +118,7 @@ class Notifications extends Component
 
     public function render()
     {
+     
         $notification = Notification::where('user_id', Auth::id())
 
             ->when($this->search , function ($e2) {

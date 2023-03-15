@@ -21,6 +21,8 @@ class SettingsController extends Controller
         $this->notificationService = $notificationService;
     }
 
+    
+
     public function index(Request $request)  
     {
         $tasks = [];

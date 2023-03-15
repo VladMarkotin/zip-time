@@ -20,12 +20,24 @@ class SocialController extends Controller
         return view('welcome');
     }
 
+    private function setTimeZone()
+    {
+        $ip = file_get_contents("http://ipecho.net/plain");
+        $url = 'http://ip-api.com/json/'.$ip;    
+        $info = file_get_contents($url);       
+        $timezone = json_decode($info,true)['timezone'];        
+        return  $timezone;  
+    }
+
     public function redirect($provider)
     {
         return Socialite::driver($provider)->redirect();
     }
 
     public function Callback($provider){
+
+       // dd($this->setTimeZone());
+      
         $userSocial =   Socialite::driver($provider)->stateless()->user();
         $users       =   User::where(['email' => $userSocial->getEmail()])->first();
         if($users){
@@ -39,8 +51,9 @@ class SocialController extends Controller
                 'image'         => $userSocial->getAvatar(),
                 'provider_id'   => $userSocial->getId(),
                 'provider'      => $provider,
+                'timezone'      => $this->setTimeZone(),
             ]);
-            return redirect()->route('/');
+            return redirect('/');
         }
     }
 }

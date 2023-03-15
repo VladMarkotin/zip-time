@@ -3,6 +3,8 @@
     @include('livewire.modals')
 
     <div class="col-md-7 mx-auto rounded ">
+
+ 
         <section class="section-50">
             <div class="container">
                 <div class="card-header  border">

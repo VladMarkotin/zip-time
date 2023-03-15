@@ -2,11 +2,11 @@
 namespace App\Repositories;
 
 
-use Illuminate\Support\Facades\DB;
-use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
-use App\Models\TimetableModel;
-use Auth;
 use Carbon;
+use App\Models\TimetableModel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 
 class WeekendRepository
 {

@@ -41,6 +41,8 @@ class CreateDayPlanRepository
 
     public function createDayPlan(array $data)
     {
+
+       // dd($data);
         $dataForDayPlanCreation["user_id"]          = Auth::id();
         $dataForDayPlanCreation["date"]             = Carbon::now()->format('Y-m-d');;//Carbon::today();
         $dataForDayPlanCreation["day_status"]       = $data["day_status"];//$this->getNumValuesOfStrValues($data["day_status"]);//temporary variant. day_status has to be general!!! Now it would not working

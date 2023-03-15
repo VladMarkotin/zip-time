@@ -63,6 +63,8 @@ class Settings extends Component
         }
     }
 
+   
+
     public function update()
     {
         //dd($this->taskName);
@@ -120,4 +122,6 @@ class Settings extends Component
             $this->selectedNotes = [];
         }
     }
+
+   
 }
