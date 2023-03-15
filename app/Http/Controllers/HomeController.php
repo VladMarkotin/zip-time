@@ -40,7 +40,7 @@ class HomeController extends Controller
     public function index()
     {
         $this->estimateDayRepository->getIds();
-       // $this->timezoneRepository->getUsersInTimezone();
+        //$this->timezoneRepository->getUsersInTimezone();
         $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
         return view('home', [
