@@ -25,6 +25,7 @@ use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\TimezoneRepository;
 
 
 class RatingService
@@ -34,6 +35,12 @@ class RatingService
     private $Sa;
     public $newRating;
     public $dayStatus;
+    private $timezoneRepository = null;
+
+    public function __construct(TimezoneRepository $timezoneRepository)
+     {
+        $this->timezoneRepository = $timezoneRepository;
+     }
 
     public function rateCompletedDay($dayStatus)
     {
@@ -208,13 +215,14 @@ class RatingService
     private function idsToBeRated()
     {
         //  get all unrated users from timetable .
+        $users = $this->timezoneRepository->getUsersInTimezone();
         $today = Carbon::today()->toDateString();
 
         $query =
             "SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
                                      WHERE timetables.day_status = 2 
                                          OR  timetables.day_status = 1 
-                                             OR   timetables.day_status = -1 
+                                            --  OR   timetables.day_status = -1 
                                                  AND  timetables.date = '" .
             $today .
             "'";
@@ -222,7 +230,9 @@ class RatingService
         $idsArr = DB::select($query); //Array of all user`s id
         $ids = [];
         foreach ($idsArr as $v) {
-            $ids[] = $v->id;
+            if (in_array($v->id, $users)) {
+                $ids[] = $v->id;
+            }
         }
         $idsToBeRated = [];
         $now = Carbon::now();
@@ -237,6 +247,7 @@ class RatingService
     private function getBadIds()
     {
         // get lazy guys without a day plan
+        $users = $this->timezoneRepository->getUsersInTimezone();
         $today = Carbon::today()->toDateString();
         $query =
             "SELECT users.id FROM users WHERE
@@ -249,8 +260,11 @@ class RatingService
         //dd($query);
         $idsArr = DB::select($query); //Array of all user`s id
         $badIds = [];
+      
         foreach ($idsArr as $v) {
-            $badIds[] = $v->id;
+            if (in_array($v->id, $users)) {
+                $badIds[] = $v->id;
+            }
         }
 
         $idsToBeRated = [];

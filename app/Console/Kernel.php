@@ -39,7 +39,7 @@ class Kernel extends ConsoleKernel
            // ->timezone('Europe/Minsk')
             //->dailyAt("14:46")
             //->everyMinute()
-            ->hourlyAt(59)
+            ->hourlyAt(15)
             ->appendOutputTo(storage_path('logs/inspire.log'));;
     }
 
