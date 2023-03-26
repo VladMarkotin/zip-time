@@ -19,7 +19,7 @@ class TimezoneRepository
         $timezones = $this->getUniqueTimezones();
         foreach ($timezones as $timezone) {
             $time = Carbon::now($timezone);    
-            if ($time->hour === 13) {
+            if ($time->hour === 23) {
                 array_push($currentTimezone, $time->getTimezone());   // if hour in that timezone == 23:59(end of day) push user to array
             }
         }

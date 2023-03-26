@@ -15,15 +15,17 @@ use App\Repositories\TimezoneRepository;
 class HomeController extends Controller
 {
     private $notificationService;
+    private $estimationRepo;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(NotificationService $notificationService)
+    public function __construct(NotificationService $notificationService, EstimationRepository $estimationRepo )
     {
         $this->notificationService = $notificationService;
+        $this->estimationRepo = $estimationRepo;
         $this->middleware('auth');
     }
 
@@ -34,6 +36,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+       
         $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
         return view('home', [

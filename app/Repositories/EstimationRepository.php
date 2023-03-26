@@ -53,9 +53,9 @@ class EstimationRepository
                     'timetable_id' => $timetableId,
                     'user_id' => $id,
                     'final_time' =>
-                    $finalMark >= 50
-                        ? $this->sumTime($timetableId)
-                        : '00:00',
+                        $finalMark >= 50
+                            ? $this->sumTime($timetableId)
+                            : '00:00',
                     'final_estimation' => $finalMark >= 50 ? $finalMark : 0,
                     'own_estimation' => $finalMark,
                     'comment' => 'Closed automatically',
@@ -113,7 +113,7 @@ class EstimationRepository
                     'date' => Carbon::today()->toDateString(),
                     'day_status' => 1,
                     'comment' =>
-                    'Closed automatically at ' .
+                        'Closed automatically at ' .
                         Carbon::now()->toDateTimeString(),
                     'updated_at' => Carbon::now(),
                 ];
@@ -174,7 +174,7 @@ class EstimationRepository
                 'id' => $timetableId,
                 'user_id' => $data['user_id'],
                 'time_of_day_plan' =>
-                $finalMark >= 50 ? $this->sumTime($timetableId) : '00:00',
+                    $finalMark >= 50 ? $this->sumTime($timetableId) : '00:00',
                 'final_estimation' => $finalMark,
                 'own_estimation' => $data['mark'],
                 'comment' => $data['comment'],
@@ -323,7 +323,7 @@ class EstimationRepository
         return $ids;
     }
 
-    private function sumMarks($timetableId, $dayStatus = 2)
+    public function sumMarks($timetableId, $dayStatus = 2)
     {
         $today = Carbon::today()->toDateString();
         $response = function () use ($today, $timetableId, $dayStatus) {
@@ -336,6 +336,7 @@ class EstimationRepository
                        AND timetables.day_status = $dayStatus";
             //die($query); //empty in weekend
             $marks = DB::select($query);
+
             foreach ($marks as $m) {
                 foreach ($m as $mark) {
                     if ($mark == -1) {
@@ -346,18 +347,18 @@ class EstimationRepository
 
             return 1;
         };
+
         $r = $response();
+
         if ($r) {
-            $query =
-                "SELECT SUM(mark) S   FROM tasks JOIN timetables T ON timetable_id = $timetableId WHERE T.date = " .
-                " '$today' " .
-                ' AND type = 4 GROUP BY(tasks.id) WITH ROLLUP';
-            $query2 =
-                "SELECT SUM(mark) S2  FROM tasks  JOIN timetables T ON timetable_id = $timetableId WHERE T.date = " .
-                " '$today' " .
-                ' AND type = 3 AND mark <> -1.00 GROUP BY(tasks.id) WITH ROLLUP';
+            $query = "SELECT SUM(mark) S   FROM tasks JOIN timetables T ON timetable_id = $timetableId WHERE T.date = '$today' 
+                 AND  T.id='$timetableId' AND type = 4 GROUP BY(tasks.id) WITH ROLLUP";
+            $query2 = "SELECT SUM(mark) S2  FROM tasks  JOIN timetables T ON timetable_id = $timetableId WHERE T.date ='$today'
+                 AND  T.id='$timetableId'  AND type = 3 AND mark <> -1.00 GROUP BY(tasks.id) WITH ROLLUP";
+
             $avgMark = DB::select($query);
             $avgMark2 = DB::select($query2);
+
             $avgMarkCount = count($avgMark) - 1;
             $avgMark = $avgMark[array_key_last($avgMark)]->S / $avgMarkCount;
             if ($avgMark2) {
