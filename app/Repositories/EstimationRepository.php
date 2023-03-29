@@ -199,14 +199,15 @@ class EstimationRepository
     {
         $mutable = Carbon::now();
         $id = Auth::id();
-        $dataForDayPlanCreation["date"]  = Carbon::today();
+        $dataForDayPlanCreation["date"]  = $data['from'];//here has to be date from which em mode begins 
         $dataForDayPlanCreation["user_id"]          = $id;
         $dataForDayPlanCreation["day_status"]       = 0;
         $dataForDayPlanCreation["final_estimation"] = 0;
         $dataForDayPlanCreation["own_estimation"]   = 0;
         $dataForDayPlanCreation["comment"]          = $data['comment'];
         $dataForDayPlanCreation["updated_at"]       = DB::raw('CURRENT_TIMESTAMP(0)');
-        $timetableCount = count( DB::table('timetables')->where([['date', '=', Carbon::today()->toDateString() ],
+        //Carbon::today()->toDateString()
+        $timetableCount = count( DB::table('timetables')->where([['date', '=', $dataForDayPlanCreation["date"] ],
              ["user_id", '=', $id ]])->get()->toArray() );
         for($i = 0; $i < $data['term']; $i++){
             if( (!$i) && ($timetableCount) ){
@@ -221,10 +222,12 @@ class EstimationRepository
                         'necessary'        => '',
                         'for_tomorrow'     => ''
                     ));
+                    $dataForDayPlanCreation["date"] = $mutable->add(1, 'day');
                     continue;
             }
             TimetableModel::insert($dataForDayPlanCreation);
-            $dataForDayPlanCreation["date"] = $mutable->add(1, 'day');
+            $dataForDayPlanCreation["date"] = $mutable = $mutable->add(1, 'day');
+            $mutable = $mutable->add(1, 'day');
         }
 
         return $data;
