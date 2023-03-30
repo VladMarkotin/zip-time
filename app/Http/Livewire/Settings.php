@@ -126,6 +126,8 @@ class Settings extends Component
         $user = User::find( Auth::id());
         $user->timezone = $this->timezone;
         $user->update();
-        session()->flash('message', 'Timezone has been updated Successfully.');
+        $this->dispatchBrowserEvent('message', [
+            'text' => 'Timezone updated Successfully',
+        ]);
     }
 }
