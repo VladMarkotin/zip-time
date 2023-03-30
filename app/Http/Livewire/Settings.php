@@ -124,9 +124,8 @@ class Settings extends Component
     public function change()
     {
         $user = User::find( Auth::id());
-        $user->update([
-            'timezone' => $this->timezone,
-        ]);
+        $user->timezone = $this->timezone;
+        $user->update();
         session()->flash('message', 'Timezone has been updated Successfully.');
     }
 }
