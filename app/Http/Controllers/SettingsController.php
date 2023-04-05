@@ -25,12 +25,13 @@ class SettingsController extends Controller
     {
         $tasks = [];
         $notificatiions = $this->notificationService->getNotifications();
+        
         return view('settings', [
-
+            'timezones' => "Europe/Minsk",
             'tasks'               =>  $tasks,
             'count_notifications' => $notificatiions['count_notifications'],
             'notifications' => $notificatiions['notifications'],
         ]);
 
     }
-    }
+}

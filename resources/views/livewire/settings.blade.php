@@ -4,7 +4,7 @@
    @include('livewire.update')
    @include('livewire.info')
    @include('livewire.notes')
-  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" wire:ignore>
     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
            aria-controls="v-pills-home" aria-selected="true">
            Saved tasks
@@ -14,13 +14,12 @@
         Statistic
     </a>
     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
-     aria-controls="v-pills-messages" aria-selected="false">
+     aria-controls="v-pills-messages" aria-selected="false" wire:ignore>
         Personal settings
     </a>
-    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-        aria-controls="v-pills-settings" aria-selected="false">I don`t know yet :)</a>
+    
   </div>
-  <div class="tab-content" id="v-pills-tabContent" >
+  <div class="tab-content" id="v-pills-tabContent" wire:ignore>
     <div class="tab-pane fade show active" id="v-pills-home"
          role="tabpanel" aria-labelledby="v-pills-home-tab">
        <table class="table">
@@ -80,9 +79,32 @@
     <div class="tab-pane fade" id="v-pills-profile"
         role="tabpanel" aria-labelledby="v-pills-profile-tab">10</div>
     <div class="tab-pane fade" id="v-pills-messages"
-         role="tabpanel" aria-labelledby="v-pills-messages-tab">2</div>
-    <div class="tab-pane fade" id="v-pills-settings"
-         role="tabpanel" aria-labelledby="v-pills-settings-tab">3</div>
+         role="tabpanel" aria-labelledby="v-pills-messages-tab" wire:ignore>
+        
+         <div class="card">
+            <h5 class="card-header">Setting timezone</h5>
+            <div class="card-body">
+              <h5 class="card-title">Choose your timezone for application`s correct work </h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <div class="form-row">
+                <div class="form-group col-md-8">
+                  <label for="inputState">Timezone</label>
+                  <select id="inputState" class="form-control" wire:model="timezone" wire:change="change()" >
+                    @foreach ($timezones as $t)
+                      @if($t == $currentTz)
+                        <option selected>{{$t}}</option>
+                      @else
+                        <option >{{$t}}</option>
+                      @endif
+                    @endforeach
+                  </select>
+                  
+            
+                  
+                </div>
+          </div>    
+    </div>
+    
   </div>
   
 </div>

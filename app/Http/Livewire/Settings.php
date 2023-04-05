@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\LWServices\TaskStatService as TSS;
 use App\Http\Livewire\LWServices\SavedNoteService as SNS;
+use App\Models\User;
 
 class Settings extends Component
 {
@@ -22,7 +23,7 @@ class Settings extends Component
     public $selectAll = false; 
     public $removeDeletedNote;
     public $sT = null;
-    public $taskName, $type, $priority, $time, $taskId; //for updates
+    public $taskName, $type, $priority, $time, $taskId, $timezone; //for updates
 
     public function render(SavedTask $savedTask)
     {
@@ -30,9 +31,15 @@ class Settings extends Component
         $this->savedTasks = $savedTask
             ->where('user_id', Auth::id())
             ->paginate(5);
+        $timezones = \DateTimeZone::listIdentifiers( \DateTimeZone::ALL );
+        $currentTimezone = User::where('id', Auth::id())->pluck('timezone')->toArray();
+        $this->timezone = $currentTimezone;
 
         return view('livewire.settings', [
             'savedTasks' => $this->savedTasks,
+            'timezones' => $timezones,
+            'currentTz' => $currentTimezone[0],
+            'user_id'   => Auth::id(),
         ]);
     }
 
@@ -54,7 +61,7 @@ class Settings extends Component
                 ->where('user_id', Auth::id())
                 ->get()
                 ->toArray();
-            //dd($this->sT[0]['task_name']);
+                //dd($this->sT[0]['task_name']);
             $this->taskName = $this->sT[0]['task_name'];
             $this->priority = $this->sT[0]['priority'];
             $this->type = $this->sT[0]['type'];
@@ -63,18 +70,11 @@ class Settings extends Component
         }
     }
 
-    public function update()
+    public function update($tz = null)
     {
-        //dd($this->taskName);
-        /*$validatedDate = $this->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-        ]);*/
-
-        if (Auth::id()) {
+        if (Auth::id() && (!$tz)) {
             //check the condithion
             $savedTask = SavedTask::find($this->taskId);
-            //dd($savedTask);
             $savedTask->update([
                 'task_name' => $this->taskName,
                 'type' => $this->type,
@@ -119,5 +119,15 @@ class Settings extends Component
         } else {
             $this->selectedNotes = [];
         }
+    }
+
+    public function change()
+    {
+        $user = User::find( Auth::id());
+        $user->timezone = $this->timezone;
+        $user->update();
+        $this->dispatchBrowserEvent('message', [
+            'text' => 'Timezone updated Successfully',
+        ]);
     }
 }
