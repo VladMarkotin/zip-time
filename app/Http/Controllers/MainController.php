@@ -32,6 +32,7 @@ use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 /* end */
 use App\Models\TimetableModel;
+use App\Models\User;
 
 class MainController
 {
@@ -412,6 +413,14 @@ class MainController
         }
         
         return ($preparedTasks);
+    }
+
+    public function getEduStep(Request $request)
+    {
+        $eduStep = User::where('id', Auth::id())->pluck('edu_step')->toArray();
+        $eduStep = $eduStep[0];
+
+        return json_encode(['edu_step' => $eduStep]);
     }
 
     private function getLastTimetableId()

@@ -1,5 +1,7 @@
 <template>  
 	<v-card>
+		<div data-title="Card!!!" data-intro="Card! 👋" class="card-demo">
+			<div data-title="Card!!!" data-intro="Priority! 👋" class="card-demo"></div>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>{{item.hash}}</span>
 			<span>{{item.taskName}}</span>
@@ -8,6 +10,7 @@
 			<span v-else-if="item.priority == 3">!!!</span>
 			<span v-else>  </span>
 		</v-card-title>
+		</div>
 		<v-list>
 			<v-list-item>
 				<v-list-item-content>Time:</v-list-item-content>
@@ -74,6 +77,7 @@
 				</template>
 			</form>
 		</v-card-title>
+	</div>
 	</v-card>
 </template>
 <script>
@@ -139,6 +143,22 @@
 			{
 				this.alert.type = type
 				this.alert.text = text
+			},
+			mounted() {
+			 axios.post('/getEduStep', {
+                    //hash_code: event
+			})
+			.then(function(response) {
+				console.log(response.data.edu_step)
+				if (response.data.edu_step == 1){
+					const introJS = require("intro.js");
+					introJS.introJs().start();
+				}
+			})
+			.catch(function(error) {
+				console.log(error)
+			});
+				
 			},
 		}
 	}
