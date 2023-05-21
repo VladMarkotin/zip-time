@@ -349,15 +349,16 @@ body {
     transform: scale(1.5); 
   }
 
-.content-container {
+.feedback-main {
      /* display: none; */
 	border: none;
-   height: 32rem; 
+   height: 33rem; 
    width: 24rem;
 	border-radius: 17px;
     position: fixed;
-    bottom: 3%;
+    bottom: 4%;
     right: 3%;
+    z-index: 1;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
     background: linear-gradient(0deg, rgba(255,255,255,1) 27%, rgb(146, 14, 14) 54%);
 
@@ -380,8 +381,30 @@ body {
     padding: 0;
 }
 
-.feedback-bug, .feedback-request, .feedback-contact{
+ .feedback-bug, .feedback-request, .feedback-contact{
+    /* display: none; */
+    height: 33rem; 
+    width: 24rem;
+     border-radius: 17px;
+     position: fixed;
+     bottom: 4%;
+     right: 3%;
+     box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  
+
+}
+
+.main-wrapper{
     display: none;
+}
+
+input[type=file]{
+display: none;
+}
+
+.remove-upload{
+  font-size: 12px;
+  color: #c51111;
 }
 
 @media only screen and (max-width: 600px) {

@@ -2,6 +2,8 @@
 
 
 $(document).ready(function () {
+  // $('.main-wrapper').hide();
+
   alertify.set('notifier', 'position', 'bottom-right');
 
   /**
@@ -219,7 +221,11 @@ $(document).ready(function () {
  */
 $(document).on("click", '#feedback', function (e) {
 
-  $('.content-container').fadeToggle();
+  // $('.content-container').fadeToggle();
+  $('.main-wrapper').fadeToggle();
+  // $('.feedback-contact').fadeToggle();
+  // $('.feedback-bug').fadeToggle();
+  // $('.feedback-request').fadeToggle();
  
 });
 
@@ -229,27 +235,40 @@ $(document).on("click", '#feedback', function (e) {
 $(document).on("click", '#feedback-report', function (e) {
 
   $('.feedback-main').hide();
+  $('.feedback-contact').hide();
   $('.feedback-bug').fadeIn();
+  $('.feedback-request').hide();
 
 });
 
 $(document).on("click", '#feedback-request', function (e) {
 
   $('.feedback-main').hide();
+  $('.feedback-contact').hide();
+  $('.feedback-bug').hide();
   $('.feedback-request').fadeIn();
 
 });
 
 $(document).on("click", '#feedback-contact', function (e) {
 
+  
   $('.feedback-main').hide();
   $('.feedback-contact').fadeIn();
+  $('.feedback-bug').hide();
+  $('.feedback-request').hide();
 
 });
 
 $(document).on("click", '#feedback-close', function (e) {
 
-  $('.content-container').fadeOut();
+  // $('.feedback-bug').fadeOut();
+  // $('.feedback-request').fadeOut();
+  // $('.feedback-contact').fadeOut();
+  // $('.feedback-main').fadeOut();
+  $('.main-wrapper').fadeOut();
+
+
 
 });
 
@@ -260,7 +279,6 @@ $(document).on("click", '#feedback-back', function (e) {
   $('.feedback-contact').hide();
   $('.feedback-main').show();
 });
-
 
 
 
@@ -390,4 +408,90 @@ $(document).on("click", '#feedback-back', function (e) {
   // })
 
 
+
+
+  // $('#feedback').click(function() {
+  //   $('.feedback-wrapper').fadeToggle();
+  //   });
+
+  //   $('#feedback-report').click(function() {
+  //     $('.feedback-main').hide();
+  //     $('.feedback-bug').fadeIn();
+  //     });
+
+  //     $('#feedback-contact').click(function() {
+  //       $('.feedback-main').hide();
+  //       $('.feedback-contact').fadeIn();
+  //       });
+
+  //       $('#feedback-request').click(function() {
+  //         $('.feedback-main').hide();
+  //         $('.feedback-request').fadeIn();
+  //         });
+  
+
+  //     $('#feedback-close').click(function() {
+  //       $('.feedback-wrapper').fadeOut();
+  //       // $('.feedback-bug').fadeOut();
+  //       // $('.feedback-request').fadeOut();
+  //       // $('.feedback-contact').fadeOut();
+  //       // $('.feedback-main').fadeOut();
+  //       });
+    
+  //       $('#feedback-back').click(function() {
+    
+  //           $('.feedback-bug').fadeOut();
+  //           $('.feedback-request').fadeOut();
+  //           $('.feedback-contact').fadeOut();
+  //           $('.feedback-main').fadeIn();
+  //           });
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
+
+
+
+// $(document).on("click", '#feedback-report', function (e) {
+
+//   $('.feedback-main').hide();
+
+ 
+//   $('.feedback-bug').fadeIn();
+
+// });
+
+// $(document).on("click", '#feedback', function (e) {
+
+//   $('.feedback-main').fadeToggle();
+
+ 
+// });
+
+// $(document).on("click", '#feedback-close', function (e) {
+
+//   // $('.content-container').fadeOut();
+//   $('.feedback-bug').fadeOut();
+//   $('.feedback-request').fadeOut();
+//   $('.feedback-contact').fadeOut();
+//   $('.feedback-main').fadeOut();
+
+// });
+
+// $(document).on("click", '#feedback-back', function (e) {
+
+//   $('.feedback-bug').hide();
+//   $('.feedback-request').hide();
+//   $('.feedback-contact').hide();
+//   $('.content-main').fadeIn();
+// });

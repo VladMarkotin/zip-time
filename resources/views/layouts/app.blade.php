@@ -172,7 +172,7 @@
         <main class="py-4">
             @yield('content')
         </main>
-        @include('feedback')
+        @livewire('feedback')
     </div>
 
     <livewire:scripts />
