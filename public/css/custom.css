@@ -396,10 +396,6 @@ body {
 
 }
 
-input[type=file]{
-display: none;
-}
-
 .remove-upload{
   font-size: 12px;
   color: #c51111;

@@ -58,9 +58,9 @@ class Feedback extends Component
 
     public function updatedFiles()
     {
-        //  $this->validate([
-        //     'files.*' => 'image|max:2024', // 1MB Max
-        // ]);
+         $this->validate([
+            'files.*' => 'image|max:10024', // 10MB Max
+        ]);
         $text = 'Maximum of 6 files';
         $files = Storage::files(self::PATH);
         $count = count($files);

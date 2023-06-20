@@ -96,34 +96,18 @@
 
                     </div>
 
+                    <div class="flex-row d-flex justify-content-evenly mt-4 mb-0">
 
-                    <div class="flex-row d-flex justify-content-evenly mt-4">
-                        <a class="btn btn-outline-secondary btn-sm mx-auto w-5">
-                            <input type="file" multiple name="file" id="file" accept="image/*"
-                                wire:model="files"> <label for="file" class="mb-0 px-5" role="button"><i
-                                    class="fa fa-camera" aria-hidden="true"></i>&nbsp;&nbsp; upload
-                                files
-                                <div wire:loading wire:target="files" wire:key="files"><i
-                                        class="fa fa-spinner fa-spin  ml-2"
-                                        style="color: #A10000;  font-size: 17px;"></i> </div>
-
-                            </label></a>
-
-
-                        {{-- <div class="input-group">
-                              <input type="file" class="form-control" id="inputGroupFile02" multiple  wire:model="files">
-                              <a class="input-group-text" for="inputGroupFile02" wire:click="save">Upload</a>
-                            </div>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="inputGroupFile02" multiple
+                                wire:model="files">
                             <div wire:loading wire:target="files" wire:key="files"><i
-                              class="fa fa-spinner fa-spin  ml-2" style="color: #A10000;  font-size: 17px;"></i> </div> --}}
-
-                        {{-- <button type="button" class="btn btn- secondary btn-sm "><i class="fa fa-camera" aria-hidden="true"></i> Mark the bug</button> --}}
-                        {{-- <button type="button" class="btn btn-outline-secondary btn-sm "><i class="fa fa-video-camera"
-                          aria-hidden="true"></i> Record screen</button> --}}
+                                    class="fa fa-spinner fa-spin mt-2 mx-2"
+                                    style="color: #A10000;  font-size: 20px;"></i> </div>
+                        </div>
                     </div>
 
-
-                    <div class="row mt-3">
+                    <div class="row mt-2">
                         @foreach (str_ireplace('public/', '', Storage::files(self::PATH)) as $key => $file)
                             <div class="col-2 image">
                                 <img src="{{ url('storage/' . $file) }}" width="50px" height="50px"
@@ -135,7 +119,7 @@
                     </div>
 
 
-                    <div class="mt-4 mb-0">
+                    <div class="{{count(Storage::files(self::PATH)) < 1 ? 'mt-4' : 'mt-2'  }}">
                         <button class="btn btn- btn-block text-white"
                             style="background: #a10000; border-radius:8px"><span>Send feedback</span>
                             <div wire:loading wire:target="sendFeedback" wire:key="sendFeedback"><i
@@ -149,15 +133,12 @@
                 </div>
             </form>
             @if (count(Storage::files(self::PATH)) < 1)
-                <div class="footer">
+                <div class="footer mt-5">
                     <p class=" text-center text-secondary fw-bold  fst-italic">Your feedback will help us improve.
                     </p>
                 </div>
             @endif
         </div>
-
-
-
 
 
 
@@ -215,7 +196,7 @@
 
                 </div>
             </form>
-            <div class="p-0, mt-0">
+            <div class="p-0, mt-3">
                 <p class=" text-center text-secondary fw-bold  fst-italic">Your feedback will help us improve.</p>
             </div>
         </div>
