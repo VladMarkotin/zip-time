@@ -1,20 +1,23 @@
+
 @extends('layouts.app')
 @section('content')
     @livewire('add-log')
-
-    @if (Auth::check())
+  
+    @auth
         <a class="backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
             Add-log </a>
-    @endif
+    @endauth
+
+   
     <div class="container">
         @auth
-        <v-app>
-            <component v-bind:is="currComponentName" v-bind:data="currComponentProps">
-        </v-app>
+            <v-app>
+                <component v-bind:is="currComponentName" v-bind:data="currComponentProps">
+            </v-app>
         @endauth
         @guest
-        <h1>Index page</h1>
-        <p class="text">Go to Login Page</p>
+            <h1>Index page</h1>
+            <p class="text">Go to Login Page</p>
         @endguest
     </div>
 @endsection
