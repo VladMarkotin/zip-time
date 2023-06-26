@@ -115,7 +115,7 @@ class MainController
     {
         $id = Auth::id();
         $hashCodes = $this->savedTaskRepository->getUserHashCodes($id);
-
+//die(var_dump($hashCodes));
         return response()->json([
             'id' => $id,
             'hash_codes' => $hashCodes,

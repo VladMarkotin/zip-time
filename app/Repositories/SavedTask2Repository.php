@@ -22,8 +22,16 @@ class SavedTask2Repository
             ->where('user_id','=', $id)
             ->where('status', 1)
             ->get()->toArray();
+        $query = "SELECT s.hash_code, COUNT(s.task_name) q FROM `saved_tasks` s JOIN tasks t
+              ON s.hash_code = t.hash_code AND s.user_id = ". Auth::id()  ." AND s.status = 1 GROUP BY s.id ORDER BY s.priority DESC, q DESC";
+        $savedTasks = DB::select($query);//->toArray();
+        $saved = [];
+        //die(var_dump($savedTasks[0]->hash_code));
+        foreach ($savedTasks as $v) {
+            $saved[] = $v;
+        }
 
-        return ($savedTasks);
+        return ($saved);
     }
 
     public function getSavedTaskByHashCode(array $params)
