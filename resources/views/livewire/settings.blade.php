@@ -4,13 +4,13 @@
    @include('livewire.update')
    @include('livewire.info')
    @include('livewire.notes')
-  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" wire:ignore>
+  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-           aria-controls="v-pills-home" aria-selected="true">
+           aria-controls="v-pills-home" aria-selected="true" wire:ignore>
            Saved tasks
     </a>
     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" 
-        role="tab" aria-controls="v-pills-profile" aria-selected="false">
+        role="tab" aria-controls="v-pills-profile" aria-selected="false"wire:ignore>
         Statistic
     </a>
     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
@@ -19,9 +19,9 @@
     </a>
     
   </div>
-  <div class="tab-content" id="v-pills-tabContent" wire:ignore>
+  <div class="tab-content" id="v-pills-tabContent" >
     <div class="tab-pane fade show active" id="v-pills-home"
-         role="tabpanel" aria-labelledby="v-pills-home-tab">
+         role="tabpanel" aria-labelledby="v-pills-home-tab" wire:ignore.self>
        <table class="table">
         <thead class="thead" style="background-color: #CD0000;color:#ffffff">
             <tr>
@@ -77,9 +77,9 @@
        {{ $savedTasks->links('livewire.pagination') }}
     </div>
     <div class="tab-pane fade" id="v-pills-profile"
-        role="tabpanel" aria-labelledby="v-pills-profile-tab">10</div>
+        role="tabpanel" aria-labelledby="v-pills-profile-tab" wire:ignore.self>10</div>
     <div class="tab-pane fade" id="v-pills-messages"
-         role="tabpanel" aria-labelledby="v-pills-messages-tab" wire:ignore>
+         role="tabpanel" aria-labelledby="v-pills-messages-tab" wire:ignore.self>
         
          <div class="card">
             <h5 class="card-header">Setting timezone</h5>
