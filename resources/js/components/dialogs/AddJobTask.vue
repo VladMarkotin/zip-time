@@ -163,6 +163,9 @@
 							)
 						this.$root.$forceUpdate()
 						this.toggle()
+						setTimeout(function (){
+							location.reload()
+						}, 3000);
 					}
 					this.$emit('setAlertData',response.status,response.message)
 					this.$emit('toggleAlertDialog')
