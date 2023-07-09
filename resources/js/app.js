@@ -16,6 +16,7 @@ Vue.component('Plan', require('./components/cards/Plan.vue').default);
 Vue.component('Stat', require('./components/cards/Stat.vue').default);
 Vue.component('Facebook', require('./components/Facebook.vue').default);
 Vue.component('ReadyDayPlan', require('./components/ReadyDayPlan.vue').default);
+Vue.component('PersonalResults', require('./components/dialogs/PersonalResults.vue').default);
 
 const app =
 	new Vue

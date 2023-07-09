@@ -141,16 +141,18 @@
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span style="color: rgb(94, 155, 94); font-weight: bold">
+                                    {{ Auth::user()->name }} 
+                                    <span style="color: rgb(94, 155, 94); font-weight: bold" id="total-results">
                                         [ rating: @php
                                             $rating = \app\models\User::where('id', Auth::id())
                                                 ->pluck('rating')
                                                 ->first();
                                             
                                             echo $rating;
-                                        @endphp ] </span>
+                                        @endphp ]
+                                    </span>
                                 </a>
-
+                                
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('settings') }}">Settings</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -164,6 +166,11 @@
                                         @csrf
                                     </form>
                                 </div>
+                            </li>
+                            <li>
+                                
+                                    <personal-results />
+                                
                             </li>
                         @endguest
                     </ul>
