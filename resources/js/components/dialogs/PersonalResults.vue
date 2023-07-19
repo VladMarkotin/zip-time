@@ -4,9 +4,9 @@
       <template v-slot:title> Your current personal results:</template>
 
       <v-card-text>
-        For now you are better than {{result}}% of users in your group<br />
-        For now you are more responsible than {{result}}% of all users<br />
-        For now Quipl estimate your purposefulness higher than 89% of users<br/>
+        For now you are better than {{better_then}}% of users in your group<br />
+        For now you are responsible on {{more_pesponsible}}% <br /> <!-- It has to be more_responsible than % of users in the group-->
+        For now Quipl estimate your purposefulness as {{user_purposelness}}% among users in your group<br/>
         <a href="#">How do we get that results?</a>
       </v-card-text>
     </v-card>
@@ -18,7 +18,9 @@
   export default
       {
           data: () => ({
-              
+              better_then: 0,
+              more_pesponsible: 0,
+              user_purposelness: 0
               
           }),
           methods :
@@ -32,7 +34,9 @@
               await axios.post('/get-results')
               .then((response) => {
                   //this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
-                  
+                  this.better_then = response.data.better
+                  this.more_pesponsible = response.data.more_pesponsible
+                  this.user_purposelness = response.data.user_purposelness
               })
           }
       }
