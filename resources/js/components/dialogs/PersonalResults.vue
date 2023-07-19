@@ -29,11 +29,11 @@
           },
           async created() {
             //alert('PersonalResults')
-              /*await axios.post('/getSavedTasks')
+              await axios.post('/get-results')
               .then((response) => {
-                  this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
+                  //this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
                   
-              })*/
+              })
           }
       }
 </script>

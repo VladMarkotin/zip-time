@@ -53,6 +53,8 @@ Route::middleware(['auth'])->group(function () {
 
 //Add job
     Route::post('/addJob', [App\Http\Controllers\MainController::class, 'addJob']);
+    //user`s results
+    Route::post('/get-results', [App\Http\Controllers\MainController::class, 'getUserResults']);
 
     //History routes
     Route::prefix('hist')->group(function () {
