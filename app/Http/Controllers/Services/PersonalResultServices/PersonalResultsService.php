@@ -3,8 +3,8 @@ namespace App\Http\Controllers\Services\PersonalResultServices;
 
 
 use Carbon\Carbon;
-use Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class PersonalResultsService 
 {

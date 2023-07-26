@@ -260,7 +260,9 @@ $(document).on("click", '#feedback-back', function (e) {
 });
 
 
-
+$('.c-toggle').on( "mouseover", function() {
+  show('personal-results')
+} );
 
 
 

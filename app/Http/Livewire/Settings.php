@@ -27,7 +27,7 @@ class Settings extends Component
 
     public function render(SavedTask $savedTask)
     {
-        sleep(1);
+       
         $this->savedTasks = $savedTask
             ->where('user_id', Auth::id())
             ->paginate(5);
@@ -93,6 +93,7 @@ class Settings extends Component
 
     public function getNote($id)
     {
+        sleep(1);
         $this->noteID = $id;
         $this->notes = SNS::getNote($id);
         $this->removeDeletedNote = SNS::getNote($id);

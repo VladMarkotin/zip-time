@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Services\PersonalResultServices\traits;
 
 use App\Models\User;
 use App\Models\TimetableModel;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 trait GetUserPurposelness
 {

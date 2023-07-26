@@ -4,14 +4,15 @@
       <template v-slot:title> Your current personal results:</template>
 
       <v-card-text>
-        For now you are better than {{better_then}}% of users in your group<br />
-        For now you are responsible on {{more_pesponsible}}% <br /> <!-- It has to be more_responsible than % of users in the group-->
-        For now Quipl estimate your purposefulness as {{user_purposelness}}% among users in your group<br/>
+        For now you are better than <strong>{{better_then}}%</strong>  of users in your group<br />
+       For now you are responsible on {{more_pesponsible}}% <br />   <!--It has to be more_responsible than % of users in the group -->
+         For now Quipl estimate your purposefulness as {{user_purposelness}}% among users in your group<br/>
         <a href="#">How do we get that results?</a>
       </v-card-text>
     </v-card>
     </div>
-  </template>
+  </template> 
+
   <script>
   import {mdiCancel,mdiSendClock} from '@mdi/js'
   
