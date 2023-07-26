@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Services\PersonalResultServices\traits;
 
 
-use DB;
 use Carbon\Carbon;
 use UserGroupTrait;
+use Illuminate\Support\Facades\DB;
 
 trait GetWorserUsersTrait
 {
