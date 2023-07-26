@@ -26,12 +26,14 @@ use App\Http\Controllers\Services\AddPlanService;
 use App\Http\Controllers\Services\HashCodeService;
 use App\Http\Controllers\Services\EstimationService;
 use App\Http\Controllers\Services\GetDayPlanService;
+use App\Http\Controllers\Services\PersonalResultServices\PersonalResultsService;
 use App\Repositories\DayPlanRepositories\GetPlanRepository;
 /* Dependencies for notifications */
 use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 /* end */
 use App\Models\TimetableModel;
+use App\Models\DefaultConfigs;
 
 class MainController
 {
@@ -51,6 +53,8 @@ class MainController
     private $weekendRepository         = null;
     private $userRatings               = null;
     private $timetableModel            = null;
+    private $personalResultsService    = null;
+    private $defaultConfigs            = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -66,7 +70,10 @@ class MainController
                                 UserNotification $userNotification,
                                 WeekendRepository $weekendRepository,
                                 RatingService $userRatings,
-                                TimetableModel $timetableModel)
+                                TimetableModel $timetableModel,
+                                PersonalResultsService $personalResultsService,
+                                DefaultConfigs $defaultConfigs
+                                )
     {
         
         $this->savedTaskRepository       = $taskRepository;
@@ -85,6 +92,8 @@ class MainController
         $this->weekendRepository         = $weekendRepository;
         $this->userRatings               = $userRatings;
         $this->timetableModel            = $timetableModel;
+        $this->personalResultsService    = $personalResultsService;
+        $this->defaultConfigs            = $defaultConfigs; 
     }
 
     public function addHashCode(Request $request)
@@ -412,6 +421,14 @@ class MainController
         }
         
         return ($preparedTasks);
+    }
+
+    public function getUserResults(Request $request)
+    {
+        $configs = DefaultConfigs::where('config_block_id',1)->get()->toArray();//select('config_data');//->where('config_block_id',1);
+        $results = $this->personalResultsService->getResults($configs);
+        die(json_encode($results));
+        //die(json_encode($configs));
     }
 
     private function getLastTimetableId()
