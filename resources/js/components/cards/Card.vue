@@ -21,6 +21,60 @@
 					 hours
 				</v-list-item-content>
 			</v-list-item>
+			<template>
+				<v-row >
+					<v-dialog
+					v-model="dialog"
+					persistent
+					width="500"
+					>
+					<template v-slot:activator="{ props }">
+					
+						<v-btn icon @click="dialog=true">
+												<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
+						</v-btn>
+						
+					</template>
+					<v-card>
+						<v-card-title class="text-h5">
+						Edit card
+						</v-card-title>
+						<v-card-text>
+							Edit task`s priority:
+							
+							<v-select
+								:items="priorities"
+								v-model= priority
+								label="Set Priority"
+								solo
+							></v-select>
+							 Edit task`s time: 
+							 <v-time-picker
+							   v-model="time"
+							   color="red">
+							</v-time-picker>
+						</v-card-text>
+						<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn
+							color="green-darken-1"
+							variant="text"
+							@click="dialog = false"
+						>
+							Cancel
+						</v-btn>
+						<v-btn
+							color="green-darken-1"
+							variant="text"
+							@click="changeTime()"
+						>
+							Save
+						</v-btn>
+						</v-card-actions>
+					</v-card>
+					</v-dialog>
+				</v-row>
+			</template>
 			<v-list-item>
 				<v-list-item-content>Details:</v-list-item-content>
 				<v-list-item-content class="align-end">
@@ -77,18 +131,22 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate} from '@mdi/js'
+	import {mdiUpdate, mdiPencil} from '@mdi/js'
 	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
 		props : ['item', 'num'],
 		data()
 		{
-			return {icons      : {mdiUpdate},
+			return {icons      : {mdiUpdate,mdiPencil},
 			        isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
+					dialog     : false,   
 					checked: true,
+					time       : this.item.time,
+					priority   : this.item.priority,
+					priorities : [1,2,3]
 			}
 		},
 		components : {Alert},
@@ -140,6 +198,11 @@
 				this.alert.type = type
 				this.alert.text = text
 			},
+			changeTime(item)
+			{
+				alert('Change time')
+				console.log(item)
+			}
 		}
 	}
 </script>
