@@ -394,7 +394,10 @@ class EstimationRepository
         return -1;
     }
 
-    private function sumTime($timetableId)
+    /**
+     * also use it in EditTaskService  
+     */
+    public function sumTime($timetableId)
     {
         $query = "SELECT SEC_TO_TIME( SUM(TIME_TO_SEC (STR_TO_DATE(`time`, '%H:%i') ) ) ) AS Sum_Of_time FROM tasks WHERE `timetable_id` = $timetableId";
         $timeOfPlan = DB::select($query);

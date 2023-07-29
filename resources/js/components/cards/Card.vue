@@ -66,7 +66,7 @@
 						<v-btn
 							color="green-darken-1"
 							variant="text"
-							@click="changeTime()"
+							@click="changeTime(item)"
 						>
 							Save
 						</v-btn>
@@ -146,7 +146,7 @@
 					checked: true,
 					time       : this.item.time,
 					priority   : this.item.priority,
-					priorities : [1,2,3]
+					priorities : [1,2,3] //['normal', 'important', 'super important']
 			}
 		},
 		components : {Alert},
@@ -200,8 +200,24 @@
 			},
 			changeTime(item)
 			{
-				alert('Change time')
-				console.log(item)
+				console.log(item.priority)
+				console.log(this.time)
+				if ( (item.time != this.time ) || (item.priority != this.priority) ) {
+					axios.post('/edit-card',{task_id : item.taskId, time : this.time, priority: this.priority}) // type : item.type
+					.then((response) => {
+						this.isShowAlert = true;
+						
+						if (response.data.status == 'success') {
+							item.time = this.time
+							item.priority = this.priority
+							this.dialog = false
+						}
+						this.setAlertData(response.data.status, response.data.message)
+						setTimeout( () => {
+							this.isShowAlert = false;
+						},3000)
+				  })
+				}
 			}
 		}
 	}
