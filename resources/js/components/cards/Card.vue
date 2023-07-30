@@ -21,20 +21,23 @@
 					 hours
 				</v-list-item-content>
 			</v-list-item>
-			<template>
-				<v-row >
+
+			<v-list-item>
+				<v-list-item-content>Details:</v-list-item-content>
+				<v-list-item-content class="align-end">
+					<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
+				</v-list-item-content>
+				
 					<v-dialog
 					v-model="dialog"
 					persistent
 					width="500"
 					>
 					<template v-slot:activator="{ props }">
-					
-						<v-btn icon @click="dialog=true">
-												<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
-						</v-btn>
-						
-					</template>
+					<v-btn icon @click="dialog=true">
+						<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
+					</v-btn>
+				</template>
 					<v-card>
 						<v-card-title class="text-h5">
 						Edit card
@@ -73,19 +76,91 @@
 						</v-card-actions>
 					</v-card>
 					</v-dialog>
-				</v-row>
-			</template>
-			<v-list-item>
-				<v-list-item-content>Details:</v-list-item-content>
-				<v-list-item-content class="align-end">
-					<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
-				</v-list-item-content>
+
+					
+				
 			</v-list-item>
 			<v-list-item>
 				<v-list-item-content>Note:</v-list-item-content>
+				
 				<v-list-item-content class="align-end">
 					<v-textarea counter="256" rows="2" outlined shaped v-model="item.notes"></v-textarea>
 				</v-list-item-content>
+				
+						<v-dialog
+						v-model="dialogNotes"
+						scrollable
+						width="auto"
+						>
+						<template v-slot:activator="{ props }">
+							<v-btn
+							icon
+							v-bind="props"
+							@click="getAllNotesForTask(item)"
+							>
+							<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
+							</v-btn>
+						</template>
+						<v-card
+									width="400"
+									title="This is a title"
+									subtitle="This is a subtitle"
+									text="This is content">
+								<v-card-title>Notes list</v-card-title>
+								<v-divider></v-divider>
+								<v-card-text style="height: 300px;">
+									<template>
+										<div class="d-flex align-center flex-column">
+    										
+												<v-card
+												width="800"
+												title="This is a title"
+												subtitle="This is a subtitle"
+												text="This is content"
+												v-model="notesList"
+												v-for="(item, i) in notesList"
+      											:key="i"
+												>
+												<v-card-title >
+         											 Note from {{ item.created_at }}
+												</v-card-title>
+												<v-card-text class="bg-white text--primary">
+													<b>
+														{{ item.note }}
+													</b>
+													<v-checkbox
+														v-model="ex4[i]"
+														label="red"
+														color="red"
+														value="red"
+														hide-details
+													></v-checkbox>
+												</v-card-text>
+											</v-card>
+										</div>
+										
+									</template>
+								</v-card-text>
+								<v-divider></v-divider>
+								<v-card-actions>
+								<v-btn
+									color="blue-darken-1"
+									variant="text"
+									@click="dialogNotes = false"
+								>
+									Close
+								</v-btn>
+								<v-btn
+									color="blue-darken-1"
+									variant="text"
+									@click="dialogNotes = false"
+								>
+									Save
+								</v-btn>
+								</v-card-actions>
+							</v-card>
+							</v-dialog> 
+					
 			</v-list-item>
 		</v-list>
 		<v-divider></v-divider>
@@ -131,27 +206,59 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil} from '@mdi/js'
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline} from '@mdi/js'
 	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
 		props : ['item', 'num'],
 		data()
 		{
-			return {icons      : {mdiUpdate,mdiPencil},
+			return {icons      : {mdiUpdate,mdiPencil, mdiNotebookEditOutline},
 			        isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
 					dialog     : false,   
+					dialogNotes: false,
 					checked: true,
 					time       : this.item.time,
 					priority   : this.item.priority,
-					priorities : [1,2,3] //['normal', 'important', 'super important']
+					priorities : [1,2,3], //['normal', 'important', 'super important']
+					notesList  : null,
+					ex4: [ 'red',
+							'indigo',
+							'orange',
+							'primary',
+							'secondary',
+							'success',
+							'info',
+							'warning',
+							'error',
+							'red darken-3',
+							'indigo darken-3',
+							'orange darken-3',
+						]
 			}
 		},
 		components : {Alert},
 		methods :
 		{
+			getAllNotesForTask(item) {
+				console.log(item)
+				this.dialogNotes = true
+				/**query for getting all notes */
+				axios.post('/get-saved-notes',{task_id : item.taskId, hash: item.hash})
+				.then((response) => {
+					//this.isShowAlert = true;
+					this.notesList = response.data
+					console.log(this.notesList[0].created_at)
+					
+					//this.setAlertData(response.data.status, response.data.message)
+					/*setTimeout( () => {
+						this.isShowAlert = false;
+						//debugger;
+					},3000)*/
+				  })
+			},
 			sendIsReadyState(item)
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})

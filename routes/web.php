@@ -86,6 +86,8 @@ Route::middleware(['auth'])->group(function () {
     //Backlog
     Route::get('backlog', [App\Http\Controllers\BackLogController::class, 'index'])->name('backlog');
 
+    //getting notes for concrete task
+    Route::post('/get-saved-notes', [App\Http\Controllers\EditController::class, 'getSavedNotes'])->name('getSavedNotes');
 
 
 
