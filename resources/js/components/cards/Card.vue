@@ -20,15 +20,7 @@
 				<v-list-item-content class="align-end" v-else>{{item.time}}
 					 hours
 				</v-list-item-content>
-			</v-list-item>
-
-			<v-list-item>
-				<v-list-item-content>Details:</v-list-item-content>
-				<v-list-item-content class="align-end">
-					<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
-				</v-list-item-content>
-				
-					<v-dialog
+				<v-dialog
 					v-model="dialog"
 					persistent
 					width="500"
@@ -76,6 +68,87 @@
 						</v-card-actions>
 					</v-card>
 					</v-dialog>
+			</v-list-item>
+
+			<v-list-item>
+				<v-list-item-content>Details:</v-list-item-content>
+				<v-list-item-content class="align-end">
+					<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
+				</v-list-item-content>
+				<v-dialog
+						v-model="dialogNotes"
+						scrollable
+						width="auto"
+						>
+						<template v-slot:activator="{ props }">
+							<v-btn
+							icon
+							v-bind="props"
+							@click="getAllNotesForTask(item)"
+							>
+							<v-icon color="#D71700">{{icons.mdiChartGantt}}</v-icon>
+							</v-btn>
+						</template>
+						<v-card
+									width="400"
+									title="This is a title"
+									subtitle="This is a subtitle"
+									text="This is content">
+								<v-card-title>Notes list</v-card-title>
+								<v-divider></v-divider>
+								<v-card-text style="height: 300px;">
+									<template>
+										<div class="d-flex align-center flex-column">
+    										
+												<v-card
+												width="800"
+												title="This is a title"
+												subtitle="This is a subtitle"
+												text="This is content"
+												v-model="notesList"
+												v-for="(item, i) in notesList"
+      											:key="i"
+												>
+												<v-card-title >
+         											 Note from {{ item.created_at }}
+												</v-card-title>
+												<v-card-text class="bg-white text--primary">
+													<b>
+														{{ item.note }}
+													</b>
+													<v-checkbox
+														v-model="ex4[i]"
+														label="red"
+														color="red"
+														value="red"
+														hide-details
+													></v-checkbox>
+												</v-card-text>
+											</v-card>
+										</div>
+										
+									</template>
+								</v-card-text>
+								<v-divider></v-divider>
+								<v-card-actions>
+								<v-btn
+									color="blue-darken-1"
+									variant="text"
+									@click="dialogNotes = false"
+								>
+									Close
+								</v-btn>
+								<v-btn
+									color="blue-darken-1"
+									variant="text"
+									@click="dialogNotes = false"
+								>
+									Save
+								</v-btn>
+								</v-card-actions>
+							</v-card>
+							</v-dialog> 
+
 
 					
 				
@@ -206,14 +279,14 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline} from '@mdi/js'
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt } from '@mdi/js'
 	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
 		props : ['item', 'num'],
 		data()
 		{
-			return {icons      : {mdiUpdate,mdiPencil, mdiNotebookEditOutline},
+			return {icons      : {mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt },
 			        isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
