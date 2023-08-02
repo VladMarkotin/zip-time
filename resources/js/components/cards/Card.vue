@@ -76,7 +76,7 @@
 					<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
 				</v-list-item-content>
 				<v-dialog
-						v-model="dialogNotes"
+						v-model="dialogDetails"
 						scrollable
 						width="auto"
 						>
@@ -84,49 +84,58 @@
 							<v-btn
 							icon
 							v-bind="props"
-							@click="getAllNotesForTask(item)"
+							@click="getAllDetailsForTask(item)"
 							>
 							<v-icon color="#D71700">{{icons.mdiChartGantt}}</v-icon>
 							</v-btn>
 						</template>
 						<v-card
-									width="400"
+									width="800"
 									title="This is a title"
 									subtitle="This is a subtitle"
 									text="This is content">
-								<v-card-title>Notes list</v-card-title>
+								<v-card-title>Plan`s details</v-card-title>
 								<v-divider></v-divider>
 								<v-card-text style="height: 300px;">
 									<template>
-										<div class="d-flex align-center flex-column">
-    										
-												<v-card
-												width="800"
-												title="This is a title"
-												subtitle="This is a subtitle"
-												text="This is content"
-												v-model="notesList"
-												v-for="(item, i) in notesList"
-      											:key="i"
+										<v-row>
+											<v-text-field
+												:counter="10"
+												label="Detail or step you want to add"
+												required
+											></v-text-field>
+											<v-btn icon>
+												<v-icon md="1"
+													color="#D71700"
+													v-on:click="addDetail"> {{icons.mdiPlex}}
+												</v-icon>
+											</v-btn>
+										</v-row>
+										<v-timeline side="end">
+											<v-timeline-item
+												v-for="item in details"
+												:key="item.id"
+												:dot-color="item.color"
+												size="small"
+											>
+												<v-alert
+												:value="true"
+												:color="item.color"
+												:icon="item.icon"
 												>
-												<v-card-title >
-         											 Note from {{ item.created_at }}
-												</v-card-title>
-												<v-card-text class="bg-white text--primary">
-													<b>
-														{{ item.note }}
-													</b>
-													<v-checkbox
-														v-model="ex4[i]"
-														label="red"
-														color="red"
-														value="red"
-														hide-details
-													></v-checkbox>
-												</v-card-text>
-											</v-card>
-										</div>
-										
+												Lorem ipsum dolor sit amet, no nam oblique veritus.
+												 Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril
+												  disputando voluptatibus, vix an salutandi sententiae.
+												  <v-checkbox
+													v-model="ex4"
+													label="Done"
+													color="#483285"
+													value="red"
+													hide-details
+												></v-checkbox>
+												</v-alert>
+											</v-timeline-item>
+										</v-timeline>
 									</template>
 								</v-card-text>
 								<v-divider></v-divider>
@@ -146,11 +155,8 @@
 									Save
 								</v-btn>
 								</v-card-actions>
-							</v-card>
-							</v-dialog> 
-
-
-					
+						</v-card>
+				</v-dialog> 		
 				
 			</v-list-item>
 			<v-list-item>
@@ -279,44 +285,53 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt } from '@mdi/js'
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex } from '@mdi/js'
 	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
 		props : ['item', 'num'],
 		data()
 		{
-			return {icons      : {mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt },
+			return {
+					icons      : {mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex },
 			        isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
 					dialog     : false,   
 					dialogNotes: false,
+					dialogDetails: false,
 					checked: true,
 					time       : this.item.time,
 					priority   : this.item.priority,
 					priorities : [1,2,3], //['normal', 'important', 'super important']
 					notesList  : null,
-					ex4: [ 'red',
-							'indigo',
-							'orange',
-							'primary',
-							'secondary',
-							'success',
-							'info',
-							'warning',
-							'error',
-							'red darken-3',
-							'indigo darken-3',
-							'orange darken-3',
-						]
-			}
-		},
+					details: [
+						{
+							id: 1,
+							color: '#D71700',
+							icon: 'mdi-information',
+						},
+						{
+							id: 2,
+							color: '#D71700',
+							icon: 'mdi-alert-circle',
+						},
+      				],
+					ex4: []
+				}
+			},
 		components : {Alert},
 		methods :
 		{
+			getAllDetailsForTask(item) {
+				this.dialogDetails = true
+			},
+
+			addDetail(){
+
+			},
+
 			getAllNotesForTask(item) {
-				console.log(item)
 				this.dialogNotes = true
 				/**query for getting all notes */
 				axios.post('/get-saved-notes',{task_id : item.taskId, hash: item.hash})
