@@ -89,7 +89,8 @@ Route::middleware(['auth'])->group(function () {
     //getting notes for concrete task
     Route::post('/get-saved-notes', [App\Http\Controllers\EditController::class, 'getSavedNotes'])->name('getSavedNotes');
 
-
+    //Upgrade details in functionality in plan
+    Route::post('/add-sub-task', [App\Http\Controllers\SubPlanController::class, 'createSubPlan'])->name('addSubTask');
 
 });
 

@@ -99,43 +99,96 @@
 								<v-card-text style="height: 300px;">
 									<template>
 										<v-row>
-											<v-text-field
+											<v-col>
+
+												<v-text-field
+												width="20px"
+												v-model="subTasks.title"
 												:counter="10"
-												label="Detail or step you want to add"
+												label="Subtask title"
 												required
+												></v-text-field>
+											</v-col>
+											<v-col>
+
+											<v-text-field
+											width="20px"
+											v-model="subTasks.text"
+											:counter="256"
+											label="Subtask details"
+											required
 											></v-text-field>
-											<v-btn icon>
-												<v-icon md="1"
+											</v-col>
+											<v-col>
+
+												<v-text-field
+												width="20px"
+												v-model="subTasks.position"
+												hide-details
+												single-line
+												type="number"
+												/>
+											</v-col>
+											<v-col>
+												<v-text-field
+												width="20px"
+												v-model="subTasks.weight"
+												hide-details
+												single-line
+												type="number"
+												/>
+											</v-col>
+											<v-col>
+												<v-checkbox
+												 label="is required subtask?"
+												 v-model="subTasks.checkpoint">
+												</v-checkbox>
+											</v-col>
+											<v-col>
+												<v-btn icon>
+													<v-icon md="1"
 													color="#D71700"
-													v-on:click="addDetail"> {{icons.mdiPlex}}
+													v-on:click="addDetail(item)"> {{icons.mdiPlex}}
 												</v-icon>
 											</v-btn>
+											</v-col>
+										
 										</v-row>
-										<v-timeline side="end">
-											<v-timeline-item
-												v-for="item in details"
-												:key="item.id"
-												:dot-color="item.color"
-												size="small"
-											>
-												<v-alert
-												:value="true"
-												:color="item.color"
-												:icon="item.icon"
-												>
-												Lorem ipsum dolor sit amet, no nam oblique veritus.
-												 Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril
-												  disputando voluptatibus, vix an salutandi sententiae.
-												  <v-checkbox
-													v-model="ex4"
-													label="Done"
-													color="#483285"
-													value="red"
-													hide-details
-												></v-checkbox>
-												</v-alert>
-											</v-timeline-item>
-										</v-timeline>
+										<v-divider></v-divider>
+										<v-row>
+
+											<template>
+												<v-expansion-panels>
+													<v-expansion-panel
+													v-for="(v, i) in details"
+													:key="i"
+													>
+													<v-expansion-panel-header>
+														{{v.title}}
+														
+														<v-btn icon v-on:click="deleteSubTask"> 
+															<v-icon md="1"
+																color="#D71700">
+																{{icons.mdiDelete}}
+															</v-icon>
+														</v-btn>
+													</v-expansion-panel-header>
+													<v-expansion-panel-content>
+														{{ v.text }}
+														
+													</v-expansion-panel-content>
+													</v-expansion-panel>
+												</v-expansion-panels>
+												<v-btn icon
+												v-on:click="createSubPlan"
+												v-if="details.length > 0">
+													<v-icon md="1"
+													color="#D71700"
+													> {{icons.mdiPlex}}
+												</v-icon>
+												</v-btn>
+											</template>
+										</v-row>
 									</template>
 								</v-card-text>
 								<v-divider></v-divider>
@@ -285,7 +338,7 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex } from '@mdi/js'
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete } from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
@@ -293,7 +346,7 @@
 		data()
 		{
 			return {
-					icons      : {mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex },
+					icons      : {mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete }, //mdiContentSaveCheckOutline
 			        isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
@@ -305,18 +358,16 @@
 					priority   : this.item.priority,
 					priorities : [1,2,3], //['normal', 'important', 'super important']
 					notesList  : null,
-					details: [
-						{
-							id: 1,
-							color: '#D71700',
-							icon: 'mdi-information',
-						},
-						{
-							id: 2,
-							color: '#D71700',
-							icon: 'mdi-alert-circle',
-						},
-      				],
+					id: this.item.id,
+					subTasks: {
+						title: '',
+						text: '',
+						position:1,
+						weight: 100,
+						checkpoint: false,
+						is_ready: false,
+					},
+					details: [],
 					ex4: []
 				}
 			},
@@ -327,9 +378,46 @@
 				this.dialogDetails = true
 			},
 
-			addDetail(){
+			addDetail(item){
+				console.log(this.item.taskId)
+				this.subTasks.task_id = this.item.taskId
+				this.details.push(this.subTasks) 
+				if (this.subTasks.length > 0) {
 
+				}
 			},
+
+			createSubPlan(item){
+				console.log(item.taskId)
+				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: this.details})
+				.then((response) => {
+					this.isShowAlert = true;
+					this.setAlertData(response.data.status, response.data.message)
+					setTimeout( () => {
+						this.isShowAlert = false;
+						//debugger;
+					},3000)
+				  })
+			},
+
+			deleteSubTask(item){
+				var index = this.details.indexOf(item)
+            	this.details.splice(index, 1);
+			},
+
+			saveNotes(){
+				axios.post('/add-sub-task',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
+				.then((response) => {
+					this.isShowAlert = true;
+					this.setAlertData(response.data.status, response.data.message)
+					setTimeout( () => {
+						this.isShowAlert = false;
+						//debugger;
+					},3000)
+				  })
+			},
+
+			/*Notes*/
 
 			getAllNotesForTask(item) {
 				this.dialogNotes = true
