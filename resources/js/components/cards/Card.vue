@@ -119,25 +119,7 @@
 											required
 											></v-text-field>
 											</v-col>
-											<v-col>
-
-												<v-text-field
-												width="20px"
-												v-model="subTasks.position"
-												hide-details
-												single-line
-												type="number"
-												/>
-											</v-col>
-											<v-col>
-												<v-text-field
-												width="20px"
-												v-model="subTasks.weight"
-												hide-details
-												single-line
-												type="number"
-												/>
-											</v-col>
+											
 											<v-col>
 												<v-checkbox
 												 label="is required subtask?"
@@ -367,6 +349,14 @@
 						checkpoint: false,
 						is_ready: false,
 					},
+					createdSubTasks: {
+						title: '',
+						text: '',
+						position:1,
+						weight: 100,
+						checkpoint: false,
+						is_ready: false,
+					},
 					details: [],
 					ex4: []
 				}
@@ -376,20 +366,29 @@
 		{
 			getAllDetailsForTask(item) {
 				this.dialogDetails = true
+				axios.post('/get-sub-tasks',{task_id : item.taskId})
+				.then((response) => {
+					this.isShowAlert = true;
+					response.data.data.forEach(element => {
+						this.details.push({
+							title: element.title,
+							text:  element.text
+						}) 
+					});
+					console.log(this.details)
+					this.setAlertData(response.data.status, response.data.message)
+				  })
 			},
 
 			addDetail(item){
-				console.log(this.item.taskId)
 				this.subTasks.task_id = this.item.taskId
 				this.details.push(this.subTasks) 
-				if (this.subTasks.length > 0) {
-
-				}
+				this.createSubPlan(this.subTasks)
 			},
 
 			createSubPlan(item){
 				console.log(item.taskId)
-				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: this.details})
+				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
 				.then((response) => {
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)

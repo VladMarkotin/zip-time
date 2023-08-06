@@ -14,16 +14,24 @@ class SubPlanController extends Controller
 
     public function createSubPlan(Request $request)
     {
-        //TODO
-        /*$request->validate([
-            'title' => 'required|string|max:255|min:3',
-            'weight' => 'required|integer|max:100|min:1',
-            'position' => 'required|date',
-        ]);*/
+        //TODO Validation
         $subPlan = $request->all()['sub_plan'];
         
 
+        //die(var_dump($subPlan));// ok
         SubPlan::insert($subPlan);
-        die(var_dump($subPlan));// ok
+    }
+
+    public function getSubPlan(Request $request)
+    {
+        $subPlan = SubPlan::where('task_id', $request->get('task_id'))->get()->toArray();
+       
+        return (
+            response()->json([
+                'status' => 'success', 
+                'data' => $subPlan, 
+            ], 200)
+            ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
+        );
     }
 }
