@@ -37,7 +37,15 @@ class SubPlanController extends Controller
 
     public function delSubTask(Request $request)
     {
-        var_dump($request->all() );
-        die();
+        $id = $request->get('task_id');
+        $res = SubPlan::where('id',$id)->delete();
+        //die();
+    }
+
+    public function completeSubTask(Request $request)
+    {
+        $id = $request->get('task_id');
+        SubPlan::whereId($id)->update(['is_ready' => true]);
+        //die(var_dump($id));
     }
 }

@@ -148,7 +148,7 @@
 													<v-expansion-panel-header>
 														{{v.title}}
 														
-														<v-btn icon v-on:click="deleteSubTask(item)"> 
+														<v-btn icon v-on:click="deleteSubTask(v)"> 
 															<v-icon md="1"
 																color="#D71700">
 																{{icons.mdiDelete}}
@@ -157,7 +157,13 @@
 													</v-expansion-panel-header>
 													<v-expansion-panel-content>
 														{{ v.text }}
-														
+														<v-checkbox
+															v-model="v.is_ready"
+															label="Is Ready?"
+															color="red"
+															@change="completed(v)"
+															hide-details
+														></v-checkbox>
 													</v-expansion-panel-content>
 													</v-expansion-panel>
 												</v-expansion-panels>
@@ -170,14 +176,14 @@
 								<v-btn
 									color="blue-darken-1"
 									variant="text"
-									@click="dialogNotes = false"
+									@click="dialogDetails = false"
 								>
 									Close
 								</v-btn>
 								<v-btn
 									color="blue-darken-1"
 									variant="text"
-									@click="dialogNotes = false"
+									@click="dialogDetails = false"
 								>
 									Save
 								</v-btn>
@@ -364,10 +370,12 @@
 					response.data.data.forEach(element => {
 						this.details.push({
 							title: element.title,
-							text:  element.text
+							text:  element.text,
+							taskId: element.id,
+							is_ready: element.is_ready, 
 						}) 
 					});
-					console.log(this.details)
+					//console.log(this.details)
 					this.setAlertData(response.data.status, response.data.message)
 				  })
 			},
@@ -393,13 +401,24 @@
 
 			deleteSubTask(item){
 				var index = this.details.indexOf(item)
+				console.log(item)
 				axios.post('/del-sub-task',{task_id : item.taskId})
 				.then((response) => {
 					//this.isShowAlert = true;
 					console.log(this.details)
 					this.setAlertData(response.data.status, response.data.message)
 					this.details.splice(index, 1);
-				  })
+				})
+			},
+
+			completed(item){
+				axios.post('/complete-sub-task',{task_id : item.taskId})
+				.then((response) => {
+					//this.isShowAlert = true;
+					console.log(this.details)
+					this.setAlertData(response.data.status, response.data.message)
+					this.details.splice(index, 1);
+				})
 			},
 
 			saveNotes(){

@@ -93,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/add-sub-task', [App\Http\Controllers\SubPlanController::class, 'createSubPlan'])->name('addSubTask'); //
     Route::post('/get-sub-tasks', [App\Http\Controllers\SubPlanController::class, 'getSubPlan'])->name('get-sub-tasks');//del-sub-task
     Route::post('/del-sub-task', [App\Http\Controllers\SubPlanController::class, 'delSubTask'])->name('get-sub-tasks');//
+    Route::post('/complete-sub-task', [App\Http\Controllers\SubPlanController::class, 'completeSubTask'])->name('complete-sub-task');//
 });
 
 
