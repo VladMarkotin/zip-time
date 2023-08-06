@@ -148,7 +148,7 @@
 													<v-expansion-panel-header>
 														{{v.title}}
 														
-														<v-btn icon v-on:click="deleteSubTask"> 
+														<v-btn icon v-on:click="deleteSubTask(item)"> 
 															<v-icon md="1"
 																color="#D71700">
 																{{icons.mdiDelete}}
@@ -161,14 +161,6 @@
 													</v-expansion-panel-content>
 													</v-expansion-panel>
 												</v-expansion-panels>
-												<v-btn icon
-												v-on:click="createSubPlan"
-												v-if="details.length > 0">
-													<v-icon md="1"
-													color="#D71700"
-													> {{icons.mdiPlex}}
-												</v-icon>
-												</v-btn>
 											</template>
 										</v-row>
 									</template>
@@ -401,7 +393,13 @@
 
 			deleteSubTask(item){
 				var index = this.details.indexOf(item)
-            	this.details.splice(index, 1);
+				axios.post('/del-sub-task',{task_id : item.taskId})
+				.then((response) => {
+					//this.isShowAlert = true;
+					console.log(this.details)
+					this.setAlertData(response.data.status, response.data.message)
+					this.details.splice(index, 1);
+				  })
 			},
 
 			saveNotes(){

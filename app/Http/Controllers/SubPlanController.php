@@ -34,4 +34,10 @@ class SubPlanController extends Controller
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
     }
+
+    public function delSubTask(Request $request)
+    {
+        var_dump($request->all() );
+        die();
+    }
 }
