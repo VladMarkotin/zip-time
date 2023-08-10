@@ -146,14 +146,10 @@
 													:key="i"
 													>
 													<v-expansion-panel-header>
-														{{v.title}}
-														
-														<v-btn icon v-on:click="deleteSubTask(v)"> 
-															<v-icon md="1"
-																color="#D71700">
-																{{icons.mdiDelete}}
-															</v-icon>
-														</v-btn>
+														{{v.title}}  
+														<v-icon color="#D71700" v-if="v.checkpoint == 1">
+															{{icons.mdiMarkerCheck}}
+														</v-icon>	
 													</v-expansion-panel-header>
 													<v-expansion-panel-content>
 														{{ v.text }}
@@ -164,8 +160,16 @@
 															@change="completed(v)"
 															hide-details
 														></v-checkbox>
+														<v-btn icon v-on:click="deleteSubTask(v)"
+														v-if="v.checkpoint == 0"> 
+															<v-icon md="1"
+																color="#D71700">
+																{{icons.mdiDelete}}
+															</v-icon>
+														</v-btn>
 													</v-expansion-panel-content>
-													</v-expansion-panel>
+													
+												</v-expansion-panel>
 												</v-expansion-panels>
 											</template>
 										</v-row>
@@ -318,7 +322,7 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete } from '@mdi/js'  //mdiContentSaveCheckOutline
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete,mdiMarkerCheck}  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
@@ -326,8 +330,9 @@
 		data()
 		{
 			return {
-					icons      : {mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete }, //mdiContentSaveCheckOutline
-			        isShowAlert: false ,
+					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete }, //mdiContentSaveCheckOutline
+			        path: {mdiMarkerCheck},
+					isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
 					dialog     : false,   
@@ -373,6 +378,7 @@
 							text:  element.text,
 							taskId: element.id,
 							is_ready: element.is_ready, 
+							checkpoint: element.checkpoint
 						}) 
 					});
 					//console.log(this.details)
