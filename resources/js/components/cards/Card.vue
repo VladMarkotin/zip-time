@@ -104,8 +104,9 @@
 												<v-text-field
 												width="20px"
 												v-model="subTasks.title"
-												:counter="10"
+												:counter="256"
 												label="Subtask title"
+												v-on:keyup.enter="addDetail"
 												required
 												></v-text-field>
 											</v-col>
@@ -114,7 +115,7 @@
 											<v-text-field
 											width="20px"
 											v-model="subTasks.text"
-											:counter="256"
+											:counter="1000"
 											label="Subtask details"
 											required
 											></v-text-field>
@@ -175,6 +176,7 @@
 										</v-row>
 									</template>
 								</v-card-text>
+								<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlertInDetails">{{alert.text}}</v-alert> 
 								<v-divider></v-divider>
 								<v-card-actions>
 								<v-btn
@@ -333,6 +335,7 @@
 					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete }, //mdiContentSaveCheckOutline
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
+					isShowAlertInDetails: false,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
 					dialog     : false,   
@@ -371,7 +374,6 @@
 				this.dialogDetails = true
 				axios.post('/get-sub-tasks',{task_id : item.taskId})
 				.then((response) => {
-					this.isShowAlert = true;
 					response.data.data.forEach(element => {
 						this.details.push({
 							title: element.title,
@@ -390,18 +392,22 @@
 				this.subTasks.task_id = this.item.taskId
 				this.details.push(this.subTasks) 
 				this.createSubPlan(this.subTasks)
+				this.subTasks = {};
 			},
 
 			createSubPlan(item){
-				console.log(item.taskId)
 				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
 				.then((response) => {
-					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message)
+					//console.log(response)
+					this.isShowAlertInDetails = true;
+					this.setAlertData(response.data.elements, response.data.message)
 					setTimeout( () => {
-						this.isShowAlert = false;
+						this.isShowAlertInDetails = false;
 						//debugger;
 					},3000)
+				  })
+				  .catch(function (error) {
+					console.log(error)
 				  })
 			},
 
@@ -418,6 +424,7 @@
 			},
 
 			completed(item){
+				var index = this.details.indexOf(item)
 				axios.post('/complete-sub-task',{task_id : item.taskId})
 				.then((response) => {
 					//this.isShowAlert = true;
