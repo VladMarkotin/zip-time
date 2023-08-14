@@ -385,8 +385,8 @@ body {
   color: #c51111;
 }
 
-.test{
-    /* display: none; */
+.gptContainer{
+    display: none;
     width: 25rem;
     /* height: 100%; */
     position: fixed;

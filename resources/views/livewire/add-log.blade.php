@@ -1,8 +1,11 @@
 <div>
 
-    <a class="backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
+    @auth
+      <a class="backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
       <b>+</b>  Log 
-    </a>
+    </a>    
+    @endauth
+  
 
 
 

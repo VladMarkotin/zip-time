@@ -266,13 +266,13 @@ $(document).on("click", '#feedback-back', function (e) {
 
 $(document).on("click", '#gpt', function (e) {
 
-  $('.test').toggle();
+  $('.gptContainer').toggle();
 
 });
 
 $(document).on("click", '#gpt-close', function (e) {
 
-  $('.test').hide();
+  $('.gptContainer').hide();
 
 });
 

@@ -1,10 +1,13 @@
 <div>
-    <a class="gpt" id="gpt">
+    @auth
+      <a class="gpt" id="gpt">
         chatGPT
-    </a>
+    </a>    
+    @endauth
+  
 
 
-    <div class="test" wire:ignore.self>
+    <div class="gptContainer" wire:ignore.self>
 
         <div class="card gpt-wrapper">
             <div class="card-header gpt-card" style="border-radius: 17px 17px 0 0">
