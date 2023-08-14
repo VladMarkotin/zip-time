@@ -2,14 +2,18 @@
 namespace App\Http\Livewire;
 
 
+use App\Models\GPT;
+use App\Models\User;
+use App\Models\Message;
 use Livewire\Component;
 use App\Models\SavedTask;
 use App\Models\SavedNotes;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use App\Http\Livewire\LWServices\TaskStatService as TSS;
 use App\Http\Livewire\LWServices\SavedNoteService as SNS;
-use App\Models\User;
 
 class Settings extends Component
 {
@@ -24,24 +28,25 @@ class Settings extends Component
     public $removeDeletedNote;
     public $sT = null;
     public $taskName, $type, $priority, $time, $taskId, $timezone; //for updates
+    public $openai_api_secret, $openai_model, $oai_temp, $oai_tokens; //gpt
+    protected $listeners = ['gpt' => 'chatGPT'];
 
-    public function render(SavedTask $savedTask)
+
+
+
+    public function  mount()
     {
-        sleep(1);
-        $this->savedTasks = $savedTask
-            ->where('user_id', Auth::id())
-            ->paginate(5);
-        $timezones = \DateTimeZone::listIdentifiers( \DateTimeZone::ALL );
-        $currentTimezone = User::where('id', Auth::id())->pluck('timezone')->toArray();
-        $this->timezone = $currentTimezone;
-
-        return view('livewire.settings', [
-            'savedTasks' => $this->savedTasks,
-            'timezones' => $timezones,
-            'currentTz' => $currentTimezone[0],
-            'user_id'   => Auth::id(),
-        ]);
+       
+       $gpt = GPT::first();
+       if(!is_null( $gpt))
+       {
+       $this->openai_api_secret =  $gpt->openai_api_secret;
+       $this->openai_model =  $gpt->openai_model;
+       $this->oai_temp =  $gpt->oai_temp;
+       $this->oai_tokens =  $gpt->oai_tokens;
+       }
     }
+
 
     public function destroy(SavedTask $savedTask)
     {
@@ -130,4 +135,56 @@ class Settings extends Component
             'text' => 'Timezone updated Successfully',
         ]);
     }
+
+    public function saveGPTsettings()
+    {
+       $gpt = GPT::first();
+       if(!is_null( $gpt))
+       {
+        $gpt->openai_api_secret = $this->openai_api_secret; 
+        $gpt->openai_model = $this->openai_model;
+        $gpt->oai_temp = $this->oai_temp;
+        $gpt->oai_tokens = $this->oai_tokens;
+        $gpt->update();
+        $this->dispatchBrowserEvent('message', [
+            'text' => 'gpt updated Successfully',
+        ]);
+       }
+
+    //    GPT::create([
+    //     'openai_api_secret' => $this->openai_api_secret,
+    //     'openai_model' => $this->openai_model,
+    //     'oai_temp' =>$this->oai_temp,
+    //     'oai_tokens' => $this->oai_tokens,
+    // ]);
+    // $this->dispatchBrowserEvent('message', [
+    //     'text' => 'gpt updated Successfully',
+    // ]);
+    }
+
+
+   
+
+
+
+
+      
+    public function render(SavedTask $savedTask)
+    {
+        
+        $this->savedTasks = $savedTask
+            ->where('user_id', Auth::id())
+            ->paginate(5);
+        $timezones = \DateTimeZone::listIdentifiers( \DateTimeZone::ALL );
+        $currentTimezone = User::where('id', Auth::id())->pluck('timezone')->toArray();
+        $this->timezone = $currentTimezone;
+
+        return view('livewire.settings', [
+            'savedTasks' => $this->savedTasks,
+            'timezones' => $timezones,
+            'currentTz' => $currentTimezone[0],
+            'user_id'   => Auth::id(),
+        ]);
+    }
+  
 }

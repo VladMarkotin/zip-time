@@ -28,6 +28,12 @@ class Feedback extends Component
         ];
     }
 
+    
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function sendFeedback(): void
     {
         $this->validate();

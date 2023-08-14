@@ -1,4 +1,11 @@
 <div>
+
+    <a class="backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
+      <b>+</b>  Log 
+    </a>
+
+
+
     <div wire:ignore.self class="modal fade" id="AddbacklogModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">

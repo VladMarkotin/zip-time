@@ -1,19 +1,6 @@
-::-webkit-scrollbar
-{
-    width: 9px;
-}
-
-::-webkit-scrollbar-thumb
-{
-    background: linear-gradient(0deg, rgba(255,255,255,1) 27%, rgba(169,8,8,1) 54%);
-
-    border-radius: 6px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-    background: linear-gradient(transparent, #00c6ff);
-}
-
+body::-webkit-scrollbar{
+    display: none;
+  }
 
 .form-control:focus {
     border-color: #a10000;
@@ -144,7 +131,7 @@ summary::after {
 
  .backlog-add-button {
     position: fixed;
-    bottom:29.5rem;
+    bottom:28.72rem;
     background-color: #A10000;
     color: white; 
     padding: 6px 10px;
@@ -157,48 +144,6 @@ summary::after {
     transform-origin: bottom right;
     z-index: 2;
 }
-
-
-
-.feedback-button {
-    position: fixed;
-    bottom:25rem;
-    background-color: #A10000;
-    color: white; 
-    padding: 6px 10px;
-    right: 0;
-    border-radius: 7px 7px 0px 0px;
-    -moz-transform:rotate(-90deg);
-    -ms-transform:rotate(-90deg);
-    -o-transform:rotate(-90deg);
-    -webkit-transform:rotate(-90deg);
-    transform-origin: bottom right;
-     z-index: 2;
-} 
-
-
-
-.backlog-add-button:hover
-{
-    text-decoration: none;
-    color: white; 
-    cursor: pointer;
-}
-
-.feedback-button:hover
-{
-    text-decoration: none;
-    color: white; 
-    cursor: pointer;
-}
-
-
-
-
-
-
-
-
 
 @media only screen and (min-width: 360px) and (max-width: 768px) {
     summary ul {
@@ -331,12 +276,50 @@ body {
     margin-left: 20px;
 }
 
+/*gpt*/
 
-
+.gpt{
+    position: fixed;
+    bottom:25rem;
+    background-color: #A10000;
+    color: white; 
+    padding: 6px 10px;
+    right: 0;
+    border-radius: 7px 7px 0px 0px;
+    -moz-transform:rotate(-90deg);
+    -ms-transform:rotate(-90deg);
+    -o-transform:rotate(-90deg);
+    -webkit-transform:rotate(-90deg);
+    transform-origin: bottom right;
+     z-index: 2;
+}
 
 
 
 /* FEEDBACK */
+
+.feedback-button {
+    position: fixed;
+    bottom:20rem;
+    background-color: #A10000;
+    color: white; 
+    padding: 6px 10px;
+    right: 0;
+    border-radius: 7px 7px 0px 0px;
+    -moz-transform:rotate(-90deg);
+    -ms-transform:rotate(-90deg);
+    -o-transform:rotate(-90deg);
+    -webkit-transform:rotate(-90deg);
+    transform-origin: bottom right;
+     z-index: 2;
+} 
+
+.feedback-button:hover,.gpt:hover, .backlog-add-button:hover
+{
+    text-decoration: none;
+    color: rgb(243, 215, 215); 
+    cursor: pointer;
+}
 
 
 .zoom{
@@ -375,6 +358,7 @@ body {
 	border-bottom-left-radius: 0;
     box-shadow: rgba(92, 4, 4, 0.1) 0px 20px 25px -5px, rgba(83, 2, 2, 0.04) 0px 10px 10px -5px;
     padding: 0;
+   
 }
 
  .feedback-bug, .feedback-request, .feedback-contact{
@@ -401,7 +385,97 @@ body {
   color: #c51111;
 }
 
-@media only screen and (max-width: 600px) {
+.test{
+    /* display: none; */
+    width: 25rem;
+    /* height: 100%; */
+    position: fixed;
+    bottom: 2%;
+    left: 3%;
+    z-index: 1;
+   
+}
+
+
+  .gpt-wrapper{
+/* display: none; */
+   
+  
+    height: 33em;
+    border-radius:  17px 17px 0 0;
+    border: #e6e6e6  solid;
+    background: rgb(252, 252, 252);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+   
+   
+   
+}
+
+.gpt-card{
+    color: white;
+    background-color: #A10000;
+
+}
+
+
+.message {
+    overflow-y: auto;
+    padding: 13px 2px;
+   
+  }
+
+.message::-webkit-scrollbar{
+display: none;
+}
+
+.msg_cotainer{
+
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    border-radius: 15px;
+    background-color: #e0dede;
+    padding: 10px;
+    position: relative;
+    max-width: 300px; 
+    }
+    .msg_cotainer_send{
+
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    border-radius:  15px;
+    background-color: #e0d4d4d2;
+    padding: 10px;
+    position: relative;
+     max-width: 300px; 
+    }
+    
+    .msg_time{
+    position: absolute;
+    left:0;
+    bottom: -15px;
+    color: rgba(39, 5, 5, 0.5);
+    font-size: 10px;
+    min-width: 200px;
+    margin-left: -68px;
+    }
+    .msg_time_send{
+    position: absolute;
+    right:0;
+    bottom: -15px;
+    color: rgba(5, 1, 1, 0.5);
+    font-size: 10px;
+    min-width: 200px;
+    margin-right: -68px;
+    }
+
+
+
+ 
+  @media only screen and (max-width: 600px) {
     .main-wrapper {
         width: 100%;
         height: 100%
@@ -410,6 +484,13 @@ body {
         width: 100%;
         height: 100%
     }
+    .gpt-wrapper{
 
+        width: 100%;
+        height: 100%
+        
+    }
+
+
+   
   }
-

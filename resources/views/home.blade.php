@@ -3,12 +3,6 @@
 @section('content')
     @livewire('add-log')
   
-    @auth
-        <a class="backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
-            Add-log </a>
-    @endauth
-
-   
     <div class="container">
         @auth
             <v-app>

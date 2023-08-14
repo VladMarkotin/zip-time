@@ -260,6 +260,21 @@ $(document).on("click", '#feedback-back', function (e) {
 });
 
 
+/**
+ * gpt
+ */
+
+$(document).on("click", '#gpt', function (e) {
+
+  $('.test').toggle();
+
+});
+
+$(document).on("click", '#gpt-close', function (e) {
+
+  $('.test').hide();
+
+});
 
 
 
