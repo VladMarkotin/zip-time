@@ -146,17 +146,19 @@ class Settings extends Component
         $this->dispatchBrowserEvent('message', [
             'text' => 'gpt updated Successfully',
         ]);
+       }else{
+            GPT::create([
+        'openai_api_secret' => $this->openai_api_secret,
+        'openai_model' => $this->openai_model,
+        'oai_temp' =>$this->oai_temp,
+        'oai_tokens' => $this->oai_tokens,
+    ]);
+    $this->dispatchBrowserEvent('message', [
+        'text' => 'gpt updated Successfully',
+    ]);
        }
 
-    //    GPT::create([
-    //     'openai_api_secret' => $this->openai_api_secret,
-    //     'openai_model' => $this->openai_model,
-    //     'oai_temp' =>$this->oai_temp,
-    //     'oai_tokens' => $this->oai_tokens,
-    // ]);
-    // $this->dispatchBrowserEvent('message', [
-    //     'text' => 'gpt updated Successfully',
-    // ]);
+   
     }
 
 
