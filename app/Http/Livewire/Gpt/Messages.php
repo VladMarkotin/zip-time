@@ -36,7 +36,7 @@ class Messages extends Component
             'text' =>  $this->input,
         ]);
         $this->emitSelf('pushMessage', $message->id);
-        $this->emitTo('settings', 'gpt', $this->input);
+        // $this->emitTo('settings', 'gpt', $this->input);
         $this->input = null;
      
     }

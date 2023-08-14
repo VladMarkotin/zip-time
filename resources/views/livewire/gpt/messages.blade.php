@@ -22,14 +22,14 @@
                     @if ($item->senderID == null)
                         <div class="d-flex justify-content-start mb-3">
                             <div class="msg_cotainer fw-bold">
-                                <p style="text-align: justify"> {{ $item->text }} </p>
+                                <p> {{ $item->text }} </p>
                                 <span class="msg_time"> {{ $item->created_at->format('m: i a') }}</span>
                             </div>
                         </div>
                     @else
                         <div class="d-flex justify-content-end mb-3">
                             <div class="msg_cotainer_send fw-bold">
-                                <p style="text-align: justify"> {{ $item->text }} </p>
+                                <p > {{ $item->text }} </p>
                                 <span class="msg_time_send"> {{ $item->created_at->format('m: i a') }}</span>
                             </div>
                         </div>

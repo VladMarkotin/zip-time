@@ -29,10 +29,7 @@ class Settings extends Component
     public $sT = null;
     public $taskName, $type, $priority, $time, $taskId, $timezone; //for updates
     public $openai_api_secret, $openai_model, $oai_temp, $oai_tokens; //gpt
-    protected $listeners = ['gpt' => 'chatGPT'];
-
-
-
+ 
 
     public function  mount()
     {

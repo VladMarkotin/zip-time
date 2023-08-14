@@ -436,7 +436,7 @@ display: none;
     margin-left: 10px;
     border-radius: 15px;
     background-color: #e0dede;
-    padding: 10px;
+    padding:  10px;
     position: relative;
     max-width: 300px; 
     }
@@ -452,7 +452,13 @@ display: none;
     position: relative;
      max-width: 300px; 
     }
-    
+
+    .msg_cotainer_send p, .msg_cotainer p{
+      text-align: justify;
+       padding: 0; 
+       margin: 0;
+
+    }
     .msg_time{
     position: absolute;
     left:0;
