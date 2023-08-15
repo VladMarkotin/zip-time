@@ -28,7 +28,7 @@ class Settings extends Component
     public $removeDeletedNote;
     public $sT = null;
     public $taskName, $type, $priority, $time, $taskId, $timezone; //for updates
-    public $openai_api_secret, $openai_model, $oai_temp, $oai_tokens; //gpt
+    public $openai_api_secret, $openai_model = 'gpt-3.5-turbo', $oai_temp, $oai_tokens; //gpt
  
 
     public function  mount()
@@ -135,6 +135,7 @@ class Settings extends Component
 
     public function saveGPTsettings()
     {
+       
        $gpt = GPT::first();
        if(!is_null( $gpt))
        {

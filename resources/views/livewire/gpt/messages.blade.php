@@ -5,7 +5,7 @@
     </a>    
     @endauth
   
-
+   
 
     <div class="gptContainer" wire:ignore.self>
 
