@@ -44,8 +44,11 @@ class EditController extends Controller
         ->get()
         ->toArray()[0]['id'];
         //get notes for saved Task
-        $notes = SavedNotes::select('note', 'created_at')->where('saved_task_id', $savedTaskId)->get()->toArray();
-        
+        $notes = SavedNotes::select('note', 'created_at')
+        ->where('saved_task_id', $savedTaskId)
+        ->get()
+        ->toArray();
+        //die(var_dump($notes));
         return json_encode( $notes, JSON_UNESCAPED_UNICODE);
     }
 }

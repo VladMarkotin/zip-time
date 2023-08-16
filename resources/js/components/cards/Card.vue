@@ -146,28 +146,38 @@
 													v-for="(v, i) in details"
 													:key="i"
 													>
-													<v-expansion-panel-header>
-														{{v.title}}  
+													<v-expansion-panel-header
+													>
+													<p class="text-md-center">{{v.title}} </p> 
 														<v-icon color="#D71700" v-if="v.checkpoint == 1">
 															{{icons.mdiMarkerCheck}}
 														</v-icon>	
 													</v-expansion-panel-header>
 													<v-expansion-panel-content>
+														<v-divider></v-divider>
 														{{ v.text }}
-														<v-checkbox
-															v-model="v.is_ready"
-															label="Is Ready?"
-															color="red"
-															@change="completed(v)"
-															hide-details
-														></v-checkbox>
-														<v-btn icon v-on:click="deleteSubTask(v)"
-														v-if="v.checkpoint == 0"> 
-															<v-icon md="1"
-																color="#D71700">
-																{{icons.mdiDelete}}
-															</v-icon>
-														</v-btn>
+														<v-row>
+															<v-col>
+
+																<v-checkbox
+																	v-model="v.is_ready"
+																	label="Is Ready?"
+																	color="red"
+																	@change="completed(v)"
+																	hide-details
+																></v-checkbox>
+															</v-col>
+															<v-col>
+
+																<v-btn icon v-on:click="deleteSubTask(v)"
+																v-if="v.checkpoint == 0"> 
+																	<v-icon md="1"
+																		color="#D71700">
+																		{{icons.mdiDelete}}
+																	</v-icon>
+																</v-btn>
+															</v-col>
+														</v-row>
 													</v-expansion-panel-content>
 													
 												</v-expansion-panel>
@@ -185,13 +195,6 @@
 									@click="dialogDetails = false"
 								>
 									Close
-								</v-btn>
-								<v-btn
-									color="blue-darken-1"
-									variant="text"
-									@click="dialogDetails = false"
-								>
-									Save
 								</v-btn>
 								</v-card-actions>
 						</v-card>
