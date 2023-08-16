@@ -46,6 +46,7 @@ class EditController extends Controller
         //get notes for saved Task
         $notes = SavedNotes::select('note', 'created_at')
         ->where('saved_task_id', $savedTaskId)
+        ->orderBy('created_at', 'desc')
         ->get()
         ->toArray();
         //die(var_dump($notes));

@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\SubPlan;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Services\SubPlanServices\SubPlanService;
 
 class SubPlanController extends Controller
 {
-    public function __construct(SubPlan $subPlan)
+    private $subPlan = null;
+    private $subPlanService = null;
+
+    public function __construct(SubPlan $subPlan, SubPlanService $subPlanService)
     {
-        $this->subPlan = $subPlan;
+        $this->subPlan        = $subPlan;
+        $this->subPlanService = $subPlanService;
     }
 
     public function createSubPlan(Request $request)
@@ -50,6 +55,7 @@ class SubPlanController extends Controller
         return ( response()->json([
             'message' => 'subtask has been added',
             'elements' => $subPlan, 
+            'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $subPlan['task_id']]),
         ]) );
     }
 
@@ -61,6 +67,7 @@ class SubPlanController extends Controller
             response()->json([
                 'status' => 'success', 
                 'data' => $subPlan, 
+                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $request->get('task_id')]), 
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
@@ -81,7 +88,8 @@ class SubPlanController extends Controller
         return (
             response()->json([
                 'status' => 'success', 
-                'message' => 'Subtask has been completed', 
+                'message' => 'Subtask has been completed',
+                'completedPercent' => 50, 
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );

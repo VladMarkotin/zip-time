@@ -153,7 +153,7 @@
 															{{icons.mdiMarkerCheck}}
 														</v-icon>	
 													</v-expansion-panel-header>
-													<v-expansion-panel-content>
+													<v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
 														<v-divider></v-divider>
 														{{ v.text }}
 														<v-row>
@@ -189,13 +189,30 @@
 								<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlertInDetails">{{alert.text}}</v-alert> 
 								<v-divider></v-divider>
 								<v-card-actions>
-								<v-btn
-									color="blue-darken-1"
-									variant="text"
-									@click="dialogDetails = false"
-								>
-									Close
-								</v-btn>
+									<v-row>
+										<v-col>
+
+											<v-btn
+											color="blue-darken-1"
+											variant="text"
+											@click="dialogDetails = false"
+											>
+											Close
+											</v-btn>
+										</v-col>
+										<v-col>
+
+											<v-progress-circular
+											:rotate="360"
+											:size="100"
+											:width="15"
+											:model-value="completedPercent"
+											color="teal"
+											>
+											{{ completedPercent }}
+										</v-progress-circular>
+										</v-col>
+									</v-row>
 								</v-card-actions>
 						</v-card>
 				</v-dialog> 		
@@ -350,6 +367,8 @@
 					priorities : [1,2,3], //['normal', 'important', 'super important']
 					notesList  : null,
 					id: this.item.id,
+					done: 'v-card-done',
+					completedPercent : 0,
 					subTasks: {
 						title: '',
 						text: '',
@@ -386,6 +405,7 @@
 							checkpoint: element.checkpoint
 						}) 
 					});
+					this.completedPercent = response.data.completedPercent
 					//console.log(this.details)
 					this.setAlertData(response.data.status, response.data.message)
 				  })
@@ -404,6 +424,7 @@
 					//console.log(response)
 					this.isShowAlertInDetails = true;
 					this.setAlertData(response.data.elements, response.data.message)
+					this.completedPercent = response.data.completedPercent
 					setTimeout( () => {
 						this.isShowAlertInDetails = false;
 						//debugger;
@@ -432,8 +453,9 @@
 				.then((response) => {
 					//this.isShowAlert = true;
 					console.log(this.details)
+					this.completedPercent = response.data.completedPercent
 					this.setAlertData(response.data.status, response.data.message)
-					this.details.splice(index, 1);
+					//this.details.splice(index, 1);
 				})
 			},
 
@@ -542,5 +564,11 @@
 	{
 		background-color : #A10000;
 		color : white
+	}
+	.v-card-done {
+		background-color: #ededed;
+	}
+	.v-progress-circular {
+  		margin: 1rem;
 	}
 </style>
