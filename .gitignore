@@ -15,3 +15,6 @@ git_inf.txt
 /.idea
 /temp
 /dump
+cert_gen.cmd
+zip-time.local.crt
+zip-time.local.key
