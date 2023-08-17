@@ -168,8 +168,12 @@
 													>
 													<p class="text-md-center">{{v.title}} </p> 
 														<v-icon color="#D71700" v-if="v.checkpoint == 1">
-															{{icons.mdiMarkerCheck}}
+															{{ icons.mdiExclamation }}
+															
 														</v-icon>	
+														<v-icon color="#D71700" v-if="v.is_ready">
+															{{icons.mdiMarkerCheck}}
+														</v-icon>
 													</v-expansion-panel-header>
 													<v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
 														<v-divider></v-divider>
@@ -351,7 +355,7 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete,mdiMarkerCheck}  from '@mdi/js'  //mdiContentSaveCheckOutline
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete,mdiMarkerCheck, mdiExclamation}  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
@@ -359,7 +363,7 @@
 		data()
 		{
 			return {
-					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete }, //mdiContentSaveCheckOutline
+					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete, mdiExclamation }, //mdiContentSaveCheckOutline
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
 					isShowAlertInDetails: false,
