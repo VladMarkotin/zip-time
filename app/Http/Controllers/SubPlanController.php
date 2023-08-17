@@ -49,12 +49,12 @@ class SubPlanController extends Controller
                 'elements' => $subPlan, 
             ]) );
         }
-        //die(var_dump($subPlan));// ok
-        SubPlan::insert($subPlan);
+        $taskId = SubPlan::create($subPlan)->id;
 
         return ( response()->json([
             'message' => 'subtask has been added',
             'elements' => $subPlan, 
+            'taskId' => $taskId,
             'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $subPlan['task_id']]),
         ]) );
     }
@@ -76,22 +76,37 @@ class SubPlanController extends Controller
     public function delSubTask(Request $request)
     {
         $id = $request->get('task_id');
+        $subPlan = SubPlan::select('task_id')->where('id',$id)->get()->toArray();
         $res = SubPlan::where('id',$id)->delete();
-        //die();
+        //die(var_dump($subPlan[0]['task_id']));
+        return (
+            response()->json([
+                'status' => 'success', 
+                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $subPlan[0]['task_id']]), 
+            ], 200)
+            ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
+        );
     }
 
     public function completeSubTask(Request $request)
     {
         $id = $request->get('task_id');
         SubPlan::whereId($id)->update(['is_ready' => true]);
-        
+        $parentTaskId = $this->getParentTaskId($id);
         return (
             response()->json([
                 'status' => 'success', 
                 'message' => 'Subtask has been completed',
-                'completedPercent' => 50, 
+                'completedPercent' =>  $this->subPlanService->countPercentOfCompletedWork(['task_id' => $parentTaskId]),
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
+    }
+
+    private function getParentTaskId($id)
+    {
+        $subPlan = SubPlan::select('task_id')->where('id',$id)->get()->toArray();
+
+        return $subPlan[0]['task_id'];
     }
 }

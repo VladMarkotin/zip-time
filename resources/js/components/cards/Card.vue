@@ -94,7 +94,25 @@
 									title="This is a title"
 									subtitle="This is a subtitle"
 									text="This is content">
-								<v-card-title>Plan`s details</v-card-title>
+								<v-card-title>
+									<v-row>
+										<v-col >
+											<p class="text-xs-center">Plan`s details</p>
+										</v-col>
+										<v-col>
+											<v-progress-circular
+											:rotate="360"
+											:size="100"
+											:width="10"
+											:model-value="completedPercent"
+											color="red"
+											:value="completedPercent"
+											>
+											{{ completedPercent }}
+										</v-progress-circular>
+										</v-col>
+									</v-row>
+								</v-card-title>
 								<v-divider></v-divider>
 								<v-card-text style="height: 300px;">
 									<template>
@@ -200,18 +218,7 @@
 											Close
 											</v-btn>
 										</v-col>
-										<v-col>
-
-											<v-progress-circular
-											:rotate="360"
-											:size="100"
-											:width="15"
-											:model-value="completedPercent"
-											color="teal"
-											>
-											{{ completedPercent }}
-										</v-progress-circular>
-										</v-col>
+										
 									</v-row>
 								</v-card-actions>
 						</v-card>
@@ -369,6 +376,7 @@
 					id: this.item.id,
 					done: 'v-card-done',
 					completedPercent : 0,
+					completedProgressBar: 0,
 					subTasks: {
 						title: '',
 						text: '',
@@ -425,6 +433,7 @@
 					this.isShowAlertInDetails = true;
 					this.setAlertData(response.data.elements, response.data.message)
 					this.completedPercent = response.data.completedPercent
+					item.taskId = response.data.taskId
 					setTimeout( () => {
 						this.isShowAlertInDetails = false;
 						//debugger;
@@ -444,6 +453,7 @@
 					console.log(this.details)
 					this.setAlertData(response.data.status, response.data.message)
 					this.details.splice(index, 1);
+					this.completedPercent = response.data.completedPercent
 				})
 			},
 
