@@ -14,10 +14,35 @@
             <v-app>
                 <component v-bind:is="currComponentName" v-bind:data="currComponentProps">
             </v-app>
-        @endauth
+        @endauth 
         @guest
-            <h1>Index page</h1>
-            <p class="text">Go to Login Page</p>
+        <div class="banner">
+            <h1 class="slogan">Quipl.io slogan</h1>
+            <p class="info-head center">manage and control</p>
+            <img class="banner-gif-left" src="/images/ezgif.com-gif-maker.gif">
+            <img class="banner-gif-right" src="/images/ezgif.com-gif-maker.gif" >
+        </div>
+        <div class="info">
+            <div class="info-container">
+                <p class="info-head text-left">statistic</p>
+                <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                <img class="statistic-img" src="/images/promotion_9640275.png">
+            </div>
+            <div class="info-container">
+                <p class="info-head text-right">#saved task</p>
+                <p class="info-bold text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <p class="info-text text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                <img class="saved-task-img" src="/images/history_2550251.png">
+            </div>
+            <div class="info-container">
+                <p class="info-head text-left">history</p>
+                <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                <img class="history-img" src="/images/timeline_8258059.png">
+            </div>
+        </div>
+            
         @endguest
     </div>
 @endsection
