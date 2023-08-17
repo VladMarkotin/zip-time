@@ -18,7 +18,7 @@
         @guest
         <div class="banner">
             <h1 class="slogan">Quipl.io slogan</h1>
-            <p class="info-head center">manage and control</p>
+            <p class="info-head info-banner">manage and control</p>
             <img class="banner-gif-left" src="/images/ezgif.com-gif-maker.gif">
             <img class="banner-gif-right" src="/images/ezgif.com-gif-maker.gif" >
         </div>
@@ -29,12 +29,14 @@
                 <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                 <img class="statistic-img" src="/images/promotion_9640275.png">
             </div>
+            <hr class="underline">            
             <div class="info-container">
                 <p class="info-head text-right">#saved task</p>
                 <p class="info-bold text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <p class="info-text text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                 <img class="saved-task-img" src="/images/history_2550251.png">
             </div>
+            <hr class="underline">
             <div class="info-container">
                 <p class="info-head text-left">history</p>
                 <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
