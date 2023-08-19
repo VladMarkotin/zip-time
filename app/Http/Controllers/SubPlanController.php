@@ -7,6 +7,7 @@ use App\Models\SubPlan;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Services\SubPlanServices\SubPlanService;
+use Carbon\Carbon;
 
 class SubPlanController extends Controller
 {
@@ -49,6 +50,13 @@ class SubPlanController extends Controller
                 'elements' => $subPlan, 
             ]) );
         }
+        /**Have to get saved_task_id */
+        $savedTaskId = $this->subPlanService->getSavedTaskId($subPlan);
+        if ($savedTaskId) {
+            $subPlan['saved_task_id'] = $savedTaskId;
+        }
+        /**end */
+        //die(var_dump($savedTaskId));
         $taskId = SubPlan::create($subPlan)->id;
 
         return ( response()->json([
@@ -61,8 +69,24 @@ class SubPlanController extends Controller
 
     public function getSubPlan(Request $request)
     {
+        $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
         $subPlan = SubPlan::where('task_id', $request->get('task_id'))->get()->toArray();
-       
+        //die(var_dump($request->get('task_id'))); 
+        //die(var_dump($savedTaskId));    
+        if ($savedTaskId) {
+
+            $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
+            //->where('is_ready', 0)
+            ->where('created_at', '<', date('Y-m-d').' 00:00:00')
+            ->get()
+            ->toArray();
+            if (count($previousSubTasks)) {
+                foreach ($previousSubTasks as $v) {
+                    $subPlan[] = $v;
+                }
+            }
+        }
+       //die(var_dump($subPlan));
         return (
             response()->json([
                 'status' => 'success', 

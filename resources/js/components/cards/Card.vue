@@ -133,6 +133,7 @@
 											<v-text-field
 											width="20px"
 											v-model="subTasks.text"
+											v-on:keyup.enter="addDetail"
 											:counter="1000"
 											label="Subtask details"
 											required
@@ -171,6 +172,9 @@
 															{{ icons.mdiExclamation }}
 															
 														</v-icon>	
+														<v-btn icon @click="dialogEditSubTask=true">
+															<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
+														</v-btn>
 														<v-icon color="#D71700" v-if="v.is_ready">
 															{{icons.mdiMarkerCheck}}
 														</v-icon>
@@ -226,7 +230,42 @@
 									</v-row>
 								</v-card-actions>
 						</v-card>
-				</v-dialog> 		
+				</v-dialog> 
+				<v-dialog
+					v-model="dialogEditSubTask"
+					persistent
+					width="500"
+					>
+					
+					<v-card>
+						<v-card-title class="text-h5">
+						Edit Subtask
+						</v-card-title>
+						<v-card-text>
+							Edit Subtask`s title:
+							<v-text-field class="ml-1" style="width : 54px" >
+							</v-text-field>
+							
+						</v-card-text>
+						<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn
+							color="green-darken-1"
+							variant="text"
+							@click="dialogEditSubTask = false"
+						>
+							Cancel
+						</v-btn>
+						<v-btn
+							color="green-darken-1"
+							variant="text"
+							@click="changeTime(item)"
+						>
+							Save
+						</v-btn>
+						</v-card-actions>
+					</v-card>
+					</v-dialog>		
 				
 			</v-list-item>
 			<v-list-item>
@@ -369,7 +408,8 @@
 					isShowAlertInDetails: false,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
-					dialog     : false,   
+					dialog     : false,  
+					dialogEditSubTask : false, 
 					dialogNotes: false,
 					dialogDetails: false,
 					checked: true,
@@ -404,10 +444,15 @@
 		components : {Alert},
 		methods :
 		{
+			testFunction(v, event){
+				console.log(event)
+			},
+
 			getAllDetailsForTask(item) {
 				this.dialogDetails = true
 				axios.post('/get-sub-tasks',{task_id : item.taskId})
 				.then((response) => {
+					this.details = []
 					response.data.data.forEach(element => {
 						this.details.push({
 							title: element.title,
