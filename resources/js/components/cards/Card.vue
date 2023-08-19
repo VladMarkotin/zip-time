@@ -196,7 +196,7 @@
 															<v-col>
 
 																<v-btn icon v-on:click="deleteSubTask(v)"
-																v-if="v.checkpoint == 0"> 
+																v-if="v.checkpoint != 1"> 
 																	<v-icon md="1"
 																		color="#D71700">
 																		{{icons.mdiDelete}}
