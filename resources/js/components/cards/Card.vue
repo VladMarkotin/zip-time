@@ -477,7 +477,7 @@
 
 			addDetail(item){
 				//console.log(item.taskId)
-				this.subTasks.task_id = item.taskId
+				this.subTasks.task_id = this.item.taskId
 				this.details.push(this.subTasks) 
 				this.createSubPlan(this.subTasks)
 				this.subTasks = {};
