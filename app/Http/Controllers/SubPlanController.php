@@ -127,6 +127,20 @@ class SubPlanController extends Controller
         );
     }
 
+    public function editSubTask(Request $request)
+    {
+        /**Add validation */
+        SubPlan::where('id', $request->all()['id'])->update($request->all());
+        /**end */
+        return (
+            response()->json([
+                'status' => 'success', 
+                'message' => 'Subtask has been updated',
+            ], 200)
+            ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
+        );
+    }
+
     private function getParentTaskId($id)
     {
         $subPlan = SubPlan::select('task_id')->where('id',$id)->get()->toArray();

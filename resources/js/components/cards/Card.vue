@@ -160,6 +160,7 @@
 										<v-row>
 
 											<template>
+												<!--Display subTask-->
 												<v-expansion-panels>
 													<v-expansion-panel
 													v-for="(v, i) in details"
@@ -172,7 +173,7 @@
 															{{ icons.mdiExclamation }}
 															
 														</v-icon>	
-														<v-btn icon @click="dialogEditSubTask=true">
+														<v-btn icon @click="editTask(v)">
 															<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
 														</v-btn>
 														<v-icon color="#D71700" v-if="v.is_ready">
@@ -243,7 +244,12 @@
 						</v-card-title>
 						<v-card-text>
 							Edit Subtask`s title:
-							<v-text-field class="ml-1" style="width : 54px" >
+							<v-text-field class="ml-1"  v-model="subTasks.title">
+								
+							</v-text-field>
+							Edit Subtask`s text:
+							<v-text-field class="ml-1"  v-model="subTasks.text">
+								
 							</v-text-field>
 							
 						</v-card-text>
@@ -259,7 +265,7 @@
 						<v-btn
 							color="green-darken-1"
 							variant="text"
-							@click="changeTime(item)"
+							@click="saveChangesInSubtask({title: subTasks.title, text: subTasks.text})"
 						>
 							Save
 						</v-btn>
@@ -410,6 +416,7 @@
 					isReady    : true,
 					dialog     : false,  
 					dialogEditSubTask : false, 
+					subTaskTitle: false,
 					dialogNotes: false,
 					dialogDetails: false,
 					checked: true,
@@ -469,7 +476,8 @@
 			},
 
 			addDetail(item){
-				this.subTasks.task_id = this.item.taskId
+				//console.log(item.taskId)
+				this.subTasks.task_id = item.taskId
 				this.details.push(this.subTasks) 
 				this.createSubPlan(this.subTasks)
 				this.subTasks = {};
@@ -596,8 +604,6 @@
 			},
 			changeTime(item)
 			{
-				console.log(item.priority)
-				console.log(this.time)
 				if ( (item.time != this.time ) || (item.priority != this.priority) ) {
 					axios.post('/edit-card',{task_id : item.taskId, time : this.time, priority: this.priority}) // type : item.type
 					.then((response) => {
@@ -614,7 +620,35 @@
 						},3000)
 				  })
 				}
-			}
+			},
+			editTask(item) {
+				this.dialogEditSubTask = true
+				this.subTasks.task_id = item.taskId
+				this.subTasks.title = item.title
+				this.subTasks.text = item.text
+				console.log(item)
+			},
+			saveChangesInSubtask(item){
+				//this.subTasks.task_id = item.taskId
+				this.subTasks.title = item.title
+				this.subTasks.text = item.text		
+						
+				axios.post('/edit-subtask',{id : this.subTasks.task_id , title : this.subTasks.title , text: this.subTasks.text }) // type : item.type
+					.then((response) => {
+						
+						if (response.data.status == 'success') {
+							item.title = this.subTasks.title
+							item.text = this.subTasks.text
+							this.dialogEditSubTask = false
+							this.dialog = false
+						}
+						this.setAlertData(response.data.status, response.data.message)
+						setTimeout( () => {
+							this.isShowAlert = false;
+						},3000)
+				  })
+				this.subTasks = {};
+			},
 		}
 	}
 </script>
