@@ -47,15 +47,14 @@ class SubPlanService
     {
         //have to sum current subtasks and prev undone tasks
         $subPlanQuantity = SubPlan::where([['task_id', $data['task_id'] ] ])
-        //->where('created_at', '>=', date('Y-m-d'))
         ->get()
         ->count();
         $prevUndoneSubPlan = SubPlan::where([['saved_task_id', $this->getSavedTaskId($data) ]])
         ->where('created_at', '<', date('Y-m-d').' 00:00:00')
-        //->where('is_ready', 0)
+        ->where('is_ready', 0)
         ->get()
         ->count();
-        //die(var_dump($prevUndoneSubPlan + $prevUndoneSubPlan));//+ $prevUndoneSubPlan
+        //die(var_dump($subPlanQuantity + $prevUndoneSubPlan));//+ $prevUndoneSubPlan
         return ($subPlanQuantity + $prevUndoneSubPlan);
     }
 
@@ -64,8 +63,7 @@ class SubPlanService
         $doneSubPlanQuantity = SubPlan::where([['task_id', $data['task_id'] ], ['is_ready', 1] ])
         ->get()->count();
         $prevDoneSubPlanQuantity = SubPlan::where([['saved_task_id', $this->getSavedTaskId($data) ]])
-        ->where('created_at', '<', date('Y-m-d').' 00:00:00')
-        ->orWhere('updated_at', date('Y-m-d'))
+        ->where('updated_at', date('Y-m-d'))
         ->where('is_ready', 1)
         ->get()
         ->count();

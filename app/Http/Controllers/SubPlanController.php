@@ -76,7 +76,7 @@ class SubPlanController extends Controller
         if ($savedTaskId) {
 
             $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
-            //->where('is_ready', 0)
+            ->where('is_ready', 0)
             ->where('created_at', '<', date('Y-m-d').' 00:00:00')
             ->get()
             ->toArray();
@@ -86,7 +86,7 @@ class SubPlanController extends Controller
                 }
             }
         }
-       //die(var_dump($subPlan));
+       //die(var_dump(count($subPlan)));
         return (
             response()->json([
                 'status' => 'success', 
