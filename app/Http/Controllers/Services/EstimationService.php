@@ -11,20 +11,24 @@ namespace App\Http\Controllers\Services;
 
 use App\Repositories\EstimateTaskRepository;
 use App\Repositories\EstimationRepository;
+use App\Models\DefaultConfigs;
 
 class EstimationService
 {
     private $estimateTaskRepository = null;
     private $estimateDayRepository  = null;
-    private $userRatings   = null;     
+    private $userRatings            = null;  
+    private $defaultConfigs         = null;   
 
     public function __construct(EstimateTaskRepository $estimateTaskRepository,
                                 EstimationRepository $estimationRepository,
-                                RatingService $userRatings)
+                                RatingService $userRatings,
+                                DefaultConfigs $defaultConfigs)
     {
         $this->estimateTaskRepository = $estimateTaskRepository;
         $this->estimateDayRepository  = $estimationRepository;
-        $this->userRatings               = $userRatings;
+        $this->userRatings            = $userRatings;
+        $this->defaultConfigs         = $defaultConfigs;
     }
     /**
      * @param array $data
@@ -33,8 +37,9 @@ class EstimationService
      */
     public function handleEstimationRequest(array $data)
     {
-        //die(var_dump($data));
-        $makeMarkValid    = function ($arg = null) use  ($data) {
+        $defaultConfigs = json_decode(DefaultConfigs::select('config_data')->where('config_block_id', 2)->get()->toArray()[0]['config_data']);
+        //\Log::channel('async-log')->info(var_export($defaultConfigs->cardRules[0]));//$defaultConfigs->cardRules[0]->maxMark
+        $makeMarkValid    = function ($arg = null) use  ($data, $defaultConfigs) {
             if($data['mark'] == '') {
                $data['mark'] = -1;
             }
@@ -44,10 +49,11 @@ class EstimationService
             $data['mark'] = intval($data['mark']);
             if(is_int($data['mark'])){
                 if(!$arg) {
-                    if (($data['mark'] < 50 && $data['mark'] != 0 && ($data['mark'] != -1))) {
+                    if (($data['mark'] < $defaultConfigs->cardRules[0]->minMark
+                          && $data['mark'] != 0 && ($data['mark'] != -1))) {
                         $data['mark'] = -1;
                         return false;
-                    } else if (($data['mark'] > 99)) {
+                    } else if (($data['mark'] > $defaultConfigs->cardRules[0]->maxMark)) {
                         $data['mark'] = -1;
                         return false;
                     } else if($data['mark']  === 0){
