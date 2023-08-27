@@ -9,6 +9,7 @@ namespace App\Repositories\HistRepositories\traits;
 
 use App\Models\Tasks;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DefaultConfigs;
 
 trait TransformHistTrait
 {
@@ -138,7 +139,7 @@ trait TransformHistTrait
 
     public static function transformData(array $data, array $period)
     {
-        // dd($data);
+        $defaultConfigs = json_decode(DefaultConfigs::select('config_data')->where('config_block_id', 2)->get()->toArray()[0]['config_data']);
         $finalArray = [
             'userId' => Auth::id(),
             'plans' => [],
@@ -154,7 +155,7 @@ trait TransformHistTrait
             $finalArray['plans'][$v->date]['dayFinalMark'] = $v->dayFinalMark;
             $finalArray['plans'][$v->date]['dayOwnMark'] = $v->dayOwnMark;
             $finalArray['plans'][$v->date]['comment'] = $v->comment;
-
+            $finalArray['plans'][$v->date]['minFinalMark'] = $defaultConfigs->cardRules[0]->minFinalMark;
             $finalArray['plans'][$v->date]['tasks'] = self::getTasksforDay(
                 $data,
                 $v->date

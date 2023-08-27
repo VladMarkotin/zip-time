@@ -121,7 +121,10 @@ class EstimationService
                 $response = $this->estimateDayRepository->closeDay($data);
                 if($response){
                   $this->userRatings-> rateCompletedDay(2) ;  //  get rating as day completed
-                    return ["status" => "success", "message" => "Your day plan is completed :) Good work!"];
+                    return [
+                        "status" => "success",
+                        "message" => "Your day plan has been completed :) Good work!"
+                    ];
                     
                 }
 

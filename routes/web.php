@@ -96,7 +96,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/complete-sub-task', [App\Http\Controllers\SubPlanController::class, 'completeSubTask'])->name('complete-sub-task');//
     Route::post('/edit-subtask', [App\Http\Controllers\SubPlanController::class, 'editSubTask'])->name('edit-sub-task');
 });
-
+Route::post('/get-default-configs', function (){
+    
+});
 
 Route::get('/event', function (){
     event(new \App\Events\MessageNotification('test broadcast'));
