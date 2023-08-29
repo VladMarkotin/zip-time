@@ -86,7 +86,7 @@ class EstimationService
                 $data['comment'] = substr($data['comment'], 0, -$diff);
             }
             else if(strlen($data['comment']) < 5 && ($data['action'] == 0)){
-                $data['comment'] = "You have activated emergency call with no explanation! We hope everything is good.";
+                $data['comment'] = "You have activated emergency mode with no explanation! We hope everything is good.";
             }
 
             return $data['comment'];
@@ -128,8 +128,8 @@ class EstimationService
                     
                 }
 
-                return ["status" => "error", "message" => "Your day plan hasn`t been done yet. You still have some
-                         required jobs/tasks incomplete! "];
+                return ["status" => "error", "message" => "You can`t close your day plan! Either some required jobs/tasks are incomplete
+                                                           or you final mark lower then minimum (". $defaultConfigs->cardRules[0]->minFinalMark ."%)"];
 
 
             case '1': //for estimation of job & task
