@@ -8,7 +8,7 @@
 		<v-list>
 			<v-list-item>
 				<v-list-item-content class="key">Final mark:</v-list-item-content>
-				<v-list-item-content class="align-end" v-if="data.dayFinalMark >= 50 ">{{data.dayFinalMark}} %</v-list-item-content>
+				<v-list-item-content class="align-end" v-if="data.dayFinalMark > 0 ">{{data.dayFinalMark}} %</v-list-item-content>
 				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
 			</v-list-item>
 			<v-list-item>
