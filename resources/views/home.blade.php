@@ -9,7 +9,7 @@
     @endauth
 
    
-    <div class="container">
+    <div class="index-container">
         @auth
             <v-app>
                 <component v-bind:is="currComponentName" v-bind:data="currComponentProps">
@@ -19,6 +19,7 @@
         <div class="banner">
             <h1 class="slogan">Quipl.io slogan</h1>
             <p class="info-head info-banner">manage and control</p>
+            <p class="info-text text-banner">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
             <img class="banner-gif-left" src="/images/ezgif.com-gif-maker.gif">
             <img class="banner-gif-right" src="/images/ezgif.com-gif-maker.gif" >
         </div>
