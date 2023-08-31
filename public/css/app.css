@@ -4334,7 +4334,7 @@ input[type=button].btn-block {
   color: #fff;
 }
 
-/* INDEX PAGE */
+/* ========================== INDEX PAGE =================================== */
 .index-container{
   margin-top: 0;
 
@@ -4384,14 +4384,14 @@ input[type=button].btn-block {
   width: 539px;
   height: 533px;
   flex-shrink: 0;
-  mix-blend-mode: multiply;
+  mix-blend-mode: multiply; 
 }
 
 .banner-gif-right{
   margin-top: -400px;
   margin-right: -90px;
   position: static;
-  align-self:last baseline;
+  align-self: flex-end;
   width: 420px;
   height: 376px;
   transform: rotate(-124.826deg);
