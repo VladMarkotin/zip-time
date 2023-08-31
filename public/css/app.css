@@ -4335,30 +4335,48 @@ input[type=button].btn-block {
 }
 
 /* INDEX PAGE */
+.index-container{
+  margin-top: 0;
 
+}
 
-.banner{
+.banner{  
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items:center;
   overflow: hidden;  
-  background: linear-gradient(360deg, #f7bdbd 0%, rgba(255, 255, 255, 0) 100%);
-  margin-left: 100px;
+  background: linear-gradient(0deg, #751A1A 0%, #292525 63.02%);
+  /* background: linear-gradient(360deg, #f7bdbd 0%, rgba(255, 255, 255, 0) 100%); */
   height: 660px;
 }
 
 .slogan{
+  color: #d4d4d4;
+  margin-top: 120px;
   align-self: center;
 }
 
 .info-banner{
-  margin-top: 200px;
+  margin-top: 150px;
+  font-size: 35px !important;
   width: 500px !important;
   align-self: center;
   text-align: center;
 }
 
+.text-banner{
+  z-index: 2;
+  position: static;  
+  width: 420px !important;
+  height: 110px !important;
+  align-self: center;
+  text-align: center;
+  color: #f0f0f0 !important;
+}
+
 .banner-gif-left{
+  margin-top: -200px;
   margin-left: -100px;
   position: static;
   align-self:flex-start;  
@@ -4366,7 +4384,7 @@ input[type=button].btn-block {
   width: 539px;
   height: 533px;
   flex-shrink: 0;
-  opacity:0.25;
+  mix-blend-mode: multiply;
 }
 
 .banner-gif-right{
@@ -4378,7 +4396,7 @@ input[type=button].btn-block {
   height: 376px;
   transform: rotate(-124.826deg);
   flex-shrink: 0;
-  opacity:0.25;
+  mix-blend-mode: multiply;
 }
 
 .info{
@@ -4387,7 +4405,6 @@ input[type=button].btn-block {
   align-items:center;
   margin-left: 100px;
   margin-right: 130px;
-  margin-bottom: 60px;
 }
 
 .info-container{
@@ -4458,7 +4475,7 @@ hr.underline{
 
 footer{
   height: 220px;
-  background-color: #1d2124;
+  background: linear-gradient(180deg, #5C1A1A 0%, #292525 45.31%);
 }
 
 
