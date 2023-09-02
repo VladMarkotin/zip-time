@@ -4378,24 +4378,26 @@ input[type=button].btn-block {
 }
 
 .banner-gif-left{
-  margin-top: -200px;
-  margin-left: -100px;
+  margin-top: -300px;
+  margin-left: 0px;
   position: static;
   align-self:flex-start;  
   transform: rotate(-180deg);
-  width: 539px;
-  height: 533px;
+  opacity: 0.3;
+  /* width: 539px; */
+  height: 650px;
   flex-shrink: 0;
   mix-blend-mode: multiply; 
 }
 
 .banner-gif-right{
-  margin-top: -400px;
-  margin-right: -90px;
+  margin-top: -500px;
+  margin-right: 0px;
   position: static;
   align-self: flex-end;
-  width: 420px;
-  height: 376px;
+  opacity: 0.3;
+  /* width: 420px; */
+  height: 500px;
   transform: rotate(-124.826deg);
   flex-shrink: 0;
   mix-blend-mode: multiply;
