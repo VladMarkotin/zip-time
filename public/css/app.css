@@ -4335,9 +4335,11 @@ input[type=button].btn-block {
 }
 
 /* ========================== INDEX PAGE =================================== */
+
+
 .index-container{
   margin-top: 0;
-
+  margin-bottom: 50px;
 }
 
 .banner{  
@@ -4413,7 +4415,7 @@ input[type=button].btn-block {
   display: flex;
   flex-direction: column;
   margin-top: 60px;
-  margin-bottom: 60px;
+  margin-bottom: 100px;
   justify-content: space-between;
 }
 
@@ -4444,24 +4446,42 @@ input[type=button].btn-block {
 }
 
 .statistic-img{
-  width: 225px;
-  height: 225px;
+  width: 300px;
   flex-shrink: 0;
   position: absolute;
   align-self:flex-end;
 }
 
-.saved-task-img{
-  width: 100px;
-  height: 100px;
-  flex-shrink: 0;
+.images{
+  width: 600px;
+  height: 400px;
+  display: flex;
   position: absolute;
   align-self:flex-start;
 }
 
+.saved-task-img{
+  width: 150px;
+  flex-shrink: 0;
+  position: relative;
+  align-self:flex-start;
+}
+
+.saved-img{
+  height: 75px;
+  margin-left: 30px;
+  margin-top: 100px;
+  position: static;
+}
+
+.task-img{
+  height: 75px;
+  margin-top: 200px;
+  position: static;
+}
+
 .history-img{
-  width: 224px;
-  height: 200px;
+  width: 300px;
   flex-shrink: 0;
   position: absolute;
   align-self:flex-end;

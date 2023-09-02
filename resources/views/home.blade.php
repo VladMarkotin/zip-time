@@ -35,7 +35,12 @@
                 <p class="info-head text-right">#saved task</p>
                 <p class="info-bold text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <p class="info-text text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                <img class="saved-task-img" src="/images/history_2550251.png">
+                <div class="images">
+                    {{-- <img class="saved-task-img" src="/images/history_2550251.png"> --}}
+                    <img class="saved-task-img" src="/images/clock.png">
+                    <img class="saved-img" src="/images/saved.png">
+                    <img class="task-img" src="/images/task.png">
+                </div>                
             </div>
             <hr class="underline">
             <div class="info-container">
