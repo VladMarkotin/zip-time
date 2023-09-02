@@ -28,7 +28,7 @@
                 <p class="info-head text-left">statistic</p>
                 <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                <img class="statistic-img" src="/images/promotion_9640275.png">
+                <img class="statistic-img" src="/images/statistic.png">
             </div>
             <hr class="underline">            
             <div class="info-container">

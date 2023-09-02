@@ -4494,6 +4494,7 @@ hr.underline{
 }
 
 footer{
+  margin-bottom: 0px;
   height: 220px;
   background: linear-gradient(180deg, #5C1A1A 0%, #292525 45.31%);
 }
