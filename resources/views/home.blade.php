@@ -47,7 +47,7 @@
                 <p class="info-head text-left">history</p>
                 <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                <img class="history-img" src="/images/timeline_8258059.png">
+                <img class="history-img" src="/images/history.png">
             </div>
         </div>
             

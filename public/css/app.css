@@ -4481,7 +4481,8 @@ input[type=button].btn-block {
 }
 
 .history-img{
-  width: 300px;
+  height: 250px;
+  margin-top: 50px;
   flex-shrink: 0;
   position: absolute;
   align-self:flex-end;
