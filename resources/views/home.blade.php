@@ -31,7 +31,7 @@
                 <img class="statistic-img" src="/images/statistic.png">
             </div>
             <hr class="underline">            
-            <div class="info-container">
+            <div class="info-container right-container">
                 <p class="info-head text-right">#saved task</p>
                 <p class="info-bold text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <p class="info-text text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
