@@ -4600,6 +4600,21 @@ footer{
     height: 275px;  
     margin-top: -300px  
   }
+
+  .saved-task-img {
+    width: 100px;
+    margin-left: 50px;
+  }
+
+  .saved-img {
+    height: 50px;
+    margin-left: 60px;
+  }
+
+  .task-img {
+    height: 50px;
+    margin-left: -250px;
+  }
 }
 
 @media screen and (max-width: 668px){ 
