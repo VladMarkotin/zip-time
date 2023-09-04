@@ -15,7 +15,7 @@ class AddTimezoneFieldInUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             
-            $table->string('timezone');
+            $table->string('timezone')->default('Europe/Minsk');
         });
     }
 
