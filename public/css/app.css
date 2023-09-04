@@ -4497,9 +4497,23 @@ hr.underline{
 }
 
 footer{
-  margin-bottom: 0px;
+  display: flex;
+  /* margin-bottom: 0px; */
+  flex-direction: column;
+  justify-content: space-evenly;
   height: 220px;
   background: linear-gradient(180deg, #5C1A1A 0%, #292525 45.31%);
+}
+
+.footer-info{
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+.footer-text{  
+  color:#b6b6b6;
+  font-size: 16px;
+  font-weight: 100;
 }
 
 

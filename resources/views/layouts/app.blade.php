@@ -206,6 +206,12 @@
     <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 <footer>
-    <p>© 2023</p>
+    <div class="footer-info">
+        <p class="footer-text">
+            footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras adipiscing.
+        </p>
+        <p class="footer-text">© 2023</p>
+    </div>    
 </footer>
 </html>
