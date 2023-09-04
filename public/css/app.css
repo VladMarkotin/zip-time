@@ -4574,8 +4574,7 @@ footer{
     margin-top: 30px;
   }
 
-  .images {    
-    width: 250px;
+  .images {
     position: inherit;
     margin: auto;
     margin-top: 30px;
@@ -4613,6 +4612,11 @@ footer{
     height: 225px;  
     margin-top: -250px  
   }
+
+  .footer-info{
+    margin-left: 50px;
+    margin-right: 50px;
+  }
 }
 
 @media screen and (max-width: 560px){ 
@@ -4625,6 +4629,12 @@ footer{
     height: 175px;  
     margin-right: -15px;
     margin-top: -200px  
+  }
+}
+
+@media screen and (max-width: 490px){ 
+  .text-banner{    
+    width: 350px !important;
   }
 }
 
