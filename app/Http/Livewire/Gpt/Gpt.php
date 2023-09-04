@@ -1,62 +1,68 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Gpt;
 
+use App\Models\Message;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+
 
 class Gpt extends Component
 {
-    // public function render()
-    // {
-    //     return view('livewire.gpt');
-    // }
 
-    public function chatGPT( $prompt)
+
+    protected $listeners = ['chatGPT'];
+
+    public function chatGPT($prompt)
     {
+
         $settings = DB::table('gpt')->first();
         $openai_secret =  $settings->openai_api_secret;
         $openai_model =  $settings->openai_model;
         $openai_tokens =  $settings->oai_tokens;
         $openai_temperature =  $settings->oai_temp;
 
- 
-        try{
+
+        try {
 
             $response = Http::timeout(80)->withHeaders([
 
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer '.$openai_secret,
-           
-            ])->post('https://api.openai.com/v1/chat/completions' ,[
+                'Authorization' => 'Bearer ' . $openai_secret,
+
+            ])->post('https://api.openai.com/v1/chat/completions', [
 
                 'model' => $openai_model,
                 'messages' => [
 
-                    ['role' => 'system',
-                     'content' => 'You are a helpful assistant',
+                    [
+                        'role' => 'system',
+                        'content' => 'You are a helpful assistant',
                     ],
 
-                    ['role' => 'user',
-                     'content' =>  $prompt
+                    [
+                        'role' => 'user',
+                        'content' =>  $prompt
                     ],
                 ],
 
                 'max_tokens' => $openai_tokens,
-                'temperature' => floatval($openai_temperature) 
+                'temperature' => floatval($openai_temperature)
             ]);
 
-          
-            $response = $response ->json();
+
+            $response = $response->json();
             //  dd( $response);
 
-            if(isset($response['choices'][0]['message']['content']))
-            {
-                 $message = Message::create([
-                'conversationID' => Auth::id(),
-                'senderID' => null,
-                'text' => $response['choices'][0]['message']['content'] ,
-                 ]);
-                 $this->emitTo('gpt.messages','pushMessage', $message->id); 
+            if (isset($response['choices'][0]['message']['content'])) {
+                $message = Message::create([
+                    'conversationID' => Auth::id(),
+                    'senderID' => null,
+                    'text' => $response['choices'][0]['message']['content'],
+                ]);
+                $this->emitTo('gpt.messages', 'pushMessage', $message->id);
             }
 
             $errorCode = $response['error']['code'] ?? null;
@@ -64,11 +70,14 @@ class Gpt extends Component
             $this->dispatchBrowserEvent('message', [
                 'text' =>   $errorCode
             ]);
+        } catch (\Exception $e) {
 
-
-        }catch(\Exception $e){
-
-            dd( $e->getMessage()) ;
+            dd($e->getMessage());
         }
+    }
+
+    public function render()
+    {
+        return view('livewire.gpt');
     }
 }

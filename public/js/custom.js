@@ -265,7 +265,6 @@ $(document).on("click", '#feedback-back', function (e) {
  */
 
 $(document).on("click", '#gpt', function (e) {
-
   $('.gptContainer').toggle();
 
 });

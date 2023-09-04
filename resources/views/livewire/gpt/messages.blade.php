@@ -1,6 +1,8 @@
 <div>
+    
+  
     @auth
-      <a class="gpt" id="gpt">
+      <a class="gpt" id="gpt" wire:click="rowChatToBottom">
         chatGPT
     </a>    
     @endauth
@@ -54,7 +56,10 @@
 
     <script>
         window.addEventListener('rowChatToBottom', event => {
-            $('.message').scrollTop($('.message')[0].scrollHeight); // roll up scrollbar if new message
+           
+            $('.message').stop().animate({
+            scrollTop: $('.message')[0].scrollHeight
+            }, 800);
         });
     </script>
 

@@ -11,7 +11,7 @@ class Messages extends Component
 
     public $input;
     public $response = null;
-    protected $listeners = ['pushMessage' => 'pushMessage'];
+    protected $listeners = ['pushMessage'];
     protected $rules = [
         'input' => 'required',
     ];
@@ -36,7 +36,7 @@ class Messages extends Component
             'text' =>  $this->input,
         ]);
         $this->emitSelf('pushMessage', $message->id);
-        // $this->emitTo('settings', 'gpt', $this->input);
+         $this->emit( 'chatGPT', $this->input);
         $this->input = null;
      
     }
@@ -45,10 +45,13 @@ class Messages extends Component
     {
         $newMessage = Message::find($messageID);
         $this->response->push($newMessage);
-        $this->dispatchBrowserEvent('rowChatToBottom');
-       
+        $this->dispatchBrowserEvent('rowChatToBottom');      
     }
 
+    public function rowChatToBottom()
+    {
+        $this->dispatchBrowserEvent('rowChatToBottom');      
+    }
 
     public function render()
     {

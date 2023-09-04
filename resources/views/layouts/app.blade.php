@@ -42,6 +42,7 @@
 </head>
 
 <body>
+    @livewire('gpt.gpt')
     @livewire('gpt.messages')
     @livewire('feedback')
     <div id="app">
