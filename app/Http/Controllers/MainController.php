@@ -26,12 +26,15 @@ use App\Http\Controllers\Services\AddPlanService;
 use App\Http\Controllers\Services\HashCodeService;
 use App\Http\Controllers\Services\EstimationService;
 use App\Http\Controllers\Services\GetDayPlanService;
+use App\Http\Controllers\Services\PersonalResultServices\PersonalResultsService;
 use App\Repositories\DayPlanRepositories\GetPlanRepository;
 /* Dependencies for notifications */
 use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 /* end */
 use App\Models\TimetableModel;
+use App\Models\DefaultConfigs;
+use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
 
 class MainController
 {
@@ -51,6 +54,9 @@ class MainController
     private $weekendRepository         = null;
     private $userRatings               = null;
     private $timetableModel            = null;
+    private $personalResultsService    = null;
+    private $defaultConfigs            = null;
+    private $checkCheckpoints            = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -61,12 +67,16 @@ class MainController
                                 GetDayPlanService $getDayPlanService,
                                 DataTransformationService $dataTransformationService,
                                 EstimationService $estimationService,
+                                CheckpointService $checkCheckpoints,
                                 EstimationRepository $estimationRepository,
                                 Tasks $tasks,
                                 UserNotification $userNotification,
                                 WeekendRepository $weekendRepository,
                                 RatingService $userRatings,
-                                TimetableModel $timetableModel)
+                                TimetableModel $timetableModel,
+                                PersonalResultsService $personalResultsService,
+                                DefaultConfigs $defaultConfigs
+                                )
     {
         
         $this->savedTaskRepository       = $taskRepository;
@@ -85,6 +95,9 @@ class MainController
         $this->weekendRepository         = $weekendRepository;
         $this->userRatings               = $userRatings;
         $this->timetableModel            = $timetableModel;
+        $this->personalResultsService    = $personalResultsService;
+        $this->defaultConfigs            = $defaultConfigs; 
+        $this->checkCheckpoints          = $checkCheckpoints;
     }
 
     public function addHashCode(Request $request)
@@ -288,6 +301,17 @@ class MainController
      */
     public function estimateTask(Request $request)
     {
+        /**Before estimation check subplans */
+        $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
+        //die(var_dump($checkSubPlan));
+        if (!$checkSubPlan) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error! Some required subtasks are still undone',
+            ]);//
+        }
+        //checkCheckpoints
+        /**end */
         $isReady = null;
         $type = $request->get('type');
         $res = $request->get('is_ready');
@@ -412,6 +436,14 @@ class MainController
         }
         
         return ($preparedTasks);
+    }
+
+    public function getUserResults(Request $request)
+    {
+        $configs = DefaultConfigs::where('config_block_id',1)->get()->toArray();//select('config_data');//->where('config_block_id',1);
+        $results = $this->personalResultsService->getResults($configs);
+        die(json_encode($results));
+        //die(json_encode($configs));
     }
 
     private function getLastTimetableId()

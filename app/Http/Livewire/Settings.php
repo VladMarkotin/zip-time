@@ -95,6 +95,7 @@ class Settings extends Component
 
     public function getNote($id)
     {
+        sleep(1);
         $this->noteID = $id;
         $this->notes = SNS::getNote($id);
         $this->removeDeletedNote = SNS::getNote($id);
@@ -162,13 +163,7 @@ class Settings extends Component
    
     }
 
-
-   
-
-
-
-
-      
+ 
     public function render(SavedTask $savedTask)
     {
         

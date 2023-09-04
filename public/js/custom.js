@@ -276,6 +276,9 @@ $(document).on("click", '#gpt-close', function (e) {
 
 });
 
+$('.c-toggle').on( "mouseover", function() {
+  show('personal-results')
+} );
 
 
 

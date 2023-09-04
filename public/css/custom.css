@@ -497,6 +497,14 @@ display: none;
         
     }
 
+  .personal-results{
+    display: none;
+  }
 
-   
+  .personal-results-toggle:hover .personal-results{
+    
+    display: block;
+    z-index: 1;
+  }
+
   }

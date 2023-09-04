@@ -53,6 +53,8 @@ Route::middleware(['auth'])->group(function () {
 
 //Add job
     Route::post('/addJob', [App\Http\Controllers\MainController::class, 'addJob']);
+    //user`s results
+    Route::post('/get-results', [App\Http\Controllers\MainController::class, 'getUserResults']);
 
     //History routes
     Route::prefix('hist')->group(function () {
@@ -68,9 +70,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [App\Http\Controllers\StatController::class, 'getStatInfo']);
     });
 
-    
-    
-
+    //Edit card
+    Route::post('/edit-card', [App\Http\Controllers\EditController::class, 'editCard'])->name('edit-card');
+    //end edit card
 
     Route::get('/get-stat-data', [App\Http\Controllers\StatController::class, 'getStatData'])->name('get-stat-data');
     //end statistic
@@ -84,9 +86,15 @@ Route::middleware(['auth'])->group(function () {
     //Backlog
     Route::get('backlog', [App\Http\Controllers\BackLogController::class, 'index'])->name('backlog');
 
+    //getting notes for concrete task
+    Route::post('/get-saved-notes', [App\Http\Controllers\EditController::class, 'getSavedNotes'])->name('getSavedNotes');
 
-
-
+    //Upgrade details in functionality in plan
+    Route::post('/add-sub-task', [App\Http\Controllers\SubPlanController::class, 'createSubPlan'])->name('addSubTask'); //
+    Route::post('/get-sub-tasks', [App\Http\Controllers\SubPlanController::class, 'getSubPlan'])->name('get-sub-tasks');//del-sub-task
+    Route::post('/del-sub-task', [App\Http\Controllers\SubPlanController::class, 'delSubTask'])->name('get-sub-tasks');//
+    Route::post('/complete-sub-task', [App\Http\Controllers\SubPlanController::class, 'completeSubTask'])->name('complete-sub-task');//
+    Route::post('/edit-subtask', [App\Http\Controllers\SubPlanController::class, 'editSubTask'])->name('edit-sub-task');
 });
 
 
