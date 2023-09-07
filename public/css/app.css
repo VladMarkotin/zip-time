@@ -4349,7 +4349,6 @@ input[type=button].btn-block {
   align-items:center;
   overflow: hidden;  
   background: linear-gradient(0deg, #751A1A 0%, #292525 63.02%);
-  /* background: linear-gradient(360deg, #f7bdbd 0%, rgba(255, 255, 255, 0) 100%); */
   height: 660px;
 }
 
@@ -4384,7 +4383,6 @@ input[type=button].btn-block {
   align-self:flex-start;  
   transform: rotate(-180deg);
   opacity: 0.3;
-  /* width: 539px; */
   height: 650px;
   flex-shrink: 0;
   mix-blend-mode: multiply; 
@@ -4396,7 +4394,6 @@ input[type=button].btn-block {
   position: static;
   align-self: flex-end;
   opacity: 0.3;
-  /* width: 420px; */
   height: 500px;
   transform: rotate(-124.826deg);
   flex-shrink: 0;
