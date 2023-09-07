@@ -34,6 +34,7 @@ use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 /* end */
 use App\Models\TimetableModel;
 use App\Models\DefaultConfigs;
+use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
 
 class MainController
 {
@@ -55,6 +56,7 @@ class MainController
     private $timetableModel            = null;
     private $personalResultsService    = null;
     private $defaultConfigs            = null;
+    private $checkCheckpoints            = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -65,6 +67,7 @@ class MainController
                                 GetDayPlanService $getDayPlanService,
                                 DataTransformationService $dataTransformationService,
                                 EstimationService $estimationService,
+                                CheckpointService $checkCheckpoints,
                                 EstimationRepository $estimationRepository,
                                 Tasks $tasks,
                                 UserNotification $userNotification,
@@ -94,6 +97,7 @@ class MainController
         $this->timetableModel            = $timetableModel;
         $this->personalResultsService    = $personalResultsService;
         $this->defaultConfigs            = $defaultConfigs; 
+        $this->checkCheckpoints          = $checkCheckpoints;
     }
 
     public function addHashCode(Request $request)
@@ -297,6 +301,17 @@ class MainController
      */
     public function estimateTask(Request $request)
     {
+        /**Before estimation check subplans */
+        $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
+        //die(var_dump($checkSubPlan));
+        if (!$checkSubPlan) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error! Some required subtasks are still undone',
+            ]);//
+        }
+        //checkCheckpoints
+        /**end */
         $isReady = null;
         $type = $request->get('type');
         $res = $request->get('is_ready');

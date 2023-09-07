@@ -12,5 +12,13 @@ class SavedNotes extends Model
     protected $table = 'notes';
     protected $fillable = ['saved_task_id', 'note', 'created_at', 'updated_at'];
 
+    public function getCreatedAtAttribute($date)
+    {
+        //die(var_dump($date));
+        $dateObj = new \DateTimeImmutable($date);
+
+        return $dateObj->format('d.m.Y');
+    }
+
 
 }
