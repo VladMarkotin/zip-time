@@ -4336,6 +4336,9 @@ input[type=button].btn-block {
 
 /* ========================== INDEX PAGE =================================== */
 
+.content{
+  min-height: 70vh;
+}
 
 .index-container{
   margin-top: 0;
