@@ -183,47 +183,56 @@
                </tr>
             </template>
          </v-data-table>
-         <div v-if="items.length > 0">
-            <div class=" d-flex justify-space-between mt-3">
-               <v-tooltip right>
-                  <template v-slot:activator="{ on, attrs }">
-                     <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
-                        v-on="on">
-                        <v-icon md="1"
-                           color="#D71700"
-                           large
-                           >
-                           {{icons.mdiStarThreePointsOutline}}
-                        </v-icon>
-                     </v-btn>
-                  </template>
-                  <span>Create plan</span>
-               </v-tooltip>
-              
+         <v-row>
+
+         <v-col>
+
+            <div v-if="items.length > 0">
+               <div class=" d-flex justify-space-between mt-3">
+                  <v-tooltip right>
+                     <template v-slot:activator="{ on, attrs }">
+                        <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
+                           v-on="on">
+                           <v-icon md="1"
+                              color="#D71700"
+                              large
+                              >
+                              {{icons.mdiClockStart}}
+                           </v-icon>
+                        </v-btn>
+                     </template>
+                     <span>Create plan</span>
+                  </v-tooltip>
+               
+               </div>
             </div>
-         </div>
-         <v-tooltip right>
-                  <template v-slot:activator="{ on, attrs }">
-                     <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="toggleEmergencyCallDialog" v-bind="attrs"
-                        v-on="on">
-                        <v-icon md="1"
-                           color="#D71700"
-                           large
-                           >
-                           {{icons.mdiCarEmergency}}
-                        </v-icon>
-                     </v-btn>
-                  </template>
-                  <span>Emergency mode</span>
-               </v-tooltip>
-         <v-alert
-            color="#404040"
-            text
-            class="elevation-1"
-            :value="showAlert"
-            :type="alertType"
-            >{{serverMessage}}
-         </v-alert>
+         </v-col>
+         <v-col>
+
+            <v-tooltip right>
+                     <template v-slot:activator="{ on, attrs }">
+                        <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="toggleEmergencyCallDialog" v-bind="attrs"
+                           v-on="on">
+                           <v-icon md="1"
+                              color="#D71700"
+                              large
+                              >
+                              {{icons.mdiCarEmergency}}
+                           </v-icon>
+                        </v-btn>
+                     </template>
+                     <span>Emergency mode</span>
+            </v-tooltip>
+         </v-col>
+            <v-alert
+               color="#404040"
+               text
+               class="elevation-1"
+               :value="showAlert"
+               :type="alertType"
+               >{{serverMessage}}
+            </v-alert>
+         </v-row>
          <div class="v-progress-circular" v-if="isShowProgress == true">
             <v-progress-circular
                   :rotate="90"
@@ -252,6 +261,7 @@ import {
     mdiShareVariant,
     mdiDelete,
     mdiStarThreePointsOutline,
+    mdiClockStart,
     mdiAlarm,
     mdiCarEmergency,
     mdiPlus,
@@ -339,6 +349,7 @@ export default {
             mdiDelete,
             mdiPencil,
             mdiStarThreePointsOutline,
+            mdiClockStart,
             mdiAlarm,
             mdiPlus,
             mdiPlusBox,
