@@ -1,10 +1,11 @@
 <div>
   
 <div class="container" style="display:flex; justify-content:space-around;">
+  <div class="row">
    @include('livewire.update')
    @include('livewire.info')
    @include('livewire.notes')
-  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+  <div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
            aria-controls="v-pills-home" aria-selected="true" wire:ignore>
            Saved tasks
@@ -19,7 +20,7 @@
     </a>
     
   </div>
-  <div class="tab-content" id="v-pills-tabContent" >
+  <div class="tab-content col-9" id="v-pills-tabContent" >
     <div class="tab-pane fade show active" id="v-pills-home"
          role="tabpanel" aria-labelledby="v-pills-home-tab" wire:ignore.self>
        <table class="table">
@@ -108,4 +109,7 @@
   </div>
   
 </div>
+</div>
+
+  </div>
 </div>
