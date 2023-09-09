@@ -422,3 +422,22 @@ body {
     display: block;
     z-index: 1;
   }
+
+  /* SETTINGS */
+
+  .nav-link.active{
+    background-color: rgb(205,0,0) !important;
+    /* font-weight: 600; */
+    color: white !important;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+  }
+
+  .nav-link {
+    color: black !important;
+  }
+
+  .card-header {
+    background-color: rgb(205,0,0) !important;
+    color: white !important;
+  }

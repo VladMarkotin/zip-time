@@ -2,6 +2,7 @@
 namespace App\Http\Livewire;
 
 
+use Jenssegers\Agent\Agent;
 use Livewire\Component;
 use App\Models\SavedTask;
 use App\Models\SavedNotes;
@@ -35,11 +36,15 @@ class Settings extends Component
         $currentTimezone = User::where('id', Auth::id())->pluck('timezone')->toArray();
         $this->timezone = $currentTimezone;
 
+// dd(gettype($this->agent));
+        
+
         return view('livewire.settings', [
             'savedTasks' => $this->savedTasks,
             'timezones' => $timezones,
             'currentTz' => $currentTimezone[0],
             'user_id'   => Auth::id(),
+            'agent' => new Agent(),
         ]);
     }
 

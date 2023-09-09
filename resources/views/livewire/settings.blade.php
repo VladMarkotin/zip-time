@@ -5,6 +5,26 @@
    @include('livewire.update')
    @include('livewire.info')
    @include('livewire.notes')
+
+@if($agent->isMobile()) 
+    <div class="nav flex-column nav-pills col-12" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+           aria-controls="v-pills-home" aria-selected="true" wire:ignore>
+           Saved tasks
+    </a>
+    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" 
+        role="tab" aria-controls="v-pills-profile" aria-selected="false"wire:ignore>
+        Statistic
+    </a>
+    <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
+     aria-controls="v-pills-messages" aria-selected="false" wire:ignore>
+        Personal settings
+    </a>
+    
+  </div>
+
+@else 
+
   <div class="nav flex-column nav-pills col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
            aria-controls="v-pills-home" aria-selected="true" wire:ignore>
@@ -110,6 +130,8 @@
   
 </div>
 </div>
-
+@endif
   </div>
 </div>
+
+
