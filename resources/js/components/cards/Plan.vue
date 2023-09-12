@@ -254,6 +254,7 @@
 <script>
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../dialogs/EmergencyCall.vue'
+// import introJs from 'intro.js/intro.js'; 
 import {
     mdiAccount,
     mdiPlex,
@@ -543,6 +544,16 @@ export default {
             .catch(function(error) {
                 currentObj.output = error;
             });
+
+         axios.post('/getEduStep', {
+                    //hash_code: event
+         })
+         .then(function(response) {
+                  console.log(response)
+         })
+         .catch(function(error) {
+                    currentObj.output = error;
+         });
 
          axios.post('/isWeekendAvailable')
          .then(function(response) {

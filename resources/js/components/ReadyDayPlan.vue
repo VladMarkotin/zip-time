@@ -1,8 +1,9 @@
 <template>
-	<div>
+	<div>		
 		<template v-if="isShowAddJobTaskDialog">
 			<AddJobTask v-on:setAlertData="setAlertData" v-on:toggleAddJobTaskDialog="toggleAddJobTaskDialog" v-on:toggleAlertDialog="toggleAlertDialog"/>
 		</template>
+		<div data-title="Welcome 2" data-intro="2! 👋" class="card-demo"></div>
 		<template v-if="isShowCloseDayDialog">
 			<CloseDay v-on:toggleCloseDayDialog="toggleCloseDayDialog"/>
 		</template>
@@ -12,6 +13,7 @@
 		<template v-if="isShowAlertDialog">
 			<Alert v-bind:type="alert.type" v-bind:text="alert.text" v-on:toggleAlertDialog="toggleAlertDialog"/>
 		</template>
+		
 		<v-data-iterator hide-default-footer v-bind:items="data">
 			<Cards title="Required tasks:" v-if="isExistsRequiredTasks(data)" v-bind:items="getRequiredTasks(data)"/>
 			<v-divider></v-divider>
@@ -52,6 +54,8 @@
 	import Cards from './cards/Cards.vue'
 	import EmergencyCall from './dialogs/EmergencyCall.vue'
 	import {mdiCarEmergency,mdiPlusBox,mdiSendClock} from '@mdi/js'
+	import "intro.js/introjs.css";
+	import "intro.js/minified/introjs.min.css";
 
 	export default
 	{
@@ -113,7 +117,27 @@
 			{
 				this.isShowAlertDialog = !this.isShowAlertDialog
 			}
-		}
+		},
+
+		created(){
+		
+		},
+		mounted() {
+			 axios.post('/getEduStep', {
+                    //hash_code: event
+         })
+         .then(function(response) {
+			console.log(response.data.edu_step)
+			if (response.data.edu_step == 1){
+				const introJS = require("intro.js");
+				introJS.introJs().start();
+			}
+         })
+         .catch(function(error) {
+            console.log(error)
+         });
+			
+		},
 	}
 </script>
 <style>

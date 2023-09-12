@@ -35,6 +35,7 @@ use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Models\TimetableModel;
 use App\Models\DefaultConfigs;
 use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
+use App\Models\User;
 
 class MainController
 {
@@ -444,6 +445,13 @@ class MainController
         $results = $this->personalResultsService->getResults($configs);
         die(json_encode($results));
         //die(json_encode($configs));
+    }
+    public function getEduStep(Request $request)
+    {
+        $eduStep = User::where('id', Auth::id())->pluck('edu_step')->toArray();
+        $eduStep = $eduStep[0];
+
+        return json_encode(['edu_step' => $eduStep]);
     }
 
     private function getLastTimetableId()
