@@ -441,3 +441,15 @@ body {
     background-color: rgb(205,0,0) !important;
     color: white !important;
   }
+
+  .saved-tasks-table {
+    display: none;
+  }
+
+  .statistic-block {
+    display: none;
+  }
+
+  .personal-settings-block {
+    display: none;
+  }
