@@ -95,6 +95,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/del-sub-task', [App\Http\Controllers\SubPlanController::class, 'delSubTask'])->name('get-sub-tasks');//
     Route::post('/complete-sub-task', [App\Http\Controllers\SubPlanController::class, 'completeSubTask'])->name('complete-sub-task');//
     Route::post('/edit-subtask', [App\Http\Controllers\SubPlanController::class, 'editSubTask'])->name('edit-sub-task');
+    
+    //Upgrade notes functionality
+    Route::post('get-today-note-amount',[App\Http\Controllers\NoteController::class, 'getTodayNoteAmount'])->name('get-note-amount');
 });
 
 

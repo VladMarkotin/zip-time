@@ -35,6 +35,9 @@ use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Models\TimetableModel;
 use App\Models\DefaultConfigs;
 use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
+use App\Models\SavedNotes;
+use App\Models\SavedTask;
+use App\Http\Controllers\NoteController;
 
 class MainController
 {
@@ -56,7 +59,8 @@ class MainController
     private $timetableModel            = null;
     private $personalResultsService    = null;
     private $defaultConfigs            = null;
-    private $checkCheckpoints            = null;
+    private $checkCheckpoints          = null;
+    private $noteController            = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -75,7 +79,8 @@ class MainController
                                 RatingService $userRatings,
                                 TimetableModel $timetableModel,
                                 PersonalResultsService $personalResultsService,
-                                DefaultConfigs $defaultConfigs
+                                DefaultConfigs $defaultConfigs,
+                                NoteController $noteController
                                 )
     {
         
@@ -98,6 +103,7 @@ class MainController
         $this->personalResultsService    = $personalResultsService;
         $this->defaultConfigs            = $defaultConfigs; 
         $this->checkCheckpoints          = $checkCheckpoints;
+        $this->noteController            = $noteController;
     }
 
     public function addHashCode(Request $request)
@@ -303,7 +309,7 @@ class MainController
     {
         /**Before estimation check subplans */
         $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
-        //die(var_dump($checkSubPlan));
+        
         if (!$checkSubPlan) {
             return response()->json([
                 'status' => 'error',
@@ -355,8 +361,11 @@ class MainController
         if($checkedData) {
             $params        = ["id" => Auth::id(),"date" => Carbon::today()->toDateString()];
             $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
+            //get today`s note Amount
+            $noteAmount = $this->noteController->countTodayNoteAmount($checkedData);
 
-            return json_encode(['status' => 'success', 'message' => 'Task has been updated.'], JSON_UNESCAPED_UNICODE);
+            return json_encode(['status' => 'success', 'message' => 'Task has been updated.',
+             'noteAmount' => $noteAmount], JSON_UNESCAPED_UNICODE);
         }
 
         return json_encode(["status" => 'error', "message" => 'Error during estimation.'], JSON_UNESCAPED_UNICODE);
@@ -442,7 +451,7 @@ class MainController
     {
         $configs = DefaultConfigs::where('config_block_id',1)->get()->toArray();//select('config_data');//->where('config_block_id',1);
         $results = $this->personalResultsService->getResults($configs);
-        die(json_encode($results));
+        exit(json_encode($results));
         //die(json_encode($configs));
     }
 

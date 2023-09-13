@@ -287,13 +287,18 @@
 						width="auto"
 						>
 						<template v-slot:activator="{ props }">
+							<span>
+								{{ noteInfo.todayAmount }}
+								<v-icon color="#D71700">{{icons.mdiCircle }}</v-icon>
+							</span>
 							<v-btn
 							icon
 							v-bind="props"
 							@click="getAllNotesForTask(item)"
 							>
 							<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
-							</v-btn>
+							
+						</v-btn>
 						</template>
 						<v-card
 									width="400"
@@ -317,6 +322,7 @@
 												>
 												<v-card-title >
          											 Note from {{ item.created_at }}
+													  <v-divider v-if="item.created_at == new Date('d.m.Y').toString()"></v-divider>
 												</v-card-title>
 												<v-card-text class="bg-white text--primary">
 													<b>
@@ -330,6 +336,7 @@
 														hide-details
 													></v-checkbox>
 												</v-card-text>
+												<v-divider v-if="item.created_at == new Date('d.m.Y')"></v-divider>
 											</v-card>
 										</div>
 										
@@ -400,7 +407,8 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete,mdiMarkerCheck, mdiExclamation}  from '@mdi/js'  //mdiContentSaveCheckOutline
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete,
+		mdiMarkerCheck, mdiExclamation, mdiCircle }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	export default
 	{
@@ -408,7 +416,8 @@
 		data()
 		{
 			return {
-					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete, mdiExclamation }, //mdiContentSaveCheckOutline
+					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline,
+						 mdiChartGantt, mdiPlex, mdiDelete, mdiExclamation,mdiCircle  }, //mdiContentSaveCheckOutline
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
 					isShowAlertInDetails: false,
@@ -445,7 +454,10 @@
 						is_ready: false,
 					},
 					details: [],
-					ex4: []
+					ex4: [],
+					noteInfo: {
+						todayAmount: 0
+					}
 				}
 			},
 		components : {Alert},
@@ -556,6 +568,23 @@
 					},3000)*/
 				  })
 			},
+
+			getTodayNoteAmount(item){
+				//get-note-amount
+				alert('getTodayNoteAmount')
+				axios.post('/get-today-note-amount',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
+				.then((response) => {
+					this.isShowAlert = true;
+					this.setAlertData(response.data.status, response.data.message)
+					setTimeout( () => {
+						this.isShowAlert = false;
+						//debugger;
+					},3000)
+				  })
+
+			},
+
+			/**end */
 			sendIsReadyState(item)
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
@@ -587,6 +616,8 @@
 				.then((response) => {
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
+					item.notes = ""
+					this.noteInfo.todayAmount = response.data.noteAmount
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
