@@ -4335,6 +4335,15 @@ input[type=button].btn-block {
 }
 
 /* ========================== INDEX PAGE =================================== */
+#total-results{
+  box-shadow: rgb(255 43 43) 0px 0px 30px;
+  background-color: rgb(88, 0, 0);
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  padding: 3.5px 3.5px 3.5px 6px;
+  border-radius: 10px;
+}
 
 .content{
   min-height: 70vh;

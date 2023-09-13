@@ -142,14 +142,13 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} 
-                                    <span style="color: rgb(94, 155, 94); font-weight: bold" id="total-results">
-                                        [ rating: @php
+                                    <span id="total-results">
+                                        @php
                                             $rating = \app\models\User::where('id', Auth::id())
                                                 ->pluck('rating')
                                                 ->first();
-                                            
                                             echo $rating;
-                                        @endphp ]
+                                        @endphp
                                     </span>
                                 </a>
                                 
