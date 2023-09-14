@@ -35,21 +35,4 @@ class EditController extends Controller
 
         return json_encode(['status' => 'fail', 'message' => 'Error has happend!'], JSON_UNESCAPED_UNICODE);
     }
-
-    public function getSavedNotes(Request $request)
-    {
-        //get id of saved_task
-        $savedTaskId = SavedTask::select('id')->where([['hash_code', $request->get('hash')], ['user_id', Auth::id()]])
-        ->orderBy('created_at', 'desc')
-        ->get()
-        ->toArray()[0]['id'];
-        //get notes for saved Task
-        $notes = SavedNotes::select('note', 'created_at')
-        ->where('saved_task_id', $savedTaskId)
-        ->orderBy('created_at', 'desc')
-        ->get()
-        ->toArray();
-        //die(var_dump($notes));
-        return json_encode( $notes, JSON_UNESCAPED_UNICODE);
-    }
 }

@@ -288,8 +288,8 @@
 						>
 						<template v-slot:activator="{ props }">
 							<span>
+								{{ getTodayNoteAmount(item) }}
 								{{ noteInfo.todayAmount }}
-								<v-icon color="#D71700">{{icons.mdiCircle }}</v-icon>
 							</span>
 							<v-btn
 							icon
@@ -463,6 +463,10 @@
 		components : {Alert},
 		methods :
 		{
+			mounted ()
+			{
+
+			},
 			testFunction(v, event){
 				console.log(event)
 			},
@@ -557,29 +561,19 @@
 				/**query for getting all notes */
 				axios.post('/get-saved-notes',{task_id : item.taskId, hash: item.hash})
 				.then((response) => {
-					//this.isShowAlert = true;
+					
 					this.notesList = response.data
 					console.log(this.notesList[0].created_at)
 					
-					//this.setAlertData(response.data.status, response.data.message)
-					/*setTimeout( () => {
-						this.isShowAlert = false;
-						//debugger;
-					},3000)*/
 				  })
 			},
 
 			getTodayNoteAmount(item){
-				//get-note-amount
-				alert('getTodayNoteAmount')
-				axios.post('/get-today-note-amount',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
+				
+				axios.post('/get-today-note-amount',{task_id : item.taskId,details : item.details,note : item.notes,type : item.type})
 				.then((response) => {
-					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message)
-					setTimeout( () => {
-						this.isShowAlert = false;
-						//debugger;
-					},3000)
+					console.log(response.data)
+					this.noteInfo.todayAmount = response.data.amount //response.data.noteAmount
 				  })
 
 			},

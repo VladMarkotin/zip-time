@@ -18,24 +18,40 @@ class NoteController extends Controller
         $this->savedNotes = $savedNotes;
     }
 
-    public function getTodayNoteAmount()
+    public function getSavedNotes(Request $request)
     {
-        $notes = SavedNotes::all()->count();
-        die(var_dump($notes));
+        //get id of saved_task
+        $savedTaskId = SavedTask::select('id')->where([['hash_code', $request->get('hash')], ['user_id', Auth::id()]])
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->toArray()[0]['id'];
+        //get notes for saved Task
+        $notes = SavedNotes::select('note', 'created_at')
+        ->where('saved_task_id', $savedTaskId)
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->toArray();
+        //die(var_dump($notes));
+        return json_encode( $notes, JSON_UNESCAPED_UNICODE);
     }
 
+    public function getTodayNoteAmount(Request $request)
+    {
+        $notesAmount = $this->countTodayNoteAmount($request->all());
+        exit(json_encode(['amount' => $notesAmount]));
+    }
+    
     public function countTodayNoteAmount(array $data)
     {
         $savedTaskId = $this->getSavedTaskId($data);
         if ($savedTaskId) {
-
-            return ( SavedNotes::select('id')
+            
+            $amount = (SavedNotes::select('id')
             ->where('saved_task_id', $savedTaskId)
             //->whereDate('created_at', Carbon::today())
             ->get()
-            ->count()
-            );
-            //@file_put_contents('saved_id.tr', var_export($todayNotesAmount, true));
+            ->count());
+            return $amount;
         }
 
         return 0;
@@ -43,6 +59,7 @@ class NoteController extends Controller
 
     private function getSavedTaskId(array $data)
     {
+        $data['id'] = (!isset($data['id']) ) ?  $data['task_id'] : $data['id'];
         $hash = Tasks::select('hash_code')->where('id', $data['id'])
             ->get()
             ->pluck('hash_code')
@@ -57,7 +74,7 @@ class NoteController extends Controller
                         ])
                         ->get()
                         ->pluck('id')
-                        ->toArray() 
+                        ->toArray()[0]
                     );
                 
         }
