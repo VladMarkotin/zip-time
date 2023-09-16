@@ -99,7 +99,9 @@ Route::middleware(['auth'])->group(function () {
     //Upgrade notes functionality
     Route::post('get-today-note-amount',[App\Http\Controllers\NoteController::class, 'getTodayNoteAmount'])->name('get-note-amount');
 });
-
+Route::post('/get-default-configs', function (){
+    
+});
 
 Route::get('/event', function (){
     event(new \App\Events\MessageNotification('test broadcast'));

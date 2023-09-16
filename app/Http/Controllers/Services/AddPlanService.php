@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Repositories\DayPlanRepositories\GetPlanRepository;
 use App\Http\Controllers\Services\DataTransformationService;
+use App\Models\DefaultConfigs;
 
 class AddPlanService
 {
@@ -111,7 +112,8 @@ class AddPlanService
             $taskQuantity = count($data['plan']);
             switch ($data["day_status"]) {
                 case 2: //Work Day
-                    if($taskQuantity > 1){
+                    $defaultConfigs = json_decode(DefaultConfigs::select('config_data')->where('config_block_id', 2)->get()->toArray()[0]['config_data']);
+                    if($taskQuantity >= $defaultConfigs->cardRules[0]->minRequiredTaskQuantity){ //
                         /* Check quantity of required tasks. In this case it has to be more than 1! */
                         $i = 0;
                         array_filter($data['plan'], function ($v) use(&$i){

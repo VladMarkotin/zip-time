@@ -35,6 +35,11 @@ return [
     */
 
     'channels' => [
+        'async-log' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/async-log.log'),
+            'level' => 'info',
+        ],
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

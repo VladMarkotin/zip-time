@@ -7,14 +7,17 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Services\RatingService;
+use App\Models\DefaultConfigs;//minFinalMark
 
 class EstimationRepository
 {
     private $userRatings = null;
+    private $defaultConfigs = null;
 
-    public function __construct(RatingService $userRatings)
+    public function __construct(RatingService $userRatings, DefaultConfigs $defaultConfigs)
     {
-        $this->userRatings = $userRatings;
+        $this->userRatings    = $userRatings;
+        $this->defaultConfigs = $defaultConfigs;
     }
 
     /*This method will be executing automaticly for all users with unclosed plan in the end of the day (23:59) */
@@ -162,18 +165,18 @@ class EstimationRepository
         $finalMark = $this->sumMarks($timetableId); //считаю оценку каждого юзера
         //Здесь надо проверить выполнены ли обязательные задачи, если они есть
         $areRequiredTasksComplete = $this->checkRequiredTasks($timetableId);
-
-        if ($finalMark >= 50 && $areRequiredTasksComplete) {
+        $defaultConfigs = json_decode(DefaultConfigs::select('config_data')->where('config_block_id', 2)->get()->toArray()[0]['config_data']);
+        if ($finalMark >= $defaultConfigs->cardRules[0]->minFinalMark && $areRequiredTasksComplete) {
             $data = [
                 'id' => $timetableId,
                 'user_id' => $data['user_id'],
                 'time_of_day_plan' =>
-                    $finalMark >= 50 ? $this->sumTime($timetableId) : '00:00',
+                    $finalMark >= $defaultConfigs->cardRules[0]->minFinalMark ? $this->sumTime($timetableId) : '00:00',
                 'final_estimation' => $finalMark,
                 'own_estimation' => $data['mark'],
                 'comment' => $data['comment'],
                 'date' => Carbon::today()->toDateString(),
-                'day_status' => $finalMark >= 50 ? 3 : -1,
+                'day_status' => $finalMark >= $defaultConfigs->cardRules[0]->minFinalMark ? 3 : -1,
                 'updated_at' => Carbon::now(),
             ];
             /*This code could be placed in own method for optimization later*/
