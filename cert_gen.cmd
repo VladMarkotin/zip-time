@@ -1,7 +1,7 @@
 @echo OFF
 rem УКАЖИТЕ ПРАВИЛЬНЫЕ РАСПОЛОЖЕНИЯ ФАЙЛОВ
-set OPENSSL_CONF=D:\OpenServer\OSPanel\modules\http\Apache_2.4-PHP_7.2-7.4\conf\openssl.cnf
-PATH=%PATH%;D:\OpenServer\OSPanel\modules\http\Apache_2.4-PHP_7.2-7.4\bin
+set OPENSSL_CONF=D:\programs\OSPanel\modules\http\Apache_2.4-PHP_7.2-7.4\conf\openssl.cnf
+PATH=%PATH%;D:\programs\OSPanel\modules\http\Apache_2.4-PHP_7.2-7.4\bin
 
 rem Количество дней действия сертификата
 set days=730
@@ -12,8 +12,8 @@ set dname=zip-time.local
 
 rem УКАЖИТЕ ПРАВИЛЬНЫЕ РАСПОЛОЖЕНИЯ ФАЙЛОВ
 rem Расположение корневого сертификата и ключа
-set root_cert=D:\OpenServer\OSPanel\userdata\config\cert_files\rootCA.crt
-set root_key=D:\OpenServer\OSPanel\userdata\config\cert_files\rootCA.key
+set root_cert=D:\programs\OSPanel\userdata\config\cert_files\rootCA.crt
+set root_key=D:\programs\OSPanel\userdata\config\cert_files\rootCA.key
 
 echo [trust_cert] > %dname%.cnf
 echo subjectAltName=@alt_names >> %dname%.cnf

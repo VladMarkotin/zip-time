@@ -44,7 +44,7 @@
 <body>
     @livewire('feedback')
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
                     {{ config('app.name', 'Laravel') }}
@@ -142,14 +142,13 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} 
-                                    <span style="color: rgb(94, 155, 94); font-weight: bold" id="total-results">
-                                        [ rating: @php
+                                    <span id="total-results">
+                                        @php
                                             $rating = \app\models\User::where('id', Auth::id())
                                                 ->pluck('rating')
                                                 ->first();
-                                            
                                             echo $rating;
-                                        @endphp ]
+                                        @endphp
                                     </span>
                                 </a>
                                 
@@ -180,7 +179,7 @@
                 </div>
             </div>
         </nav>
-        <main class="py-4">
+        <main class="py-0">
           
             @yield('content')
         </main>
@@ -205,5 +204,13 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
+<footer>
+    <div class="footer-info">
+        <p class="footer-text">
+            footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras adipiscing.
+        </p>
+        <p class="footer-text">© 2023</p>
+    </div>    
+</footer>
 </html>
