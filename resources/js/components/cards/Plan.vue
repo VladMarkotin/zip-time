@@ -1,17 +1,19 @@
 <template>
-   <v-card>
-      <v-card-title style="background-color: #A10000;color: white;">Create your day plan!</v-card-title>
+   <v-card id="plan-wrapper">
+      <v-card-title style="background-color: #A10000;color: white;" >Create your day plan!</v-card-title>
       <v-container>
-         <v-select
-            :items="dayStatuses2"
-            label="Day status"
-            v-model="day_status"
-            @change="isWeekendAvailable"
-           
-            item-disabled="disable"
-            item-text="status"
-            required
-            ></v-select>
+         <div id="plan-day-status">
+            <v-select
+               :items="dayStatuses2"
+               label="Day status"
+               v-model="day_status"
+               @change="isWeekendAvailable"
+              
+               item-disabled="disable"
+               item-text="status"
+               required
+               ></v-select>
+         </div>
          <v-divider></v-divider>
          <div>
             <v-row align="center" class="d-flex mb-6">
@@ -269,6 +271,8 @@ import {
     mdiPlusBox,
     mdiCancel
 } from '@mdi/js'
+import "intro.js/introjs.css";
+import "intro.js/minified/introjs.min.css";
 
 export default {
    components : {EmergencyCall},
@@ -585,7 +589,37 @@ export default {
          .catch(function(error) {
             currentObj.output = error;
          });
-    }
+    },
+
+    async mounted() {
+      try {
+         const response = await  axios.post('/getEduStep', {
+                    //hash_code: event
+			})
+         if (response.data.edu_step == 1){
+					const introJS = require("intro.js").introJs();
+					introJS.setOptions({
+                  steps: [
+                  {
+                     element: document.getElementById('plan-wrapper'),
+                     intro: 'This is so-called pre-plan. Here you can scetch you day plan. On this step you still can easily add/delete tasks'
+                  },
+                  {
+                     element: document.getElementById('plan-day-status'),
+                     intro: 'Here you can easily manage day status. We got 2 statuses: "Work day" and "Weekend"'
+                  },
+                  {
+                     element: document.getElementById('plan-day-status'),
+                     intro: 'You wouldn\'t be able to change it after plan\s createing'
+                  }
+
+                  ]
+               }).start();
+			}
+      } catch(error) {
+         console.error(error)
+      }
+    },
 
 }
 </script>

@@ -116,27 +116,27 @@
 			toggleAlertDialog()
 			{
 				this.isShowAlertDialog = !this.isShowAlertDialog
-			}
+			},
 		},
 
 		created(){
 		
 		},
+
 		mounted() {
-			 axios.post('/getEduStep', {
+			axios.post('/getEduStep', {
                     //hash_code: event
-         })
-         .then(function(response) {
-			console.log(response.data.edu_step)
-			if (response.data.edu_step == 1){
-				const introJS = require("intro.js");
-				introJS.introJs().start();
-			}
-         })
-         .catch(function(error) {
-            console.log(error)
-         });
-			
+			})
+			.then(function(response) {
+				// console.log(response.data.edu_step)
+				if (response.data.edu_step == 1){
+					const introJS = require("intro.js");
+					introJS.introJs().start();
+				}
+			})
+			.catch(function(error) {
+				console.log(error)
+			});		
 		},
 	}
 </script>
