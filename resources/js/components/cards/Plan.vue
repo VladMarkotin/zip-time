@@ -275,8 +275,8 @@ import {
     mdiPlusBox,
     mdiCancel
 } from '@mdi/js'
-import "intro.js/introjs.css";
-import "intro.js/minified/introjs.min.css";
+// import "intro.js/introjs.css";
+// import "intro.js/minified/introjs.min.css";
 
 export default {
    components : {EmergencyCall},
@@ -602,10 +602,15 @@ export default {
 			})
          if (response.data.edu_step == 1){
 					const introJS = require("intro.js").introJs();
+               require("intro.js/themes/introjs-nassim.css");
+              
 					introJS.setOptions({
+                  tooltipClass: 'custom-tooltip',
                   hidePrev: true,
                   hideNext: true,
                   disableInteraction: true,
+                  exitOnOverlayClick: false,
+                  showStepNumbers: false,
                   steps: [
                   {  
                      element: document.getElementById('plan-wrapper'),
@@ -621,7 +626,8 @@ export default {
                   },
                   {
                      element: document.getElementById('plan-hash'),
-                     intro: 'This is hash - the short task\s name. If job/task got it would be able quickly add it to your plan with all settings.'
+                     intro: 'This is hash - the short task\s name. If job/task got it would be able quickly add it to your plan with all settings.',
+                     position: 'right',
                   },
                   {
                      element: document.getElementById('plan-time'),
@@ -636,15 +642,15 @@ export default {
                   const getCurrentStepTimer = (step) => {
                      switch(step) {
                         case 0:
-                           return 12000;
+                           return 180000000;
                         case 1:
-                           return 9000;
+                           return 180000000;
                         case 2:
-                           return 8500;
+                           return 180000000;
                         case lastStepIndex:
-                           return 6000;
+                           return 180000000;
                         default:
-                           return 9000;
+                           return 180000000;
                      }
                   };
                   
