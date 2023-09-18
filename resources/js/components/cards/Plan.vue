@@ -63,6 +63,7 @@
                   </div>
                </v-col>
                <v-col
+                  id="plan-hash"
                   cols="3"
                   md="2"
                   :offset="defaultSelected.hash == '#' ? 0 : 1"
@@ -102,7 +103,10 @@
                      v-model="defaultSelected.priority"
                      ></v-select>
                </v-col>
-               <v-col cols="1" md="1">
+               <v-col
+               id="plan-time" 
+               cols="1" 
+               md="1">
                   <v-menu ref="v-menu" v-bind:close-on-content-click="false" v-model="menu">
                      <template v-slot:activator="{on}">
                         <v-text-field label="Time" prepend-icon="mdi-clock-time-four-outline" readonly v-model="defaultSelected.time" v-on="on"></v-text-field>
@@ -599,22 +603,63 @@ export default {
          if (response.data.edu_step == 1){
 					const introJS = require("intro.js").introJs();
 					introJS.setOptions({
+                  hidePrev: true,
+                  hideNext: true,
+                  disableInteraction: true,
                   steps: [
-                  {
+                  {  
                      element: document.getElementById('plan-wrapper'),
-                     intro: 'This is so-called pre-plan. Here you can scetch you day plan. On this step you still can easily add/delete tasks'
+                     intro: 'This is so-called pre-plan. Here you can scetch you day plan. On this step you still can easily add/delete tasks.'
                   },
                   {
                      element: document.getElementById('plan-day-status'),
-                     intro: 'Here you can easily manage day status. We got 2 statuses: "Work day" and "Weekend"'
+                     intro: 'Here you can easily manage day status. We got 2 statuses: "Work day" and "Weekend".'
                   },
                   {
                      element: document.getElementById('plan-day-status'),
-                     intro: 'You wouldn\'t be able to change it after plan\s createing'
+                     intro: 'You wouldn\'t be able to change it after plan\s createing.'
+                  },
+                  {
+                     element: document.getElementById('plan-hash'),
+                     intro: 'This is hash - the short task\s name. If job/task got it would be able quickly add it to your plan with all settings.'
+                  },
+                  {
+                     element: document.getElementById('plan-time'),
+                     intro: 'Here yout can set time.'
                   }
-
                   ]
-               }).start();
+               }).onbeforechange(() => {
+
+                  const currentStepIndex = introJS._currentStep;
+                  const lastStepIndex = introJS._introItems.length - 1;
+
+                  const getCurrentStepTimer = (step) => {
+                     switch(step) {
+                        case 0:
+                           return 12000;
+                        case 1:
+                           return 9000;
+                        case 2:
+                           return 8500;
+                        case lastStepIndex:
+                           return 6000;
+                        default:
+                           return 9000;
+                     }
+                  };
+                  
+                  const timerId = setTimeout(() => {
+                     currentStepIndex < lastStepIndex ? introJS.nextStep() : introJS.exit();
+                  },getCurrentStepTimer(currentStepIndex));
+                    
+                    setTimeout(() => {
+                     const tooltipButtons = document.querySelector('.introjs-tooltip').querySelectorAll('a[role="button"]');
+                     
+                     for (const button of tooltipButtons) {
+                        button.addEventListener('click', () => clearTimeout(timerId));
+                     }
+                    },0);
+               }).start(); 
 			}
       } catch(error) {
          console.error(error)
