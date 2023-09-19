@@ -269,32 +269,20 @@ $('.c-toggle').on( "mouseover", function() {
    * INDEX INFO ANIMATION
    */
   const saved_task_img = document.querySelector('.saved-task-img, .task-img');
-  saved_task_img.classList.remove('img-transition');
-
   const saved_img = document.querySelector('.saved-img, .task-img');
-  saved_img.classList.remove('img-transition');
-
   const task_img = document.querySelector('.task-img');
-  task_img.classList.remove('img-transition');
-
   const statistic_img = document.querySelector('.statistic-img');
-  task_img.classList.remove('img-transition');
-
   const history_img = document.querySelector('.history-img');
-  history_img.classList.remove('img-transition');
-
   const move_right_head = document.querySelector('.move-right-head');
-  move_right_head.classList.remove('move-right');
-
   const move_right_bold_text = document.querySelector('.move-right-bold-text');
-  move_right_bold_text.classList.remove('move-right');
-
   const move_right_text = document.querySelector('.move-right-text');
-  move_right_text.classList.remove('move-right');
+  const move_left_head = document.querySelector('.move-left-head');
+  const move_left_bold_text = document.querySelector('.move-left-bold-text');
+  const move_left_text = document.querySelector('.move-left-text');
 
 // ========= TEXT TRANSITION =========
 
-  const info_container_observer = new IntersectionObserver(entries => {
+  const right_text_observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         move_right_head.classList.add('move-right');
@@ -302,12 +290,21 @@ $('.c-toggle').on( "mouseover", function() {
         move_right_text.classList.add('move-right');
         return;
       }
-      move_right_head.classList.remove('move-right');
-      move_right_bold_text.classList.remove('move-right');
-      move_right_text.classList.add('move-right');
     });
   });
-  info_container_observer.observe(document.querySelector('.info-container'));
+  right_text_observer.observe(document.querySelector('.info-container'));
+
+  const left_text_observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        move_left_head.classList.add('move-left');
+        move_left_bold_text.classList.add('move-left');
+        move_left_text.classList.add('move-left');
+        return;
+      }
+    });
+  });
+  left_text_observer.observe(document.querySelector('.right-container'));
 
 // ========= IMG TRANSITION =========
 
@@ -317,7 +314,6 @@ $('.c-toggle').on( "mouseover", function() {
         history_img.classList.add('img-transition');
         return;
       }
-      history_img.classList.remove('img-transition');
     });
   });
   history_img_observer.observe(document.querySelector('.history-img'));
@@ -328,7 +324,6 @@ $('.c-toggle').on( "mouseover", function() {
         statistic_img.classList.add('img-transition');
         return;
       }
-      statistic_img.classList.remove('img-transition');
     });
   });
   statistic_img_observer.observe(document.querySelector('.statistic-img'));
@@ -341,9 +336,6 @@ $('.c-toggle').on( "mouseover", function() {
         task_img.classList.add('img-transition');
         return;
       }
-      saved_task_img.classList.remove('img-transition');
-      saved_img.classList.remove('img-transition');
-      task_img.classList.remove('img-transition');
     });
   });
   img_observer.observe(document.querySelector('.images'));

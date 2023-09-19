@@ -4439,7 +4439,12 @@ input[type=button].btn-block {
 }
 
 .move-right-head, .move-right-bold-text, .move-right-text{
-  margin-left: -150px;
+  margin-left: -100px;
+  opacity: 0;
+}
+
+.move-left-head, .move-left-bold-text, .move-left-text{
+  margin-right: -100px;
   opacity: 0;
 }
 
@@ -4695,15 +4700,15 @@ footer{
 
 @media (prefers-reduced-motion: no-preference) {
   .saved-task-img{
-    transition: opacity 1.5s, transform 1.5s;
+    transition: opacity 1.5s 1.5s, transform 1.5s 1.5s;
   }
 
   .saved-img{
-    transition: opacity 1.5s 0.5s, transform 1.5s  0.5s;
+    transition: opacity 1.5s 2s, transform 1.5s  2s;
   }
 
   .task-img{
-    transition: opacity 1.5s 0.8s, transform 1.5s  0.8s;
+    transition: opacity 1.5s 2.3s, transform 1.5s  2.3s;
   }
 
   .statistic-img{
@@ -4711,8 +4716,10 @@ footer{
   }
 
   .history-img{
-    transition: opacity 1.5s, transform 1.5s;
+    transition: opacity 1.5s 1.5s, transform 1.5s 1.5s;
   }
+
+/* ====== RIGHT TEXT ====== */
 
   .move-right-head{
     transition: all 2s ease-in-out;
@@ -4730,6 +4737,29 @@ footer{
 
   .move-right-text{
     transition: all 1.5s ease-out 1s;
+    -webkit-transition: all 2.5s ease-out 1s; /** Chrome & Safari **/
+    -moz-transition: all 2.5s ease-out 1s; /** Firefox **/
+    -o-transition: all 2.5s ease-out 1s; /** Opera **/
+  }
+
+/* ====== LEFT TEXT ====== */
+
+  .move-left-head{
+    transition: all 2s ease-in-out;
+    -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
+    -moz-transition: all 2s ease-in-out; /** Firefox **/
+    -o-transition: all 2s ease-in-out; /** Opera **/
+  }
+
+  .move-left-bold-text{
+    transition: all 1.5s ease-out 1s;
+    -webkit-transition: all 2.5s ease-out 1s; /** Chrome & Safari **/
+    -moz-transition: all 2.5s ease-out 1s; /** Firefox **/
+    -o-transition: all 2.5s ease-out 1s; /** Opera **/
+  }
+
+  .move-left-text{
+    transition: all 1.5s ease-out 1s;
     -webkit-transition: all 2.5s ease-out 1.7s; /** Chrome & Safari **/
     -moz-transition: all 2.5s ease-out 1.7s; /** Firefox **/
     -o-transition: all 2.5s ease-out 1.7s; /** Opera **/
@@ -4743,10 +4773,18 @@ footer{
 
 .move-right{
   opacity: 1;
-  transform: translate(150px, );
-  -webkit-transform: translate(150px,0); /** Chrome & Safari **/
-  -o-transform: translate(150px,0); /** Opera **/
-  -moz-transform: translate(150px,0); /** Firefox **/
+  transform: translate(100px, 0);
+  -webkit-transform: translate(100px,0); /** Chrome & Safari **/
+  -o-transform: translate(100px,0); /** Opera **/
+  -moz-transform: translate(100px,0); /** Firefox **/
+}
+
+.move-left{
+  opacity: 1;
+  transform: translate(-100px, 0);
+  -webkit-transform: translate(-100px,0); /** Chrome & Safari **/
+  -o-transform: translate(-100px,0); /** Opera **/
+  -moz-transform: translate(-100px,0); /** Firefox **/
 }
 
 
