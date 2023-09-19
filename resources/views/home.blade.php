@@ -29,9 +29,9 @@
             </div>
             <div class="info">
                 <div class="info-container">
-                    <p class="info-head text-left">statistic</p>
-                    <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                    <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                    <p class="info-head move-right-head text-left">statistic</p>
+                    <p class="info-bold move-right-bold-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    <p class="info-text move-right-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                     <img class="statistic-img" src="/images/statistic.png">
                 </div>
                 <hr class="underline">            
@@ -47,7 +47,7 @@
                 </div>
                 <hr class="underline">
                 <div class="info-container">
-                    <p class="info-head text-left">history</p>
+                    <p class="info-head move-left-head text-left">history</p>
                     <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                     <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                     <img class="history-img" src="/images/history.png">

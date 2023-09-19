@@ -4438,6 +4438,11 @@ input[type=button].btn-block {
   width: 300px;
 }
 
+.move-right-head, .move-right-bold-text, .move-right-text{
+  margin-left: -150px;
+  opacity: 0;
+}
+
 .info-bold {
   font-size: 28px;
   font-weight: 700;
@@ -4686,37 +4691,62 @@ footer{
   }
 }
 
-
 /* ========== IMG ANIMATION ============ */
-
 
 @media (prefers-reduced-motion: no-preference) {
   .saved-task-img{
-    transition: opacity 1.5s ease, transform 1.5s ease;
+    transition: opacity 1.5s, transform 1.5s;
   }
 
   .saved-img{
-    transition: opacity 1.5s ease, transform 1.5s ease;
-    transition-delay: 0.5s; 
+    transition: opacity 1.5s 0.5s, transform 1.5s  0.5s;
   }
 
   .task-img{
-    transition: opacity 1.5s ease, transform 1.5s ease;
-    transition-delay: 0.8s; 
+    transition: opacity 1.5s 0.8s, transform 1.5s  0.8s;
   }
 
   .statistic-img{
-    transition: opacity 1.5s ease, transform 1.5s ease;
+    transition: opacity 1.5s 1.5s, transform 1.5s 1.5s;
   }
 
   .history-img{
-    transition: opacity 1.5s ease, transform 1.5s ease;
+    transition: opacity 1.5s, transform 1.5s;
+  }
+
+  .move-right-head{
+    transition: all 2s ease-in-out;
+    -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
+    -moz-transition: all 2s ease-in-out; /** Firefox **/
+    -o-transition: all 2s ease-in-out; /** Opera **/
+  }
+
+  .move-right-bold-text{
+    transition: all 1.5s ease-out 1s;
+    -webkit-transition: all 2.5s ease-out 1s; /** Chrome & Safari **/
+    -moz-transition: all 2.5s ease-out 1s; /** Firefox **/
+    -o-transition: all 2.5s ease-out 1s; /** Opera **/
+  }
+
+  .move-right-text{
+    transition: all 1.5s ease-out 1s;
+    -webkit-transition: all 2.5s ease-out 1.7s; /** Chrome & Safari **/
+    -moz-transition: all 2.5s ease-out 1.7s; /** Firefox **/
+    -o-transition: all 2.5s ease-out 1.7s; /** Opera **/
   }
 }
 
 .img-transition {
   opacity: 1;
   transform: scale(1)
+}
+
+.move-right{
+  opacity: 1;
+  transform: translate(150px, );
+  -webkit-transform: translate(150px,0); /** Chrome & Safari **/
+  -o-transform: translate(150px,0); /** Opera **/
+  -moz-transform: translate(150px,0); /** Firefox **/
 }
 
 

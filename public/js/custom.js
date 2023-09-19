@@ -283,6 +283,34 @@ $('.c-toggle').on( "mouseover", function() {
   const history_img = document.querySelector('.history-img');
   history_img.classList.remove('img-transition');
 
+  const move_right_head = document.querySelector('.move-right-head');
+  move_right_head.classList.remove('move-right');
+
+  const move_right_bold_text = document.querySelector('.move-right-bold-text');
+  move_right_bold_text.classList.remove('move-right');
+
+  const move_right_text = document.querySelector('.move-right-text');
+  move_right_text.classList.remove('move-right');
+
+// ========= TEXT TRANSITION =========
+
+  const info_container_observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        move_right_head.classList.add('move-right');
+        move_right_bold_text.classList.add('move-right');
+        move_right_text.classList.add('move-right');
+        return;
+      }
+      move_right_head.classList.remove('move-right');
+      move_right_bold_text.classList.remove('move-right');
+      move_right_text.classList.add('move-right');
+    });
+  });
+  info_container_observer.observe(document.querySelector('.info-container'));
+
+// ========= IMG TRANSITION =========
+
   const history_img_observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
