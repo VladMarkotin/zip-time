@@ -645,21 +645,22 @@ export default {
                   const currentStepIndex = introJS._currentStep;
                   const lastStepIndex = introJS._introItems.length - 1;
 
-                  const timer = () => {
-                     const getCurrentStepTimer = (step) => {
-                     switch(step) {
-                        case 0:
-                           return 60000000;
-                        case 1:
-                           return 60000000;
-                        case 2:
-                           return 60000000;
-                        case 3:
-                           return 60000000;
-                        case lastStepIndex:
-                           return 60000000;
-                        default:
-                           return 60000000;
+                  const getCurrentStepTimer = (step) => {
+                  switch(step) {
+                     case 0:
+                        return 19000;
+                     case 1:
+                        return 16000;
+                     case 2:
+                        return 14000;
+                     case 3:
+                        return 18000;
+                     case 3:
+                        return 12000;
+                     case lastStepIndex:
+                        return 24000;
+                     default:
+                        return 18000;
                      }
                   };
                   
@@ -674,18 +675,6 @@ export default {
                         button.addEventListener('click', () => clearTimeout(timerId));
                      }
                     },0);
-                  }
-
-                  switch(currentStepIndex) {
-                     case 3:
-                        this.defaultSelected.hash = this.defaultSelected.hashCodes[0];
-                        this.onChange.call(this,this.defaultSelected.hashCodes[0]);
-                        timer();
-                     break;
-                     default:
-                        timer();
-                     break;
-                  };
 
                }).start(); 
 			}
