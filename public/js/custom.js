@@ -265,6 +265,34 @@ $('.c-toggle').on( "mouseover", function() {
 } );
 
 
+  /**
+   * INDEX INFO ANIMATION
+   */
+  // Удалить CSS-класс img-transition
+  const saved_task_img = document.querySelector('.saved-task-img, .task-img');
+  saved_task_img.classList.remove('img-transition');
+
+  const saved_img = document.querySelector('.saved-img, .task-img');
+  saved_img.classList.remove('img-transition');
+
+  const task_img = document.querySelector('.task-img');
+  task_img.classList.remove('img-transition');
+
+  // Добавить наблюдение за появлением элемента
+  const img_observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        saved_task_img.classList.add('img-transition');
+        saved_img.classList.add('img-transition');
+        task_img.classList.add('img-transition');
+        return;
+      }
+      saved_task_img.classList.remove('img-transition');
+      saved_img.classList.remove('img-transition');
+      task_img.classList.remove('img-transition');
+    });
+  });
+  img_observer.observe(document.querySelector('.images'));
 
 
 
