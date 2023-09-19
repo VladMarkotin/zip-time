@@ -146,8 +146,7 @@
                         <div class="form-group">
                             <strong>Notification type:</strong>
                             <input type="text" class="form-control"
-                                  value="Pusher"
-                                 readonly>
+                                     wire:model="type">
                             @error('type')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror
@@ -175,6 +174,8 @@
                             @enderror
                         </div>
                     </div>
+
+             
 
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
 

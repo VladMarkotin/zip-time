@@ -79,8 +79,8 @@
     
                             @if (Auth::user()->role_as == 1)
                                 <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                  
                                    <b>  <i class="bi bi-broadcast-pin"></i>  Broadcast</b> 
+                                   <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                                 </button>
                             @endif
                             </div>

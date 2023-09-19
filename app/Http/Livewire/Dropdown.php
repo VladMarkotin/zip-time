@@ -90,8 +90,10 @@ class Dropdown extends Component
 
     public function pushNotification()
     {
+        // dd($this->token);
+        $validatedData = $this->validate();
        $broadcast = event(new NotificationEvent('pusher',  $this->data,  $this->date));
-       dd($broadcast );
+       
     }
 
 
