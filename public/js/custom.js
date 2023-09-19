@@ -268,7 +268,6 @@ $('.c-toggle').on( "mouseover", function() {
   /**
    * INDEX INFO ANIMATION
    */
-  // Удалить CSS-класс img-transition
   const saved_task_img = document.querySelector('.saved-task-img, .task-img');
   saved_task_img.classList.remove('img-transition');
 
@@ -278,7 +277,34 @@ $('.c-toggle').on( "mouseover", function() {
   const task_img = document.querySelector('.task-img');
   task_img.classList.remove('img-transition');
 
-  // Добавить наблюдение за появлением элемента
+  const statistic_img = document.querySelector('.statistic-img');
+  task_img.classList.remove('img-transition');
+
+  const history_img = document.querySelector('.history-img');
+  history_img.classList.remove('img-transition');
+
+  const history_img_observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        history_img.classList.add('img-transition');
+        return;
+      }
+      history_img.classList.remove('img-transition');
+    });
+  });
+  history_img_observer.observe(document.querySelector('.history-img'));
+
+  const statistic_img_observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        statistic_img.classList.add('img-transition');
+        return;
+      }
+      statistic_img.classList.remove('img-transition');
+    });
+  });
+  statistic_img_observer.observe(document.querySelector('.statistic-img'));
+
   const img_observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {

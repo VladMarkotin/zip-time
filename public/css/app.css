@@ -4461,6 +4461,8 @@ input[type=button].btn-block {
   flex-shrink: 0;
   position: absolute;
   align-self:flex-end;
+  opacity: 0;
+  transform: scale(1.08);
 }
 
 .images{
@@ -4504,6 +4506,8 @@ input[type=button].btn-block {
   flex-shrink: 0;
   position: absolute;
   align-self:flex-end;
+  opacity: 0;
+  transform: scale(1.08);
 }
 
 hr.underline{
@@ -4683,7 +4687,7 @@ footer{
 }
 
 
-/* ====================== */
+/* ========== IMG ANIMATION ============ */
 
 
 @media (prefers-reduced-motion: no-preference) {
@@ -4699,6 +4703,14 @@ footer{
   .task-img{
     transition: opacity 1.5s ease, transform 1.5s ease;
     transition-delay: 0.8s; 
+  }
+
+  .statistic-img{
+    transition: opacity 1.5s ease, transform 1.5s ease;
+  }
+
+  .history-img{
+    transition: opacity 1.5s ease, transform 1.5s ease;
   }
 }
 
