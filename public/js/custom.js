@@ -268,32 +268,34 @@ $('.c-toggle').on( "mouseover", function() {
   /**
    * INDEX INFO ANIMATION
    */
-  const saved_task_img = document.querySelector('.saved-task-img, .task-img');
-  const saved_img = document.querySelector('.saved-img, .task-img');
-  const task_img = document.querySelector('.task-img');
-  const statistic_img = document.querySelector('.statistic-img');
-  const history_img = document.querySelector('.history-img');
-  const move_right_head = document.querySelector('.move-right-head');
-  const move_right_bold_text = document.querySelector('.move-right-bold-text');
-  const move_right_text = document.querySelector('.move-right-text');
+  
+  
+  
+
+// ========= TEXT TRANSITION =========
+  $( "p.text-left" ).each(function(index, element) {
+    const move_right_head = document.querySelector('.move-right-head');
+    const move_right_bold_text = document.querySelector('.move-right-bold-text');
+    const move_right_text = document.querySelector('.move-right-text');
+    const right_text_observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          move_right_head.classList.add('move-right');
+          move_right_bold_text.classList.add('move-right');
+          move_right_text.classList.add('move-right');
+          console.log('Индекс элемента: ' + index + '; класс элемента: ' +$(element).attr('class'));
+          return;
+        }
+      });
+      
+    });
+    
+    right_text_observer.observe(document.querySelector('.info-container'));
+  });
+
   const move_left_head = document.querySelector('.move-left-head');
   const move_left_bold_text = document.querySelector('.move-left-bold-text');
   const move_left_text = document.querySelector('.move-left-text');
-
-// ========= TEXT TRANSITION =========
-
-  const right_text_observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        move_right_head.classList.add('move-right');
-        move_right_bold_text.classList.add('move-right');
-        move_right_text.classList.add('move-right');
-        return;
-      }
-    });
-  });
-  right_text_observer.observe(document.querySelector('.info-container'));
-
   const left_text_observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -306,18 +308,9 @@ $('.c-toggle').on( "mouseover", function() {
   });
   left_text_observer.observe(document.querySelector('.right-container'));
 
-// ========= IMG TRANSITION =========
+  // ========= IMG TRANSITION =========
 
-  const history_img_observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        history_img.classList.add('img-transition');
-        return;
-      }
-    });
-  });
-  history_img_observer.observe(document.querySelector('.history-img'));
-
+  const statistic_img = document.querySelector('.statistic-img');
   const statistic_img_observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -328,6 +321,9 @@ $('.c-toggle').on( "mouseover", function() {
   });
   statistic_img_observer.observe(document.querySelector('.statistic-img'));
 
+  const saved_task_img = document.querySelector('.saved-task-img, .task-img');
+  const saved_img = document.querySelector('.saved-img, .task-img');
+  const task_img = document.querySelector('.task-img');
   const img_observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -340,6 +336,16 @@ $('.c-toggle').on( "mouseover", function() {
   });
   img_observer.observe(document.querySelector('.images'));
 
+  const history_img = document.querySelector('.history-img');
+  const history_img_observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        history_img.classList.add('img-transition');
+        return;
+      }
+    });
+  });
+  history_img_observer.observe(document.querySelector('.history-img'));
 
 
 

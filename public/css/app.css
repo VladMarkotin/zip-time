@@ -4696,9 +4696,12 @@ footer{
   }
 }
 
-/* ========== IMG ANIMATION ============ */
+
 
 @media (prefers-reduced-motion: no-preference) {
+
+  /* ========== IMG ANIMATION ============ */
+  
   .saved-task-img{
     transition: opacity 1.5s 1.5s, transform 1.5s 1.5s;
   }
@@ -4719,7 +4722,7 @@ footer{
     transition: opacity 1.5s 1.5s, transform 1.5s 1.5s;
   }
 
-/* ====== RIGHT TEXT ====== */
+  /* ====== RIGHT TEXT ====== */
 
   .move-right-head{
     transition: all 2s ease-in-out;
@@ -4742,7 +4745,7 @@ footer{
     -o-transition: all 2.5s ease-out 1s; /** Opera **/
   }
 
-/* ====== LEFT TEXT ====== */
+  /* ====== LEFT TEXT ====== */
 
   .move-left-head{
     transition: all 2s ease-in-out;
