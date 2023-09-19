@@ -399,7 +399,7 @@ class MainController
         ];
         $response = $this->planService->checkExtraJob($data);
         $data = $this->dataTransformationService->getNumValuesOfStrValues($data);
-               
+             
         if($response['status'] == 'success'){
             $dataForTasks = [
                 "timetable_id" => $this->getLastTimetableId(),

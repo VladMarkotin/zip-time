@@ -67,6 +67,7 @@ class Notifications extends Component
             $notification->read_at = 1;
             $notification->update();
         }
+        $this->emit('refresh');
     }
 
     public function updateNotification(): void
@@ -97,6 +98,7 @@ class Notifications extends Component
         $this->dispatchBrowserEvent('message', [
             'text' => 'Notification Deleted Successfully',
         ]);
+        $this->emit('refresh');
     }
 
     public function updatingSearch()

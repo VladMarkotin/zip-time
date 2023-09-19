@@ -20,6 +20,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -42,7 +43,11 @@
 </head>
 
 <body>
-    @livewire('feedback')
+ 
+
+    <livewire:feedback />
+    <livewire:dropdown />
+ 
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm">
             <div class="container">
@@ -55,62 +60,40 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                @if (Route::has('login'))
-                    @auth
-
-                        <!-- Button Notification -->
-
-                        <div class="btn-group" id="notification_section">
-                            <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-bell" viewBox="0 0 16 16">
-                                    <path
-                                        @if ($notifications) style=" animation: bell 4s linear infinite; " @endif
-                                        d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" />
-                                </svg>
-                                <span class="badge badge-pill notification--num"
-                                    @if ($notifications) style="background: #a10000; color:white;" @endif>
-
-                                    <span id="main_notification_button"
-                                        @if (!$notifications) style="color: #BFBABA;" @endif>{{ $count_notifications }}</span></span>
-
-
-                            </button>
-                            <div class="dropdown-menu notifications" style="padding: 0">
-                                @foreach ($notifications as $notification)
-                                    <div class="dropdown-item notification"><b>{{ $notification->data }}</b></div>
-                                @endforeach
-
-                                <div class="view_all">
-                                    <a href="notifications" class="  btn-block"><strong>View All</strong> </a>
-
-                                </div>
-
-                            </div>
-                            <input type="hidden" name="_token" id="_token" value={{ csrf_token() }}>
-                        </div>
-
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <span class="mdi mdi-pencil-outline"></span>
-                        </button>
-
-                        @if (Auth::user()->role_as == 1)
-                            <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                Отправить через Pusher
-                            </button>
-                        @endif
-
-
-
-                    @endauth
-                @endif
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
 
+                        @if (Route::has('login'))
+                        @auth
+    
+                            <!-- Button Notification -->
+    
+                            <div class="btn-group" >
+                                <button type="button" class="btn btn-light " id="bell">
+                                      <livewire:counter/>
+                                </button>
+
+                        <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-light " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <span class="mdi mdi-pencil-outline"></span>
+                            </button>
+    
+                            @if (Auth::user()->role_as == 1)
+                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                    Отправить через Pusher
+                                </button>
+                            @endif
+    
+
+                            </div>
+    
+                        
+    
+    
+                        @endauth
+                    @endif
+    
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -174,13 +157,15 @@
                         @endguest
                     </ul>
                   
-                  
+              
 
                 </div>
             </div>
         </nav>
+       
+        
         <main class="py-0">
-          
+     
             @yield('content')
         </main>
        

@@ -53,107 +53,153 @@ $(document).ready(function () {
    * NOTIFICATIONS
    */
 
-  $(document).on("click", '#saveNotification', function (e) {
-    let type = $('#type').val();
-    let data = $('#data').val();
-    let notification_date = $('#notification_date').val();
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-    $.ajax({
-      method: "POST",
-      url: "save_notification",
-      data: {
-        'type': type,
-        ' data': data,
-        'notification_date': notification_date
-      },
-      success: function (response) {
 
-        resetModalFields()   // Empty modal inputs on send
-        $('#exampleModal').modal('hide');   // hide modal
-        $('input').removeClass("is-invalid");  // remove error class on success
-        alertify.notify('Notification Added Successfuly');
-        $("#notification_section").load(" #notification_section");  //reload notification section on success
-      },
-      error: function (response) {
-        var data = JSON.parse(response.responseText);
-        alertify.notify(data.message);
-        $.each(data, function (i, item) {
-          $.each(data.errors, function (key, value) {
-            $('#' + key).attr("class", "form-control is-invalid");  // add error class to input field if any errors
 
-          });
-        });
-      },
-    })
+  $("#bell").click(function(){
+    $(".notification-wrapper").slideToggle();
   });
 
+  $(document).mouseup(function(e) 
+  {
+      var container = $(".notification-wrapper");
 
-  /**
-   * PUSHER
-   */
-  $(document).on("click", '#sendNotification', function (e) {
-    let type_pusher = $('#type_pusher').val();
-    let data_pusher = $('#data_pusher').val();
-    let notification_date_pusher = $('#notification_date_pusher').val();
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      // if the target of the click isn't the container nor a descendant of the container
+      if (!container.is(e.target) && container.has(e.target).length === 0) 
+      {
+          container.slideUp();
       }
-    });
-    $.ajax({
-      method: "POST",
-      url: "send_notification",
-      data: {
-
-        'type_pusher': type_pusher,
-        ' data_pusher': data_pusher,
-        'notification_date_pusher': notification_date_pusher
-      },
-      success: function (response) {
-        resetModalFields()
-        $('#exampleModal2').modal('hide');
-        $('input').removeClass("is-invalid");
-        alertify.notify('Notification Sent Successfuly');
-        $("#notification_section").load(" #notification_section");
-      },
-      error: function (response) {
-        var data = JSON.parse(response.responseText);
-        alertify.notify(data.message);
-        $.each(data, function (i, item) {
-          $.each(data.errors, function (key, value) {
-            $('#' + key).attr("class", "form-control is-invalid");
-
-          });
-        });
-      },
-
-    })
-
   });
 
 
 
-  window.addEventListener("load", function () {
-    document.querySelector('.notifications').addEventListener('click', e => {
-      let content = e.target.innerHTML;
-      e.target.outerHTML = content;
-      let token = $('#_token').val();
-      $.post('/read_notification', {
-        _token: token,
-        notification_content: content
-      }, function () { }).done(function (response) {
 
-        let message = JSON.parse(response)
-        var text_button_notification = message.count_notifications
-        $('#main_notification_button').text(text_button_notification);
 
-      })
-    });
-  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // $(document).on("click", '#saveNotification', function (e) {
+  //   let type = $('#type').val();
+  //   let data = $('#data').val();
+  //   let notification_date = $('#notification_date').val();
+  //   $.ajaxSetup({
+  //     headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //     }
+  //   });
+  //   $.ajax({
+  //     method: "POST",
+  //     url: "save_notification",
+  //     data: {
+  //       'type': type,
+  //       ' data': data,
+  //       'notification_date': notification_date
+  //     },
+  //     success: function (response) {
+
+  //       resetModalFields()   // Empty modal inputs on send
+  //       $('#exampleModal').modal('hide');   // hide modal
+  //       $('input').removeClass("is-invalid");  // remove error class on success
+  //       alertify.notify('Notification Added Successfuly');
+  //       $("#notification_section").load(" #notification_section");  //reload notification section on success
+  //     },
+  //     error: function (response) {
+  //       var data = JSON.parse(response.responseText);
+  //       alertify.notify(data.message);
+  //       $.each(data, function (i, item) {
+  //         $.each(data.errors, function (key, value) {
+  //           $('#' + key).attr("class", "form-control is-invalid");  // add error class to input field if any errors
+
+  //         });
+  //       });
+  //     },
+  //   })
+  // });
+
+
+  // /**
+  //  * PUSHER
+  //  */
+  // $(document).on("click", '#sendNotification', function (e) {
+  //   let type_pusher = $('#type_pusher').val();
+  //   let data_pusher = $('#data_pusher').val();
+  //   let notification_date_pusher = $('#notification_date_pusher').val();
+  //   $.ajaxSetup({
+  //     headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //     }
+  //   });
+  //   $.ajax({
+  //     method: "POST",
+  //     url: "send_notification",
+  //     data: {
+
+  //       'type_pusher': type_pusher,
+  //       ' data_pusher': data_pusher,
+  //       'notification_date_pusher': notification_date_pusher
+  //     },
+  //     success: function (response) {
+  //       resetModalFields()
+  //       $('#exampleModal2').modal('hide');
+  //       $('input').removeClass("is-invalid");
+  //       alertify.notify('Notification Sent Successfuly');
+  //       $("#notification_section").load(" #notification_section");
+  //     },
+  //     error: function (response) {
+  //       var data = JSON.parse(response.responseText);
+  //       alertify.notify(data.message);
+  //       $.each(data, function (i, item) {
+  //         $.each(data.errors, function (key, value) {
+  //           $('#' + key).attr("class", "form-control is-invalid");
+
+  //         });
+  //       });
+  //     },
+
+  //   })
+
+  // });
+
+
+
+  // window.addEventListener("load", function () {
+  //   document.querySelector('.notifications').addEventListener('click', e => {
+  //     let content = e.target.innerHTML;
+  //     e.target.outerHTML = content;
+  //     let token = $('#_token').val();
+  //     $.post('/read_notification', {
+  //       _token: token,
+  //       notification_content: content
+  //     }, function () { }).done(function (response) {
+
+  //       let message = JSON.parse(response)
+  //       var text_button_notification = message.count_notifications
+  //       $('#main_notification_button').text(text_button_notification);
+
+  //     })
+  //   });
+  // })
 
 
 

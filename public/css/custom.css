@@ -5,13 +5,13 @@
 
 ::-webkit-scrollbar-thumb
 {
-    background: linear-gradient(0deg, rgba(255,255,255,1) 27%, rgba(169,8,8,1) 54%);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 27%, rgb(235, 219, 219) 54%);
 
     border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover{
-    background: linear-gradient(transparent, #00c6ff);
+    background: linear-gradient(transparent, #ffdbd2);
 }
 
 
@@ -331,7 +331,21 @@ body {
     margin-left: 20px;
 }
 
+.notification-wrapper{
 
+    position:absolute;
+    z-index: 10;
+    margin-left: 11%;
+    display: none;
+   margin-top: 6%;
+   
+}
+
+.notification-dropdown-item:hover{
+    background-color: rgba(240, 240, 240, 0.945);
+    cursor: pointer;
+}
+__
 
 
 

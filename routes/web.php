@@ -31,9 +31,9 @@ Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::post('/send_notification', [App\Http\Controllers\NotificationController::class, 'sendNotification']);
-    Route::post('/read_notification', [App\Http\Controllers\NotificationController::class, 'readNotification']);
-    Route::post('/save_notification', [App\Http\Controllers\NotificationController::class, 'saveNotification']);
+    // Route::post('/send_notification', [App\Http\Controllers\NotificationController::class, 'sendNotification']);
+    // Route::post('/read_notification', [App\Http\Controllers\NotificationController::class, 'readNotification']);
+    // Route::post('/save_notification', [App\Http\Controllers\NotificationController::class, 'saveNotification']);
     Route::get('/notifications',      [App\Http\Controllers\NotificationController::class, 'notificationsHistory']);
                       
     Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );

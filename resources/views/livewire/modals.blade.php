@@ -250,7 +250,7 @@ aria-hidden="true">
 
 
 <!-- Modal Отправить через notification-->
-<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{{-- <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
@@ -357,7 +357,7 @@ aria-hidden="true">
     </div>
     </div>
 </div>
-
+ --}}
 
 <!-- Modal Отправить через Pusher-->
 {{-- <div class="modal fade" id="sendToPusher" tabindex="-1" role="dialog"
