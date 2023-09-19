@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\EstimationRepository;
 use App\Http\Controllers\Services\RatingService;
 use App\Http\Controllers\Services\GetDayPlanService;
-use App\Http\Controllers\Services\NotificationService;
+
 
 class HomeController extends Controller
 {
@@ -25,12 +25,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct(GetDayPlanService $getDayPlanService, EstimationRepository $estimationRepository, RatingService $userRatings, NotificationService $notificationService  )
+    public function __construct(GetDayPlanService $getDayPlanService, EstimationRepository $estimationRepository, RatingService $userRatings, )
     { $this->userRatings = $userRatings;
      
         $this->estimateDayRepository = $estimationRepository;
-        $this->notificationService = $notificationService;
-        //$this->middleware('auth');
+           //$this->middleware('auth');
         $this->getDayPlanService = $getDayPlanService;
     }
 
@@ -41,14 +40,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $tasks = [];
-        $notificatiions = $this->notificationService->getNotifications();
-        return view('home', [
-
-            'tasks'               =>  $tasks,
-            'count_notifications' => $notificatiions['count_notifications'],
-            'notifications' => $notificatiions['notifications'],
-        ]);
+        
+        return view('home');
 
     }
 }

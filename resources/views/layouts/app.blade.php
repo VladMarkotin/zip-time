@@ -38,12 +38,12 @@
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
 
-  
+
     <livewire:styles />
 </head>
 
 <body>
- 
+
     <livewire:feedback />
     <livewire:dropdown />
 
@@ -64,29 +64,30 @@
                     <ul class="navbar-nav mr-auto">
 
                         @if (Route::has('login'))
-                        @auth   
-                            <!-- Button Notification -->
-    
-                            <div class="btn-group" >
-                                <button type="button" class="btn btn-light " id="bell">
-                                      <livewire:counter/>
-                                </button>
+                            @auth
+                                <!-- Button Notification -->
 
-                        <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-light " data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <span class="mdi mdi-pencil-outline"></span>
-                            </button>
-    
-                            @if (Auth::user()->role_as == 1)
-                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                   <b>  <i class="bi bi-broadcast-pin"></i>  Broadcast</b> 
-                                   <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-                                </button>
-                            @endif
-                            </div>
-                        @endauth
-                    @endif
-    
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-light " id="bell">
+                                        <livewire:counter />
+                                    </button>
+
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-light " data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                        <span class="mdi mdi-pencil-outline"></span>
+                                    </button>
+
+                                    @if (Auth::user()->role_as == 1)
+                                        <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal2">
+                                            <b> <i class="bi bi-broadcast-pin"></i> Broadcast</b>
+                                        </button>
+                                    @endif
+                                </div>
+                            @endauth
+                        @endif
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -114,10 +115,10 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
                             </li>
-                            <li class="nav-item dropdown personal-results-toggle" >
+                            <li class="nav-item dropdown personal-results-toggle">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} 
+                                    {{ Auth::user()->name }}
                                     <span id="total-results">
                                         @php
                                             $rating = \app\models\User::where('id', Auth::id())
@@ -127,7 +128,7 @@
                                         @endphp
                                     </span>
                                 </a>
-                                
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('settings') }}">Settings</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -136,43 +137,31 @@
                                         {{ __('Logout') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        class="d-none">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
 
-                                <div class="personal-results" >
+                                <div class="personal-results">
                                     <personal-results />
                                 </div>
                             </li>
-                        
+
                         @endguest
                     </ul>
-                  
-              
-
                 </div>
             </div>
         </nav>
-       
-        
+
+
         <main class="py-0">
-     
+
             @yield('content')
         </main>
-       
-    </div>
 
+    </div>
     <livewire:scripts />
     @stack('script')
-
-    {{-- include all modals to appblade. --}}
-
- 
-         @include('livewire.modals')
-   
-   
 
     <script src="//js.pusher.com/3.1/pusher.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -185,10 +174,12 @@
 <footer>
     <div class="footer-info">
         <p class="footer-text">
-            footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras adipiscing.
+            footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras
+            adipiscing.
         </p>
         <p class="footer-text">© 2023</p>
-    </div>    
+    </div>
 </footer>
+
 </html>

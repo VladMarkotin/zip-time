@@ -52,6 +52,7 @@ class Dropdown extends Component
             'read_at' => 0
         ]);
         $this->emit('refresh');
+        $this->resetInput();
         $this->dispatchBrowserEvent('close-modal');
     }
 
@@ -90,16 +91,20 @@ class Dropdown extends Component
 
     public function pushNotification()
     {
-        // dd($this->token);
-        $validatedData = $this->validate();
-       $broadcast = event(new NotificationEvent('pusher',  $this->data,  $this->date));
-       
+        
+       $validatedData = $this->validate();
+        event(new NotificationEvent($this->type,  $this->data,  $this->date));
+        $this->dispatchBrowserEvent('close-modal');
+        $this->resetInput();
     }
 
 
-
-
-
+    public function resetInput(): void
+    {
+        $this->type = null;
+        $this->data = null;
+        $this->date = null;
+    }
     
     public function render()
     {

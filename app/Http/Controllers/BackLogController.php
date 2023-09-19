@@ -12,25 +12,11 @@ use App\Http\Controllers\Services\NotificationService;
 
 class BackLogController extends Controller
 {
-    private $notificationService;
-
-
-    public function __construct(  NotificationService $notificationService)
-    {
-        $this->notificationService = $notificationService;
-
-    }
-
+   
     public function index()
     {
-        $tasks = [];
-        $notificatiions = $this->notificationService->getNotifications();
-        return view('backlog', [
-
-            'tasks'               =>  $tasks,
-            'count_notifications' => $notificatiions['count_notifications'],
-            'notifications' => $notificatiions['notifications'],
-        ]);
+       
+        return view('backlog');
 
     }
 }

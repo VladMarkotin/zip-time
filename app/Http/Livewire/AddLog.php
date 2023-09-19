@@ -34,8 +34,6 @@ class AddLog extends Component
 
     public function storeBacklogInfo()
     {
-
-        
         $validatedData = $this->validate();
         Savedlogs::create([
             'user_id' => Auth::id(),
