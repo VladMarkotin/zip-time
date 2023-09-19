@@ -161,6 +161,7 @@
             :items="items"
             class="elevation-1"
             @dblclick:tr="deleteItem"
+            id="plan-tasks-table"
             >
             <template v-slot:item="props">
                <tr align="center"  ref="refWord">
@@ -598,11 +599,10 @@ export default {
     async mounted() {
       try {
          const response = await  axios.post('/getEduStep', {
-                    //hash_code: event
 			})
          if (response.data.edu_step == 1){
 					const introJS = require("intro.js").introJs();
-               require("intro.js/themes/introjs-nassim.css");
+               require("/css/customTooltip.css");
               
 					introJS.setOptions({
                   tooltipClass: 'custom-tooltip',
@@ -618,20 +618,26 @@ export default {
                   },
                   {
                      element: document.getElementById('plan-day-status'),
-                     intro: 'Here you can easily manage day status. We got 2 statuses: "Work day" and "Weekend".'
+                     intro: 'Here you can easily manage day status.<br> We got 2 statuses: "Work day" and "Weekend".'
                   },
                   {
                      element: document.getElementById('plan-day-status'),
-                     intro: 'You wouldn\'t be able to change it after plan\s createing.'
+                     intro: 'You wouldn\'t be able to change it after plan\'s createing.'
                   },
                   {
                      element: document.getElementById('plan-hash'),
-                     intro: 'This is hash - the short task\s name. If job/task got it would be able quickly add it to your plan with all settings.',
+                     intro: 'This is hash - the short task\'s name. If job/task got it would be able quickly add it to your plan with all settings.',
                      position: 'right',
                   },
                   {
                      element: document.getElementById('plan-time'),
-                     intro: 'Here yout can set time.'
+                     intro: 'Here your can set time.',
+                     position: 'left',
+                  },
+                  {
+                     element: document.getElementById('plan-tasks-table'),
+                     intro: 'Here your would see jobs/tasks which you have already added. On this step you can easily add/delete/change any of them.',
+                     position: 'left',
                   }
                   ]
                }).onbeforechange(() => {
@@ -639,18 +645,21 @@ export default {
                   const currentStepIndex = introJS._currentStep;
                   const lastStepIndex = introJS._introItems.length - 1;
 
-                  const getCurrentStepTimer = (step) => {
+                  const timer = () => {
+                     const getCurrentStepTimer = (step) => {
                      switch(step) {
                         case 0:
-                           return 180000000;
+                           return 60000000;
                         case 1:
-                           return 180000000;
+                           return 60000000;
                         case 2:
-                           return 180000000;
+                           return 60000000;
+                        case 3:
+                           return 60000000;
                         case lastStepIndex:
-                           return 180000000;
+                           return 60000000;
                         default:
-                           return 180000000;
+                           return 60000000;
                      }
                   };
                   
@@ -665,6 +674,19 @@ export default {
                         button.addEventListener('click', () => clearTimeout(timerId));
                      }
                     },0);
+                  }
+
+                  switch(currentStepIndex) {
+                     case 3:
+                        this.defaultSelected.hash = this.defaultSelected.hashCodes[0];
+                        this.onChange.call(this,this.defaultSelected.hashCodes[0]);
+                        timer();
+                     break;
+                     default:
+                        timer();
+                     break;
+                  };
+
                }).start(); 
 			}
       } catch(error) {
