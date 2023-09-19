@@ -1,0 +1,61 @@
+.custom-tooltip {
+  min-width: 320px;
+  font-size: 15px;
+  animation: 0.7s show ease;
+}
+.custom-tooltip .introjs-tooltiptext {
+  text-indent: 0.4rem;
+  text-align: justify;
+}
+.custom-tooltip .introjs-bullets {
+  margin-bottom: 0.7rem;
+}
+.custom-tooltip .introjs-bullets ul li:not(:last-child) {
+  margin-right: 5px;
+}
+.custom-tooltip .introjs-bullets ul li a {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-button {
+  box-shadow: 1px 1px 1px black;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  text-shadow: 1px 1px 1px black;
+  color: whitesmoke;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-skipbutton {
+  margin-right: 14px;
+  background: #a10000;
+  opacity: 0.8;
+  transition: opacity 0.3s ease-in;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-skipbutton:hover {
+  opacity: 1;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-prevbutton {
+  margin-right: 7px;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-prevbutton,
+.custom-tooltip .introjs-tooltipbuttons .introjs-nextbutton {
+  transition: all 0.3s ease-in;
+  color: #000000;
+  text-shadow: 1px 1px 1px whitesmoke;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-prevbutton:hover,
+.custom-tooltip .introjs-tooltipbuttons .introjs-nextbutton:hover {
+  color: whitesmoke;
+  text-shadow: 1px 1px 1px #000000;
+  background: #5D76CB;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

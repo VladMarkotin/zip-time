@@ -1,0 +1,73 @@
+.custom-tooltip {
+    min-width: 320px;
+    font-size: 15px;
+    animation: 0.7s show ease;
+
+    .introjs-tooltiptext {
+        text-indent: 0.4rem;
+        text-align: justify;
+    }
+
+    .introjs-bullets {
+        margin-bottom: 0.7rem;
+        ul {
+            li {
+                &:not(:last-child) {
+                    margin-right: 5px;
+                }
+                a {
+                    width: 0.8rem;
+                    height: 0.8rem;
+                }
+            }
+        }
+    }
+
+    .introjs-tooltipbuttons {
+        .introjs-button {
+            box-shadow: 1px 1px 1px black;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 6px;
+            border: none;
+            text-shadow: 1px 1px 1px black;  
+            color: whitesmoke;
+        }
+
+        .introjs-skipbutton {
+            margin-right: 14px;
+            background: rgb(161, 0, 0);
+            opacity: 0.8;
+            transition: opacity .3s ease-in;
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .introjs-prevbutton {
+            margin-right: 7px;
+        }
+
+        .introjs-prevbutton,
+        .introjs-nextbutton {
+            transition: all .3s ease-in;
+            color: #000000;
+            text-shadow: 1px 1px 1px whitesmoke;
+            &:hover {
+                color: whitesmoke;
+                text-shadow: 1px 1px 1px #000000;
+                background: #5D76CB;
+            }       
+        }
+        
+    }
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
