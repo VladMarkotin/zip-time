@@ -44,10 +44,9 @@
 
 <body>
  
-
     <livewire:feedback />
     <livewire:dropdown />
- 
+
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm">
             <div class="container">
@@ -65,8 +64,7 @@
                     <ul class="navbar-nav mr-auto">
 
                         @if (Route::has('login'))
-                        @auth
-    
+                        @auth   
                             <!-- Button Notification -->
     
                             <div class="btn-group" >
@@ -81,16 +79,11 @@
     
                             @if (Auth::user()->role_as == 1)
                                 <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                    Отправить через Pusher
+                                  
+                                   <b>  <i class="bi bi-broadcast-pin"></i>  Broadcast</b> 
                                 </button>
                             @endif
-    
-
                             </div>
-    
-                        
-    
-    
                         @endauth
                     @endif
     

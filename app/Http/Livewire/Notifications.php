@@ -21,6 +21,7 @@ class Notifications extends Component
     public $tasks = [];
     public $sortNotifications = [];
     protected $paginationTheme = 'bootstrap';
+    protected $listeners = [ 'refresh'=>'$refresh'];
 
     public function mount(): void
     {
@@ -83,6 +84,7 @@ class Notifications extends Component
         $this->dispatchBrowserEvent('message', [
             'text' => 'Notification Updated Successfully',
         ]);
+        $this->emit('refresh');
         $this->resetInput();
     }
 

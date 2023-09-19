@@ -7,6 +7,7 @@ use App\Models\Tasks;
 use Livewire\Component;
 use App\Models\Notification;
 use App\Models\TimetableModel;
+use App\Events\NotificationEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +16,7 @@ class Dropdown extends Component
 
     
     public  $type, $date, $data, $unread;
+    protected $listeners = [ 'refresh'=>'$refresh'];
     protected $rules = [
         'type' => 'required',
         'date' => 'required',
@@ -85,6 +87,16 @@ class Dropdown extends Component
 
        
     }
+
+    public function pushNotification()
+    {
+       $broadcast = event(new NotificationEvent('pusher',  $this->data,  $this->date));
+       dd($broadcast );
+    }
+
+
+
+
 
     
     public function render()
