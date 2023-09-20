@@ -40,6 +40,11 @@ class Notifications extends Component
         ];
     }
 
+    public function test(): void
+    {
+        dd(65745);
+    }
+
     public function resetInput(): void
     {
         $this->type = null;

@@ -1,4 +1,30 @@
-<div>
+ <div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @include('livewire.modals')
 
@@ -59,7 +85,7 @@
                     @foreach ($notifications as $notification)
                         <div
                             class="notification-list  {{ $notification->read_at == 0 ? 'notification-list--unread' : '' }}">
-                            <a wire:click="readNotification({{ $notification->id }})">
+                            <a wire:click="readNotification({{ $notification->id }})" class="w-100 text-dark text-decoration-none"  role="button">
                                 <div class="notification-list_content">
 
                                     <div class="notification-list_detail">
@@ -119,3 +145,7 @@
         </script>
     @endpush
 </div>
+
+
+
+

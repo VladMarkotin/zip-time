@@ -1,4 +1,6 @@
 <div>
+
+
     @auth
   
         <div class="col-lg-3 notification-wrapper  bg-light p-0 overflow-auto rounded shadow-sm" wire:ignore.self> 
@@ -13,7 +15,7 @@
                 <div class="box-body  ">
                     @foreach ($notifications as $notification)
                         <div class=" d-flex align-items-center notification-dropdown-item rounded">
-                            <div class="mr-2 pl-2" role="button" wire:click="readNotification( {{ $notification->id }})">
+                            <a class="mr-2 pl-2 w-100 text-dark text-decoration-none" role="button" wire:click="readNotification( {{ $notification->id }})">
                            
                                 <div @class([
                                     'text-justify',
@@ -21,7 +23,7 @@
                                 ])>
                                     {{ $notification->data }}
                                 </div>
-                            </div>
+                            </a>
                             <span class="ml-auto mb-auto px-1">
                                 <div class="btn-group ">
                                     <button type="button" class="btn btn-light btn-sm rounded" data-toggle="dropdown"

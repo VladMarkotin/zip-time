@@ -28,15 +28,12 @@ $(document).ready(function () {
     event.stopPropagation();
     $(".notification-wrapper").slideToggle('fast');
   });
-  $(".notification-wrapper").on("click", function (event) {
-    event.stopPropagation();
+
+  $(document).on('click', function (e) {
+    if ($(e.target).closest(".notification-wrapper").length === 0) {
+      $(".notification-wrapper").slideUp('fast');
+    }
   });
-
-
-  $(document).on("click", function () {
-    $(".notification-wrapper").hide();
-  });
-
 
 
   // Enable pusher logging - don't include this in production
@@ -87,35 +84,46 @@ $(document).ready(function () {
   /**
    * Feedback
    */
-  $(document).on("click", '#feedback', function (e) {
 
-    $('.main-wrapper').fadeToggle();
 
+  $('#feedback').click(function (event) {
+    event.stopPropagation();
+    $(".main-wrapper").slideToggle('fast');
   });
+
+
+  $(document).on('click', function (e) {
+    if ($(e.target).closest(".main-wrapper").length === 0) {
+      $(".main-wrapper").hide();
+    }
+  });
+
+
+
 
   $(document).on("click", '#feedback-report', function (e) {
 
 
     $('.feedback-main').hide();
-    $('.feedback-bug').fadeIn();
+    $('.feedback-bug').fadeIn('fast');
 
   });
 
   $(document).on("click", '#feedback-request', function (e) {
 
     $('.feedback-main').hide();
-    $('.feedback-request').fadeIn();
+    $('.feedback-request').fadeIn('fast');
   });
 
   $(document).on("click", '#feedback-contact', function (e) {
     $('.feedback-main').hide();
-    $('.feedback-contact').fadeIn();
+    $('.feedback-contact').fadeIn('fast');
 
   });
 
   $(document).on("click", '#feedback-close', function (e) {
 
-    $('.main-wrapper').fadeOut();
+    $('.main-wrapper').hide();
 
   });
 
