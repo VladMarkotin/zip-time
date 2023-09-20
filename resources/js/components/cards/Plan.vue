@@ -432,7 +432,9 @@ export default {
 
         onChange(event) {
             let currentObj = this;
-            axios.post('/getSavedTask', {
+
+            return new Promise((resolve, reject) => {
+               axios.post('/getSavedTask', {
                     hash_code: event
                 })
                 .then(function(response) {
@@ -442,10 +444,12 @@ export default {
                     currentObj.defaultSelected.time = response.data[5];
                     currentObj.defaultSelected.details = response.data[4];
                     currentObj.defaultSelected.notes = response.data[6];
+                    resolve();
                 })
                 .catch(function(error) {
                     currentObj.output = error;
                 });
+            })
 
         },
 
@@ -645,36 +649,111 @@ export default {
                   const currentStepIndex = introJS._currentStep;
                   const lastStepIndex = introJS._introItems.length - 1;
 
-                  const getCurrentStepTimer = (step) => {
-                  switch(step) {
-                     case 0:
-                        return 19000;
-                     case 1:
-                        return 16000;
-                     case 2:
-                        return 14000;
-                     case 3:
-                        return 18000;
-                     case 3:
-                        return 12000;
-                     case lastStepIndex:
-                        return 24000;
-                     default:
-                        return 18000;
-                     }
-                  };
-                  
-                  const timerId = setTimeout(() => {
-                     currentStepIndex < lastStepIndex ? introJS.nextStep() : introJS.exit();
-                  },getCurrentStepTimer(currentStepIndex));
-                    
-                    setTimeout(() => {
-                     const tooltipButtons = document.querySelector('.introjs-tooltip').querySelectorAll('a[role="button"]');
+                  const timer = () => {
+                     const getCurrentStepTimer = (step) => {
+
+                     switch(step) {
+                        case 0:
+                           return 19000;
+                        case 1:
+                           return 16000;
+                        case 2:
+                           return 14000;
+                        case 3:
+                           return 18000;
+                        case 4:
+                           return 12000;
+                        case lastStepIndex:
+                           return 24000;
+                        default:
+                           return 18000;
+                        }
+                     };
                      
-                     for (const button of tooltipButtons) {
-                        button.addEventListener('click', () => clearTimeout(timerId));
-                     }
-                    },0);
+                     const timerId = setTimeout(() => {
+                        currentStepIndex < lastStepIndex ? introJS.nextStep() : introJS.exit();
+                     },getCurrentStepTimer(currentStepIndex));
+                     
+                     setTimeout(() => {
+                        const tooltipButtons = document.querySelector('.introjs-tooltip').querySelectorAll('a[role="button"]');
+                        
+                        for (const button of tooltipButtons) {
+                           button.addEventListener('click', () => clearTimeout(timerId));
+                        }
+                     },0);
+                  }
+
+                  const addTaskForPresentation = (step) => {
+                        this.defaultSelected.hash = this.defaultSelected.hashCodes[0];
+                        this.onChange.call(this,this.defaultSelected.hashCodes[0])
+                        .then(() => {
+                           introJS.goToStepNumber(step)
+                        })
+                  }
+
+                  switch(currentStepIndex) {
+                     case 3:
+                        if (this.defaultSelected.hash === '#' && this.defaultSelected.hashCodes[0]) { //подумать над проверкой тут
+                           addTaskForPresentation(currentStepIndex + 1);
+                        } else timer();
+                     break;
+                     case 4:
+                        if (this.defaultSelected.hash === '#' && this.defaultSelected.hashCodes[0]) { //подумать над проверкой тут
+                           addTaskForPresentation(currentStepIndex + 1);
+                        } else timer();
+                     break;
+                     case lastStepIndex:
+                        if (!this.items.length) {
+                           if ([this.defaultSelected.hash, 
+                              this.defaultSelected.taskName, 
+                              this.defaultSelected.type, 
+                              this.defaultSelected.priority, 
+                              this.defaultSelected.time]
+                              .every(item => item)) {
+                              this.addTask();
+                              timer();
+                           } else addTaskForPresentation(currentStepIndex + 1);
+                        }
+                     break;
+                     default:
+                        timer();
+                     break;
+                  }
+
+               }).onexit(() => {
+
+                  this.defaultSelected = {
+                  hash: '#',
+                  hashCodes: this.defaultSelected.hashCodes,
+                  taskName: '',
+                  time: '01:00',
+                  type: 'required job',
+                  priority: '1',
+                  details: '',
+                  notes: ''
+                  };
+
+                  this.items = [];
+               }).onafterchange(() => {
+                  const currentStepIndex = introJS._currentStep;
+                  const lastStepIndex = introJS._introItems.length - 1;
+
+                  if (currentStepIndex !== lastStepIndex && this.items.length) {
+                     this.items = [];
+                  }
+
+                  if (currentStepIndex < 3 && this.defaultSelected.hash !== '#') {
+                     this.defaultSelected = {
+                     hash: '#',
+                     hashCodes: this.defaultSelected.hashCodes,
+                     taskName: '',
+                     time: '01:00',
+                     type: 'required job',
+                     priority: '1',
+                     details: '',
+                     notes: ''
+                     };
+                  }
 
                }).start(); 
 			}
