@@ -661,7 +661,7 @@ export default {
                            return 14000;
                         case 3:
                            return 18000;
-                        case 3:
+                        case 4:
                            return 12000;
                         case lastStepIndex:
                            return 24000;
@@ -689,7 +689,6 @@ export default {
                         .then(() => {
                            introJS.goToStepNumber(step)
                         })
-                        
                   }
 
                   switch(currentStepIndex) {
@@ -703,7 +702,7 @@ export default {
                            addTaskForPresentation(currentStepIndex + 1);
                         } else timer();
                      break;
-                     case 5:
+                     case lastStepIndex:
                         if (!this.items.length) {
                            if ([this.defaultSelected.hash, 
                               this.defaultSelected.taskName, 
@@ -713,9 +712,7 @@ export default {
                               .every(item => item)) {
                               this.addTask();
                               timer();
-                           } else {
-                              addTaskForPresentation(currentStepIndex + 1);
-                           }
+                           } else addTaskForPresentation(currentStepIndex + 1);
                         }
                      break;
                      default:
