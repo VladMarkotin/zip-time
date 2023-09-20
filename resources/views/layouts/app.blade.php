@@ -126,6 +126,8 @@
                                                 ->first();
                                             echo $rating;
                                         @endphp
+                                        <!--{{ Auth::user()->rating}}-->
+                                        
                                     </span>
                                 </a>
 
