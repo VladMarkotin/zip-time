@@ -4448,6 +4448,11 @@ input[type=button].btn-block {
   opacity: 0;
 }
 
+.move-last-head, .move-last-bold-text, .move-last-text{
+  margin-left: -100px;
+  opacity: 0;
+}
+
 .info-bold {
   font-size: 28px;
   font-weight: 700;
@@ -4696,12 +4701,10 @@ footer{
   }
 }
 
+/* ========== TRANSITION ANIMATION ============ */
 
+@media (prefers-reduced-motion: no-preference) { 
 
-@media (prefers-reduced-motion: no-preference) {
-
-  /* ========== IMG ANIMATION ============ */
-  
   .saved-task-img{
     transition: opacity 1.5s 1.5s, transform 1.5s 1.5s;
   }
@@ -4767,6 +4770,29 @@ footer{
     -moz-transition: all 2.5s ease-out 1.7s; /** Firefox **/
     -o-transition: all 2.5s ease-out 1.7s; /** Opera **/
   }
+
+  /* ====== LAST TEXT ====== */
+
+  .move-last-head{
+    transition: all 2s ease-in-out;
+    -webkit-transition: all 2s ease-in-out; /** Chrome & Safari **/
+    -moz-transition: all 2s ease-in-out; /** Firefox **/
+    -o-transition: all 2s ease-in-out; /** Opera **/
+  }
+
+  .move-last-bold-text{
+    transition: all 1.5s ease-out 1s;
+    -webkit-transition: all 2.5s ease-out 1s; /** Chrome & Safari **/
+    -moz-transition: all 2.5s ease-out 1s; /** Firefox **/
+    -o-transition: all 2.5s ease-out 1s; /** Opera **/
+  }
+
+  .move-last-text{
+    transition: all 1.5s ease-out 1s;
+    -webkit-transition: all 2.5s ease-out 1.7s; /** Chrome & Safari **/
+    -moz-transition: all 2.5s ease-out 1.7s; /** Firefox **/
+    -o-transition: all 2.5s ease-out 1.7s; /** Opera **/
+  }
 }
 
 .img-transition {
@@ -4790,10 +4816,9 @@ footer{
   -moz-transform: translate(-100px,0); /** Firefox **/
 }
 
-
-
-
 /* ====================== */
+
+
 
 
 .card {

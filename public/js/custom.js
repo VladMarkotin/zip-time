@@ -268,30 +268,25 @@ $('.c-toggle').on( "mouseover", function() {
   /**
    * INDEX INFO ANIMATION
    */
-  
-  
-  
 
-// ========= TEXT TRANSITION =========
-  $( "p.text-left" ).each(function(index, element) {
-    const move_right_head = document.querySelector('.move-right-head');
-    const move_right_bold_text = document.querySelector('.move-right-bold-text');
-    const move_right_text = document.querySelector('.move-right-text');
-    const right_text_observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          move_right_head.classList.add('move-right');
-          move_right_bold_text.classList.add('move-right');
-          move_right_text.classList.add('move-right');
-          console.log('Индекс элемента: ' + index + '; класс элемента: ' +$(element).attr('class'));
-          return;
-        }
-      });
-      
+  // ========= TEXT TRANSITION =========
+
+  const move_right_head = document.querySelector('.move-right-head');
+  const move_right_bold_text = document.querySelector('.move-right-bold-text');
+  const move_right_text = document.querySelector('.move-right-text');
+  const right_text_observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        move_right_head.classList.add('move-right');
+        move_right_bold_text.classList.add('move-right');
+        move_right_text.classList.add('move-right');
+        return;
+      }
     });
     
-    right_text_observer.observe(document.querySelector('.info-container'));
-  });
+  });  
+  right_text_observer.observe(document.querySelector('.info-container'));
+  
 
   const move_left_head = document.querySelector('.move-left-head');
   const move_left_bold_text = document.querySelector('.move-left-bold-text');
@@ -307,6 +302,21 @@ $('.c-toggle').on( "mouseover", function() {
     });
   });
   left_text_observer.observe(document.querySelector('.right-container'));
+
+  const move_last_head = document.querySelector('.move-last-head');
+  const move_last_bold_text = document.querySelector('.move-last-bold-text');
+  const move_last_text = document.querySelector('.move-last-text');
+  const last_text_observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        move_last_head.classList.add('move-right');
+        move_last_bold_text.classList.add('move-right');
+        move_last_text.classList.add('move-right');
+        return;
+      }
+    });    
+  });  
+  last_text_observer.observe(document.querySelector('.last-container'));
 
   // ========= IMG TRANSITION =========
 

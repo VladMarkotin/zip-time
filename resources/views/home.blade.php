@@ -46,10 +46,10 @@
                     </div>                
                 </div>
                 <hr class="underline">
-                <div class="info-container">
-                    <p class="info-head move-right-head text-left">history</p>
-                    <p class="info-bold move-right-bold-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                    <p class="info-text move-right-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                <div class="info-container last-container">
+                    <p class="info-head move-last-head text-left">history</p>
+                    <p class="info-bold move-last-bold-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    <p class="info-text move-last-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                     <img class="history-img" src="/images/history.png">
                 </div>
             </div>
