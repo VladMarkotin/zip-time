@@ -433,24 +433,43 @@ export default {
         onChange(event) {
             let currentObj = this;
 
-            return new Promise((resolve, reject) => {
-               axios.post('/getSavedTask', {
-                    hash_code: event
-                })
-                .then(function(response) {
-                    currentObj.defaultSelected.taskName = response.data[1];
-                    currentObj.defaultSelected.type = response.data[2];
-                    currentObj.defaultSelected.priority = `${response.data[3]}`;
-                    currentObj.defaultSelected.time = response.data[5];
-                    currentObj.defaultSelected.details = response.data[4];
-                    currentObj.defaultSelected.notes = response.data[6];
-                    resolve();
+            axios.post('/getSavedTask', {
+                  hash_code: event
+               })
+               .then(function(response) {
+                  currentObj.defaultSelected.taskName = response.data[1];
+                  currentObj.defaultSelected.type = response.data[2];
+                  currentObj.defaultSelected.priority = `${response.data[3]}`;
+                  currentObj.defaultSelected.time = response.data[5];
+                  currentObj.defaultSelected.details = response.data[4];
+                  currentObj.defaultSelected.notes = response.data[6];
                 })
                 .catch(function(error) {
                     currentObj.output = error;
                 });
-            })
+           
+        },
 
+         onChangeForPresentation(event) {
+            const currentObj = this;
+
+            return new Promise((resolve, reject) => {
+               axios.post('/getSavedTask', {
+                  hash_code: event
+               })
+               .then(function(response) {
+                  currentObj.defaultSelected.taskName = response.data[1];
+                  currentObj.defaultSelected.type = response.data[2];
+                  currentObj.defaultSelected.priority = `${response.data[3]}`;
+                  currentObj.defaultSelected.time = response.data[5];
+                  currentObj.defaultSelected.details = response.data[4];
+                  currentObj.defaultSelected.notes = response.data[6];
+                  resolve();
+                })
+                .catch(function(error) {
+                    currentObj.output = error;
+                });
+            });
         },
 
         addTask(e) {
@@ -553,6 +572,18 @@ export default {
                 for (let i = 0; i < length; i++) {
                     currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
                 }
+                     axios.post('/getDefaultSavedTasks')
+                     .then((response) => {
+                        const {defaultSavedTasks} = response.data;
+                        if (defaultSavedTasks.length) {
+                           defaultSavedTasks.forEach(defaultSavedTask => {
+                              currentObj.defaultSelected.hashCodes = [...currentObj.defaultSelected.hashCodes, defaultSavedTask.hash_code];
+                           })
+                        }
+                     })
+                     .catch((error) => {
+                        currentObj.output = error;;
+                     })
             })
             .catch(function(error) {
                 currentObj.output = error;
@@ -601,6 +632,7 @@ export default {
     },
 
     async mounted() {
+      console.log(this.defaultSelected);
       try {
          const response = await  axios.post('/getEduStep', {
 			})
@@ -649,7 +681,14 @@ export default {
                   const currentStepIndex = introJS._currentStep;
                   const lastStepIndex = introJS._introItems.length - 1;
 
-                  const timer = () => {
+                  const checkDefaultTasks = () => {
+                     const defaultTasks = this.defaultSelected.hashCodes.filter(hash => hash.match(/^#q-/))   
+                     return defaultTasks.length ? defaultTasks[0] : null;
+                  }
+
+                  const firstDefaultSavedTask = checkDefaultTasks();
+
+                  const getTimer = () => {
                      const getCurrentStepTimer = (step) => {
 
                      switch(step) {
@@ -684,8 +723,8 @@ export default {
                   }
 
                   const addTaskForPresentation = (step) => {
-                        this.defaultSelected.hash = this.defaultSelected.hashCodes[0];
-                        this.onChange.call(this,this.defaultSelected.hashCodes[0])
+                        this.defaultSelected.hash = firstDefaultSavedTask;
+                        this.onChangeForPresentation.call(this, firstDefaultSavedTask)
                         .then(() => {
                            introJS.goToStepNumber(step)
                         })
@@ -693,14 +732,12 @@ export default {
 
                   switch(currentStepIndex) {
                      case 3:
-                        if (this.defaultSelected.hash === '#' && this.defaultSelected.hashCodes[0]) { //подумать над проверкой тут
-                           addTaskForPresentation(currentStepIndex + 1);
-                        } else timer();
+                        if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
+                        else getTimer();
                      break;
                      case 4:
-                        if (this.defaultSelected.hash === '#' && this.defaultSelected.hashCodes[0]) { //подумать над проверкой тут
-                           addTaskForPresentation(currentStepIndex + 1);
-                        } else timer();
+                        if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
+                        else getTimer();
                      break;
                      case lastStepIndex:
                         if (!this.items.length) {
@@ -711,12 +748,15 @@ export default {
                               this.defaultSelected.time]
                               .every(item => item)) {
                               this.addTask();
-                              timer();
-                           } else addTaskForPresentation(currentStepIndex + 1);
-                        }
+                              getTimer();
+                           } else {
+                              if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
+                              else getTimer();
+                           }
+                        } else getTimer();
                      break;
                      default:
-                        timer();
+                        getTimer();
                      break;
                   }
 

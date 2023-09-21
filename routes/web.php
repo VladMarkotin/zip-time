@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
     Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
     Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
+    Route::post('/getDefaultSavedTasks', [App\Http\Controllers\MainController::class, 'getDefaultSavedTasks']);
     Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode']);
     Route::post('/getPreparedPlan', [App\Http\Controllers\MainController::class, 'getPreparedPlan']);//check whether we got prepared plan
     Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists

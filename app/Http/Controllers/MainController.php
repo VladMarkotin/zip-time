@@ -36,6 +36,7 @@ use App\Models\TimetableModel;
 use App\Models\DefaultConfigs;
 use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
 use App\Models\User;
+use App\Models\DefaultSavedTasks;
 
 class MainController
 {
@@ -57,7 +58,8 @@ class MainController
     private $timetableModel            = null;
     private $personalResultsService    = null;
     private $defaultConfigs            = null;
-    private $checkCheckpoints            = null;
+    private $checkCheckpoints          = null;
+    private $defaultSavedTasks         = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -76,7 +78,8 @@ class MainController
                                 RatingService $userRatings,
                                 TimetableModel $timetableModel,
                                 PersonalResultsService $personalResultsService,
-                                DefaultConfigs $defaultConfigs
+                                DefaultConfigs $defaultConfigs,
+                                DefaultSavedTasks $defaultSavedTasks
                                 )
     {
         
@@ -99,6 +102,7 @@ class MainController
         $this->personalResultsService    = $personalResultsService;
         $this->defaultConfigs            = $defaultConfigs; 
         $this->checkCheckpoints          = $checkCheckpoints;
+        $this->defaultSavedTasks         = $defaultSavedTasks;
     }
 
     public function addHashCode(Request $request)
@@ -134,6 +138,13 @@ class MainController
             'id' => $id,
             'hash_codes' => $hashCodes,
         ]);//
+    }
+
+    public function getDefaultSavedTasks()
+    {
+        return response()->json([
+            'defaultSavedTasks' => $this->defaultSavedTasks::all()
+        ]);
     }
 
     public function isWeekendAvailable()

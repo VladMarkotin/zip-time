@@ -45,10 +45,15 @@ class SavedTask2Repository
         ];
         $lastNoteArray = $this->notesRepository->getLastNote($paramsForNotes);//возвращает последнюю заметку,но ее надо как-то + в savedTask
         
+        $savedDefaultTask = DB::table('default_saved_tasks')
+            ->select('hash_code','task_name', 'type', 'priority', 'details', 'time', 'note')
+            ->where('hash_code', '=', $params['hash_code']);
+
         $savedTask = DB::table('saved_tasks')
             ->select('hash_code','task_name', 'type', 'priority', 'details', 'time', 'note')
             ->where('user_id',   '=', Auth::id())
             ->where('hash_code', '=', $params['hash_code'])
+            ->union($savedDefaultTask)
             ->get()->toArray();
         /*Remove spechial chars here. Have to move it in another place (Service?)*/
         foreach ($savedTask as $k => &$v) {
