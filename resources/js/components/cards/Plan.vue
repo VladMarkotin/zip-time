@@ -633,7 +633,6 @@ export default {
     },
 
     async mounted() {
-      console.log(this.defaultSelected);
       try {
          const response = await  axios.post('/getEduStep', {
 			})
@@ -650,8 +649,9 @@ export default {
                   showStepNumbers: false,
                   steps: [
                   {  
+                     tooltipClass: 'custom-tooltip first-slide',
                      element: document.getElementById('plan-wrapper'),
-                     intro: 'hello user'
+                     intro: 'Hello, dear user! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt voluptate aspernatur officia error repellat tempore voluptates iusto eos inventore doloremque. Voluptate labore totam fugiat esse.'
                   },
                   {  
                      element: document.getElementById('plan-wrapper'),
@@ -682,15 +682,16 @@ export default {
                   },
                   {  
                      element: document.getElementById('plan-create'),
-                     intro: 'create plan',
+                     intro: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt voluptate aspernatur officia error repellat tempore voluptates iusto eos inventore doloremque. Voluptate labore totam fugiat esse.',
                   },
                   {  
                      element: document.getElementById('plan-emergency-mode'),
-                     intro: 'emergency mode',
+                     intro: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt voluptate aspernatur officia error repellat tempore voluptates iusto eos inventore doloremque. Voluptate labore totam fugiat esse.',
                   },
                   ]
                }).onbeforechange((targetElement) => {
                   const currentStepIndex = introJS._currentStep;
+                  
                   if (![6,7].some(item => item === currentStepIndex) && this.items.length) {
                      this.items = [];
                   }
@@ -726,20 +727,38 @@ export default {
 
                   const currentStepIndex = introJS._currentStep;
                   const lastStepIndex = introJS._introItems.length - 1;
+                  
+
+                  const addWelcomeBlock = () => {
+                     const mainIntroTooltipBlock =  document.querySelector('.custom-tooltip')
+                     const customBlock = document.createElement('div');
+                     customBlock.classList.add('welcome-block');
+                     
+                     mainIntroTooltipBlock.insertBefore(customBlock, mainIntroTooltipBlock.querySelector('.introjs-tooltiptext'));
+                  }
+
+                  const welcomeBlock = document.querySelector('.welcome-block');
+                  if (currentStepIndex === 0 && !welcomeBlock) {
+                     addWelcomeBlock()
+                     introJS.goToStepNumber(currentStepIndex + 1);
+                  };
+                  if (currentStepIndex !== 0 && welcomeBlock) {
+                     welcomeBlock.remove();
+                  }
 
                   const checkDefaultTasks = () => {
                      const defaultTasks = this.defaultSelected.hashCodes.filter(hash => hash.match(/^#q-/))   
                      return defaultTasks.length ? defaultTasks[0] : null;
                   }
 
-                  const firstDefaultSavedTask = checkDefaultTasks();
+                  const firstDefaultTaskHash = checkDefaultTasks();
 
                   const getTimer = () => {
                      const getCurrentStepTimer = (step) => { //менять время показа каждого слайда
 
                      switch(step) {
                         case 0:
-                           return 19000;
+                           return 1900000000;
                         case 1:
                            return 16000;
                         case 2:
@@ -769,8 +788,8 @@ export default {
                   }
 
                   const addTaskForPresentation = (step) => {
-                     this.defaultSelected.hash = firstDefaultSavedTask;
-                     this.onChangeForPresentation.call(this, firstDefaultSavedTask)
+                     this.defaultSelected.hash = firstDefaultTaskHash;
+                     this.onChangeForPresentation.call(this, firstDefaultTaskHash)
                      .then(() => {
                         introJS.goToStepNumber(step)
                      })
@@ -778,11 +797,11 @@ export default {
 
                   switch(currentStepIndex) {
                      case 4:
-                        if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
+                        if (this.defaultSelected.hash === '#' && firstDefaultTaskHash) addTaskForPresentation(currentStepIndex + 1);
                         else getTimer();
                      break;
                      case 5:
-                        if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
+                        if (this.defaultSelected.hash === '#' && firstDefaultTaskHash) addTaskForPresentation(currentStepIndex + 1);
                         else getTimer();
                      break;
                      case 6:
@@ -797,7 +816,10 @@ export default {
                               this.addTask();
                               getTimer();
                            } else {
-                              if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
+                              if (this.defaultSelected.hash === '#' && firstDefaultTaskHash) {
+                                 
+                                 addTaskForPresentation(currentStepIndex + 1);
+                              }
                               else getTimer();
                            }
                         } else getTimer();
