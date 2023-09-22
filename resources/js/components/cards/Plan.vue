@@ -650,7 +650,6 @@ export default {
                   steps: [
                   {  
                      tooltipClass: 'custom-tooltip first-slide',
-                     element: document.getElementById('plan-wrapper'),
                      intro: 'Hello, dear user! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt voluptate aspernatur officia error repellat tempore voluptates iusto eos inventore doloremque. Voluptate labore totam fugiat esse.'
                   },
                   {  
@@ -689,7 +688,7 @@ export default {
                      intro: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt voluptate aspernatur officia error repellat tempore voluptates iusto eos inventore doloremque. Voluptate labore totam fugiat esse.',
                   },
                   ]
-               }).onbeforechange((targetElement) => {
+               }).onbeforechange(() => {
                   const currentStepIndex = introJS._currentStep;
                   
                   if (![6,7].some(item => item === currentStepIndex) && this.items.length) {
@@ -709,25 +708,9 @@ export default {
                      };
                   }
 
-               }).onexit(() => {
-
-                  this.defaultSelected = {
-                  hash: '#',
-                  hashCodes: this.defaultSelected.hashCodes,
-                  taskName: '',
-                  time: '01:00',
-                  type: 'required job',
-                  priority: '1',
-                  details: '',
-                  notes: ''
-                  };
-
-                  this.items = [];
                }).onafterchange(() => {
-
                   const currentStepIndex = introJS._currentStep;
                   const lastStepIndex = introJS._introItems.length - 1;
-                  
 
                   const addWelcomeBlock = () => {
                      const mainIntroTooltipBlock =  document.querySelector('.custom-tooltip')
@@ -829,9 +812,8 @@ export default {
                      break;
                   }
                }).onchange(() => {
-
                   const currentStepIndex = introJS._currentStep;
-
+                  
                   const configIntroJSObject = (targetElemVal) => {
                      introJS._introItems = [...introJS._introItems.map(item => {
                            if (item.step === 8) return {...item, element: document.getElementById('plan-create') 
@@ -850,6 +832,20 @@ export default {
                         introJS.goToStepNumber(currentStepIndex + 1);
                      }
                   }, 0);
+               }).onexit(() => {
+
+                  this.defaultSelected = {
+                  hash: '#',
+                  hashCodes: this.defaultSelected.hashCodes,
+                  taskName: '',
+                  time: '01:00',
+                  type: 'required job',
+                  priority: '1',
+                  details: '',
+                  notes: ''
+                  };
+
+                  this.items = [];
                }).start(); 
 			}
       } catch(error) {

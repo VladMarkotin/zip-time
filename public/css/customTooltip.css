@@ -1,14 +1,13 @@
 @import url(https://fonts.googleapis.com/css2?family=Bad+Script&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@400;500;700;900&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Bad+Script&family=Inter&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
 .custom-tooltip {
   min-width: 320px;
   font-size: 15px;
-  animation: 0.7s show ease;
-  font-family: "Bad Script", cursive;
-  font-family: "Montserrat", sans-serif;
+  animation: 1s show ease;
   font-family: "Roboto", sans-serif;
 }
 .custom-tooltip .welcome-block {
-  min-height: 120px;
+  min-height: 160px;
   background-image: url("/images/welcome_block_background.png");
   background-position: center;
   background-size: contain;
@@ -28,13 +27,16 @@
   height: 0.8rem;
 }
 .custom-tooltip .introjs-tooltipbuttons .introjs-button {
-  box-shadow: 1px 1px 1px black;
+  box-shadow: 2px 2px 4px black;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 400;
   border-radius: 6px;
   border: none;
   text-shadow: 1px 1px 1px black;
   color: whitesmoke;
+  min-width: 46.82px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
 }
 .custom-tooltip .introjs-tooltipbuttons .introjs-skipbutton {
   margin-right: 14px;
@@ -62,16 +64,43 @@
 }
 
 .first-slide {
-  background-color: #C5D0E6;
-  min-width: 420px;
+  background: linear-gradient(225deg, #c5d0e6 31%, cornflowerblue 100%);
+  min-width: 500px;
+  border-radius: 1.2rem;
+  padding: 15px;
+  animation: gradient 10s ease infinite;
+  background-size: 300% 300%;
 }
 .first-slide .introjs-tooltiptext {
   box-sizing: border-box;
   padding: 0 25px;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 19px;
   line-height: 23.44px;
   color: #121212;
+}
+.first-slide .introjs-bullets ul li:not(:last-child) {
+  margin-right: 7px;
+}
+.first-slide .introjs-bullets ul li a {
+  width: 1.1rem;
+  height: 1.1rem;
+  background: #EADEBD;
+}
+.first-slide .introjs-bullets ul li a.active {
+  background: #5D76CB;
+}
+.first-slide .introjs-bullets ul li a:hover {
+  background: #5D76CB;
+}
+.first-slide .introjs-tooltipbuttons .introjs-button {
+  padding: 7px 12px;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 20px;
+}
+.first-slide .introjs-tooltipbuttons .introjs-nextbutton {
+  background: #EADEBD;
 }
 
 @keyframes show {
@@ -80,5 +109,16 @@
   }
   to {
     opacity: 1;
+  }
+}
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
   }
 }
