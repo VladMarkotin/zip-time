@@ -198,7 +198,7 @@
                <div class=" d-flex justify-space-between mt-3">
                   <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
+                        <v-btn id="plan-create" color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
                            v-on="on">
                            <v-icon md="1"
                               color="#D71700"
@@ -207,18 +207,19 @@
                               {{icons.mdiClockStart}}
                            </v-icon>
                         </v-btn>
-                     </template>
-                     <span>Create plan</span>
+                        </template>
+                        <span>Create plan</span>
                   </v-tooltip>
-               
+                  
+                  </div>
                </div>
-            </div>
          </v-col>
          <v-col>
 
             <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn color="#D71700" style="text-color:#ffffff" icon v-on:click="toggleEmergencyCallDialog" v-bind="attrs"
+                        <v-btn 
+                        id="plan-emergency-mode" color="#D71700" style="text-color:#ffffff" icon v-on:click="toggleEmergencyCallDialog" v-bind="attrs"
                            v-on="on">
                            <v-icon md="1"
                               color="#D71700"
@@ -650,6 +651,10 @@ export default {
                   steps: [
                   {  
                      element: document.getElementById('plan-wrapper'),
+                     intro: 'hello user'
+                  },
+                  {  
+                     element: document.getElementById('plan-wrapper'),
                      intro: 'This is so-called pre-plan. Here you can scetch you day plan. On this step you still can easily add/delete tasks.'
                   },
                   {
@@ -674,9 +679,50 @@ export default {
                      element: document.getElementById('plan-tasks-table'),
                      intro: 'Here your would see jobs/tasks which you have already added. On this step you can easily add/delete/change any of them.',
                      position: 'left',
-                  }
+                  },
+                  {  
+                     element: document.getElementById('plan-create'),
+                     intro: 'create plan',
+                  },
+                  {  
+                     element: document.getElementById('plan-emergency-mode'),
+                     intro: 'emergency mode',
+                  },
                   ]
-               }).onbeforechange(() => {
+               }).onbeforechange((targetElement) => {
+                  const currentStepIndex = introJS._currentStep;
+                  if (![6,7].some(item => item === currentStepIndex) && this.items.length) {
+                     this.items = [];
+                  }
+
+                  if (![4,5,6,7].some(item => item === currentStepIndex) && this.defaultSelected.hash !== '#') {
+                     this.defaultSelected = {
+                     hash: '#',
+                     hashCodes: this.defaultSelected.hashCodes,
+                     taskName: '',
+                     time: '01:00',
+                     type: 'required job',
+                     priority: '1',
+                     details: '',
+                     notes: ''
+                     };
+                  }
+
+               }).onexit(() => {
+
+                  this.defaultSelected = {
+                  hash: '#',
+                  hashCodes: this.defaultSelected.hashCodes,
+                  taskName: '',
+                  time: '01:00',
+                  type: 'required job',
+                  priority: '1',
+                  details: '',
+                  notes: ''
+                  };
+
+                  this.items = [];
+               }).onafterchange(() => {
 
                   const currentStepIndex = introJS._currentStep;
                   const lastStepIndex = introJS._introItems.length - 1;
@@ -689,7 +735,7 @@ export default {
                   const firstDefaultSavedTask = checkDefaultTasks();
 
                   const getTimer = () => {
-                     const getCurrentStepTimer = (step) => {
+                     const getCurrentStepTimer = (step) => { //менять время показа каждого слайда
 
                      switch(step) {
                         case 0:
@@ -702,7 +748,7 @@ export default {
                            return 18000;
                         case 4:
                            return 12000;
-                        case lastStepIndex:
+                        case 6:
                            return 24000;
                         default:
                            return 18000;
@@ -723,23 +769,24 @@ export default {
                   }
 
                   const addTaskForPresentation = (step) => {
-                        this.defaultSelected.hash = firstDefaultSavedTask;
-                        this.onChangeForPresentation.call(this, firstDefaultSavedTask)
-                        .then(() => {
-                           introJS.goToStepNumber(step)
-                        })
+                     this.defaultSelected.hash = firstDefaultSavedTask;
+                     this.onChangeForPresentation.call(this, firstDefaultSavedTask)
+                     .then(() => {
+                        introJS.goToStepNumber(step)
+                     })
                   }
 
                   switch(currentStepIndex) {
-                     case 3:
-                        if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
-                        else getTimer();
-                     break;
                      case 4:
                         if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
                         else getTimer();
                      break;
-                     case lastStepIndex:
+                     case 5:
+                        if (this.defaultSelected.hash === '#' && firstDefaultSavedTask) addTaskForPresentation(currentStepIndex + 1);
+                        else getTimer();
+                     break;
+                     case 6:
+                     case 7:
                         if (!this.items.length) {
                            if ([this.defaultSelected.hash, 
                               this.defaultSelected.taskName, 
@@ -759,42 +806,28 @@ export default {
                         getTimer();
                      break;
                   }
+               }).onchange(() => {
 
-               }).onexit(() => {
-
-                  this.defaultSelected = {
-                  hash: '#',
-                  hashCodes: this.defaultSelected.hashCodes,
-                  taskName: '',
-                  time: '01:00',
-                  type: 'required job',
-                  priority: '1',
-                  details: '',
-                  notes: ''
-                  };
-
-                  this.items = [];
-               }).onafterchange(() => {
                   const currentStepIndex = introJS._currentStep;
-                  const lastStepIndex = introJS._introItems.length - 1;
 
-                  if (currentStepIndex !== lastStepIndex && this.items.length) {
-                     this.items = [];
+                  const configIntroJSObject = (targetElemVal) => {
+                     introJS._introItems = [...introJS._introItems.map(item => {
+                           if (item.step === 8) return {...item, element: document.getElementById('plan-create') 
+                           ? document.getElementById('plan-create') 
+                           : targetElemVal, 
+                           position: 'right'};
+                           return item;
+                     })];
                   }
 
-                  if (currentStepIndex < 3 && this.defaultSelected.hash !== '#') {
-                     this.defaultSelected = {
-                     hash: '#',
-                     hashCodes: this.defaultSelected.hashCodes,
-                     taskName: '',
-                     time: '01:00',
-                     type: 'required job',
-                     priority: '1',
-                     details: '',
-                     notes: ''
-                     };
-                  }
+                  configIntroJSObject(document.querySelector('.introjsFloatingElement'));
 
+                  setTimeout(() => {
+                     if (!introJS._introItems.some(item => item.element === document.getElementById('plan-create')) && this.items.length) {
+                        configIntroJSObject(document.getElementById('plan-create'));
+                        introJS.goToStepNumber(currentStepIndex + 1);
+                     }
+                  }, 0);
                }).start(); 
 			}
       } catch(error) {
