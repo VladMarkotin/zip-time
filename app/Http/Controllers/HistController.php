@@ -10,7 +10,7 @@ class HistController extends Controller
 {
     private $histService = null;
 
-    public function __construct(HistService $histService, )
+    public function __construct(HistService $histService )
     {
         $this->histService = $histService;
      

@@ -226,20 +226,6 @@ summary::after {
 
 */
 
-.view_all {
-    padding: 8px;
-    text-align: center;
-    background-color: #e9eff1;
-}
-
-.view_all a {
-    color: #212121;
-    text-decoration: none;
-}
-
-.view_all a:hover {
-    color: #979797;
-}
 
 body {
     font-family: "Roboto", sans-serif;
@@ -437,6 +423,10 @@ body {
     .notification-wrapper {
         margin-left: 0;
         margin-top: 120px;
+    }
+
+    .filter{
+        display: none;
     }
 }
 

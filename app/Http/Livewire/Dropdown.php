@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Dropdown extends Component
 {
-    public  $type = 'Broadcast', $date, $data, $unread;
+    public  $type , $date, $data, $unread;
     protected $listeners = ['refresh' => '$refresh', 'saveNotification'];
     protected $rules = [
         'type' => 'required',
@@ -38,7 +38,7 @@ class Dropdown extends Component
         $this->emit('refresh');
     }
 
-    public function saveNotification($type=null, $data=null, $date=null)
+    public function saveNotification($type = null, $data = null, $date = null)
     {
 
         !$data ? $this->validate() : '';
@@ -86,13 +86,13 @@ class Dropdown extends Component
     public function pushNotification()
     {
 
-         $this->validate();
+        $this->validate();
         event(new NotificationEvent($this->type,  $this->data,  $this->date));
         $this->dispatchBrowserEvent('close-modal');
         $this->reset(['type', 'date', 'data']);
     }
 
-  
+
     public function render()
     {
 

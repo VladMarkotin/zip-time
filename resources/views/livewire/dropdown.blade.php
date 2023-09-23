@@ -11,7 +11,7 @@
                     <div class="form-check float-end mr-3">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" wire:model="unread" value="all">
                         <label class="form-check-label mt-1" for="flexCheckDefault">
-                            Unread notifications
+                            Unread 
                         </label>
                       </div>
 
@@ -24,8 +24,8 @@
                             <a class="mr-2 pl-2 w-100 text-dark text-decoration-none" role="button" wire:click="readNotification( {{ $notification->id }})">
                            
                                 <div @class([
-                                    'text-justify',
-                                    'font-weight-bold' => $notification->read_at == 0,
+                                    'text-justify ',
+                                    'fw-bold' => $notification->read_at == 0,
                                 ])>
                                     {{ $notification->data }}
                                 </div>
@@ -154,7 +154,7 @@
                         <div class="form-group">
                             <strong>Notification type:</strong>
                             <input type="text" class="form-control"
-                                     wire:model="type" readonly>
+                                     wire:model="type">
                             @error('type')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror
