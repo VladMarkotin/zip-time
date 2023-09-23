@@ -7,8 +7,14 @@
             
             <div class="box-title border-bottom ">
                 <h6 class="fw-bold p-2 heading-line-drop ">Notifications
-                    <span class="float-end mr-3"><input type="checkbox" wire:model="unread" value="all" >
-                    Unread</span>
+
+                    <div class="form-check float-end mr-3">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" wire:model="unread" value="all">
+                        <label class="form-check-label mt-1" for="flexCheckDefault">
+                            Unread notifications
+                        </label>
+                      </div>
+
                 </h6>
             </div>
         <div class="box  bg-white p-1 " >
@@ -148,7 +154,7 @@
                         <div class="form-group">
                             <strong>Notification type:</strong>
                             <input type="text" class="form-control"
-                                     wire:model="type">
+                                     wire:model="type" readonly>
                             @error('type')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror

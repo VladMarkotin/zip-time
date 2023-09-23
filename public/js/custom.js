@@ -2,8 +2,8 @@
 
 
 $(document).ready(function () {
-  // $('.main-wrapper').hide();
 
+ 
   alertify.set('notifier', 'position', 'bottom-right');
 
   /**
@@ -49,19 +49,11 @@ $(document).ready(function () {
     let type = data.type;
     let notification_data = data.data;
     let notification_date = data.date;
-    var csrf = document.querySelector('meta[name="csrf-token"]').content;
-
-    $.post('/save_notification', {
-      _token: csrf,
-      type: type,
-      data: notification_data,
-      notification_date: notification_date
-    }, function () { }).done(function (response) {
-
-      alertify.notify('Message Brodcasted');
-    })
+  
+    Livewire.emit('saveNotification', type, notification_data, notification_date);
+    alertify.notify('New Brodcasted');
+    
   });
-
 
 
 

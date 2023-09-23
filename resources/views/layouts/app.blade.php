@@ -120,12 +120,7 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                     <span id="total-results">
-                                        @php
-                                            $rating = \app\models\User::where('id', Auth::id())
-                                                ->pluck('rating')
-                                                ->first();
-                                            echo $rating;
-                                        @endphp
+                                            {{ Auth::user()->rating  }}                                    
                                     </span>
                                 </a>
 
@@ -162,6 +157,9 @@
     </div>
     <livewire:scripts />
     @stack('script')
+
+
+
 
     <script src="//js.pusher.com/3.1/pusher.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

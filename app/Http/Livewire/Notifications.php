@@ -40,17 +40,6 @@ class Notifications extends Component
         ];
     }
 
-    public function test(): void
-    {
-        dd(65745);
-    }
-
-    public function resetInput(): void
-    {
-        $this->type = null;
-        $this->data = null;
-        $this->date = null;
-    }
 
     public function updated($propertyName): void
     {
@@ -64,6 +53,7 @@ class Notifications extends Component
         $this->type = $notification->type;
         $this->data = $notification->data;
         $this->date = $notification->notification_date;
+       
     }
 
     public function readNotification($id)
@@ -78,7 +68,7 @@ class Notifications extends Component
 
     public function updateNotification(): void
     {
-        $validatedData = $this->validate();
+        $this->validate();
         Notification::findOrFail($this->notificationId)->update([
             'user_id' => Auth::id(),
             'type' => $this->type,
@@ -90,7 +80,7 @@ class Notifications extends Component
             'text' => 'Notification Updated Successfully',
         ]);
         $this->emit('refresh');
-        $this->resetInput();
+        $this->reset(['type', 'date', 'data']);
     }
 
     public function deleteNotification($notificationId): void

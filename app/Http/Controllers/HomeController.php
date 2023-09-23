@@ -15,23 +15,6 @@ use App\Http\Controllers\Services\GetDayPlanService;
 
 class HomeController extends Controller
 {
-    private $userRatings   = null;
-    private $estimateDayRepository = null;
-    private $getDayPlanService = null;
-    private $notificationService;
-  
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(GetDayPlanService $getDayPlanService, EstimationRepository $estimationRepository, RatingService $userRatings)
-    { $this->userRatings = $userRatings;
-     
-        $this->estimateDayRepository = $estimationRepository;
-           //$this->middleware('auth');
-        $this->getDayPlanService = $getDayPlanService;
-    }
 
     /**
      * Show the application dashboard.
@@ -40,8 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
         return view('home');
-
     }
 }

@@ -13,10 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Dropdown extends Component
 {
-
-    
-    public  $type, $date, $data, $unread;
-    protected $listeners = [ 'refresh'=>'$refresh'];
+    public  $type = 'Broadcast', $date, $data, $unread;
+    protected $listeners = ['refresh' => '$refresh', 'saveNotification'];
     protected $rules = [
         'type' => 'required',
         'date' => 'required',
@@ -27,7 +25,6 @@ class Dropdown extends Component
     {
         $this->validateOnly($propertyName);
     }
-
 
     public function readNotification($id)
     {
@@ -41,30 +38,30 @@ class Dropdown extends Component
         $this->emit('refresh');
     }
 
-    public function saveNotification()
+    public function saveNotification($type=null, $data=null, $date=null)
     {
-        $validatedData = $this->validate();
+
+        !$data ? $this->validate() : '';
         $notification = Notification::create([
             'user_id' => auth()->user()->id,
-            'type' => $this->type,
-            'data' => $this->data,
-            'notification_date' => $this->date,
+            'type' => $type ? $type : $this->type,
+            'data' =>     $data ? $data : $this->data,
+            'notification_date' =>   $date ? $date : $this->date,
             'read_at' => 0
         ]);
         $this->emit('refresh');
-        $this->resetInput();
+        $this->reset(['type', 'date', 'data']);
         $this->dispatchBrowserEvent('close-modal');
     }
 
     public function addTask($id)
     {
-        $notification = Notification::find($id)->first();
-      
+        $notification = Notification::find($id);
         $timetable = TimetableModel::where('user_id', Auth::id())
-        ->where('date', Carbon::today())
-        ->first();
-       
-        if($timetable){
+            ->where('date', Carbon::today())
+            ->first();
+
+        if ($timetable) {
             $dataForTasks = [
                 "timetable_id" => $timetable->id,
                 "hash_code"    => '#',
@@ -79,33 +76,23 @@ class Dropdown extends Component
             ];
             Tasks::insert($dataForTasks);
             return redirect()->route('home');
-        }else{
+        } else {
             $this->dispatchBrowserEvent('message', [
                 'text' => 'Please Create a Day Plan',
             ]);
-           
         }
-
-       
     }
 
     public function pushNotification()
     {
-        
-       $validatedData = $this->validate();
+
+         $this->validate();
         event(new NotificationEvent($this->type,  $this->data,  $this->date));
         $this->dispatchBrowserEvent('close-modal');
-        $this->resetInput();
+        $this->reset(['type', 'date', 'data']);
     }
 
-
-    public function resetInput(): void
-    {
-        $this->type = null;
-        $this->data = null;
-        $this->date = null;
-    }
-    
+  
     public function render()
     {
 
@@ -114,7 +101,7 @@ class Dropdown extends Component
         $notifications = Notification::where('user_id', $id)
             ->where('notification_date', '<=', $ldate)
             ->orderBy('created_at', 'DESC')
-            ->when($this->unread,function($e){
+            ->when($this->unread, function ($e) {
                 $e->where('read_at', 0);
             })
             ->take(15)
