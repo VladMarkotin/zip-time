@@ -1,16 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bad+Script&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@400;500;700;900&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Inter&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bad+Script&family=Inter&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+$skipButtoncolor: #ff2b2b;
+$nextButtonColor: rgb(100, 149, 237);
 
 .custom-tooltip {
     min-width: 320px;
     font-size: 15px;
     animation: 1s show ease;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
 
     .welcome-block {
         min-height: 160px;
-        background-image: url('/images/welcome_block_background.png');
+        background-image: url("/images/welcome_block_background.png");
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
@@ -42,18 +45,18 @@
             font-weight: 400;
             border-radius: 6px;
             border: none;
-            text-shadow: 1px 1px 1px black;  
+            text-shadow: 1px 1px 1px black;
             color: whitesmoke;
             min-width: 46.82px;
             text-align: center;
-            font-family: 'Inter', sans-serif;
+            font-family: "Inter", sans-serif;
         }
 
         .introjs-skipbutton {
             margin-right: 14px;
             background: rgb(161, 0, 0);
             opacity: 0.8;
-            transition: opacity .3s ease-in;
+            transition: opacity 0.3s ease-in;
             &:hover {
                 opacity: 1;
             }
@@ -65,27 +68,38 @@
 
         .introjs-prevbutton,
         .introjs-nextbutton {
-            transition: all .3s ease-in;
+            transition: all 0.3s ease-in;
             color: #000000;
             text-shadow: 1px 1px 1px whitesmoke;
             &:hover {
                 color: whitesmoke;
                 text-shadow: 1px 1px 1px #000000;
-                background: #5D76CB;
-            }       
+                background: #5d76cb;
+            }
         }
-        
     }
 }
 
 .first-slide {
-    background: -webkit-linear-gradient(225deg, rgb(197, 208, 230) 31%, rgb(100, 149, 237) 100%);
-    background: -moz-linear-gradient(225deg, rgb(197, 208, 230) 31%, rgb(100, 149, 237) 100%);
-    background: linear-gradient(225deg, rgb(197, 208, 230) 31%, rgb(100, 149, 237) 100%);
+    background: -webkit-linear-gradient(
+        225deg,
+        rgb(197, 208, 230) 31%,
+        rgb(100, 149, 237) 100%
+    );
+    background: -moz-linear-gradient(
+        225deg,
+        rgb(197, 208, 230) 31%,
+        rgb(100, 149, 237) 100%
+    );
+    background: linear-gradient(
+        225deg,
+        rgb(197, 208, 230) 31%,
+        rgb(100, 149, 237) 100%
+    );
     min-width: 500px;
     border-radius: 1.2rem;
     padding: 15px;
-    animation:  gradient 10s ease infinite;
+    animation: gradient 10s ease infinite;
     background-size: 300% 300%;
 
     .introjs-tooltiptext {
@@ -106,12 +120,12 @@
                 a {
                     width: 1.1rem;
                     height: 1.1rem;
-                    background: #EADEBD;
+                    background: #eadebd;
                     &.active {
-                        background: #5D76CB;
+                        background: #5d76cb;
                     }
                     &:hover {
-                        background: #5D76CB;
+                        background: #5d76cb;
                     }
                 }
             }
@@ -120,13 +134,71 @@
 
     .introjs-tooltipbuttons {
         .introjs-button {
-            padding: 7px 12px;
             font-weight: 400;
-            font-size: 17px;
             line-height: 20px;
+            padding: 0.75rem 1.75rem;
+            border-radius: 10rem;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 0.15rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-shadow: 1px 1px 1px black;
+
+            &:after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: $skipButtoncolor;
+                border-radius: 10rem;
+                z-index: -2;
+            }
+
+            &:before {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0%;
+                height: 100%;
+                background-color: darken($skipButtoncolor, 15%);
+                transition: all 0.3s;
+                border-radius: 10rem;
+                z-index: -1;
+            }
+
+            &:hover {
+                color: #fff;
+                &:before {
+                    width: 100%;
+                }
+            }
         }
+
+        .introjs-skipbutton {
+            &:after {
+                background-color: $skipButtoncolor;
+            }
+
+            &:before {
+                background-color: darken($skipButtoncolor, 15%);
+            }
+        }
+
         .introjs-nextbutton {
-            background: #EADEBD;
+            &:after {
+                background-color: $nextButtonColor;
+            }
+
+            &:before {
+                background-color: darken($nextButtonColor, 15%);
+            }
         }
     }
 }
