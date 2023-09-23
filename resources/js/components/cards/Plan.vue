@@ -193,26 +193,29 @@
          <v-row>
 
          <v-col>
-
-            <div v-if="items.length > 0">
-               <div class=" d-flex justify-space-between mt-3">
-                  <v-tooltip right>
-                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn id="plan-creating" color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
-                           v-on="on">
-                           <v-icon md="1"
-                              color="#D71700"
-                              large
-                              >
-                              {{icons.mdiClockStart}}
-                           </v-icon>
-                        </v-btn>
-                        </template>
-                        <span>Create plan</span>
-                  </v-tooltip>
-                  
-                  </div>
+            <div 
+            id="plan-creating-wrapper"
+            style="min-height: 36px; width: 36px;"
+            >
+               <div v-if="items.length > 0">
+                  <div class=" d-flex justify-space-between mt-3">
+                     <v-tooltip right>
+                        <template v-slot:activator="{ on, attrs }">
+                           <v-btn id="plan-creating" color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
+                              v-on="on">
+                              <v-icon md="1"
+                                 color="#D71700"
+                                 large
+                                 >
+                                 {{icons.mdiClockStart}}
+                              </v-icon>
+                           </v-btn>
+                           </template>
+                           <span>Create plan</span>
+                     </v-tooltip>        
+                     </div>
                </div>
+            </div>
          </v-col>
          <v-col>
 
@@ -730,11 +733,13 @@ export default {
                   }
 
                   const checkDefaultTasks = () => {
-                     const defaultTasks = this.defaultSelected.hashCodes.filter(hash => hash.match(/^#q-/))   
-                     return defaultTasks.length ? defaultTasks[0] : null;
+                     const defaultTasks = this.defaultSelected.hashCodes.filter(hash => hash.match(/^#q-/))  
+                     if (defaultTasks.length) return defaultTasks[0];
+
+                     return this.defaultSelected.hashCodes.length ? this.defaultSelected.hashCodes[0]: null;
                   }
 
-                  const firstDefaultTaskHash = checkDefaultTasks();
+                  const shownTaskHash = checkDefaultTasks();
 
                   const getTimer = () => {
                      const getCurrentStepTimer = (step) => { //менять время показа каждого слайда
@@ -777,8 +782,8 @@ export default {
                   }
 
                   const addTaskForPresentation = (step) => {
-                     this.defaultSelected.hash = firstDefaultTaskHash;
-                     this.onChangeForPresentation.call(this, firstDefaultTaskHash)
+                     this.defaultSelected.hash = shownTaskHash;
+                     this.onChangeForPresentation.call(this, shownTaskHash)
                      .then(() => {
                         introJS.goToStepNumber(step)
                      })
@@ -786,11 +791,11 @@ export default {
 
                   switch(currentStepIndex) {
                      case 4:
-                        if (this.defaultSelected.hash === '#' && firstDefaultTaskHash) addTaskForPresentation(currentStepIndex + 1);
+                        if (this.defaultSelected.hash === '#' && shownTaskHash) addTaskForPresentation(currentStepIndex + 1);
                         else getTimer();
                      break;
                      case 5:
-                        if (this.defaultSelected.hash === '#' && firstDefaultTaskHash) addTaskForPresentation(currentStepIndex + 1);
+                        if (this.defaultSelected.hash === '#' && shownTaskHash) addTaskForPresentation(currentStepIndex + 1);
                         else getTimer();
                      break;
                      case 6:
@@ -805,7 +810,7 @@ export default {
                               this.addTask();
                               getTimer();
                            } else {
-                              if (this.defaultSelected.hash === '#' && firstDefaultTaskHash) {
+                              if (this.defaultSelected.hash === '#' && shownTaskHash) {
                                  
                                  addTaskForPresentation(currentStepIndex + 1);
                               }
@@ -830,7 +835,7 @@ export default {
                      })];
                   }
 
-                  configIntroJSObject(document.querySelector('.introjsFloatingElement'));
+                  configIntroJSObject(document.getElementById('plan-creating-wrapper'));
 
                   setTimeout(() => {
                      if (!introJS._introItems.some(item => item.element === document.getElementById('plan-creating')) && this.items.length) {
