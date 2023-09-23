@@ -653,7 +653,7 @@ export default {
                   steps: [
                   {  
                      tooltipClass: 'custom-tooltip first-slide',
-                     intro: 'Hello, dear user! Now you will be explained, how to use some basic functional application "Zip-time". We hope that we will manage to help you to plan your time efficiently and hope you will spend a good day with us!'
+                     intro: 'Hello, dear user! Now you will be explained, how to use some basic functional application «Zip-time». We hope that we will manage to help you to plan your time efficiently and hope you will spend a good day with us!'
                   },
                   {  
                      element: document.getElementById('plan-wrapper'),
@@ -661,7 +661,7 @@ export default {
                   },
                   {
                      element: document.getElementById('plan-day-status'),
-                     intro: 'Here you can easily manage day status.<br> We got 2 statuses: "Work day" and "Weekend".'
+                     intro: 'Here you can easily manage day status.<br> We got 2 statuses: «Work day» and «Weekend».'
                   },
                   {
                      element: document.getElementById('plan-day-status'),
@@ -688,7 +688,7 @@ export default {
                   },
                   {  
                      element: document.getElementById('plan-emergency-mode'),
-                     intro: 'This button makes "emergency mode" active. You may use it in the occasions when you can\'t close your day plan. In this case  your rating will not be reduced, but you will not be able to activate it more than 3 times a month. In the next step you will also be able to activate it.',
+                     intro: 'This button makes «emergency mode» active. You may use it in the occasions when you can\'t close your day plan. In this case  your rating will not be reduced, but you will not be able to activate it more than 3 times a month. In the next step you will also be able to activate it.',
                   },
                   ]
                }).onbeforechange(() => {
@@ -746,25 +746,25 @@ export default {
 
                      switch(step) {
                         case 0:
-                           return 19000;
-                        case 1:
-                           return 18000;
-                        case 2:
-                           return 14000;
-                        case 3:
-                           return 14000;
-                        case 4:
-                           return 16000;
-                        case 5:
-                           return 12000;
-                        case 6:
                            return 24000;
+                        case 1:
+                           return 23000;
+                        case 2:
+                           return 19000;
+                        case 3:
+                           return 19000;
+                        case 4:
+                           return 21000;
+                        case 5:
+                           return 17000;
+                        case 6:
+                           return 29000;
                         case 7:
-                           return 14000;
+                           return 19000;
                         case 8:
-                           return 22000;
+                           return 27000;
                         default:
-                           return 16000;
+                           return 21000;
                         }
                      };
                      
