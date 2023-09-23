@@ -198,7 +198,7 @@
                <div class=" d-flex justify-space-between mt-3">
                   <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn id="plan-create" color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
+                        <v-btn id="plan-creating" color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
                            v-on="on">
                            <v-icon md="1"
                               color="#D71700"
@@ -650,7 +650,7 @@ export default {
                   steps: [
                   {  
                      tooltipClass: 'custom-tooltip first-slide',
-                     intro: 'Hello, dear user! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt voluptate aspernatur officia error repellat tempore voluptates iusto eos inventore doloremque. Voluptate labore totam fugiat esse.'
+                     intro: 'Hello, dear user! Now you will be explained, how to use some basic functional application "Zip-time". We hope that we will manage to help you to plan your time efficiently and hope you will spend a good day with us!'
                   },
                   {  
                      element: document.getElementById('plan-wrapper'),
@@ -678,14 +678,14 @@ export default {
                      element: document.getElementById('plan-tasks-table'),
                      intro: 'Here your would see jobs/tasks which you have already added. On this step you can easily add/delete/change any of them.',
                      position: 'left',
-                  },
+                  }, 
                   {  
-                     element: document.getElementById('plan-create'),
-                     intro: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt voluptate aspernatur officia error repellat tempore voluptates iusto eos inventore doloremque. Voluptate labore totam fugiat esse.',
+                     element: document.getElementById('plan-creating'),
+                     intro: 'Right now you will be able to form your day plan. Pay attention that it shoud consist of no less than two points.',
                   },
                   {  
                      element: document.getElementById('plan-emergency-mode'),
-                     intro: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt voluptate aspernatur officia error repellat tempore voluptates iusto eos inventore doloremque. Voluptate labore totam fugiat esse.',
+                     intro: 'This button makes "emergency mode" active. You may use it in the occasions when you can\'t close your day plan. In this case  your rating will not be reduced, but you will not be able to activate it more than 3 times a month. In the next step you will also be able to activate it.',
                   },
                   ]
                }).onbeforechange(() => {
@@ -741,19 +741,25 @@ export default {
 
                      switch(step) {
                         case 0:
-                           return 1900000000;
+                           return 19000;
                         case 1:
-                           return 16000;
+                           return 18000;
                         case 2:
                            return 14000;
                         case 3:
-                           return 18000;
+                           return 14000;
                         case 4:
+                           return 16000;
+                        case 5:
                            return 12000;
                         case 6:
                            return 24000;
+                        case 7:
+                           return 14000;
+                        case 8:
+                           return 22000;
                         default:
-                           return 18000;
+                           return 16000;
                         }
                      };
                      
@@ -816,8 +822,8 @@ export default {
                   
                   const configIntroJSObject = (targetElemVal) => {
                      introJS._introItems = [...introJS._introItems.map(item => {
-                           if (item.step === 8) return {...item, element: document.getElementById('plan-create') 
-                           ? document.getElementById('plan-create') 
+                           if (item.step === 8) return {...item, element: document.getElementById('plan-creating') 
+                           ? document.getElementById('plan-creating') 
                            : targetElemVal, 
                            position: 'right'};
                            return item;
@@ -827,8 +833,8 @@ export default {
                   configIntroJSObject(document.querySelector('.introjsFloatingElement'));
 
                   setTimeout(() => {
-                     if (!introJS._introItems.some(item => item.element === document.getElementById('plan-create')) && this.items.length) {
-                        configIntroJSObject(document.getElementById('plan-create'));
+                     if (!introJS._introItems.some(item => item.element === document.getElementById('plan-creating')) && this.items.length) {
+                        configIntroJSObject(document.getElementById('plan-creating'));
                         introJS.goToStepNumber(currentStepIndex + 1);
                      }
                   }, 0);
