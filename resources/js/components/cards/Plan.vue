@@ -746,7 +746,7 @@ export default {
 
                      switch(step) {
                         case 0:
-                           return 24000;
+                           return 30000;
                         case 1:
                            return 23000;
                         case 2:
@@ -764,7 +764,7 @@ export default {
                         case 8:
                            return 27000;
                         default:
-                           return 21000;
+                           return 35000;
                         }
                      };
                      
