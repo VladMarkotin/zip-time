@@ -40,7 +40,7 @@ class Dropdown extends Component
 
     public function saveNotification($type = null, $data = null, $date = null)
     {
-
+          
         !$data ? $this->validate() : '';
         $notification = Notification::create([
             'user_id' => auth()->user()->id,

@@ -157,8 +157,7 @@ class Notifications extends Component
         $count = Notification::where('user_id', Auth::id())->get();
         $count_unread = $count->where('read_at', 0)->count();
         $count_read = $count->where('read_at', 1)->count();
-        $total = $count->count();
-            sleep(0.5);
+        $total = $count->count();  
         return view('livewire.notifications', [
             'notifications' => $notification,
             'count_unread' => $count_unread,

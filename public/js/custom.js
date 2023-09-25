@@ -51,7 +51,7 @@ $(document).ready(function () {
     let notification_date = data.date;
   
     Livewire.emit('saveNotification', type, notification_data, notification_date);
-    alertify.notify('New Brodcasted');
+    alertify.notify('New Brodcast');
     
   });
 
