@@ -408,7 +408,10 @@ export default {
             return {
                 date: new Date().toISOString().substr(0, 10),
                 day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
-                plan: this.items
+                plan: [...this.items.map(item => {
+                        if (item.hash.match(/^#q-/)) return {...item, hash: '#'};
+                        return item;
+                     })]
             };
         },
         toggleEmergencyCallDialog(){
@@ -519,9 +522,9 @@ export default {
 
         formSubmit(e) {
             let currentObj = this;
-            currentObj.isShowProgress = true
+            currentObj.isShowProgress = true;
             axios.post('/addPlan', currentObj.getPostParams())
-                .then(function(response) {
+                .then(function(response) { 
                     currentObj.alertType = response.data.status;
                     currentObj.serverMessage = response.data.message;
                     currentObj.showAlert = true;

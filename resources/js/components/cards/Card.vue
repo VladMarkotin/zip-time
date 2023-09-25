@@ -588,8 +588,7 @@
 				  })
 			},
 			sendMark(item)
-			{
-
+			{	
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
 				.then((response) => {
 					this.isShowAlert = true;
