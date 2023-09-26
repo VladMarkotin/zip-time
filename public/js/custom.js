@@ -50,7 +50,7 @@ $(document).ready(function () {
     let notification_data = data.data;
     let notification_date = data.date;
   
-    Livewire.emit('saveNotification', type, notification_data, notification_date);
+    Livewire.emit('saveBroadcastedNotification', type, notification_data, notification_date);
     alertify.notify('New Brodcast');
     
   });

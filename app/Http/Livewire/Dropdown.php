@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Dropdown extends Component
 {
-    public  $type , $date, $data, $unread;
-    protected $listeners = ['refresh' => '$refresh', 'saveNotification'];
+    public  $type, $date, $data, $unread;
+    protected $listeners = ['refresh' => '$refresh', 'saveBroadcastedNotification'];
     protected $rules = [
         'type' => 'required',
         'date' => 'required',
@@ -38,16 +38,16 @@ class Dropdown extends Component
         $this->emit('refresh');
     }
 
-    public function saveNotification($type = null, $data = null, $date = null)
+    public function saveNotification()
     {
-          
-        !$data ? $this->validate() : '';
-        $notification = Notification::create([
+
+        $this->validate();
+        Notification::create([
             'user_id' => auth()->user()->id,
-            'type' => $type ? $type : $this->type,
-            'data' =>     $data ? $data : $this->data,
-            'notification_date' =>   $date ? $date : $this->date,
-            'broadcast_type' => !$data ? 'private' : 'public',
+            'type' => $this->type,
+            'data' =>    $this->data,
+            'notification_date' => $this->date,
+            'broadcast_type' => 'private',
             'read_at' => 0
         ]);
         $this->emit('refresh');
@@ -84,13 +84,25 @@ class Dropdown extends Component
         }
     }
 
-    public function pushNotification()
+    public function broadcastNotification()
     {
 
         $this->validate();
         event(new NotificationEvent($this->type,  $this->data,  $this->date));
         $this->dispatchBrowserEvent('close-modal');
         $this->reset(['type', 'date', 'data']);
+    }
+
+    public function saveBroadcastedNotification($type, $data, $date)
+    {
+        Notification::create([
+            'user_id' => auth()->user()->id,
+            'type' => $type,
+            'data' =>  $data,
+            'notification_date' => $date,
+            'broadcast_type' => 'public',
+            'read_at' => 0
+        ]);
     }
 
 
