@@ -47,6 +47,7 @@ class Dropdown extends Component
             'type' => $type ? $type : $this->type,
             'data' =>     $data ? $data : $this->data,
             'notification_date' =>   $date ? $date : $this->date,
+            'broadcast_type' => !$data ? 'private' : 'public',
             'read_at' => 0
         ]);
         $this->emit('refresh');

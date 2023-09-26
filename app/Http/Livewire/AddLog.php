@@ -20,13 +20,6 @@ class AddLog extends Component
         ];
     }
 
-    public function resetInput()
-    {
-        $this->title = null;
-        $this->content = null;
-        $this->task_id = null;
-    }
-
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -34,19 +27,23 @@ class AddLog extends Component
 
     public function storeBacklogInfo()
     {
-        $validatedData = $this->validate();
+         $this->validate();
         Savedlogs::create([
             'user_id' => Auth::id(),
             'title' => $this->title,
             'saved_task_id' => $this->task_id,
             'content' => $this->content,
         ]);
-        $this->resetInput();
+        $this->reset(['title', 'content', 'task_id']);
+        $this->emit('refresh');
         $this->dispatchBrowserEvent('close-modal');
         $this->dispatchBrowserEvent('message', [
             'text' => 'Log Added Successfully',
         ]);
+
     }
+    
+
     
     public function render()
     {

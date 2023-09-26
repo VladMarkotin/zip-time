@@ -1,15 +1,7 @@
 
 @extends('layouts.app')
 @section('content')
-    @livewire('add-log')
-  
-    @auth
-        <a class="backlog-add-button" data-bs-toggle="modal" data-bs-target="#AddbacklogModal">
-            Add-log </a>
-    @endauth
 
-   
-    
         @auth
         <div class="container">
             <v-app>

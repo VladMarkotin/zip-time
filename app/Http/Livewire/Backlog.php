@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 class Backlog extends Component
 {
     use WithPagination;
+
+    protected $listeners = [ 'refresh'=>'$refresh'];
     protected $paginationTheme = 'bootstrap';
     
 
@@ -26,29 +28,6 @@ class Backlog extends Component
         ];
     }
 
-    public function resetInput()
-    {
-        $this->title = null;
-        $this->content = null;
-        $this->task_id = null;
-    }
-
-
-    public function storeBacklogInfo()
-    {
-        $validatedData = $this->validate();
-        Savedlogs::create([
-            'user_id' => Auth::id(),
-            'title' => $this->title,
-            'saved_task_id' => $this->task_id,
-            'content' => $this->content,
-        ]);
-        $this->resetInput();
-        $this->dispatchBrowserEvent('close-modal');
-        $this->dispatchBrowserEvent('message', [
-            'text' => 'Log Added Successfully',
-        ]);
-    }
 
     public function editBacklogInfo($backlog_id)
     {
@@ -62,7 +41,7 @@ class Backlog extends Component
 
     public function updateBacklogInfo()
     {
-        $validatedData = $this->validate();
+         $this->validate();
         Savedlogs::findOrFail($this->backlog_id)->update([
             'user_id' => Auth::id(),
             'title' => $this->title,
@@ -73,9 +52,10 @@ class Backlog extends Component
         $this->dispatchBrowserEvent('message', [
             'text' => 'Log Updated Successfully',
         ]);
-
-        $this->resetInput();
+        $this->reset(['title', 'content', 'task_id']);
     }
+      
+    
 
     public function deleteBacklogInfo($backlog_id)
     {

@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Notification;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
@@ -19,16 +18,13 @@ class Notifications extends Component
     public $startDate;
     public $notificationId;
     public $tasks = [];
-    public $sortNotifications = [];
+    public $sortNotifications = ['all'];
     protected $paginationTheme = 'bootstrap';
     protected $listeners = [ 'refresh'=>'$refresh'];
 
     public function mount(): void
     {
         $this->resetPage();
-        if (empty($this->sortNotifications)) {
-            $this->sortNotifications[] = 'all';
-        }
     }
 
     public function rules(): array
@@ -46,6 +42,12 @@ class Notifications extends Component
         $this->validateOnly($propertyName);
     }
 
+    public function readNotification($id)
+    {
+        Notification::findOrfail($id)->update(['read_at' => 1]);
+        $this->emit('refresh');
+    }
+
     public function editNotification($notificationId): void
     {
         $this->notificationId = $notificationId;
@@ -56,16 +58,6 @@ class Notifications extends Component
        
     }
 
-    public function readNotification($id)
-    {
-        $notification = Notification::findOrfail($id);
-        if ($notification->read_at == 0) {
-            $notification->read_at = 1;
-            $notification->update();
-        }
-        $this->emit('refresh');
-    }
-
     public function updateNotification(): void
     {
         $this->validate();
@@ -73,6 +65,7 @@ class Notifications extends Component
             'user_id' => Auth::id(),
             'type' => $this->type,
             'data' => $this->data,
+            'broadcast_type' => 'private',
             'notification_date' => $this->date,
         ]);
         $this->dispatchBrowserEvent('close-modal');

@@ -31,9 +31,10 @@ details {
     background: #fff;
     font-size: 16px;
     transition: 0.9s;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #f8f8f8;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.24), 0 2px 4px rgba(0, 0, 0, 0.24);
     display: flex;
+   
 }
 
 details:hover {
@@ -50,6 +51,7 @@ details[open] summary:after {
     content: "expand_less";
     transition: 0.9s;
     font-family: "Material Icons";
+ 
 }
 
 details[open] summary ~ * {
@@ -145,7 +147,7 @@ summary::after {
 
 .backlog-add-button {
     position: fixed;
-    bottom: 29.5rem;
+    bottom: 28.8rem;
     background-color: #a10000;
     color: white;
     padding: 6px 10px;

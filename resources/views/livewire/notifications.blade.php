@@ -39,27 +39,27 @@
 
                     <div class="card-header d-flex justify-content-between ">
 
-                        <div class="d-flex mt-2 ">
+                        <div class="d-flex mt-2 "  role="button">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1" wire:model="sortNotifications" value="all">
-                                <label class="form-check-label" for="flexRadioDefault1">
+                                    id="flexRadioDefault1" wire:model="sortNotifications" value="all"  role="button">
+                                <label class="form-check-label" for="flexRadioDefault1"  role="button">
                                     all
                                 </label>
                             </div>
 
-                            <div class="form-check ml-3">
+                            <div class="form-check ml-3" role="button">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault2" wire:model="sortNotifications" value="read">
-                                <label class="form-check-label" for="flexRadioDefault2">
+                                    id="flexRadioDefault2" wire:model="sortNotifications" value="read"  role="button">
+                                <label class="form-check-label" for="flexRadioDefault2"  role="button">
                                     read
                                 </label>
                             </div>
 
-                            <div class="form-check ml-3">
+                            <div class="form-check ml-3" role="button" >
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault3" wire:model="sortNotifications" value="unread">
-                                <label class="form-check-label" for="flexRadioDefault3">
+                                    id="flexRadioDefault3" wire:model="sortNotifications" value="unread"  role="button">
+                                <label class="form-check-label" for="flexRadioDefault3"  role="button">
                                     unread
                                 </label>
                             </div>
@@ -79,8 +79,7 @@
                 </div>
                 <div class="notification-ui_dd-content">
                     @foreach ($notifications as $notification)
-                        <div
-                            class="notification-list  {{ $notification->read_at == 0 ? 'notification-list--unread' : '' }}">
+                        <div @class(['notification-list ', 'notification-list--unread' =>  $notification->read_at == 0 ])>
                             <a wire:click="readNotification({{ $notification->id }})"
                                 class="w-100 text-dark text-decoration-none" role="button">
                                 <div class="notification-list_content">
@@ -94,7 +93,7 @@
                                     </div>
                                 </div>
                             </a>
-
+                     
                             <div class="notification-list_feature-img">
                                 <span class="ml-auto mb-auto">
                                     <div class="btn-group">
@@ -109,11 +108,14 @@
                                                     class="mdi mdi-delete"></i> Delete</button>
 
 
-                                            <button class="dropdown-item" type="button"
+                                            <button  type="button"
                                                 wire:click="editNotification({{ $notification->id }})"
                                                 data-bs-toggle="modal" data-bs-target="#editNotificationModal"
-                                                {{ $notification->type == 'pusher' ? 'disabled' : '' }}><i
-                                                    class="mdi mdi-pen"></i> Edit</button>
+
+                                              @class(['dropdown-item', 'd-none' => $notification->broadcast_type == 'public'])>
+                                              <i class="mdi mdi-pen"></i>
+                                               Edit
+                                            </button>
                                         </div>
                                     </div>
                                     <br />

@@ -46,6 +46,7 @@
 
     <livewire:feedback />
     <livewire:dropdown />
+    <livewire:add-log />
 
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm">

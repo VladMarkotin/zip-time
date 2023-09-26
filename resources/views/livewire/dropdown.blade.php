@@ -1,8 +1,5 @@
 <div>
-
-
-    @auth
-  
+    @auth  
         <div class="col-lg-3 notification-wrapper  bg-light p-0 overflow-auto rounded shadow-sm" wire:ignore.self> 
             
             <div class="box-title border-bottom ">
@@ -23,10 +20,7 @@
                         <div class=" d-flex align-items-center notification-dropdown-item rounded">
                             <a class="mr-2 pl-2 w-100 text-dark text-decoration-none" role="button" wire:click="readNotification( {{ $notification->id }})">
                            
-                                <div @class([
-                                    'text-justify ',
-                                    'fw-bold' => $notification->read_at == 0,
-                                ])>
+                                <div @class([ 'text-justify ','fw-bold' => $notification->read_at == 0, ])>
                                     {{ $notification->data }}
                                 </div>
                             </a>
