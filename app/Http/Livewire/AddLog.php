@@ -27,7 +27,7 @@ class AddLog extends Component
 
     public function storeBacklogInfo()
     {
-         $this->validate();
+        $this->validate();
         Savedlogs::create([
             'user_id' => Auth::id(),
             'title' => $this->title,
@@ -40,11 +40,10 @@ class AddLog extends Component
         $this->dispatchBrowserEvent('message', [
             'text' => 'Log Added Successfully',
         ]);
-
     }
-    
 
-    
+
+
     public function render()
     {
         $tasks = SavedTask::where('user_id', Auth::id())->get();

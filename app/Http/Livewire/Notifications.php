@@ -13,14 +13,14 @@ class Notifications extends Component
     public $type;
     public $data;
     public $date;
-    public $search='';
+    public $search = '';
     public $endDate;
     public $startDate;
     public $notificationId;
     public $tasks = [];
     public $sortNotifications = ['all'];
     protected $paginationTheme = 'bootstrap';
-    protected $listeners = [ 'refresh'=>'$refresh'];
+    protected $listeners = ['refresh' => '$refresh'];
 
     public function mount(): void
     {
@@ -35,7 +35,6 @@ class Notifications extends Component
             'date' => 'required|string',
         ];
     }
-
 
     public function updated($propertyName): void
     {
@@ -55,7 +54,6 @@ class Notifications extends Component
         $this->type = $notification->type;
         $this->data = $notification->data;
         $this->date = $notification->notification_date;
-       
     }
 
     public function updateNotification(): void
@@ -105,23 +103,19 @@ class Notifications extends Component
         $this->resetPage();
     }
 
- 
 
     public function render()
     {
         $notification = Notification::where('user_id', Auth::id())
 
-            ->when($this->search , function ($e2) {
-                $e2
-                    ->where('data', 'like', '%' . $this->search . '%')
-                    ->orWhere('type', 'like', '%' . $this->search . '%');
-            })
             ->when(
                 $this->startDate !== null && $this->endDate !== null,
                 function ($e2) {
                     $e2->whereBetween('notification_date', [
                         $this->startDate,
-                        $this->endDate,
+                        $this->endDate
+
+
                     ]);
                 }
             )
@@ -145,12 +139,18 @@ class Notifications extends Component
                     });
             })
 
+            ->when($this->search, function ($e2) {
+                $e2
+                    ->where('data', 'like', '%' . $this->search . '%')
+                    ->orWhere('type', 'like', '%' . $this->search . '%');
+            })
+
             ->orderBy('created_at', 'DESC')
             ->paginate(4);
         $count = Notification::where('user_id', Auth::id())->get();
         $count_unread = $count->where('read_at', 0)->count();
         $count_read = $count->where('read_at', 1)->count();
-        $total = $count->count();  
+        $total = $count->count();
         return view('livewire.notifications', [
             'notifications' => $notification,
             'count_unread' => $count_unread,

@@ -37,8 +37,6 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
-
-
     <livewire:styles />
 </head>
 

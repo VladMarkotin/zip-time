@@ -14,9 +14,9 @@ class Backlog extends Component
 {
     use WithPagination;
 
-    protected $listeners = [ 'refresh'=>'$refresh'];
+    protected $listeners = ['refresh' => '$refresh'];
     protected $paginationTheme = 'bootstrap';
-    
+
 
     public $title, $task_id, $content, $backlog_id;
 
@@ -41,7 +41,7 @@ class Backlog extends Component
 
     public function updateBacklogInfo()
     {
-         $this->validate();
+        $this->validate();
         Savedlogs::findOrFail($this->backlog_id)->update([
             'user_id' => Auth::id(),
             'title' => $this->title,
@@ -54,8 +54,8 @@ class Backlog extends Component
         ]);
         $this->reset(['title', 'content', 'task_id']);
     }
-      
-    
+
+
 
     public function deleteBacklogInfo($backlog_id)
     {
@@ -75,11 +75,11 @@ class Backlog extends Component
     {
         $this->resetPage();
     }
-   
+
 
     public function render()
     {
-        
+
         $backlogs = Savedlogs::where('user_id', Auth::id())
             ->orderBy('created_at', 'DESC')
             ->paginate(5);
