@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section ('content')
 <script src="{{ asset('js/fadeInSettingsBlocks.js') }}"></script>
+
+@section ('content')
 
 <div class="content">
    @livewire('settings')

@@ -1,41 +1,39 @@
-<div>
-  
-<div class="container" style="display:flex; justify-content:space-around;">
+<div class="container pl-4" style="display:flex; justify-content:space-around;">
   <div class="row">
    @include('livewire.update')
    @include('livewire.info')
    @include('livewire.notes')
 
 @if($agent->isMobile()) 
-    <div class="nav flex-column nav-pills col-12" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
-    <a class="nav-link active saved-tasks-button" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-           aria-controls="v-pills-home" aria-selected="true" wire:ignore>
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+    <a class="nav-link saved-tasks-button">
            Saved tasks
     </a>
 
-    <div class="tab-pane fade show active saved-tasks-table" id="v-pills-home"
+    <div class="tab-pane fade show active saved-tasks-table" id="v-pills-home" style="max-width: 100%;"
          role="tabpanel" aria-labelledby="v-pills-home-tab" wire:ignore.self>
        <table class="table">
         <thead class="thead" style="background-color: #CD0000;color:#ffffff">
             <tr>
               <th scope="col">#</th>
               <th scope="col">Task name</th>
-              <th>
+              <th></th>
             </tr>
           </thead>
           @foreach($savedTasks as $sT)
-                
-                <tr>
-                  <td>{{$sT->hash_code}}</td>
-                  <td>{{$sT->task_name }}</td>
-                  <td>
-                      <button class="btn btn-outline-primary" 
-                        data-toggle="modal" data-target="#infoModal" wire:click="getInfo({{ $sT['id'] }})">
-                        Info
-                      </button>
-                  </td>
-                </tr>
-               
+            <tr>
+                <td><a href="{{ route('saved-tasks', $sT->id) }}">{{$sT->hash_code}}</a></td>
+                <td>{{$sT->task_name }}</td>
+            @if(!$sT->status)
+                <td>
+                    <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button>
+                </td>
+            @else
+                <td>
+                    <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger">Disable</button>
+                </td>
+            @endif
+                </tr>               
           @endforeach
        </table>
        {{ $savedTasks->links('livewire.pagination') }}
@@ -55,7 +53,7 @@
         Personal settings
     </a>
 
-    <div class="tab-pane fade personal-settings-block" id="v-pills-messages"
+    <div class="tab-pane fade personal-settings-block" id="v-pills-messages" style="max-width: 100%;"
          role="tabpanel" aria-labelledby="v-pills-messages-tab" wire:ignore.self>
         <div class="card">
             <h5 class="card-header">Setting timezone</h5>

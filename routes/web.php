@@ -82,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
 //
 //settings
     Route::get('/settings',  [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
+    Route::get('/settings/saved-tasks/{id}',  [App\Http\Controllers\SettingsController::class, 'savedTasksInfo'])->name('saved-tasks');
     Route::get('/settings/{setting}', [App\Http\Controllers\SettingsController::class, 'index']);
     //Backlog
     Route::get('backlog', [App\Http\Controllers\BackLogController::class, 'index'])->name('backlog');
