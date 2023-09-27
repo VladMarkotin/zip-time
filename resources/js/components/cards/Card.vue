@@ -1,9 +1,8 @@
 <template>  
-	<v-card>
-		<div data-title="Card!!!" data-intro="Card! 👋" 
-		class="card-demo">
+	<v-card :id="!num ? 'card-wrapper' : false">
+		<div class="card-demo">
 
-			<div data-title="Card!!!" data-intro="Priority! 👋" class="card-demo"></div>
+			<div class="card-demo"></div>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>{{item.hash}}</span>
 			<span>{{item.taskName}}</span>
@@ -91,6 +90,7 @@
 							icon
 							v-bind="props"
 							@click="getAllDetailsForTask(item)"
+							:id="!num ? 'card-details' : false"
 							>
 							<v-icon color="#D71700">{{icons.mdiChartGantt}}</v-icon>
 							</v-btn>
@@ -297,6 +297,7 @@
 							icon
 							v-bind="props"
 							@click="getAllNotesForTask(item)"
+							:id="!num ? 'card-notes' : false"
 							>
 							<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
 							</v-btn>
@@ -366,7 +367,7 @@
 		<v-divider></v-divider>
 		<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
 		<v-card-title class="font-weight-bold">
-			<form class="d-flex align-center">
+			<form class="d-flex align-center" :id="!num ? 'card-mark' : false">
 				<template v-if="[4,3].includes(item.type)">
 					<div>Mark</div>
 					<v-text-field class="ml-1" style="width : 54px" v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)">
@@ -659,6 +660,7 @@
 			},
 		}
 	}
+	
 </script>
 <style scoped>
 	.v-card-title

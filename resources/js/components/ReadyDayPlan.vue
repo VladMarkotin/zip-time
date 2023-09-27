@@ -3,7 +3,7 @@
 		<template v-if="isShowAddJobTaskDialog">
 			<AddJobTask v-on:setAlertData="setAlertData" v-on:toggleAddJobTaskDialog="toggleAddJobTaskDialog" v-on:toggleAlertDialog="toggleAlertDialog"/>
 		</template>
-		<div data-title="Welcome 2" data-intro="2! 👋" class="card-demo"></div>
+		<div class="card-demo"></div>
 		<template v-if="isShowCloseDayDialog">
 			<CloseDay v-on:toggleCloseDayDialog="toggleCloseDayDialog"/>
 		</template>
@@ -130,8 +130,43 @@
 			.then(function(response) {
 				// console.log(response.data.edu_step)
 				if (response.data.edu_step == 1){
-					const introJS = require("intro.js");
-					introJS.introJs().start();
+					const introJS = require("intro.js").introJs();
+               		require("/css/customTooltip.css");
+
+					introJS.setOptions({
+						tooltipClass: 'custom-tooltip',
+						hidePrev: true,
+						hideNext: true,
+						disableInteraction: true,
+						exitOnOverlayClick: false,
+						showStepNumbers: false,
+						steps: [
+							{
+								element: document.getElementById('card-wrapper'),
+                     			intro: 'This is what the task card looks like',
+							},
+							{
+								element: document.getElementById('card-details'),
+                     			intro: 'This is what the task card looks like',
+								position: 'right',
+							},
+							{
+								element: document.getElementById('card-notes'),
+                     			intro: 'All your notes for your task would be here',
+								position: 'right',
+							},
+							{
+								element: document.getElementById('card-mark'),
+                     			intro: 'After you job has been completed, you have to estimate it. Minimum is 10%, Maximum - 100%. Remember, nobody knows, your diligence, your efforts better than you do.',
+								position: 'right',
+							},
+							{
+								element: document.getElementById('card-mark'),
+                     			intro: 'So, be honest with yourself! Your is only your decision. Any way your rate does not(!) depend on it but grades tell you how good you were',
+								position: 'right',
+							},
+						]
+					}).start(); 
 				}
 			})
 			.catch(function(error) {
