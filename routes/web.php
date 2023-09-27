@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
     Route::post('isWeekendAvailable',[App\Http\Controllers\MainController::class, 'isWeekendAvailable']);
     Route::post('/getEduStep', [App\Http\Controllers\MainController::class, 'getEduStep']);
+    Route::post('/updateEduStep', [App\Http\Controllers\MainController::class, 'updateEduStep']);
     //get info about closed day
     Route::post('/getClosedPlanInfo', [App\Http\Controllers\MainController::class, 'getClosedDayInfo']);
     //estimate Task

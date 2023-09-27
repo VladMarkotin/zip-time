@@ -37,6 +37,7 @@ use App\Models\DefaultConfigs;
 use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
 use App\Models\User;
 use App\Models\DefaultSavedTasks;
+use Illuminate\Support\Facades\Log;
 
 class MainController
 {
@@ -463,6 +464,22 @@ class MainController
         $eduStep = $eduStep[0];
 
         return json_encode(['edu_step' => $eduStep]);
+    }
+
+    public function updateEduStep(Request $request) 
+    {
+        try {
+            $newEduStep = $request->newStep;
+            $currentUser = User::where('id', Auth::id())->first();
+            $currentEduStep = $currentUser->id;
+
+            if ($newEduStep != $currentEduStep) {
+                $query = "UPDATE users SET edu_step = $newEduStep WHERE id = {$currentUser->id}";
+                DB::update($query);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error has happened with presentation showing step update: '. $e->getFile(). "\n". $e->getLine(). "\n".$e->getMessage());
+        }
     }
 
     private function getLastTimetableId()

@@ -846,8 +846,7 @@ export default {
                         introJS.goToStepNumber(currentStepIndex + 1);
                      }
                   }, 0);
-               }).onexit(() => {
-
+               }).onbeforeexit(() => {
                   this.defaultSelected = {
                   hash: '#',
                   hashCodes: this.defaultSelected.hashCodes,
@@ -860,6 +859,10 @@ export default {
                   };
 
                   this.items = [];
+
+                  axios.post('/updateEduStep', {
+                     newStep: 'blablabla',
+			         })
                }).start(); 
 			}
       } catch(error) {
