@@ -405,6 +405,12 @@ export default {
     methods: {
        
         getPostParams() {
+            // return {
+            //    date: new Date().toISOString().substr(0, 10),
+            //    day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
+            //    plan: this.items,
+            // };  //было так, но есть ошибка при добавлении в план на день хоть одной дефолтной таски
+
             return {
                 date: new Date().toISOString().substr(0, 10),
                 day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
@@ -412,7 +418,7 @@ export default {
                         if (item.hash.match(/^#q-/)) return {...item, hash: '#'};
                         return item;
                      })]
-            };
+            }; //тут костыль
         },
         toggleEmergencyCallDialog(){
 				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
