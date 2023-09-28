@@ -701,11 +701,11 @@ export default {
                }).onbeforechange(() => {
                   const currentStepIndex = introJS._currentStep;
                   
-                  if (![6,7].some(item => item === currentStepIndex) && this.items.length) {
+                  if (![6,7].includes(currentStepIndex) && this.items.length) {
                      this.items = [];
                   }
 
-                  if (![4,5,6,7].some(item => item === currentStepIndex) && this.defaultSelected.hash !== '#') {
+                  if (![4,5,6,7].includes(currentStepIndex) && this.defaultSelected.hash !== '#') {
                      this.defaultSelected = {
                      hash: '#',
                      hashCodes: this.defaultSelected.hashCodes,
@@ -797,6 +797,12 @@ export default {
                   }
 
                   switch(currentStepIndex) {
+                     case 0:
+                        if (document.body.scrollHeight) {
+                           window.scrollTo(0, 0);
+                           getTimer();
+                        };
+                     break
                      case 4:
                         if (this.defaultSelected.hash === '#' && shownTaskHash) addTaskForPresentation(currentStepIndex + 1);
                         else getTimer();
