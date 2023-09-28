@@ -83,7 +83,6 @@ import Cards from "./cards/Cards.vue";
 import EmergencyCall from "./dialogs/EmergencyCall.vue";
 import { mdiCarEmergency, mdiPlusBox, mdiSendClock } from "@mdi/js";
 import "intro.js/introjs.css";
-import "intro.js/minified/introjs.min.css";
 
 export default {
     components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall },

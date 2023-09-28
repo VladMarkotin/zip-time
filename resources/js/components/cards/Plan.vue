@@ -265,7 +265,6 @@
 <script>
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../dialogs/EmergencyCall.vue'
-// import introJs from 'intro.js/intro.js'; 
 import {
     mdiAccount,
     mdiPlex,
@@ -280,8 +279,6 @@ import {
     mdiPlusBox,
     mdiCancel
 } from '@mdi/js'
-// import "intro.js/introjs.css";
-// import "intro.js/minified/introjs.min.css";
 
 export default {
    components : {EmergencyCall},

@@ -37,7 +37,6 @@ use App\Models\DefaultConfigs;
 use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
 use App\Models\User;
 use App\Models\DefaultSavedTasks;
-use Illuminate\Support\Facades\Log;
 
 class MainController
 {
