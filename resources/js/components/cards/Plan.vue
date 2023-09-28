@@ -642,7 +642,8 @@ export default {
       try {
          const response = await  axios.post('/getEduStep', {
 			})
-         if (response.data.edu_step == 1){
+         let currentEduStep = response.data.edu_step;
+         if (currentEduStep === 1){
 					const introJS = require("intro.js").introJs();
                require("/css/customTooltip.css");
               
@@ -861,7 +862,7 @@ export default {
                   this.items = [];
 
                   axios.post('/updateEduStep', {
-                     newStep: 'blablabla',
+                     newStep: ++currentEduStep,
 			         })
                }).start(); 
 			}

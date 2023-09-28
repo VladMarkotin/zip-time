@@ -468,17 +468,12 @@ class MainController
 
     public function updateEduStep(Request $request) 
     {
-        try {
-            $newEduStep = $request->newStep;
-            $currentUser = User::where('id', Auth::id())->first();
-            $currentEduStep = $currentUser->id;
-
-            if ($newEduStep != $currentEduStep) {
-                $query = "UPDATE users SET edu_step = $newEduStep WHERE id = {$currentUser->id}";
-                DB::update($query);
-            }
-        } catch (\Exception $e) {
-            Log::error('Error has happened with presentation showing step update: '. $e->getFile(). "\n". $e->getLine(). "\n".$e->getMessage());
+        $newEduStep = $request->newStep;
+        $currentUser = User::where('id', Auth::id())->first();
+        $currentEduStep = $currentUser->edu_step;
+            
+        if ($newEduStep != $currentEduStep) {
+            $currentUser->update(["edu_step" => $newEduStep]);
         }
     }
 

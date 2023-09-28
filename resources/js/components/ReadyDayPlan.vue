@@ -123,13 +123,12 @@
 		
 		},
 
-		mounted() {
-			axios.post('/getEduStep', {
-                    //hash_code: event
-			})
-			.then(function(response) {
-				// console.log(response.data.edu_step)
-				if (response.data.edu_step == 1){
+		async mounted() {
+			try {
+				const response = await  axios.post('/getEduStep', {
+				})
+				let currentEduStep = response.data.edu_step;
+				if (currentEduStep == 2){
 					const introJS = require("intro.js").introJs();
                		require("/css/customTooltip.css");
 
@@ -168,10 +167,9 @@
 						]
 					}).start(); 
 				}
-			})
-			.catch(function(error) {
-				console.log(error)
-			});		
+			} catch(error) {
+         		console.error(error)
+      		}	
 		},
 	}
 </script>
