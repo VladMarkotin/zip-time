@@ -660,7 +660,7 @@ export default {
                   steps: [
                   {  
                      tooltipClass: 'custom-tooltip first-slide',
-                     intro: 'Hello, dear user! Now you will be explained, how to use some basic functional application «Zip-time». We hope that we will manage to help you to plan your time efficiently and hope you will spend a good day with us!'
+                     intro: 'Hello, dear user! Now you will be explained, how to use some basic functional application «Zip-time». We hope that we will manage to help you to plan your time efficiently and hope you will spend a good day with us!',
                   },
                   {  
                      element: document.getElementById('plan-wrapper'),
@@ -686,7 +686,12 @@ export default {
                   },
                   {
                      element: document.getElementById('plan-tasks-table'),
-                     intro: 'Here your would see jobs/tasks which have already been added. On this step you can easily add/delete/change any of them. After your plan had been created, cancel job/task would be imposible. But why so severely?<br/> This approach is the best way to instill responsibility. This motivates you to think through your plans and, most importantly, bring them to completion.',
+                     intro: 'Here your would see jobs/tasks which have already been added. On this step you can easily add/delete/change any of them. After your plan had been created, cancel job/task would be imposible.',
+                     position: 'left',
+                  }, 
+                  {
+                     element: document.getElementById('plan-tasks-table'),
+                     intro: 'But why so severely? This approach is the best way to instill responsibility. This motivates you to think through your plans and, most importantly, bring them to completion.',
                      position: 'left',
                   }, 
                   {  
@@ -695,17 +700,21 @@ export default {
                   },
                   {  
                      element: document.getElementById('plan-emergency-mode'),
-                     intro: 'This button makes «emergency mode» active. You may use it in the occasions when you can\'t close your day plan. In this case, day plan would be absolutly reset, your rating wouldn`t be reduced. In the next step you would also be able to activate it but, again, emergency mode reset(!) all your day progress.',
+                     intro: 'This button makes «emergency mode» active. You may use it in the occasions when you can\'t close your day plan.',
+                  },
+                  {  
+                     element: document.getElementById('plan-emergency-mode'),
+                     intro: 'In this case, day plan would be absolutly reset, your rating wouldn`t be reduced. In the next step you would also be able to activate it but, again, emergency mode reset(!) all your day progress.',
                   },
                   ]
-               }).onbeforechange(() => {
+               }).onbeforechange((elem) => {
                   const currentStepIndex = introJS._currentStep;
-                  
-                  if (![6,7].includes(currentStepIndex) && this.items.length) {
+
+                  if (![6,7,8,].includes(currentStepIndex) && this.items.length) {
                      this.items = [];
                   }
 
-                  if (![4,5,6,7].includes(currentStepIndex) && this.defaultSelected.hash !== '#') {
+                  if (![4,5,6,7,8,].includes(currentStepIndex) && this.defaultSelected.hash !== '#') {
                      this.defaultSelected = {
                      hash: '#',
                      hashCodes: this.defaultSelected.hashCodes,
@@ -753,25 +762,25 @@ export default {
 
                      switch(step) {
                         case 0:
-                           return 30000;
+                           return 26000;
                         case 1:
-                           return 23000;
+                           return 26000;
                         case 2:
-                           return 19000;
                         case 3:
                            return 19000;
                         case 4:
-                           return 21000;
                         case 5:
-                           return 17000;
-                        case 6:
-                           return 29000;
-                        case 7:
-                           return 19000;
-                        case 8:
                            return 27000;
+                        case 6:
+                        case 7:
+                           return 32000;
+                        case 8:
+                        case 9:
+                           return 22000;
+                        case 10:
+                           return 29000;
                         default:
-                           return 35000;
+                           return 25000;
                         }
                      };
                      
@@ -813,6 +822,7 @@ export default {
                      break;
                      case 6:
                      case 7:
+                     case 8:
                         if (!this.items.length) {
                            if ([this.defaultSelected.hash, 
                               this.defaultSelected.taskName, 
@@ -835,12 +845,13 @@ export default {
                         getTimer();
                      break;
                   }
-               }).onchange(() => {
+               }).onchange((elem) => {
                   const currentStepIndex = introJS._currentStep;
-                  
+                  const currentId = elem.id;
+
                   const configIntroJSObject = (targetElemVal) => {
                      introJS._introItems = [...introJS._introItems.map(item => {
-                           if (item.step === 8) return {...item, element: document.getElementById('plan-creating') 
+                           if (item.step === 9) return {...item, element: document.getElementById('plan-creating') 
                            ? document.getElementById('plan-creating') 
                            : targetElemVal, 
                            position: 'right'};
@@ -849,9 +860,9 @@ export default {
                   }
 
                   configIntroJSObject(document.getElementById('plan-creating-wrapper'));
-
+                  
                   setTimeout(() => {
-                     if (!introJS._introItems.some(item => item.element === document.getElementById('plan-creating')) && this.items.length) {
+                     if (!introJS._introItems.some(item => item.element === document.getElementById('plan-creating')) && this.items.length && currentId == 'plan-creating-wrapper') {    
                         configIntroJSObject(document.getElementById('plan-creating'));
                         introJS.goToStepNumber(currentStepIndex + 1);
                      }
@@ -870,9 +881,9 @@ export default {
 
                   this.items = [];
 
-                  axios.post('/updateEduStep', {
-                     newStep: ++currentEduStep,
-			         })
+                  // axios.post('/updateEduStep', {
+                  //    newStep: ++currentEduStep,
+			         // })
                }).start(); 
 			}
       } catch(error) {
