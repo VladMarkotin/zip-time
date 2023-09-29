@@ -797,8 +797,8 @@ export default {
                      },0);
                   }
 
-                  const addTaskForPresentation = (step) => {
-                     this.defaultSelected.hash = shownTaskHash;
+                  const addTaskForPresentation = (step, showHash) => {
+                     if (showHash) this.defaultSelected.hash = shownTaskHash;      
                      this.onChangeForPresentation.call(this, shownTaskHash)
                      .then(() => {
                         introJS.goToStepNumber(step)
@@ -813,11 +813,11 @@ export default {
                         };
                      break
                      case 4:
-                        if (this.defaultSelected.hash === '#' && shownTaskHash) addTaskForPresentation(currentStepIndex + 1);
+                        if (this.defaultSelected.hash === '#' && shownTaskHash) addTaskForPresentation(currentStepIndex + 1, true);
                         else getTimer();
                      break;
                      case 5:
-                        if (this.defaultSelected.hash === '#' && shownTaskHash) addTaskForPresentation(currentStepIndex + 1);
+                        if (this.defaultSelected.hash === '#' && shownTaskHash) addTaskForPresentation(currentStepIndex + 1, true);
                         else getTimer();
                      break;
                      case 6:
@@ -834,8 +834,7 @@ export default {
                               getTimer();
                            } else {
                               if (this.defaultSelected.hash === '#' && shownTaskHash) {
-                                 
-                                 addTaskForPresentation(currentStepIndex + 1);
+                                 addTaskForPresentation(currentStepIndex + 1, false);
                               }
                               else getTimer();
                            }
