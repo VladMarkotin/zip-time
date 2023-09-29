@@ -156,18 +156,18 @@ export default {
                             {
                                 element:
                                     document.getElementById("card-wrapper"),
-                                intro: "This is what the task card looks like",
+                                intro: "This is task`s card view",
                                 position: "right",
                             },
                             {
                                 element:
                                     document.getElementById("card-details"),
-                                intro: "This is what the task card looks like",
+                                intro: "Here you can divide your job/task on subtasks",
                                 position: "right",
                             },
                             {
                                 element: document.getElementById("card-notes"),
-                                intro: "All your notes for your task would be here",
+                                intro: "Here you can see all notes for current job/task",
                                 position: "right",
                             },
                             {
@@ -177,7 +177,7 @@ export default {
                             },
                             {
                                 element: document.getElementById("card-mark"),
-                                intro: "So, be honest with yourself! Your is only your decision. Any way your rate does not(!) depend on it but grades tell you how good you were",
+                                intro: "So, be honest with yourself! Your mark is only your decision. Anyway, your rate doesn`t(!) depend on it but grades would show you how good you were",
                                 position: "right",
                             },
                         ],

@@ -672,30 +672,30 @@ export default {
                   },
                   {
                      element: document.getElementById('plan-day-status'),
-                     intro: 'You wouldn\'t be able to change it after plan\'s createing.'
+                     intro: 'You wouldn\'t be able to change it after plan\'s creating.'
                   },
                   {
                      element: document.getElementById('plan-hash'),
-                     intro: 'This is hash - the short task\'s name. If job/task got it would be able quickly add it to your plan with all settings.',
+                     intro: 'This is hash code - the short task\'s name. After adding hash code to job/task, you would be able quickly add it to your plan with all settings.',
                      position: 'right',
                   },
                   {
                      element: document.getElementById('plan-time'),
-                     intro: 'Here your can set time.',
+                     intro: 'Here your can set job/task`s presumptive time. The crutial word is «presumptive». You can change this parameter at any time. Also you can close job/task much later/earlier',
                      position: 'left',
                   },
                   {
                      element: document.getElementById('plan-tasks-table'),
-                     intro: 'Here your would see jobs/tasks which you have already added. On this step you can easily add/delete/change any of them.',
+                     intro: 'Here your would see jobs/tasks which have already been added. On this step you can easily add/delete/change any of them. After your plan had been created, cancel job/task would be imposible. But why so severely?<br/> This approach is the best way to instill responsibility. This motivates you to think through your plans and, most importantly, bring them to completion.',
                      position: 'left',
                   }, 
                   {  
                      element: document.getElementById('plan-creating'),
-                     intro: 'Right now you will be able to form your day plan. Pay attention that it shoud consist of no less than two points.',
+                     intro: 'Right now you will be able to form your day plan. Pay attention that it should consist of no less than two required jobs.',
                   },
                   {  
                      element: document.getElementById('plan-emergency-mode'),
-                     intro: 'This button makes «emergency mode» active. You may use it in the occasions when you can\'t close your day plan. In this case  your rating will not be reduced, but you will not be able to activate it more than 3 times a month. In the next step you will also be able to activate it.',
+                     intro: 'This button makes «emergency mode» active. You may use it in the occasions when you can\'t close your day plan. In this case, day plan would be absolutly reset, your rating wouldn`t be reduced. In the next step you would also be able to activate it but, again, emergency mode reset(!) all your day progress.',
                   },
                   ]
                }).onbeforechange(() => {
