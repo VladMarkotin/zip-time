@@ -830,6 +830,7 @@ export default {
                               this.defaultSelected.priority, 
                               this.defaultSelected.time]
                               .every(item => item)) {
+                              this.defaultSelected.hash = shownTaskHash;
                               this.addTask();
                               getTimer();
                            } else {
@@ -880,9 +881,9 @@ export default {
 
                   this.items = [];
 
-                  // axios.post('/updateEduStep', {
-                  //    newStep: ++currentEduStep,
-			         // })
+                  axios.post('/updateEduStep', {
+                     newStep: ++currentEduStep,
+			         })
                }).start(); 
 			}
       } catch(error) {
