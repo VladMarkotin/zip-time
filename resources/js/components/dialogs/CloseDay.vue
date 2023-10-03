@@ -1,18 +1,20 @@
 <template>
 	<v-dialog max-width="650px" persistent v-model="isShow">
-		<v-card>
+		<v-card id="close-day__wrapper">
 			<v-card-title class="font-weight-bold v-card-title">Close day</v-card-title>
 			<v-card-text>
 				<v-container>
 					<v-row class="justify-center">
 						<v-col cols="3">
-							<v-text-field label="Own Mark" required v-model="ownMark">
-								<v-icon slot="append">mdi-percent</v-icon>
-							</v-text-field>
+							<div id="close-day__mark">
+								<v-text-field label="Own Mark" required v-model="ownMark" >
+									<v-icon slot="append">mdi-percent</v-icon>
+								</v-text-field>
+							</div>
 						</v-col>
 					</v-row>
 					<v-row>
-						<v-col>
+						<v-col id="close-day__comment-field">
 							<v-textarea counter="256" label="Comment" rows="2" outlined shaped v-model="comment"></v-textarea>
 						</v-col>
 					</v-row>
@@ -25,6 +27,7 @@
 						<v-sheet
 							elevation="20"
 							class="py-4 px-1"
+							id="close-day_tomorrow-plan"
 						>
 						<p style="text-align: center;">
 							You can choose tasks for tomorrow`s plan
@@ -51,7 +54,7 @@
 			<v-card-actions class="justify-space-between v-card-actions">
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="closeDay">
+						<v-btn icon v-on="on" v-on:click="closeDay" id="close-day__icon">
 							<v-icon color="#D71700" large>{{icons.mdiSendClock}}</v-icon>
 						</v-btn>
 					</template>
@@ -81,6 +84,8 @@
 	</v-dialog>
 </template>
 <script>
+	import { driver } from "driver.js";
+	import "driver.js/dist/driver.css";
 	import {mdiCancel,mdiSendClock} from '@mdi/js'
 	import Alert from '../dialogs/Alert.vue'
 	export default
@@ -162,6 +167,79 @@
 					this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
 					
 				})
+			},
+			async mounted() {
+				require("/css/customTooltip.css");
+				const driverObj = driver({
+					disableActiveInteraction: true,
+					allowClose: false,
+					nextBtnText: 'Next→',
+					prevBtnText: '←Back',
+					doneBtnText: 'Done',
+					stagePadding: 0,
+					popoverOffset: 15,
+					popoverClass: 'custom-tooltip__third-step',
+					steps: [
+						{
+							element: '#close-day__wrapper',
+							popover: {
+								description: 'This is «Close-day window». Remember, you have to estimate all your required jobs/tasks to close the day!', 
+								side: 'right', 
+							},
+						},
+						{
+							element: '#close-day__mark',
+							popover: {
+								description: 'Quipl can\'t know all your circumstances, so to make your mark more fair, you can put your own mark. It won\'t cancel or change Quipl\'s one, but it also would display in your day plan history.', 
+								side: 'right', 
+							},
+						},
+						{
+							element: '#close-day__comment-field',
+							popover: {
+								description: 'You might want to leave a comment about your day. It isn\'t neccessary and you are free to leave this field empty.', 
+								side: 'right', 
+							},
+						},
+						{
+							element: '#close-day_tomorrow-plan',
+							popover: {
+								description: 'You might want to leave a comment about your day. It isn\'t neccessary and you are free to leave this field empty.', 
+								side: 'right', 
+							},
+						},
+						{
+							element: '#close-day__icon',
+							popover: {
+								description: 'After clicking this button, you wouldnt\'t finish your day plan, so it would be be impossible to make any changes in it.', 
+								side: 'left',
+								align: 'end',
+							},
+						},
+					],
+					onDestroyStarted: () => {
+						driverObj.destroy();
+					},
+					onHighlighted: () => {
+						window.addEventListener('keydown', closeTour);
+						
+						const currentStepIndex = driverObj.getActiveIndex();
+						const lastStepIndex = driverObj.getConfig().steps.length - 1
+
+						if (currentStepIndex === lastStepIndex) {
+							const skipButton = document.querySelector('.driver-popover-navigation-btns').querySelector('.driver-popover-next-btn');
+							const skipButtonClass = 'driver-popover-skip-button';
+							if (!skipButton.classList.contains(skipButtonClass)) skipButton.classList.add(skipButtonClass);
+						}
+					}
+				});
+
+				function closeTour() {
+					driverObj.destroy();
+					this.removeEventListener('keydown', closeTour);
+				}
+
+				driverObj.drive();
 			}
 		}
 </script>

@@ -150,6 +150,47 @@
   background-color: #1f66e5;
 }
 
+.custom-tooltip__third-step {
+  min-width: 320px;
+  font-size: 15px;
+  font-family: "Roboto", sans-serif;
+}
+.custom-tooltip__third-step .driver-popover-description {
+  text-align: justify;
+}
+.custom-tooltip__third-step .driver-popover-footer {
+  margin-top: 21px;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns {
+  gap: 14px;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button {
+  box-shadow: 2px 2px 4px black;
+  font-size: 0.85rem;
+  font-weight: 400;
+  border-radius: 6px;
+  border: none;
+  text-shadow: 1px 1px 1px black;
+  background: #ececec;
+  min-width: 46.82px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  padding: 4px 11px;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-prev-btn, .custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-next-btn {
+  transition: all 0.3s ease-in;
+  color: #000000;
+  text-shadow: 1px 1px 1px whitesmoke;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-prev-btn:hover, .custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-next-btn:hover {
+  color: whitesmoke;
+  text-shadow: 1px 1px 1px #000000;
+  background: #5d76cb;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-skip-button:hover {
+  background: #a10000;
+}
+
 @keyframes show {
   from {
     opacity: 0;

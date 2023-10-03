@@ -204,6 +204,56 @@ $nextButtonColor: rgb(100, 149, 237);
     }
 }
 
+.custom-tooltip__third-step {
+    min-width: 320px;
+    font-size: 15px;
+    font-family: "Roboto", sans-serif;
+
+    .driver-popover-description {
+        text-align: justify;
+    }
+
+    .driver-popover-footer {
+        margin-top: 21px;
+        .driver-popover-navigation-btns {
+            gap: 14px;
+            >button {
+                box-shadow: 2px 2px 4px black;
+                font-size: 0.85rem;
+                font-weight: 400;
+                border-radius: 6px;
+                border: none;
+                text-shadow: 1px 1px 1px black;
+                background: #ececec;
+                min-width: 46.82px;
+                text-align: center;
+                font-family: "Inter", sans-serif;
+                padding: 4px 11px;
+    
+                &.driver-popover-prev-btn,
+                &.driver-popover-next-btn {
+                    transition: all 0.3s ease-in;
+                        color: #000000;
+                        text-shadow: 1px 1px 1px whitesmoke;
+                        &:hover {
+                            color: whitesmoke;
+                            text-shadow: 1px 1px 1px #000000;
+                            background: #5d76cb;
+                        }
+                }
+
+                &.driver-popover-skip-button {
+                    &:hover {
+                        background: rgb(161, 0, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    
+}
+
 @keyframes show {
     from {
         opacity: 0;

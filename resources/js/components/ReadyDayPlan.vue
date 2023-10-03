@@ -199,6 +199,8 @@ export default {
                                         return 27000;
                                     case lastStepIndex:
 										return 27000;
+                                    default: 
+                                        return 19000;
                                 }
                             };
 
