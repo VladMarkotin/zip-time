@@ -158,8 +158,33 @@
 .custom-tooltip__third-step .driver-popover-description {
   text-align: justify;
 }
+.custom-tooltip__third-step .custom-bullets {
+  display: flex;
+  justify-content: center;
+}
+.custom-tooltip__third-step .custom-bullets > ul {
+  margin: 15px 0 15px;
+  display: flex;
+  list-style: none;
+  gap: 7px;
+  align-items: center;
+}
+.custom-tooltip__third-step .custom-bullets > ul a {
+  width: 0.8rem;
+  height: 0.8rem;
+  background: #ccc;
+  border-radius: 10px;
+  display: block;
+  cursor: pointer;
+}
+.custom-tooltip__third-step .custom-bullets > ul a.active {
+  background: #999;
+}
+.custom-tooltip__third-step .custom-bullets > ul a:hover {
+  background: #999;
+}
 .custom-tooltip__third-step .driver-popover-footer {
-  margin-top: 21px;
+  margin-top: 5px;
 }
 .custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns {
   gap: 14px;
@@ -176,6 +201,7 @@
   text-align: center;
   font-family: "Inter", sans-serif;
   padding: 4px 11px;
+  min-width: 67.11px;
 }
 .custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-prev-btn, .custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-next-btn {
   transition: all 0.3s ease-in;
@@ -189,6 +215,17 @@
 }
 .custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-skip-button:hover {
   background: #a10000;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.custom-skip-button {
+  transition: all 0.3s ease-in;
+  color: whitesmoke;
+  text-shadow: 1px 1px 1px #000000;
+  background: #a10000;
+  opacity: 0.8;
+  transition: opacity 0.3s ease-in;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.custom-skip-button:hover {
+  opacity: 1;
 }
 
 @keyframes show {

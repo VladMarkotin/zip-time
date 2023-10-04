@@ -213,8 +213,37 @@ $nextButtonColor: rgb(100, 149, 237);
         text-align: justify;
     }
 
+    .custom-bullets {
+        display: flex;
+        justify-content: center;
+        
+        >ul {
+            margin: 15px 0 15px;
+            display: flex;
+            list-style: none;
+            gap: 7px;
+            align-items: center;
+
+            a {
+                width: 0.8rem;
+                height: 0.8rem;
+                background: #ccc;
+                border-radius: 10px;
+                display: block;
+                cursor: pointer;
+                &.active {
+                    background: #999;
+                }
+
+                &:hover {
+                    background: #999;
+                }
+            }
+        }
+    }
+
     .driver-popover-footer {
-        margin-top: 21px;
+        margin-top: 5px;
         .driver-popover-navigation-btns {
             gap: 14px;
             >button {
@@ -229,12 +258,13 @@ $nextButtonColor: rgb(100, 149, 237);
                 text-align: center;
                 font-family: "Inter", sans-serif;
                 padding: 4px 11px;
+                min-width: 67.11px;
     
                 &.driver-popover-prev-btn,
                 &.driver-popover-next-btn {
                     transition: all 0.3s ease-in;
-                        color: #000000;
-                        text-shadow: 1px 1px 1px whitesmoke;
+                    color: #000000;
+                    text-shadow: 1px 1px 1px whitesmoke;
                         &:hover {
                             color: whitesmoke;
                             text-shadow: 1px 1px 1px #000000;
@@ -245,6 +275,19 @@ $nextButtonColor: rgb(100, 149, 237);
                 &.driver-popover-skip-button {
                     &:hover {
                         background: rgb(161, 0, 0);
+                    }
+                }
+
+                &.custom-skip-button {
+                    transition: all 0.3s ease-in;
+                    color: whitesmoke;
+                    text-shadow: 1px 1px 1px #000000;
+                    background: #a10000;
+                    opacity: 0.8;
+                    transition: opacity 0.3s ease-in;
+                    &:hover {
+                        
+                        opacity: 1;
                     }
                 }
             }

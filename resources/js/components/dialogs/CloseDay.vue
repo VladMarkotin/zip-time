@@ -169,78 +169,146 @@
 				})
 			},
 			async mounted() {
-				require("/css/customTooltip.css");
-				const driverObj = driver({
-					disableActiveInteraction: true,
-					allowClose: false,
-					nextBtnText: 'Next→',
-					prevBtnText: '←Back',
-					doneBtnText: 'Done',
-					stagePadding: 0,
-					popoverOffset: 15,
-					popoverClass: 'custom-tooltip__third-step',
-					steps: [
-						{
-							element: '#close-day__wrapper',
-							popover: {
-								description: 'This is «Close-day window». Remember, you have to estimate all your required jobs/tasks to close the day!', 
-								side: 'right', 
-							},
-						},
-						{
-							element: '#close-day__mark',
-							popover: {
-								description: 'Quipl can\'t know all your circumstances, so to make your mark more fair, you can put your own mark. It won\'t cancel or change Quipl\'s one, but it also would display in your day plan history.', 
-								side: 'right', 
-							},
-						},
-						{
-							element: '#close-day__comment-field',
-							popover: {
-								description: 'You might want to leave a comment about your day. It isn\'t neccessary and you are free to leave this field empty.', 
-								side: 'right', 
-							},
-						},
-						{
-							element: '#close-day_tomorrow-plan',
-							popover: {
-								description: 'You might want to leave a comment about your day. It isn\'t neccessary and you are free to leave this field empty.', 
-								side: 'right', 
-							},
-						},
-						{
-							element: '#close-day__icon',
-							popover: {
-								description: 'After clicking this button, you wouldnt\'t finish your day plan, so it would be be impossible to make any changes in it.', 
-								side: 'left',
-								align: 'end',
-							},
-						},
-					],
-					onDestroyStarted: () => {
-						driverObj.destroy();
-					},
-					onHighlighted: () => {
-						window.addEventListener('keydown', closeTour);
-						
-						const currentStepIndex = driverObj.getActiveIndex();
-						const lastStepIndex = driverObj.getConfig().steps.length - 1
+			try {
+				const response = await axios.post("/getEduStep", {});
+				let currentEduStep = response.data.edu_step;
+				if (currentEduStep == 3) {
+					require("/css/customTooltip.css");
 
-						if (currentStepIndex === lastStepIndex) {
-							const skipButton = document.querySelector('.driver-popover-navigation-btns').querySelector('.driver-popover-next-btn');
-							const skipButtonClass = 'driver-popover-skip-button';
-							if (!skipButton.classList.contains(skipButtonClass)) skipButton.classList.add(skipButtonClass);
+					const driverObj = driver({
+						disableActiveInteraction: true,
+						allowClose: false,
+						nextBtnText: 'Next→',
+						prevBtnText: '←Back',
+						doneBtnText: 'Done',
+						stagePadding: 0,
+						popoverOffset: 15,
+						smoothScroll: true,
+						popoverClass: 'custom-tooltip__third-step',
+						steps: [
+							{
+								element: '#close-day__wrapper',
+								popover: {
+									description: 'This is «Close-day window». Remember, you have to estimate all your required jobs/tasks to close the day!',
+									side: 'right',
+								},
+							},
+							{
+								element: '#close-day__mark',
+								popover: {
+									description: 'Quipl can\'t know all your circumstances, so to make your mark more fair, you can put your own mark. It won\'t cancel or change Quipl\'s one, but it also would display in your day plan history.',
+									side: 'right',
+								},
+							},
+							{
+								element: '#close-day__comment-field',
+								popover: {
+									description: 'You might want to leave a comment about your day. It isn\'t neccessary and you are free to leave this field empty.',
+									side: 'right',
+								},
+							},
+							{
+								element: '#close-day_tomorrow-plan',
+								popover: {
+									description: 'Here you can choose saved tasks for tomorrow\'s plan. It isn\'t nessesary but would make tomorrow\'s plan creation faster',
+									side: 'right',
+								},
+							},
+							{
+								element: '#close-day__icon',
+								popover: {
+									description: 'After clicking this button, you wouldnt\'t finish your day plan, so it would be be impossible to make any changes in it.',
+									side: 'left',
+									align: 'end',
+								},
+							},
+						],
+						onHighlighted: () => {
+							const currentStepIndex = driverObj.getActiveIndex();
+							const lastStepIndex = driverObj.getConfig().steps.length - 1;
+							
+							if (currentStepIndex === lastStepIndex) {
+								const skipButton = document.querySelector('.driver-popover-navigation-btns').querySelector('.driver-popover-next-btn');
+								const skipButtonClass = 'driver-popover-skip-button';
+								if (!skipButton.classList.contains(skipButtonClass)) skipButton.classList.add(skipButtonClass);
+							}
+						},
+
+						onPopoverRender: () => {
+							const currentStepIndex = driverObj.getActiveIndex();
+							const lastStepIndex = driverObj.getConfig().steps.length - 1;
+
+							const createSkipButton = (buttonValue) => {
+								const doneButton = document.createElement('button');
+								const doneButtonAttributes = [['type', 'button'], ['class', 'custom-skip-button'], ['style', 'display: block;']];
+								doneButtonAttributes.forEach((item) => {
+									if (Array.isArray(item)) {
+										doneButton.setAttribute(item[0], item[1]);
+									}
+								})
+								doneButton.innerText = buttonValue;
+								doneButton.addEventListener('click', () => {
+									driverObj.destroy();
+								})
+
+								document.querySelector('.driver-popover-navigation-btns').prepend(doneButton);
+							};
+
+							const removeButton = (selector) => {
+								if (document.querySelector(selector)) document.querySelector(selector).remove();
+							}
+
+							if (currentStepIndex === 0) { // по умолчанию в driver.js на 0 шаге отображается кнопка "предыдущий слайд", удаляю ее
+								removeButton('.driver-popover-prev-btn');
+							}
+
+							if (currentStepIndex < lastStepIndex) { //добавляю кнопку "Skip" либо "Done" по аналогии с intro.js
+								createSkipButton('Skip');
+							} else {
+								removeButton('.driver-popover-next-btn');
+								createSkipButton('Done');
+							}
+
+							const popoverFooter = document.querySelector('.driver-popover > footer');
+
+							const customBullets = document.createElement('div');
+							customBullets.classList.add('custom-bullets');
+
+							const customBulletsList = document.createElement('ul');
+							for (let i = 0; i <= lastStepIndex; i++) {
+								const cutstomBulletsLi = document.createElement('li');
+								const customBulletsLink = document.createElement('a');
+								
+								customBulletsLink.setAttribute('data-stepnumber', i);
+								if (i === currentStepIndex) customBulletsLink.classList.add('active');
+
+								customBulletsLink.addEventListener('click', (e) => {
+									driverObj.moveTo(+e.target.dataset.stepnumber);
+								})
+
+								cutstomBulletsLi.append(customBulletsLink);
+								customBulletsList.append(cutstomBulletsLi);
+							}
+
+							customBullets.appendChild(customBulletsList);
+							document.querySelector('.driver-popover').insertBefore(customBullets, popoverFooter)
+						},
+
+						onDestroyed: () => {
+							axios.post('/updateEduStep', {
+                     			newStep: ++currentEduStep,
+			         		})
 						}
-					}
-				});
+					});
 
-				function closeTour() {
-					driverObj.destroy();
-					this.removeEventListener('keydown', closeTour);
+					driverObj.drive();
 				}
-
-				driverObj.drive();
+			} catch (error) {
+				console.error(error);
 			}
+
+
+		}
 		}
 </script>
 <style scoped>

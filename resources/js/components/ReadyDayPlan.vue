@@ -154,14 +154,12 @@ export default {
                         showStepNumbers: false,
                         steps: [
                             {
-                                element:
-                                    document.getElementById("card-wrapper"),
+                                element: document.getElementById("card-wrapper"),
                                 intro: "This is task`s card view",
                                 position: "right",
                             },
                             {
-                                element:
-                                    document.getElementById("card-details"),
+                                element: document.getElementById("card-details"),
                                 intro: "Here you can divide your job/task on subtasks",
                                 position: "right",
                             },
