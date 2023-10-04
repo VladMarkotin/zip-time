@@ -217,7 +217,7 @@
 							{
 								element: '#close-day__icon',
 								popover: {
-									description: 'After clicking this button, you wouldnt\'t finish your day plan, so it would be be impossible to make any changes in it.',
+									description: 'After clicking this button, you would finish your day plan, so it would be be impossible to make any changes in it.',
 									side: 'left',
 									align: 'end',
 								},
