@@ -22,7 +22,7 @@
                             <a class="mr-2 pl-2 w-100 text-dark text-decoration-none" role="button"
                                 wire:click="readNotification( {{ $notification->id }})">
 
-                                <div @class(['text-justify ', 'fw-bold' => $notification->read_at == 0])>
+                                <div @class(['text-justify text-break', 'fw-bold' => $notification->read_at == 0])>
                                     {{ $notification->data }}
                                 </div>
                             </a>
