@@ -81,26 +81,14 @@ $nextButtonColor: rgb(100, 149, 237);
 }
 
 .first-slide {
-    background: -webkit-linear-gradient(
-        225deg,
-        rgb(197, 208, 230) 31%,
-        rgb(100, 149, 237) 100%
-    );
-    background: -moz-linear-gradient(
-        225deg,
-        rgb(197, 208, 230) 31%,
-        rgb(100, 149, 237) 100%
-    );
-    background: linear-gradient(
-        225deg,
-        rgb(197, 208, 230) 31%,
-        rgb(100, 149, 237) 100%
-    );
+    background: -webkit-linear-gradient(45deg, rgb(248, 248, 217) 46%, rgb(250, 247, 222) 5%);
+    background: -moz-linear-gradient(45deg, rgb(248, 248, 217) 46%, rgb(250, 247, 222) 5%);
+    background: linear-gradient(45deg, rgb(248, 248, 217) 46%, rgb(250, 247, 222) 5%);
     min-width: 500px;
     border-radius: 1.2rem;
     padding: 15px;
     animation: gradient 10s ease infinite;
-    background-size: 300% 300%;
+    background-size: 400% 400%;
 
     .introjs-tooltiptext {
         box-sizing: border-box;
@@ -120,13 +108,13 @@ $nextButtonColor: rgb(100, 149, 237);
                 a {
                     width: 1.1rem;
                     height: 1.1rem;
-                    background: #eadebd;
+                    background: #A5A5A5;
                 
                     &.active {
-                        background: #5d76cb;
+                        background: #696969;
                     }
                     &:hover {
-                        background: #5d76cb;
+                        background: #696969;
                     }
                 }
             }

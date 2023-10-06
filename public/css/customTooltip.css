@@ -64,12 +64,12 @@
 }
 
 .first-slide {
-  background: linear-gradient(225deg, #c5d0e6 31%, cornflowerblue 100%);
+  background: linear-gradient(45deg, #f8f8d9 46%, #faf7de 5%);
   min-width: 500px;
   border-radius: 1.2rem;
   padding: 15px;
   animation: gradient 10s ease infinite;
-  background-size: 300% 300%;
+  background-size: 400% 400%;
 }
 .first-slide .introjs-tooltiptext {
   box-sizing: border-box;
@@ -85,13 +85,13 @@
 .first-slide .introjs-bullets ul li a {
   width: 1.1rem;
   height: 1.1rem;
-  background: #eadebd;
+  background: #A5A5A5;
 }
 .first-slide .introjs-bullets ul li a.active {
-  background: #5d76cb;
+  background: #696969;
 }
 .first-slide .introjs-bullets ul li a:hover {
-  background: #5d76cb;
+  background: #696969;
 }
 .first-slide .introjs-tooltipbuttons .introjs-button {
   font-weight: 400;

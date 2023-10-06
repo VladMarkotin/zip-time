@@ -210,7 +210,7 @@
 							{
 								element: '#close-day_tomorrow-plan',
 								popover: {
-									description: 'Here you can choose saved tasks for tomorrow\'s plan. It isn\'t nessesary but would make tomorrow\'s plan creation faster',
+									description: 'Here you can choose saved tasks for tomorrow\'s plan. It isn\'t nessesary but would make tomorrow\'s plan creation faster.',
 									side: 'right',
 								},
 							},
