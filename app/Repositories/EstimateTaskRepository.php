@@ -26,7 +26,7 @@ class EstimateTaskRepository
     }
     /*Estimate task and update it dependencies if there is a hash_code. Better to upgrade logic of this method in future*/
     public function estimateTask(array $data)
-    {
+    {   
         $dataForLastTimetable = ["date" => Carbon::today(), "id" => Auth::id()];
         $dataForTasks  =   [
             "id"              => $data['id'],

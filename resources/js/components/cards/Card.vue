@@ -1,5 +1,8 @@
 <template>  
-	<v-card>
+	<v-card :id="!num ? 'card-wrapper' : false">
+		<div class="card-demo">
+
+			<div class="card-demo"></div>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>{{item.hash}}</span>
 			<span>{{item.taskName}}</span>
@@ -8,6 +11,8 @@
 			<span v-else-if="item.priority == 3">!!!</span>
 			<span v-else>  </span>
 		</v-card-title>
+		</div>
+		
 		<v-list>
 			<v-list-item>
 				<v-list-item-content>Time:</v-list-item-content>
@@ -85,6 +90,7 @@
 							icon
 							v-bind="props"
 							@click="getAllDetailsForTask(item)"
+							:id="!num ? 'card-details' : false"
 							>
 							<v-icon color="#D71700">{{icons.mdiChartGantt}}</v-icon>
 							</v-btn>
@@ -295,6 +301,7 @@
 							icon
 							v-bind="props"
 							@click="getAllNotesForTask(item)"
+							:id="!num ? 'card-notes' : false"
 							>
 							<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
 							
@@ -367,7 +374,7 @@
 		<v-divider></v-divider>
 		<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
 		<v-card-title class="font-weight-bold">
-			<form class="d-flex align-center">
+			<form class="d-flex align-center" :id="!num ? 'card-mark' : false">
 				<template v-if="[4,3].includes(item.type)">
 					<div>Mark</div>
 					<v-text-field class="ml-1" style="width : 54px" v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)">
@@ -404,6 +411,7 @@
 				</template>
 			</form>
 		</v-card-title>
+	</div>
 	</v-card>
 </template>
 <script>
@@ -604,8 +612,7 @@
 				  })
 			},
 			sendMark(item)
-			{
-
+			{	
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
 				.then((response) => {
 					this.isShowAlert = true;
@@ -627,6 +634,7 @@
 				this.alert.type = type
 				this.alert.text = text
 			},
+
 			changeTime(item)
 			{
 				if ( (item.time != this.time ) || (item.priority != this.priority) ) {
@@ -646,6 +654,7 @@
 				  })
 				}
 			},
+			
 			editTask(item) {
 				this.dialogEditSubTask = true
 				this.subTasks.task_id = item.taskId
@@ -676,6 +685,7 @@
 			},
 		}
 	}
+	
 </script>
 <style scoped>
 	.v-card-title
