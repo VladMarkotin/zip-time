@@ -99,6 +99,9 @@
 				async loadHashCodes()
 				{
 					this.hashCodes = (await axios.post('/getSavedTasks')).data.hash_codes.map((item) => item.hash_code)
+					let {defaultSavedTasks} = (await axios.post('/getDefaultSavedTasks')).data;
+					defaultSavedTasks = defaultSavedTasks.map((item) => item.hash_code);
+					this.hashCodes = [...this.hashCodes, ...defaultSavedTasks];
 				},
 				addHashCode(hashCode)
 				{

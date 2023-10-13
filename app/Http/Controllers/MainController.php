@@ -38,6 +38,8 @@ use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
 use App\Models\SavedNotes;
 use App\Models\SavedTask;
 use App\Http\Controllers\NoteController;
+use App\Models\User;
+use App\Models\DefaultSavedTasks;
 
 class MainController
 {
@@ -61,6 +63,7 @@ class MainController
     private $defaultConfigs            = null;
     private $checkCheckpoints          = null;
     private $noteController            = null;
+    private $defaultSavedTasks         = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -80,7 +83,8 @@ class MainController
                                 TimetableModel $timetableModel,
                                 PersonalResultsService $personalResultsService,
                                 DefaultConfigs $defaultConfigs,
-                                NoteController $noteController
+                                NoteController $noteController,
+                                DefaultSavedTasks $defaultSavedTasks
                                 )
     {
         
@@ -104,6 +108,7 @@ class MainController
         $this->defaultConfigs            = $defaultConfigs; 
         $this->checkCheckpoints          = $checkCheckpoints;
         $this->noteController            = $noteController;
+        $this->defaultSavedTasks         = $defaultSavedTasks;
     }
 
     public function addHashCode(Request $request)
@@ -139,6 +144,13 @@ class MainController
             'id' => $id,
             'hash_codes' => $hashCodes,
         ]);//
+    }
+
+    public function getDefaultSavedTasks()
+    {
+        return response()->json([
+            'defaultSavedTasks' => $this->defaultSavedTasks::all()
+        ]);
     }
 
     public function isWeekendAvailable()
@@ -453,6 +465,24 @@ class MainController
         $results = $this->personalResultsService->getResults($configs);
         exit(json_encode($results));
         //die(json_encode($configs));
+    }
+    public function getEduStep(Request $request)
+    {
+        $eduStep = User::where('id', Auth::id())->pluck('edu_step')->toArray();
+        $eduStep = $eduStep[0];
+
+        return json_encode(['edu_step' => $eduStep]);
+    }
+
+    public function updateEduStep(Request $request) 
+    {
+        $newEduStep = $request->newStep;
+        $currentUser = User::where('id', Auth::id())->first();
+        $currentEduStep = $currentUser->edu_step;
+            
+        if ($newEduStep != $currentEduStep) {
+            $currentUser->update(["edu_step" => $newEduStep]);
+        }
     }
 
     private function getLastTimetableId()
