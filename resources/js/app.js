@@ -6,6 +6,7 @@ import Vuetify from 'vuetify';
 import functions from './functions';
 import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/dist/vuetify.min.css';
+import ChatGPTIcon from './components/icons/ChatGPTIcon.vue';
 
 Vue.use(HighchartsVue);
 Vue.use(Vuetify);
@@ -24,7 +25,16 @@ const app =
 			{
 				el: '#app',
 				loader: 'vue-loader',
-				vuetify: new Vuetify(),
+				vuetify: new Vuetify({
+					theme: {},
+					icons: {
+						values: {
+							chatGPTIcon: {
+								component: ChatGPTIcon,
+							},
+						}
+					}
+				}),
 				components: {app},
 				data: {alertDelay: 5e3, currComponent: {name: '', props: {}}},
 				computed:

@@ -78,7 +78,11 @@
 			<v-list-item>
 				<v-list-item-content>Details:</v-list-item-content>
 				<v-list-item-content class="align-end">
-					<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
+						<v-list-item-content class="p-0 position-relative overflow-visible">
+							<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
+							<CreateSubplanGPT 
+							/>
+						</v-list-item-content>
 				</v-list-item-content>
 				<v-dialog
 						v-model="dialogDetails"
@@ -418,6 +422,7 @@
 	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete,
 		mdiMarkerCheck, mdiExclamation, mdiCircle }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
+	import CreateSubplanGPT from '../dialogs/CreateSubplanGPT.vue'
 	export default
 	{
 		props : ['item', 'num'],
@@ -468,7 +473,7 @@
 					}
 				}
 			},
-		components : {Alert},
+		components : {Alert, CreateSubplanGPT},
 		methods :
 		{
 			mounted ()
