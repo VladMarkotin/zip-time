@@ -7,6 +7,7 @@ import functions from './functions';
 import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/dist/vuetify.min.css';
 import ChatGPTIcon from './components/icons/ChatGPTIcon.vue';
+import GPTRecreateIcon from './components/icons/GPTRecreateIcon.vue';
 
 Vue.use(HighchartsVue);
 Vue.use(Vuetify);
@@ -32,6 +33,9 @@ const app =
 							chatGPTIcon: {
 								component: ChatGPTIcon,
 							},
+							gptRecreateIcon: {
+								component: GPTRecreateIcon,
+							}
 						}
 					}
 				}),

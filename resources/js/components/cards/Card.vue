@@ -81,6 +81,10 @@
 						<v-list-item-content class="p-0 position-relative overflow-visible">
 							<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
 							<CreateSubplanGPT 
+							:requestData="{
+								label: 'Request: create subplan for',
+								taskName: item.taskName,
+							}"
 							/>
 						</v-list-item-content>
 				</v-list-item-content>
