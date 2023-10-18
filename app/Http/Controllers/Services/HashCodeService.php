@@ -49,7 +49,7 @@ class HashCodeService
 
     private function isUniqueForUser($hashCode)
     {
-        $hashCodes = $this->savedTaskRepository->getUserHashCodes(Auth::id());
+        $hashCodes = $this->savedTaskRepository->getUserHashCodes(Auth::id(), 0);
 
         foreach($hashCodes as $i){
             if($i->hash_code == $hashCode){

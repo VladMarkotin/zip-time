@@ -22,6 +22,16 @@
 							<v-col>
 								<v-select label="#code" v-bind:items="hashCodes" v-model="task.hashCode" v-on:change="hashCodeChangeHandler"></v-select>
 							</v-col>
+							<v-col v-if="task.name.length  > 2">
+								<v-tooltip right>
+									<template v-slot:activator="{on}">
+										<v-btn icon v-on="on" v-on:click="clearCurrentHashCode">
+											<v-icon color="#D71700">{{icons.mdiBackspace}}</v-icon>
+										</v-btn>
+									</template>
+									<span>Clear current hash code</span>
+								</v-tooltip>
+							</v-col>
 						</v-row>
 						<v-text-field counter="25" label="Name" required v-model="task.name"></v-text-field>
 						<v-select label="Type" v-bind:items="types" v-model="task.type"></v-select>
@@ -59,7 +69,7 @@
 </template>
 <script>
 	import AddHashCode from './AddHashCode.vue'
-	import {mdiPlusBox,mdiCancel} from '@mdi/js'
+	import {mdiPlusBox,mdiCancel, mdiBackspace} from '@mdi/js'
 
 	export default
 		{
@@ -79,7 +89,7 @@
 						types : ['required job','non required job','required task','task','reminder'],
 						priorities : [1,2,3],
 						menu : false/*for task.time*/,
-						icons : {mdiPlusBox,mdiCancel},
+						icons : {mdiPlusBox,mdiCancel, mdiBackspace},
 
 						isShow : true,
 						isShowAddHashCodeDialog : false
@@ -87,6 +97,15 @@
 			},
 			methods :
 			{
+
+				clearCurrentHashCode(hashCode){
+					this.task.hashCode = ''
+					this.task.name = ''
+					this.task.type = ''
+					this.task.priority = ''
+					this.task.time = ''
+				},
+
 				async hashCodeChangeHandler(hashCode)
 				{
 					const data = (await axios.post('/getSavedTask',{hash_code : hashCode})).data

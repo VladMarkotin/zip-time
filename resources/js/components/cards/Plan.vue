@@ -16,14 +16,15 @@
          </div>
          <v-divider></v-divider>
          <div>
-            <v-row align="center" class="d-flex mb-6">
-               <v-col cols="1" md="1" v-if="defaultSelected.hash == '#'">
-                  <div class="text-center">
+            <v-row align="center" class="d-flex mb-2" >
+               <v-col cols="2" sm="1" v-if="defaultSelected.hash == '#'" no-gutters>
+                  <div class="text-center pa-2 ma-2">
                      <v-dialog max-width="650px" persistent v-model="dialog">
                         <template #activator="{ on: dialog }">
                            <v-tooltip right>
                               <template v-slot:activator="{ on:tooltip  }">
-                                 <v-btn icon v-on="{ ...tooltip, ...dialog }" v-show="showIcon > 3">
+                                 <v-btn icon v-on="{ ...tooltip, ...dialog }"
+                                     v-show="defaultSelected.taskName.length > 3">
                                     <v-icon md="1"
                                        color="#D71700"
                                        > {{icons.mdiPlusBox}}
@@ -64,8 +65,8 @@
                </v-col>
                <v-col
                   id="plan-hash"
-                  cols="3"
-                  md="2"
+                  cols="1"
+                  md="1"
                   :offset="defaultSelected.hash == '#' ? 0 : 1"
                   :offset-md="defaultSelected.hash == '#' ? 0 : 1"
                   >
@@ -76,6 +77,17 @@
                      @change="onChange"
                      required>
                   </v-select>
+               </v-col>
+               <v-col v-if="defaultSelected.hash.length > 1">
+                  <v-tooltip right >
+					<template v-slot:activator="{on}">
+                 
+						<v-btn icon v-on="on" v-on:click="clearCurrentHashCode"  >
+                     <v-icon color="#D71700">{{ icons.mdiBackspace }}</v-icon>
+						</v-btn>
+					</template>
+					<span>Clear</span>
+				</v-tooltip>
                </v-col>
                <v-col cols="4" md="3">
                   <v-text-field
@@ -118,26 +130,7 @@
                      </v-time-picker>
                   </v-menu>
                </v-col>
-            <!-- </v-row> -->
-            <!-- <v-row> -->
-               <!-- <v-col cols="5" md="5" offset="1" offset-md="1">
-                  <v-textarea
-                     outlined
-                     rows="2"
-                     row-height="4"
-                     v-model="defaultSelected.details"
-                     shaped
-                     :placeholder="placeholders[4]"
-                     :counter="256"
-                     ></v-textarea>
-               </v-col>
-               <v-col cols="5" md="5">
-                  <v-text-field
-                     :placeholder=" placeholders[5] "
-                     v-model="defaultSelected.notes"
-                     @keypress.enter = "addTask"
-                     ></v-text-field>
-               </v-col> -->
+            
                <v-col cols="1" md="1">
                   <v-tooltip right>
                      <template v-slot:activator="{ on }">
@@ -277,7 +270,8 @@ import {
     mdiCarEmergency,
     mdiPlus,
     mdiPlusBox,
-    mdiCancel
+    mdiCancel,
+    mdiBackspace
 } from '@mdi/js'
 
 export default {
@@ -366,6 +360,7 @@ export default {
             mdiPlusBox,
             mdiCancel,
             mdiCarEmergency,
+            mdiBackspace
         },
         hashCodes: [],
         hashNames: '#',
@@ -400,6 +395,14 @@ export default {
         }
     },
     methods: {
+
+      clearCurrentHashCode(){
+					this.defaultSelected.hash = '#'
+					this.defaultSelected.taskName = ''
+					this.defaultSelected.type = 'required job'
+					this.defaultSelected.priority = '1'
+					this.defaultSelected.time = '01:00'
+		},
        
         getPostParams() {
             // return {
@@ -423,7 +426,7 @@ export default {
         inputChangeHandler() {
             if (this.showIcon < 4) {
                 this.showIcon += 1
-            }
+            } 
 
         },
         isWeekendAvailable(item){
@@ -449,6 +452,7 @@ export default {
                .then(function(response) {
                   currentObj.defaultSelected.taskName = response.data[1];
                   currentObj.defaultSelected.type = response.data[2];
+                  console.log(response.data[2])
                   currentObj.defaultSelected.priority = `${response.data[3]}`;
                   currentObj.defaultSelected.time = response.data[5];
                   currentObj.defaultSelected.details = response.data[4];

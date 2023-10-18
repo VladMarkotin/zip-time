@@ -133,6 +133,11 @@ class MainController
                 $this->notesRepository->addSavedNote($params);
             }
         }
+
+        return response()->json([
+            'message' => 'Hash code already exists',
+            'status' => 'error',
+        ]);
     }
 
     public function getSavedTasks()

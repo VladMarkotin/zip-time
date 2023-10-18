@@ -15,13 +15,20 @@ class SavedTask2Repository
         $this->notesRepository = $addNoteToSavedTask;
     }
 
-    public function getUserHashCodes($id)
+    public function getUserHashCodes($id, $status = 1)
     {
-        $savedTasks = DB::table('saved_tasks')
-            ->select(DB::raw('hash_code'))
-            ->where('user_id','=', $id)
-            ->where('status', 1)
-            ->get()->toArray();
+        if ($status) {
+            $savedTasks = DB::table('saved_tasks')
+                ->select(DB::raw('hash_code'))
+                ->where('user_id','=', $id)
+                ->where('status', $status)
+                ->get()->toArray();
+        } else {
+            $savedTasks = DB::table('saved_tasks')
+                ->select(DB::raw('hash_code'))
+                ->where('user_id','=', $id)
+                ->get()->toArray();
+        }
 
         return ($savedTasks);
     }

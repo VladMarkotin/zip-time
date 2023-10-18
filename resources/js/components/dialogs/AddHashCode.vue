@@ -28,12 +28,12 @@
 	</v-dialog>
 </template>
 <script>
-	import {mdiPlusBox,mdiCancel} from '@mdi/js'
+	import {mdiPlusBox,mdiCancel, mdiBackspace} from '@mdi/js'
 	export default
 		{
 			data()
 			{
-				return {hashCode : '',icons : {mdiPlusBox,mdiCancel}, isShow : true}
+				return {hashCode : '',icons : {mdiPlusBox,mdiCancel, mdiBackspace}, isShow : true}
 			},
 			methods :
 			{
