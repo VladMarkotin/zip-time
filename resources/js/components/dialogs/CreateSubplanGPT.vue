@@ -1,7 +1,7 @@
 <template>
     <v-dialog 
     v-model="showDialog"
-    hide-overlay
+    overlay-color="transparent"
     content-class="subpan-GPT-modal"
     width="477"
     >
@@ -45,6 +45,8 @@
                     color="rgb(255, 255, 255)"
                     elevation
                     id="sublpan-gpt-button-recreate"
+                    :class="!isTaskNameValid ? 'subplan-gpt-disabled-button' : ''"
+                    :disabled="!isTaskNameValid"
                     >
                         <v-icon size="18">$vuetify.icons.gptRecreateIcon</v-icon>
                     </v-btn>
@@ -87,6 +89,10 @@
                     (v) => {
                         return v.trim().length > 2 || 'Minimum length is 3 characters'
                     },
+
+                    (v) => {
+                        return !v.match(/^\d*$/) || 'can\'t consist only of numbers';
+                    }
                 ],
                 isLoading: false,
                 isTaskNameValid: false,
@@ -145,6 +151,10 @@
         padding:  0 .3em 0 .6em;
         min-width: 0;
         border-radius: 50%;
+    }
+
+    .subpan-GPT-modal .subplan-gpt-disabled-button {
+        opacity: .5;
     }
 
     .subpan-GPT-modal {
