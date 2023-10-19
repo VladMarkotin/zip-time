@@ -22,7 +22,8 @@
                         color="#000000"
                         :rules="taskNameRules"
                         required
-                        ref="test"
+                        ref="taskNameInput"
+                        success
                         ></v-text-field>
                     </v-list-item>
                     <v-btn 
@@ -56,12 +57,30 @@
                     </v-list>
                 </v-list-item>
                 <v-divider></v-divider>
-                <v-list-item class="subplan-gpt-footer"></v-list-item>
+                <v-list-item class="subplan-gpt-footer">
+                    <div class="subplan-gpt-footer-inner">
+                        <v-btn
+                         color="#FAFAFA"
+                        elevation
+                        id="subplan-GPT-button-playoutline"
+                        >
+                            <v-icon size="30">{{ icons.mdiPlayOutline }}</v-icon>
+                        </v-btn>
+                        <v-btn
+                        color="#FAFAFA"
+                        elevation
+                        id="subplan-GPT-button-cogrefresh"
+                        >
+                            <v-icon size="30">{{ icons.mdiCogRefresh }}</v-icon>
+                        </v-btn>
+                    </div>
+                </v-list-item>
             </v-list>
         </v-card>
 </template>
 
 <script>
+    import { mdiPlayOutline, mdiCogRefresh } from '@mdi/js';
     export default {
         props: ['requestData'],
         data() {
@@ -79,6 +98,10 @@
                 isTaskNameValid: false,
                 isLoading: false,
                 subtasksFromChatGPT: [],
+                icons: {
+                    mdiPlayOutline,
+                    mdiCogRefresh
+                }
             }
         },
         watch: {
@@ -115,7 +138,7 @@
         },
 
         mounted() {
-            this.$refs.test.validate(true)
+            this.$refs.taskNameInput.validate(true)
             this.checkTaskNameValue();
             if (this.isTaskNameValid) this.getSubTasks();
         }

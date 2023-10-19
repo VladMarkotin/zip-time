@@ -44,7 +44,9 @@
 
 <style>
     #subplan-GPT-button,
-    #subplan-GPT-button-modal {
+    #subplan-GPT-button-modal,
+    #subplan-GPT-button-playoutline,
+    #subplan-GPT-button-cogrefresh {
         padding: 0 .3em;
         min-width: 0;
         border-radius: 50%;
@@ -138,6 +140,13 @@
     .subpan-GPT-modal div[role="listitem"].subplan-gpt-footer {
         min-height: 40px;
         background-color: #FAFAFA;
+        
+    }
+
+    .subpan-GPT-modal .subplan-gpt-footer > .subplan-gpt-footer-inner {
+        width: 100%;
+        display: flex;
+        align-items: center;
         justify-content: space-between;
     }
 </style>
