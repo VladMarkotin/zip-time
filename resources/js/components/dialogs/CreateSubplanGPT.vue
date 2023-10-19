@@ -61,14 +61,16 @@
                     </v-list-item-content>
                     <v-list v-else class="subplan-gpt-subtasks-list">
                         <v-list-item-content 
-                        v-for="(item, index) in subtasksFromChatGPT"
+                        v-for="(subtask, index) in subtasksFromChatGPT"
                         :key="index"
                         class="subplan-gpt-subtasks-li subpan-GPT-text"
                         >
-                        1
+                        {{ getSubTaskLi(subtask, index) }}
                     </v-list-item-content>
                     </v-list>
                 </v-list-item>
+                <v-divider></v-divider>
+                <v-list-item class="subplan-gpt-footer"></v-list-item>
             </v-list>
         </v-card>
     </v-dialog>
@@ -82,22 +84,35 @@
                 taskName: this.requestData.taskName,
                 showDialog: false,
                 taskNameRules: [
-                    (v) => v.trim().length > 0 || 'Minimum length is 3 characters',
+                    (v) => {
+                        return v.trim().length > 2 || 'Minimum length is 3 characters'
+                    },
                 ],
                 isLoading: false,
+                isTaskNameValid: false,
                 subtasksFromChatGPT: [],
             }
+       },
+       watch: {
+        taskName() {
+            this.checkTaskNameValue();
+        }
        },
        methods: {
         toggleDialog() {
             this.showDialog = !this.showDialog;
             if (this.showDialog) {
                 this.taskName = this.requestData.taskName;
-                this.getTasks();
+                this.checkTaskNameValue();
+                if (this.isTaskNameValid) this.getSubTasks();
             }
         },
 
-        getTasks() {
+        getSubTaskLi(subtask, index) {
+            return `${index + 1}) ${subtask}`;
+        },
+
+        getSubTasks() {
             this.isLoading = true;
             setTimeout(() => {
                 this.subtasksFromChatGPT = [
@@ -107,12 +122,14 @@
                 ]
                 this.isLoading = false;
             },1000)
+        },
+
+        checkTaskNameValue() { //проверяю,что все проверки для значения из инпута с названием таски прошли успешно
+            this.isTaskNameValid = this.taskNameRules.map(check => {
+                return check(this.taskName);
+            }).every(currentVal => currentVal === true)
         }
        },
-
-       mounted() {
-        this.getTasks();
-       }
     }
 </script>
 
@@ -136,7 +153,7 @@
     }
 
     .subpan-GPT-text {
-        font-weight: 400;
+        font-weight: 500;
         font-size: 16px;
         line-height: 20px;
         vertical-align: middle;
@@ -194,13 +211,20 @@
     .subpan-GPT-modal div[role="listitem"].subplan-gpt-subtasks-list-wrapper {
         min-height: 135px;
         padding: 9px 16px;
-    }
-
-    .subpan-GPT-modal .subplan-gpt-subtasks-list {
-        height: 100%;
+        align-items: flex-start;
     }
 
     .subpan-GPT-modal .subplan-gpt-subtasks-list .subplan-gpt-subtasks-li {
         padding: 0;
+    }
+
+    .subpan-GPT-modal .subplan-gpt-subtasks-list .subplan-gpt-subtasks-li:not(:last-child) {
+        margin-bottom: 4px;
+    }
+
+    .subpan-GPT-modal div[role="listitem"].subplan-gpt-footer {
+        min-height: 40px;
+        background-color: #FAFAFA;
+        justify-content: space-between;
     }
 </style>
