@@ -129,6 +129,11 @@
         align-items: flex-start;
     }
 
+    .subpan-GPT-modal .subplan-gpt-subtasks-list {
+        animation: 1.5s subtasklistappearance ease;
+        overflow: hidden;
+    }
+
     .subpan-GPT-modal .subplan-gpt-subtasks-list .subplan-gpt-subtasks-li {
         padding: 0;
     }
@@ -149,4 +154,15 @@
         align-items: center;
         justify-content: space-between;
     }
+
+    @keyframes subtasklistappearance {
+        from {
+            opacity: 0;
+            max-height: 0;
+        }
+        to {
+            opacity: 1;
+            max-height: 1200px;
+        }
+}
 </style>
