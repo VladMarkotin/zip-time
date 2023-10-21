@@ -344,7 +344,11 @@
 													></v-checkbox>
 												</v-card-text>
 												<v-divider v-if="item.created_at == new Date('d.m.Y')"></v-divider>
+
 											</v-card>
+											<span v-if="noteInfo.todayAmount == 0">
+												There are no any notes
+											</span>
 										</div>
 										
 									</template>

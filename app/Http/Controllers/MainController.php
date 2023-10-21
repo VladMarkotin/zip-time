@@ -455,13 +455,18 @@ class MainController
         ])
         ->get(['for_tomorrow'])
         ->toArray();
-        $preparedPlan = $preparedPlan[0]['for_tomorrow'];
-        if($preparedPlan){
-            $preparedPlan = explode(';', $preparedPlan);
-            $preparedTasks = $this->getSavedTasksByHashCode($preparedPlan);
+        if (count($preparedPlan) > 0) {
+
+            $preparedPlan = $preparedPlan[0]['for_tomorrow'];
+            if($preparedPlan){
+                $preparedPlan = explode(';', $preparedPlan);
+                $preparedTasks = $this->getSavedTasksByHashCode($preparedPlan);
+            }
+            
+            return ($preparedTasks);
         }
         
-        return ($preparedTasks);
+        return [];
     }
 
     public function getUserResults(Request $request)
