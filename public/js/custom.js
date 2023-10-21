@@ -69,7 +69,7 @@ $(document).ready(function () {
 
   /* notifyJs for livewire --*/
   window.addEventListener('message', event => {
-    alertify.notify(event.detail.text);
+    if (event.detail)  alertify.notify(event.detail.text);
   });
 
 
