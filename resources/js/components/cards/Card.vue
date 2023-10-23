@@ -84,6 +84,8 @@
 							:requestData="{
 								label: 'Request: create subplan for',
 								taskName: item.taskName,
+								taskHash: item.hash,
+								taskId: item.taskId,
 							}"
 							/>
 						</v-list-item-content>

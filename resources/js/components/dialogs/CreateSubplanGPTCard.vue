@@ -100,6 +100,8 @@
                         return !v.match(/^\d*$/) || 'can\'t consist only of numbers';
                     }
                 ],
+                taskHash: this.requestData.taskHash,
+                taskId: this.requestData.taskId,
                 isTaskNameValid: false,
                 isLoading: false,
                 subtasksFromChatGPT: [],
