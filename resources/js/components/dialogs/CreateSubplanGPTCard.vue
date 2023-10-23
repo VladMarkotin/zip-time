@@ -32,6 +32,7 @@
                     id="sublpan-gpt-button-recreate"
                     :class="!isTaskNameValid ? 'subplan-gpt-disabled-button' : ''"
                     :disabled="!isTaskNameValid"
+                    @click="sendGPTRequest()"
                     >
                         <v-icon size="18">$vuetify.icons.gptRecreateIcon</v-icon>
                     </v-btn>
@@ -46,8 +47,11 @@
                         width="5"
                         ></v-progress-circular>
                     </v-list-item-content>
+                    <v-list-item-content v-else-if="subtasksFromChatGPT.length == 0 && isLoading == false">
+                        {{ subtasksFromChatGPTWelcome }}
+                    </v-list-item-content>
                     <v-list v-else class="subplan-gpt-subtasks-list">
-                        <v-list-item-content 
+                        <v-list-item-content
                         v-for="(subtask, index) in subtasksFromChatGPT"
                         :key="index"
                         class="subplan-gpt-subtasks-li subpan-GPT-text"
@@ -63,6 +67,7 @@
                          color="#FAFAFA"
                         elevation
                         id="subplan-GPT-button-playoutline"
+                        @click="createSubPlanViaGPT(id)"
                         >
                             <v-icon size="30">{{ icons.mdiPlayOutline }}</v-icon>
                         </v-btn>
@@ -98,6 +103,7 @@
                 isTaskNameValid: false,
                 isLoading: false,
                 subtasksFromChatGPT: [],
+                subtasksFromChatGPTWelcome: "Create Your SubPlan with charGPT!",
                 icons: {
                     mdiPlayOutline,
                     mdiCogRefresh
@@ -114,6 +120,38 @@
                 this.$emit('toggleDialog');
             },
 
+            sendGPTRequest() {
+                if (this.taskName.length > 1) { 
+                    axios.post('/create-gpt-subplan-request',{request: this.taskName})
+                        .then((response) => {
+                            this.isLoading = true
+                            setTimeout( () => {
+                                    this.isLoading = false
+                            },3000)
+                            this.subtasksFromChatGPT = []
+                            this.subtasksFromChatGPT.push('task1')
+                            this.subtasksFromChatGPT.push('task2')
+                        }
+                    )
+                } else {
+
+                }
+            },
+
+            createSubPlanViaGPT(id) {
+                setTimeout( () => {
+                                    this.isLoading = false
+                            },3000)
+                axios.post('/create-gpt-subplan',{plan: this.subtasksFromChatGPT, taskId: id})
+                        .then((response) => {
+                            this.isLoading = true
+                            
+                            this.subtasksFromChatGPT = []
+                            this.subtasksFromChatGPTWelcome = "SubPlan has been succesfully created. Whish you good luck:)"
+                        }
+                    )
+            },
+
             checkTaskNameValue() { //проверяю,что все проверки для значения из инпута с названием таски прошли успешно
                 this.isTaskNameValid = this.taskNameRules.map(check => {
                     return check(this.taskName);
@@ -124,10 +162,12 @@
                 this.isLoading = true;
                 setTimeout(() => {
                     this.subtasksFromChatGPT = [
-                        'subtask one',
-                        'subtask two',
-                        'subtask three',
+                        
                     ]
+                    if (!this.subtasksFromChatGPT.length) {
+                        
+                        
+                    }
                     this.isLoading = false;
                 },1000)
             },

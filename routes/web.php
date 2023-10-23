@@ -100,6 +100,12 @@ Route::middleware(['auth'])->group(function () {
     
     //Upgrade notes functionality
     Route::post('get-today-note-amount',[App\Http\Controllers\NoteController::class, 'getTodayNoteAmount'])->name('get-note-amount');
+    
+    //Local chatGPT functionality
+    Route::post('/create-gpt-subplan-request', [App\Http\Controllers\SubPlanGPTController::class, 'makeRequestToGPT'])->name('create-gpt-subplan-request');
+    Route::post('/create-gpt-subplan', [App\Http\Controllers\SubPlanGPTController::class, 'createSubPlanViaGPT'])->name('create-gpt-sub-task');
+
+
 });
 Route::post('/get-default-configs', function (){
     
