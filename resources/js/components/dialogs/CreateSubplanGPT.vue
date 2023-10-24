@@ -6,15 +6,16 @@
     width="477"
     >
         <template v-slot:activator="{ on }">
-            <v-btn 
-            class="position-absolute top-0 end-0"
-            id="subplan-GPT-button"
-            color="rgb(255, 255, 255)"
-            elevation
-            @click="toggleDialog"
-            >
-                <v-icon size="28">$vuetify.icons.chatGPTIcon</v-icon>
-            </v-btn>
+            <div>
+                <v-btn 
+                id="subplan-GPT-button"
+                color="rgb(255, 255, 255)"
+                elevation
+                @click="toggleDialog"
+                >
+                    <v-icon size="28">$vuetify.icons.chatGPTIcon</v-icon>
+                </v-btn>
+            </div>
         </template>
         <CreateSubplanGPTCard 
         v-if="showDialog"

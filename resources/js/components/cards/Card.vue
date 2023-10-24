@@ -15,307 +15,346 @@
 		
 		<v-list>
 			<v-list-item>
-				<v-list-item-content>Time:</v-list-item-content>
-				<v-list-item-content class="align-end" v-if="item.time.includes('00:')">{{item.time}}
-					 minutes
-				</v-list-item-content>
-                <v-list-item-content class="align-end" v-else-if="item.time.includes('01:00')">{{item.time}}
-					 hour
-				</v-list-item-content>
-				<v-list-item-content class="align-end" v-else>{{item.time}}
-					 hours
-				</v-list-item-content>
-				<v-dialog
-					v-model="dialog"
-					persistent
-					width="500"
-					>
-					<template v-slot:activator="{ props }">
-					<v-btn icon @click="dialog=true">
-						<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
-					</v-btn>
-				</template>
-					<v-card>
-						<v-card-title class="text-h5">
-						Edit card
-						</v-card-title>
-						<v-card-text>
-							Edit task`s priority:
-							
-							<v-select
-								:items="priorities"
-								v-model= priority
-								label="Set Priority"
-								solo
-							></v-select>
-							 Edit task`s time: 
-							 <v-time-picker
-							   v-model="time"
-							   color="red">
-							</v-time-picker>
-						</v-card-text>
-						<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn
-							color="green-darken-1"
-							variant="text"
-							@click="dialog = false"
-						>
-							Cancel
-						</v-btn>
-						<v-btn
-							color="green-darken-1"
-							variant="text"
-							@click="changeTime(item)"
-						>
-							Save
-						</v-btn>
-						</v-card-actions>
-					</v-card>
-					</v-dialog>
-			</v-list-item>
-
-			<v-list-item>
-				<v-list-item-content>Details:</v-list-item-content>
-				<v-list-item-content class="align-end">
-						<v-list-item-content class="p-0 position-relative overflow-visible">
-							<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
-							<CreateSubplanGPT 
-							:requestData="{
-								label: 'Request: create subplan for',
-								taskName: item.taskName,
-								taskHash: item.hash,
-								taskId: item.taskId,
-							}"
-							/>
-						</v-list-item-content>
-				</v-list-item-content>
-				<v-dialog
-						v-model="dialogDetails"
-						scrollable
-						width="auto"
-						>
-						<template v-slot:activator="{ props }">
-							<v-btn
-							icon
-							v-bind="props"
-							@click="getAllDetailsForTask(item)"
-							:id="!num ? 'card-details' : false"
+				<v-row class="m-0 p-0">
+					<v-col class="p-0">
+						<v-row class="m-0 p-0">
+							<v-col class="p-0 d-flex">
+								<v-list-item-content>Time:</v-list-item-content>
+							</v-col>
+							<v-col class="p-0">
+								<v-list-item-content class="align-end" v-if="item.time.includes('00:')">{{item.time}}
+									minutes
+								</v-list-item-content>
+								<v-list-item-content class="align-end" v-else-if="item.time.includes('01:00')">{{item.time}}
+									hour
+								</v-list-item-content>
+								<v-list-item-content class="align-end" v-else>{{item.time}}
+									hours
+								</v-list-item-content>
+							</v-col>
+						</v-row>
+					</v-col>
+					<v-col class="p-0" cols="auto" style="min-width: 53px;">
+						<v-dialog
+							v-model="dialog"
+							persistent
+							width="500"
 							>
-							<v-icon color="#D71700">{{icons.mdiChartGantt}}</v-icon>
-							</v-btn>
-						</template>
-						<v-card
-									width="800"
-									title="This is a title"
-									subtitle="This is a subtitle"
-									text="This is content">
-								<v-card-title>
-									<v-row>
-										<v-col >
-											<p class="text-xs-center">Plan`s details</p>
-										</v-col>
-										<v-col>
-											<v-progress-circular
-											:rotate="360"
-											:size="100"
-											:width="10"
-											:model-value="completedPercent"
-											color="red"
-											:value="completedPercent"
-											>
-											{{ completedPercent }}
-										</v-progress-circular>
-										</v-col>
-									</v-row>
+							<template v-slot:activator="{ props }">
+								<v-btn icon @click="dialog=true">
+									<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
+								</v-btn>
+							</template>
+							<v-card>
+								<v-card-title class="text-h5">
+								Edit card
 								</v-card-title>
-								<v-divider></v-divider>
-								<v-card-text style="height: 300px;">
-									<template>
-										<v-row>
-											<v-col>
-
-												<v-text-field
-												width="20px"
-												v-model="subTasks.title"
-												:counter="256"
-												label="Subtask title"
-												v-on:keyup.enter="addDetail"
-												required
-												></v-text-field>
-											</v-col>
-											<v-col>
-
-											<v-text-field
-											width="20px"
-											v-model="subTasks.text"
-											v-on:keyup.enter="addDetail"
-											:counter="1000"
-											label="Subtask details"
-											required
-											></v-text-field>
-											</v-col>
-											
-											<v-col>
-												<v-checkbox
-												 label="is required subtask?"
-												 v-model="subTasks.checkpoint">
-												</v-checkbox>
-											</v-col>
-											<v-col>
-												<v-btn icon>
-													<v-icon md="1"
-													color="#D71700"
-													v-on:click="addDetail(item)"> {{icons.mdiPlex}}
-												</v-icon>
-											</v-btn>
-											</v-col>
-										
-										</v-row>
-										<v-divider></v-divider>
-										<v-row>
-
-											<template>
-												<!--Display subTask-->
-												<v-expansion-panels>
-													<v-expansion-panel
-													v-for="(v, i) in details"
-													:key="i"
-													>
-													<v-expansion-panel-header
-													>
-													<p class="text-md-center">{{v.title}} </p> 
-														<v-icon color="#D71700" v-if="v.checkpoint == 1">
-															{{ icons.mdiExclamation }}
-															
-														</v-icon>	
-														<v-btn icon @click="editTask(v)">
-															<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
-														</v-btn>
-														<v-icon color="#D71700" v-if="v.is_ready">
-															{{icons.mdiMarkerCheck}}
-														</v-icon>
-													</v-expansion-panel-header>
-													<v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
-														<v-divider></v-divider>
-														{{ v.text }}
-														<v-row>
-															<v-col>
-
-																<v-checkbox
-																	v-model="v.is_ready"
-																	label="Is Ready?"
-																	color="red"
-																	@change="completed(v)"
-																	hide-details
-																></v-checkbox>
-															</v-col>
-															<v-col>
-
-																<v-btn icon v-on:click="deleteSubTask(v)"
-																v-if="v.checkpoint != 1"> 
-																	<v-icon md="1"
-																		color="#D71700">
-																		{{icons.mdiDelete}}
-																	</v-icon>
-																</v-btn>
-															</v-col>
-														</v-row>
-													</v-expansion-panel-content>
-													
-												</v-expansion-panel>
-												</v-expansion-panels>
-											</template>
-										</v-row>
-									</template>
+								<v-card-text>
+									Edit task`s priority:
+									
+									<v-select
+										:items="priorities"
+										v-model= priority
+										label="Set Priority"
+										solo
+									></v-select>
+									 Edit task`s time: 
+									 <v-time-picker
+									   v-model="time"
+									   color="red">
+									</v-time-picker>
 								</v-card-text>
-								<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlertInDetails">{{alert.text}}</v-alert> 
-								<v-divider></v-divider>
 								<v-card-actions>
-									<v-row>
-										<v-col>
-
-											<v-btn
-											color="blue-darken-1"
-											variant="text"
-											@click="dialogDetails = false"
-											>
-											Close
-											</v-btn>
-										</v-col>
-										
-									</v-row>
+								<v-spacer></v-spacer>
+								<v-btn
+									color="green-darken-1"
+									variant="text"
+									@click="dialog = false"
+								>
+									Cancel
+								</v-btn>
+								<v-btn
+									color="green-darken-1"
+									variant="text"
+									@click="changeTime(item)"
+								>
+									Save
+								</v-btn>
 								</v-card-actions>
-						</v-card>
-				</v-dialog> 
-				<v-dialog
-					v-model="dialogEditSubTask"
-					persistent
-					width="500"
-					>
+							</v-card>
+							</v-dialog>
+					</v-col>
+				</v-row>
+				
+			</v-list-item>
+
+			<v-list-item>
+				<v-row class="p-0 m-0">
+					<v-col class="p-0">
+						<v-row class="p-0 m-0">
+							<v-col class="p-0 d-flex">
+								<v-list-item-content>Details:</v-list-item-content>
+							</v-col>
+							<v-col class="p-0">
+								<v-list-item-content class="align-end">
+									<v-list-item-content class="p-0 overflow-visible">
+										<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
+									</v-list-item-content>
+								</v-list-item-content>
+							</v-col>
+						</v-row>
+					</v-col>
+					<v-col class="p-0" cols="auto" style="min-width: 53px;">
+						<div 
+						class="d-flex flex-column align-self-start"
+						>
+							<CreateSubplanGPT 
+								:requestData="{
+									label: 'Request: create subplan for',
+									taskName: item.taskName,
+									taskHash: item.hash,
+									taskId: item.taskId,
+								}"
+							/>
+							<v-dialog
+								v-model="dialogDetails"
+								scrollable
+								width="auto"
+								>
+								<template v-slot:activator="{ props }">
+									<v-btn
+									icon
+									v-bind="props"
+									@click="getAllDetailsForTask(item)"
+									:id="!num ? 'card-details' : false"
+									>
+									<v-icon color="#D71700">{{ icons.mdiChartGantt }}</v-icon>
+									</v-btn>
+								</template>
+								<v-card
+											width="800"
+											title="This is a title"
+											subtitle="This is a subtitle"
+											text="This is content">
+										<v-card-title>
+											<v-row>
+												<v-col >
+													<p class="text-xs-center">Plan`s details</p>
+												</v-col>
+												<v-col>
+													<v-progress-circular
+													:rotate="360"
+													:size="100"
+													:width="10"
+													:model-value="completedPercent"
+													color="red"
+													:value="completedPercent"
+													>
+													{{ completedPercent }}
+												</v-progress-circular>
+												</v-col>
+											</v-row>
+										</v-card-title>
+										<v-divider></v-divider>
+										<v-card-text style="height: 300px;">
+											<template>
+												<v-row>
+													<v-col>
+
+														<v-text-field
+														width="20px"
+														v-model="subTasks.title"
+														:counter="256"
+														label="Subtask title"
+														v-on:keyup.enter="addDetail"
+														required
+														></v-text-field>
+													</v-col>
+													<v-col>
+
+													<v-text-field
+													width="20px"
+													v-model="subTasks.text"
+													v-on:keyup.enter="addDetail"
+													:counter="1000"
+													label="Subtask details"
+													required
+													></v-text-field>
+													</v-col>
+											
+													<v-col>
+														<v-checkbox
+														 label="is required subtask?"
+														 v-model="subTasks.checkpoint">
+														</v-checkbox>
+													</v-col>
+													<v-col>
+														<v-btn icon>
+															<v-icon md="1"
+															color="#D71700"
+															v-on:click="addDetail(item)"> {{ icons.mdiPlex }}
+														</v-icon>
+													</v-btn>
+													</v-col>
+										
+												</v-row>
+												<v-divider></v-divider>
+												<v-row>
+
+													<template>
+														<!--Display subTask-->
+														<v-expansion-panels>
+															<v-expansion-panel
+															v-for="(v, i) in details"
+															:key="i"
+															>
+															<v-expansion-panel-header
+															>
+															<p class="text-md-center">{{ v.title }} </p> 
+																<v-icon color="#D71700" v-if="v.checkpoint == 1">
+																	{{ icons.mdiExclamation }}
+															
+																</v-icon>	
+																<v-btn icon @click="editTask(v)">
+																	<v-icon color="#D71700">{{ icons.mdiPencil }}</v-icon>
+																</v-btn>
+																<v-icon color="#D71700" v-if="v.is_ready">
+																	{{ icons.mdiMarkerCheck }}
+																</v-icon>
+															</v-expansion-panel-header>
+															<v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
+																<v-divider></v-divider>
+																{{ v.text }}
+																<v-row>
+																	<v-col>
+
+																		<v-checkbox
+																			v-model="v.is_ready"
+																			label="Is Ready?"
+																			color="red"
+																			@change="completed(v)"
+																			hide-details
+																		></v-checkbox>
+																	</v-col>
+																	<v-col>
+
+																		<v-btn icon v-on:click="deleteSubTask(v)"
+																		v-if="v.checkpoint != 1"> 
+																			<v-icon md="1"
+																				color="#D71700">
+																				{{ icons.mdiDelete }}
+																			</v-icon>
+																		</v-btn>
+																	</v-col>
+																</v-row>
+															</v-expansion-panel-content>
+													
+														</v-expansion-panel>
+														</v-expansion-panels>
+													</template>
+												</v-row>
+											</template>
+										</v-card-text>
+										<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlertInDetails">{{ alert.text }}</v-alert> 
+										<v-divider></v-divider>
+										<v-card-actions>
+											<v-row>
+												<v-col>
+
+													<v-btn
+													color="blue-darken-1"
+													variant="text"
+													@click="dialogDetails = false"
+													>
+													Close
+													</v-btn>
+												</v-col>
+										
+											</v-row>
+										</v-card-actions>
+								</v-card>
+						</v-dialog>
+						<v-dialog
+							v-model="dialogEditSubTask"
+							persistent
+							width="500"
+							>
 					
-					<v-card>
-						<v-card-title class="text-h5">
-						Edit Subtask
-						</v-card-title>
-						<v-card-text>
-							Edit Subtask`s title:
-							<v-text-field class="ml-1"  v-model="subTasks.title">
+							<v-card>
+								<v-card-title class="text-h5">
+								Edit Subtask
+								</v-card-title>
+								<v-card-text>
+									Edit Subtask`s title:
+									<v-text-field class="ml-1"  v-model="subTasks.title">
 								
-							</v-text-field>
-							Edit Subtask`s text:
-							<v-text-field class="ml-1"  v-model="subTasks.text">
+									</v-text-field>
+									Edit Subtask`s text:
+									<v-text-field class="ml-1"  v-model="subTasks.text">
 								
-							</v-text-field>
+									</v-text-field>
 							
-						</v-card-text>
-						<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn
-							color="green-darken-1"
-							variant="text"
-							@click="dialogEditSubTask = false"
-						>
-							Cancel
-						</v-btn>
-						<v-btn
-							color="green-darken-1"
-							variant="text"
-							@click="saveChangesInSubtask({title: subTasks.title, text: subTasks.text})"
-						>
-							Save
-						</v-btn>
-						</v-card-actions>
-					</v-card>
-					</v-dialog>		
+								</v-card-text>
+								<v-card-actions>
+								<v-spacer></v-spacer>
+								<v-btn
+									color="green-darken-1"
+									variant="text"
+									@click="dialogEditSubTask = false"
+								>
+									Cancel
+								</v-btn>
+								<v-btn
+									color="green-darken-1"
+									variant="text"
+									@click="saveChangesInSubtask({ title: subTasks.title, text: subTasks.text })"
+								>
+									Save
+								</v-btn>
+								</v-card-actions>
+							</v-card>
+							</v-dialog>	 
+						</div>
+					</v-col>
+				</v-row>
+				
 				
 			</v-list-item>
 			<v-list-item>
-				<v-list-item-content>Note:</v-list-item-content>
-				
-				<v-list-item-content class="align-end">
-					<v-textarea counter="256" rows="2" outlined shaped v-model="item.notes"></v-textarea>
-				</v-list-item-content>
-				
+				<v-row class="p-0 m-0">
+					<v-col class="p-0">
+						<v-row class="p-0 m-0">
+							<v-col class="p-0 d-flex">
+								<v-list-item-content>Note:</v-list-item-content>
+							</v-col>
+							<v-col class="p-0">
+								<v-list-item-content class="align-end">
+									<v-textarea counter="256" rows="2" outlined shaped v-model="item.notes"></v-textarea>
+								</v-list-item-content>	
+							</v-col>
+						</v-row>
+					</v-col>
+					<v-col class="p-0 d-flex flex-column justify-center" cols="auto" style="min-width: 53px;">
 						<v-dialog
 						v-model="dialogNotes"
 						scrollable
 						width="auto"
 						>
 						<template v-slot:activator="{ props }">
-							<span>
-								{{ getTodayNoteAmount(item) }}
-								{{ noteInfo.todayAmount }}
-							</span>
-							<v-btn
-							icon
-							v-bind="props"
-							@click="getAllNotesForTask(item)"
-							:id="!num ? 'card-notes' : false"
-							>
-							<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
-							
-						</v-btn>
+							<div class="d-flex justify-space-between align-center">
+								<v-btn
+								icon
+								v-bind="props"
+								@click="getAllNotesForTask(item)"
+								:id="!num ? 'card-notes' : false"
+								>
+								<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
+								</v-btn>
+								<span>
+									{{ getTodayNoteAmount(item) }}
+									{{ noteInfo.todayAmount }}
+								</span>
+							</div>
 						</template>
 						<v-card
 									width="400"
@@ -378,7 +417,8 @@
 								</v-card-actions>
 							</v-card>
 							</v-dialog> 
-					
+					</v-col>
+				</v-row>	
 			</v-list-item>
 		</v-list>
 		<v-divider></v-divider>
