@@ -26,7 +26,10 @@
                         success
                         ></v-text-field>
                     </v-list-item>
+                    <v-tooltip right>
+						<template v-slot:activator="{on}">
                     <v-btn 
+                    v-on="on"
                     color="rgb(255, 255, 255)"
                     elevation
                     id="sublpan-gpt-button-recreate"
@@ -36,6 +39,9 @@
                     >
                         <v-icon size="18">$vuetify.icons.gptRecreateIcon</v-icon>
                     </v-btn>
+                </template>
+                <span>Ask chatGPT for help</span>
+                    </v-tooltip>
                 </v-list-item>
                 <v-divider></v-divider>
                 <v-list-item class="subplan-gpt-subtasks-list-wrapper">
@@ -63,21 +69,33 @@
                 <v-divider></v-divider>
                 <v-list-item class="subplan-gpt-footer">
                     <div class="subplan-gpt-footer-inner">
-                        <v-btn
-                         color="#FAFAFA"
-                        elevation
-                        id="subplan-GPT-button-playoutline"
-                        @click="createSubPlanViaGPT(id)"
-                        >
+                        <v-tooltip right>
+						<template v-slot:activator="{on}">
+                           <v-btn
+                                v-on="on"
+                                color="#FAFAFA"
+                                elevation
+                                id="subplan-GPT-button-playoutline"
+                                @click="createSubPlanViaGPT()"
+                            >
                             <v-icon size="30">{{ icons.mdiPlayOutline }}</v-icon>
                         </v-btn>
+                        </template>
+                        <span>Save and add subplan</span>
+                        </v-tooltip>
+                        <v-tooltip right>
+						<template v-slot:activator="{on}">
                         <v-btn
                         color="#FAFAFA"
+                        v-on="on"
                         elevation
                         id="subplan-GPT-button-cogrefresh"
                         >
                             <v-icon size="30">{{ icons.mdiCogRefresh }}</v-icon>
                         </v-btn>
+                        </template>
+                        <span>Regenerate GPT`s answer</span>
+                        </v-tooltip>
                     </div>
                 </v-list-item>
             </v-list>
@@ -124,7 +142,10 @@
 
             sendGPTRequest() {
                 if (this.taskName.length > 1) { 
-                    axios.post('/create-gpt-subplan-request',{request: this.taskName})
+                    axios.post('/create-gpt-subplan-request',{request: this.taskName,
+                         taskId: this.taskId, 
+                        hash: this.taskHash                        
+                        })
                         .then((response) => {
                             this.isLoading = true
                             setTimeout( () => {
@@ -140,18 +161,24 @@
                 }
             },
 
-            createSubPlanViaGPT(id) {
-                setTimeout( () => {
-                                    this.isLoading = false
-                            },3000)
-                axios.post('/create-gpt-subplan',{plan: this.subtasksFromChatGPT, taskId: id})
-                        .then((response) => {
-                            this.isLoading = true
-                            
-                            this.subtasksFromChatGPT = []
-                            this.subtasksFromChatGPTWelcome = "SubPlan has been succesfully created. Whish you good luck:)"
-                        }
-                    )
+            createSubPlanViaGPT() {
+                if (this.subtasksFromChatGPT.length > 0) {
+
+                    setTimeout( () => {
+                                        this.isLoading = false
+                                },3000)
+                    axios.post('/create-gpt-subplan',{plan: this.subtasksFromChatGPT,
+                        taskId: this.taskId, 
+                        hash: this.taskHash 
+                        })
+                            .then((response) => {
+                                this.isLoading = true
+                                
+                                this.subtasksFromChatGPT = []
+                                this.subtasksFromChatGPTWelcome = "SubPlan has been succesfully created. Whish you good luck:)"
+                            }
+                        )
+                }
             },
 
             checkTaskNameValue() { //проверяю,что все проверки для значения из инпута с названием таски прошли успешно
