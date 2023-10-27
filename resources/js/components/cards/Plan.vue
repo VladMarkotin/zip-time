@@ -19,7 +19,27 @@
             <v-row align="center" class="d-flex mb-2" >
                <v-col cols="2" sm="1" v-if="defaultSelected.hash == '#'" no-gutters>
                   <div class="text-center pa-2 ma-2">
-                     <v-dialog max-width="650px" persistent v-model="dialog">
+                     <template v-if="defaultSelected.taskName.length > 3">
+                        <v-tooltip right>
+                              <template v-slot:activator="{ on: tooltip  }">
+                                 <v-btn icon v-on="tooltip">
+                                    <v-icon md="1"
+                                       color="#D71700"
+                                       @click="showAddHashCodeDialog"
+                                       > {{icons.mdiPlusBox}}
+                                    </v-icon>
+                                 </v-btn>
+                              </template>
+                              <span>Add hash-code to task for quick access</span>
+                        </v-tooltip>
+                     </template>
+                     <template v-if="dialog">    
+                        <AddHashCode
+                        :isShowDialog="dialog"
+                        @close="closeAddHashCodeDialog"
+                        />
+                     </template>
+                     <!-- <v-dialog max-width="650px" persistent v-model="dialog">
                         <template #activator="{ on: dialog }">
                            <v-tooltip right>
                               <template v-slot:activator="{ on:tooltip  }">
@@ -33,7 +53,6 @@
                               </template>
                               <span>Add hash-code to task for quick access</span>
                            </v-tooltip>
-                           
                         </template>
 		<v-card>
 			<v-card-title class="font-weight-bold v-card-title">Add #code</v-card-title>
@@ -60,7 +79,7 @@
 				</v-tooltip>
 			</v-card-actions>
 		</v-card>
-	</v-dialog>
+	</v-dialog> -->
                   </div>
                </v-col>
                <v-col
@@ -256,6 +275,7 @@
    </v-card>
 </template>
 <script>
+import AddHashCode from '../dialogs/AddHashCode.vue';
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../dialogs/EmergencyCall.vue'
 import {
@@ -275,7 +295,7 @@ import {
 } from '@mdi/js'
 
 export default {
-   components : {EmergencyCall},
+   components : {EmergencyCall, AddHashCode},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
@@ -576,6 +596,14 @@ export default {
                     currentObj.output = error;
                 });
         },
+
+        showAddHashCodeDialog() {
+         this.dialog = true;
+        },
+
+        closeAddHashCodeDialog() {
+         this.dialog = false;
+        }
     },
     created() {
         let currentObj = this;
