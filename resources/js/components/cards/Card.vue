@@ -1,10 +1,18 @@
 <template>  
 	<v-card :id="!num ? 'card-wrapper' : false">
 		<div class="card-demo">
-
+			<template v-if="isShowAddHashCodeDialog">
+				<AddHashCode v-on:addHashCode="addHashCode" 
+				v-on:toggleAddHashCodeDialog="toggleAddHashCodeDialog"/>
+			</template>
 			<div class="card-demo"></div>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
-			<span>{{item.hash}}</span>
+			<span v-if="item.hash == '#'">
+				<!-- <v-btn> -->
+				<v-icon color="#000000" @click="createSavedTask()">{{icons.mdiMusicAccidentalSharp}}</v-icon>
+				<!-- </v-btn> -->
+			</span>
+			<span v-else>{{item.hash}}</span>
 			<span>{{item.taskName}}</span>
 			<span v-if="item.priority == 1"> </span>
 			<span v-else-if="item.priority == 2">!</span>
@@ -420,8 +428,9 @@
 </template>
 <script>
 	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete,
-		mdiMarkerCheck, mdiExclamation, mdiCircle }  from '@mdi/js'  //mdiContentSaveCheckOutline
+		mdiMarkerCheck, mdiExclamation, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
+	import AddHashCode from '../dialogs/AddHashCode.vue'
 	export default
 	{
 		props : ['item', 'num'],
@@ -429,7 +438,7 @@
 		{
 			return {
 					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline,
-						 mdiChartGantt, mdiPlex, mdiDelete, mdiExclamation,mdiCircle  }, //mdiContentSaveCheckOutline
+						 mdiChartGantt, mdiPlex, mdiDelete, mdiExclamation,mdiCircle, mdiMusicAccidentalSharp  }, //mdiContentSaveCheckOutline
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
 					isShowAlertInDetails: false,
@@ -469,19 +478,51 @@
 					ex4: [],
 					noteInfo: {
 						todayAmount: 0
-					}
+					},
+					isShow : true,
+					isShowAddHashCodeDialog : false
 				}
 			},
-		components : {Alert},
+		components : {Alert, AddHashCode},
 		methods :
 		{
 			mounted ()
 			{
 
 			},
-			testFunction(v, event){
-				console.log(event)
+
+			toggleAddHashCodeDialog()
+			{
+					this.isShowAddHashCodeDialog = !this.isShowAddHashCodeDialog
 			},
+
+			createSavedTask(v, event){
+				this.isShowAddHashCodeDialog = true;
+			},
+
+			addHashCode(hashCode)
+				{
+					axios.
+					post
+						(
+							'/addHashCode',
+							{
+								hash : hashCode,
+								name : this.task.name,
+								type : this.task.type,
+								priority : this.task.priority,
+								time : this.task.time,
+								details : '',
+								notes : ''
+							}
+						)
+					this.hashCodes.unshift(hashCode)
+					this.task.hashCode = hashCode
+				},
+				toggleAddHashCodeDialog()
+				{
+					this.isShowAddHashCodeDialog = !this.isShowAddHashCodeDialog
+				},
 
 			getAllDetailsForTask(item) {
 				this.dialogDetails = true
