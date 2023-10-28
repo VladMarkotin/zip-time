@@ -25,7 +25,7 @@
                                  <v-btn icon v-on="tooltip">
                                     <v-icon md="1"
                                        color="#D71700"
-                                       @click="showAddHashCodeDialog"
+                                       @click="dialog = true"
                                        > {{icons.mdiPlusBox}}
                                     </v-icon>
                                  </v-btn>
@@ -35,8 +35,16 @@
                      </template>
                      <template v-if="dialog">    
                         <AddHashCode
-                        :isShowDialog="dialog"
-                        @close="closeAddHashCodeDialog"
+                        :hashCodeVal    = "newHashCode"
+                        :isShowDialog   = "dialog"
+                        :taskName       = "defaultSelected.taskName"
+                        :time           = "defaultSelected.time"
+                        :type           = "defaultSelected.type"
+                        :priority       = "defaultSelected.priority"
+                        :details        = "defaultSelected.details"
+                        :notes          = "defaultSelected.notes"
+                        @close          = "closeHashCodeDialog"
+                        @changeHashCode = "changeHashCode"
                         />
                      </template>
                      <!-- <v-dialog max-width="650px" persistent v-model="dialog">
@@ -525,27 +533,27 @@ export default {
             this.items.splice(index, 1);
         },
 
-        addHashCode()
-				{
-					if (this.newHashCode.length >= 3 && this.newHashCode.length <= 6)
-					{
-						if (this.newHashCode.includes('#'))
-						{
-							this.addNewHashCodePost();
-							this.defaultSelected.hashCodes.unshift(this.newHashCode);
-                     this.dialog = false;
-						}
-						else
-						{
-							this.newHashCode = `#${this.newHashCode}`
-						}
-					}
-				},
-         cleanHashCode()
-				{
-               this.newHashCode = ``
-					this.dialog = false;
-				},
+      //   addHashCode()
+		// 		{
+		// 			if (this.newHashCode.length >= 3 && this.newHashCode.length <= 6)
+		// 			{
+		// 				if (this.newHashCode.includes('#'))
+		// 				{
+		// 					this.addNewHashCodePost();
+		// 					this.defaultSelected.hashCodes.unshift(this.newHashCode);
+      //                this.dialog = false;
+		// 				}
+		// 				else
+		// 				{
+		// 					this.newHashCode = `#${this.newHashCode}`
+		// 				}
+		// 			}
+		// 		},
+      //    cleanHashCode()
+		// 		{
+      //          this.newHashCode = ``
+		// 			this.dialog = false;
+		// 		},
 
         formSubmit(e) {
             let currentObj = this;
@@ -580,30 +588,31 @@ export default {
                 });
         },
 
-        addNewHashCodePost() {
-            let currentObj = this;
-            axios.post('/addHashCode', {
-                    'hash': this.newHashCode,
-                    'taskName': this.defaultSelected.taskName,
-                    'time': this.defaultSelected.time,
-                    'type': this.defaultSelected.type,
-                    'priority': this.defaultSelected.priority,
-                    'details': this.defaultSelected.details,
-                    'notes': this.defaultSelected.notes,
-                })
-                .then(function(response) {})
-                .catch(function(error) {
-                    currentObj.output = error;
-                });
-        },
+      //   addNewHashCodePost() {
+      //       let currentObj = this;
+      //       axios.post('/addHashCode', {
+      //               'hash': this.newHashCode,
+      //               'taskName': this.defaultSelected.taskName,
+      //               'time': this.defaultSelected.time,
+      //               'type': this.defaultSelected.type,
+      //               'priority': this.defaultSelected.priority,
+      //               'details': this.defaultSelected.details,
+      //               'notes': this.defaultSelected.notes,
+      //           })
+      //           .then(function(response) {})
+      //           .catch(function(error) {
+      //               currentObj.output = error;
+      //           });
+      //   },
 
-        showAddHashCodeDialog() {
-         this.dialog = true;
-        },
+      changeHashCode(hashCodeVal) {
+         this.newHashCode = hashCodeVal;
+      },
 
-        closeAddHashCodeDialog() {
+      closeHashCodeDialog() {
+         this.newHashCode = '';
          this.dialog = false;
-        }
+      },
     },
     created() {
         let currentObj = this;

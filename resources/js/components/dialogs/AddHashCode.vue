@@ -10,6 +10,7 @@
 				:rules="hashCodeRules"
 				success
 				ref="hashCodeInput"
+				@keydown.enter="addHashCode"
 				>
 				</v-text-field>
 			</v-card-text>
@@ -25,7 +26,7 @@
 				</v-tooltip>
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="toggle">
+						<v-btn icon v-on="on" v-on:click="closeDialog">
 							<v-icon color="#D71700" large>{{icons.mdiCancel}}</v-icon>
 						</v-btn>
 					</template>
@@ -43,7 +44,19 @@
 				isShowDialog: {
 					type: Boolean,
 					required: true,
-				}
+				},
+
+				hashCodeVal: {
+					type: String,
+					required: true,
+				},
+
+				taskName: {},
+				time: {},
+				type: {},
+				priority: {},
+				details: {},
+				notes: {}  
 			},
 			data() {
 				return {
@@ -53,10 +66,12 @@
 					userHashCodes: new Array,
 					hashCodeRules: [
 						(inputVal) => {
+							if (inputVal.trim()[0] !== '#') return inputVal.trim().length > 1 || 'Maximum length is 2 characters';
 							return inputVal.trim().length > 2 || 'Minimum length is 3 characters';
 						},
 
 						(inputVal) => {
+							if (inputVal.trim()[0] !== '#') return inputVal.trim().length <= 5 || 'Maximum length is 5 characters';
 							return inputVal.trim().length <= 6 || 'Maximum length is 6 characters';
 						},
 
@@ -69,6 +84,8 @@
 						}
 					],
 					isHashCodeValid: false,
+					permissibleCodeLengthMin: 3,
+					permissibleCodeLengthMax: 6,
 				}
 			},
 			watch: {
@@ -82,26 +99,45 @@
 						return check(this.hashCode);
 					}).every(checkResult => checkResult === true);
 
-					console.log(this.isHashCodeValid);
+					this.$emit('changeHashCode', this.hashCode);
 				},
 			},
 			methods : {
 				addHashCode() {
-					if (this.hashCode.length >= 3 && this.hashCode.length <= 6)
-					{
-						if (this.hashCode.includes('#'))
-						{
-							this.toggle()
-							this.$emit('addHashCode',this.hashCode)
+					const closeAfterAdding = async () => {
+						const permissibleLength = new Array;
+						for (let i = this.permissibleCodeLengthMin; i <= this.permissibleCodeLengthMax; i++) {
+							permissibleLength.push(i);
 						}
-						else
-						{
-							this.hashCode = `#${this.hashCode}`
+
+						if (permissibleLength.includes(this.hashCode.length)) {
+							try {
+								// const responce = await axios.post('/addHashCode', {
+								// 	hash:     this.hashCode,
+								// 	taskName: this.taskName,
+								// 	time:     this.time,
+								// 	type:     this.type,
+								// 	priority: this.priority,
+								// 	details:  this.details,
+								// 	notes:    this.notes,
+								// })
+								// console.log(responce);
+							} catch(error) {
+								
+							}
 						}
+					};
+
+					if (this.hashCode[0] === '#') {
+						closeAfterAdding();
+					} else {
+						this.hashCode = `#${this.hashCode}`
+						closeAfterAdding();
 					}
 				},
-				toggle() {
-					this.$emit('toggleAddHashCodeDialog')
+
+				closeDialog() {
+					this.isShow = false;
 				},
 
 				async getHashCodes() {
@@ -120,6 +156,8 @@
 
 			created() {
 				this.isShow = this.isShowDialog;
+				this.hashCode = this.hashCodeVal;
+				console.log(this.taskName);
 			},
 
 			async mounted() {
