@@ -1,9 +1,10 @@
 <template>
-	<v-dialog max-width="450px" v-model="isShow">
+	<v-dialog :max-width="maxWidth" v-model="isShow">
 		<v-card>
 			<v-card-title class="font-weight-bold v-card-title">Add #code</v-card-title>
 			<v-card-text>
 				<v-text-field 
+				class="addHashCode-dialog-input-wrapper"
 				label="#code" 
 				required 
 				v-model="hashCode"
@@ -13,6 +14,10 @@
 				@keydown.enter="addHashCode"
 				>
 				</v-text-field>
+				<v-alert
+				type="success"
+				v-model="showAllertSuccess"
+				>#code was added successfully</v-alert>
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions class="justify-space-between v-card-actions">
@@ -51,6 +56,10 @@
 					required: true,
 				},
 
+				width: {
+					default: 400,
+				},
+
 				taskName: {},
 				time: {},
 				type: {},
@@ -66,27 +75,41 @@
 					userHashCodes: new Array,
 					hashCodeRules: [
 						(inputVal) => {
-							if (inputVal.trim()[0] !== '#') return inputVal.trim().length > 1 || 'Maximum length is 2 characters';
-							return inputVal.trim().length > 2 || 'Minimum length is 3 characters';
+							inputVal = inputVal.trim();
+							if (inputVal[0] !== '#') return inputVal.length > 1 || 'Minimum length is 2 characters';
+							return inputVal.length > 2 || 'Minimum length is 3 characters';
 						},
 
 						(inputVal) => {
-							if (inputVal.trim()[0] !== '#') return inputVal.trim().length <= 5 || 'Maximum length is 5 characters';
-							return inputVal.trim().length <= 6 || 'Maximum length is 6 characters';
+							inputVal = inputVal.trim();
+							if (inputVal[0] !== '#') return inputVal.length <= 5 || 'Maximum length is 5 characters';
+							return inputVal.length <= 6 || 'Maximum length is 6 characters';
 						},
 
 						(inputVal) => {
+							inputVal = inputVal.trim();
 							if (inputVal[0] === '#') {
-								return !this.userHashCodes.some(code => code === inputVal) || 'your code must be unique';
+								return !this.userHashCodes.some(code => code === inputVal) || 'Your code must be unique';
 							}
 
-							return (!this.userHashCodes.some(code => code.slice(1) === inputVal)) || 'your code must be unique';
+							return (!this.userHashCodes.some(code => code.slice(1) === inputVal)) || 'Your code must be unique';
+						},
+
+						(inputVal) => {
+							inputVal = inputVal.trim();
+							return inputVal.match(/^[A-Za-z0-9#_-]+$/) !== null || 'You can use Latin alphabet, numbers, symbols: # - _';
 						}
 					],
 					isHashCodeValid: false,
 					permissibleCodeLengthMin: 3,
 					permissibleCodeLengthMax: 6,
+					showAllertSuccess: false,
 				}
+			},
+			computed: {
+				maxWidth: function() {
+					return `${this.width}px`
+				},
 			},
 			watch: {
 				isShow(currentValue) {
@@ -110,20 +133,25 @@
 							permissibleLength.push(i);
 						}
 
-						if (permissibleLength.includes(this.hashCode.length)) {
+						if (permissibleLength.includes(this.hashCode.trim().length)) {
 							try {
-								// const responce = await axios.post('/addHashCode', {
-								// 	hash:     this.hashCode,
-								// 	taskName: this.taskName,
-								// 	time:     this.time,
-								// 	type:     this.type,
-								// 	priority: this.priority,
-								// 	details:  this.details,
-								// 	notes:    this.notes,
-								// })
-								// console.log(responce);
-							} catch(error) {
+								const responce = await axios.post('/addHashCode', {
+									hash:     this.hashCode.trim(),
+									taskName: this.taskName,
+									time:     this.time,
+									type:     this.type,
+									priority: this.priority,
+									details:  this.details,
+									notes:    this.notes,
+								})
 								
+								if (responce.data.status === 'success') {
+									this.showAllertSuccess = true;
+									// this.$emit('addHashCode');
+									// this.closeDialog();
+								} 
+							} catch(error) {
+								throw new Error(error);
 							}
 						}
 					};
@@ -157,7 +185,6 @@
 			created() {
 				this.isShow = this.isShowDialog;
 				this.hashCode = this.hashCodeVal;
-				console.log(this.taskName);
 			},
 
 			async mounted() {
@@ -167,3 +194,10 @@
 			}
 		}
 </script>
+
+<style>
+	.addHashCode-dialog-input-wrapper .v-input__control .v-messages__wrapper{
+		font-size: 14px;
+	}
+
+</style>

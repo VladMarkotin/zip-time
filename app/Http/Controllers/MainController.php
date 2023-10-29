@@ -132,6 +132,10 @@ class MainController
             if($response){
                 $this->notesRepository->addSavedNote($params);
             }
+            return response()->json(([
+                'message' => 'Hash code added successfully',
+                'status'  => 'success',
+            ]));
         }
 
         return response()->json([

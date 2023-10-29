@@ -35,6 +35,7 @@
                      </template>
                      <template v-if="dialog">    
                         <AddHashCode
+                        :width      = "450"
                         :hashCodeVal    = "newHashCode"
                         :isShowDialog   = "dialog"
                         :taskName       = "defaultSelected.taskName"
@@ -45,6 +46,7 @@
                         :notes          = "defaultSelected.notes"
                         @close          = "closeHashCodeDialog"
                         @changeHashCode = "changeHashCode"
+                        @addHashCode    = "addHashCode"
                         />
                      </template>
                      <!-- <v-dialog max-width="650px" persistent v-model="dialog">
@@ -308,7 +310,7 @@ export default {
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
         readyTasks: [],
-        newHashCode: '',
+        newHashCode: '#',
         showIcon: 0,
         day_status: 'Work Day',
         menu: false/*for defaultSelected.time*/,
@@ -610,8 +612,12 @@ export default {
       },
 
       closeHashCodeDialog() {
-         this.newHashCode = '';
+         this.newHashCode = '#';
          this.dialog = false;
+      },
+
+      addHashCode() {
+         this.defaultSelected.hashCodes.unshift(this.newHashCode);
       },
     },
     created() {
