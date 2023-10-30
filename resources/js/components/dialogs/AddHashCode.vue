@@ -182,7 +182,7 @@
 										error: false,
 									};
 
-									this.$emit('addHashCode');
+									this.$emit('addHashCode', this.hashCode.trim());
 									setTimeout(() => {
 										this.closeDialog();
 									}, 1500);

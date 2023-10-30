@@ -13,6 +13,7 @@
 				:details        = "newHashCodeData.details"
 				:notes          = "newHashCodeData.notes"
 				@close          = "closeHashCodeDialog"
+				@addHashCode    = "addHashCode"
 				/>
 			</template>
 			<div class="card-demo"></div>
@@ -25,7 +26,7 @@
 				>
 					<v-row 
 					class="m-0 p-0"
-					v-if="item.hash == '#'"
+					v-if="hashCode == '#'"
 					>
 						<AddHashCodeButton 
 						:buttonColor = "'white'"
@@ -37,7 +38,7 @@
 					class="m-0 p-0"
 					v-else
 					>
-						<span class="p-0">{{ item.hash }}</span>
+						<span class="p-0">{{ hashCode }}</span>
 					</v-row>
 				</v-col>
 				<v-col class="m-0 p-0 d-flex justify-content-center align-items-center">
@@ -527,44 +528,21 @@
 						details: 	this.item.details,
 						notes: 		this.item.notes,
 					},
+					hashCode: this.item.hash,
 				}
 			},
 		components : {Alert, AddHashCode, AddHashCodeButton},
 		methods :
 		{
 
-			toggleAddHashCodeDialog()
-			{
-					this.isShowAddHashCodeDialog = !this.isShowAddHashCodeDialog
+			addHashCode(newHashCode) {
+				
+				this.hashCode = newHashCode;
 			},
 
-			createSavedTask(v, event){
-				this.isShowAddHashCodeDialog = true;
-			},
-
-			addHashCode(hashCode)
-				{
-					axios.
-					post
-						(
-							'/addHashCode',
-							{
-								hash : hashCode,
-								name : this.task.name,
-								type : this.task.type,
-								priority : this.task.priority,
-								time : this.task.time,
-								details : '',
-								notes : ''
-							}
-						)
-					this.hashCodes.unshift(hashCode)
-					this.task.hashCode = hashCode
-				},
-				toggleAddHashCodeDialog()
-				{
-					this.isShowAddHashCodeDialog = !this.isShowAddHashCodeDialog
-				},
+			closeHashCodeDialog() {
+      	   		this.isShowAddHashCodeDialog = false;
+      		},
 
 			getAllDetailsForTask(item) {
 				this.dialogDetails = true
@@ -772,7 +750,6 @@
 			},
 
 			editHashCodeData() {
-				console.log(this.newHashCodeData);
 				if (typeof this.newHashCodeData.priority === 'number' ) {
 					this.newHashCodeData.priority = this.newHashCodeData.priority.toString();
 				}
@@ -796,18 +773,14 @@
 					this.newHashCodeData.type = checkType(this.newHashCodeData.type);
 				}
 			},
-
-			closeHashCodeDialog() {
-      	   		this.isShowAddHashCodeDialog = false;
-      		},
-
-			addHashCode() {
-				console.log('++++');
-			}
 		},
 
 		created() {
 			this.editHashCodeData();
+		},
+
+		mounted() {
+			console.log(this.hashCode);
 		}
 	}
 	

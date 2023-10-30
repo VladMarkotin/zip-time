@@ -530,6 +530,8 @@ export default {
 
       addHashCode() {
          this.defaultSelected.hashCodes.unshift(this.newHashCode);
+         this.defaultSelected.hash = this.newHashCode;
+         this.isShowAddHashCodeDialog = false;
       },
     },
     created() {
