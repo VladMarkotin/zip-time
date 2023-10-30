@@ -154,9 +154,18 @@
 						for (let i = this.permissibleCodeLengthMin; i <= this.permissibleCodeLengthMax; i++) {
 							permissibleLength.push(i);
 						}
-
+						
 						if (permissibleLength.includes(this.hashCode.trim().length)) {
 							try {
+								console.log({
+									hash:     this.hashCode.trim(),
+									taskName: this.taskName,
+									time:     this.time,
+									type:     this.type,
+									priority: this.priority,
+									details:  this.details,
+									notes:    this.notes,
+								})
 								const responce = await axios.post('/addHashCode', {
 									hash:     this.hashCode.trim(),
 									taskName: this.taskName,
@@ -190,7 +199,7 @@
 							}
 						}
 					};
-
+					
 					if (this.isHashCodeValid) {
 						if (this.hashCode[0] === '#') {
 							closeAfterAdding();
@@ -222,7 +231,7 @@
 
 			created() {
 				this.isShow = this.isShowDialog;
-				this.hashCode = this.hashCodeVal;
+				this.hashCode = this.hashCodeVal;				
 			},
 
 			async mounted() {

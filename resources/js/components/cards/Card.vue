@@ -2,22 +2,58 @@
 	<v-card :id="!num ? 'card-wrapper' : false">
 		<div class="card-demo">
 			<template v-if="isShowAddHashCodeDialog">
-				<AddHashCode v-on:addHashCode="addHashCode" 
-				v-on:toggleAddHashCodeDialog="toggleAddHashCodeDialog"/>
+				<AddHashCode 
+				:width  		= "450"
+				:hashCodeVal    = "newHashCode"
+				:isShowDialog   = "isShowAddHashCodeDialog"
+				:taskName       = "item.taskName"
+				:time           = "item.time"
+				:type           = "item.type"
+				:priority       = "item.priority"
+				:details        = "item.details"
+				:notes          = "item.notes"
+				@changeHashCode = "changeHashCode"
+				/>
 			</template>
 			<div class="card-demo"></div>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
-			<span v-if="item.hash == '#'">
-				<!-- <v-btn> -->
-				<v-icon color="#000000" @click="createSavedTask()">{{icons.mdiMusicAccidentalSharp}}</v-icon>
-				<!-- </v-btn> -->
-			</span>
-			<span v-else>{{item.hash}}</span>
-			<span>{{item.taskName}}</span>
-			<span v-if="item.priority == 1"> </span>
-			<span v-else-if="item.priority == 2">!</span>
-			<span v-else-if="item.priority == 3">!!!</span>
-			<span v-else>  </span>
+			<v-row class="m-0 p-0">
+				<v-col 
+				class="m-0 p-0 d-flex justify-content-start align-items-center"
+				cols="auto"
+				style="min-width: 88px;"
+				>
+					<v-row 
+					class="m-0 p-0"
+					v-if="item.hash == '#'"
+					>
+						<AddHashCodeButton 
+						:buttonColor = "'white'"
+						:buttonSize  = "26"
+						@addHashCodeButtonClick="isShowAddHashCodeDialog = true"
+						/>	
+					</v-row>
+					<v-row 
+					class="m-0 p-0"
+					v-else
+					>
+						<span class="p-0">{{ item.hash }}</span>
+					</v-row>
+				</v-col>
+				<v-col class="m-0 p-0 d-flex justify-content-center align-items-center">
+					<span>{{item.taskName}}</span>
+				</v-col>
+				<v-col 
+				class="m-0 p-0 d-flex justify-content-end align-items-center"
+				cols="auto"
+				style="min-width: 22px;"
+				>
+					<span v-if="item.priority == 1"> </span>
+					<span v-else-if="item.priority == 2">!</span>
+					<span v-else-if="item.priority == 3">!!!</span>
+					<span v-else>  </span>
+				</v-col>
+			</v-row>
 		</v-card-title>
 		</div>
 		
@@ -431,6 +467,7 @@
 		mdiMarkerCheck, mdiExclamation, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
+	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
 	export default
 	{
 		props : ['item', 'num'],
@@ -480,10 +517,11 @@
 						todayAmount: 0
 					},
 					isShow : true,
-					isShowAddHashCodeDialog : false
+					isShowAddHashCodeDialog : false,
+					newHashCode: '#',
 				}
 			},
-		components : {Alert, AddHashCode},
+		components : {Alert, AddHashCode, AddHashCodeButton},
 		methods :
 		{
 			mounted ()
@@ -728,6 +766,10 @@
 				  })
 				this.subTasks = {};
 			},
+
+			changeHashCode(hashCodeVal) {
+				this.newHashCode = hashCodeVal;
+      		},
 		}
 	}
 	

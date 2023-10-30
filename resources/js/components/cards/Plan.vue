@@ -20,18 +20,9 @@
                <v-col cols="2" sm="1" v-if="defaultSelected.hash == '#'" no-gutters>
                   <div class="text-center pa-2 ma-2">
                      <template v-if="defaultSelected.taskName.length > 3">
-                        <v-tooltip right>
-                              <template v-slot:activator="{ on: tooltip  }">
-                                 <v-btn icon v-on="tooltip">
-                                    <v-icon md="1"
-                                       color="#D71700"
-                                       @click="isShowAddHashCodeDialog = true"
-                                       > {{icons.mdiPlusBox}}
-                                    </v-icon>
-                                 </v-btn>
-                              </template>
-                              <span>Add hash-code to task for quick access</span>
-                        </v-tooltip>
+                        <AddHashCodeButton 
+                        @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
+                        />
                      </template>
                      <template v-if="isShowAddHashCodeDialog">    
                         <AddHashCode
@@ -245,6 +236,7 @@
 </template>
 <script>
 import AddHashCode from '../dialogs/AddHashCode.vue';
+import AddHashCodeButton from '../UI/addHashCodeButton.vue'
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../dialogs/EmergencyCall.vue'
 import {
@@ -264,7 +256,7 @@ import {
 } from '@mdi/js'
 
 export default {
-   components : {EmergencyCall, AddHashCode},
+   components : {EmergencyCall, AddHashCode, AddHashCodeButton},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
