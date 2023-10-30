@@ -1,6 +1,8 @@
 <template>
-	<v-dialog :max-width="maxWidth" v-model="isShow">
-		<v-card>
+	<v-dialog :max-width="maxWidth" 
+	v-model="isShow"
+	>
+		<v-card class="addHashCode-card-wrapper">
 			<v-card-title class="font-weight-bold v-card-title">Add #code</v-card-title>
 			<v-card-text>
 				<v-text-field 
@@ -14,10 +16,21 @@
 				@keydown.enter="addHashCode"
 				>
 				</v-text-field>
-				<v-alert
-				type="success"
-				v-model="showAllertSuccess"
-				>#code was added successfully</v-alert>
+				<v-row class="p-0 m-o addHashCode-alert-wrapper">
+					<v-alert
+					type="success"
+					v-model="showAllert.success"
+					>
+					#code was added successfully
+					</v-alert>
+					<v-alert
+					type="error"
+					v-model="showAllert.error"
+					>
+					failed to add #code
+					</v-alert>
+
+				</v-row>
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions class="justify-space-between v-card-actions">
@@ -103,7 +116,10 @@
 					isHashCodeValid: false,
 					permissibleCodeLengthMin: 3,
 					permissibleCodeLengthMax: 6,
-					showAllertSuccess: false,
+					showAllert: {
+						success: false,
+						error: false,
+					},
 				}
 			},
 			computed: {
@@ -146,10 +162,23 @@
 								})
 								
 								if (responce.data.status === 'success') {
-									this.showAllertSuccess = true;
-									// this.$emit('addHashCode');
-									// this.closeDialog();
-								} 
+									this.showAllert = {
+										success: true,
+										error: false,
+									};
+
+									this.$emit('addHashCode');
+									setTimeout(() => {
+										this.closeDialog();
+									}, 1500);
+								}
+								else {
+									this.showAllert = {
+										success: false,
+										error: true,
+									}
+								}
+
 							} catch(error) {
 								throw new Error(error);
 							}
@@ -196,8 +225,26 @@
 </script>
 
 <style>
-	.addHashCode-dialog-input-wrapper .v-input__control .v-messages__wrapper{
+	.addHashCode-card-wrapper .addHashCode-dialog-input-wrapper .v-input__control .v-messages__wrapper{
 		font-size: 14px;
+	}
+
+	.addHashCode-card-wrapper .addHashCode-alert-wrapper {
+		min-height: 56px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.addHashCode-card-wrapper .addHashCode-alert-wrapper > div[role="alert"] {
+		margin-bottom: 0;
+		width: 70%;
+		animation: .45s codeAlertAppearance ease;
+		position: relative;
+	}
+
+	@keyframes codeAlertAppearance {
+		from { opacity: 0;  top: -.5rem;}
+		to { opacity: 1; top: 0;}
 	}
 
 </style>

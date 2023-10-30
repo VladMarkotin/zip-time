@@ -35,7 +35,7 @@
                      </template>
                      <template v-if="dialog">    
                         <AddHashCode
-                        :width      = "450"
+                        :width          = "450"
                         :hashCodeVal    = "newHashCode"
                         :isShowDialog   = "dialog"
                         :taskName       = "defaultSelected.taskName"
