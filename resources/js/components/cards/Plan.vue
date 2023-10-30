@@ -25,7 +25,7 @@
                                  <v-btn icon v-on="tooltip">
                                     <v-icon md="1"
                                        color="#D71700"
-                                       @click="dialog = true"
+                                       @click="isShowAddHashCodeDialog = true"
                                        > {{icons.mdiPlusBox}}
                                     </v-icon>
                                  </v-btn>
@@ -33,11 +33,11 @@
                               <span>Add hash-code to task for quick access</span>
                         </v-tooltip>
                      </template>
-                     <template v-if="dialog">    
+                     <template v-if="isShowAddHashCodeDialog">    
                         <AddHashCode
                         :width          = "450"
                         :hashCodeVal    = "newHashCode"
-                        :isShowDialog   = "dialog"
+                        :isShowDialog   = "isShowAddHashCodeDialog"
                         :taskName       = "defaultSelected.taskName"
                         :time           = "defaultSelected.time"
                         :type           = "defaultSelected.type"
@@ -49,47 +49,6 @@
                         @addHashCode    = "addHashCode"
                         />
                      </template>
-                     <!-- <v-dialog max-width="650px" persistent v-model="dialog">
-                        <template #activator="{ on: dialog }">
-                           <v-tooltip right>
-                              <template v-slot:activator="{ on:tooltip  }">
-                                 <v-btn icon v-on="{ ...tooltip, ...dialog }"
-                                     v-show="defaultSelected.taskName.length > 3">
-                                    <v-icon md="1"
-                                       color="#D71700"
-                                       > {{icons.mdiPlusBox}}
-                                    </v-icon>
-                                 </v-btn>
-                              </template>
-                              <span>Add hash-code to task for quick access</span>
-                           </v-tooltip>
-                        </template>
-		<v-card>
-			<v-card-title class="font-weight-bold v-card-title">Add #code</v-card-title>
-			<v-card-text>
-				<v-text-field label="#code" required v-model="newHashCode"></v-text-field>
-			</v-card-text>
-			<v-divider></v-divider>
-			<v-card-actions class="justify-space-between v-card-actions">
-				<v-tooltip right>
-					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="addHashCode">
-							<v-icon color="#D71700" large>{{icons.mdiPlusBox}}</v-icon>
-						</v-btn>
-					</template>
-					<span>Add #code</span>
-				</v-tooltip>
-            <v-tooltip right>
-					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="cleanHashCode">
-							<v-icon color="#D71700" large>{{icons.mdiCancel}}</v-icon>
-						</v-btn>
-					</template>
-					<span>Cancel</span>
-				</v-tooltip>
-			</v-card-actions>
-		</v-card>
-	</v-dialog> -->
                   </div>
                </v-col>
                <v-col
@@ -412,7 +371,7 @@ export default {
         serverMessage: '',
         showAlert: false,
         alertType: 'success',
-        dialog: false,
+        isShowAddHashCodeDialog: false,
         dialogDelete: false,
         isShowProgress: false,
         value: 0,
@@ -535,28 +494,6 @@ export default {
             this.items.splice(index, 1);
         },
 
-      //   addHashCode()
-		// 		{
-		// 			if (this.newHashCode.length >= 3 && this.newHashCode.length <= 6)
-		// 			{
-		// 				if (this.newHashCode.includes('#'))
-		// 				{
-		// 					this.addNewHashCodePost();
-		// 					this.defaultSelected.hashCodes.unshift(this.newHashCode);
-      //                this.dialog = false;
-		// 				}
-		// 				else
-		// 				{
-		// 					this.newHashCode = `#${this.newHashCode}`
-		// 				}
-		// 			}
-		// 		},
-      //    cleanHashCode()
-		// 		{
-      //          this.newHashCode = ``
-		// 			this.dialog = false;
-		// 		},
-
         formSubmit(e) {
             let currentObj = this;
             currentObj.isShowProgress = true;
@@ -590,30 +527,13 @@ export default {
                 });
         },
 
-      //   addNewHashCodePost() {
-      //       let currentObj = this;
-      //       axios.post('/addHashCode', {
-      //               'hash': this.newHashCode,
-      //               'taskName': this.defaultSelected.taskName,
-      //               'time': this.defaultSelected.time,
-      //               'type': this.defaultSelected.type,
-      //               'priority': this.defaultSelected.priority,
-      //               'details': this.defaultSelected.details,
-      //               'notes': this.defaultSelected.notes,
-      //           })
-      //           .then(function(response) {})
-      //           .catch(function(error) {
-      //               currentObj.output = error;
-      //           });
-      //   },
-
       changeHashCode(hashCodeVal) {
          this.newHashCode = hashCodeVal;
       },
 
       closeHashCodeDialog() {
          this.newHashCode = '#';
-         this.dialog = false;
+         this.isShowAddHashCodeDialog = false;
       },
 
       addHashCode() {

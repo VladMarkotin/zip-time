@@ -36,7 +36,13 @@
 			<v-card-actions class="justify-space-between v-card-actions">
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="addHashCode">
+						<v-btn 
+						icon 
+						v-on="isHashCodeValid ? on : false" 
+						v-on:click="addHashCode"
+						:disabled="!isHashCodeValid ? true : false"
+						:class="{'addHashCode-button-inactive': !isHashCodeValid}"
+						>
 							<v-icon color="#D71700" large>{{icons.mdiPlusBox}}</v-icon>
 						</v-btn>
 					</template>
@@ -137,7 +143,7 @@
 					this.isHashCodeValid = this.hashCodeRules.map(check => {
 						return check(this.hashCode);
 					}).every(checkResult => checkResult === true);
-
+					
 					this.$emit('changeHashCode', this.hashCode);
 				},
 			},
@@ -185,12 +191,15 @@
 						}
 					};
 
-					if (this.hashCode[0] === '#') {
-						closeAfterAdding();
-					} else {
-						this.hashCode = `#${this.hashCode}`
-						closeAfterAdding();
+					if (this.isHashCodeValid) {
+						if (this.hashCode[0] === '#') {
+							closeAfterAdding();
+						} else {
+							this.hashCode = `#${this.hashCode}`
+							closeAfterAdding();
+						}
 					}
+
 				},
 
 				closeDialog() {
@@ -240,6 +249,10 @@
 		width: 70%;
 		animation: .45s codeAlertAppearance ease;
 		position: relative;
+	}
+
+	.addHashCode-card-wrapper .addHashCode-button-inactive {
+		opacity: .4;
 	}
 
 	@keyframes codeAlertAppearance {
