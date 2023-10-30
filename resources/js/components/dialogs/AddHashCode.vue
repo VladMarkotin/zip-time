@@ -195,6 +195,10 @@
 								}
 
 							} catch(error) {
+								this.showAllert = {
+										success: false,
+										error: true,
+									}
 								throw new Error(error);
 							}
 						}

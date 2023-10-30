@@ -35,9 +35,5 @@ import {mdiPlusBox,} from '@mdi/js'
         data: () => ({
             icon: {mdiPlusBox,},
         }),
-
-        mounted() {
-            console.log(this.buttonColor);
-        }
     }
 </script>

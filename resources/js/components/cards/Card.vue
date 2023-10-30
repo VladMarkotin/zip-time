@@ -4,15 +4,15 @@
 			<template v-if="isShowAddHashCodeDialog">
 				<AddHashCode 
 				:width  		= "450"
-				:hashCodeVal    = "newHashCode"
+				:hashCodeVal    = "newHashCodeData.newHashCode"
 				:isShowDialog   = "isShowAddHashCodeDialog"
-				:taskName       = "item.taskName"
-				:time           = "item.time"
-				:type           = "item.type"
-				:priority       = "item.priority"
-				:details        = "item.details"
-				:notes          = "item.notes"
-				@changeHashCode = "changeHashCode"
+				:taskName       = "newHashCodeData.taskName"
+				:time           = "newHashCodeData.time"
+				:type           = "newHashCodeData.type"
+				:priority       = "newHashCodeData.priority"
+				:details        = "newHashCodeData.details"
+				:notes          = "newHashCodeData.notes"
+				@close          = "closeHashCodeDialog"
 				/>
 			</template>
 			<div class="card-demo"></div>
@@ -518,16 +518,20 @@
 					},
 					isShow : true,
 					isShowAddHashCodeDialog : false,
-					newHashCode: '#',
+					newHashCodeData: {
+						newHashCode: '#',
+						taskName: 	this.item.taskName,
+						time: 		this.item.time,
+						type: 		this.item.type,
+						priority: 	this.item.priority,
+						details: 	this.item.details,
+						notes: 		this.item.notes,
+					},
 				}
 			},
 		components : {Alert, AddHashCode, AddHashCodeButton},
 		methods :
 		{
-			mounted ()
-			{
-
-			},
 
 			toggleAddHashCodeDialog()
 			{
@@ -767,9 +771,43 @@
 				this.subTasks = {};
 			},
 
-			changeHashCode(hashCodeVal) {
-				this.newHashCode = hashCodeVal;
+			editHashCodeData() {
+				console.log(this.newHashCodeData);
+				if (typeof this.newHashCodeData.priority === 'number' ) {
+					this.newHashCodeData.priority = this.newHashCodeData.priority.toString();
+				}
+
+				if (typeof this.newHashCodeData.type === 'number') {
+					const checkType = (type) => {
+						switch (type) {
+							case 0:
+								return 'reminder';
+							case 1:
+								return 'task';
+							case 2:
+								return 'required task';
+							case 3:
+								return 'non required job'
+							case 4:
+								return 'required job';
+						}
+					}
+
+					this.newHashCodeData.type = checkType(this.newHashCodeData.type);
+				}
+			},
+
+			closeHashCodeDialog() {
+      	   		this.isShowAddHashCodeDialog = false;
       		},
+
+			addHashCode() {
+				console.log('++++');
+			}
+		},
+
+		created() {
+			this.editHashCodeData();
 		}
 	}
 	
