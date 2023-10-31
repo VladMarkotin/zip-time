@@ -41,8 +41,11 @@ use App\Http\Controllers\NoteController;
 use App\Models\User;
 use App\Models\DefaultSavedTasks;
 
+//подключу временно здесь модели для взаимодействия в БД
+
 class MainController
 {
+
     private $savedTaskRepository       = null;
     private $savedTaskService          = null;
     private $planService               = null;

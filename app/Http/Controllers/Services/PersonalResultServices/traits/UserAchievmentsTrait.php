@@ -8,6 +8,7 @@ trait UserAchievmentsTrait
     use GetWorserUsersTrait;
     use GetUserResponsibilityTrait;
     use GetUserPurposelness;
+    use GetUserMonthlyStat;
 
     public function getData(array $data, array $configs)
     {
@@ -19,6 +20,7 @@ trait UserAchievmentsTrait
         $result['better'] = GetWorserUsersTrait::getData($data, $usersQuantityInGroup);
         $result['more_pesponsible'] = GetUserResponsibilityTrait::getData($data, $usersQuantityInGroup);
         $result['user_purposelness'] = GetUserPurposelness::getData($data, $usersQuantityInGroup);
+        $result['user_activity'] = GetUserMonthlyStat::getData();
         //die(var_dump($result));
         return ($result);
     }

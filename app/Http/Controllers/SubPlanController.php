@@ -56,8 +56,10 @@ class SubPlanController extends Controller
             $subPlan['saved_task_id'] = $savedTaskId;
         }
         /**end */
-        //die(var_dump($savedTaskId));
+        // die(var_dump($savedTaskId));
         $taskId = SubPlan::create($subPlan)->id;
+
+        // dd($savedTaskId);
 
         return ( response()->json([
             'message' => 'subtask has been added',
@@ -86,7 +88,7 @@ class SubPlanController extends Controller
                 }
             }
         }
-       //die(var_dump(count($subPlan)));
+    //    die(var_dump(count($subPlan)));
         return (
             response()->json([
                 'status' => 'success', 

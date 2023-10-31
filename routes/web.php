@@ -56,6 +56,13 @@ Route::middleware(['auth'])->group(function () {
     //user`s results
     Route::post('/get-results', [App\Http\Controllers\MainController::class, 'getUserResults']);
 
+    // monthly-stat
+    // почему-то с методом post ошибка The GET method is not supported for this route. Supported methods: POST. , ставлю гет для просмотра того, что приходит, в дальнейшем заменить на post
+    Route::get('/monthly-stat', [App\Http\Controllers\MainController::class, 'getMonthlyStat']);
+    
+    // добавил роут для трейта, чтобы проще посмотреть вывод
+    // Route::post('/monthly-stat', [App\Http\Controllers\Services\traits\GetUserMonthlyStat::class, 'getStat']);
+
     //History routes
     Route::prefix('hist')->group(function () {
         Route::get('/', [App\Http\Controllers\HistController::class, 'displayHist'])->name('hist');
