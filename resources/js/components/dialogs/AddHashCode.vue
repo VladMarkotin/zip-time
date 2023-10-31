@@ -157,15 +157,6 @@
 						
 						if (permissibleLength.includes(this.hashCode.trim().length)) {
 							try {
-								console.log({
-									hash:     this.hashCode.trim(),
-									taskName: this.taskName,
-									time:     this.time,
-									type:     this.type,
-									priority: this.priority,
-									details:  this.details,
-									notes:    this.notes,
-								})
 								const responce = await axios.post('/addHashCode', {
 									hash:     this.hashCode.trim(),
 									taskName: this.taskName,
