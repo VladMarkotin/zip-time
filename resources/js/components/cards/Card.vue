@@ -16,6 +16,9 @@
 				@addHashCode    = "addHashCode"
 				/>
 			</template>
+			<template v-if="isShowPreloader">
+				<Preloader :showPreloader="isShowPreloader"/>
+			</template>
 			<div class="card-demo"></div>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<v-row class="m-0 p-0">
@@ -469,6 +472,7 @@
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
 	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
+	import Preloader from '../UI/Preloader.vue';
 	export default
 	{
 		props : ['item', 'num'],
@@ -529,15 +533,42 @@
 						notes: 		this.item.notes,
 					},
 					hashCode: this.item.hash,
+					isShowPreloader: false,
 				}
 			},
-		components : {Alert, AddHashCode, AddHashCodeButton},
+		components : {Alert, AddHashCode, AddHashCodeButton, Preloader},
 		methods :
 		{
 
-			addHashCode(newHashCode) {
-				
+			async addHashCode(newHashCode) {
 				this.hashCode = newHashCode;
+				this.isShowPreloader = true;
+
+				const minPreloaderDispTime = 1000;
+				const loadingStart 		   = Date.now();
+
+				try {
+					await axios.post('', { //тут передаю id таски и новый хеш код
+						newHashCode: newHashCode,
+						id: this.item.taskId
+					})
+					
+				} catch(error) {
+					throw new Error(error);
+				} finally {
+					const loadingEnd = Date.now();
+
+					if (loadingEnd - loadingStart < 1000) {
+						const currentLoadingTime = loadingEnd - loadingStart;
+						
+						setTimeout(() => {
+							this.isShowPreloader = false;
+						}, minPreloaderDispTime - currentLoadingTime)
+					} else {
+						this.isShowPreloader = false;
+					}
+				}
+
 			},
 
 			closeHashCodeDialog() {

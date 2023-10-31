@@ -183,7 +183,7 @@
 
 								const controllLoadingTime = (time, callback) => {
 
-									const minPreloaderDispTime = 1500;
+									const minPreloaderDispTime = 1000;
 
 									if (time > minPreloaderDispTime) callback();
 									else setTimeout(callback, minPreloaderDispTime - time);
@@ -199,9 +199,8 @@
 											error: false,
 										};
 	
-										this.$emit('addHashCode', this.hashCode.trim());
-
 										setTimeout(() => {
+											this.$emit('addHashCode', this.hashCode.trim());
 											this.closeDialog();
 										}, 1500);
 									})
