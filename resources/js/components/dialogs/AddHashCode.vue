@@ -134,6 +134,7 @@
 						error: false,
 					},
 					isShowPreloader: false,
+					loading: false,
 				}
 			},
 			computed: {
@@ -159,8 +160,12 @@
 			},
 			methods : {
 				addHashCode() {
+					
 					const closeAfterAdding = async () => {
 
+						if (this.loading) return;
+						this.loading = true;
+						
 						const loadingStart = Date.now();
 						this.isShowPreloader = true;
 						const permissibleLength = new Array;
@@ -201,6 +206,7 @@
 	
 										setTimeout(() => {
 											this.$emit('addHashCode', this.hashCode.trim());
+											if (this.loading) this.loading = false;
 											this.closeDialog();
 										}, 1500);
 									})
@@ -209,7 +215,8 @@
 									const loadingEnd = Date.now();
 									controllLoadingTime(loadingEnd - loadingStart, () => {
 										if (this.isShowPreloader) this.isShowPreloader = false;
-
+										if (this.loading) this.loading = false;
+										
 										this.showAllert = {
 											success: false,
 											error: true,
@@ -219,6 +226,7 @@
 
 							} catch(error) {
 								if (this.isShowPreloader) this.isShowPreloader = false;
+								if (this.loading) this.loading = false;
 
 								this.showAllert = {
 										success: false,
