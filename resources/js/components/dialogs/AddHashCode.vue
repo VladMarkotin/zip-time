@@ -17,6 +17,13 @@
 				>
 				</v-text-field>
 				<v-row class="p-0 m-o addHashCode-alert-wrapper">
+					<v-progress-circular
+					v-if="isShowPreloader" 
+                    indeterminate
+                    color="#A10000"
+                    size="48"
+                    width="5"
+                    ></v-progress-circular>
 					<v-alert
 					type="success"
 					v-model="showAllert.success"
@@ -126,6 +133,7 @@
 						success: false,
 						error: false,
 					},
+					isShowPreloader: false,
 				}
 			},
 			computed: {
@@ -145,12 +153,18 @@
 					}).every(checkResult => checkResult === true);
 					
 					this.$emit('changeHashCode', this.hashCode);
+
+					if (this.showAllert.error === true) this.showAllert.error = false;
 				},
 			},
 			methods : {
 				addHashCode() {
 					const closeAfterAdding = async () => {
+
+						const loadingStart = Date.now();
+						this.isShowPreloader = true;
 						const permissibleLength = new Array;
+
 						for (let i = this.permissibleCodeLengthMin; i <= this.permissibleCodeLengthMax; i++) {
 							permissibleLength.push(i);
 						}
@@ -166,30 +180,52 @@
 									details:  this.details,
 									notes:    this.notes,
 								})
+
+								const controllLoadingTime = (time, callback) => {
+
+									const minPreloaderDispTime = 1500;
+
+									if (time > minPreloaderDispTime) callback();
+									else setTimeout(callback, minPreloaderDispTime - time);
+								}
 								
 								if (responce.data.status === 'success') {
-									this.showAllert = {
-										success: true,
-										error: false,
-									};
+									const loadingEnd = Date.now();
+									controllLoadingTime(loadingEnd - loadingStart, () => {
+										if (this.isShowPreloader) this.isShowPreloader = false;
 
-									this.$emit('addHashCode', this.hashCode.trim());
-									setTimeout(() => {
-										this.closeDialog();
-									}, 1500);
-								}
-								else {
-									this.showAllert = {
-										success: false,
-										error: true,
-									}
+										this.showAllert = {
+											success: true,
+											error: false,
+										};
+	
+										this.$emit('addHashCode', this.hashCode.trim());
+
+										setTimeout(() => {
+											this.closeDialog();
+										}, 1500);
+									})
+
+								} else {
+									const loadingEnd = Date.now();
+									controllLoadingTime(loadingEnd - loadingStart, () => {
+										if (this.isShowPreloader) this.isShowPreloader = false;
+
+										this.showAllert = {
+											success: false,
+											error: true,
+										}
+									})
 								}
 
 							} catch(error) {
+								if (this.isShowPreloader) this.isShowPreloader = false;
+
 								this.showAllert = {
 										success: false,
 										error: true,
 									}
+									
 								throw new Error(error);
 							}
 						}
