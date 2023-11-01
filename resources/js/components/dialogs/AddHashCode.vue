@@ -134,7 +134,7 @@
 						error: false,
 					},
 					isShowPreloader: false,
-					loading: false,
+					loading: false, //тут храню статус загрузки, что бы нельзя было хаотично нажимать на Enter во время загрузки
 				}
 			},
 			computed: {
@@ -216,7 +216,7 @@
 									controllLoadingTime(loadingEnd - loadingStart, () => {
 										if (this.isShowPreloader) this.isShowPreloader = false;
 										if (this.loading) this.loading = false;
-										
+
 										this.showAllert = {
 											success: false,
 											error: true,
