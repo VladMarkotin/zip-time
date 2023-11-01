@@ -9,10 +9,10 @@ class GPTService
 
     public function chatGPT(string $prompt)
     {
-        $openai_secret =  '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';
-        $openai_model =  'gpt-3.5-turbo';
-        $openai_tokens =  100;
-        $openai_temperature =  0.1;
+        $openai_secret = config('services.gpt.openai_secret');
+        $openai_model =  config('services.gpt.openai_model');
+        $openai_tokens = (int)config('services.gpt.openai_tokens');
+        $openai_temperature =  config('services.gpt.openai_temperature');
         try {
             $response = Http::timeout(80)->withHeaders([
                 'Content-Type' => 'application/json',

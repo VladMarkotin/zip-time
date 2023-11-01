@@ -36,4 +36,10 @@ return [
         'redirect'      => env('FACEBOOK_URL'),
     ],
 
+    'gpt' => [
+        'openai_secret'       => env('GPT_OPENAI_SECRET'),
+        'openai_model'        => env('GPT_OPENAI_MODEL'),
+        'openai_tokens'       => env('GPT_OPENAI_TOKENS'),
+        'openai_temperature'  => env('GPT_OPENAI_TEMPERATURE'),
+    ],
 ];
