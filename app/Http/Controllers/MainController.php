@@ -40,6 +40,7 @@ use App\Models\SavedTask;
 use App\Http\Controllers\NoteController;
 use App\Models\User;
 use App\Models\DefaultSavedTasks;
+use Illuminate\Support\Facades\Log;
 
 class MainController
 {
@@ -124,24 +125,30 @@ class MainController
         $params['details']      = $request->input('details');
         $params['note']         = $request->input('notes');
 
+        $createResponce         = fn($message, $status) => ['message' => $message, 'status'  => $status,];
+
         $flag = $this->savedTaskService->checkNewHashCode($params['hash_code']);
         if($flag){
-            $transformData = $this->savedTaskService->transformDataForDb($params);
-            $this->savedTaskRepository->saveNewHashCode($transformData);
-            $response = $this->notesService->addNoteForSavedTask($params);
-            if($response){
-                $this->notesRepository->addSavedNote($params);
+            try {
+                DB::transaction(function () use ($params) {     
+                    $transformData = $this->savedTaskService->transformDataForDb($params);
+                    $this->savedTaskRepository->saveNewHashCode($transformData);
+                    $response = $this->notesService->addNoteForSavedTask($params);
+                    if($response){
+                        $this->notesRepository->addSavedNote($params);
+                    }
+                });
+            } catch(\Exception $e){
+                Log::error('Error has happened with save hash code: '. $e->getFile(). " ". $e->getLine(). " ".$e->getMessage());
+
+                return response()->json($createResponce('error has occurred', 'error'));
+            } finally {
+                return response()->json($createResponce('Hash code added successfully', 'success'));
             }
-            return response()->json(([
-                'message' => 'Hash code added successfully',
-                'status'  => 'success',
-            ]));
+            
         }
 
-        return response()->json([
-            'message' => 'Hash code already exists',
-            'status' => 'error',
-        ]);
+        return response()->json($createResponce('Hash code already exists', 'error'));
     }
 
     public function getSavedTasks()
