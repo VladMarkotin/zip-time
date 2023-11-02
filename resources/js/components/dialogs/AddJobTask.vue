@@ -76,11 +76,41 @@
 							</v-col>
 						</v-row>
 						<v-menu ref="v-menu" v-bind:close-on-content-click="false" v-model="menu">
-							<template v-slot:activator="{on}">
-								<v-text-field label="Time" prepend-icon="mdi-clock-time-four-outline" readonly v-model="task.time" v-on="on"></v-text-field>
-							</template>
-							<v-time-picker color="#D71700" v-on:click:minute="$refs['v-menu'].save(task.time)" v-model="task.time"></v-time-picker>
-						</v-menu>
+							<template v-slot:activator="{on: showTimePicker}">
+								<v-row class="p-0 m-0">
+									<v-col
+									cols="1"
+									class="p-0 m-0 d-flex flex-column justify-content-center"
+									>
+									<v-tooltip left>
+										<template 
+										v-slot:activator="{ on: tooltip  }">
+											<v-btn 
+											icon 
+											v-on="{...tooltip, ...showTimePicker}"
+											>
+												<v-icon>
+													{{ icons.mdiClockTimeFourOutline }}
+												</v-icon>
+											</v-btn>
+										</template>
+										<span>Edit time</span>
+									</v-tooltip>
+									</v-col>
+									<v-col class="p-0 m-0">
+										<v-text-field label="Time" readonly v-model="task.time" v-on="showTimePicker"></v-text-field>
+									</v-col>
+									<v-col
+									cols="1"
+									class="p-0 m-0"
+									>
+									</v-col>
+								</v-row>
+								</template>
+									<v-card>
+										<v-time-picker color="#D71700" v-on:click:minute="$refs['v-menu'].save(task.time)" v-model="task.time" />
+									</v-card>
+								</v-menu>
 					</v-container>
 				</v-card-text>
 				<v-divider></v-divider>
@@ -110,7 +140,7 @@
 	import AddHashCode from './AddHashCode.vue';
 	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
-	import {mdiPlusBox,mdiCancel,} from '@mdi/js';
+	import {mdiPlusBox,mdiCancel, mdiClockTimeFourOutline} from '@mdi/js';
 
 	export default
 		{
@@ -130,7 +160,7 @@
 						types : ['required job','non required job','required task','task','reminder'],
 						priorities : [1,2,3],
 						menu : false/*for task.time*/,
-						icons : {mdiPlusBox,mdiCancel,},
+						icons : {mdiPlusBox,mdiCancel,mdiClockTimeFourOutline},
 
 						isShow : true,
 						isShowAddHashCodeDialog : false
