@@ -9,28 +9,26 @@
 				<v-card-text>
 					<v-container>
 						<v-row align="center">
-							<v-col cols="1" v-if="task.name.length >= 4 && task.hashCode == ''">
-								<v-tooltip right>
+							<v-col cols="1">
+								<template v-if="task.name.length >= 4 && task.hashCode == ''">
+									<AddHashCodeButton />
+								</template>
+								<!-- <v-tooltip right>
 									<template v-slot:activator="{on}">
 										<v-btn icon v-on="on" v-on:click="toggleAddHashCodeDialog">
 											<v-icon color="#D71700">{{icons.mdiPlusBox}}</v-icon>
 										</v-btn>
 									</template>
 									<span>Add #code to task for quick access</span>
-								</v-tooltip>
+								</v-tooltip> -->
 							</v-col>
 							<v-col>
 								<v-select label="#code" v-bind:items="hashCodes" v-model="task.hashCode" v-on:change="hashCodeChangeHandler"></v-select>
 							</v-col>
-							<v-col v-if="task.name.length  > 2">
-								<v-tooltip right>
-									<template v-slot:activator="{on}">
-										<v-btn icon v-on="on" v-on:click="clearCurrentHashCode">
-											<v-icon color="#D71700">{{icons.mdiBackspace}}</v-icon>
-										</v-btn>
-									</template>
-									<span>Clear current hash code</span>
-								</v-tooltip>
+							<v-col cols="1">
+								<template v-if="task.name.length  > 2">
+									<CleanHashCodeButton @clearCurrentHashCode="clearCurrentHashCode"/>
+								</template>
 							</v-col>
 						</v-row>
 						<v-text-field counter="25" label="Name" required v-model="task.name"></v-text-field>
@@ -68,12 +66,14 @@
 	</div>
 </template>
 <script>
-	import AddHashCode from './AddHashCode.vue'
-	import {mdiPlusBox,mdiCancel, mdiBackspace} from '@mdi/js'
+	import AddHashCode from './AddHashCode.vue';
+	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
+	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
+	import {mdiPlusBox,mdiCancel,} from '@mdi/js';
 
 	export default
 		{
-			components : {AddHashCode},
+			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton},
 			data()
 			{
 				return {
@@ -89,7 +89,7 @@
 						types : ['required job','non required job','required task','task','reminder'],
 						priorities : [1,2,3],
 						menu : false/*for task.time*/,
-						icons : {mdiPlusBox,mdiCancel, mdiBackspace},
+						icons : {mdiPlusBox,mdiCancel,},
 
 						isShow : true,
 						isShowAddHashCodeDialog : false

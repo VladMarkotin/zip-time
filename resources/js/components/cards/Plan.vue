@@ -58,15 +58,12 @@
                   </v-select>
                </v-col>
                <v-col v-if="defaultSelected.hash.length > 1">
-                  <v-tooltip right >
-					<template v-slot:activator="{on}">
-                 
-						<v-btn icon v-on="on" v-on:click="clearCurrentHashCode"  >
-                     <v-icon color="#D71700">{{ icons.mdiBackspace }}</v-icon>
-						</v-btn>
-					</template>
-					<span>Clear</span>
-				</v-tooltip>
+                  <template>    
+                     <CleanHashCodeButton 
+                     :tooltipText="'Clear'"
+                     @clearCurrentHashCode="clearCurrentHashCode"
+                     />
+                  </template>
                </v-col>
                <v-col cols="4" md="3">
                   <v-text-field
@@ -237,6 +234,7 @@
 <script>
 import AddHashCode from '../dialogs/AddHashCode.vue';
 import AddHashCodeButton from '../UI/addHashCodeButton.vue'
+import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../dialogs/EmergencyCall.vue'
 import {
@@ -256,7 +254,7 @@ import {
 } from '@mdi/js'
 
 export default {
-   components : {EmergencyCall, AddHashCode, AddHashCodeButton},
+   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
