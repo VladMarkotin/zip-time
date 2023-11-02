@@ -250,7 +250,6 @@ import {
     mdiPlus,
     mdiPlusBox,
     mdiCancel,
-    mdiBackspace
 } from '@mdi/js'
 
 export default {
@@ -339,7 +338,6 @@ export default {
             mdiPlusBox,
             mdiCancel,
             mdiCarEmergency,
-            mdiBackspace
         },
         hashCodes: [],
         hashNames: '#',

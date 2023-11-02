@@ -31,9 +31,50 @@
 								</template>
 							</v-col>
 						</v-row>
-						<v-text-field counter="25" label="Name" required v-model="task.name"></v-text-field>
-						<v-select label="Type" v-bind:items="types" v-model="task.type"></v-select>
-						<v-select label="Priority" v-bind:items="priorities" v-model="task.priority"></v-select>
+						<v-row class="p-0 m-0">
+							<v-col 
+							cols="1" 
+							class="p-0 m-0"></v-col>
+							<v-col class="p-0 m-0">
+								<v-text-field 
+								counter="25" 
+								label="Name" 
+								required 
+								v-model="task.name"></v-text-field>
+							</v-col>
+							<v-col 
+							cols="1" 
+							class="p-0 m-0"></v-col>
+						</v-row>
+						<v-row class="p-0 m-0">
+							<v-col 
+							cols="1"
+							class="p-0 m-0"
+							></v-col>
+							<v-col class="p-0 m-0">
+								<v-select label="Type" v-bind:items="types" v-model="task.type"></v-select>
+							</v-col>
+							<v-col
+							cols="1"
+							class="p-0 m-0"
+							></v-col>
+						</v-row>
+						<v-row class="p-0 m-0">
+							<v-col
+							cols="1"
+							class="p-0 m-0"
+							></v-col>
+							<v-col
+							class="p-0 m-0"
+							>
+								<v-select label="Priority" v-bind:items="priorities" v-model="task.priority"></v-select>
+							</v-col>
+							<v-col
+							cols="1"
+							class="p-0 m-0"
+							>	
+							</v-col>
+						</v-row>
 						<v-menu ref="v-menu" v-bind:close-on-content-click="false" v-model="menu">
 							<template v-slot:activator="{on}">
 								<v-text-field label="Time" prepend-icon="mdi-clock-time-four-outline" readonly v-model="task.time" v-on="on"></v-text-field>
