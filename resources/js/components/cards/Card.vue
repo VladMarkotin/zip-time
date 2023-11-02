@@ -748,6 +748,8 @@
 							this.isShowAlert = false;
 						},3000)
 				  })
+
+				  	this.newHashCodeData = {...this.newHashCodeData, time: this.time, priority: this.priority.toString()};
 				}
 			},
 			
