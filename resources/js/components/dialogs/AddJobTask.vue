@@ -1,7 +1,20 @@
 <template>
 	<div>
 		<template v-if="isShowAddHashCodeDialog">
-			<AddHashCode v-on:addHashCode="addHashCode" v-on:toggleAddHashCodeDialog="toggleAddHashCodeDialog"/>
+			<AddHashCode 
+			:width  		= "450"
+			:hashCodeVal    = "task.hashCode"
+			:isShowDialog   = "isShowAddHashCodeDialog"
+			:taskName       = "task.name"
+			:time           = "task.time"
+			:type           = "task.type"
+			:priority       = "task.priority"
+			:details        = "task.details"
+			:notes          = "task.notes"
+			@close          = "closeHashCodeDialog"
+			@changeHashCode = "changeHashCode"
+			@addHashCode    = "addHashCode"
+			/>
 		</template>
 		<v-dialog max-width="650px" persistent v-model="isShow">
 			<v-card>
@@ -10,8 +23,8 @@
 					<v-container>
 						<v-row align="center">
 							<v-col cols="1">
-								<template v-if="task.name.length >= 4 && task.hashCode == ''">
-									<AddHashCodeButton />
+								<template v-if="task.name.length >= 4 && task.hashCode == '#'">
+									<AddHashCodeButton @addHashCodeButtonClick="isShowAddHashCodeDialog = true"/>
 								</template>
 								<!-- <v-tooltip right>
 									<template v-slot:activator="{on}">
@@ -117,11 +130,13 @@
 				return {
 						task :
 							{
-								hashCode : '',
+								hashCode : '#',
 								name : '',
 								type : 'required job',
 								priority : 1,
-								time : '01:00'
+								time : '01:00',
+								details: '',
+								notes: '',
 							},
 						hashCodes : [],
 						types : ['required job','non required job','required task','task','reminder'],
@@ -135,12 +150,16 @@
 			},
 			methods :
 			{
-				clearCurrentHashCode(hashCode){
-					this.task.hashCode = ''
-					this.task.name = ''
-					this.task.type = ''
-					this.task.priority = ''
-					this.task.time = ''
+				clearCurrentHashCode(){
+					this.task = {
+								hashCode : '#',
+								name : '',
+								type : 'required job',
+								priority : 1,
+								time : '01:00',
+								details: '',
+								notes: '',
+							};
 				},
 
 				async hashCodeChangeHandler(hashCode)
@@ -159,28 +178,17 @@
 					defaultSavedTasks = defaultSavedTasks.map((item) => item.hash_code);
 					this.hashCodes = [...this.hashCodes, ...defaultSavedTasks];
 				},
-				addHashCode(hashCode)
-				{
-					axios.
-					post
-						(
-							'/addHashCode',
-							{
-								hash : hashCode,
-								name : this.task.name,
-								type : this.task.type,
-								priority : this.task.priority,
-								time : this.task.time,
-								details : '',
-								notes : ''
-							}
-						)
-					this.hashCodes.unshift(hashCode)
-					this.task.hashCode = hashCode
-				},
-				toggleAddHashCodeDialog()
-				{
-					this.isShowAddHashCodeDialog = !this.isShowAddHashCodeDialog
+
+				changeHashCode(hashCodeVal) {
+         			this.task.hashCode = hashCodeVal;
+      			},
+
+				closeHashCodeDialog() {
+      	   			this.isShowAddHashCodeDialog = false;
+      			},
+				addHashCode() {
+					this.hashCodes.unshift(this.task.hashCode);
+					this.clearCurrentHashCode();
 				},
 
 				async addJob()
@@ -240,7 +248,7 @@
 
 				changeTimeModel(time) {
 					this.task = {...this.task, time};
-				}
+				},
 			},
 			async created()
 			{
