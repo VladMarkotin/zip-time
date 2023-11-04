@@ -75,7 +75,11 @@
 							>	
 							</v-col>
 						</v-row>
-						<v-menu ref="v-menu" v-bind:close-on-content-click="false" v-model="menu">
+						<v-menu 
+						ref="v-menu" 
+						v-bind:close-on-content-click="false" 
+						v-model="menu" 
+						content-class="addJobTask-timePicker-wrapper">
 							<template v-slot:activator="{on: showTimePicker}">
 								<v-row class="p-0 m-0">
 									<v-col
@@ -108,7 +112,24 @@
 								</v-row>
 								</template>
 									<v-card>
-										<v-time-picker color="#D71700" v-on:click:minute="$refs['v-menu'].save(task.time)" v-model="task.time" />
+										<v-container class="p-0">
+											<v-row class="d-flex justify-content-center">
+												<v-col>
+													<v-time-picker 
+													full-width 
+													color="#D71700" 
+													v-on:click:minute="$refs['v-menu'].save(task.time)" 
+													v-model="task.time" 
+													/>
+												</v-col>
+											</v-row>
+											<v-divider></v-divider>
+											<v-row class="d-flex justify-content-end align-items-center pr-4 pl-4">
+												<v-col cols="auto" class="p">
+													<CloseButton @close="menu = false"/>
+												</v-col>
+											</v-row>
+										</v-container>
 									</v-card>
 								</v-menu>
 					</v-container>
@@ -123,14 +144,7 @@
 						</template>
 						<span>Add job/task</span>
 					</v-tooltip>
-					<v-tooltip right>
-						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="toggle">
-								<v-icon color="#D71700" large>{{icons.mdiCancel}}</v-icon>
-							</v-btn>
-						</template>
-						<span>Cancel</span>
-					</v-tooltip>
+					<CloseButton @close="toggle"/>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -140,11 +154,12 @@
 	import AddHashCode from './AddHashCode.vue';
 	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
-	import {mdiPlusBox,mdiCancel, mdiClockTimeFourOutline} from '@mdi/js';
+	import CloseButton from '../UI/CloseButton.vue';
+	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
 
 	export default
 		{
-			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton},
+			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton},
 			data()
 			{
 				return {
@@ -160,7 +175,7 @@
 						types : ['required job','non required job','required task','task','reminder'],
 						priorities : [1,2,3],
 						menu : false/*for task.time*/,
-						icons : {mdiPlusBox,mdiCancel,mdiClockTimeFourOutline},
+						icons : {mdiPlusBox,mdiClockTimeFourOutline},
 
 						isShow : true,
 						isShowAddHashCodeDialog : false
@@ -168,7 +183,6 @@
 			},
 			methods :
 			{
-
 				clearCurrentHashCode(hashCode){
 					this.task.hashCode = ''
 					this.task.name = ''
@@ -274,3 +288,10 @@
 			}
 		}
 </script>
+
+<style>
+	.addJobTask-timePicker-wrapper .v-picker > .v-picker__body {
+		width: 60%;
+		margin: 0 auto;
+	}
+</style>

@@ -176,7 +176,6 @@
 						
 						if (permissibleLength.includes(this.hashCode.trim().length)) {
 							try {
-								//если время обновлено,то поправить!!!!
 								const responce = await axios.post('/addHashCode', {
 									hash:     this.hashCode.trim(),
 									taskName: this.taskName,
