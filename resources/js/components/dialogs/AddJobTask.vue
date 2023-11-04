@@ -75,63 +75,14 @@
 							>	
 							</v-col>
 						</v-row>
-						<v-menu 
-						ref="v-menu" 
-						v-bind:close-on-content-click="false" 
-						v-model="menu" 
-						content-class="addJobTask-timePicker-wrapper">
-							<template v-slot:activator="{on: showTimePicker}">
-								<v-row class="p-0 m-0">
-									<v-col
-									cols="1"
-									class="p-0 m-0 d-flex flex-column justify-content-center"
-									>
-									<v-tooltip left>
-										<template 
-										v-slot:activator="{ on: tooltip  }">
-											<v-btn 
-											icon 
-											v-on="{...tooltip, ...showTimePicker}"
-											>
-												<v-icon>
-													{{ icons.mdiClockTimeFourOutline }}
-												</v-icon>
-											</v-btn>
-										</template>
-										<span>Edit time</span>
-									</v-tooltip>
-									</v-col>
-									<v-col class="p-0 m-0">
-										<v-text-field label="Time" readonly v-model="task.time" v-on="showTimePicker"></v-text-field>
-									</v-col>
-									<v-col
-									cols="1"
-									class="p-0 m-0"
-									>
-									</v-col>
-								</v-row>
-								</template>
-									<v-card>
-										<v-container class="p-0">
-											<v-row class="d-flex justify-content-center">
-												<v-col>
-													<v-time-picker 
-													full-width 
-													color="#D71700" 
-													v-on:click:minute="$refs['v-menu'].save(task.time)" 
-													v-model="task.time" 
-													/>
-												</v-col>
-											</v-row>
-											<v-divider></v-divider>
-											<v-row class="d-flex justify-content-end align-items-center pr-4 pl-4">
-												<v-col cols="auto" class="p">
-													<CloseButton @close="menu = false"/>
-												</v-col>
-											</v-row>
-										</v-container>
-									</v-card>
-								</v-menu>
+						<template>
+							<TimePickerMenu 
+							:menuParent = "menu"
+							:timeParent = "task.time"
+							@changeMenuModel="changeMenuModel"
+							@changeTimeModel="changeTimeModel"
+							/>
+						</template>
 					</v-container>
 				</v-card-text>
 				<v-divider></v-divider>
@@ -155,11 +106,12 @@
 	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
 	import CloseButton from '../UI/CloseButton.vue';
+	import TimePickerMenu from '../TimePickerMenu.vue';
 	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
 
 	export default
 		{
-			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton},
+			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, TimePickerMenu},
 			data()
 			{
 				return {
@@ -194,6 +146,7 @@
 				async hashCodeChangeHandler(hashCode)
 				{
 					const data = (await axios.post('/getSavedTask',{hash_code : hashCode})).data
+					console.log(data);
 					this.task.name = data[1]
 					const types = this.types.slice()
 					this.task.type = data[2] //types.reverse()[data[2]]
@@ -280,6 +233,14 @@
 				toggle()
 				{
 					this.$emit('toggleAddJobTaskDialog')
+				},
+
+				changeMenuModel(menu) {
+					this.menu = menu;
+				},
+
+				changeTimeModel(time) {
+					this.task = {...this.task, time};
 				}
 			},
 			async created()
