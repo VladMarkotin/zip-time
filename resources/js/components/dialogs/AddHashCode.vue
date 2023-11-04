@@ -160,6 +160,19 @@
 			},
 			methods : {
 				addHashCode() {
+					const showAllert = (status) => {
+						if (status) {
+							this.showAllert = {
+								success: true,
+								error: false,
+							}
+						} else {
+							this.showAllert = {
+								success: false,
+								error: true,
+							}
+						}
+					}
 					
 					const closeAfterAdding = async () => {
 
@@ -192,17 +205,14 @@
 
 									if (time > minPreloaderDispTime) callback();
 									else setTimeout(callback, minPreloaderDispTime - time);
-								}
+								}		
 								
 								if (responce.data.status === 'success') {
 									const loadingEnd = Date.now();
 									controllLoadingTime(loadingEnd - loadingStart, () => {
 										if (this.isShowPreloader) this.isShowPreloader = false;
 
-										this.showAllert = {
-											success: true,
-											error: false,
-										};
+										showAllert(true);
 	
 										setTimeout(() => {
 											this.$emit('addHashCode', this.hashCode.trim());
@@ -217,10 +227,7 @@
 										if (this.isShowPreloader) this.isShowPreloader = false;
 										if (this.loading) this.loading = false;
 
-										this.showAllert = {
-											success: false,
-											error: true,
-										}
+										showAllert(false);
 									})
 								}
 
@@ -228,10 +235,7 @@
 								if (this.isShowPreloader) this.isShowPreloader = false;
 								if (this.loading) this.loading = false;
 
-								this.showAllert = {
-										success: false,
-										error: true,
-									}
+								showAllert(false);
 									
 								throw new Error(error);
 							}
@@ -239,12 +243,10 @@
 					};
 					
 					if (this.isHashCodeValid) {
-						if (this.hashCode[0] === '#') {
-							closeAfterAdding();
-						} else {
+						if (!this.hashCode[0] === '#') {
 							this.hashCode = `#${this.hashCode}`
-							closeAfterAdding();
 						}
+						closeAfterAdding();
 					}
 
 				},
