@@ -188,7 +188,6 @@
       			},
 				addHashCode() {
 					this.hashCodes.unshift(this.task.hashCode);
-					this.clearCurrentHashCode();
 				},
 
 				async addJob()
