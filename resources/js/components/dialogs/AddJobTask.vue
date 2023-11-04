@@ -146,7 +146,6 @@
 				async hashCodeChangeHandler(hashCode)
 				{
 					const data = (await axios.post('/getSavedTask',{hash_code : hashCode})).data
-					console.log(data);
 					this.task.name = data[1]
 					const types = this.types.slice()
 					this.task.type = data[2] //types.reverse()[data[2]]

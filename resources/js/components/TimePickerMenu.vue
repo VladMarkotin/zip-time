@@ -20,7 +20,7 @@
                     </v-tooltip>
                 </v-col>
                 <v-col class="p-0 m-0">
-                    <v-text-field label="Time" readonly v-model="time" v-on="showTimePicker"></v-text-field>
+                    <v-text-field label="Time" readonly v-model="timeParent" v-on="showTimePicker"></v-text-field>
                 </v-col>
                 <v-col cols="1" class="p-0 m-0">
                 </v-col>
