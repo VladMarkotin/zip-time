@@ -160,94 +160,93 @@
 			},
 			methods : {
 				addHashCode() {
-					const showAllert = (status) => {
-						if (status) {
-							this.showAllert = {
-								success: true,
-								error: false,
-							}
-						} else {
-							this.showAllert = {
-								success: false,
-								error: true,
-							}
-						}
-					}
-					
-					const closeAfterAdding = async () => {
-
-						if (this.loading) return;
-						this.loading = true;
-						
-						const loadingStart = Date.now();
-						this.isShowPreloader = true;
-						const permissibleLength = new Array;
-
-						for (let i = this.permissibleCodeLengthMin; i <= this.permissibleCodeLengthMax; i++) {
-							permissibleLength.push(i);
-						}
-						
-						if (permissibleLength.includes(this.hashCode.trim().length)) {
-							try {
-								const responce = await axios.post('/addHashCode', {
-									hash:     this.hashCode.trim(),
-									taskName: this.taskName,
-									time:     this.time,
-									type:     this.type,
-									priority: this.priority,
-									details:  this.details,
-									notes:    this.notes,
-								})
-
-								const controllLoadingTime = (time, callback) => {
-
-									const minPreloaderDispTime = 1000;
-
-									if (time > minPreloaderDispTime) callback();
-									else setTimeout(callback, minPreloaderDispTime - time);
-								}		
-								
-								if (responce.data.status === 'success') {
-									const loadingEnd = Date.now();
-									controllLoadingTime(loadingEnd - loadingStart, () => {
-										if (this.isShowPreloader) this.isShowPreloader = false;
-
-										showAllert(true);
-	
-										setTimeout(() => {
-											this.$emit('addHashCode', this.hashCode.trim());
-											if (this.loading) this.loading = false;
-											this.closeDialog();
-										}, 1500);
-									})
-
-								} else {
-									const loadingEnd = Date.now();
-									controllLoadingTime(loadingEnd - loadingStart, () => {
-										if (this.isShowPreloader) this.isShowPreloader = false;
-										if (this.loading) this.loading = false;
-
-										showAllert(false);
-									})
-								}
-
-							} catch(error) {
-								if (this.isShowPreloader) this.isShowPreloader = false;
-								if (this.loading) this.loading = false;
-
-								showAllert(false);
-									
-								throw new Error(error);
-							}
-						}
-					};
-					
 					if (this.isHashCodeValid) {
 						if (!this.hashCode[0] === '#') {
 							this.hashCode = `#${this.hashCode}`
 						}
-						closeAfterAdding();
+						sendHashCodeData = sendHashCodeData.bind(this);
+						sendHashCodeData();
 					}
+
+					
+					async function sendHashCodeData () {
+						
+						const checkHashCodeLength = () => {
+							const permissibleLength = new Array;
+
+							for (let i = this.permissibleCodeLengthMin; i <= this.permissibleCodeLengthMax; i++) {
+								permissibleLength.push(i);
+							}
+
+							return permissibleLength.includes(this.hashCode.trim().length) ? true : false;
+						}
+
+						const showAllert = (success, error) => {
+							this.showAllert = {
+								success,
+								error,
+							}
+						}
+
+						const controllLoadingTime = (time, callback) => {
+							const minPreloaderDispTime = 1000;
+							
+							if (time > minPreloaderDispTime) callback();
+							else setTimeout(callback, minPreloaderDispTime - time);
+						}
+						
+						if (this.loading || !checkHashCodeLength()) return;
+						showAllert(false, false)
+						this.loading = true;
+						const loadingStart = Date.now();
+						this.isShowPreloader = true;
+
+						try {
+						const responce = await axios.post('/addHashCode', {
+							hash: this.hashCode.trim(),
+							taskName: this.taskName,
+							time: this.time,
+							type: this.type,
+							priority: this.priority,
+							details: this.details,
+							notes: this.notes,
+						})
+
+						if (responce.data.status === 'success') {
+							const loadingEnd = Date.now();
+							controllLoadingTime(loadingEnd - loadingStart, () => {
+								if (this.isShowPreloader) this.isShowPreloader = false;
+								showAllert(true, false);
+
+								setTimeout(() => {
+									this.$emit('addHashCode', this.hashCode.trim());
+									if (this.loading) this.loading = false;
+									this.closeDialog();
+								}, 1500);
+							})
+
+						} else {
+							const loadingEnd = Date.now();
+							controllLoadingTime(loadingEnd - loadingStart, () => {
+								if (this.isShowPreloader) this.isShowPreloader = false;
+								if (this.loading) this.loading = false;
+
+								showAllert(false, true);
+							})
+						}
+
+					} catch (error) {
+						const loadingEnd = Date.now();
+						controllLoadingTime(loadingEnd - loadingStart, () => {
+							if (this.isShowPreloader) this.isShowPreloader = false;
+							if (this.loading) this.loading = false;
+
+							showAllert(false, true);
+						})
+
+						throw new Error(error);
+					}
+					};
 
 				},
 
