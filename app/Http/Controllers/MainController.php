@@ -127,7 +127,7 @@ class MainController
 
         $createResponce         = fn($message, $status) => ['message' => $message, 'status'  => $status,];
 
-        $flag = $this->savedTaskService->checkNewHashCode($params['hash_code']);
+        $flag = $this->savedTaskService->checkNewHashCode($params['hash_code'], $params['task_name']);
         if($flag){
             try {
                 DB::transaction(function () use ($params) {     

@@ -28,9 +28,9 @@ class HashCodeService
         $this->savedTaskRepository = $savedTask2Repository;
     }
 
-    public function checkNewHashCode($hashCode)
+    public function checkNewHashCode($hashCode, $taskName)
     {
-        if($this->isHashCodeCorrect($hashCode)){
+        if($this->isHashCodeCorrect($hashCode) && $this->isTaskNameCorrect($taskName)){
             if($this->isUniqueForUser($hashCode)){
                 return true;
             }
@@ -68,5 +68,12 @@ class HashCodeService
         }
 
         return false;
+    }
+
+    private function isTaskNameCorrect($taskName)
+    {
+        $taskNameLength = mb_strlen(trim($taskName));
+
+        return ($taskNameLength > 0) && ($taskNameLength < 256) ? true : false;
     }
 }
