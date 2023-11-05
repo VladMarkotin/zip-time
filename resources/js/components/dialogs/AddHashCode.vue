@@ -102,14 +102,14 @@
 					hashCodeRules: [
 						(inputVal) => {
 							inputVal = inputVal.trim();
-							if (inputVal[0] !== '#') return inputVal.length > 1 || 'Minimum length is 2 characters';
-							return inputVal.length > 2 || 'Minimum length is 3 characters';
+							if (inputVal[0] !== '#') return inputVal.length >= this.permissibleCodeLengthMin - 1 || `Minimum length is ${this.permissibleCodeLengthMin - 1} characters`;
+							return inputVal.length >= this.permissibleCodeLengthMin || `Minimum length is ${this.permissibleCodeLengthMin} characters`;
 						},
 
 						(inputVal) => {
 							inputVal = inputVal.trim();
-							if (inputVal[0] !== '#') return inputVal.length <= 5 || 'Maximum length is 5 characters';
-							return inputVal.length <= 6 || 'Maximum length is 6 characters';
+							if (inputVal[0] !== '#') return inputVal.length <= this.permissibleCodeLengthMax - 1 || `Maximum length is ${this.permissibleCodeLengthMax - 1} characters`;
+							return inputVal.length <= this.permissibleCodeLengthMax || `Maximum length is ${this.permissibleCodeLengthMax} characters`;
 						},
 
 						(inputVal) => {
