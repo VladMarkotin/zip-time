@@ -158,7 +158,7 @@ class AddPlanService
         return $task;
     }
 
-    private function checkName($task)
+    public function checkName($task)
     {
         if( strlen($task) > 3 && (strlen($task) < 255) ){
             return true;

@@ -76,7 +76,6 @@ import {mdiClockTimeFourOutline} from '@mdi/js';
                 this.$emit('changeMenuModel', this.menu);
             },
             time() {
-                console.log(this.time);
                 this.$emit('changeTimeModel', this.time);
             },
         },
