@@ -10217,7 +10217,7 @@ hr.underline {
 
 .footer {
     display: flex;
-    /* margin-bottom: 0px; */
+    margin-top: 170px;
     flex-direction: column;
     justify-content: space-evenly;
     height: 220px;
@@ -10498,5 +10498,58 @@ hr.underline {
     -moz-transform: translate(-100px, 0); /** Firefox **/
 }
 
-/* ====================== */
+/* ==========  AUTH FORM  ============ */
 
+.auth-container{
+  display: flex;
+    width: 700px;
+    height: 200px;
+    background-color: #212121;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    margin: 30px;
+    border-radius: 10px;
+}
+
+.auth-info{
+  display: flex;
+    justify-content: center;
+    background-color: #A10000;
+    width: 300px;
+    border-radius: 10px;
+    height: 130px;
+    align-self: center;
+    /* box-shadow: 0 0 10px 10px #A10000; */
+}
+
+.auth-text{
+  align-self: center;
+  max-width: 250px;
+  color: #fff;
+  font-size: larger;
+}
+
+.auth-card{
+  display: flex;
+  flex-direction: row;
+  height: 40px !important;
+  align-self: center;
+  box-shadow: rgb(59 89 152 / 73%) 0px 0px 50px;
+  margin-right: 40px;
+}
+
+.facebook-ico{
+  height: 90%;
+  width: auto;
+  align-self: center;
+  margin: 2.5px;
+}
+
+.facebook-link{
+  align-self: center;
+}
+
+a.btn.btn-facebook {
+  font-size: 17px;
+}
