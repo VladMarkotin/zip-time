@@ -10509,7 +10509,7 @@ hr.underline {
     flex-wrap: nowrap;
     justify-content: space-around;
     margin: 30px;
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 .auth-info{
@@ -10517,7 +10517,7 @@ hr.underline {
     justify-content: center;
     background-color: #A10000;
     width: 300px;
-    border-radius: 15px;
+    border-radius: 10px;
     height: 130px;
     align-self: center;
     /* box-shadow: 0 0 10px 10px #A10000; */
