@@ -3,14 +3,14 @@
 		<template v-if="isShowAddHashCodeDialog">
 			<AddHashCode 
 			:width  		= "450"
-			:hashCodeVal    = "task.hashCode"
+			:hashCodeVal    = "isChangedHashCodeTemplate ? '#' : task.hashCode"
 			:isShowDialog   = "isShowAddHashCodeDialog"
 			:taskName       = "task.name"
 			:time           = "task.time"
 			:type           = "task.type"
 			:priority       = "task.priority"
-			:details        = "task.details"
-			:notes          = "task.notes"
+			:details        = "isChangedHashCodeTemplate ? '' : task.details"
+			:notes          = "isChangedHashCodeTemplate ? '' : task.notes"
 			@close          = "closeHashCodeDialog"
 			@changeHashCode = "changeHashCode"
 			@addHashCode    = "addHashCode"
@@ -23,17 +23,9 @@
 					<v-container>
 						<v-row align="center">
 							<v-col cols="1">
-								<template v-if="task.name.length >= 4 && task.hashCode == '#'">
+								<template v-if="(task.name.length >= 4 && (task.hashCode == '#' || isChangedHashCodeTemplate)) ">
 									<AddHashCodeButton @addHashCodeButtonClick="isShowAddHashCodeDialog = true"/>
 								</template>
-								<!-- <v-tooltip right>
-									<template v-slot:activator="{on}">
-										<v-btn icon v-on="on" v-on:click="toggleAddHashCodeDialog">
-											<v-icon color="#D71700">{{icons.mdiPlusBox}}</v-icon>
-										</v-btn>
-									</template>
-									<span>Add #code to task for quick access</span>
-								</v-tooltip> -->
 							</v-col>
 							<v-col>
 								<v-select label="#code" v-bind:items="hashCodes" v-model="task.hashCode" v-on:change="hashCodeChangeHandler"></v-select>
@@ -53,7 +45,8 @@
 								counter="25" 
 								label="Name" 
 								required 
-								v-model="task.name"></v-text-field>
+								v-model="task.name"
+								@input="compareWithTemplate"></v-text-field>
 							</v-col>
 							<v-col 
 							cols="1" 
@@ -65,7 +58,12 @@
 							class="p-0 m-0"
 							></v-col>
 							<v-col class="p-0 m-0">
-								<v-select label="Type" v-bind:items="types" v-model="task.type"></v-select>
+								<v-select 
+								label="Type" 
+								v-bind:items="types" 
+								v-model="task.type"
+								@change="compareWithTemplate"
+								></v-select>
 							</v-col>
 							<v-col
 							cols="1"
@@ -80,7 +78,12 @@
 							<v-col
 							class="p-0 m-0"
 							>
-								<v-select label="Priority" v-bind:items="priorities" v-model="task.priority"></v-select>
+								<v-select 
+								label="Priority" 
+								v-bind:items="priorities" 
+								v-model="task.priority"
+								@change="compareWithTemplate"
+								></v-select>
 							</v-col>
 							<v-col
 							cols="1"
@@ -128,16 +131,22 @@
 			data()
 			{
 				return {
-						task :
-							{
-								hashCode : '#',
-								name : '',
-								type : 'required job',
-								priority : 1,
-								time : '01:00',
-								details: '',
-								notes: '',
-							},
+						task : {
+							hashCode : '#',
+							name : '',
+							type : 'required job',
+							priority : 1,
+							time : '01:00',
+							details: '',
+							notes: '',
+						},
+						savedTaskTemplate: {
+							hashCode : '#',
+							name : '',
+							type : '',
+							priority : null,
+							time : '',
+						},
 						hashCodes : [],
 						types : ['required job','non required job','required task','task','reminder'],
 						priorities : [1,2,3],
@@ -145,7 +154,8 @@
 						icons : {mdiPlusBox,mdiClockTimeFourOutline},
 
 						isShow : true,
-						isShowAddHashCodeDialog : false
+						isShowAddHashCodeDialog : false,
+						isChangedHashCodeTemplate: false,
 					}
 			},
 			methods :
@@ -160,16 +170,27 @@
 								details: '',
 								notes: '',
 							};
+					
+					this.savedTaskTemplate = {
+						hashCode : '#',
+						name : '',
+						type : '',
+						priority : null,
+						time : '',
+					}
 				},
 
 				async hashCodeChangeHandler(hashCode)
-				{
+				{	
 					const data = (await axios.post('/getSavedTask',{hash_code : hashCode})).data
-					this.task.name = data[1]
+					this.savedTaskTemplate.hashCode = hashCode;
+					this.savedTaskTemplate.name = this.task.name = data[1];
 					const types = this.types.slice()
-					this.task.type = data[2] //types.reverse()[data[2]]
-					this.task.priority = data[3]
-					this.task.time = data[5]
+					this.savedTaskTemplate.type = this.task.type = data[2]; //types.reverse()[data[2]]
+					this.savedTaskTemplate.priority = this.task.priority = data[3];
+					this.savedTaskTemplate.time = this.task.time = data[5];
+
+					this.isChangedHashCodeTemplate = false;
 				},
 				async loadHashCodes()
 				{
@@ -184,7 +205,12 @@
       			},
 
 				closeHashCodeDialog() {
+					if (this.isChangedHashCodeTemplate && !this.hashCodes.includes(this.task.hashCode)) {
+						this.task.hashCode = this.savedTaskTemplate.hashCode;
+					}
+
       	   			this.isShowAddHashCodeDialog = false;
+					this.isChangedHashCodeTemplate = false;
       			},
 				addHashCode() {
 					this.hashCodes.unshift(this.task.hashCode);
@@ -247,6 +273,27 @@
 
 				changeTimeModel(time) {
 					this.task = {...this.task, time};
+					this.compareWithTemplate();
+				},
+
+				compareWithTemplate() {
+
+					if (this.task.hashCode !== '#') {
+
+						const currentTask = {
+							hashCode: this.task.hashCode,
+							name: this.task.name,
+							type: this.task.type,
+							priority: this.task.priority,
+							time: this.task.time,
+						};
+
+						const currentTaskClone = {...currentTask, name: currentTask.name.trim()};
+						const currentTaskTemplateClone = {...this.savedTaskTemplate, name: this.savedTaskTemplate.name.trim()};
+						
+						this.isChangedHashCodeTemplate = !(JSON.stringify(currentTaskClone) === JSON.stringify(currentTaskTemplateClone));
+					}
+
 				},
 			},
 			async created()

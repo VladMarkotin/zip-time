@@ -274,9 +274,9 @@
 			},
 
 			async mounted() {
-				if (this.$refs.hashCodeInput) this.$refs.hashCodeInput.validate(true);
 				const hashCodes = await this.getHashCodes();
 				if (hashCodes.length) this.userHashCodes = hashCodes;
+				if (this.$refs.hashCodeInput) this.$refs.hashCodeInput.validate(true);
 			}
 		}
 </script>
