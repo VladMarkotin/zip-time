@@ -279,6 +279,10 @@
 				compareWithTemplate() {
 
 					if (this.task.hashCode !== '#') {
+						
+						const convertToJSON = (targetObj) => {
+							return JSON.stringify({...targetObj, name: targetObj.name.trim()});
+						}
 
 						const currentTask = {
 							hashCode: this.task.hashCode,
@@ -288,10 +292,7 @@
 							time: this.task.time,
 						};
 
-						const currentTaskClone = {...currentTask, name: currentTask.name.trim()};
-						const currentTaskTemplateClone = {...this.savedTaskTemplate, name: this.savedTaskTemplate.name.trim()};
-						
-						this.isChangedHashCodeTemplate = !(JSON.stringify(currentTaskClone) === JSON.stringify(currentTaskTemplateClone));
+						this.isChangedHashCodeTemplate = !(convertToJSON(currentTask) === convertToJSON(this.savedTaskTemplate));
 					}
 
 				},
