@@ -286,7 +286,7 @@ export default {
                                                 : this.editCompletedPercet(complPercentResp);
                     
                     this.updateCompletedPercent(completedPercent);
-                    this.updateAlertData({type: response.data.status, text: response.data.message});
+                    this.updateAlertData(response.data.status, response.data.message);
 				  })
 			},
 

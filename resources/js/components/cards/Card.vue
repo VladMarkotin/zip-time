@@ -457,7 +457,7 @@
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
 				.then((response) => {
 					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message)
+					this.setAlertData({type: response.data.status, text: response.data.message})
 					setTimeout( () => {
 						this.isShowAlert = false;
 						//debugger;
@@ -494,8 +494,8 @@
 				this.isShowAlert = !this.isShowAlert
 			},
 			
-			setAlertData({type,text})
-			{
+			setAlertData(type, text)
+			{	
 				this.alert.type = type
 				this.alert.text = text
 			},
