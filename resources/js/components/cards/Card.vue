@@ -255,14 +255,14 @@
 						mdiPlex, mdiDelete, mdiExclamation,mdiCircle, mdiMusicAccidentalSharp  }, //mdiContentSaveCheckOutline
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
-					isShowAlertInDetails: false,
+					// isShowAlertInDetails: false,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
 					dialog     : false,  
 					dialogEditSubTask : false, 
 					subTaskTitle: false,
 					dialogNotes: false,
-					dialogDetails: false,
+					// dialogDetails: false,
 					checked: true,
 					time       : this.item.time,
 					priority   : this.item.priority,
@@ -272,14 +272,14 @@
 					done: 'v-card-done',
 					completedPercent : 0,
 					completedProgressBar: 0,
-					subTasks: {
-						title: '',
-						text: '',
-						position:1,
-						weight: 100,
-						checkpoint: false,
-						is_ready: false,
-					},
+					// subTasks: {
+					// 	title: '',
+					// 	text: '',
+					// 	position:1,
+					// 	weight: 100,
+					// 	checkpoint: false,
+					// 	is_ready: false,
+					// },
 					createdSubTasks: {
 						title: '',
 						text: '',
@@ -338,7 +338,6 @@
 					this.isShowAddHashCodeDialog = !this.isShowAddHashCodeDialog
 				},
 				updateDetails(details) {
-					console.log(details);
 					this.details = details;
 				},
 
@@ -365,31 +364,31 @@
 			// 	  })
 			// },
 
-			addDetail(item){
-				//console.log(item.taskId)
-				this.subTasks.task_id = this.item.taskId
-				this.details.push(this.subTasks) 
-				this.createSubPlan(this.subTasks)
-				this.subTasks = {};
-			},
+			// addDetail(item){
+			// 	//console.log(item.taskId)
+			// 	this.subTasks.task_id = this.item.taskId
+			// 	this.details.push(this.subTasks) 
+			// 	this.createSubPlan(this.subTasks)
+			// 	this.subTasks = {};
+			// },
 
-			createSubPlan(item){
-				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
-				.then((response) => {
-					//console.log(response)
-					this.isShowAlertInDetails = true;
-					this.setAlertData(response.data.elements, response.data.message)
-					this.completedPercent = response.data.completedPercent
-					item.taskId = response.data.taskId
-					setTimeout( () => {
-						this.isShowAlertInDetails = false;
-						//debugger;
-					},3000)
-				  })
-				  .catch(function (error) {
-					console.log(error)
-				  })
-			},
+			// createSubPlan(item){
+			// 	axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
+			// 	.then((response) => {
+			// 		//console.log(response)
+			// 		this.isShowAlertInDetails = true;
+			// 		this.setAlertData(response.data.elements, response.data.message)
+			// 		this.completedPercent = response.data.completedPercent
+			// 		item.taskId = response.data.taskId
+			// 		setTimeout( () => {
+			// 			this.isShowAlertInDetails = false;
+			// 			//debugger;
+			// 		},3000)
+			// 	  })
+			// 	  .catch(function (error) {
+			// 		console.log(error)
+			// 	  })
+			// },
 
 			deleteSubTask(item){
 				var index = this.details.indexOf(item)

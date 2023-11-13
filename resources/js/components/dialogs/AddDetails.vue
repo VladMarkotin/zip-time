@@ -20,9 +20,14 @@
                         <p class="text-xs-center">Plan`s details</p>
                     </v-col>
                     <v-col>
-                        <v-progress-circular :rotate="360" :size="100" :width="10" :model-value="completedPercent"
-                            color="red" :value="completedPercent">
-                            {{ completedPercent }}
+                        <v-progress-circular 
+                        :rotate="360" 
+                        :size="100" 
+                        :width="10" 
+                        :model-value="completedPercent"
+                        color="red" 
+                        :value="completedPercent">
+                            {{ completedPercent }} %
                         </v-progress-circular>
                     </v-col>
                 </v-row>
@@ -32,18 +37,27 @@
                 <template>
                     <v-row>
                         <v-col>
-
-                            <v-text-field width="20px" v-model="subTasks.title" :counter="256" label="Subtask title"
-                                v-on:keyup.enter="addDetail" required></v-text-field>
+                            <v-text-field 
+                            width="20px" 
+                            v-model="subTasks.title" 
+                            :counter="256" 
+                            label="Subtask title"
+                            v-on:keyup.enter="addDetail" 
+                            required></v-text-field>
                         </v-col>
                         <v-col>
-
-                            <v-text-field width="20px" v-model="subTasks.text" v-on:keyup.enter="addDetail" :counter="1000"
-                                label="Subtask details" required></v-text-field>
+                            <v-text-field 
+                            width="20px" 
+                            v-model="subTasks.text" 
+                            v-on:keyup.enter="addDetail" 
+                            :counter="1000"
+                            label="Subtask details" 
+                            required></v-text-field>
                         </v-col>
-
                         <v-col>
-                            <v-checkbox label="is required subtask?" v-model="subTasks.checkpoint">
+                            <v-checkbox 
+                            label="is required subtask?" 
+                            v-model="subTasks.checkpoint">
                             </v-checkbox>
                         </v-col>
                         <v-col>
@@ -106,12 +120,10 @@
             <v-card-actions>
                 <v-row>
                     <v-col>
-
                         <v-btn color="blue-darken-1" variant="text" @click="dialogDetails = false">
                             Close
                         </v-btn>
                     </v-col>
-
                 </v-row>
             </v-card-actions>
         </v-card>
@@ -148,7 +160,7 @@
 </template>
 
 <script>
-import {mdiChartGantt, }  from '@mdi/js'  //m
+import {mdiChartGantt, mdiPlex}  from '@mdi/js'  //m
 export default {
     props: {
         num: {},
@@ -168,7 +180,17 @@ export default {
     data() {
         return {
             isShowDialogDetails: false,
-            icons: {mdiChartGantt},
+            icons: {mdiChartGantt, mdiPlex},
+            subTasks: {
+						title: '',
+						text: '',
+						position:1,
+						weight: 100,
+						checkpoint: false,
+						is_ready: false,
+					},
+            isShowAlertInDetails: false,
+            
         }
     },
     watch: {
@@ -224,6 +246,31 @@ export default {
                     
                     this.updateCompletedPercent(completedPercent);
                     this.updateAlertData({type: response.data.status, text: response.data.message});
+				  })
+			},
+
+            addDetail(){
+				this.subTasks.task_id = this.item.taskId
+                this.updateDetails([...this.details, this.subTasks]);
+				this.createSubPlan(this.subTasks)
+				this.subTasks = {};
+			},
+
+			createSubPlan(item){
+				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
+				.then((response) => {
+					//console.log(response)
+					this.isShowAlertInDetails = true;
+					this.setAlertData(response.data.elements, response.data.message)
+					this.completedPercent = response.data.completedPercent
+					item.taskId = response.data.taskId
+					setTimeout( () => {
+						this.isShowAlertInDetails = false;
+						//debugger;
+					},3000)
+				  })
+				  .catch(function (error) {
+					console.log(error)
 				  })
 			},
 
