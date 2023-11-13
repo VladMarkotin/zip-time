@@ -26,13 +26,14 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @livewireStyles
 
 
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet"> -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <!-- Default theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
@@ -48,106 +49,130 @@
     <livewire:add-log />
 
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto ">
+        <header id="sticky-header" class="header-area header-wrapper transparent-header">
 
-                        @if (Route::has('login'))
-                            @auth
-                                <!-- Button Notification -->
+    <!-- Меню (для десктопа) -->
+    <div class="header-middle-area full-width">
+        <div class="container">
+            <div class="full-width-mega-dropdown">
+                <div class="row">
+                    <!-- Логотип -->
+                    <div class="col-md-2 col-sm-3 col-xs-8">
+                        <div class="logo ptb-22">
+                            <a href="index.html">
+                                <img src="img/logo/logo.png" alt="main logo">
+                            </a>
+                        </div>
+                    </div>
 
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-light " id="bell">
-                                        <livewire:counter />
-                                    </button>
+                    <!-- Меню (основное) -->
+                    <div class="col-md-10 col-sm-9 col-xs-4 text-right">
+                        <div class="header-main-menu hidden-xs">
+                            <nav id="primary-menu">
+                                <ul class="main-menu text-right">
+                                    <li class="mega-parent">
+                                        <a href="index.html">Главная</a>
+                                    </li>
+                                    <li>
+                                        <a href="about_us.html">О нас</a>
+                                    </li>
+                                    <li>
+                                        <a href="services.html">
+                                            Услуги
+                                            <span class="indicator"><i class="fa fa-angle-down"></i></span>
+                                        </a>
+                                        <ul class="dropdown">
+                                            <li>
+                                                <a href="services_landing.html">Лендинг</a>
+                                            </li>
+                                            <li>
+                                                <a href="services_online_shop.html">Интернет-магазин</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>                                        <a href="portfolio.html">                                            Портфолио                                        </a>                                    </li>
+                                    <li>
+                                        <a href="blog.html">Блог</a>
+                                    </li>
+                                    <li>
+                                        <a href="contacts.html">Контакты</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
 
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-light " data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                        <span class="mdi mdi-pencil-outline"></span>
-                                    </button>
-
-                                    @if (Auth::user()->role_as == 1)
-                                        <button type="button" class="btn btn-light" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal2">
-                                            <b> <i class="bi bi-broadcast-pin"></i> Broadcast</b>
-                                        </button>
-                                    @endif
-                                </div>
-                            @endauth
-                        @endif
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('stat') }}">Statistics</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('hist') }}">History</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('backlog') }}">Backlog</a>
-                            </li>
-                            <li class="nav-item dropdown personal-results-toggle">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                    <span id="total-results">
-                                            {{ Auth::user()->rating  }}                                    
-                                    </span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('settings') }}">Settings</a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                        <!-- Поиск -->
+                        <div class="header-right">
+                            <div class="header-search">
+                                <div class="search-wrapper">
+                                    <a href="javascript:void(0);" class="search-open">
+                                        <i class="pe-7s-search"></i>
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                    <div class="search-inside animated bounceInUp">
+                                        <i class="icon-close search-close fa fa-times"></i>
+                                        <div class="search-overlay"></div>
+                                        <div class="position-center-center">
+                                            <div class="search">
+                                                <form>
+                                                    <input type="search" placeholder="Поиск по сайту">
+                                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="personal-results">
-                                    <personal-results />
-                                </div>
-                            </li>
-
-                        @endguest
-                    </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
+    </div>
 
+    <!-- Меню (для мобилки) -->
+    <div class="mobile-menu-area visible-xs">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mobile-menu">
+                        <nav id="dropdown">
+                            <ul>
+                                <li>
+                                    <a href="index.html">Главная</a>
+                                </li>
+                                <li>
+                                    <a href="about_us.html">О нас</a>
+                                </li>
+                                <li>
+                                    <a href="services.html">Услуги</a>
+                                    <ul>
+                                        <li>
+                                            <a href="services_landing.html">Лендинг</a>
+                                        </li>
+                                        <li>
+                                            <a href="services_online_shop.html">Интернет-магазин</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="portfolio.html">Портфолио</a>
+                                </li>
+
+                                <li>
+                                    <a href="blog.html">Блог</a>
+                                </li>
+                                <li>
+                                    <a href="contacts.html">Контакты</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 
         <main class="py-0">
 
