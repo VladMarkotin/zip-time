@@ -40,9 +40,13 @@
                             <v-text-field 
                             width="20px" 
                             v-model="subTasks.title" 
-                            :counter="256" 
+                            :counter="255" 
                             label="Subtask title"
                             v-on:keyup.enter="addDetail" 
+                            :rules="subtaskTitleRules"
+				            success
+                            @input="checkInputsValue"
+                            ref="subtaskTitleInput"
                             required></v-text-field>
                         </v-col>
                         <v-col>
@@ -50,8 +54,12 @@
                             width="20px" 
                             v-model="subTasks.text" 
                             v-on:keyup.enter="addDetail" 
-                            :counter="1000"
+                            :counter="999"
                             label="Subtask details" 
+                            :rules="subtaskTextRules"
+                            success
+                            @input="checkInputsValue"
+                            ref="subtaskTextInput"
                             required></v-text-field>
                         </v-col>
                         <v-col>
@@ -61,7 +69,10 @@
                             </v-checkbox>
                         </v-col>
                         <v-col>
-                            <v-btn icon>
+                            <v-btn 
+                            icon
+                            v-if="isSubTasksInputValValid"
+                            >
                                 <v-icon md="1" color="#D71700" v-on:click="addDetail(item)"> {{ icons.mdiPlex }}
                                 </v-icon>
                             </v-btn>
@@ -190,12 +201,42 @@ export default {
 						is_ready: false,
 					},
             isShowAlertInDetails: false,
-            
+            subtaskRules: {
+                subtaskTitle: {
+                    minLength: 3,
+                    maxLength: 255,
+                },
+                subtaskText: {
+                    minLength: 0,
+                    maxLength: 999,
+                }
+            },
+            subtaskTitleRules: [
+                (inputVal) => {
+                    inputVal = inputVal.trim().length;
+                    const {minLength} = this.subtaskRules.subtaskTitle;
+                    return inputVal >= minLength || `Minimum length is ${minLength} characters`;
+                },
+
+                (inputVal) => {
+                    inputVal = inputVal.trim().length;
+                    const {maxLength} = this.subtaskRules.subtaskTitle;
+                    return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
+                }
+            ],
+            subtaskTextRules: [
+                (inputVal) => {
+                    inputVal = inputVal.trim().length;
+                    const {maxLength} = this.subtaskRules.subtaskText;
+                    return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
+                }
+            ],
+            isSubTasksInputValValid: false,
         }
     },
     watch: {
        
-    },
+    }, 
     methods: {
         showAddDetailsDialog() {
             this.isShowDialogDetails = true;
@@ -274,9 +315,13 @@ export default {
 				  })
 			},
 
+            checkInputsValue() {
+                this.isSubTasksInputValValid = new Array(
+                    ...this.subtaskTitleRules.map(check => check(this.subTasks.title)),
+                    ...this.subtaskTextRules.map(check => check(this.subTasks.text)),
+                ).every(checkResult => checkResult === true);
+            },
+
     },
-    created() {
-        
-    }
 }
 </script>
