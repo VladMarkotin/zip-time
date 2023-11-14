@@ -389,18 +389,18 @@
 			// 	  })
 			// },
 
-			deleteSubTask(item){
-				var index = this.details.indexOf(item)
-				console.log(item)
-				axios.post('/del-sub-task',{task_id : item.taskId})
-				.then((response) => {
-					//this.isShowAlert = true;
-					console.log(this.details)
-					this.setAlertData(response.data.status, response.data.message)
-					this.details.splice(index, 1);
-					this.completedPercent = response.data.completedPercent
-				})
-			},
+			// deleteSubTask(item){
+			// 	var index = this.details.indexOf(item)
+			// 	console.log(item)
+			// 	axios.post('/del-sub-task',{task_id : item.taskId})
+			// 	.then((response) => {
+			// 		//this.isShowAlert = true;
+			// 		console.log(this.details)
+			// 		this.setAlertData(response.data.status, response.data.message)
+			// 		this.details.splice(index, 1);
+			// 		this.completedPercent = response.data.completedPercent
+			// 	})
+			// },
 
 			completed(item){
 				var index = this.details.indexOf(item)

@@ -90,13 +90,18 @@
                                         {{ v.text }}
                                         <v-row>
                                             <v-col>
-
-                                                <v-checkbox v-model="v.is_ready" label="Is Ready?" color="red"
-                                                    @change="completed(v)" hide-details></v-checkbox>
+                                                <v-checkbox 
+                                                v-model="v.is_ready" 
+                                                label="Is Ready?" 
+                                                color="red"
+                                                @change="completed(v)" 
+                                                hide-details></v-checkbox>
                                             </v-col>
                                             <v-col>
-
-                                                <v-btn icon v-on:click="deleteSubTask(v)" v-if="v.checkpoint != 1">
+                                                <v-btn 
+                                                icon 
+                                                v-on:click="deleteSubTask(v)" 
+                                                v-if="v.checkpoint != 1">
                                                     <v-icon md="1" color="#D71700">
                                                         {{ icons.mdiDelete }}
                                                     </v-icon>
@@ -127,7 +132,7 @@
 </template>
 
 <script>
-import {mdiPlex,}  from '@mdi/js' 
+import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
             item: {
@@ -148,7 +153,7 @@ import {mdiPlex,}  from '@mdi/js'
         },
         data() {
             return {
-                icons: {mdiPlex, },
+                icons: {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete},
                 subTasks: {
 						title: '',
 						text: '',
@@ -248,6 +253,33 @@ import {mdiPlex,}  from '@mdi/js'
                     ...this.subtaskTextRules.map(check => check(this.subTasks.text)),
                 ).every(checkResult => checkResult === true);
             },
+
+            deleteSubTask(item){
+                const removedTaskId = item.taskId;
+                
+				axios.post('/del-sub-task',{task_id : removedTaskId})
+				.then((response) => {
+                    if (response.data.status === 'success') {
+                        this.isShowAlertInDetails = true;
+                        this.updateAlertData({type: response.data.status, text: 'subtask has been removed'});
+                        this.updateDetails(this.details.filter(item => item.taskId !== removedTaskId));
+                        this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
+                        console.log(response.data);
+
+                        setTimeout( () => {
+                            this.isShowAlertInDetails = false;
+					    },3000)
+                    }
+				})
+			},
+
+            completed(item){
+				axios.post('/complete-sub-task',{task_id : item.taskId})
+				.then((response) => {
+                    console.log(response);
+                    this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
+				})
+			},
         },
 
         mounted() {
