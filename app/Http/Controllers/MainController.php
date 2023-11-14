@@ -124,15 +124,20 @@ class MainController
         $params['priority']     = $request->input('priority');
         $params['details']      = $request->input('details');
         $params['note']         = $request->input('notes');
-
+        $taskId = $request->input('task_id');
+        $taskId    = (isset($taskId)) ? $request->input('task_id') : null;
+        //die(var_dump($params));
         $createResponce         = fn($message, $status) => ['message' => $message, 'status'  => $status,];
 
         $flag = $this->savedTaskService->checkNewHashCode($params['hash_code'], $params['task_name']);
         if($flag){
             try {
-                DB::transaction(function () use ($params) {     
+                DB::transaction(function () use ($params, $taskId) {     
                     $transformData = $this->savedTaskService->transformDataForDb($params);
                     $this->savedTaskRepository->saveNewHashCode($transformData);
+                    if ($taskId) {
+                        Tasks::where('id', $taskId)->update(['hash_code' => $params['hash_code'] ]);
+                    }
                     $response = $this->notesService->addNoteForSavedTask($params);
                     if($response){
                         $this->notesRepository->addSavedNote($params);

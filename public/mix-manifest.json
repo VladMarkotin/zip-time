@@ -1,5 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/customTooltip.css": "/css/customTooltip.css",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/css/animate.css": "/css/animate.css",
+    "/css/animate-text.css": "/css/animate-text.css"
 }
