@@ -243,7 +243,7 @@
 		mdiMarkerCheck, mdiExclamation, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
-	import AddDetails from '../dialogs/AddDetails.vue';
+	import AddDetails from '../dialogs/AddDetails/AddDetails.vue';
 	export default
 	{
 		props : ['item', 'num'],
