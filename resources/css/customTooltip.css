@@ -1,0 +1,249 @@
+@import url(https://fonts.googleapis.com/css2?family=Bad+Script&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@400;500;700;900&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Bad+Script&family=Inter&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
+.custom-tooltip {
+  min-width: 320px;
+  font-size: 15px;
+  animation: 1s show ease;
+  font-family: "Roboto", sans-serif;
+}
+.custom-tooltip .welcome-block {
+  min-height: 160px;
+  background-image: url("/images/welcome_block_background.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.custom-tooltip .introjs-tooltiptext {
+  text-align: justify;
+}
+.custom-tooltip .introjs-bullets {
+  margin-bottom: 0.7rem;
+}
+.custom-tooltip .introjs-bullets ul li:not(:last-child) {
+  margin-right: 5px;
+}
+.custom-tooltip .introjs-bullets ul li a {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-button {
+  box-shadow: 2px 2px 4px black;
+  font-size: 0.85rem;
+  font-weight: 400;
+  border-radius: 6px;
+  border: none;
+  text-shadow: 1px 1px 1px black;
+  color: whitesmoke;
+  min-width: 46.82px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-skipbutton {
+  margin-right: 14px;
+  background: #a10000;
+  opacity: 0.8;
+  transition: opacity 0.3s ease-in;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-skipbutton:hover {
+  opacity: 1;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-prevbutton {
+  margin-right: 7px;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-prevbutton,
+.custom-tooltip .introjs-tooltipbuttons .introjs-nextbutton {
+  transition: all 0.3s ease-in;
+  color: #000000;
+  text-shadow: 1px 1px 1px whitesmoke;
+}
+.custom-tooltip .introjs-tooltipbuttons .introjs-prevbutton:hover,
+.custom-tooltip .introjs-tooltipbuttons .introjs-nextbutton:hover {
+  color: whitesmoke;
+  text-shadow: 1px 1px 1px #000000;
+  background: #5d76cb;
+}
+
+.first-slide {
+  background: linear-gradient(45deg, #f8f8d9 46%, #faf7de 5%);
+  min-width: 500px;
+  border-radius: 1.2rem;
+  padding: 15px;
+  animation: gradient 10s ease infinite;
+  background-size: 400% 400%;
+}
+.first-slide .introjs-tooltiptext {
+  box-sizing: border-box;
+  padding: 0 25px;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 23.44px;
+  color: #121212;
+}
+.first-slide .introjs-bullets ul li:not(:last-child) {
+  margin-right: 7px;
+}
+.first-slide .introjs-bullets ul li a {
+  width: 1.1rem;
+  height: 1.1rem;
+  background: #A5A5A5;
+}
+.first-slide .introjs-bullets ul li a.active {
+  background: #696969;
+}
+.first-slide .introjs-bullets ul li a:hover {
+  background: #696969;
+}
+.first-slide .introjs-tooltipbuttons .introjs-button {
+  font-weight: 400;
+  line-height: 20px;
+  padding: 0.75rem 1.75rem;
+  border-radius: 10rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 0.15rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  text-shadow: 1px 1px 1px black;
+}
+.first-slide .introjs-tooltipbuttons .introjs-button:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ff2b2b;
+  border-radius: 10rem;
+  z-index: -2;
+}
+.first-slide .introjs-tooltipbuttons .introjs-button:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #de0000;
+  transition: all 0.3s;
+  border-radius: 10rem;
+  z-index: -1;
+}
+.first-slide .introjs-tooltipbuttons .introjs-button:hover {
+  color: #fff;
+}
+.first-slide .introjs-tooltipbuttons .introjs-button:hover:before {
+  width: 100%;
+}
+.first-slide .introjs-tooltipbuttons .introjs-skipbutton:after {
+  background-color: #ff2b2b;
+}
+.first-slide .introjs-tooltipbuttons .introjs-skipbutton:before {
+  background-color: #de0000;
+}
+.first-slide .introjs-tooltipbuttons .introjs-nextbutton:after {
+  background-color: cornflowerblue;
+}
+.first-slide .introjs-tooltipbuttons .introjs-nextbutton:before {
+  background-color: #1f66e5;
+}
+
+.custom-tooltip__third-step {
+  min-width: 320px;
+  font-size: 15px;
+  font-family: "Roboto", sans-serif;
+}
+.custom-tooltip__third-step .driver-popover-description {
+  text-align: justify;
+}
+.custom-tooltip__third-step .custom-bullets {
+  display: flex;
+  justify-content: center;
+}
+.custom-tooltip__third-step .custom-bullets > ul {
+  margin: 15px 0 15px;
+  display: flex;
+  list-style: none;
+  gap: 7px;
+  align-items: center;
+}
+.custom-tooltip__third-step .custom-bullets > ul a {
+  width: 0.8rem;
+  height: 0.8rem;
+  background: #ccc;
+  border-radius: 10px;
+  display: block;
+  cursor: pointer;
+}
+.custom-tooltip__third-step .custom-bullets > ul a.active {
+  background: #999;
+}
+.custom-tooltip__third-step .custom-bullets > ul a:hover {
+  background: #999;
+}
+.custom-tooltip__third-step .driver-popover-footer {
+  margin-top: 5px;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns {
+  gap: 14px;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button {
+  box-shadow: 2px 2px 4px black;
+  font-size: 0.85rem;
+  font-weight: 400;
+  border-radius: 6px;
+  border: none;
+  text-shadow: 1px 1px 1px black;
+  background: #ececec;
+  min-width: 46.82px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  padding: 4px 11px;
+  min-width: 67.11px;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-prev-btn, .custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-next-btn {
+  transition: all 0.3s ease-in;
+  color: #000000;
+  text-shadow: 1px 1px 1px whitesmoke;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-prev-btn:hover, .custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-next-btn:hover {
+  color: whitesmoke;
+  text-shadow: 1px 1px 1px #000000;
+  background: #5d76cb;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.driver-popover-skip-button:hover {
+  background: #a10000;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.custom-skip-button {
+  transition: all 0.3s ease-in;
+  color: whitesmoke;
+  text-shadow: 1px 1px 1px #000000;
+  background: #a10000;
+  opacity: 0.8;
+  transition: opacity 0.3s ease-in;
+}
+.custom-tooltip__third-step .driver-popover-footer .driver-popover-navigation-btns > button.custom-skip-button:hover {
+  opacity: 1;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}

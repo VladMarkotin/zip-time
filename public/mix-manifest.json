@@ -1,5 +1,21 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/customTooltip.css": "/css/customTooltip.css",
-    "/css/app.css": "/css/app.css"
+    "/js/main.js": "/js/main.js",
+    "/js/plugins.js": "/js/plugins.js",
+    "/js/owl.carousel.min.js": "/js/owl.carousel.min.js",
+    "/js/masonry.pkgd.js": "/js/masonry.pkgd.js",
+    "/js/masonry.pkgd.min.js": "/js/masonry.pkgd.min.js",
+    "/js/waypoints.min.js": "/js/waypoints.min.js",
+    "/js/ajax-mail.js": "/js/ajax-mail.js",
+    "/js/jquery.counterup.min.js": "/js/jquery.counterup.min.js",
+    "/js/jquery.magnific-popup.min.js": "/js/jquery.magnific-popup.min.js",
+    "/js/jquery.mb.YTPlayer.min.js": "/js/jquery.mb.YTPlayer.min.js",
+    "/js/jquery.meanmenu.js": "/js/jquery.meanmenu.js",
+    "/js/jquery.mixitup.min.js": "/js/jquery.mixitup.min.js",
+    "/js/jquery.nav.js": "/js/jquery.nav.js",
+    "/js/jquery.parallax-1.1.3.js": "/js/jquery.parallax-1.1.3.js",
+    "/js/jquery-1.12.0.js": "/js/jquery-1.12.0.js",
+    "/js/modernizr-2.8.3.js": "/js/modernizr-2.8.3.js",
+    "/css/style.css": "/css/style.css",
+    "/css/all.css": "/css/all.css"
 }
