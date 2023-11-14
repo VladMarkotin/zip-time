@@ -12,6 +12,7 @@
 				:priority       = "newHashCodeData.priority"
 				:details        = "newHashCodeData.details"
 				:notes          = "newHashCodeData.notes"
+				:taskId 		=  "item.taskId"
 				@close          = "closeHashCodeDialog"
 				@addHashCode    = "addHashCode"
 				/>
@@ -542,32 +543,32 @@
 
 			async addHashCode(newHashCode) {
 				this.hashCode = newHashCode;
-				this.isShowPreloader = true;
+				// this.isShowPreloader = true; на всякий случай пока просто закомментировал логику по отправка запроса с обновлением id, решили перенести его в запрос который отправляется в AddHashCode диалоге
 
-				const minPreloaderDispTime = 1000;
-				const loadingStart 		   = Date.now();
+				// const minPreloaderDispTime = 1000;
+				// const loadingStart 		   = Date.now();
 
-				try {
-					await axios.post('', { //тут передаю id таски и новый хеш код
-						newHashCode: newHashCode,
-						id: this.item.taskId
-					})
+				// try {
+				// 	await axios.post('', { //тут передаю id таски и новый хеш код
+				// 		newHashCode: newHashCode,
+				// 		id: this.item.taskId
+				// 	})
 					
-				} catch(error) {
-					throw new Error(error);
-				} finally {
-					const loadingEnd = Date.now();
+				// } catch(error) {
+				// 	throw new Error(error);
+				// } finally {
+				// 	const loadingEnd = Date.now();
 
-					if (loadingEnd - loadingStart < 1000) {
-						const currentLoadingTime = loadingEnd - loadingStart;
+				// 	if (loadingEnd - loadingStart < 1000) {
+				// 		const currentLoadingTime = loadingEnd - loadingStart;
 						
-						setTimeout(() => {
-							this.isShowPreloader = false;
-						}, minPreloaderDispTime - currentLoadingTime)
-					} else {
-						this.isShowPreloader = false;
-					}
-				}
+				// 		setTimeout(() => {
+				// 			this.isShowPreloader = false;
+				// 		}, minPreloaderDispTime - currentLoadingTime)
+				// 	} else {
+				// 		this.isShowPreloader = false;
+				// 	}
+				// }
 
 			},
 

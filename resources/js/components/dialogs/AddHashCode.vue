@@ -91,7 +91,8 @@
 				type: {},
 				priority: {},
 				details: {},
-				notes: {}  
+				notes: {},
+				taskId: {}, 
 			},
 			data() {
 				return {
@@ -203,13 +204,14 @@
 
 						try {
 						const responce = await axios.post('/addHashCode', {
-							hash: this.hashCode.trim(),
+							hash:     this.hashCode.trim(),
 							taskName: this.taskName,
-							time: this.time,
-							type: this.type,
+							time:     this.time,
+							type:     this.type,
 							priority: this.priority,
-							details: this.details,
-							notes: this.notes,
+							details:  this.details,
+							notes:    this.notes,
+							task_id:  this.taskId,
 						})
 
 						if (responce.data.status === 'success') {
