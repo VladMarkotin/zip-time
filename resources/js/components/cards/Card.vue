@@ -95,7 +95,6 @@
 					:details          = "details"
 					:completedPercent = "completedPercent"
 					@updateDetails          = "updateDetails"
-					@updateAlertData        = "setAlertData"
 					@updateCompletedPercent = "updateCompletedPercent"
 					/>
 				</template>

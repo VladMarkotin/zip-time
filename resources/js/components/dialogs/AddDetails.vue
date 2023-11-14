@@ -191,6 +191,7 @@ export default {
     data() {
         return {
             isShowDialogDetails: false,
+            alert: {type: 'success', text: 'success'},
             icons: {mdiChartGantt, mdiPlex},
             subTasks: {
 						title: '',
@@ -213,20 +214,20 @@ export default {
             },
             subtaskTitleRules: [
                 (inputVal) => {
-                    inputVal = inputVal.trim().length;
+                    inputVal = inputVal ? inputVal.trim().length : 0;
                     const {minLength} = this.subtaskRules.subtaskTitle;
                     return inputVal >= minLength || `Minimum length is ${minLength} characters`;
                 },
 
                 (inputVal) => {
-                    inputVal = inputVal.trim().length;
+                    inputVal = inputVal ? inputVal.trim().length : 0;
                     const {maxLength} = this.subtaskRules.subtaskTitle;
                     return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
                 }
             ],
             subtaskTextRules: [
                 (inputVal) => {
-                    inputVal = inputVal.trim().length;
+                    inputVal = inputVal ? inputVal.trim().length : 0;
                     const {maxLength} = this.subtaskRules.subtaskText;
                     return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
                 }
@@ -250,12 +251,19 @@ export default {
             this.$emit('updateDetails', details);
         },
 
-        updateAlertData(data) {
-            this.$emit('updateAlertData', data);
+        setAlertData({type, text}) {
+            if (type) this.alert.type = type;
+            if (text) this.alert.text = text;
 		},
 
         updateCompletedPercent(compPercent) {
             this.$emit('updateCompletedPercent', compPercent);
+        },
+
+        checkCompletedPercent(complPercentResp) {
+            return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
+                    ? complPercentResp
+                    : this.editCompletedPercet(complPercentResp);
         },
 
         editCompletedPercet(compPercent) {
@@ -280,13 +288,10 @@ export default {
 						}) 
 					});
                     this.updateDetails(details);
-                    const complPercentResp = response.data.completedPercent;
-                    const completedPercent = (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
-                                                ? complPercentResp
-                                                : this.editCompletedPercet(complPercentResp);
+                    const completedPercent = this.checkCompletedPercent(response.data.completedPercent); 
                     
                     this.updateCompletedPercent(completedPercent);
-                    this.updateAlertData(response.data.status, response.data.message);
+                    this.setAlertData({type: response.data.status, text: response.data.message});
 				  })
 			},
 
@@ -300,10 +305,10 @@ export default {
 			createSubPlan(item){
 				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
 				.then((response) => {
-					//console.log(response)
 					this.isShowAlertInDetails = true;
-					this.setAlertData(response.data.elements, response.data.message)
-					this.completedPercent = response.data.completedPercent
+					this.setAlertData({type: '', text: response.data.message});
+					const completedPercent = this.checkCompletedPercent(response.data.completedPercent);
+                    this.updateCompletedPercent(completedPercent);
 					item.taskId = response.data.taskId
 					setTimeout( () => {
 						this.isShowAlertInDetails = false;
