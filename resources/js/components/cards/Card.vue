@@ -402,17 +402,17 @@
 			// 	})
 			// },
 
-			completed(item){
-				var index = this.details.indexOf(item)
-				axios.post('/complete-sub-task',{task_id : item.taskId})
-				.then((response) => {
-					//this.isShowAlert = true;
-					console.log(this.details)
-					this.completedPercent = response.data.completedPercent
-					this.setAlertData(response.data.status, response.data.message)
-					//this.details.splice(index, 1);
-				})
-			},
+			// completed(item){
+			// 	var index = this.details.indexOf(item)
+			// 	axios.post('/complete-sub-task',{task_id : item.taskId})
+			// 	.then((response) => {
+			// 		//this.isShowAlert = true;
+			// 		console.log(this.details)
+			// 		this.completedPercent = response.data.completedPercent
+			// 		this.setAlertData(response.data.status, response.data.message)
+			// 		//this.details.splice(index, 1);
+			// 	})
+			// },
 
 			saveNotes(){
 				axios.post('/add-sub-task',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})

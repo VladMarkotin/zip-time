@@ -274,7 +274,8 @@ import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@m
 			},
 
             completed(item){
-				axios.post('/complete-sub-task',{task_id : item.taskId})
+                console.log(item);
+				axios.post('/complete-sub-task',{task_id : item.taskId, is_task_ready: item.is_ready})
 				.then((response) => {
                     console.log(response);
                     this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
