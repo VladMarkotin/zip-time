@@ -472,7 +472,7 @@
 		mdiMarkerCheck, mdiExclamation, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
-	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
+	import AddHashCodeButton from '../UI/AddHashCodeButton.vue';
 	import Preloader from '../UI/Preloader.vue';
 	export default
 	{

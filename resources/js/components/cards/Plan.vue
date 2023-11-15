@@ -233,7 +233,7 @@
 </template>
 <script>
 import AddHashCode from '../dialogs/AddHashCode.vue';
-import AddHashCodeButton from '../UI/addHashCodeButton.vue'
+import AddHashCodeButton from '../UI/AddHashCodeButton.vue'
 import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../dialogs/EmergencyCall.vue'
