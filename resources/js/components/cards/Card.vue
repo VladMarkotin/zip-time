@@ -644,6 +644,7 @@
 					},3000)
 				  })
 			},
+			
 			updateIsReadyState(item)
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,is_ready : item.is_ready,type : item.type})
