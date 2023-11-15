@@ -9,10 +9,11 @@ namespace App\Http\Controllers\Services;
 
 use App\Repositories\SavedTask2Repository;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Services\AddPlanService;
 
 class HashCodeService
 {
-    private $savedTaskRepository = null;
+    private $savedTaskRepository   = null;
     private $dataForTransformForDb = [
         'type' => [
             'required job'     => 4,
@@ -22,15 +23,17 @@ class HashCodeService
             'reminder'         => 0,
         ],
     ];
+    private $addPlanService       = null;
 
-    public function __construct(SavedTask2Repository $savedTask2Repository)
+    public function __construct(SavedTask2Repository $savedTask2Repository, AddPlanService $addPlanService)
     {
         $this->savedTaskRepository = $savedTask2Repository;
+        $this->addPlanService      = $addPlanService;
     }
 
-    public function checkNewHashCode($hashCode)
-    {
-        if($this->isHashCodeCorrect($hashCode)){
+    public function checkNewHashCode($hashCode, $taskName)
+    {   
+        if($this->isHashCodeCorrect($hashCode) && $this->addPlanService->checkName($taskName)){
             if($this->isUniqueForUser($hashCode)){
                 return true;
             }

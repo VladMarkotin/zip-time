@@ -19,48 +19,27 @@
             <v-row align="center" class="d-flex mb-2" >
                <v-col cols="2" sm="1" v-if="defaultSelected.hash == '#'" no-gutters>
                   <div class="text-center pa-2 ma-2">
-                     <v-dialog max-width="650px" persistent v-model="dialog">
-                        <template #activator="{ on: dialog }">
-                           <v-tooltip right>
-                              <template v-slot:activator="{ on:tooltip  }">
-                                 <v-btn icon v-on="{ ...tooltip, ...dialog }"
-                                     v-show="defaultSelected.taskName.length > 3">
-                                    <v-icon md="1"
-                                       color="#D71700"
-                                       > {{icons.mdiPlusBox}}
-                                    </v-icon>
-                                 </v-btn>
-                              </template>
-                              <span>Add hash-code to task for quick access</span>
-                           </v-tooltip>
-                           
-                        </template>
-		<v-card>
-			<v-card-title class="font-weight-bold v-card-title">Add #code</v-card-title>
-			<v-card-text>
-				<v-text-field label="#code" required v-model="newHashCode"></v-text-field>
-			</v-card-text>
-			<v-divider></v-divider>
-			<v-card-actions class="justify-space-between v-card-actions">
-				<v-tooltip right>
-					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="addHashCode">
-							<v-icon color="#D71700" large>{{icons.mdiPlusBox}}</v-icon>
-						</v-btn>
-					</template>
-					<span>Add #code</span>
-				</v-tooltip>
-            <v-tooltip right>
-					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="cleanHashCode">
-							<v-icon color="#D71700" large>{{icons.mdiCancel}}</v-icon>
-						</v-btn>
-					</template>
-					<span>Cancel</span>
-				</v-tooltip>
-			</v-card-actions>
-		</v-card>
-	</v-dialog>
+                     <template v-if="defaultSelected.taskName.length > 3">
+                        <AddHashCodeButton 
+                        @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
+                        />
+                     </template>
+                     <template v-if="isShowAddHashCodeDialog">    
+                        <AddHashCode
+                        :width          = "450"
+                        :hashCodeVal    = "newHashCode"
+                        :isShowDialog   = "isShowAddHashCodeDialog"
+                        :taskName       = "defaultSelected.taskName"
+                        :time           = "defaultSelected.time"
+                        :type           = "defaultSelected.type"
+                        :priority       = "defaultSelected.priority"
+                        :details        = "defaultSelected.details"
+                        :notes          = "defaultSelected.notes"
+                        @close          = "closeHashCodeDialog"
+                        @changeHashCode = "changeHashCode"
+                        @addHashCode    = "addHashCode"
+                        />
+                     </template>
                   </div>
                </v-col>
                <v-col
@@ -79,15 +58,12 @@
                   </v-select>
                </v-col>
                <v-col v-if="defaultSelected.hash.length > 1">
-                  <v-tooltip right >
-					<template v-slot:activator="{on}">
-                 
-						<v-btn icon v-on="on" v-on:click="clearCurrentHashCode"  >
-                     <v-icon color="#D71700">{{ icons.mdiBackspace }}</v-icon>
-						</v-btn>
-					</template>
-					<span>Clear</span>
-				</v-tooltip>
+                  <template>    
+                     <CleanHashCodeButton 
+                     :tooltipText="'Clear'"
+                     @clearCurrentHashCode="clearCurrentHashCode"
+                     />
+                  </template>
                </v-col>
                <v-col cols="4" md="3">
                   <v-text-field
@@ -256,6 +232,9 @@
    </v-card>
 </template>
 <script>
+import AddHashCode from '../dialogs/AddHashCode.vue';
+import AddHashCodeButton from '../UI/addHashCodeButton.vue'
+import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../dialogs/EmergencyCall.vue'
 import {
@@ -271,16 +250,15 @@ import {
     mdiPlus,
     mdiPlusBox,
     mdiCancel,
-    mdiBackspace
 } from '@mdi/js'
 
 export default {
-   components : {EmergencyCall},
+   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
         readyTasks: [],
-        newHashCode: '',
+        newHashCode: '#',
         showIcon: 0,
         day_status: 'Work Day',
         menu: false/*for defaultSelected.time*/,
@@ -360,7 +338,6 @@ export default {
             mdiPlusBox,
             mdiCancel,
             mdiCarEmergency,
-            mdiBackspace
         },
         hashCodes: [],
         hashNames: '#',
@@ -382,7 +359,7 @@ export default {
         serverMessage: '',
         showAlert: false,
         alertType: 'success',
-        dialog: false,
+        isShowAddHashCodeDialog: false,
         dialogDelete: false,
         isShowProgress: false,
         value: 0,
@@ -505,28 +482,6 @@ export default {
             this.items.splice(index, 1);
         },
 
-        addHashCode()
-				{
-					if (this.newHashCode.length >= 3 && this.newHashCode.length <= 6)
-					{
-						if (this.newHashCode.includes('#'))
-						{
-							this.addNewHashCodePost();
-							this.defaultSelected.hashCodes.unshift(this.newHashCode);
-                     this.dialog = false;
-						}
-						else
-						{
-							this.newHashCode = `#${this.newHashCode}`
-						}
-					}
-				},
-         cleanHashCode()
-				{
-               this.newHashCode = ``
-					this.dialog = false;
-				},
-
         formSubmit(e) {
             let currentObj = this;
             currentObj.isShowProgress = true;
@@ -560,22 +515,20 @@ export default {
                 });
         },
 
-        addNewHashCodePost() {
-            let currentObj = this;
-            axios.post('/addHashCode', {
-                    'hash': this.newHashCode,
-                    'taskName': this.defaultSelected.taskName,
-                    'time': this.defaultSelected.time,
-                    'type': this.defaultSelected.type,
-                    'priority': this.defaultSelected.priority,
-                    'details': this.defaultSelected.details,
-                    'notes': this.defaultSelected.notes,
-                })
-                .then(function(response) {})
-                .catch(function(error) {
-                    currentObj.output = error;
-                });
-        },
+      changeHashCode(hashCodeVal) {
+         this.newHashCode = hashCodeVal;
+      },
+
+      closeHashCodeDialog() {
+         this.newHashCode = '#';
+         this.isShowAddHashCodeDialog = false;
+      },
+
+      addHashCode() {
+         this.defaultSelected.hashCodes.unshift(this.newHashCode);
+         this.defaultSelected.hash = this.newHashCode;
+         this.isShowAddHashCodeDialog = false;
+      },
     },
     created() {
         let currentObj = this;

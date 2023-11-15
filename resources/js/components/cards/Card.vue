@@ -2,22 +2,63 @@
 	<v-card :id="!num ? 'card-wrapper' : false">
 		<div class="card-demo">
 			<template v-if="isShowAddHashCodeDialog">
-				<AddHashCode v-on:addHashCode="addHashCode" 
-				v-on:toggleAddHashCodeDialog="toggleAddHashCodeDialog"/>
+				<AddHashCode 
+				:width  		= "450"
+				:hashCodeVal    = "newHashCodeData.newHashCode"
+				:isShowDialog   = "isShowAddHashCodeDialog"
+				:taskName       = "newHashCodeData.taskName"
+				:time           = "newHashCodeData.time"
+				:type           = "newHashCodeData.type"
+				:priority       = "newHashCodeData.priority"
+				:details        = "newHashCodeData.details"
+				:notes          = "newHashCodeData.notes"
+				:taskId 		=  "item.taskId"
+				@close          = "closeHashCodeDialog"
+				@addHashCode    = "renameHashCode"
+				/>
+			</template>
+			<template v-if="isShowPreloader">
+				<Preloader :showPreloader="isShowPreloader"/>
 			</template>
 			<div class="card-demo"></div>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
-			<span v-if="item.hash == '#'">
-				<!-- <v-btn> -->
-				<v-icon color="#000000" @click="createSavedTask()">{{icons.mdiMusicAccidentalSharp}}</v-icon>
-				<!-- </v-btn> -->
-			</span>
-			<span v-else>{{item.hash}}</span>
-			<span>{{item.taskName}}</span>
-			<span v-if="item.priority == 1"> </span>
-			<span v-else-if="item.priority == 2">!</span>
-			<span v-else-if="item.priority == 3">!!!</span>
-			<span v-else>  </span>
+			<v-row class="m-0 p-0">
+				<v-col 
+				class="m-0 p-0 d-flex justify-content-start align-items-center"
+				cols="auto"
+				style="min-width: 88px;"
+				>
+					<v-row 
+					class="m-0 p-0"
+					v-if="hashCode == '#'"
+					>
+						<AddHashCodeButton 
+						:buttonColor = "'white'"
+						:buttonSize  = "26"
+						@addHashCodeButtonClick="isShowAddHashCodeDialog = true"
+						/>	
+					</v-row>
+					<v-row 
+					class="m-0 p-0"
+					v-else
+					>
+						<span class="p-0">{{ hashCode }}</span>
+					</v-row>
+				</v-col>
+				<v-col class="m-0 p-0 d-flex justify-content-center align-items-center">
+					<span>{{item.taskName}}</span>
+				</v-col>
+				<v-col 
+				class="m-0 p-0 d-flex justify-content-end align-items-center"
+				cols="auto"
+				style="min-width: 22px;"
+				>
+					<span v-if="item.priority == 1"> </span>
+					<span v-else-if="item.priority == 2">!</span>
+					<span v-else-if="item.priority == 3">!!!</span>
+					<span v-else>  </span>
+				</v-col>
+			</v-row>
 		</v-card-title>
 		</div>
 		
@@ -431,6 +472,8 @@
 		mdiMarkerCheck, mdiExclamation, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
+	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
+	import Preloader from '../UI/Preloader.vue';
 	export default
 	{
 		props : ['item', 'num'],
@@ -480,49 +523,26 @@
 						todayAmount: 0
 					},
 					isShow : true,
-					isShowAddHashCodeDialog : false
+					isShowAddHashCodeDialog : false,
+					newHashCodeData: {
+						newHashCode: '#',
+						taskName: 	this.item.taskName,
+						time: 		this.item.time,
+						type: 		this.item.type,
+						priority: 	this.item.priority,
+						details: 	this.item.details,
+						notes: 		this.item.notes,
+					},
+					hashCode: this.item.hash,
+					isShowPreloader: false,
 				}
 			},
-		components : {Alert, AddHashCode},
+		components : {Alert, AddHashCode, AddHashCodeButton, Preloader},
 		methods :
 		{
-			mounted ()
-			{
-
-			},
-
-			toggleAddHashCodeDialog()
-			{
-					this.isShowAddHashCodeDialog = !this.isShowAddHashCodeDialog
-			},
-
-			createSavedTask(v, event){
-				this.isShowAddHashCodeDialog = true;
-			},
-
-			addHashCode(hashCode)
-				{
-					axios.
-					post
-						(
-							'/addHashCode',
-							{
-								hash : hashCode,
-								name : this.task.name,
-								type : this.task.type,
-								priority : this.task.priority,
-								time : this.task.time,
-								details : '',
-								notes : ''
-							}
-						)
-					this.hashCodes.unshift(hashCode)
-					this.task.hashCode = hashCode
-				},
-				toggleAddHashCodeDialog()
-				{
-					this.isShowAddHashCodeDialog = !this.isShowAddHashCodeDialog
-				},
+			closeHashCodeDialog() {
+      	   		this.isShowAddHashCodeDialog = false;
+      		},
 
 			getAllDetailsForTask(item) {
 				this.dialogDetails = true
@@ -698,6 +718,8 @@
 							this.isShowAlert = false;
 						},3000)
 				  })
+
+				  	this.newHashCodeData = {...this.newHashCodeData, time: this.time, priority: this.priority.toString()};
 				}
 			},
 			
@@ -729,6 +751,43 @@
 				  })
 				this.subTasks = {};
 			},
+
+			editHashCodeData() {
+				if (typeof this.newHashCodeData.priority === 'number' ) {
+					this.newHashCodeData.priority = this.newHashCodeData.priority.toString();
+				}
+
+				if (typeof this.newHashCodeData.type === 'number') {
+					const checkType = (type) => {
+						switch (type) {
+							case 0:
+								return 'reminder';
+							case 1:
+								return 'task';
+							case 2:
+								return 'required task';
+							case 3:
+								return 'non required job'
+							case 4:
+								return 'required job';
+						}
+					}
+
+					this.newHashCodeData.type = checkType(this.newHashCodeData.type);
+				}
+			},
+
+			renameHashCode(newHashCode) {
+				this.hashCode = newHashCode;
+			},
+		},
+
+		created() {
+			this.editHashCodeData();
+		},
+
+		mounted() {
+			
 		}
 	}
 	
