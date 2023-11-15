@@ -26,7 +26,7 @@
                             <v-text-field 
                             width="20px" 
                             v-model="subTasks.title" 
-                            :counter="255" 
+                            :counter="subtaskRules.subtaskTitle.maxLength" 
                             label="Subtask title"
                             v-on:keyup.enter="addDetail" 
                             :rules="subtaskTitleRules"
@@ -40,7 +40,7 @@
                             width="20px" 
                             v-model="subTasks.text" 
                             v-on:keyup.enter="addDetail" 
-                            :counter="999"
+                            :counter="subtaskRules.subtaskText.maxLength"
                             label="Subtask details" 
                             :rules="subtaskTextRules"
                             success
@@ -78,7 +78,9 @@
                                             {{ icons.mdiExclamation }}
 
                                         </v-icon>
-                                        <v-btn icon @click="editTask(v)">
+                                        <v-btn 
+                                        icon 
+                                        @click="createModifiedDetailTemplate(v)">
                                             <v-icon color="#D71700">{{ icons.mdiPencil }}</v-icon>
                                         </v-btn>
                                         <v-icon color="#D71700" v-if="v.is_ready">
@@ -122,16 +124,29 @@
             <v-card-actions>
                 <v-row>
                     <v-col>
-                        <v-btn color="blue-darken-1" variant="text" @click="dialogDetails = false">
+                        <v-btn color="blue-darken-1" variant="text" @click="$emit('closeAddDetailsDialog')">
                             Close
                         </v-btn>
                     </v-col>
                 </v-row>
             </v-card-actions>
+            <template v-if="isShowEditDetailsDialog">
+                <EditDetails 
+                :isShowEditDetailsDialog = "isShowEditDetailsDialog"
+                :modifiedDetailTemplate  = "modifiedDetailTemplate"
+                :details                 = "details"
+                :subtaskRules            = "subtaskRules"
+                :subtaskTitleRules       = "subtaskTitleRules"
+                :subtaskTextRules        = "subtaskTextRules"
+                @closeEditDetailsDialog = "closeEditDetailsDialog"
+                @updateDetails          = "updateDetails"
+                />
+            </template>
         </v-card>
 </template>
 
 <script>
+import EditDetails from './EditDetails.vue';
 import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
@@ -194,8 +209,11 @@ import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@m
                     }
                 ],
                 isSubTasksInputValValid: false,
+                isShowEditDetailsDialog: false,
+                modifiedDetailTemplate: {id: null, title: '', text: ''},
             }
         },
+        components: {EditDetails},
         methods: {
             updateDetails(details) {
                 this.$emit('updateDetails', details);
@@ -227,6 +245,7 @@ import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@m
                 this.updateDetails([...this.details, this.subTasks]);
 				this.createSubPlan(this.subTasks)
 				this.subTasks = {};
+                this.checkInputsValue();
 			},
 
 			createSubPlan(item){
@@ -274,13 +293,30 @@ import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@m
 			},
 
             completed(item){
-                console.log(item);
 				axios.post('/complete-sub-task',{task_id : item.taskId, is_task_ready: item.is_ready})
 				.then((response) => {
                     console.log(response);
                     this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
 				})
 			},
+
+            createModifiedDetailTemplate(item) {
+                this.modifiedDetailTemplate = {
+                    id: item.taskId,
+                    title: item.title,
+                    text: item.text,
+                }
+
+                this.showEditDetailsDialog();
+            },
+
+            showEditDetailsDialog() {
+                this.isShowEditDetailsDialog = true;
+            },
+
+            closeEditDetailsDialog() {
+                this.isShowEditDetailsDialog = false;
+            }
         },
 
         mounted() {

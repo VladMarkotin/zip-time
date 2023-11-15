@@ -22,38 +22,10 @@
             @updateDetails          = "updateDetails"
             @updateAlertData        = "setAlertData"
             @updateCompletedPercent = "updateCompletedPercent"
+            @closeAddDetailsDialog  = "closeAddDetailsDialog"
             />
         </template>
     </v-dialog>
-    <!-- <v-dialog v-model="dialogEditSubTask" persistent width="500">
-
-        <v-card>
-            <v-card-title class="text-h5">
-                Edit Subtask
-            </v-card-title>
-            <v-card-text>
-                Edit Subtask`s title:
-                <v-text-field class="ml-1" v-model="subTasks.title">
-
-                </v-text-field>
-                Edit Subtask`s text:
-                <v-text-field class="ml-1" v-model="subTasks.text">
-
-                </v-text-field>
-
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green-darken-1" variant="text" @click="dialogEditSubTask = false">
-                    Cancel
-                </v-btn>
-                <v-btn color="green-darken-1" variant="text"
-                    @click="saveChangesInSubtask({ title: subTasks.title, text: subTasks.text })">
-                    Save
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog> -->
 </template>
 
 <script>

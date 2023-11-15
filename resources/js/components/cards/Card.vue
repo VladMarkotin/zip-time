@@ -519,34 +519,35 @@
 				}
 			},
 			
-			editTask(item) {
-				this.dialogEditSubTask = true
-				this.subTasks.task_id = item.taskId
-				this.subTasks.title = item.title
-				this.subTasks.text = item.text
-				console.log(item)
-			},
-			saveChangesInSubtask(item){
-				//this.subTasks.task_id = item.taskId
-				this.subTasks.title = item.title
-				this.subTasks.text = item.text		
+			// editTask(item) {
+			// 	this.dialogEditSubTask = true
+			// 	this.subTasks.task_id = item.taskId
+			// 	this.subTasks.title = item.title
+			// 	this.subTasks.text = item.text
+			// 	console.log(item)
+			// },
+			
+			// saveChangesInSubtask(item){
+			// 	//this.subTasks.task_id = item.taskId
+			// 	this.subTasks.title = item.title
+			// 	this.subTasks.text = item.text		
 						
-				axios.post('/edit-subtask',{id : this.subTasks.task_id , title : this.subTasks.title , text: this.subTasks.text }) // type : item.type
-					.then((response) => {
+			// 	axios.post('/edit-subtask',{id : this.subTasks.task_id , title : this.subTasks.title , text: this.subTasks.text }) // type : item.type
+			// 		.then((response) => {
 						
-						if (response.data.status == 'success') {
-							item.title = this.subTasks.title
-							item.text = this.subTasks.text
-							this.dialogEditSubTask = false
-							this.dialog = false
-						}
-						this.setAlertData(response.data.status, response.data.message)
-						setTimeout( () => {
-							this.isShowAlert = false;
-						},3000)
-				  })
-				this.subTasks = {};
-			},
+			// 			if (response.data.status == 'success') {
+			// 				item.title = this.subTasks.title
+			// 				item.text = this.subTasks.text
+			// 				this.dialogEditSubTask = false
+			// 				this.dialog = false
+			// 			}
+			// 			this.setAlertData(response.data.status, response.data.message)
+			// 			setTimeout( () => {
+			// 				this.isShowAlert = false;
+			// 			},3000)
+			// 	  })
+			// 	this.subTasks = {};
+			// },
 		}
 	}
 	
