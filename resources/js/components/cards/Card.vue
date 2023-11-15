@@ -14,7 +14,7 @@
 				:notes          = "newHashCodeData.notes"
 				:taskId 		=  "item.taskId"
 				@close          = "closeHashCodeDialog"
-				@addHashCode    = "addHashCode"
+				@addHashCode    = "renameHashCode"
 				/>
 			</template>
 			<template v-if="isShowPreloader">
@@ -540,38 +540,6 @@
 		components : {Alert, AddHashCode, AddHashCodeButton, Preloader},
 		methods :
 		{
-
-			async addHashCode(newHashCode) {
-				this.hashCode = newHashCode;
-				// this.isShowPreloader = true; на всякий случай пока просто закомментировал логику по отправка запроса с обновлением id, решили перенести его в запрос который отправляется в AddHashCode диалоге
-
-				// const minPreloaderDispTime = 1000;
-				// const loadingStart 		   = Date.now();
-
-				// try {
-				// 	await axios.post('', { //тут передаю id таски и новый хеш код
-				// 		newHashCode: newHashCode,
-				// 		id: this.item.taskId
-				// 	})
-					
-				// } catch(error) {
-				// 	throw new Error(error);
-				// } finally {
-				// 	const loadingEnd = Date.now();
-
-				// 	if (loadingEnd - loadingStart < 1000) {
-				// 		const currentLoadingTime = loadingEnd - loadingStart;
-						
-				// 		setTimeout(() => {
-				// 			this.isShowPreloader = false;
-				// 		}, minPreloaderDispTime - currentLoadingTime)
-				// 	} else {
-				// 		this.isShowPreloader = false;
-				// 	}
-				// }
-
-			},
-
 			closeHashCodeDialog() {
       	   		this.isShowAddHashCodeDialog = false;
       		},
@@ -806,6 +774,10 @@
 
 					this.newHashCodeData.type = checkType(this.newHashCodeData.type);
 				}
+			},
+
+			renameHashCode(newHashCode) {
+				this.hashCode = newHashCode;
 			},
 		},
 
