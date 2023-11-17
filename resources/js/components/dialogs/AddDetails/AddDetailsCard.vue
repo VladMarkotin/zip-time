@@ -116,11 +116,12 @@
                                                     cols="4"
                                                     class="p-0 m-0 d-flex justify-content-center align-items-center"
                                                     >
-                                                        <v-btn 
-                                                        icon 
-                                                        @click="createModifiedDetailTemplate(v)">
-                                                            <v-icon color="#D71700">{{ icons.mdiPencil }}</v-icon>
-                                                        </v-btn>
+                                                    <template>
+                                                        <EditButton 
+                                                        @click="createModifiedDetailTemplate(v)"
+                                                        :tooltipValue="'Edit subtask'"
+                                                        />
+                                                    </template>
                                                     </v-col>
                                                     <v-col 
                                                     cols="4"
@@ -195,7 +196,8 @@
 <script>
 import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
-import {mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
+import EditButton from '../../UI/EditButton.vue';
+import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
             item: {
@@ -216,7 +218,7 @@ import {mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         },
         data() {
             return {
-                icons: {mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete},
+                icons: {mdiExclamation, mdiMarkerCheck, mdiDelete},
                 subTasks: {
 						title: '',
 						text: '',
@@ -261,7 +263,7 @@ import {mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 modifiedDetailTemplate: {id: null, title: '', text: ''},
             }
         },
-        components: {EditDetails, AddSubtaskButton},
+        components: {EditDetails, AddSubtaskButton, EditButton},
         methods: {
             updateDetails(details) {
                 this.$emit('updateDetails', details);
