@@ -244,8 +244,8 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiPlex, mdiDelete,
-		mdiMarkerCheck, mdiExclamation, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline,
+		mdiMarkerCheck, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
 	import AddDetails from '../dialogs/AddDetails/AddDetails.vue';
@@ -257,17 +257,15 @@
 		{
 			return {
 					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline,
-						mdiPlex, mdiDelete, mdiExclamation,mdiCircle, mdiMusicAccidentalSharp  }, //mdiContentSaveCheckOutline
+						mdiCircle, mdiMusicAccidentalSharp  }, //mdiContentSaveCheckOutline
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
-					// isShowAlertInDetails: false,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
 					dialog     : false,  
 					dialogEditSubTask : false, 
 					subTaskTitle: false,
 					dialogNotes: false,
-					// dialogDetails: false,
 					checked: true,
 					time       : this.item.time,
 					priority   : this.item.priority,
@@ -277,14 +275,6 @@
 					done: 'v-card-done',
 					completedPercent : 0,
 					completedProgressBar: 0,
-					// subTasks: {
-					// 	title: '',
-					// 	text: '',
-					// 	position:1,
-					// 	weight: 100,
-					// 	checkpoint: false,
-					// 	is_ready: false,
-					// },
 					createdSubTasks: {
 						title: '',
 						text: '',
@@ -349,76 +339,6 @@
 				updateCompletedPercent(compPercent) {
 					this.completedPercent = compPercent;
 				},
-			// getAllDetailsForTask(item) {
-			// 	this.dialogDetails = true
-			// 	axios.post('/get-sub-tasks',{task_id : item.taskId})
-			// 	.then((response) => {
-			// 		this.details = []
-			// 		response.data.data.forEach(element => {
-			// 			this.details.push({
-			// 				title: element.title,
-			// 				text:  element.text,
-			// 				taskId: element.id,
-			// 				is_ready: element.is_ready, 
-			// 				checkpoint: element.checkpoint
-			// 			}) 
-			// 		});
-			// 		this.completedPercent = response.data.completedPercent
-			// 		//console.log(this.details)
-			// 		this.setAlertData(response.data.status, response.data.message)
-			// 	  })
-			// },
-
-			// addDetail(item){
-			// 	//console.log(item.taskId)
-			// 	this.subTasks.task_id = this.item.taskId
-			// 	this.details.push(this.subTasks) 
-			// 	this.createSubPlan(this.subTasks)
-			// 	this.subTasks = {};
-			// },
-
-			// createSubPlan(item){
-			// 	axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
-			// 	.then((response) => {
-			// 		//console.log(response)
-			// 		this.isShowAlertInDetails = true;
-			// 		this.setAlertData(response.data.elements, response.data.message)
-			// 		this.completedPercent = response.data.completedPercent
-			// 		item.taskId = response.data.taskId
-			// 		setTimeout( () => {
-			// 			this.isShowAlertInDetails = false;
-			// 			//debugger;
-			// 		},3000)
-			// 	  })
-			// 	  .catch(function (error) {
-			// 		console.log(error)
-			// 	  })
-			// },
-
-			// deleteSubTask(item){
-			// 	var index = this.details.indexOf(item)
-			// 	console.log(item)
-			// 	axios.post('/del-sub-task',{task_id : item.taskId})
-			// 	.then((response) => {
-			// 		//this.isShowAlert = true;
-			// 		console.log(this.details)
-			// 		this.setAlertData(response.data.status, response.data.message)
-			// 		this.details.splice(index, 1);
-			// 		this.completedPercent = response.data.completedPercent
-			// 	})
-			// },
-
-			// completed(item){
-			// 	var index = this.details.indexOf(item)
-			// 	axios.post('/complete-sub-task',{task_id : item.taskId})
-			// 	.then((response) => {
-			// 		//this.isShowAlert = true;
-			// 		console.log(this.details)
-			// 		this.completedPercent = response.data.completedPercent
-			// 		this.setAlertData(response.data.status, response.data.message)
-			// 		//this.details.splice(index, 1);
-			// 	})
-			// },
 
 			saveNotes(){
 				axios.post('/add-sub-task',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
@@ -525,35 +445,7 @@
 				}
 			},
 			
-			// editTask(item) {
-			// 	this.dialogEditSubTask = true
-			// 	this.subTasks.task_id = item.taskId
-			// 	this.subTasks.title = item.title
-			// 	this.subTasks.text = item.text
-			// 	console.log(item)
-			// },
 			
-			// saveChangesInSubtask(item){
-			// 	//this.subTasks.task_id = item.taskId
-			// 	this.subTasks.title = item.title
-			// 	this.subTasks.text = item.text		
-						
-			// 	axios.post('/edit-subtask',{id : this.subTasks.task_id , title : this.subTasks.title , text: this.subTasks.text }) // type : item.type
-			// 		.then((response) => {
-						
-			// 			if (response.data.status == 'success') {
-			// 				item.title = this.subTasks.title
-			// 				item.text = this.subTasks.text
-			// 				this.dialogEditSubTask = false
-			// 				this.dialog = false
-			// 			}
-			// 			this.setAlertData(response.data.status, response.data.message)
-			// 			setTimeout( () => {
-			// 				this.isShowAlert = false;
-			// 			},3000)
-			// 	  })
-			// 	this.subTasks = {};
-			// },
 		}
 	}
 	
