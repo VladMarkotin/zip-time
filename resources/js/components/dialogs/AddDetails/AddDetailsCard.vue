@@ -90,19 +90,49 @@
                             <v-expansion-panels>
                                 <v-expansion-panel v-for="(v, i) in details" :key="i">
                                     <v-expansion-panel-header>
-                                        <p class="text-md-center">{{ v.title }} </p>
-                                        <v-icon color="#D71700" v-if="v.checkpoint == 1">
-                                            {{ icons.mdiExclamation }}
-
-                                        </v-icon>
-                                        <v-btn 
-                                        icon 
-                                        @click="createModifiedDetailTemplate(v)">
-                                            <v-icon color="#D71700">{{ icons.mdiPencil }}</v-icon>
-                                        </v-btn>
-                                        <v-icon color="#D71700" v-if="v.is_ready">
-                                            {{ icons.mdiMarkerCheck }}
-                                        </v-icon>
+                                        <v-row class="p-0 m-0">
+                                            <v-col
+                                            cols="9" 
+                                            class="p-0 m-0 d-flex justify-content-center align-items-center subtask-title-wrapper"
+                                            >
+                                                <p class="text-md-center mb-0">{{ v.title }} </p>
+                                            </v-col>
+                                            <v-col
+                                            cols="3" 
+                                            class="p-0 m-0"
+                                            >
+                                                <v-row
+                                                class="m-0 pl-2 pr-4"
+                                                >
+                                                    <v-col 
+                                                    cols="4" 
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                                    >
+                                                        <v-icon color="#D71700" v-if="v.checkpoint == 1">
+                                                            {{ icons.mdiExclamation }}
+                                                        </v-icon>
+                                                    </v-col>
+                                                    <v-col 
+                                                    cols="4"
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                                    >
+                                                        <v-btn 
+                                                        icon 
+                                                        @click="createModifiedDetailTemplate(v)">
+                                                            <v-icon color="#D71700">{{ icons.mdiPencil }}</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                    <v-col 
+                                                    cols="4"
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                                    >
+                                                        <v-icon color="#D71700" v-if="v.is_ready">
+                                                            {{ icons.mdiMarkerCheck }}
+                                                        </v-icon>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-col>
+                                        </v-row>
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
                                         <v-divider></v-divider>
@@ -352,5 +382,13 @@ import {mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 <style scoped>
     .isReqSubtask-checkbox-wrapper .v-input--checkbox {
         margin-top: 0;
+    }
+
+    .subtask-title-wrapper {
+        overflow: hidden;
+    }
+
+    .subtask-title-wrapper > p {
+        word-wrap: break-word;
     }
 </style>
