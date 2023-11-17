@@ -49,19 +49,30 @@
                             required></v-text-field>
                         </v-col>
                         <v-col>
-                            <v-checkbox 
-                            label="is required subtask?" 
-                            v-model="subTasks.checkpoint">
-                            </v-checkbox>
-                        </v-col>
-                        <v-col>
-                            <v-btn 
-                            icon
-                            v-if="isSubTasksInputValValid"
-                            >
-                                <v-icon md="1" color="#D71700" v-on:click="addDetail(item)"> {{ icons.mdiPlex }}
-                                </v-icon>
-                            </v-btn>
+                            <v-row class="p-0 m-0">
+                                <v-col
+                                cols="8"
+                                class="d-flex flex-column align-items-center justify-content-start isReqSubtask-checkbox-wrapper"
+                                >
+                                    <v-checkbox 
+                                    label="is required subtask?" 
+                                    v-model="subTasks.checkpoint">
+                                    </v-checkbox>
+                                </v-col>
+                                <v-col
+                                cols="4"
+                                class="d-flex flex-column align-items-start justify-content-start"
+                                >
+                                <template
+                                v-if="isSubTasksInputValValid"
+                                >
+                                    <AddSubtaskButton 
+                                    :buttonSize="40"
+                                    @click.native="addDetail(item)"
+                                    />
+                                </template>
+                                </v-col>
+                            </v-row>
                         </v-col>
 
                     </v-row>
@@ -147,7 +158,8 @@
 
 <script>
 import EditDetails from './EditDetails.vue';
-import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
+import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
+import {mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
             item: {
@@ -168,7 +180,7 @@ import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@m
         },
         data() {
             return {
-                icons: {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete},
+                icons: {mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete},
                 subTasks: {
 						title: '',
 						text: '',
@@ -213,7 +225,7 @@ import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@m
                 modifiedDetailTemplate: {id: null, title: '', text: ''},
             }
         },
-        components: {EditDetails},
+        components: {EditDetails, AddSubtaskButton},
         methods: {
             updateDetails(details) {
                 this.$emit('updateDetails', details);
@@ -330,3 +342,9 @@ import {mdiPlex, mdiExclamation, mdiPencil, mdiMarkerCheck, mdiDelete}  from '@m
         }
     }
 </script>
+
+<style scoped>
+    .isReqSubtask-checkbox-wrapper .v-input--checkbox {
+        margin-top: 0;
+    }
+</style>
