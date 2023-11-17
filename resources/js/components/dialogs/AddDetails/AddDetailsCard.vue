@@ -22,7 +22,9 @@
             <v-card-text style="height: 300px;">
                 <template>
                     <v-row>
-                        <v-col>
+                        <v-col
+                        class="pb-0"
+                        >
                             <v-text-field 
                             width="20px" 
                             v-model="subTasks.title" 
@@ -35,7 +37,9 @@
                             ref="subtaskTitleInput"
                             required></v-text-field>
                         </v-col>
-                        <v-col>
+                        <v-col
+                        class="pb-0"
+                        >
                             <v-text-field 
                             width="20px" 
                             v-model="subTasks.text" 
@@ -48,7 +52,9 @@
                             ref="subtaskTextInput"
                             required></v-text-field>
                         </v-col>
-                        <v-col>
+                        <v-col
+                        class="pb-0"
+                        >
                             <v-row class="p-0 m-0">
                                 <v-col
                                 cols="8"
@@ -68,7 +74,7 @@
                                 >
                                     <AddSubtaskButton 
                                     :buttonSize="40"
-                                    @click.native="addDetail(item)"
+                                    @addSubtask="addDetail(item)"
                                     />
                                 </template>
                                 </v-col>

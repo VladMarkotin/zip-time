@@ -4,6 +4,7 @@
             <v-btn 
             v-on="tooltip"
             :size="buttonSize"
+            @click="$emit('addSubtask')"
             icon
             >
                 <v-icon 
