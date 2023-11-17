@@ -4,7 +4,7 @@
             <v-btn 
             v-on="tooltip"
             icon 
-            @click="$emit('click')">
+            @click.stop="$emit('click')">
                 <v-icon color="#D71700">{{ icon.mdiPencil }}</v-icon>
             </v-btn>
         </template>

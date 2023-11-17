@@ -39,9 +39,14 @@
 					width="500"
 					>
 					<template v-slot:activator="{ props }">
-					<v-btn icon @click="dialog=true">
+						<template>
+							<EditButton 
+							@click="dialog=true"
+							/>
+						</template>
+					<!-- <v-btn icon @click="dialog=true"> тут пока не удалять
 						<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
-					</v-btn>
+					</v-btn> --> 
 				</template>
 					<v-card>
 						<v-card-title class="text-h5">
@@ -244,6 +249,7 @@
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
 	import AddDetails from '../dialogs/AddDetails/AddDetails.vue';
+	import EditButton from '../UI/EditButton.vue';
 	export default
 	{
 		props : ['item', 'num'],
@@ -296,7 +302,7 @@
 					isShowAddHashCodeDialog : false
 				}
 			},
-		components : {Alert, AddHashCode, AddDetails},
+		components : {Alert, AddHashCode, AddDetails, EditButton},
 		methods :
 		{
 			mounted ()

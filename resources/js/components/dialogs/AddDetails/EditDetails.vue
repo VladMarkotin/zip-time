@@ -4,13 +4,13 @@
     persistent 
     width="500">
         <v-card>
-            <v-card-title class="text-h5">
+            <v-card-title class="text-h5 d-flex justify-content-center align-items-center">
                 Edit Subtask
             </v-card-title>
             <v-card-text>
                 Edit Subtask`s title:
                 <v-text-field 
-                class="ml-1" 
+                class="ml-1 pt-0" 
                 :counter="subtaskRules.subtaskTitle.maxLength" 
                 v-model="subtaskInputsValues.title"
                 :rules="subtaskTitleRules"
@@ -23,7 +23,7 @@
                 Edit Subtask`s text:
                 <v-text-field 
                 :counter="subtaskRules.subtaskText.maxLength"
-                class="ml-1" 
+                class="ml-1 pt-0" 
                 v-model="subtaskInputsValues.text"
                 :rules="subtaskTextRules"
                 success
