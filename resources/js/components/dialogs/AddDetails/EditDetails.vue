@@ -38,7 +38,7 @@
                 </form>
 
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions style="min-height: 88px;">
                 <v-alert 
                 v-if="alert.isShowAlert"
                 text class="elevation-1" 
@@ -159,7 +159,6 @@ export default {
                     ...this.subtaskTitleRules.map(check => check(this.subtaskInputsValues.title)),
                     ...this.subtaskTextRules.map(check => check(this.subtaskInputsValues.text)),
                 ).every(checkResult => checkResult === true);
-                console.log(this.isSubTaskInputValValid);
             },
     },
     watch: {

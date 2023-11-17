@@ -347,7 +347,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
 				.then((response) => {
 					this.isShowAlertInDetails = true;
-					this.$emit('updateAlertData', {type: '', text: response.data.message});
+					this.$emit('updateAlertData', {type: response.status === 200 ? 'success' : 'error', text: response.data.message});
 					const completedPercent = this.checkCompletedPercent(response.data.completedPercent);
                     this.updateCompletedPercent(completedPercent);
 					item.taskId = response.data.taskId // ?
