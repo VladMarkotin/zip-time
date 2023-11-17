@@ -9,37 +9,41 @@
             </v-card-title>
             <v-card-text>
                 Edit Subtask`s title:
-                <v-text-field 
-                class="ml-1 pt-0" 
-                :counter="subtaskRules.subtaskTitle.maxLength" 
-                v-model="subtaskInputsValues.title"
-                :rules="subtaskTitleRules"
-                success
-                @input="checkInputsValue"
-                ref="subtaskTitleInput"
+                <form
+                @keydown.enter="saveChangesInSubtask"
                 >
-
-                </v-text-field>
-                Edit Subtask`s text:
-                <v-text-field 
-                :counter="subtaskRules.subtaskText.maxLength"
-                class="ml-1 pt-0" 
-                v-model="subtaskInputsValues.text"
-                :rules="subtaskTextRules"
-                success
-                @input="checkInputsValue"
-                ref="subtaskTextInput"
-                >
-
-                </v-text-field>
+                    <v-text-field 
+                    class="ml-1 pt-0" 
+                    :counter="subtaskRules.subtaskTitle.maxLength" 
+                    v-model="subtaskInputsValues.title"
+                    :rules="subtaskTitleRules"
+                    success
+                    @input="checkInputsValue"
+                    ref="subtaskTitleInput"
+                    >
+    
+                    </v-text-field>
+                    Edit Subtask`s text:
+                    <v-text-field 
+                    :counter="subtaskRules.subtaskText.maxLength"
+                    class="ml-1 pt-0" 
+                    v-model="subtaskInputsValues.text"
+                    :rules="subtaskTextRules"
+                    success
+                    @input="checkInputsValue"
+                    ref="subtaskTextInput"
+                    >
+    
+                    </v-text-field>
+                </form>
 
             </v-card-text>
             <v-card-actions>
                 <v-alert 
                 v-if="alert.isShowAlert"
-                color="#404040" 
                 text class="elevation-1" 
                 v-bind:type="alert.type"
+                :class="'edit-details-alert'"
                 >{{ alert.text }}</v-alert>
                 <v-spacer></v-spacer>
                 <v-btn color="green-darken-1" variant="text" @click="dialogEditSubTask = false">
@@ -85,6 +89,11 @@ export default {
 
         subtaskTextRules: {
             type: Array,
+        },
+
+        alertDisplayTime: {
+            type: Number,
+            default: 1500,
         }
     },
     data() {
@@ -119,6 +128,7 @@ export default {
         },
 
         saveChangesInSubtask(){	
+            if (this.isSubTaskInputValValid) {
 				axios.post('/edit-subtask', 
                 {id: this.modifiedDetailTemplate.id, title: this.subtaskInputsValues.title, text: this.subtaskInputsValues.text}) // type : item.type
 					.then((response) => {
@@ -132,8 +142,16 @@ export default {
 
 						setTimeout( () => {
 							this.dialogEditSubTask = false;
-						},1500)
+						},this.alertDisplayTime)
 				  })
+            } else {
+                this.setAlertData({type: 'error', text: 'Invalid data'})
+                this.alert.isShowAlert = true;
+
+                setTimeout(() => {
+                    this.alert.isShowAlert = false;
+                }, this.alertDisplayTime)
+            }
 			},
 
             checkInputsValue() {
@@ -164,3 +182,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .edit-details-alert {
+        background-color: #DCDCDC !important;
+    }
+</style>

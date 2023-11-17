@@ -19,179 +19,188 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="height: 300px;">
-                <template>
-                    <v-row>
-                        <v-col
-                        class="pb-0"
-                        >
-                            <v-text-field 
-                            width="20px" 
-                            v-model="subTasks.title" 
-                            :counter="subtaskRules.subtaskTitle.maxLength" 
-                            label="Subtask title"
-                            v-on:keyup.enter="addDetail" 
-                            :rules="subtaskTitleRules"
-				            success
-                            @input="checkInputsValue"
-                            ref="subtaskTitleInput"
-                            required></v-text-field>
-                        </v-col>
-                        <v-col
-                        class="pb-0"
-                        >
-                            <v-text-field 
-                            width="20px" 
-                            v-model="subTasks.text" 
-                            v-on:keyup.enter="addDetail" 
-                            :counter="subtaskRules.subtaskText.maxLength"
-                            label="Subtask details" 
-                            :rules="subtaskTextRules"
-                            success
-                            @input="checkInputsValue"
-                            ref="subtaskTextInput"
-                            required></v-text-field>
-                        </v-col>
-                        <v-col
-                        class="pb-0"
-                        >
-                            <v-row class="p-0 m-0">
-                                <v-col
-                                cols="8"
-                                class="d-flex flex-column align-items-center justify-content-start isReqSubtask-checkbox-wrapper"
-                                >
-                                    <v-checkbox 
-                                    label="is required subtask?" 
-                                    v-model="subTasks.checkpoint">
-                                    </v-checkbox>
-                                </v-col>
-                                <v-col
-                                cols="4"
-                                class="d-flex flex-column align-items-start justify-content-start"
-                                >
-                                <template
-                                v-if="isSubTasksInputValValid"
-                                >
-                                    <AddSubtaskButton 
-                                    :buttonSize="40"
-                                    @addSubtask="addDetail(item)"
-                                    />
-                                </template>
-                                </v-col>
-                            </v-row>
-                        </v-col>
-
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-row>
-
-                        <template>
-                            <!--Display subTask-->
-                            <v-expansion-panels>
-                                <v-expansion-panel v-for="(v, i) in details" :key="i">
-                                    <v-expansion-panel-header>
-                                        <v-row class="p-0 m-0">
-                                            <v-col
-                                            cols="9" 
-                                            class="p-0 m-0 d-flex justify-content-center align-items-center subtask-title-wrapper"
-                                            >
-                                                <p class="text-md-center">{{ v.title }} </p>
-                                            </v-col>
-                                            <v-col
-                                            cols="3" 
-                                            class="p-0 m-0"
-                                            >
-                                                <v-row
-                                                class="m-0 pl-2 pr-4"
+            <v-card-text style="height: 300px; position: relative;" >
+                <!-- возможно удалить этот блок -->
+                <div class="subtasks-inner-block"> 
+                    <template>
+                        <v-row>
+                            <v-col
+                            class="pb-0"
+                            >
+                                <v-text-field 
+                                width="20px" 
+                                v-model="subTasks.title" 
+                                v-on:keyup.enter="addDetail" 
+                                :counter="subtaskRules.subtaskTitle.maxLength" 
+                                label="Subtask title"
+                                :rules="subtaskTitleRules"
+                                success
+                                @input="checkInputsValue"
+                                ref="subtaskTitleInput"
+                                required></v-text-field>
+                            </v-col>
+                            <v-col
+                            class="pb-0"
+                            >
+                                <v-text-field 
+                                width="20px" 
+                                v-model="subTasks.text" 
+                                v-on:keyup.enter="addDetail" 
+                                :counter="subtaskRules.subtaskText.maxLength"
+                                label="Subtask details" 
+                                :rules="subtaskTextRules"
+                                success
+                                @input="checkInputsValue"
+                                ref="subtaskTextInput"
+                                required></v-text-field>
+                            </v-col>
+                            <v-col
+                            class="pb-0"
+                            >
+                                <v-row class="p-0 m-0">
+                                    <v-col
+                                    cols="8"
+                                    class="d-flex flex-column align-items-center justify-content-start isReqSubtask-checkbox-wrapper"
+                                    >
+                                        <v-checkbox 
+                                        label="is required subtask?" 
+                                        v-model="subTasks.checkpoint">
+                                        </v-checkbox>
+                                    </v-col>
+                                    <v-col
+                                    cols="4"
+                                    class="d-flex flex-column align-items-start justify-content-start"
+                                    >
+                                    <template
+                                    v-if="isSubTasksInputValValid"
+                                    >
+                                        <AddSubtaskButton 
+                                        :buttonSize="40"
+                                        @addSubtask="addDetail(item)"
+                                        />
+                                    </template>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+    
+                        </v-row>
+                        <v-divider></v-divider>
+                        <v-row>
+    
+                            <template>
+                                <!--Display subTask-->
+                                <v-expansion-panels>
+                                    <v-expansion-panel v-for="(v, i) in details" :key="i">
+                                        <v-expansion-panel-header>
+                                            <v-row class="p-0 m-0">
+                                                <v-col
+                                                cols="9" 
+                                                class="p-0 m-0 d-flex justify-content-center align-items-center subtask-title-wrapper"
                                                 >
-                                                    <v-col 
-                                                    cols="4" 
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                                    <p class="text-md-center">{{ v.title }} </p>
+                                                </v-col>
+                                                <v-col
+                                                cols="3" 
+                                                class="p-0 m-0"
+                                                >
+                                                    <v-row
+                                                    class="m-0 pl-2 pr-4"
                                                     >
-                                                    <v-tooltip bottom>
-                                                        <template v-slot:activator="{ on: tooltip  }">
-                                                            <v-icon
-                                                            v-on="tooltip" 
-                                                            color="#D71700" 
-                                                            v-if="v.checkpoint == 1">
-                                                                {{ icons.mdiExclamation }}
-                                                            </v-icon>
+                                                        <v-col 
+                                                        cols="4" 
+                                                        class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                                        >
+                                                        <v-tooltip bottom>
+                                                            <template v-slot:activator="{ on: tooltip  }">
+                                                                <v-icon
+                                                                v-on="tooltip" 
+                                                                color="#D71700" 
+                                                                v-if="v.checkpoint == 1">
+                                                                    {{ icons.mdiExclamation }}
+                                                                </v-icon>
+                                                            </template>
+                                                            <span>This subtask has required status</span>
+                                                        </v-tooltip>
+                                                        </v-col>
+                                                        <v-col 
+                                                        cols="4"
+                                                        class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                                        >
+                                                        <template>
+                                                            <EditButton 
+                                                            @click="createModifiedDetailTemplate(v)"
+                                                            :tooltipValue="'Edit subtask'"
+                                                            />
                                                         </template>
-                                                        <span>This subtask has required status</span>
-                                                    </v-tooltip>
-                                                    </v-col>
-                                                    <v-col 
-                                                    cols="4"
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center"
-                                                    >
-                                                    <template>
-                                                        <EditButton 
-                                                        @click="createModifiedDetailTemplate(v)"
-                                                        :tooltipValue="'Edit subtask'"
-                                                        />
-                                                    </template>
-                                                    </v-col>
-                                                    <v-col 
-                                                    cols="4"
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center"
-                                                    >
-                                                        <v-icon color="#D71700" v-if="v.is_ready">
-                                                            {{ icons.mdiMarkerCheck }}
-                                                        </v-icon>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-                                        </v-row>
-                                    </v-expansion-panel-header>
-                                    <v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
-                                        <v-divider></v-divider>
-                                        <v-row class="p-0 m-0">
-                                            <v-col 
-                                            class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
-                                            cols="9"
-                                            >
-                                                <p> {{ v.text }}</p>
-                                            </v-col>
-                                            <v-col 
-                                            class="p-0 m-0"
-                                            cols="3"
-                                            >
-                                                <v-row class="m-0 pl-2">
-                                                    <v-col class="p-0 m-0 d-flex flex-column justify-content-center align-items-center isReady-checkbox-wrapper">
-                                                        <v-checkbox 
-                                                        class="isReady-checkbox"
-                                                        v-model="v.is_ready" 
-                                                        label="Is Ready?" 
-                                                        color="red"
-                                                        @change="completed(v)" 
-                                                        hide-details></v-checkbox>
-                                                    </v-col>
-                                                    <v-col 
-                                                    cols="2"
-                                                    class="p-0 m-0 d-flex flex-column justify-content-center align-items-end"
-                                                    >
-                                                        <v-btn 
-                                                        icon 
-                                                        v-on:click="deleteSubTask(v)" 
-                                                        v-if="v.checkpoint != 1">
-                                                            <v-icon md="1" color="#D71700">
-                                                                {{ icons.mdiDelete }}
+                                                        </v-col>
+                                                        <v-col 
+                                                        cols="4"
+                                                        class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                                        >
+                                                            <v-icon color="#D71700" v-if="v.is_ready">
+                                                                {{ icons.mdiMarkerCheck }}
                                                             </v-icon>
-                                                        </v-btn>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-                                        </v-row>
-                                    </v-expansion-panel-content>
-
-                                </v-expansion-panel>
-                            </v-expansion-panels>
-                        </template>
-                    </v-row>
-                </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                            </v-row>
+                                        </v-expansion-panel-header>
+                                        <v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
+                                            <v-divider></v-divider>
+                                            <v-row class="p-0 m-0">
+                                                <v-col 
+                                                class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
+                                                cols="9"
+                                                >
+                                                    <p> {{ v.text }}</p>
+                                                </v-col>
+                                                <v-col 
+                                                class="p-0 m-0"
+                                                cols="3"
+                                                >
+                                                    <v-row class="m-0 pl-2">
+                                                        <v-col class="p-0 m-0 d-flex flex-column justify-content-center align-items-center isReady-checkbox-wrapper">
+                                                            <v-checkbox 
+                                                            class="isReady-checkbox"
+                                                            v-model="v.is_ready" 
+                                                            label="Is Ready?" 
+                                                            color="red"
+                                                            @change="completed(v)" 
+                                                            hide-details></v-checkbox>
+                                                        </v-col>
+                                                        <v-col 
+                                                        cols="2"
+                                                        class="p-0 m-0 d-flex flex-column justify-content-center align-items-end"
+                                                        >
+                                                            <v-btn 
+                                                            icon 
+                                                            v-on:click="deleteSubTask(v)" 
+                                                            v-if="v.checkpoint != 1">
+                                                                <v-icon md="1" color="#D71700">
+                                                                    {{ icons.mdiDelete }}
+                                                                </v-icon>
+                                                            </v-btn>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                            </v-row>
+                                        </v-expansion-panel-content>
+    
+                                    </v-expansion-panel>
+                                </v-expansion-panels>
+                            </template>
+                        </v-row>
+                    </template>
+                    <v-alert 
+                    v-if="isShowAlertInDetails"
+                    text class="elevation-1" 
+                    v-bind:type="alert.type"
+                    :class="'add-details-alert'"
+                    >
+                        {{ alert.text }}
+                    </v-alert>
+                </div>
             </v-card-text>
-            <v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type"
-                v-if="isShowAlertInDetails">{{ alert.text }}</v-alert>
             <v-divider></v-divider>
             <v-card-actions>
                 <v-row class="d-flex align-items-center justify-content-end">
@@ -212,6 +221,7 @@
                 :subtaskRules            = "subtaskRules"
                 :subtaskTitleRules       = "subtaskTitleRules"
                 :subtaskTextRules        = "subtaskTextRules"
+                :alertDisplayTime        = "alertDisplayTime"
                 @closeEditDetailsDialog = "closeEditDetailsDialog"
                 @updateDetails          = "updateDetails"
                 />
@@ -254,6 +264,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 						is_ready: false,
 					},
                 isShowAlertInDetails: false,
+                alertDisplayTime: 1500,
                 subtaskRules: {
                     subtaskTitle: {
                         minLength: 3,
@@ -317,11 +328,19 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
 
             addDetail(){
-				this.subTasks.task_id = this.item.taskId
-                this.updateDetails([...this.details, this.subTasks]);
-				this.createSubPlan(this.subTasks)
-				this.subTasks = {};
-                this.checkInputsValue();
+                if (this.isSubTasksInputValValid) {
+                    this.subTasks.task_id = this.item.taskId
+                    this.updateDetails([...this.details, this.subTasks]);
+                    this.createSubPlan(this.subTasks)
+                    this.subTasks = {};
+                    this.checkInputsValue();
+                } else {
+					this.$emit('updateAlertData', {type: 'error', text: 'Invalid data'});
+                    this.isShowAlertInDetails = true;
+                    setTimeout( () => {
+						this.isShowAlertInDetails = false;
+					},this.alertDisplayTime)
+                }
 			},
 
 			createSubPlan(item){
@@ -335,7 +354,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 					setTimeout( () => {
 						this.isShowAlertInDetails = false;
 						//debugger;
-					},3000)
+					},this.alertDisplayTime)
 				  })
 				  .catch(function (error) {
 					console.log(error)
@@ -363,7 +382,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
                         setTimeout( () => {
                             this.isShowAlertInDetails = false;
-					    },3000)
+					    },this.alertDisplayTime)
                     }
 				})
 			},
@@ -428,7 +447,19 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         padding-top: 0;
     }
 
-    .isReady-checkbox {
-        
+    .subtasks-inner-block {
+        width: 95%;
+    }
+
+    .add-details-alert {
+        position: sticky; 
+        left: 0; 
+        bottom: 0; 
+        z-index: 9999; 
+        margin-bottom: 0;
+        background-color: #DCDCDC !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
