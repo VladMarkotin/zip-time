@@ -22,9 +22,9 @@ class SubPlanGPTController extends Controller
         /**
          * Здесь нужно обращаться к chatGPT API и получать ответ
          */
-         $request = 'create plan for '.$request->get('request');
+         $request = 'create plan for '.$request->get('request').'Return answer in bullet points';
          $response = $this ->GPTService->chatGPT($request);
-        die(var_dump( $response));
+         echo response()->json($response);
     }
 
     public function createSubPlanViaGPT(Request $request)
