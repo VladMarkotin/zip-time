@@ -12,16 +12,13 @@
         @guest
         <section>
             <div class="slider-wrapper">
-                <div class="slider-right-arrow-wrapper slider-arrow">
-
-                </div>
                 <div class="slide slide-one">
                     
                 </div>
-                <div class="slide slide-two">
+                <div class="slide slide-two" style="display: none;"> 
                     
                 </div>
-                <div class="slide slide-three">
+                <div class="slide slide-three" style="display: none;">
                     
                 </div>
                 <div class="slider-left-arrow-wrapper slider-arrow">

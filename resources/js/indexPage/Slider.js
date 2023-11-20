@@ -20,7 +20,6 @@ const draw = () => {
         slide.classList.add(item);
     }
     
-    
     slide.style.left = offset * currentWidth + 'px';
     sliderWrapper.appendChild(slide);
 
