@@ -1,0 +1,36 @@
+.slider-wrapper {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+.slider-wrapper .slide {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: all ease 0.6s;
+  left: 0;
+  top: 0;
+}
+.slider-wrapper .slide.slide-one {
+  background-color: orange;
+}
+.slider-wrapper .slide.slide-two {
+  background-color: red;
+}
+.slider-wrapper .slide.slide-three {
+  background-color: green;
+}
+.slider-wrapper .slider-arrow {
+  padding: 15px 25px;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+  top: calc(50vh - 15px);
+}
+.slider-wrapper .slider-arrow.slider-left-arrow-wrapper {
+  right: 55px;
+}
+.slider-wrapper .slider-arrow.slider-right-arrow-wrapper {
+  left: 55px;
+}

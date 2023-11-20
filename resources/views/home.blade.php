@@ -10,42 +10,25 @@
         </div>
         @endauth 
         @guest
-        <div class="index-container">
-            <div class="banner">
-                <h1 class="slogan">Quipl.io slogan</h1>
-                <p class="info-head info-banner">manage and control</p>
-                <p class="info-text text-banner">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                <img class="banner-gif-left" src="/images/ezgif.com-gif-maker.gif">
-                <img class="banner-gif-right" src="/images/ezgif.com-gif-maker.gif" >
-            </div>
-            <div class="info">
-                <div class="info-container">
-                    <p class="info-head text-left">statistic</p>
-                    <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                    <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                    <img class="statistic-img" src="/images/statistic.png">
+        <section>
+            <div class="slider-wrapper">
+                <div class="slider-right-arrow-wrapper slider-arrow">
+
                 </div>
-                <hr class="underline">            
-                <div class="info-container right-container">
-                    <p class="info-head text-right">#saved task</p>
-                    <p class="info-bold text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                    <p class="info-text text-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                    <div class="images">
-                        {{-- <img class="saved-task-img" src="/images/history_2550251.png"> --}}
-                        <img class="saved-task-img" src="/images/clock.png">
-                        <img class="saved-img" src="/images/saved.png">
-                        <img class="task-img" src="/images/task.png">
-                    </div>                
+                <div class="slide slide-one">
+                    
                 </div>
-                <hr class="underline">
-                <div class="info-container">
-                    <p class="info-head text-left">history</p>
-                    <p class="info-bold text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                    <p class="info-text text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                    <img class="history-img" src="/images/history.png">
+                <div class="slide slide-two">
+                    
+                </div>
+                <div class="slide slide-three">
+                    
+                </div>
+                <div class="slider-left-arrow-wrapper slider-arrow">
+                    
                 </div>
             </div>
-        </div> 
+        </section>
         @endguest
     
 @endsection

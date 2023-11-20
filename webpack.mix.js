@@ -13,7 +13,9 @@ const mix = require('laravel-mix');
 
 mix
     .js('resources/js/app.js', 'public/js')
+    .js('resources/js/indexPage/Slider.js', 'public/js/indexPage.js')
     .vue()
     .css('resources/css/app.css', 'public/css/app.css')
+    .sass('resources/sass/indexPage/indexPage.scss', 'public/css/indexPage')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');

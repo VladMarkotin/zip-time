@@ -1,5 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/indexPage.js": "/js/indexPage.js",
     "/css/customTooltip.css": "/css/customTooltip.css",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css"
 }
