@@ -5,8 +5,6 @@ const currentWidth = window.innerWidth;
 const sliderLeftArrow = document.querySelector('.slider-left-arrow-wrapper');
 const sliderRightArrow = document.querySelector('.slider-right-arrow-wrapper');
 
-console.log(sliderRightArrow);
-
 for (let item of slides) {
     slider.push(item.classList.value.split(' '));
     item.remove();
@@ -50,6 +48,7 @@ const right = () => {
 }
 
 const left = () => {
+    sliderLeftArrow.onclick=null;
     const slides = document.querySelectorAll('.slide');
     let offset = 0;
 
@@ -61,12 +60,11 @@ const left = () => {
     setTimeout(() => {
         slides[0].remove();
         draw();
+        sliderLeftArrow.onclick=left;
     }, 600);
 }
 
-
 draw();
 draw();
 
-sliderRightArrow.addEventListener('click', right);
 sliderLeftArrow.addEventListener('click', left);

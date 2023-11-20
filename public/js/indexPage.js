@@ -12,7 +12,6 @@ var sliderWrapper = document.querySelector('.slider-wrapper');
 var currentWidth = window.innerWidth;
 var sliderLeftArrow = document.querySelector('.slider-left-arrow-wrapper');
 var sliderRightArrow = document.querySelector('.slider-right-arrow-wrapper');
-console.log(sliderRightArrow);
 var _iterator = _createForOfIteratorHelper(slides),
   _step;
 try {
@@ -73,6 +72,7 @@ var right = function right() {
   }, 600);
 };
 var left = function left() {
+  sliderLeftArrow.onclick = null;
   var slides = document.querySelectorAll('.slide');
   var offset = 0;
   var _iterator4 = _createForOfIteratorHelper(slides),
@@ -91,11 +91,11 @@ var left = function left() {
   setTimeout(function () {
     slides[0].remove();
     draw();
+    sliderLeftArrow.onclick = left;
   }, 600);
 };
 draw();
 draw();
-sliderRightArrow.addEventListener('click', right);
 sliderLeftArrow.addEventListener('click', left);
 /******/ })()
 ;
