@@ -1,69 +1,69 @@
-const slides = document.body.querySelectorAll('.slide');
-const slider = new Array;
-const sliderWrapper = document.querySelector('.slider-wrapper');
-const currentWidth = window.innerWidth;
-const sliderLeftArrow = document.querySelector('.slider-left-arrow-wrapper');
-const sliderRightArrow = document.querySelector('.slider-right-arrow-wrapper');
+class Slider {
 
-for (let item of slides) {
-    slider.push(item.classList.value.split(' '));
-    item.remove();
-}
+    #slider          = null;
+    #sliderWrapper   = null;
+    #currentWidth    = null;
+    #step            = null;
+    #offset          = null;
+    #sliderLeftArrow = null;
 
-let step   = 0;
-let offset = 0;
+    init() {
+        const slides = document.body.querySelectorAll('.slide');
+        this.#slider = new Array;
+        this.#sliderWrapper = document.querySelector('.slider-wrapper');
+        this.#currentWidth = window.innerWidth;
+        this.#sliderLeftArrow = document.querySelector('.slider-left-arrow-wrapper');
 
-const draw = () => {
-    const slide = document.createElement('div');
+        for (let item of slides) {
+            this.#slider.push(item.classList.value.split(' '));
+            item.remove();
+        }
 
-    for(let item of slider[step]) {
-        slide.classList.add(item);
+        this.#step   = 0;
+        this.#offset = 0;
+
+        this.draw();
+        this.draw();
+
+        this.left = this.left.bind(this);
+        this.#sliderLeftArrow.onclick=this.left;
     }
+
+    draw() {
+        const slide = document.createElement('div');
+
+        for(let item of this.#slider[this.#step]) {
+            slide.classList.add(item);
+        }
+        
+        slide.style.left = this.#offset * this.#currentWidth + 'px';
+        this.#sliderWrapper.appendChild(slide);
     
-    slide.style.left = offset * currentWidth + 'px';
-    sliderWrapper.appendChild(slide);
-
-    if (step + 1 === slider.length) {
-        step = 0;
-    } else {
-        step++;
-    }
-    offset = 1;
-}
-
-const right = () => {
-    const slides = document.querySelectorAll('.slide');
-    let offset = 0;
-    
-    for (let item of slides) {
-        item.style.left = offset * currentWidth - currentWidth + 'px';
-        offset++;
+        if (this.#step + 1 === this.#slider.length) {
+            this.#step = 0;
+        } else {
+            this.#step++;
+        }
+        this.#offset = 1;
     }
 
-    setTimeout(() => {
-        slides[0].remove();
-        draw();
-    }, 600);
-}
+    left() {
+        this.#sliderLeftArrow.onclick = null;
+        const slides = document.querySelectorAll('.slide');
+        let offset = 0;
 
-const left = () => {
-    sliderLeftArrow.onclick=null;
-    const slides = document.querySelectorAll('.slide');
-    let offset = 0;
+        for (let item of slides) {
+            item.style.left = offset * this.#currentWidth - this.#currentWidth + 'px';
+            offset++;
+        }
 
-    for (let item of slides) {
-        item.style.left = offset * currentWidth - currentWidth + 'px';
-        offset++;
+        setTimeout(() => {
+            slides[0].remove();
+            this.draw();
+            this.#sliderLeftArrow.onclick=this.left;
+        }, 600);
     }
-
-    setTimeout(() => {
-        slides[0].remove();
-        draw();
-        sliderLeftArrow.onclick=left;
-    }, 600);
 }
 
-draw();
-draw();
-
-sliderLeftArrow.addEventListener('click', left);
+const sliderT = new Slider;
+sliderT.init();
