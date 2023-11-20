@@ -65,5 +65,9 @@ class Slider {
     }
 }
 
-const sliderT = new Slider;
-sliderT.init();
+const slider = new Slider;
+slider.init();
+
+window.addEventListener('resize', () => {
+    slider.init();
+});

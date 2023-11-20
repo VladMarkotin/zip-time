@@ -136,7 +136,10 @@ var Slider = /*#__PURE__*/function () {
   }]);
   return Slider;
 }();
-var sliderT = new Slider();
-sliderT.init();
+var slider = new Slider();
+slider.init();
+window.addEventListener('resize', function () {
+  slider.init();
+});
 /******/ })()
 ;
