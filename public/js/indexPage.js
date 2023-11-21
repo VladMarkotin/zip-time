@@ -6,6 +6,7 @@ var __webpack_exports__ = {};
   !*** ./resources/js/indexPage/Slider.js ***!
   \******************************************/
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
@@ -57,7 +58,7 @@ var Slider = /*#__PURE__*/function () {
   }
   _createClass(Slider, [{
     key: "init",
-    value: function init() {
+    value: function init(allSlides) {
       var slides = document.body.querySelectorAll('.slide');
       _classPrivateFieldSet(this, _slider, new Array());
       _classPrivateFieldSet(this, _sliderWrapper, document.querySelector('.slider-wrapper'));
@@ -76,6 +77,26 @@ var Slider = /*#__PURE__*/function () {
       } finally {
         _iterator.f();
       }
+      var _iterator2 = _createForOfIteratorHelper(allSlides),
+        _step3;
+      try {
+        for (_iterator2.s(); !(_step3 = _iterator2.n()).done;) {
+          var slide = _step3.value;
+          //вот тут лучше не трогать
+          var allSlidesClasses = slide.classList.value.split(' ');
+          var allSlideMainClass = allSlidesClasses[1];
+          if (!_classPrivateFieldGet(this, _slider).map(function (item) {
+            return item[1];
+          }).includes(allSlideMainClass)) {
+            _classPrivateFieldGet(this, _slider).push(slide.classList.value.split(' '));
+            console.log(_classPrivateFieldGet(this, _slider));
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
       _classPrivateFieldSet(this, _step, 0);
       _classPrivateFieldSet(this, _offset, 0);
       this.draw();
@@ -87,17 +108,17 @@ var Slider = /*#__PURE__*/function () {
     key: "draw",
     value: function draw() {
       var slide = document.createElement('div');
-      var _iterator2 = _createForOfIteratorHelper(_classPrivateFieldGet(this, _slider)[_classPrivateFieldGet(this, _step)]),
-        _step3;
+      var _iterator3 = _createForOfIteratorHelper(_classPrivateFieldGet(this, _slider)[_classPrivateFieldGet(this, _step)]),
+        _step4;
       try {
-        for (_iterator2.s(); !(_step3 = _iterator2.n()).done;) {
-          var item = _step3.value;
+        for (_iterator3.s(); !(_step4 = _iterator3.n()).done;) {
+          var item = _step4.value;
           slide.classList.add(item);
         }
       } catch (err) {
-        _iterator2.e(err);
+        _iterator3.e(err);
       } finally {
-        _iterator2.f();
+        _iterator3.f();
       }
       slide.style.left = _classPrivateFieldGet(this, _offset) * _classPrivateFieldGet(this, _currentWidth) + 'px';
       _classPrivateFieldGet(this, _sliderWrapper).appendChild(slide);
@@ -116,18 +137,18 @@ var Slider = /*#__PURE__*/function () {
       _classPrivateFieldGet(this, _sliderLeftArrow).onclick = null;
       var slides = document.querySelectorAll('.slide');
       var offset = 0;
-      var _iterator3 = _createForOfIteratorHelper(slides),
-        _step4;
+      var _iterator4 = _createForOfIteratorHelper(slides),
+        _step5;
       try {
-        for (_iterator3.s(); !(_step4 = _iterator3.n()).done;) {
-          var item = _step4.value;
+        for (_iterator4.s(); !(_step5 = _iterator4.n()).done;) {
+          var item = _step5.value;
           item.style.left = offset * _classPrivateFieldGet(this, _currentWidth) - _classPrivateFieldGet(this, _currentWidth) + 'px';
           offset++;
         }
       } catch (err) {
-        _iterator3.e(err);
+        _iterator4.e(err);
       } finally {
-        _iterator3.f();
+        _iterator4.f();
       }
       setTimeout(function () {
         slides[0].remove();
@@ -138,7 +159,27 @@ var Slider = /*#__PURE__*/function () {
   }]);
   return Slider;
 }();
-var slider = new Slider();
+var _slider2 = /*#__PURE__*/new WeakMap();
+var SliderFacade = /*#__PURE__*/function () {
+  function SliderFacade(slider) {
+    _classCallCheck(this, SliderFacade);
+    _classPrivateFieldInitSpec(this, _slider2, {
+      writable: true,
+      value: null
+    });
+    _defineProperty(this, "slides", null);
+    _classPrivateFieldSet(this, _slider2, slider);
+    this.slides = document.body.querySelectorAll('.slide');
+  }
+  _createClass(SliderFacade, [{
+    key: "init",
+    value: function init() {
+      _classPrivateFieldGet(this, _slider2).init(this.slides);
+    }
+  }]);
+  return SliderFacade;
+}();
+var slider = new SliderFacade(new Slider());
 slider.init();
 window.addEventListener('resize', function () {
   slider.init();

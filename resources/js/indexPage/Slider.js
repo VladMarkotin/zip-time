@@ -7,7 +7,8 @@ class Slider {
     #offset          = null;
     #sliderLeftArrow = null;
 
-    init() {
+    init(allSlides) {
+        
         const slides = document.body.querySelectorAll('.slide');
         this.#slider = new Array;
         this.#sliderWrapper = document.querySelector('.slider-wrapper');
@@ -17,6 +18,15 @@ class Slider {
         for (let item of slides) {
             this.#slider.push(item.classList.value.split(' '));
             item.remove();
+        }
+
+        for(let slide of allSlides) { //вот тут лучше не трогать
+            const allSlidesClasses = slide.classList.value.split(' ');
+            const allSlideMainClass = allSlidesClasses[1];
+            if (!this.#slider.map(item => item[1]).includes(allSlideMainClass)) {
+                this.#slider.push(slide.classList.value.split(' '));
+                console.log(this.#slider);
+            }
         }
 
         this.#step   = 0;
@@ -65,7 +75,21 @@ class Slider {
     }
 }
 
-const slider = new Slider;
+class SliderFacade {
+    #slider = null;
+    slides  = null;
+
+    constructor(slider) {
+        this.#slider = slider;
+        this.slides = document.body.querySelectorAll('.slide');
+    }
+    
+    init() {
+        this.#slider.init(this.slides);
+    }
+}
+
+const slider = new SliderFacade(new Slider);
 slider.init();
 
 window.addEventListener('resize', () => {
