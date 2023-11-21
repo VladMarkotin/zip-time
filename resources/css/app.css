@@ -2,16 +2,49 @@ html {
     height: 100%;
 }
 
+#app {
+    position: relative;
+}
+
 .navbar {
-    background-color: #A10000;
+    background-color: rgb(34,34,34);
+    font-family: 'Lato', sans-serif;
 }
 
-.navbar-light .navbar-brand {
-    color: rgba(255, 255, 255, 0.9);
-}
-
+.navbar-light .navbar-brand,
 .navbar-light .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.9);
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 29px;
+    font-weight: 700;
+    transition: all ease .3s;
+}
+
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-brand:focus,
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link:focus {
+    color: #4fc1f0;;
+}
+
+.navbar-nav.ml-auto {
+    gap: 12px;
+}
+
+.nav-menu-sticky {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    animation: .4s stickyMenuAppearance ease;
+    box-shadow: 0 1px 3px rgba(50, 50, 50, 0.4);
+    background: #fff;
+}
+
+.nav-menu-sticky .navbar-brand,
+.nav-menu-sticky  .navbar-nav .nav-link {
+    color: #303030;;
 }
 
 /* ========================== INDEX PAGE =================================== */
@@ -506,3 +539,8 @@ hr.underline {
 }
 
 /* ====================== */
+
+@keyframes stickyMenuAppearance {
+    from { opacity: 0; transform: translate3d(0, -100%, 0)}
+    to { opacity: 1; top: 0; transform: none;}
+}
