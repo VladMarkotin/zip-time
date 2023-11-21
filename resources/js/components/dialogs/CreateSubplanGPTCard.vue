@@ -151,9 +151,13 @@
                             setTimeout( () => {
                                     this.isLoading = false
                             },3000)
+                            console.log(response.data)
                             this.subtasksFromChatGPT = []
-                            this.subtasksFromChatGPT.push('task1')
-                            this.subtasksFromChatGPT.push('task2')
+                            response.data.map( (el, key) => {
+                                this.subtasksFromChatGPT.push(el)    
+                            })
+                            /*this.subtasksFromChatGPT.push('task1')
+                            this.subtasksFromChatGPT.push('task2')*/
                         }
                     )
                 } else {
