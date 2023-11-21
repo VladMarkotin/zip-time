@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Services\GPTService;
 
 use Illuminate\Support\Facades\Http;
-use App\Http\Controllers\Services\GPTService\traits\transformGptResponseTrait;
+
 
 
 class GPTService
 {
-    use transformGptResponseTrait;
+   
 
     public function chatGPT(string $prompt)
     {
@@ -37,10 +37,11 @@ class GPTService
                 'max_tokens' => $openai_tokens,
                 'temperature' => floatval($openai_temperature)
             ]);
-            $data = $response['choices'][0]['message']['content'];
-            return $this->transformData($data);
-            $errorCode = $response['error']['code'] ?? null;
-            $errorType = $response['error']['type'] ?? null;
+           
+            // return $this->transformData($data);
+            // $errorCode = $response['error']['code'] ?? null;
+            // $errorType = $response['error']['type'] ?? null;
+            return $response;
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
