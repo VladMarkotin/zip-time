@@ -6,15 +6,9 @@ var __webpack_exports__ = {};
   !*** ./resources/js/indexPage/Slider.js ***!
   \******************************************/
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
 function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
@@ -22,6 +16,19 @@ function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { 
 function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var SlideItem = /*#__PURE__*/_createClass(function SlideItem(classes, content) {
+  _classCallCheck(this, SlideItem);
+  _defineProperty(this, "content", null);
+  _defineProperty(this, "classes", null);
+  this.classes = classes;
+  this.content = content;
+});
 var _slider = /*#__PURE__*/new WeakMap();
 var _sliderWrapper = /*#__PURE__*/new WeakMap();
 var _currentWidth = /*#__PURE__*/new WeakMap();
@@ -69,7 +76,7 @@ var Slider = /*#__PURE__*/function () {
       try {
         for (_iterator.s(); !(_step2 = _iterator.n()).done;) {
           var item = _step2.value;
-          _classPrivateFieldGet(this, _slider).push(item.classList.value.split(' '));
+          _classPrivateFieldGet(this, _slider).push(new SlideItem(item.classList.value.split(' '), item.innerHTML));
           item.remove();
         }
       } catch (err) {
@@ -83,13 +90,12 @@ var Slider = /*#__PURE__*/function () {
         for (_iterator2.s(); !(_step3 = _iterator2.n()).done;) {
           var slide = _step3.value;
           //вот тут лучше не трогать
-          var allSlidesClasses = slide.classList.value.split(' ');
+          var allSlidesClasses = slide.classes;
           var allSlideMainClass = allSlidesClasses[1];
           if (!_classPrivateFieldGet(this, _slider).map(function (item) {
-            return item[1];
+            return item.classes[1];
           }).includes(allSlideMainClass)) {
-            _classPrivateFieldGet(this, _slider).push(slide.classList.value.split(' '));
-            console.log(_classPrivateFieldGet(this, _slider));
+            _classPrivateFieldGet(this, _slider).push(slide);
           }
         }
       } catch (err) {
@@ -108,7 +114,8 @@ var Slider = /*#__PURE__*/function () {
     key: "draw",
     value: function draw() {
       var slide = document.createElement('div');
-      var _iterator3 = _createForOfIteratorHelper(_classPrivateFieldGet(this, _slider)[_classPrivateFieldGet(this, _step)]),
+      var currentItem = _classPrivateFieldGet(this, _slider)[_classPrivateFieldGet(this, _step)];
+      var _iterator3 = _createForOfIteratorHelper(currentItem.classes),
         _step4;
       try {
         for (_iterator3.s(); !(_step4 = _iterator3.n()).done;) {
@@ -120,6 +127,7 @@ var Slider = /*#__PURE__*/function () {
       } finally {
         _iterator3.f();
       }
+      slide.innerHTML = currentItem.content;
       slide.style.left = _classPrivateFieldGet(this, _offset) * _classPrivateFieldGet(this, _currentWidth) + 'px';
       _classPrivateFieldGet(this, _sliderWrapper).appendChild(slide);
       if (_classPrivateFieldGet(this, _step) + 1 === _classPrivateFieldGet(this, _slider).length) {
@@ -167,9 +175,21 @@ var SliderFacade = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
-    _defineProperty(this, "slides", null);
+    _defineProperty(this, "slides", new Array());
     _classPrivateFieldSet(this, _slider2, slider);
-    this.slides = document.body.querySelectorAll('.slide');
+    var slides = document.body.querySelectorAll('.slide');
+    var _iterator5 = _createForOfIteratorHelper(slides),
+      _step6;
+    try {
+      for (_iterator5.s(); !(_step6 = _iterator5.n()).done;) {
+        var item = _step6.value;
+        this.slides.push(new SlideItem(item.classList.value.split(' '), item.innerHTML));
+      }
+    } catch (err) {
+      _iterator5.e(err);
+    } finally {
+      _iterator5.f();
+    }
   }
   _createClass(SliderFacade, [{
     key: "init",

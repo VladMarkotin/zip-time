@@ -35,6 +35,11 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.6);
 }
+.slider-wrapper .slide .slide-content {
+  position: relative;
+  z-index: 10;
+  color: whitesmoke;
+}
 .slider-wrapper .slider-arrow {
   padding: 15px 25px;
   background-color: orange;

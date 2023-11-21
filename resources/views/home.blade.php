@@ -13,13 +13,19 @@
         <section>
             <div class="slider-wrapper">
                 <div class="slide slide-one">
-                    
+                    <div class="slide-content">
+                        <h1>первый</h1>
+                    </div>
                 </div>
                 <div class="slide slide-two" style="display: none;"> 
-                    
+                    <div class="slide-content">
+                        <h1>второй</h1>
+                    </div>
                 </div>
                 <div class="slide slide-three" style="display: none;">
-                    
+                    <div class="slide-content">
+                        <h1>третий</h1>
+                    </div>
                 </div>
                 <div class="slider-left-arrow-wrapper slider-arrow">
                     
