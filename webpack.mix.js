@@ -16,6 +16,7 @@ mix
     .js([
         'resources/js/indexPage/Slider.js',
         'resources/js/indexPage/NavMenu.js',
+        'resources/js/indexPage/OurAdvantages.js',
     ], 'public/js/indexPage.js')
     .vue()
     .css('resources/css/app.css', 'public/css/app.css')

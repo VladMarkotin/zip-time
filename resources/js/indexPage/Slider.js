@@ -1,3 +1,29 @@
+class SlideArrowController {
+    #sliderWrapper   = null;
+    #slideLeftArrow  = null;
+    #className       = 'transparent'
+
+    init() {
+        this.#sliderWrapper = document.querySelector('.slider-wrapper');
+        this.#slideLeftArrow = document.querySelector('.slider-left-arrow-wrapper');
+
+        this.#sliderWrapper.addEventListener('mouseenter', () => {
+            if (this.#slideLeftArrow.classList.contains(this.#className)) {
+                this.#slideLeftArrow.classList.remove(this.#className);
+            }
+        })
+
+        this.#sliderWrapper.addEventListener('mouseleave', () => {
+            if (!this.#slideLeftArrow.classList.contains(this.#className)) {
+                this.#slideLeftArrow.classList.add(this.#className);
+            }
+        })
+    }
+}
+
+const slideArrowController = new SlideArrowController;
+slideArrowController.init();
+
 class SlideItem {
 
     content = null;

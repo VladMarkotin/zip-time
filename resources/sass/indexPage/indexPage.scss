@@ -1,5 +1,70 @@
+// сброс стилей
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li {
+  margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+// кастомные классы
+
+.white-background {
+    background-color: #fff;
+}
+
+.inner-block {
+    max-width: 1170px;
+    margin: 0 auto;
+    padding: 90px 0;
+}
+
+.title-index-page {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 500;
+    color: #444;
+    font-size: 35px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.text-index-page {
+    font-weight: 400;
+    line-height: 30px;
+    font-family: 'Lato', sans-serif;
+    color: #444;
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
+//верстка по странице
+
 .slider-wrapper {
-    height: calc(100vh - 85px);
+    height: calc(100vh - 85px); //мб поменять если перенесем этот блок
     width: 100vw;
     position: relative;
 
@@ -77,15 +142,132 @@
     }
 
     .slider-arrow {
-        padding: 15px 25px;
+        height: 40px;
+        width: 40px;
         background-color: orange;
         position: absolute;
         top: 0;
         z-index: 1000;
         top: calc(50vh - 15px);
+        transition: all .45s ease;
+        opacity: 1;
+        cursor: pointer;
+        background: #03a9f4;
+
+        &:hover {
+            background: #fff;
+        }
         
-        &.slider-left-arrow-wrapper {
+            &.slider-left-arrow-wrapper {
             right: 55px;
+            
+                &.transparent {
+                    opacity: 0;
+                }
+        }
+    }
+}
+
+.about-us-wrapper {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    grid-row-gap: 10px;
+    grid-column-gap: 30px;
+
+    .about-us-title-wrapper {
+        grid-column: 1/3;
+        display: flex;
+    }
+
+    .about-us-text-wrapper {
+        p {
+            // text-align: justify;
+            &:not(:last-child) {
+                margin-bottom: 15px;
+            }
+        }
+    }
+
+    .about-us-img-wrapper {
+        position: relative;
+        min-width: 450px;
+        min-height: 300px;
+
+        >img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+.our-advantages-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    .our-advantages-text-wrapper {
+        margin-bottom: 40px;
+    }
+
+    .our-advantages-content {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 360px);
+        grid-column-gap: 30px;
+        justify-content: space-between;
+        grid-row-gap: 30px;
+
+        .our-advantages-item {
+            padding: 20px;
+            border: 2px solid #eee;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transition: all .3s ease;
+
+            .our-advantages-icon-wrapper {
+                min-height: 48px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .our-advantages-icon {
+                    height: 40px;
+                    width: 40px;
+                    background-color: #03a9f4;
+                }
+            }
+
+            .our-advantages-title {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 0;
+            }
+
+            .our-advantages-text {
+                .text-index-page {
+                    text-align: center;
+                }
+            }
+        }
+
+        .our-advantages-item-focus {
+            background: linear-gradient(180deg, #5c1a1a 0%, #1a1411 45.31%);
+
+            .our-advantages-title {
+                color: #fff;
+            }
+
+            .text-index-page {
+                color: #fff;
+            }
         }
     }
 }

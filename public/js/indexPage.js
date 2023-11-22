@@ -9,6 +9,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
 function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
@@ -16,12 +22,47 @@ function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { 
 function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var _sliderWrapper = /*#__PURE__*/new WeakMap();
+var _slideLeftArrow = /*#__PURE__*/new WeakMap();
+var _className = /*#__PURE__*/new WeakMap();
+var SlideArrowController = /*#__PURE__*/function () {
+  function SlideArrowController() {
+    _classCallCheck(this, SlideArrowController);
+    _classPrivateFieldInitSpec(this, _sliderWrapper, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slideLeftArrow, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _className, {
+      writable: true,
+      value: 'transparent'
+    });
+  }
+  _createClass(SlideArrowController, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _sliderWrapper, document.querySelector('.slider-wrapper'));
+      _classPrivateFieldSet(this, _slideLeftArrow, document.querySelector('.slider-left-arrow-wrapper'));
+      _classPrivateFieldGet(this, _sliderWrapper).addEventListener('mouseenter', function () {
+        if (_classPrivateFieldGet(_this, _slideLeftArrow).classList.contains(_classPrivateFieldGet(_this, _className))) {
+          _classPrivateFieldGet(_this, _slideLeftArrow).classList.remove(_classPrivateFieldGet(_this, _className));
+        }
+      });
+      _classPrivateFieldGet(this, _sliderWrapper).addEventListener('mouseleave', function () {
+        if (!_classPrivateFieldGet(_this, _slideLeftArrow).classList.contains(_classPrivateFieldGet(_this, _className))) {
+          _classPrivateFieldGet(_this, _slideLeftArrow).classList.add(_classPrivateFieldGet(_this, _className));
+        }
+      });
+    }
+  }]);
+  return SlideArrowController;
+}();
+var slideArrowController = new SlideArrowController();
+slideArrowController.init();
 var SlideItem = /*#__PURE__*/_createClass(function SlideItem(classes, content) {
   _classCallCheck(this, SlideItem);
   _defineProperty(this, "content", null);
@@ -30,7 +71,7 @@ var SlideItem = /*#__PURE__*/_createClass(function SlideItem(classes, content) {
   this.content = content;
 });
 var _slider = /*#__PURE__*/new WeakMap();
-var _sliderWrapper = /*#__PURE__*/new WeakMap();
+var _sliderWrapper2 = /*#__PURE__*/new WeakMap();
 var _currentWidth = /*#__PURE__*/new WeakMap();
 var _step = /*#__PURE__*/new WeakMap();
 var _offset = /*#__PURE__*/new WeakMap();
@@ -42,7 +83,7 @@ var Slider = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
-    _classPrivateFieldInitSpec(this, _sliderWrapper, {
+    _classPrivateFieldInitSpec(this, _sliderWrapper2, {
       writable: true,
       value: null
     });
@@ -68,7 +109,7 @@ var Slider = /*#__PURE__*/function () {
     value: function init(allSlides) {
       var slides = document.body.querySelectorAll('.slide');
       _classPrivateFieldSet(this, _slider, new Array());
-      _classPrivateFieldSet(this, _sliderWrapper, document.querySelector('.slider-wrapper'));
+      _classPrivateFieldSet(this, _sliderWrapper2, document.querySelector('.slider-wrapper'));
       _classPrivateFieldSet(this, _currentWidth, window.innerWidth);
       _classPrivateFieldSet(this, _sliderLeftArrow, document.querySelector('.slider-left-arrow-wrapper'));
       var _iterator = _createForOfIteratorHelper(slides),
@@ -129,7 +170,7 @@ var Slider = /*#__PURE__*/function () {
       }
       slide.innerHTML = currentItem.content;
       slide.style.left = _classPrivateFieldGet(this, _offset) * _classPrivateFieldGet(this, _currentWidth) + 'px';
-      _classPrivateFieldGet(this, _sliderWrapper).appendChild(slide);
+      _classPrivateFieldGet(this, _sliderWrapper2).appendChild(slide);
       if (_classPrivateFieldGet(this, _step) + 1 === _classPrivateFieldGet(this, _slider).length) {
         _classPrivateFieldSet(this, _step, 0);
       } else {
@@ -141,7 +182,7 @@ var Slider = /*#__PURE__*/function () {
   }, {
     key: "left",
     value: function left() {
-      var _this = this;
+      var _this2 = this;
       _classPrivateFieldGet(this, _sliderLeftArrow).onclick = null;
       var slides = document.querySelectorAll('.slide');
       var offset = 0;
@@ -160,8 +201,8 @@ var Slider = /*#__PURE__*/function () {
       }
       setTimeout(function () {
         slides[0].remove();
-        _this.draw();
-        _classPrivateFieldGet(_this, _sliderLeftArrow).onclick = _this.left;
+        _this2.draw();
+        _classPrivateFieldGet(_this2, _sliderLeftArrow).onclick = _this2.left;
       }, 600);
     }
   }]);
@@ -274,6 +315,76 @@ var NavMenu = /*#__PURE__*/function () {
 }();
 var navMenu = new NavMenu();
 navMenu.init();
+})();
+
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+/*!*************************************************!*\
+  !*** ./resources/js/indexPage/OurAdvantages.js ***!
+  \*************************************************/
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _ourAdvantagesItems = /*#__PURE__*/new WeakMap();
+var _ourAdvantagesItemClass = /*#__PURE__*/new WeakMap();
+var OurAdvantagesController = /*#__PURE__*/function () {
+  function OurAdvantagesController() {
+    _classCallCheck(this, OurAdvantagesController);
+    _classPrivateFieldInitSpec(this, _ourAdvantagesItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _ourAdvantagesItemClass, {
+      writable: true,
+      value: 'our-advantages-item-focus'
+    });
+  }
+  _createClass(OurAdvantagesController, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _ourAdvantagesItems, document.body.querySelectorAll('.our-advantages-item'));
+      var _iterator = _createForOfIteratorHelper(_classPrivateFieldGet(this, _ourAdvantagesItems)),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var item = _step.value;
+          item.addEventListener('mouseenter', function (e) {
+            if (!_this.checkClass(e.target)) e.target.classList.add(_classPrivateFieldGet(_this, _ourAdvantagesItemClass));
+          });
+          item.addEventListener('mouseleave', function (e) {
+            if (_this.checkClass(e.target)) e.target.classList.remove(_classPrivateFieldGet(_this, _ourAdvantagesItemClass));
+          });
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }, {
+    key: "checkClass",
+    value: function checkClass(item) {
+      return item.classList.contains(_classPrivateFieldGet(this, _ourAdvantagesItemClass));
+    }
+  }]);
+  return OurAdvantagesController;
+}();
+var ourAdvantages = new OurAdvantagesController();
+ourAdvantages.init();
 })();
 
 /******/ })()
