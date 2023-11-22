@@ -6,6 +6,8 @@ use App\Models\SubPlan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Services\GPTService\GPTService;
 use App\Http\Controllers\Services\GPTService\traits\transformGptResponseTrait;
+use Illuminate\Support\Facades\DB;
+use Auth;
 
 class SubPlanGPTController extends Controller
 {
@@ -50,9 +52,33 @@ class SubPlanGPTController extends Controller
 
     public function createSubPlanViaGPT(Request $request)
     {
-        die(var_dump($request->all()));
-        if ($this->response) {
-            //Work with SubPlanModel
+        if ($request->input('plan')) {
+            //die(var_dump($request->input('plan'))); //array
+            $hash = ($request->input('hash')) ?: null;
+            $dataSet = [];
+            $plan = $request->input('plan');
+            if (count($plan) > 0) {
+                $savedTaskId = DB::table('saved_tasks')
+                ->select('id')
+                ->where('user_id',   '=', Auth::id())
+                ->where('hash_code', '=', $hash)
+                //->union($savedDefaultTask)
+                ->get()
+                ->toArray();
+                
+                foreach ($plan as $i => $el) { //TODO validation of $request->input('plan')
+                    $dataSet[] = [
+                        'task_id'  => $request->input('taskId'),
+                        'saved_task_id'    => $savedTaskId[0]->id, //todo later
+                        'title'       => $el,
+                        // 'created_at' => ,
+                        // 'updated_at' => ,
+                    ];
+                }
+                DB::table('subplans')->insert($dataSet);
+
+            }
+
         }
 
         return response()->json([
