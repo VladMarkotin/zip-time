@@ -1,5 +1,5 @@
 .slider-wrapper {
-    height: 100vh;
+    height: calc(100vh - 85px);
     width: 100vw;
     position: relative;
 
@@ -42,7 +42,37 @@
             .slide-content {
                 position: relative;
                 z-index: 10;
-                color: whitesmoke;
+                color: #fff;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                height: 100%;
+
+                .slide-content_inner-block {
+                    margin-top: 165px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    justify-content: center;
+                    align-items: center;
+
+                    .slide-content-subtitle {
+                        font-family: "Dosis",sans-serif;
+                        font-size: 16px;
+                        font-weight: 400;
+                        letter-spacing: 0.3em;
+                        line-height: 1.2;
+                        text-transform: uppercase;
+                    }
+
+                    .slide-content-title {
+                        font-family: "Lato",sans-serif;
+                        font-size: 45px;
+                        font-weight: 700;
+                        letter-spacing: 0.3em;
+                    }
+                }
             }
     }
 
