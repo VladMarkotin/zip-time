@@ -62,6 +62,7 @@ ol {
   height: calc(100vh - 85px);
   width: 100vw;
   position: relative;
+  box-shadow: 1px 1px 1px black;
 }
 .slider-wrapper .slide {
   height: 100%;
@@ -225,11 +226,58 @@ ol {
   text-align: center;
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item-focus {
-  background: linear-gradient(180deg, #5c1a1a 0%, #1a1411 45.31%);
+  background-color: #5c1a1a;
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item-focus .our-advantages-title {
   color: #fff;
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item-focus .text-index-page {
   color: #fff;
+}
+
+.statistics-section {
+  background-color: #5c1a1a;
+}
+.statistics-section .statistics-content {
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 260px);
+  grid-row-gap: 30px;
+  justify-content: space-between;
+}
+.statistics-section .statistics-content .statistics-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #fff;
+}
+.statistics-section .statistics-content .statistics-item .statistics-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.statistics-section .statistics-content .statistics-item .statistics-icon-wrapper .statistics-icon {
+  height: 40px;
+  width: 40px;
+  background-color: #03a9f4;
+}
+.statistics-section .statistics-content .statistics-item .statistics-counter-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.statistics-section .statistics-content .statistics-item .statistics-counter-wrapper .statistics-counter {
+  margin-bottom: 0;
+  color: #fff;
+  font-size: 40;
+  font-weight: 300;
+}
+.statistics-section .statistics-content .statistics-item .statistics-text {
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: 1px;
+  font-weight: normal;
+  line-height: 30px;
 }

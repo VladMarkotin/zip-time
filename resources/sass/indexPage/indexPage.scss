@@ -63,10 +63,13 @@ ol {
 
 //верстка по странице
 
+$mainSHadeRed: #5c1a1a;
+
 .slider-wrapper {
     height: calc(100vh - 85px); //мб поменять если перенесем этот блок
     width: 100vw;
     position: relative;
+    box-shadow: 1px 1px 1px black;
 
     .slide {
         height: 100%;
@@ -259,7 +262,7 @@ ol {
         }
 
         .our-advantages-item-focus {
-            background: linear-gradient(180deg, #5c1a1a 0%, #1a1411 45.31%);
+            background-color: $mainSHadeRed;
 
             .our-advantages-title {
                 color: #fff;
@@ -267,6 +270,60 @@ ol {
 
             .text-index-page {
                 color: #fff;
+            }
+        }
+    }
+}
+
+.statistics-section {
+    background-color: $mainSHadeRed;
+
+    .statistics-content {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 260px);
+        grid-row-gap: 30px;
+        justify-content: space-between;
+
+        .statistics-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            color: #fff;
+
+            .statistics-icon-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .statistics-icon {
+                    height: 40px;
+                    width: 40px;
+                    background-color: #03a9f4;
+                }
+            }
+
+            .statistics-counter-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .statistics-counter {
+                    margin-bottom: 0;
+                    color: #fff;
+                    font-size: 40;
+                    font-weight: 300;
+                }
+            }
+
+            .statistics-text {
+                text-align: center;
+                color: #fff;
+                font-size: 16px;
+                letter-spacing: 1px;
+                font-weight: normal;
+                line-height: 30px;
             }
         }
     }

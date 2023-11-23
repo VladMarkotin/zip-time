@@ -108,6 +108,56 @@
                 </div>
             </div>
         </section>
+        <section class="statistics-section">
+            <div class="inner-block">
+                <div class="statistics-content">
+                    <div class="statistics-item">
+                        <div class="statistics-icon-wrapper">
+                            <div class="statistics-icon"></div>
+                        </div>
+                        <div class="statistics-counter-wrapper">
+                            <h2 class="statistics-counter title-index-page">360</h2>
+                        </div>
+                        <div class="statistics-text-wrapper">
+                            <p class="statistics-text text-index-page">Lorem ipsum dolor</p>
+                        </div>
+                    </div>
+                    <div class="statistics-item">
+                        <div class="statistics-icon-wrapper">
+                            <div class="statistics-icon"></div>
+                        </div>
+                        <div class="statistics-counter-wrapper">
+                            <h2 class="statistics-counter title-index-page">690</h2>
+                        </div>
+                        <div class="statistics-text-wrapper">
+                            <p class="statistics-text text-index-page">Lorem ipsum dolor</p>
+                        </div>
+                    </div>
+                    <div class="statistics-item">
+                        <div class="statistics-icon-wrapper">
+                            <div class="statistics-icon"></div>
+                        </div>
+                        <div class="statistics-counter-wrapper">
+                            <h2 class="statistics-counter title-index-page">420</h2>
+                        </div>
+                        <div class="statistics-text-wrapper">
+                            <p class="statistics-text text-index-page">Lorem ipsum dolor</p>
+                        </div>
+                    </div>
+                    <div class="statistics-item">
+                        <div class="statistics-icon-wrapper">
+                            <div class="statistics-icon"></div>
+                        </div>
+                        <div class="statistics-counter-wrapper">
+                            <h2 class="statistics-counter title-index-page">114</h2>
+                        </div>
+                        <div class="statistics-text-wrapper">
+                            <p class="statistics-text text-index-page">Lorem ipsum dolor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         @endguest
     
 @endsection
