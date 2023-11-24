@@ -413,6 +413,7 @@ var _sliderLine = /*#__PURE__*/new WeakMap();
 var _sliderItems = /*#__PURE__*/new WeakMap();
 var _sliderItemsCounter = /*#__PURE__*/new WeakMap();
 var _sliderWidth = /*#__PURE__*/new WeakMap();
+var _sliderButtonsWrapper = /*#__PURE__*/new WeakMap();
 var ReviewsSlider = /*#__PURE__*/function () {
   function ReviewsSlider() {
     _classCallCheck(this, ReviewsSlider);
@@ -436,6 +437,10 @@ var ReviewsSlider = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
+    _classPrivateFieldInitSpec(this, _sliderButtonsWrapper, {
+      writable: true,
+      value: null
+    });
   }
   _createClass(ReviewsSlider, [{
     key: "init",
@@ -446,24 +451,30 @@ var ReviewsSlider = /*#__PURE__*/function () {
       _classPrivateFieldSet(this, _sliderItems, _classPrivateFieldGet(this, _sliderLine).querySelectorAll('.reviews-slide'));
       _classPrivateFieldSet(this, _sliderItemsCounter, _classPrivateFieldGet(this, _sliderItems).length);
       _classPrivateFieldSet(this, _sliderWidth, getComputedStyle(_classPrivateFieldGet(this, _slider)).width);
+      _classPrivateFieldSet(this, _sliderButtonsWrapper, document.querySelector('.reviews-slider-buttons'));
       _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter);
+      this.cleanButtonWrapper();
       _classPrivateFieldGet(this, _sliderItems).forEach(function (item, index) {
         item.style.width = _classPrivateFieldGet(_this, _sliderWidth);
         _this.createButton(index);
       });
     }
   }, {
+    key: "cleanButtonWrapper",
+    value: function cleanButtonWrapper() {
+      _classPrivateFieldGet(this, _sliderButtonsWrapper).innerHTML = '';
+    }
+  }, {
     key: "createButton",
     value: function createButton(index) {
       var _this2 = this;
       if (_classPrivateFieldGet(this, _sliderItemsCounter)) {
-        var sliderButtonsWrapper = document.querySelector('.reviews-slider-buttons');
         var activeClassVal = 'reviews-slider-active-button';
         var sliderButton = document.createElement('button');
         sliderButton.classList.add('reviews-slider-button');
         if (!index) sliderButton.classList.add(activeClassVal);
         sliderButton.addEventListener('click', function (e) {
-          var _iterator = _createForOfIteratorHelper(sliderButtonsWrapper.querySelectorAll('.reviews-slider-button')),
+          var _iterator = _createForOfIteratorHelper(_classPrivateFieldGet(_this2, _sliderButtonsWrapper).querySelectorAll('.reviews-slider-button')),
             _step;
           try {
             for (_iterator.s(); !(_step = _iterator.n()).done;) {
@@ -478,7 +489,7 @@ var ReviewsSlider = /*#__PURE__*/function () {
           e.target.classList.add(activeClassVal);
           _classPrivateFieldGet(_this2, _sliderLine).style.left = "-".concat(Number.parseInt(_classPrivateFieldGet(_this2, _sliderWidth)) * index, "px");
         });
-        sliderButtonsWrapper.append(sliderButton);
+        _classPrivateFieldGet(this, _sliderButtonsWrapper).append(sliderButton);
       }
     }
   }]);
@@ -486,6 +497,9 @@ var ReviewsSlider = /*#__PURE__*/function () {
 }();
 var reviewsSlider = new ReviewsSlider();
 reviewsSlider.init();
+window.addEventListener('resize', function () {
+  reviewsSlider.init();
+});
 })();
 
 /******/ })()

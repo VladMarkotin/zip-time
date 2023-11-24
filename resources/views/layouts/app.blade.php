@@ -29,6 +29,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/indexPage/indexPage.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/indexPage/indexPageMedia.css') }}" rel="stylesheet">
     @livewireStyles
 
 

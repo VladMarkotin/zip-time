@@ -1,0 +1,59 @@
+@media screen and (max-width: 1225px) {
+  .about-us-wrapper {
+    padding: 0 50px;
+    width: 100%;
+    justify-content: space-between;
+    grid-template-columns: minmax(auto, 570px) auto;
+  }
+  .about-us-wrapper .about-us-img-wrapper {
+    min-width: 370px;
+  }
+
+  .our-advantages-wrapper {
+    padding: 0 50px;
+  }
+  .our-advantages-wrapper .our-advantages-content {
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, 290px);
+  }
+
+  .statistics-section {
+    padding: 0 50px;
+  }
+  .statistics-section .statistics-content {
+    grid-template-columns: repeat(auto-fill, 240px);
+  }
+}
+@media screen and (max-width: 1175px) {
+  .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper {
+    width: 75%;
+  }
+}
+@media screen and (max-width: 1035px) {
+  .about-us-wrapper {
+    padding: 0 130px;
+    grid-template-columns: 1fr;
+  }
+  .about-us-wrapper .about-us-text-wrapper {
+    grid-column: 1/3;
+  }
+  .about-us-wrapper .about-us-img-wrapper {
+    max-width: 650px;
+    min-height: 397px;
+  }
+
+  .our-advantages-wrapper {
+    padding: 0 130px;
+  }
+  .our-advantages-wrapper .our-advantages-content {
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, 345px);
+  }
+
+  .statistics-section {
+    padding: 0 130px;
+  }
+  .statistics-section .statistics-content {
+    grid-template-columns: repeat(auto-fill, 185px);
+  }
+}
