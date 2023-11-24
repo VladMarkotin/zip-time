@@ -328,3 +328,89 @@ $mainSHadeRed: #5c1a1a;
         }
     }
 }
+
+.reviews-inner-block {
+    max-width: 1170px;
+    margin: 0 auto;
+    padding: 90px 0;
+
+    .reviews-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .reviews-slider-wrapper {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+
+            .reviews-slider {
+                width: 100%;
+                overflow: hidden;
+
+                .reviews-slider-line {
+                    display: flex;
+                    position: relative;
+                    left: 0;
+                    transition: all .4s ease;
+
+                    .reviews-slide {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 18px;
+                        text-align: center;
+
+                        .reviews-slide-icon-wrapper {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            .reviews-slide-icon {
+                                height: 40px;
+                                width: 40px;
+                                background: #03a9f4;
+                            }
+                        }
+
+                        .reviws-slide-title {
+                            font-size: 16px;
+                            font-weight: 500;
+                            letter-spacing: 0.3em;
+                            margin: 0;
+                            text-transform: uppercase;
+                        }
+
+                        .reviews-slide-text {
+                            font-size: 32px;
+                            font-weight: 400;
+                            line-height: 1.4;
+                        }
+
+                        .reviews-slide-author {
+                            font-size: 14px;
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+
+            .reviews-slider-buttons {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 6px;
+
+                .reviews-slider-button {
+                    width: 15px;
+                    height: 5px;
+                    background: rgba(0, 0, 0, 0.5);
+
+                    &.reviews-slider-active-button {
+                        background: $mainSHadeRed;
+                    }
+                }
+            }
+        }
+    }
+}

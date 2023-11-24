@@ -387,5 +387,106 @@ var ourAdvantages = new OurAdvantagesController();
 ourAdvantages.init();
 })();
 
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+/*!*************************************************!*\
+  !*** ./resources/js/indexPage/ReviewsSlider.js ***!
+  \*************************************************/
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _slider = /*#__PURE__*/new WeakMap();
+var _sliderLine = /*#__PURE__*/new WeakMap();
+var _sliderItems = /*#__PURE__*/new WeakMap();
+var _sliderItemsCounter = /*#__PURE__*/new WeakMap();
+var _sliderWidth = /*#__PURE__*/new WeakMap();
+var ReviewsSlider = /*#__PURE__*/function () {
+  function ReviewsSlider() {
+    _classCallCheck(this, ReviewsSlider);
+    _classPrivateFieldInitSpec(this, _slider, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderLine, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderItemsCounter, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderWidth, {
+      writable: true,
+      value: null
+    });
+  }
+  _createClass(ReviewsSlider, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _slider, document.querySelector('.reviews-slider'));
+      _classPrivateFieldSet(this, _sliderLine, _classPrivateFieldGet(this, _slider).querySelector('.reviews-slider-line'));
+      _classPrivateFieldSet(this, _sliderItems, _classPrivateFieldGet(this, _sliderLine).querySelectorAll('.reviews-slide'));
+      _classPrivateFieldSet(this, _sliderItemsCounter, _classPrivateFieldGet(this, _sliderItems).length);
+      _classPrivateFieldSet(this, _sliderWidth, getComputedStyle(_classPrivateFieldGet(this, _slider)).width);
+      _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter);
+      _classPrivateFieldGet(this, _sliderItems).forEach(function (item, index) {
+        item.style.width = _classPrivateFieldGet(_this, _sliderWidth);
+        _this.createButton(index);
+      });
+    }
+  }, {
+    key: "createButton",
+    value: function createButton(index) {
+      var _this2 = this;
+      if (_classPrivateFieldGet(this, _sliderItemsCounter)) {
+        var sliderButtonsWrapper = document.querySelector('.reviews-slider-buttons');
+        var activeClassVal = 'reviews-slider-active-button';
+        var sliderButton = document.createElement('button');
+        sliderButton.classList.add('reviews-slider-button');
+        if (!index) sliderButton.classList.add(activeClassVal);
+        sliderButton.addEventListener('click', function (e) {
+          var _iterator = _createForOfIteratorHelper(sliderButtonsWrapper.querySelectorAll('.reviews-slider-button')),
+            _step;
+          try {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              var item = _step.value;
+              if (item.classList.contains(activeClassVal)) item.classList.remove(activeClassVal);
+            }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
+          }
+          e.target.classList.add(activeClassVal);
+          _classPrivateFieldGet(_this2, _sliderLine).style.left = "-".concat(Number.parseInt(_classPrivateFieldGet(_this2, _sliderWidth)) * index, "px");
+        });
+        sliderButtonsWrapper.append(sliderButton);
+      }
+    }
+  }]);
+  return ReviewsSlider;
+}();
+var reviewsSlider = new ReviewsSlider();
+reviewsSlider.init();
+})();
+
 /******/ })()
 ;

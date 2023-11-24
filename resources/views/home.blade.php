@@ -158,6 +158,63 @@
                 </div>
             </div>
         </section>
+        <section class="reviews-section">
+            <div class="reviews-inner-block">
+                <div class="reviews-wrapper">
+                    <div class="reviews-slider-wrapper">
+                        <div class="reviews-slider">
+                            <div class="reviews-slider-line">
+                                <div class="reviews-slide reviews-slide-one">
+                                    <div class="reviews-slide-icon-wrapper">
+                                        <div class="reviews-slide-icon">1</div>
+                                    </div>
+                                    <div class="reviws-slide-title-wrapper">
+                                        <h3 class="reviws-slide-title title-index-page">Some title</h3>
+                                    </div>
+                                    <div class="reviews-slide-text-wrapper">
+                                        <p class="reviews-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
+                                    </div>
+                                    <div class="reviews-slide-author-wrapper">
+                                       <p class="reviews-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
+                                    </div>
+                                </div>
+                                <div class="reviews-slide reviews-slide-two">
+                                <div class="reviews-slide-icon-wrapper">
+                                        <div class="reviews-slide-icon">2</div>
+                                    </div>
+                                    <div class="reviws-slide-title-wrapper">
+                                        <h3 class="reviws-slide-title title-index-page">Some title</h3>
+                                    </div>
+                                    <div class="reviews-slide-text-wrapper">
+                                        <p class="reviews-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
+                                    </div>
+                                    <div class="reviews-slide-author-wrapper">
+                                       <p class="reviews-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
+                                    </div>
+                                </div>
+                                <div class="reviews-slide reviews-slide-three">
+                                <div class="reviews-slide-icon-wrapper">
+                                        <div class="reviews-slide-icon">3</div>
+                                    </div>
+                                    <div class="reviws-slide-title-wrapper">
+                                        <h3 class="reviws-slide-title title-index-page">Some title</h3>
+                                    </div>
+                                    <div class="reviews-slide-text-wrapper">
+                                        <p class="reviews-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
+                                    </div>
+                                    <div class="reviews-slide-author-wrapper">
+                                       <p class="reviews-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reviews-slider-buttons">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         @endguest
     
 @endsection
