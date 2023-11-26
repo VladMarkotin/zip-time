@@ -29,6 +29,14 @@
     width: 75%;
   }
 }
+@media screen and (max-width: 1075px) {
+  .statistics-section {
+    padding: 0 130px;
+  }
+  .statistics-section .statistics-content {
+    grid-template-columns: repeat(auto-fill, 185px);
+  }
+}
 @media screen and (max-width: 1035px) {
   .about-us-wrapper {
     padding: 0 130px;
@@ -38,7 +46,8 @@
     grid-column: 1/3;
   }
   .about-us-wrapper .about-us-img-wrapper {
-    max-width: 650px;
+    min-width: auto;
+    max-width: 90%;
     min-height: 397px;
   }
 
@@ -51,9 +60,143 @@
   }
 
   .statistics-section {
-    padding: 0 130px;
+    justify-content: space-between;
   }
   .statistics-section .statistics-content {
-    grid-template-columns: repeat(auto-fill, 185px);
+    grid-template-columns: minmax(auto, 265px) minmax(auto, 265px);
+  }
+}
+@media screen and (max-width: 980px) {
+  .about-us-wrapper {
+    padding: 0 50px;
+  }
+
+  .our-advantages-wrapper {
+    padding: 0 50px;
+  }
+
+  .statistics-section {
+    padding: 0 50px;
+  }
+}
+@media screen and (max-width: 824px) {
+  .our-advantages-wrapper .our-advantages-content {
+    grid-template-columns: repeat(auto-fill, 305px);
+  }
+}
+@media screen and (max-width: 768px) {
+  .our-advantages-wrapper .our-advantages-content {
+    grid-template-columns: repeat(auto-fill, 305px);
+  }
+}
+@media screen and (max-width: 740px) {
+  .slider-wrapper .slide .slide-content .slide-content_inner-block {
+    max-width: 450px;
+  }
+
+  .about-us-section .inner-block {
+    padding-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .about-us-section .inner-block .about-us-wrapper {
+    padding: 0;
+    max-width: 450px;
+  }
+  .about-us-section .inner-block .about-us-wrapper .about-us-img-wrapper {
+    max-width: 100%;
+    min-height: 270px;
+  }
+
+  .our-advantages-wrapper .our-advantages-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .our-advantages-wrapper .our-advantages-content .our-advantages-item {
+    max-width: 450px;
+    min-height: 220px;
+  }
+
+  .statistics-section .inner-block {
+    display: flex;
+    justify-content: center;
+  }
+  .statistics-section .statistics-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .statistics-section .statistics-content .statistics-item {
+    max-width: 450px;
+  }
+
+  .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper {
+    max-width: 450px;
+  }
+}
+@media screen and (max-width: 520px) {
+  .slider-wrapper .slide .slide-content .slide-content_inner-block {
+    max-width: 420px;
+  }
+
+  .about-us-section .inner-block .about-us-wrapper {
+    max-width: 420px;
+  }
+
+  .our-advantages-wrapper .our-advantages-content .our-advantages-item {
+    max-width: 420px;
+  }
+
+  .statistics-section .statistics-content .statistics-item {
+    max-width: 420px;
+  }
+
+  .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper {
+    max-width: 420px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .about-us-section .inner-block .about-us-wrapper {
+    max-width: 270px;
+    display: flex;
+    flex-direction: column;
+  }
+  .about-us-section .inner-block .about-us-wrapper .about-us-text-wrapper .text-index-page {
+    text-align: justify;
+  }
+  .about-us-section .inner-block .about-us-wrapper .about-us-img-wrapper {
+    min-height: 190px;
+  }
+
+  .our-advantages-section .inner-block {
+    display: flex;
+    justify-content: center;
+  }
+  .our-advantages-section .inner-block .our-advantages-wrapper {
+    padding: 0;
+    max-width: 270px;
+  }
+  .our-advantages-section .inner-block .our-advantages-wrapper .our-advantages-content .our-advantages-item {
+    max-width: 100%;
+  }
+
+  .statistics-section .inner-block {
+    display: flex;
+    justify-content: center;
+  }
+  .statistics-section .inner-block .statistics-content {
+    max-width: 270px;
+  }
+  .statistics-section .inner-block .statistics-content .statistics-item {
+    max-width: 100%;
+  }
+
+  .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper {
+    max-width: 270px;
+  }
+  .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide-text-wrapper .reviews-slide-text {
+    font-size: 28px;
   }
 }
