@@ -43,7 +43,7 @@
         </section>
         <section class="about-us-section white-background">
             <div class="inner-block">
-                <div class="about-us-wrapper">
+                <div class="about-us-wrapper element-animation">
                     <div class="about-us-title-wrapper">
                         <h2 class="about-us-title title-index-page">some title</h2>
                     </div>
@@ -60,7 +60,7 @@
         </section>
         <section class="our-advantages-section">
             <div class="inner-block">
-                <div class="our-advantages-wrapper">
+                <div class="our-advantages-wrapper element-animation">
                     <div class="our-advantages-title-wrapper">
                         <h2 class="our-advantages-title title-index-page">some title</h2>
                     </div>
@@ -110,7 +110,7 @@
         </section>
         <section class="statistics-section">
             <div class="inner-block">
-                <div class="statistics-content">
+                <div class="statistics-content element-animation">
                     <div class="statistics-item">
                         <div class="statistics-icon-wrapper">
                             <div class="statistics-icon"></div>
@@ -161,7 +161,7 @@
         <section class="reviews-section">
             <div class="reviews-inner-block">
                 <div class="reviews-wrapper">
-                    <div class="reviews-slider-wrapper">
+                    <div class="reviews-slider-wrapper element-animation">
                         <div class="reviews-slider">
                             <div class="reviews-slider-line">
                                 <div class="reviews-slide reviews-slide-one">

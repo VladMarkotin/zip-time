@@ -18,6 +18,7 @@ mix
         'resources/js/indexPage/NavMenu.js',
         'resources/js/indexPage/OurAdvantages.js',
         'resources/js/indexPage/ReviewsSlider.js',
+        'resources/js/indexPage/BlocksAppearanceController.js',
     ], 'public/js/indexPage.js')
     .vue()
     .css('resources/css/app.css', 'public/css/app.css')
