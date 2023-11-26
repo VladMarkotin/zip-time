@@ -251,6 +251,14 @@ $mainSHadeRed: #5c1a1a;
             align-items: center;
             gap: 15px;
             transition: all .3s ease;
+            opacity: 0;
+            transition: all .55s ease;
+            transform: translateX(-10px);
+
+            &.element-show {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
             .our-advantages-icon-wrapper {
                 min-height: 48px;
@@ -300,14 +308,6 @@ $mainSHadeRed: #5c1a1a;
         grid-template-columns: repeat(auto-fill, 260px);
         grid-row-gap: 30px;
         justify-content: space-between;
-        opacity: 0;
-        transition: all .55s ease;
-        transform: translateX(-10px);
-
-        &.element-show {
-            opacity: 1;
-            transform: translateX(0);
-        }
 
         .statistics-item {
             display: flex;
@@ -315,6 +315,14 @@ $mainSHadeRed: #5c1a1a;
             align-items: center;
             gap: 15px;
             color: #fff;
+            opacity: 0;
+            transition: all .55s ease;
+            transform: translateX(-10px);
+
+            &.element-show {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
             .statistics-icon-wrapper {
                 display: flex;

@@ -219,6 +219,13 @@ ol {
   align-items: center;
   gap: 15px;
   transition: all 0.3s ease;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.our-advantages-wrapper .our-advantages-content .our-advantages-item.element-show {
+  opacity: 1;
+  transform: translateX(0);
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item .our-advantages-icon-wrapper {
   min-height: 48px;
@@ -258,13 +265,6 @@ ol {
   grid-template-columns: repeat(auto-fill, 260px);
   grid-row-gap: 30px;
   justify-content: space-between;
-  opacity: 0;
-  transition: all 0.55s ease;
-  transform: translateX(-10px);
-}
-.statistics-section .statistics-content.element-show {
-  opacity: 1;
-  transform: translateX(0);
 }
 .statistics-section .statistics-content .statistics-item {
   display: flex;
@@ -272,6 +272,13 @@ ol {
   align-items: center;
   gap: 15px;
   color: #fff;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.statistics-section .statistics-content .statistics-item.element-show {
+  opacity: 1;
+  transform: translateX(0);
 }
 .statistics-section .statistics-content .statistics-item .statistics-icon-wrapper {
   display: flex;

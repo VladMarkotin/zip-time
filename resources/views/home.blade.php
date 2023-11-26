@@ -68,7 +68,7 @@
                         <p class="text-index-page">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt, et!</p>
                     </div>
                     <div class="our-advantages-content">
-                        <div class="our-advantages-item">
+                        <div class="our-advantages-item element-animation">
                             <div class="our-advantages-icon-wrapper">
                                 <div class="our-advantages-icon">
                                 </div>
@@ -80,7 +80,7 @@
                                 <p class="text-index-page ">Lorem ipsum dolor sit amet adipisicing elit. Necessitatibus nihil ipsam deleniti voluptatum.</p>
                             </div>
                         </div>
-                        <div class="our-advantages-item">
+                        <div class="our-advantages-item element-animation">
                             <div class="our-advantages-icon-wrapper">
                                 <div class="our-advantages-icon">
                                 </div>
@@ -92,7 +92,7 @@
                                 <p class="text-index-page ">Lorem ipsum dolor sit amet adipisicing elit. Necessitatibus nihil ipsam deleniti voluptatum.</p>
                             </div>
                         </div>
-                        <div class="our-advantages-item">
+                        <div class="our-advantages-item element-animation">
                             <div class="our-advantages-icon-wrapper">
                                 <div class="our-advantages-icon">
                                 </div>
@@ -110,8 +110,8 @@
         </section>
         <section class="statistics-section">
             <div class="inner-block">
-                <div class="statistics-content element-animation">
-                    <div class="statistics-item">
+                <div class="statistics-content">
+                    <div class="statistics-item element-animation">
                         <div class="statistics-icon-wrapper">
                             <div class="statistics-icon"></div>
                         </div>
@@ -122,7 +122,7 @@
                             <p class="statistics-text text-index-page">Lorem ipsum dolor</p>
                         </div>
                     </div>
-                    <div class="statistics-item">
+                    <div class="statistics-item element-animation">
                         <div class="statistics-icon-wrapper">
                             <div class="statistics-icon"></div>
                         </div>
@@ -133,7 +133,7 @@
                             <p class="statistics-text text-index-page">Lorem ipsum dolor</p>
                         </div>
                     </div>
-                    <div class="statistics-item">
+                    <div class="statistics-item element-animation">
                         <div class="statistics-icon-wrapper">
                             <div class="statistics-icon"></div>
                         </div>
@@ -144,7 +144,7 @@
                             <p class="statistics-text text-index-page">Lorem ipsum dolor</p>
                         </div>
                     </div>
-                    <div class="statistics-item">
+                    <div class="statistics-item element-animation">
                         <div class="statistics-icon-wrapper">
                             <div class="statistics-icon"></div>
                         </div>
