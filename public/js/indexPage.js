@@ -414,6 +414,8 @@ var _sliderItems = /*#__PURE__*/new WeakMap();
 var _sliderItemsCounter = /*#__PURE__*/new WeakMap();
 var _sliderWidth = /*#__PURE__*/new WeakMap();
 var _sliderButtonsWrapper = /*#__PURE__*/new WeakMap();
+var _activeClassVal = /*#__PURE__*/new WeakMap();
+var _currentSlideIndex = /*#__PURE__*/new WeakMap();
 var ReviewsSlider = /*#__PURE__*/function () {
   function ReviewsSlider() {
     _classCallCheck(this, ReviewsSlider);
@@ -441,6 +443,14 @@ var ReviewsSlider = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
+    _classPrivateFieldInitSpec(this, _activeClassVal, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _currentSlideIndex, {
+      writable: true,
+      value: 0
+    });
   }
   _createClass(ReviewsSlider, [{
     key: "init",
@@ -452,6 +462,8 @@ var ReviewsSlider = /*#__PURE__*/function () {
       _classPrivateFieldSet(this, _sliderItemsCounter, _classPrivateFieldGet(this, _sliderItems).length);
       _classPrivateFieldSet(this, _sliderWidth, getComputedStyle(_classPrivateFieldGet(this, _slider)).width);
       _classPrivateFieldSet(this, _sliderButtonsWrapper, document.querySelector('.reviews-slider-buttons'));
+      _classPrivateFieldSet(this, _activeClassVal, 'reviews-slider-active-button');
+      this.move = this.move.bind(this);
       _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter);
       this.cleanButtonWrapper();
       _classPrivateFieldGet(this, _sliderItems).forEach(function (item, index) {
@@ -469,28 +481,39 @@ var ReviewsSlider = /*#__PURE__*/function () {
     value: function createButton(index) {
       var _this2 = this;
       if (_classPrivateFieldGet(this, _sliderItemsCounter)) {
-        var activeClassVal = 'reviews-slider-active-button';
         var sliderButton = document.createElement('button');
         sliderButton.classList.add('reviews-slider-button');
-        if (!index) sliderButton.classList.add(activeClassVal);
+        if (index === _classPrivateFieldGet(this, _currentSlideIndex)) sliderButton.classList.add(_classPrivateFieldGet(this, _activeClassVal));
         sliderButton.addEventListener('click', function (e) {
-          var _iterator = _createForOfIteratorHelper(_classPrivateFieldGet(_this2, _sliderButtonsWrapper).querySelectorAll('.reviews-slider-button')),
-            _step;
-          try {
-            for (_iterator.s(); !(_step = _iterator.n()).done;) {
-              var item = _step.value;
-              if (item.classList.contains(activeClassVal)) item.classList.remove(activeClassVal);
-            }
-          } catch (err) {
-            _iterator.e(err);
-          } finally {
-            _iterator.f();
-          }
-          e.target.classList.add(activeClassVal);
-          _classPrivateFieldGet(_this2, _sliderLine).style.left = "-".concat(Number.parseInt(_classPrivateFieldGet(_this2, _sliderWidth)) * index, "px");
+          _this2.move(index, e);
         });
         _classPrivateFieldGet(this, _sliderButtonsWrapper).append(sliderButton);
       }
+    }
+  }, {
+    key: "move",
+    value: function move(index, e) {
+      var sliderButtons = _classPrivateFieldGet(this, _sliderButtonsWrapper).querySelectorAll('.reviews-slider-button');
+      var _iterator = _createForOfIteratorHelper(sliderButtons),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var item = _step.value;
+          if (item.classList.contains(_classPrivateFieldGet(this, _activeClassVal))) item.classList.remove(_classPrivateFieldGet(this, _activeClassVal));
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      if (e) e.target.classList.add(_classPrivateFieldGet(this, _activeClassVal));else sliderButtons[index].classList.add(_classPrivateFieldGet(this, _activeClassVal));
+      _classPrivateFieldGet(this, _sliderLine).style.left = "-".concat(Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * index, "px");
+      _classPrivateFieldSet(this, _currentSlideIndex, index);
+    }
+  }, {
+    key: "currentSlideIndex",
+    get: function get() {
+      return _classPrivateFieldGet(this, _currentSlideIndex);
     }
   }]);
   return ReviewsSlider;
@@ -499,6 +522,7 @@ var reviewsSlider = new ReviewsSlider();
 reviewsSlider.init();
 window.addEventListener('resize', function () {
   reviewsSlider.init();
+  reviewsSlider.move(reviewsSlider.currentSlideIndex);
 });
 })();
 
