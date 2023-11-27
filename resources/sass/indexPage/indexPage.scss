@@ -177,6 +177,14 @@ $mainSHadeRed: #5c1a1a;
     grid-template-rows: auto auto;
     grid-row-gap: 10px;
     grid-column-gap: 30px;
+    opacity: 0;
+    transition: all .55s ease;
+    transform: translateX(-10px);
+
+    &.element-show {
+        opacity: 1;
+        transform: translateX(0);
+    }
 
     .about-us-title-wrapper {
         grid-column: 1/3;
@@ -213,13 +221,21 @@ $mainSHadeRed: #5c1a1a;
     justify-content: center;
     align-items: center;
     gap: 15px;
+    opacity: 0;
+    transition: all .55s ease;
+    transform: translateX(-10px);
+
+    &.element-show {
+        opacity: 1;
+        transform: translateX(0);
+    }
 
     .our-advantages-text-wrapper {
         margin-bottom: 40px;
     }
 
     .our-advantages-content {
-        max-width: 100%;
+        width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fill, 360px);
         grid-column-gap: 30px;
@@ -235,6 +251,14 @@ $mainSHadeRed: #5c1a1a;
             align-items: center;
             gap: 15px;
             transition: all .3s ease;
+            opacity: 0;
+            transition: all .55s ease;
+            transform: translateX(-10px);
+
+            &.element-show {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
             .our-advantages-icon-wrapper {
                 min-height: 48px;
@@ -291,6 +315,14 @@ $mainSHadeRed: #5c1a1a;
             align-items: center;
             gap: 15px;
             color: #fff;
+            opacity: 0;
+            transition: all .55s ease;
+            transform: translateX(-10px);
+
+            &.element-show {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
             .statistics-icon-wrapper {
                 display: flex;
@@ -344,6 +376,14 @@ $mainSHadeRed: #5c1a1a;
             display: flex;
             flex-direction: column;
             gap: 30px;
+            opacity: 0;
+            transition: all .55s ease;
+            transform: translateX(-10px);
+
+            &.element-show {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
             .reviews-slider {
                 width: 100%;

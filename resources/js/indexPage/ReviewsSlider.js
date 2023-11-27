@@ -5,6 +5,8 @@ class ReviewsSlider {
     #sliderItemsCounter   = null;
     #sliderWidth          = null;
     #sliderButtonsWrapper = null;
+    #activeClassVal       = null;
+    #currentSlideIndex    = 0;
 
     init() {
         this.#slider =  document.querySelector('.reviews-slider');
@@ -13,6 +15,9 @@ class ReviewsSlider {
         this.#sliderItemsCounter = this.#sliderItems.length;
         this.#sliderWidth = getComputedStyle(this.#slider).width;
         this.#sliderButtonsWrapper = document.querySelector('.reviews-slider-buttons');
+        this.#activeClassVal = 'reviews-slider-active-button';
+
+        this.move = this.move.bind(this)
 
         this.#sliderLine.style.width = Number.parseInt(this.#sliderWidth) * this.#sliderItemsCounter;
         
@@ -30,31 +35,35 @@ class ReviewsSlider {
 
     createButton(index) {
         if (this.#sliderItemsCounter) {
-            const activeClassVal = 'reviews-slider-active-button';
-    
             const sliderButton = document.createElement('button');
             sliderButton.classList.add('reviews-slider-button');
-            if (!index) sliderButton.classList.add(activeClassVal);
+            if (index === this.#currentSlideIndex) sliderButton.classList.add(this.#activeClassVal);
 
             sliderButton.addEventListener('click', (e) => {
-                
-                for (const item of this.#sliderButtonsWrapper.querySelectorAll('.reviews-slider-button')) {
-                    if (item.classList.contains(activeClassVal)) item.classList.remove(activeClassVal)
-                }
-
-                e.target.classList.add(activeClassVal);
-                
-                this.#sliderLine.style.left = `-${Number.parseInt(this.#sliderWidth)  * index}px`
+                this.move(index, e);
             })
     
             this.#sliderButtonsWrapper.append(sliderButton);
         }
     }
+
+    move(index, e) {
+        const sliderButtons = this.#sliderButtonsWrapper.querySelectorAll('.reviews-slider-button');
+
+        for (const item of sliderButtons) {
+            if (item.classList.contains(this.#activeClassVal)) item.classList.remove(this.#activeClassVal)
+        }
+
+        if (e) e.target.classList.add(this.#activeClassVal);
+        else sliderButtons[index].classList.add(this.#activeClassVal);
+        
+        this.#sliderLine.style.left = `-${Number.parseInt(this.#sliderWidth)  * index}px`
+        this.#currentSlideIndex = index;
+    }
+
+    get currentSlideIndex() {
+        return this.#currentSlideIndex;
+    }
 }
 
-const reviewsSlider = new ReviewsSlider;
-reviewsSlider.init();
-
-window.addEventListener('resize', () => {
-    reviewsSlider.init();
-});
+export default ReviewsSlider;

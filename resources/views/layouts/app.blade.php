@@ -12,7 +12,10 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/custom.js') }}" defer></script>
-    <script src="js/indexPage.js" defer></script>
+    @if(Route::currentRouteName() == 'welcome')
+        <script src="js/IndexPageController.js" defer></script>
+        <script src="js/NavMenu.js" defer></script>
+    @endif
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -23,13 +26,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" src='https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/introjs.min.css'>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600&display=swap" rel="stylesheet">
+    @if(Route::currentRouteName() == 'welcome')
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600&display=swap" rel="stylesheet">
+    @endif
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/indexPage/indexPage.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/indexPage/indexPageMedia.css') }}" rel="stylesheet">
+    @if(Route::currentRouteName() == 'welcome')
+        <link href="{{ asset('css/indexPage/indexPage.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/indexPage/indexPageMedia.css') }}" rel="stylesheet">
+    @endif
     @livewireStyles
 
 

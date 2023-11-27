@@ -157,6 +157,13 @@ ol {
   grid-template-rows: auto auto;
   grid-row-gap: 10px;
   grid-column-gap: 30px;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.about-us-wrapper.element-show {
+  opacity: 1;
+  transform: translateX(0);
 }
 .about-us-wrapper .about-us-title-wrapper {
   grid-column: 1/3;
@@ -184,12 +191,19 @@ ol {
   justify-content: center;
   align-items: center;
   gap: 15px;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.our-advantages-wrapper.element-show {
+  opacity: 1;
+  transform: translateX(0);
 }
 .our-advantages-wrapper .our-advantages-text-wrapper {
   margin-bottom: 40px;
 }
 .our-advantages-wrapper .our-advantages-content {
-  max-width: 100%;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, 360px);
   grid-column-gap: 30px;
@@ -205,6 +219,13 @@ ol {
   align-items: center;
   gap: 15px;
   transition: all 0.3s ease;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.our-advantages-wrapper .our-advantages-content .our-advantages-item.element-show {
+  opacity: 1;
+  transform: translateX(0);
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item .our-advantages-icon-wrapper {
   min-height: 48px;
@@ -251,6 +272,13 @@ ol {
   align-items: center;
   gap: 15px;
   color: #fff;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.statistics-section .statistics-content .statistics-item.element-show {
+  opacity: 1;
+  transform: translateX(0);
 }
 .statistics-section .statistics-content .statistics-item .statistics-icon-wrapper {
   display: flex;
@@ -297,6 +325,13 @@ ol {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper.element-show {
+  opacity: 1;
+  transform: translateX(0);
 }
 .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider {
   width: 100%;
