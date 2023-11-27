@@ -13,13 +13,8 @@ const mix = require('laravel-mix');
 
 mix
     .js('resources/js/app.js', 'public/js')
-    .js([
-        'resources/js/indexPage/Slider.js',
-        'resources/js/indexPage/NavMenu.js',
-        'resources/js/indexPage/OurAdvantages.js',
-        'resources/js/indexPage/ReviewsSlider.js',
-        'resources/js/indexPage/BlocksAppearanceController.js',
-    ], 'public/js/indexPage.js')
+    .js('resources/js/indexPage/IndexPageController.js', 'public/js/IndexPageController.js')
+    .js('resources/js/indexPage/NavMenu.js', 'public/js/NavMenu.js')
     .vue()
     .css('resources/css/app.css', 'public/css/app.css')
     .sass('resources/sass/indexPage/indexPage.scss', 'public/css/indexPage')

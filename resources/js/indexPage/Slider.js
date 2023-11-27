@@ -21,9 +21,6 @@ class SlideArrowController {
     }
 }
 
-const slideArrowController = new SlideArrowController;
-slideArrowController.init();
-
 class SlideItem {
 
     content = null;
@@ -43,16 +40,18 @@ class Slider {
     #step            = null;
     #offset          = null;
     #sliderLeftArrow = null;
+    #slideItem       = null;
 
-    init(allSlides) {
+    init(slideItem, allSlides) {
         const slides = document.body.querySelectorAll('.slide');
         this.#slider = new Array;
         this.#sliderWrapper = document.querySelector('.slider-wrapper');
         this.#currentWidth = window.innerWidth;
         this.#sliderLeftArrow = document.querySelector('.slider-left-arrow-wrapper');
+        this.#slideItem = slideItem;
 
         for (let item of slides) {
-            this.#slider.push(new SlideItem(item.classList.value.split(' '), item.innerHTML));
+            this.#slider.push(new this.#slideItem(item.classList.value.split(' '), item.innerHTML));
             item.remove();
         }
 
@@ -115,25 +114,30 @@ class Slider {
 }
 
 class SliderFacade {
-    #slider = null;
-    slides  = new Array;
+    #slider    = null;
+    slides     = new Array;
+    #slideItem = null;
 
-    constructor(slider) {
+    constructor(slider, slideItem) {
         this.#slider = slider;
+        this.#slideItem = slideItem;
+
         const slides = document.body.querySelectorAll('.slide');
         for (let item of slides) {
-            this.slides.push(new SlideItem(item.classList.value.split(' '), item.innerHTML));
+            this.slides.push(new this.#slideItem(item.classList.value.split(' '), item.innerHTML));
         }
     }
     
     init() {
-        this.#slider.init(this.slides);
+        this.#slider.init(this.#slideItem, this.slides);
     }
 }
 
-const slider = new SliderFacade(new Slider);
-slider.init();
+const mainSliderClasses = {
+    slideArrowController: SlideArrowController, 
+    slideItem:            SlideItem, 
+    slider:               Slider,
+    sliderFacade:         SliderFacade,
+};
 
-window.addEventListener('resize', () => {
-    slider.init();
-});
+export default mainSliderClasses;

@@ -21,5 +21,4 @@ class OurAdvantagesController {
     }
 }
 
-const ourAdvantages = new OurAdvantagesController;
-ourAdvantages.init();
+export default OurAdvantagesController;

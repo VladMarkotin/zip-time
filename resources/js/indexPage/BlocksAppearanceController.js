@@ -66,5 +66,4 @@ class BlocksAppearanceController {
     }
 }
 
-const blocksAppearanceController = new BlocksAppearanceController;
-blocksAppearanceController.init();
+export default BlocksAppearanceController;

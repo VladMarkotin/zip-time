@@ -66,10 +66,4 @@ class ReviewsSlider {
     }
 }
 
-const reviewsSlider = new ReviewsSlider;
-reviewsSlider.init();
-
-window.addEventListener('resize', () => {
-    reviewsSlider.init();
-    reviewsSlider.move(reviewsSlider.currentSlideIndex);
-});
+export default ReviewsSlider;
