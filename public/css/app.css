@@ -10004,6 +10004,10 @@ html {
     font-family: 'Lato', sans-serif;
 }
 
+.navbar .container {
+    min-height: 69px;
+}
+
 .navbar-light .navbar-brand,
 .navbar-light .navbar-nav .nav-link {
     color: #fff;
@@ -10032,12 +10036,6 @@ html {
     z-index: 9998;
     animation: .4s stickyMenuAppearance ease;
     box-shadow: 0 1px 3px rgba(50, 50, 50, 0.4);
-    background: #fff;
-}
-
-.nav-menu-sticky .navbar-brand,
-.nav-menu-sticky  .navbar-nav .nav-link {
-    color: #303030;;
 }
 
 /* ========================== INDEX PAGE =================================== */
