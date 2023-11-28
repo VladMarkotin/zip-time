@@ -162,8 +162,19 @@ $mainSHadeRed: #5c1a1a;
         cursor: pointer;
         background: #03a9f4;
 
-        &:hover {
+        .slider-left-icon {
+            fill: #fff;
+            transition: fill .45s ease;
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
             background: #fff;
+
+            .slider-left-icon {
+                fill: #000000;
+            }
         }
         
             &.slider-left-arrow-wrapper {
@@ -270,10 +281,12 @@ $mainSHadeRed: #5c1a1a;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 .our-advantages-icon {
-                    height: 40px;
-                    width: 40px;
-                    background-color: #03a9f4;
+                    height: 45px;
+                    width: 45px;
+                    fill: #444;
+                    transition: fill .55s ease;
                 }
             }
 
@@ -293,12 +306,18 @@ $mainSHadeRed: #5c1a1a;
         .our-advantages-item-focus {
             background-color: $mainSHadeRed;
 
+            .our-advantages-icon-wrapper {
+                .our-advantages-icon {
+                    fill: #FFFAFA;
+                }
+            }
+
             .our-advantages-title {
-                color: #fff;
+                color: #FFFAFA;
             }
 
             .text-index-page {
-                color: #fff;
+                color: #FFFAFA;
             }
         }
     }
@@ -323,6 +342,7 @@ $mainSHadeRed: #5c1a1a;
             opacity: 0;
             transition: all .55s ease;
             transform: translateX(-10px);
+            text-shadow: 1px 1px 1px black;
 
             &.element-show {
                 opacity: 1;
@@ -335,9 +355,10 @@ $mainSHadeRed: #5c1a1a;
                 align-items: center;
 
                 .statistics-icon {
-                    height: 40px;
-                    width: 40px;
-                    background-color: #03a9f4;
+                    height: 55px;
+                    width: 50px;
+                    fill: #fff;
+                    
                 }
             }
 
@@ -412,9 +433,9 @@ $mainSHadeRed: #5c1a1a;
                             align-items: center;
 
                             .reviews-slide-icon {
-                                height: 40px;
-                                width: 40px;
-                                background: #03a9f4;
+                                height: 60px;
+                                width: 50px;
+                                fill: #444;;
                             }
                         }
 

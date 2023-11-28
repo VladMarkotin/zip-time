@@ -146,8 +146,15 @@ ol {
   cursor: pointer;
   background: #03a9f4;
 }
-.slider-wrapper .slider-arrow:hover {
+.slider-wrapper .slider-arrow .slider-left-icon {
+  fill: #fff;
+  transition: fill 0.45s ease;
+}
+.slider-wrapper .slider-arrow:hover, .slider-wrapper .slider-arrow:active, .slider-wrapper .slider-arrow:focus {
   background: #fff;
+}
+.slider-wrapper .slider-arrow:hover .slider-left-icon, .slider-wrapper .slider-arrow:active .slider-left-icon, .slider-wrapper .slider-arrow:focus .slider-left-icon {
+  fill: #000000;
 }
 .slider-wrapper .slider-arrow.slider-left-arrow-wrapper {
   right: 55px;
@@ -239,9 +246,10 @@ ol {
   align-items: center;
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item .our-advantages-icon-wrapper .our-advantages-icon {
-  height: 40px;
-  width: 40px;
-  background-color: #03a9f4;
+  height: 45px;
+  width: 45px;
+  fill: #444;
+  transition: fill 0.55s ease;
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item .our-advantages-title {
   font-size: 18px;
@@ -254,11 +262,14 @@ ol {
 .our-advantages-wrapper .our-advantages-content .our-advantages-item-focus {
   background-color: #5c1a1a;
 }
+.our-advantages-wrapper .our-advantages-content .our-advantages-item-focus .our-advantages-icon-wrapper .our-advantages-icon {
+  fill: #FFFAFA;
+}
 .our-advantages-wrapper .our-advantages-content .our-advantages-item-focus .our-advantages-title {
-  color: #fff;
+  color: #FFFAFA;
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item-focus .text-index-page {
-  color: #fff;
+  color: #FFFAFA;
 }
 
 .statistics-section {
@@ -280,6 +291,7 @@ ol {
   opacity: 0;
   transition: all 0.55s ease;
   transform: translateX(-10px);
+  text-shadow: 1px 1px 1px black;
 }
 .statistics-section .statistics-content .statistics-item.element-show {
   opacity: 1;
@@ -291,9 +303,9 @@ ol {
   align-items: center;
 }
 .statistics-section .statistics-content .statistics-item .statistics-icon-wrapper .statistics-icon {
-  height: 40px;
-  width: 40px;
-  background-color: #03a9f4;
+  height: 55px;
+  width: 50px;
+  fill: #fff;
 }
 .statistics-section .statistics-content .statistics-item .statistics-counter-wrapper {
   display: flex;
@@ -360,9 +372,9 @@ ol {
   align-items: center;
 }
 .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide .reviews-slide-icon-wrapper .reviews-slide-icon {
-  height: 40px;
-  width: 40px;
-  background: #03a9f4;
+  height: 60px;
+  width: 50px;
+  fill: #444;
 }
 .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide .reviws-slide-title {
   font-size: 16px;
