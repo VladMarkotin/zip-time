@@ -10038,6 +10038,15 @@ html {
     box-shadow: 0 1px 3px rgba(50, 50, 50, 0.4);
 }
 
+.nav-menu-sticky {
+    background-color: rgba(34, 34, 34, 0.97) !important;
+ }
+
+ .nav-menu-sticky .container {
+    position: relative;
+    z-index: 10000;
+ }
+
 /* ========================== INDEX PAGE =================================== */
 #total-results {
     box-shadow: rgb(255 43 43) 0px 0px 30px;

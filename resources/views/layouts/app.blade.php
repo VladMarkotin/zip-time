@@ -14,8 +14,8 @@
     <script src="{{ asset('js/custom.js') }}" defer></script>
     @if(Route::currentRouteName() == 'welcome')
         <script src="js/IndexPageController.js" defer></script>
-        <script src="js/NavMenu.js" defer></script>
     @endif
+    <script src="js/NavMenu.js" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
