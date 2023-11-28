@@ -29,6 +29,11 @@ ol {
   list-style: none;
 }
 
+.main {
+  overflow: hidden;
+  max-width: 100%;
+}
+
 .white-background {
   background-color: #fff;
 }
