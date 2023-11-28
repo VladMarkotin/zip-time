@@ -19,6 +19,7 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 var _navMenu = /*#__PURE__*/new WeakMap();
 var _navMenuHeight = /*#__PURE__*/new WeakMap();
 var _stickyMenuClass = /*#__PURE__*/new WeakMap();
+var _deltaForAppearance = /*#__PURE__*/new WeakMap();
 var NavMenu = /*#__PURE__*/function () {
   function NavMenu() {
     _classCallCheck(this, NavMenu);
@@ -34,6 +35,10 @@ var NavMenu = /*#__PURE__*/function () {
       writable: true,
       value: 'nav-menu-sticky'
     });
+    _classPrivateFieldInitSpec(this, _deltaForAppearance, {
+      writable: true,
+      value: 200
+    });
   }
   _createClass(NavMenu, [{
     key: "init",
@@ -41,12 +46,13 @@ var NavMenu = /*#__PURE__*/function () {
       var _this = this;
       _classPrivateFieldSet(this, _navMenu, document.body.querySelector('.nav-menu'));
       _classPrivateFieldSet(this, _navMenuHeight, parseInt(window.getComputedStyle(_classPrivateFieldGet(this, _navMenu)).height));
+      _classPrivateFieldSet(this, _deltaForAppearance, Math.floor(window.innerHeight / 2));
       window.addEventListener('scroll', function () {
         var posTop = window.pageYOffset;
-        if (posTop > _classPrivateFieldGet(_this, _navMenuHeight) + 150 && !_classPrivateFieldGet(_this, _navMenu).classList.contains(_classPrivateFieldGet(_this, _stickyMenuClass))) {
+        if (posTop > _classPrivateFieldGet(_this, _navMenuHeight) + _classPrivateFieldGet(_this, _deltaForAppearance) && !_classPrivateFieldGet(_this, _navMenu).classList.contains(_classPrivateFieldGet(_this, _stickyMenuClass))) {
           _this.addClass();
         }
-        if (posTop < _classPrivateFieldGet(_this, _navMenuHeight) + 150 && _classPrivateFieldGet(_this, _navMenu).classList.contains(_classPrivateFieldGet(_this, _stickyMenuClass))) {
+        if (posTop < _classPrivateFieldGet(_this, _navMenuHeight) + _classPrivateFieldGet(_this, _deltaForAppearance) && _classPrivateFieldGet(_this, _navMenu).classList.contains(_classPrivateFieldGet(_this, _stickyMenuClass))) {
           _this.removeClass();
         }
       });
