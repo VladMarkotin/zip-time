@@ -133,7 +133,7 @@ $mainSHadeRed: #5c1a1a;
 
                     .slide-content-subtitle {
                         font-family: "Dosis",sans-serif;
-                        font-size: 16px;
+                        font-size: 24px;
                         font-weight: 400;
                         letter-spacing: 0.3em;
                         line-height: 1.2;
@@ -197,8 +197,29 @@ $mainSHadeRed: #5c1a1a;
             flex-direction: column;
             align-items: flex-start;
             justify-content: space-between;
+            gap: 30px;
 
             .slide-one-li {
+                opacity: 0;
+                color: #F5F5F5;
+                // &:nth-child(odd) {
+                //     color: #BEBEBE;
+                // }
+
+                // &:nth-child(even) {
+                //     color: #F5F5F5;
+                // }
+                
+                &.slide-one-li-left {
+                    animation: .5s slide_one_left_appearance ease;
+                    opacity: 1;
+                }
+
+                &.slide-one-li-right {
+                    opacity: 1;
+                    animation:.5s slide_one_right_appearance ease;
+                }
+
                 &:nth-child(even) {
                     align-self: flex-end;
                 }
@@ -499,4 +520,14 @@ $mainSHadeRed: #5c1a1a;
             }
         }
     }
+}
+
+@keyframes slide_one_left_appearance {
+    from { opacity: 0; transform: translateX(-130px);}
+    to { opacity: 1; transform: translateX(0);}
+}
+
+@keyframes slide_one_right_appearance {
+    from { opacity: 0; transform: translateX(130px);}
+    to { opacity: 1; transform: translateX(0);}
 }

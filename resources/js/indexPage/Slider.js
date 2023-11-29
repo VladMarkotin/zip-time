@@ -20,10 +20,17 @@ class SlideContentController {
     }
 
     static initFirstSlide() {
-        const slideOneLiCollect = document.querySelectorAll('.slide-one-list .slide-one-li > .slide-one-title');
+        const slideOneLiCollect = document.querySelectorAll('.slide-one-list .slide-one-li');
+        const getTimer = this.getTimerCreator();
+        const slideOneLiTimer = getTimer(slideOneLiCollect);
         
-        for(const item of slideOneLiCollect) {
-            // console.log(item);
+        for (let i = 0; i < slideOneLiCollect.length; i++) {
+            const currentLi = slideOneLiCollect[i];
+            const classAdded = i % 2 === 0 ? 'slide-one-li-left' : 'slide-one-li-right';
+
+            setTimeout(() => {
+                currentLi.classList.add(classAdded);
+            }, slideOneLiTimer.next().value)
         }
     }
 
@@ -33,6 +40,16 @@ class SlideContentController {
 
     static initThirdSlide() {
         console.log('3')
+    }
+    
+    static getTimerCreator() {
+
+        return function* (items, interval = 1600) {
+            for (let i = 1; i <= items.length; i++) {
+                if (i === 1) yield 100
+                yield i * interval;
+            }
+        }
     }
 }
 
