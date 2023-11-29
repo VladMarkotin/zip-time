@@ -15,8 +15,21 @@
                 <div class="slide slide-one">
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
-                            <span class="slide-content-subtitle">some text</span>
-                            <h2 class="slide-content-title">some title</h2>
+                            <span class="slide-content-subtitle">Hi there! Quipl has 4 questions for you:</span>
+                            <ul class="slide-one-list">
+                                <li class="slide-one-li">
+                                    <h2 class="slide-content-title slide-one-title">Think you`re great but haven`t reached your potential yet?</h2>
+                                </li>
+                                <li class="slide-one-li">
+                                    <h2 class="slide-content-title slide-one-title">Wasting time instead self-developing?</h2>
+                                </li>
+                                <li class="slide-one-li">
+                                    <h2 class="slide-content-title slide-one-title">Sometimes don`t have enough self-discipline?</h2>
+                                </li>
+                                <li class="slide-one-li">
+                                    <h2 class="slide-content-title slide-one-title">Can`t find out how efficient you are?</h2>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

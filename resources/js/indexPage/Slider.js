@@ -1,3 +1,41 @@
+class SlideContentController {
+    static #slideContentMap = [
+        {
+            number: 'one',
+            method: 'initFirstSlide',
+        },
+        {
+            number: 'two',
+            method: 'initSecondSlide',
+        },
+        {
+            number: 'three',
+            method: 'initThirdSlide',
+        },
+    ]
+
+    static init(slideNumber) {
+        const currentMethod = this.#slideContentMap.find(item => item.number === slideNumber).method;
+        this[currentMethod]();
+    }
+
+    static initFirstSlide() {
+        const slideOneLiCollect = document.querySelectorAll('.slide-one-list .slide-one-li > .slide-one-title');
+        
+        for(const item of slideOneLiCollect) {
+            // console.log(item);
+        }
+    }
+
+    static initSecondSlide() {
+        console.log('2')
+    }
+
+    static initThirdSlide() {
+        console.log('3')
+    }
+}
+
 class SlideArrowController {
     #sliderWrapper   = null;
     #slideLeftArrow  = null;
@@ -34,21 +72,23 @@ class SlideItem {
 
 class Slider {
 
-    #slider          = null;
-    #sliderWrapper   = null;
-    #currentWidth    = null;
-    #step            = null;
-    #offset          = null;
-    #sliderLeftArrow = null;
-    #slideItem       = null;
+    #slider                 = null;
+    #sliderWrapper          = null;
+    #currentWidth           = null;
+    #step                   = null;
+    #offset                 = null;
+    #sliderLeftArrow        = null;
+    #slideItem              = null;
+    #slideContentController = null;
 
-    init(slideItem, allSlides) {
+    init(slideItem, allSlides, slideContentController) {
         const slides = document.body.querySelectorAll('.slide');
         this.#slider = new Array;
         this.#sliderWrapper = document.querySelector('.slider-wrapper');
         this.#currentWidth = window.innerWidth;
         this.#sliderLeftArrow = document.querySelector('.slider-left-arrow-wrapper');
         this.#slideItem = slideItem;
+        this.#slideContentController = slideContentController;
 
         for (let item of slides) {
             this.#slider.push(new this.#slideItem(item.classList.value.split(' '), item.innerHTML));
@@ -72,6 +112,7 @@ class Slider {
 
         this.left = this.left.bind(this);
         this.#sliderLeftArrow.onclick=this.left;
+        this.initZeroSlide();
     }
 
     draw() {
@@ -109,18 +150,42 @@ class Slider {
             slides[0].remove();
             this.draw();
             this.#sliderLeftArrow.onclick=this.left;
+            this.initZeroSlide();
         }, 600);
+    }
+
+    initZeroSlide() {
+        const zeroSlide = document.querySelector('.slider-wrapper > .slide');
+        const regExpPattern = /^slide-(\w+)$/;
+
+        const slideNumber = findSlideNumbe(zeroSlide);
+        this.#slideContentController.init(slideNumber);
+        
+        function findSlideNumbe(zeroSlide) {
+            const allClasses = zeroSlide.classList;
+
+            for (const item of allClasses) {
+                const regExp = item.match(regExpPattern);
+                if (regExp) {
+                    return regExp[1];
+                    break;
+                }
+            }
+        }
+        
     }
 }
 
 class SliderFacade {
-    #slider    = null;
-    slides     = new Array;
-    #slideItem = null;
+    #slider                 = null;
+    slides                  = new Array;
+    #slideItem              = null;
+    #slideContentController = null;
 
-    constructor(slider, slideItem) {
+    constructor(slider, slideItem, slideContentController) {
         this.#slider = slider;
         this.#slideItem = slideItem;
+        this.#slideContentController = slideContentController;
 
         const slides = document.body.querySelectorAll('.slide');
         for (let item of slides) {
@@ -129,15 +194,16 @@ class SliderFacade {
     }
     
     init() {
-        this.#slider.init(this.#slideItem, this.slides);
+        this.#slider.init(this.#slideItem, this.slides, this.#slideContentController);
     }
 }
 
 const mainSliderClasses = {
-    slideArrowController: SlideArrowController, 
-    slideItem:            SlideItem, 
-    slider:               Slider,
-    sliderFacade:         SliderFacade,
+    slideArrowController:   SlideArrowController, 
+    SlideContentController: SlideContentController,
+    slideItem:              SlideItem, 
+    slider:                 Slider,
+    sliderFacade:           SliderFacade,
 };
 
 export default mainSliderClasses;
