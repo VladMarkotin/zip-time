@@ -15,7 +15,7 @@
                 <div class="slide slide-one">
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
-                            <span class="slide-content-subtitle">Hi there! Quipl has 4 questions for you:</span>
+                            <span class="slide-content-3d-title">Hi there! Quipl has 4 questions for you:</span>
                             <ul class="slide-one-list">
                                 <li class="slide-one-li">
                                     <h2 class="slide-content-title slide-one-title">Think you`re great but haven`t reached your potential yet?</h2>
@@ -30,6 +30,9 @@
                                     <h2 class="slide-content-title slide-one-title">Can`t find out how efficient you are?</h2>
                                 </li>
                             </ul>
+                            <div class="yeap-button-wrapper">
+                                <button class="yeap-button">Yeap!</button>
+                            </div>
                         </div>
                     </div>
                 </div>

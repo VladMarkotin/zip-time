@@ -429,16 +429,25 @@ var SlideContentController = /*#__PURE__*/function () {
       for (var i = 0; i < slideOneLiCollect.length; i++) {
         _loop();
       }
+      var sliderContetWrapper = document.querySelector('.slide-content');
+      var slider3dText = sliderContetWrapper.querySelector('.slide-content-3d-title');
+      var slider3dActiveClass = 'slide-content-3d-title-active';
+      sliderContetWrapper.addEventListener('mouseenter', function () {
+        slider3dText.classList.add(slider3dActiveClass);
+      });
+      sliderContetWrapper.addEventListener('mouseleave', function () {
+        if (slider3dText.classList.contains(slider3dActiveClass)) slider3dText.classList.remove(slider3dActiveClass);
+      });
     }
   }, {
     key: "initSecondSlide",
     value: function initSecondSlide() {
-      console.log('2');
+      // console.log('2')
     }
   }, {
     key: "initThirdSlide",
     value: function initThirdSlide() {
-      console.log('3');
+      // console.log('3')
     }
   }, {
     key: "getTimerCreator",
@@ -691,10 +700,17 @@ var Slider = /*#__PURE__*/function () {
   }, {
     key: "initZeroSlide",
     value: function initZeroSlide() {
+      var _this3 = this;
       var zeroSlide = document.querySelector('.slider-wrapper > .slide');
       var regExpPattern = /^slide-(\w+)$/;
       var slideNumber = findSlideNumbe(zeroSlide);
       _classPrivateFieldGet(this, _slideContentController).init(slideNumber);
+      var yeapButton = document.querySelector('.yeap-button');
+      if (yeapButton) {
+        yeapButton.addEventListener('click', function () {
+          _this3.left();
+        });
+      }
       function findSlideNumbe(zeroSlide) {
         var allClasses = zeroSlide.classList;
         var _iterator5 = _createForOfIteratorHelper(allClasses),
