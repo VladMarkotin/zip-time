@@ -14,8 +14,8 @@
     <script src="{{ asset('js/custom.js') }}" defer></script>
     @if(Route::currentRouteName() == 'welcome')
         <script src="js/IndexPageController.js" defer></script>
-        <script src="js/NavMenu.js" defer></script>
     @endif
+    <script src="js/NavMenu.js" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -29,6 +29,7 @@
     @if(Route::currentRouteName() == 'welcome')
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     @endif
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -160,7 +161,7 @@
         </nav>
 
 
-        <main class="py-0">
+        <main class="py-0 main">
 
             @yield('content')
         </main>

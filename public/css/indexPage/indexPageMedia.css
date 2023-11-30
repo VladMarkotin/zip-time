@@ -195,3 +195,8 @@
     font-size: 28px;
   }
 }
+@media (max-height: 547px) {
+  .slider-wrapper {
+    min-height: 750px;
+  }
+}

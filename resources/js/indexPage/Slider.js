@@ -1,3 +1,70 @@
+class SlideContentController {
+    static #slideContentMap = [
+        {
+            number: 'one',
+            method: 'initFirstSlide',
+        },
+        {
+            number: 'two',
+            method: 'initSecondSlide',
+        },
+        {
+            number: 'three',
+            method: 'initThirdSlide',
+        },
+    ]
+
+    static init(slideNumber) {
+        const currentMethod = this.#slideContentMap.find(item => item.number === slideNumber).method;
+        this[currentMethod]();
+    }
+
+    static initFirstSlide() {
+        const slideOneLiCollect = document.querySelectorAll('.slide-one-list .slide-one-li');
+        const getTimer = this.getTimerCreator();
+        const slideOneLiTimer = getTimer(slideOneLiCollect);
+        
+        for (let i = 0; i < slideOneLiCollect.length; i++) {
+            const currentLi = slideOneLiCollect[i];
+            const classAdded = i % 2 === 0 ? 'slide-one-li-left' : 'slide-one-li-right';
+
+            setTimeout(() => {
+                currentLi.classList.add(classAdded);
+            }, slideOneLiTimer.next().value)
+        }
+
+        const sliderContetWrapper = document.querySelector('.slide-content');
+        const slider3dText = sliderContetWrapper.querySelector('.slide-content-3d-title');
+        const slider3dActiveClass = 'slide-content-3d-title-active';
+
+        sliderContetWrapper.addEventListener('mouseenter', () => {
+            slider3dText.classList.add(slider3dActiveClass);
+        });
+
+        sliderContetWrapper.addEventListener('mouseleave', () => {
+            if (slider3dText.classList.contains(slider3dActiveClass)) slider3dText.classList.remove(slider3dActiveClass);
+        })
+    }
+
+    static initSecondSlide() {
+        // console.log('2')
+    }
+
+    static initThirdSlide() {
+        // console.log('3')
+    }
+    
+    static getTimerCreator() {
+
+        return function* (items, interval = 1600) {
+            for (let i = 1; i <= items.length; i++) {
+                if (i === 1) yield 100
+                yield i * interval;
+            }
+        }
+    }
+}
+
 class SlideArrowController {
     #sliderWrapper   = null;
     #slideLeftArrow  = null;
@@ -34,21 +101,23 @@ class SlideItem {
 
 class Slider {
 
-    #slider          = null;
-    #sliderWrapper   = null;
-    #currentWidth    = null;
-    #step            = null;
-    #offset          = null;
-    #sliderLeftArrow = null;
-    #slideItem       = null;
+    #slider                 = null;
+    #sliderWrapper          = null;
+    #currentWidth           = null;
+    #step                   = null;
+    #offset                 = null;
+    #sliderLeftArrow        = null;
+    #slideItem              = null;
+    #slideContentController = null;
 
-    init(slideItem, allSlides) {
+    init(slideItem, allSlides, slideContentController) {
         const slides = document.body.querySelectorAll('.slide');
         this.#slider = new Array;
         this.#sliderWrapper = document.querySelector('.slider-wrapper');
         this.#currentWidth = window.innerWidth;
         this.#sliderLeftArrow = document.querySelector('.slider-left-arrow-wrapper');
         this.#slideItem = slideItem;
+        this.#slideContentController = slideContentController;
 
         for (let item of slides) {
             this.#slider.push(new this.#slideItem(item.classList.value.split(' '), item.innerHTML));
@@ -72,6 +141,7 @@ class Slider {
 
         this.left = this.left.bind(this);
         this.#sliderLeftArrow.onclick=this.left;
+        this.initZeroSlide();
     }
 
     draw() {
@@ -109,18 +179,49 @@ class Slider {
             slides[0].remove();
             this.draw();
             this.#sliderLeftArrow.onclick=this.left;
+            this.initZeroSlide();
         }, 600);
+    }
+
+    initZeroSlide() {
+        const zeroSlide = document.querySelector('.slider-wrapper > .slide');
+        const regExpPattern = /^slide-(\w+)$/;
+
+        const slideNumber = findSlideNumbe(zeroSlide);
+        this.#slideContentController.init(slideNumber);
+
+        const yeapButton = document.querySelector('.yeap-button');
+        if (yeapButton) {
+            yeapButton.addEventListener('click', () => {
+                this.left();
+            })
+        }
+        
+        function findSlideNumbe(zeroSlide) {
+            const allClasses = zeroSlide.classList;
+
+            for (const item of allClasses) {
+                const regExp = item.match(regExpPattern);
+                if (regExp) {
+                    return regExp[1];
+                    break;
+                }
+            }
+        }
+        
     }
 }
 
 class SliderFacade {
-    #slider    = null;
-    slides     = new Array;
-    #slideItem = null;
+    #slider                 = null;
+    slides                  = new Array;
+    #slideItem              = null;
+    #slideContentController = null;
 
-    constructor(slider, slideItem) {
+    constructor(slider, slideItem, slideContentController) {
         this.#slider = slider;
         this.#slideItem = slideItem;
+        this.#slideContentController = slideContentController;
 
         const slides = document.body.querySelectorAll('.slide');
         for (let item of slides) {
@@ -129,15 +230,16 @@ class SliderFacade {
     }
     
     init() {
-        this.#slider.init(this.#slideItem, this.slides);
+        this.#slider.init(this.#slideItem, this.slides, this.#slideContentController);
     }
 }
 
 const mainSliderClasses = {
-    slideArrowController: SlideArrowController, 
-    slideItem:            SlideItem, 
-    slider:               Slider,
-    sliderFacade:         SliderFacade,
+    slideArrowController:   SlideArrowController, 
+    SlideContentController: SlideContentController,
+    slideItem:              SlideItem, 
+    slider:                 Slider,
+    sliderFacade:           SliderFacade,
 };
 
 export default mainSliderClasses;

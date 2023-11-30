@@ -311,3 +311,11 @@ $maxContentWidth480: 270px;
 @media screen and (max-width: 365px) {
 
 }
+
+//---------------------------------------------------------------------//
+
+@media (max-height: 547px) {
+    .slider-wrapper {
+        min-height: 750px; //мб поменять если перенесем этот блок
+    }
+}

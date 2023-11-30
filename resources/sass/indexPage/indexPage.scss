@@ -32,6 +32,11 @@ ol {
 
 // кастомные классы
 
+.main {
+    overflow: hidden;
+    max-width: 100%;
+}
+
 .white-background {
     background-color: #fff;
 }
@@ -61,12 +66,15 @@ ol {
     font-size: 16px;
 }
 
+
+
 //верстка по странице
 
 $mainSHadeRed: #5c1a1a;
+$yeapButtonColor: #3490dc;
 
 .slider-wrapper {
-    height: calc(100vh - 85px); //мб поменять если перенесем этот блок
+    min-height: calc(100vh - 85px); //мб поменять если перенесем этот блок
     width: 100vw;
     position: relative;
     box-shadow: 1px 1px 1px black;
@@ -111,34 +119,42 @@ $mainSHadeRed: #5c1a1a;
                 position: relative;
                 z-index: 10;
                 color: #fff;
-                display: flex;
-                flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                height: 100%;
 
                 .slide-content_inner-block {
-                    margin-top: 165px;
+                    padding-top: 90px;
+                    margin-top: 115px;
                     display: flex;
                     flex-direction: column;
-                    gap: 20px;
+                    gap: 40px;
                     justify-content: center;
                     align-items: center;
-
-                    .slide-content-subtitle {
-                        font-family: "Dosis",sans-serif;
-                        font-size: 16px;
-                        font-weight: 400;
-                        letter-spacing: 0.3em;
-                        line-height: 1.2;
-                        text-transform: uppercase;
-                    }
+                    max-width: 1170px;
+                    margin: 0 auto;
 
                     .slide-content-title {
-                        font-family: "Lato",sans-serif;
-                        font-size: 45px;
+                        font-size: 26px;
                         font-weight: 700;
-                        letter-spacing: 0.3em;
+                        text-shadow: 1px 1px 4px black;
+                        color: #C2C2C2;
+                        font-family: 'Montserrat', sans-serif;
+                    }
+
+                    .slide-content-3d-title {
+                        margin-top: -12px;
+                        align-self: center;
+                        transform: perspective(300px) rotateX(15deg) scaleY(0.8);
+                        transition: all 0.5s;
+                        font-family: Impact, Charcoal, sans-serif;
+                        font-size: 45px;
+                        letter-spacing: 3px;
+                        color: #C2C2C2;
+                        text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 4px 0 #808080;
+                    }
+                    .slide-content-3d-title-active {
+                        transform: perspective(1000px) rotateX(15deg) scale(1.07);
+                        text-shadow: 0 0 10px black, 0 1px 0 #808080;
                     }
                 }
             }
@@ -157,8 +173,19 @@ $mainSHadeRed: #5c1a1a;
         cursor: pointer;
         background: #03a9f4;
 
-        &:hover {
+        .slider-left-icon {
+            fill: #fff;
+            transition: fill .45s ease;
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
             background: #fff;
+
+            .slider-left-icon {
+                fill: #000000;
+            }
         }
         
             &.slider-left-arrow-wrapper {
@@ -170,6 +197,78 @@ $mainSHadeRed: #5c1a1a;
         }
     }
 }
+
+.slider-wrapper {
+    .slide-one {
+        .slide-one-list {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 30px;
+            width: 100%;
+
+            .slide-one-li {
+                opacity: 0;
+                color: #fff;
+                // &:nth-child(odd) {
+                //     color: #BEBEBE;
+                // }
+
+                // &:nth-child(even) {
+                //     color: #F5F5F5;
+                // }
+                
+                &.slide-one-li-left {
+                    animation: .5s slide_one_left_appearance ease;
+                    opacity: 1;
+                }
+
+                &.slide-one-li-right {
+                    opacity: 1;
+                    animation:.5s slide_one_right_appearance ease;
+                }
+
+                &:nth-child(even) {
+                    align-self: flex-end;
+                }
+            }
+        }
+    }
+}
+
+.yeap-button {
+    box-sizing: border-box;
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid $yeapButtonColor;
+    border-radius: 0.6em;
+    color: $yeapButtonColor ;
+    cursor: pointer;
+    display: flex;
+    align-self: center;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1;
+    padding: 1.2em 2.8em;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+
+    &:hover,
+    &:focus {
+        color: #fff !important;
+        outline: 0;
+    }
+
+    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+    &:hover {
+      box-shadow: 0 0 40px 40px $yeapButtonColor inset;
+    }
+ }
 
 .about-us-wrapper {
     display: grid;
@@ -265,10 +364,12 @@ $mainSHadeRed: #5c1a1a;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 .our-advantages-icon {
-                    height: 40px;
-                    width: 40px;
-                    background-color: #03a9f4;
+                    height: 45px;
+                    width: 45px;
+                    fill: #444;
+                    transition: fill .55s ease;
                 }
             }
 
@@ -288,12 +389,18 @@ $mainSHadeRed: #5c1a1a;
         .our-advantages-item-focus {
             background-color: $mainSHadeRed;
 
+            .our-advantages-icon-wrapper {
+                .our-advantages-icon {
+                    fill: #FFFAFA;
+                }
+            }
+
             .our-advantages-title {
-                color: #fff;
+                color: #FFFAFA;
             }
 
             .text-index-page {
-                color: #fff;
+                color: #FFFAFA;
             }
         }
     }
@@ -318,6 +425,7 @@ $mainSHadeRed: #5c1a1a;
             opacity: 0;
             transition: all .55s ease;
             transform: translateX(-10px);
+            text-shadow: 1px 1px 1px black;
 
             &.element-show {
                 opacity: 1;
@@ -330,9 +438,10 @@ $mainSHadeRed: #5c1a1a;
                 align-items: center;
 
                 .statistics-icon {
-                    height: 40px;
-                    width: 40px;
-                    background-color: #03a9f4;
+                    height: 55px;
+                    width: 50px;
+                    fill: #fff;
+                    
                 }
             }
 
@@ -407,9 +516,9 @@ $mainSHadeRed: #5c1a1a;
                             align-items: center;
 
                             .reviews-slide-icon {
-                                height: 40px;
-                                width: 40px;
-                                background: #03a9f4;
+                                height: 60px;
+                                width: 50px;
+                                fill: #444;;
                             }
                         }
 
@@ -453,4 +562,14 @@ $mainSHadeRed: #5c1a1a;
             }
         }
     }
+}
+
+@keyframes slide_one_left_appearance {
+    from { opacity: 0; transform: translateX(-130px);}
+    to { opacity: 1; transform: translateX(0);}
+}
+
+@keyframes slide_one_right_appearance {
+    from { opacity: 0; transform: translateX(130px);}
+    to { opacity: 1; transform: translateX(0);}
 }

@@ -12,8 +12,9 @@ class IndexPageController {
     #slideItem                  = null;
     #slider                     = null;
     #sliderFacade               = null;
+    #slideContentController     = null;
 
-    init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade) {
+    init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController) {
         this.#blocksAppearanceController = new blocksAppearanceController;
         this.#ourAdvantagesController = new ourAdvantagesController;
         this.#reviewsSlider = new reviewsSlider;
@@ -21,7 +22,8 @@ class IndexPageController {
         this.#slideArrowController = new slideArrowController;
         this.#slideItem = slideItem;
         this.#slider    = slider;
-        this.#sliderFacade = new sliderFacade(new this.#slider, this.#slideItem);;
+        this.#slideContentController = slideContentController;
+        this.#sliderFacade = new sliderFacade(new this.#slider, this.#slideItem, this.#slideContentController);
 
         this.#blocksAppearanceController.init();
         this.#ourAdvantagesController.init();
@@ -40,6 +42,6 @@ class IndexPageController {
 
 const indexPageController = new IndexPageController;
 
-const {slideArrowController, slider, slideItem, sliderFacade} = mainSliderClasses;
+const {slideArrowController, slider, slideItem, sliderFacade, SlideContentController} = mainSliderClasses;
 
-indexPageController.init(BlocksAppearanceController, OurAdvantagesController, ReviewsSlider, slideArrowController, slideItem, slider, sliderFacade);
+indexPageController.init(BlocksAppearanceController, OurAdvantagesController, ReviewsSlider, slideArrowController, slideItem, slider, sliderFacade, SlideContentController);
