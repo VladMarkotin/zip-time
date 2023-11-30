@@ -138,7 +138,7 @@
                             <h2 class="statistics-counter title-index-page">360</h2>
                         </div>
                         <div class="statistics-text-wrapper">
-                            <p class="statistics-text text-index-page">Total day plans created</p>
+                            <p class="statistics-text text-index-page">Total day plans are created</p>
                         </div>
                     </div>
                     <div class="statistics-item element-animation">
@@ -149,7 +149,7 @@
                             <h2 class="statistics-counter title-index-page">690</h2>
                         </div>
                         <div class="statistics-text-wrapper">
-                            <p class="statistics-text text-index-page">Successfully completed tasks</p>
+                            <p class="statistics-text text-index-page">Tasks are successfully completed</p>
                         </div>
                     </div>
                     <div class="statistics-item element-animation">
@@ -160,7 +160,7 @@
                             <h2 class="statistics-counter title-index-page">420</h2>
                         </div>
                         <div class="statistics-text-wrapper">
-                            <p class="statistics-text text-index-page">Successfully completed days</p>
+                            <p class="statistics-text text-index-page">Days are successfully completed</p>
                         </div>
                     </div>
                     <div class="statistics-item element-animation">
@@ -171,7 +171,7 @@
                             <h2 class="statistics-counter title-index-page">114</h2>
                         </div>
                         <div class="statistics-text-wrapper">
-                            <p class="statistics-text text-index-page">Total weekends taken</p>
+                            <p class="statistics-text text-index-page">Total weekends are taken</p>
                         </div>
                     </div>
                 </div>

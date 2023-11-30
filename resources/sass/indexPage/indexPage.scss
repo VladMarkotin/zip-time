@@ -123,6 +123,7 @@ $yeapButtonColor: #3490dc;
                 align-items: center;
 
                 .slide-content_inner-block {
+                    padding-top: 90px;
                     margin-top: 115px;
                     display: flex;
                     flex-direction: column;
@@ -130,7 +131,7 @@ $yeapButtonColor: #3490dc;
                     justify-content: center;
                     align-items: center;
                     max-width: 1170px;
-                    margin: 90px auto 0 auto;
+                    margin: 0 auto;
 
                     .slide-content-title {
                         font-size: 26px;
