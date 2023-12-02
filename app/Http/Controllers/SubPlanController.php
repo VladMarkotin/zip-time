@@ -77,9 +77,9 @@ class SubPlanController extends Controller
 
             $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
             ->where('is_ready', 0)
-            ->where('created_at', '<', date('Y-m-d').' 00:00:00')
+            //->where('created_at', '<', date('Y-m-d').' 00:00:00')
             ->get()
-            ->toArray();
+            ->toArray();  
             if (count($previousSubTasks)) {
                 foreach ($previousSubTasks as $v) {
                     $subPlan[] = $v;

@@ -67,14 +67,18 @@ class NoteController extends Controller
         if(isset($hash[0])) {
 
                 //get saved task id
-                $savedTaskId = SavedTask::select('id')->where([
-                        ['hash_code', $hash[0]],
-                        ['user_id', Auth::id()]
-                    ])
-                    ->get()
-                    ->pluck('id')
-                    ->toArray();
-                return (isset($savedTaskId[0]) ? $savedTaskId[0] : null);
+                
+            $savedTaskId = SavedTask::select('id')->where([
+                            ['hash_code', $hash[0]],
+                            ['user_id', Auth::id()]
+                        ])
+                        ->get()
+                        ->pluck('id')
+                        ->toArray();
+        
+            if (isset($savedTaskId[0])) {
+                return $savedTaskId[0];
+            }        
                 
         }
 
