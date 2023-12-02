@@ -11,4 +11,4 @@ namespace App\Http\Controllers;
 
 class TestViewController {
 
-} 
+}
