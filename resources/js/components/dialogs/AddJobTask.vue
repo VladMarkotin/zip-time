@@ -119,7 +119,7 @@
 </template>
 <script>
 	import AddHashCode from './AddHashCode.vue';
-	import AddHashCodeButton from '../UI/addHashCodeButton.vue';
+	import AddHashCodeButton from '../UI/AddHashCodeButton.vue';
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
 	import CloseButton from '../UI/CloseButton.vue';
 	import TimePickerMenu from '../TimePickerMenu.vue';
