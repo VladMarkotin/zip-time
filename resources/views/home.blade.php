@@ -39,31 +39,36 @@
                 <div class="slide slide-two" style="display: none;"> 
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
-                            <h2 class="slide-content-title">Have you answered «Yeap» at least once?</h2>
-                            <div class="slide-two-content">
-                                <h3 class="slide-content-subtitle">Welcome on board! Quipl gonna fix this points!</h3>
-                                <ul class="slide-two-list">
-                                    <li class="slide-two-li">
-                                        <span class="slide-two-li-number slide-content-text">1 . </span>
-                                        <p class="slide-content-text">Begin planning! Every day no less then 2 required tasks. The crucial word is «required». If at least one task was`t completed, the plan failed</p>
-                                    </li>
-                                    <li class="slide-two-li">
-                                        <span class="slide-two-li-number slide-content-text">2 . </span>
-                                        <p class="slide-content-text">Do it! You got all day. You may complete all tasks in any order until day isn`t over (23:59)</p>
-                                    </li>
-                                    <li class="slide-two-li">
-                                        <span class="slide-two-li-number slide-content-text">3 . </span>
-                                       <p class="slide-content-text">After task is done - rate yourself. Put mark from 15% to 100%. The only and most honest judge is you!</p>
-                                    </li>
-                                    <li class="slide-two-li">
-                                        <span class="slide-two-li-number slide-content-text">4 . </span>
-                                       <p class="slide-content-text">After all tasks have been done - close day plan. If you forget to do this before the end of the day, Quipl will do it itself!</p>
-                                    </li>
-                                    <li class="slide-two-li">
-                                        <span class="slide-two-li-number slide-content-text">5 . </span>
-                                       <p class="slide-content-text">Congratulations! Just see your history, statistic and realize you are awesome!</p>
-                                    </li>
-                                </ul>
+                            <div class="slide-content-button-wrapper">
+                                <button class="yeap-button">Cool!<br>Tell me more</button>
+                            </div>
+                            <div class="slide-content-text-wrapper">
+                                <h2 class="slide-content-title"><span class="red-text">Quipl</span> is a day planing system which gonna solve all mentioned problems</h2>
+                                <div class="slide-two-content">
+                                    <h3 class="slide-content-subtitle">How it works?</h3>
+                                    <ul class="slide-two-list">
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">1 . </span>
+                                            <p class="slide-content-text">Create day plan with plenty of required jobs</p>
+                                        </li>
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">2 . </span>
+                                            <p class="slide-content-text">Do it!</p>
+                                        </li>
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">3 . </span>
+                                           <p class="slide-content-text">Evaluate yourself for every job. No deadline while day is not closed.</p>
+                                        </li>
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">4 . </span>
+                                           <p class="slide-content-text">After all required jobs done, close day plan and get your day efficiency</p>
+                                        </li>
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">5 . </span>
+                                           <p class="slide-content-text">Congratulations! Just see your history, statistic and realize you are awesome!</p>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

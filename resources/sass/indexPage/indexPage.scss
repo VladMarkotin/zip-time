@@ -72,6 +72,7 @@ ol {
 
 $mainSHadeRed: #5c1a1a;
 $yeapButtonColor: #3490dc;
+$redText: #960018;
 
 .slider-wrapper {
     min-height: calc(100vh - 85px); //мб поменять если перенесем этот блок
@@ -138,7 +139,7 @@ $yeapButtonColor: #3490dc;
                     margin: 0 auto;
 
                     .slide-content-title {
-                        font-size: 35px;
+                        font-size: 28px;
                         font-weight: 700;
                         text-shadow: 1px 1px 4px black;
                         color: #C2C2C2;
@@ -191,7 +192,7 @@ $yeapButtonColor: #3490dc;
         position: absolute;
         top: 0;
         z-index: 1000;
-        top: calc(50vh - 15px);
+        top: calc(50% - 15px);
         transition: all .45s ease;
         opacity: 1;
         cursor: pointer;
@@ -264,51 +265,80 @@ $yeapButtonColor: #3490dc;
     .slide-two {
        .slide-content {
         .slide-content_inner-block {
-            align-items: flex-end;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            min-height: 600px;
 
-            .slide-content-subtitle {
-                opacity: 0;
-
-                &.slide-content-subtitle-isshown {
-                    opacity: 1;
-                    animation:.5s slide_two_subtitle_appearance ease;
+            .slide-content-button-wrapper {
+                align-self: flex-end;
+                .yeap-button {
+                    line-height: 23px;
                 }
-
             }
 
-            .slide-two-content {
+            .slide-content-text-wrapper {
                 display: flex;
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 25px;
+                gap: 15px;
+                max-width: 700px;
+                align-items: flex-end;
 
-                .slide-two-list {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 15px;
-                    align-items: flex-start;
-
-                    .slide-two-li {
-                        display: grid;
-                        grid-template-columns: auto 1fr;
-                        max-width: 710px;
-                        grid-column-gap: 7px;
-                        opacity: 0;
-
-                        &.slide-one-li-left {
-                            animation: .5s slide_one_left_appearance ease;
-                            opacity: 1;
-
-                        }
-                        
-    
-                        .slide-content-text {
-                            text-align: justify;
-                        }
+                .slide-content-title {
+                    .red-text {
+                        color: $redText;
+                        font-size: 36px;
                     }
                 }
+                .slide-content-subtitle {
+                    opacity: 0;
+    
+                    &.slide-content-subtitle-isshown {
+                        opacity: 1;
+                        animation:.5s slide_two_subtitle_appearance ease;
+                    }
+    
+                }
+    
+                .slide-two-content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 35px;
+    
+                    .slide-two-list {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+                        align-items: flex-start;
+    
+                        .slide-two-li {
+                            display: grid;
+                            grid-template-columns: auto 1fr;
+                            max-width: 710px;
+                            grid-column-gap: 7px;
+                            opacity: 0;
+    
+                            &.slide-one-li-left {
+                                animation: .5s slide_one_left_appearance ease;
+                                opacity: 1;
+    
+                            }
+                            
+        
+                            .slide-content-text {
+                                text-align: justify;
 
+                                // .red-text {
+                                //     color: $redText;
+                                // }
+                            }
+                        }
+                    }
+    
+                }
             }
+
         }
        }
     }
