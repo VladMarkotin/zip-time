@@ -112,7 +112,11 @@ $yeapButtonColor: #3490dc;
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background: rgba(0, 0, 0, 0.6);
+                    background: rgba(0, 0, 0, 0.7);
+            }
+
+            &.slide-two::before {
+                background: rgba(0, 0, 0, 0.75);
             }
 
             .slide-content {
@@ -134,11 +138,31 @@ $yeapButtonColor: #3490dc;
                     margin: 0 auto;
 
                     .slide-content-title {
+                        font-size: 35px;
+                        font-weight: 700;
+                        text-shadow: 1px 1px 4px black;
+                        color: #C2C2C2;
+                        font-family: 'Montserrat', sans-serif;
+                        margin-bottom: 0;
+                    }
+
+                    .slide-content-subtitle {
                         font-size: 26px;
                         font-weight: 700;
                         text-shadow: 1px 1px 4px black;
                         color: #C2C2C2;
                         font-family: 'Montserrat', sans-serif;
+                    }
+
+                    .slide-content-text {
+                        font-size: 20px;
+                        font-weight: 700;
+                        text-shadow: 1px 1px 4px black;
+                        color: #C2C2C2;
+                        font-family: 'Montserrat', sans-serif;
+                        margin-bottom: 0;
+                        line-height: 29px;
+                        color: #fff;
                     }
 
                     .slide-content-3d-title {
@@ -235,6 +259,58 @@ $yeapButtonColor: #3490dc;
                 }
             }
         }
+    }
+
+    .slide-two {
+       .slide-content {
+        .slide-content_inner-block {
+            align-items: flex-end;
+
+            .slide-content-subtitle {
+                opacity: 0;
+
+                &.slide-content-subtitle-isshown {
+                    opacity: 1;
+                    animation:.5s slide_two_subtitle_appearance ease;
+                }
+
+            }
+
+            .slide-two-content {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 25px;
+
+                .slide-two-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                    align-items: flex-start;
+
+                    .slide-two-li {
+                        display: grid;
+                        grid-template-columns: auto 1fr;
+                        max-width: 710px;
+                        grid-column-gap: 7px;
+                        opacity: 0;
+
+                        &.slide-one-li-left {
+                            animation: .5s slide_one_left_appearance ease;
+                            opacity: 1;
+
+                        }
+                        
+    
+                        .slide-content-text {
+                            text-align: justify;
+                        }
+                    }
+                }
+
+            }
+        }
+       }
     }
 }
 
@@ -572,4 +648,9 @@ $yeapButtonColor: #3490dc;
 @keyframes slide_one_right_appearance {
     from { opacity: 0; transform: translateX(130px);}
     to { opacity: 1; transform: translateX(0);}
+}
+
+@keyframes slide_two_subtitle_appearance {
+    from { opacity: 0; transform: translateY(-10px);}
+    to { opacity: 1; transform: translateY(0);}
 }

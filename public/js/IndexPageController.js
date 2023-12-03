@@ -442,7 +442,22 @@ var SlideContentController = /*#__PURE__*/function () {
   }, {
     key: "initSecondSlide",
     value: function initSecondSlide() {
-      // console.log('2')
+      var slideTwoWrapper = document.querySelector('.slide-two');
+      var slideTwoSubtitle = slideTwoWrapper.querySelector('.slide-content-subtitle');
+      var slideTwoLiCollect = slideTwoWrapper.querySelectorAll('.slide-two-list .slide-two-li');
+      var getTimer = this.getTimerCreator(1000, 2400);
+      var slideTwoLiTimer = getTimer(slideTwoLiCollect);
+      setTimeout(function () {
+        slideTwoSubtitle.classList.add('slide-content-subtitle-isshown');
+        var _loop2 = function _loop2(i) {
+          setTimeout(function () {
+            slideTwoLiCollect[i].classList.add('slide-one-li-left');
+          }, slideTwoLiTimer.next().value);
+        };
+        for (var i = 0; i < slideTwoLiCollect.length; i++) {
+          _loop2(i);
+        }
+      }, _classStaticPrivateFieldSpecGet(this, SlideContentController, _defaultTimerValue) / 2);
     }
   }, {
     key: "initThirdSlide",
@@ -452,8 +467,11 @@ var SlideContentController = /*#__PURE__*/function () {
   }, {
     key: "getTimerCreator",
     value: function getTimerCreator() {
+      var firstSlideTimerValue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
+      var timerValue = arguments.length > 1 ? arguments[1] : undefined;
+      var defaultTimerValue = timerValue || _classStaticPrivateFieldSpecGet(this, SlideContentController, _defaultTimerValue);
       return function (items) {
-        var interval = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1600;
+        var interval = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultTimerValue;
         return /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
           var i;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -470,7 +488,7 @@ var SlideContentController = /*#__PURE__*/function () {
                   break;
                 }
                 _context.next = 5;
-                return 100;
+                return firstSlideTimerValue;
               case 5:
                 _context.next = 7;
                 return i * interval;
@@ -501,6 +519,10 @@ var _slideContentMap = {
     number: 'three',
     method: 'initThirdSlide'
   }]
+};
+var _defaultTimerValue = {
+  writable: true,
+  value: 1600
 };
 var _sliderWrapper = /*#__PURE__*/new WeakMap();
 var _slideLeftArrow = /*#__PURE__*/new WeakMap();

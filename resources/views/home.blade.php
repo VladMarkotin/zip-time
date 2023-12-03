@@ -18,16 +18,16 @@
                             <span class="slide-content-3d-title">Hi there! Quipl has 4 questions for you:</span>
                             <ul class="slide-one-list">
                                 <li class="slide-one-li">
-                                    <h2 class="slide-content-title slide-one-title">Think you`re great but haven`t reached your potential yet?</h2>
+                                    <h3 class="slide-content-subtitle slide-one-title">Think you`re great but haven`t reached your potential yet?</h3>
                                 </li>
                                 <li class="slide-one-li">
-                                    <h2 class="slide-content-title slide-one-title">Wasting time instead self-developing?</h2>
+                                    <h3 class="slide-content-subtitle slide-one-title">Wasting time instead self-developing?</h3>
                                 </li>
                                 <li class="slide-one-li">
-                                    <h2 class="slide-content-title slide-one-title">Sometimes don`t have enough self-discipline?</h2>
+                                    <h3 class="slide-content-subtitle slide-one-title">Sometimes don`t have enough self-discipline?</h3>
                                 </li>
                                 <li class="slide-one-li">
-                                    <h2 class="slide-content-title slide-one-title">Can`t find out how efficient you are?</h2>
+                                    <h3 class="slide-content-subtitle slide-one-title">Can`t find out how efficient you are?</h3>
                                 </li>
                             </ul>
                             <div class="yeap-button-wrapper">
@@ -39,8 +39,32 @@
                 <div class="slide slide-two" style="display: none;"> 
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
-                            <span class="slide-content-subtitle">some text</span>
-                            <h2 class="slide-content-title">some title</h2>
+                            <h2 class="slide-content-title">Have you answered «Yeap» at least once?</h2>
+                            <div class="slide-two-content">
+                                <h3 class="slide-content-subtitle">Welcome on board! Quipl gonna fix this points!</h3>
+                                <ul class="slide-two-list">
+                                    <li class="slide-two-li">
+                                        <span class="slide-two-li-number slide-content-text">1 . </span>
+                                        <p class="slide-content-text">Begin planning! Every day no less then 2 required tasks. The crucial word is «required». If at least one task was`t completed, the plan failed</p>
+                                    </li>
+                                    <li class="slide-two-li">
+                                        <span class="slide-two-li-number slide-content-text">2 . </span>
+                                        <p class="slide-content-text">Do it! You got all day. You may complete all tasks in any order until day isn`t over (23:59)</p>
+                                    </li>
+                                    <li class="slide-two-li">
+                                        <span class="slide-two-li-number slide-content-text">3 . </span>
+                                       <p class="slide-content-text">After task is done - rate yourself. Put mark from 15% to 100%. The only and most honest judge is you!</p>
+                                    </li>
+                                    <li class="slide-two-li">
+                                        <span class="slide-two-li-number slide-content-text">4 . </span>
+                                       <p class="slide-content-text">After all tasks have been done - close day plan. If you forget to do this before the end of the day, Quipl will do it itself!</p>
+                                    </li>
+                                    <li class="slide-two-li">
+                                        <span class="slide-two-li-number slide-content-text">5 . </span>
+                                       <p class="slide-content-text">Congratulations! Just see your history, statistic and realize you are awesome!</p>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

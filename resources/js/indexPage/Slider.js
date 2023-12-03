@@ -14,6 +14,8 @@ class SlideContentController {
         },
     ]
 
+    static #defaultTimerValue = 1600;
+
     static init(slideNumber) {
         const currentMethod = this.#slideContentMap.find(item => item.number === slideNumber).method;
         this[currentMethod]();
@@ -47,18 +49,33 @@ class SlideContentController {
     }
 
     static initSecondSlide() {
-        // console.log('2')
+        const slideTwoWrapper = document.querySelector('.slide-two');
+        const slideTwoSubtitle = slideTwoWrapper.querySelector('.slide-content-subtitle');
+        const slideTwoLiCollect = slideTwoWrapper.querySelectorAll('.slide-two-list .slide-two-li');
+        const getTimer = this.getTimerCreator(1000 ,2400);
+        const slideTwoLiTimer = getTimer(slideTwoLiCollect);
+        
+        setTimeout(() => {
+            slideTwoSubtitle.classList.add('slide-content-subtitle-isshown');
+
+            for (let i = 0; i < slideTwoLiCollect.length;i++) {
+                setTimeout(() => {
+                    slideTwoLiCollect[i].classList.add('slide-one-li-left');
+                }, slideTwoLiTimer.next().value);
+            }
+        }, this.#defaultTimerValue / 2)
     }
 
     static initThirdSlide() {
         // console.log('3')
     }
     
-    static getTimerCreator() {
+    static getTimerCreator(firstSlideTimerValue = 100 ,timerValue) {
+        const defaultTimerValue = timerValue || this.#defaultTimerValue;
 
-        return function* (items, interval = 1600) {
+        return function* (items, interval = defaultTimerValue) {
             for (let i = 1; i <= items.length; i++) {
-                if (i === 1) yield 100
+                if (i === 1) yield firstSlideTimerValue
                 yield i * interval;
             }
         }
