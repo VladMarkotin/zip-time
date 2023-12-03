@@ -22,6 +22,8 @@ class SlideContentController {
     }
 
     static initFirstSlide() {
+        this.removeAddedClasses('slide-one-li-left', 'slide-one-li-right');
+
         const slideOneLiCollect = document.querySelectorAll('.slide-one-list .slide-one-li');
         const getTimer = this.getTimerCreator();
         const slideOneLiTimer = getTimer(slideOneLiCollect);
@@ -49,6 +51,8 @@ class SlideContentController {
     }
 
     static initSecondSlide() {
+        this.removeAddedClasses('slide-content-subtitle-isshown', 'slide-one-li-left');
+        
         const slideTwoWrapper = document.querySelector('.slide-two');
         const slideTwoSubtitle = slideTwoWrapper.querySelector('.slide-content-subtitle');
         const slideTwoLiCollect = slideTwoWrapper.querySelectorAll('.slide-two-list .slide-two-li');
@@ -79,6 +83,14 @@ class SlideContentController {
                 yield i * interval;
             }
         }
+    }
+
+    static removeAddedClasses(...classes) {
+       classes.forEach((addedClass) => {
+        const existsCurrentClassColl = document.querySelectorAll(`.${addedClass}`);
+
+        for (let i = 0; i < existsCurrentClassColl.length; i++) existsCurrentClassColl[i].classList.remove(addedClass);
+       })
     }
 }
 
