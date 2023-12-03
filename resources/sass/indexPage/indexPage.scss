@@ -72,8 +72,9 @@ ol {
 
 $mainSHadeRed: #5c1a1a;
 $yeapButtonColor: #3490dc;
-$redText: #960018; //старая версия красного
+$redText: #960018; 
 $redText2: #F80000;
+$signUpButtonColor: #4169E1;
 
 .slider-wrapper {
     min-height: calc(100vh - 85px); //мб поменять если перенесем этот блок
@@ -366,6 +367,13 @@ $redText2: #F80000;
                         grid-template-columns: auto 1fr;
                         max-width: 550px;
                         grid-column-gap: 7px;
+                        opacity: 0;
+    
+                            &.slide-one-li-left {
+                                animation: .5s slide_one_left_appearance ease;
+                                opacity: 1;
+    
+                            }
                     }
                 }
 
@@ -381,6 +389,11 @@ $redText2: #F80000;
                     .red-text {
                         color: $redText2;
                     }
+                }
+
+                .slide-content-buttons-wrapper {
+                    display: flex;
+                    gap: 25px;
                 }
             }
         }
@@ -416,6 +429,67 @@ $redText2: #F80000;
     transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
     &:hover {
       box-shadow: 0 0 40px 40px $yeapButtonColor inset;
+    }
+ }
+
+ .sign-button {
+    font-weight: 400;
+    line-height: 20px;
+    padding: 1.25rem 2.5rem;
+    border-radius: 10rem;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    text-shadow: 1px 1px 1px black;
+    font-family: 'Montserrat', sans-serif;
+
+    &:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 10rem;
+        z-index: -2;
+    }
+
+    &.sing-in-button::after {
+        background-color: darken($yeapButtonColor, 15%);
+    }
+
+    &.sign-up-button::after {
+        background-color: darken($signUpButtonColor, 15%);
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        transition: all 0.3s;
+        border-radius: 10rem;
+        z-index: -1;
+    }
+
+    &.sing-in-button::before {
+        background-color: $yeapButtonColor;
+    }
+
+    &.sign-up-button::before {
+        background-color: $signUpButtonColor;
+    }
+
+    &:hover {
+        &:before {
+            width: 100%;
+        }
     }
  }
 

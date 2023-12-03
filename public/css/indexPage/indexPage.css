@@ -293,6 +293,11 @@ ol {
   grid-template-columns: auto 1fr;
   max-width: 550px;
   grid-column-gap: 7px;
+  opacity: 0;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-three-list .slide-three-li.slide-one-li-left {
+  animation: 0.5s slide_one_left_appearance ease;
+  opacity: 1;
 }
 .slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper {
   display: flex;
@@ -304,6 +309,10 @@ ol {
 }
 .slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .red-text {
   color: #F80000;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-buttons-wrapper {
+  display: flex;
+  gap: 25px;
 }
 
 .yeap-button {
@@ -335,6 +344,58 @@ ol {
 }
 .yeap-button:hover {
   box-shadow: 0 0 40px 40px #3490dc inset;
+}
+
+.sign-button {
+  font-weight: 400;
+  line-height: 20px;
+  padding: 1.25rem 2.5rem;
+  border-radius: 10rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  text-shadow: 1px 1px 1px black;
+  font-family: "Montserrat", sans-serif;
+}
+.sign-button:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10rem;
+  z-index: -2;
+}
+.sign-button.sing-in-button::after {
+  background-color: #1d68a7;
+}
+.sign-button.sign-up-button::after {
+  background-color: #1d44b8;
+}
+.sign-button:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  transition: all 0.3s;
+  border-radius: 10rem;
+  z-index: -1;
+}
+.sign-button.sing-in-button::before {
+  background-color: #3490dc;
+}
+.sign-button.sign-up-button::before {
+  background-color: #4169E1;
+}
+.sign-button:hover:before {
+  width: 100%;
 }
 
 .about-us-wrapper {

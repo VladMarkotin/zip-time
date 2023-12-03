@@ -71,7 +71,18 @@ class SlideContentController {
     }
 
     static initThirdSlide() {
-        // console.log('3')
+        this.removeAddedClasses('slide-one-li-left');
+
+        const slideThreeWrapper = document.querySelector('.slide-three');
+        const slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
+        const getTimer = this.getTimerCreator();
+        const slideThreeTimer = getTimer(slideThreeLiCollect)
+        
+        for (let i = 0; i < slideThreeLiCollect.length; i++) {
+            setTimeout(() => {
+                slideThreeLiCollect[i].classList.add('slide-one-li-left');
+            }, slideThreeTimer.next().value)
+        }
     }
     
     static getTimerCreator(firstSlideTimerValue = 100 ,timerValue) {

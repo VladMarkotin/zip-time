@@ -92,6 +92,14 @@
                                 <h3 class="slide-content-subtitle"><span class="red-text">Quipl</span> & <span class="red-text">ChatGPT</span> always ready to help :)</h3>
                                 <h3 class="slide-content-subtitle">Key things you need are focus and constancy. Just try it!</h3>
                             </div>
+                            <div class="slide-content-buttons-wrapper">
+                                <a href="{{ route('login') }}">
+                                    <button class="sign-button sing-in-button">sign in</button>
+                                </a>
+                                <a href="{{ route('register') }}">
+                                    <button class="sign-button sign-up-button">sign up</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

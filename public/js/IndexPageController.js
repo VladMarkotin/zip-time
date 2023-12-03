@@ -464,7 +464,19 @@ var SlideContentController = /*#__PURE__*/function () {
   }, {
     key: "initThirdSlide",
     value: function initThirdSlide() {
-      // console.log('3')
+      this.removeAddedClasses('slide-one-li-left');
+      var slideThreeWrapper = document.querySelector('.slide-three');
+      var slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
+      var getTimer = this.getTimerCreator();
+      var slideThreeTimer = getTimer(slideThreeLiCollect);
+      var _loop3 = function _loop3(i) {
+        setTimeout(function () {
+          slideThreeLiCollect[i].classList.add('slide-one-li-left');
+        }, slideThreeTimer.next().value);
+      };
+      for (var i = 0; i < slideThreeLiCollect.length; i++) {
+        _loop3(i);
+      }
     }
   }, {
     key: "getTimerCreator",
