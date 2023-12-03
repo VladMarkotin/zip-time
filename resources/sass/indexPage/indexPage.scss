@@ -72,7 +72,8 @@ ol {
 
 $mainSHadeRed: #5c1a1a;
 $yeapButtonColor: #3490dc;
-$redText: #960018;
+$redText: #960018; //старая версия красного
+$redText2: #F80000;
 
 .slider-wrapper {
     min-height: calc(100vh - 85px); //мб поменять если перенесем этот блок
@@ -118,6 +119,10 @@ $redText: #960018;
 
             &.slide-two::before {
                 background: rgba(0, 0, 0, 0.75);
+            }
+
+            &.slide-three::before {
+                background: rgba(0, 0, 0, 0.79);
             }
 
             .slide-content {
@@ -329,9 +334,9 @@ $redText: #960018;
                             .slide-content-text {
                                 text-align: justify;
 
-                                // .red-text {
-                                //     color: $redText;
-                                // }
+                                .red-text {
+                                    color: $redText2;
+                                }
                             }
                         }
                     }
@@ -341,6 +346,44 @@ $redText: #960018;
 
         }
        }
+    }
+
+    .slide-three {
+        .slide-content {
+            .slide-content_inner-block {
+                display: flex;
+                flex-direction: column;
+                gap: 35px;
+
+                .slide-three-list {
+                    // padding-left: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+
+                    .slide-three-li {
+                        display: grid;
+                        grid-template-columns: auto 1fr;
+                        max-width: 550px;
+                        grid-column-gap: 7px;
+                    }
+                }
+
+                .slide-content-text-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .slide-content-subtitle {
+                        margin-bottom: 15px;
+                    }
+
+                    .red-text {
+                        color: $redText2;
+                    }
+                }
+            }
+        }
     }
 }
 

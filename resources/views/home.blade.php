@@ -65,7 +65,7 @@
                                         </li>
                                         <li class="slide-two-li">
                                             <span class="slide-two-li-number slide-content-text">5 . </span>
-                                           <p class="slide-content-text">Congratulations! Just see your history, statistic and realize you are awesome!</p>
+                                           <p class="slide-content-text"><span class="red-text">Congratulations!</span> Just see your history, statistic and realize you are awesome!</p>
                                         </li>
                                     </ul>
                                 </div>
@@ -76,8 +76,22 @@
                 <div class="slide slide-three" style="display: none;">
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
-                            <span class="slide-content-subtitle">some text</span>
-                            <h2 class="slide-content-title">some title</h2>
+                            <h2 class="slide-content-title">Wait.. wait.. But</h2>
+                            <ul class="slide-three-list">
+                                <li class="slide-three-li">
+                                    <span class="slide-three-li-number slide-content-text">1 . </span>
+                                    <p class="slide-content-text">It`s hard to me to set a clearly defined task or to divide it on subtasks :(</p>
+                                </li>
+                                <li class="slide-three-li">
+                                    <span class="slide-three-li-number slide-content-text">2 . </span>
+                                    <p class="slide-content-text">I doubt to start something new and complex cause I simply don`t know how to start :(</p>
+                                </li>
+                            </ul>
+                            <div class="slide-content-text-wrapper">
+                                <h3 class="slide-content-subtitle">Will Quipl help me?</h3>
+                                <h3 class="slide-content-subtitle"><span class="red-text">Quipl</span> & <span class="red-text">ChatGPT</span> always ready to help :)</h3>
+                                <h3 class="slide-content-subtitle">Key things you need are focus and constancy. Just try it!</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
