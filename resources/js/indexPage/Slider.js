@@ -14,12 +14,16 @@ class SlideContentController {
         },
     ]
 
+    static #defaultTimerValue = 1600;
+
     static init(slideNumber) {
         const currentMethod = this.#slideContentMap.find(item => item.number === slideNumber).method;
         this[currentMethod]();
     }
 
     static initFirstSlide() {
+        this.removeAddedClasses('slide-one-li-left', 'slide-one-li-right');
+
         const slideOneLiCollect = document.querySelectorAll('.slide-one-list .slide-one-li');
         const getTimer = this.getTimerCreator();
         const slideOneLiTimer = getTimer(slideOneLiCollect);
@@ -47,21 +51,81 @@ class SlideContentController {
     }
 
     static initSecondSlide() {
-        // console.log('2')
+        this.removeAddedClasses('slide-content-subtitle-isshown', 'slide-one-li-left');
+        
+        const slideTwoWrapper = document.querySelector('.slide-two');
+        const slideTwoSubtitle = slideTwoWrapper.querySelector('.slide-content-subtitle');
+        const slideTwoLiCollect = slideTwoWrapper.querySelectorAll('.slide-two-list .slide-two-li');
+        const getTimer = this.getTimerCreator(1000 ,2400);
+        const slideTwoLiTimer = getTimer(slideTwoLiCollect);
+        
+        setTimeout(() => {
+            slideTwoSubtitle.classList.add('slide-content-subtitle-isshown');
+
+            for (let i = 0; i < slideTwoLiCollect.length;i++) {
+                setTimeout(() => {
+                    slideTwoLiCollect[i].classList.add('slide-one-li-left');
+                }, slideTwoLiTimer.next().value);
+            }
+        }, this.#defaultTimerValue / 2)
     }
 
     static initThirdSlide() {
-        // console.log('3')
+        this.removeAddedClasses('slide-one-li-left', 'title-third-slide-isshown', 'subtitle-third-slide-isshown');
+
+        const slideThreeWrapper = document.querySelector('.slide-three');
+        const slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
+        const getTimerLi = this.getTimerCreator();
+        const slideThreeLiTimer = getTimerLi(slideThreeLiCollect)
+        const slideContentTitle = slideThreeWrapper.querySelector('.title-third-slide');
+        const slideThreeSubtitleCollect = slideThreeWrapper.querySelectorAll('.subtitle-third-slide');
+        const getTimerSubtitle = this.getTimerCreator(1000 ,2400);
+        const slideThreeSubtitleTimer = getTimerSubtitle(slideThreeSubtitleCollect);
+        const justTryIt = slideThreeWrapper.querySelector('.just-try-it-wrapper');
+
+        new Promise((resolve) => {
+            for (let i = 0; i < slideThreeLiCollect.length; i++) {
+                setTimeout(() => {
+                    slideThreeLiCollect[i].classList.add('slide-one-li-left');
+                    if (i === slideThreeLiCollect.length - 1) setTimeout(() => resolve(), 900)
+                }, slideThreeLiTimer.next().value)
+            }
+        })
+        .then(() => {
+            return new Promise((resolve) => {
+                slideContentTitle.classList.add('title-third-slide-isshown');
+    
+                for (let i = 0; i < slideThreeSubtitleCollect.length;i++) {
+                    setTimeout(() => {
+                        slideThreeSubtitleCollect[i].classList.add('subtitle-third-slide-isshown');
+                        if (i === slideThreeSubtitleCollect.length - 1) setTimeout(() => resolve(), 900)
+                    }, slideThreeSubtitleTimer.next().value);
+                }
+            })
+        })
+        .then(() => {
+            justTryIt.classList.add('just-try-it-wrapper-isLink');
+        })
+        
     }
     
-    static getTimerCreator() {
+    static getTimerCreator(firstSlideTimerValue = 200 ,timerValue) {
+        const defaultTimerValue = timerValue || this.#defaultTimerValue;
 
-        return function* (items, interval = 1600) {
+        return function* (items, interval = defaultTimerValue) {
             for (let i = 1; i <= items.length; i++) {
-                if (i === 1) yield 100
+                if (i === 1) yield firstSlideTimerValue
                 yield i * interval;
             }
         }
+    }
+
+    static removeAddedClasses(...classes) {
+       classes.forEach((addedClass) => {
+        const existsCurrentClassColl = document.querySelectorAll(`.${addedClass}`);
+
+        for (let i = 0; i < existsCurrentClassColl.length; i++) existsCurrentClassColl[i].classList.remove(addedClass);
+       })
     }
 }
 

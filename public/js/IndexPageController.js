@@ -416,6 +416,7 @@ var SlideContentController = /*#__PURE__*/function () {
   }, {
     key: "initFirstSlide",
     value: function initFirstSlide() {
+      this.removeAddedClasses('slide-one-li-left', 'slide-one-li-right');
       var slideOneLiCollect = document.querySelectorAll('.slide-one-list .slide-one-li');
       var getTimer = this.getTimerCreator();
       var slideOneLiTimer = getTimer(slideOneLiCollect);
@@ -442,18 +443,76 @@ var SlideContentController = /*#__PURE__*/function () {
   }, {
     key: "initSecondSlide",
     value: function initSecondSlide() {
-      // console.log('2')
+      this.removeAddedClasses('slide-content-subtitle-isshown', 'slide-one-li-left');
+      var slideTwoWrapper = document.querySelector('.slide-two');
+      var slideTwoSubtitle = slideTwoWrapper.querySelector('.slide-content-subtitle');
+      var slideTwoLiCollect = slideTwoWrapper.querySelectorAll('.slide-two-list .slide-two-li');
+      var getTimer = this.getTimerCreator(1000, 2400);
+      var slideTwoLiTimer = getTimer(slideTwoLiCollect);
+      setTimeout(function () {
+        slideTwoSubtitle.classList.add('slide-content-subtitle-isshown');
+        var _loop2 = function _loop2(i) {
+          setTimeout(function () {
+            slideTwoLiCollect[i].classList.add('slide-one-li-left');
+          }, slideTwoLiTimer.next().value);
+        };
+        for (var i = 0; i < slideTwoLiCollect.length; i++) {
+          _loop2(i);
+        }
+      }, _classStaticPrivateFieldSpecGet(this, SlideContentController, _defaultTimerValue) / 2);
     }
   }, {
     key: "initThirdSlide",
     value: function initThirdSlide() {
-      // console.log('3')
+      this.removeAddedClasses('slide-one-li-left', 'title-third-slide-isshown', 'subtitle-third-slide-isshown');
+      var slideThreeWrapper = document.querySelector('.slide-three');
+      var slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
+      var getTimerLi = this.getTimerCreator();
+      var slideThreeLiTimer = getTimerLi(slideThreeLiCollect);
+      var slideContentTitle = slideThreeWrapper.querySelector('.title-third-slide');
+      var slideThreeSubtitleCollect = slideThreeWrapper.querySelectorAll('.subtitle-third-slide');
+      var getTimerSubtitle = this.getTimerCreator(1000, 2400);
+      var slideThreeSubtitleTimer = getTimerSubtitle(slideThreeSubtitleCollect);
+      var justTryIt = slideThreeWrapper.querySelector('.just-try-it-wrapper');
+      new Promise(function (resolve) {
+        var _loop3 = function _loop3(i) {
+          setTimeout(function () {
+            slideThreeLiCollect[i].classList.add('slide-one-li-left');
+            if (i === slideThreeLiCollect.length - 1) setTimeout(function () {
+              return resolve();
+            }, 900);
+          }, slideThreeLiTimer.next().value);
+        };
+        for (var i = 0; i < slideThreeLiCollect.length; i++) {
+          _loop3(i);
+        }
+      }).then(function () {
+        return new Promise(function (resolve) {
+          slideContentTitle.classList.add('title-third-slide-isshown');
+          var _loop4 = function _loop4(i) {
+            setTimeout(function () {
+              slideThreeSubtitleCollect[i].classList.add('subtitle-third-slide-isshown');
+              if (i === slideThreeSubtitleCollect.length - 1) setTimeout(function () {
+                return resolve();
+              }, 900);
+            }, slideThreeSubtitleTimer.next().value);
+          };
+          for (var i = 0; i < slideThreeSubtitleCollect.length; i++) {
+            _loop4(i);
+          }
+        });
+      }).then(function () {
+        justTryIt.classList.add('just-try-it-wrapper-isLink');
+      });
     }
   }, {
     key: "getTimerCreator",
     value: function getTimerCreator() {
+      var firstSlideTimerValue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 200;
+      var timerValue = arguments.length > 1 ? arguments[1] : undefined;
+      var defaultTimerValue = timerValue || _classStaticPrivateFieldSpecGet(this, SlideContentController, _defaultTimerValue);
       return function (items) {
-        var interval = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1600;
+        var interval = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultTimerValue;
         return /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
           var i;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -470,7 +529,7 @@ var SlideContentController = /*#__PURE__*/function () {
                   break;
                 }
                 _context.next = 5;
-                return 100;
+                return firstSlideTimerValue;
               case 5:
                 _context.next = 7;
                 return i * interval;
@@ -485,6 +544,17 @@ var SlideContentController = /*#__PURE__*/function () {
           }, _callee);
         })();
       };
+    }
+  }, {
+    key: "removeAddedClasses",
+    value: function removeAddedClasses() {
+      for (var _len = arguments.length, classes = new Array(_len), _key = 0; _key < _len; _key++) {
+        classes[_key] = arguments[_key];
+      }
+      classes.forEach(function (addedClass) {
+        var existsCurrentClassColl = document.querySelectorAll(".".concat(addedClass));
+        for (var i = 0; i < existsCurrentClassColl.length; i++) existsCurrentClassColl[i].classList.remove(addedClass);
+      });
     }
   }]);
   return SlideContentController;
@@ -501,6 +571,10 @@ var _slideContentMap = {
     number: 'three',
     method: 'initThirdSlide'
   }]
+};
+var _defaultTimerValue = {
+  writable: true,
+  value: 1600
 };
 var _sliderWrapper = /*#__PURE__*/new WeakMap();
 var _slideLeftArrow = /*#__PURE__*/new WeakMap();

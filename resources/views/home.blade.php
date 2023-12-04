@@ -18,16 +18,16 @@
                             <span class="slide-content-3d-title">Hi there! Quipl has 4 questions for you:</span>
                             <ul class="slide-one-list">
                                 <li class="slide-one-li">
-                                    <h2 class="slide-content-title slide-one-title">Think you`re great but haven`t reached your potential yet?</h2>
+                                    <h3 class="slide-content-subtitle slide-one-title">Think you`re great but haven`t reached your potential yet?</h3>
                                 </li>
                                 <li class="slide-one-li">
-                                    <h2 class="slide-content-title slide-one-title">Wasting time instead self-developing?</h2>
+                                    <h3 class="slide-content-subtitle slide-one-title">Wasting time instead self-developing?</h3>
                                 </li>
                                 <li class="slide-one-li">
-                                    <h2 class="slide-content-title slide-one-title">Sometimes don`t have enough self-discipline?</h2>
+                                    <h3 class="slide-content-subtitle slide-one-title">Sometimes don`t have enough self-discipline?</h3>
                                 </li>
                                 <li class="slide-one-li">
-                                    <h2 class="slide-content-title slide-one-title">Can`t find out how efficient you are?</h2>
+                                    <h3 class="slide-content-subtitle slide-one-title">Can`t find out how efficient you are?</h3>
                                 </li>
                             </ul>
                             <div class="yeap-button-wrapper">
@@ -39,16 +39,67 @@
                 <div class="slide slide-two" style="display: none;"> 
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
-                            <span class="slide-content-subtitle">some text</span>
-                            <h2 class="slide-content-title">some title</h2>
+                            <div class="slide-content-button-wrapper">
+                                <button class="yeap-button">Cool!<br>Tell me more</button>
+                            </div>
+                            <div class="slide-content-text-wrapper">
+                                <h2 class="slide-content-title"><span class="red-text">Quipl</span> is a day planing system which gonna solve all mentioned problems</h2>
+                                <div class="slide-two-content">
+                                    <h3 class="slide-content-subtitle">How it works?</h3>
+                                    <ul class="slide-two-list">
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">1 . </span>
+                                            <p class="slide-content-text">Create day plan with plenty of required jobs</p>
+                                        </li>
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">2 . </span>
+                                            <p class="slide-content-text">Do it!</p>
+                                        </li>
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">3 . </span>
+                                           <p class="slide-content-text">Evaluate yourself for every job. No deadline while day is not closed.</p>
+                                        </li>
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">4 . </span>
+                                           <p class="slide-content-text">After all required jobs done, close day plan and get your day efficiency</p>
+                                        </li>
+                                        <li class="slide-two-li">
+                                            <span class="slide-two-li-number slide-content-text">5 . </span>
+                                           <p class="slide-content-text"><span class="red-text">Congratulations!</span> Just see your history, statistic and realize you are awesome!</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="slide slide-three" style="display: none;">
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
-                            <span class="slide-content-subtitle">some text</span>
-                            <h2 class="slide-content-title">some title</h2>
+                            <h2 class="slide-content-title">Wait.. wait.. But</h2>
+                            <ul class="slide-three-list">
+                                <li class="slide-three-li">
+                                    <span class="slide-three-li-number slide-content-text">1 . </span>
+                                    <p class="slide-content-text">It`s hard to me to set a clearly defined task or to divide it on subtasks :(</p>
+                                </li>
+                                <li class="slide-three-li">
+                                    <span class="slide-three-li-number slide-content-text">2 . </span>
+                                    <p class="slide-content-text">I doubt to start something new and complex cause I simply don`t know how to start :(</p>
+                                </li>
+                            </ul>
+                            <div class="slide-content-text-wrapper">
+                                <h3 class="slide-content-subtitle title-third-slide">Will Quipl help me?</h3>
+                                <h3 class="slide-content-subtitle subtitle-third-slide"><span class="red-text">Quipl</span> & <span class="red-text">ChatGPT</span> always ready to help :)</h3>
+                                <h3 class="slide-content-subtitle subtitle-third-slide">Key things you need are focus and constancy.<span class="just-try-it-wrapper"><a href="{{ route('register') }}"> Just try it!</a></span></h3>
+                            </div>
+                            <div class="slide-content-buttons-wrapper">
+                                <a href="{{ route('login') }}">
+                                    <button class="sign-button sing-in-button">sign in</button>
+                                </a>
+                                <a href="{{ route('register') }}">
+                                    <button class="sign-button sign-up-button">sign up</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
