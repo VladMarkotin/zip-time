@@ -77,7 +77,8 @@ $redText2: #F80000;
 $signUpButtonColor: #4169E1;
 
 .slider-wrapper {
-    min-height: calc(100vh - 85px); //мб поменять если перенесем этот блок
+    height: 100vh;
+    min-height: 650px; //мб поменять если перенесем этот блок
     width: 100vw;
     position: relative;
     box-shadow: 1px 1px 1px black;

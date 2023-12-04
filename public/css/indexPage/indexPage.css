@@ -64,7 +64,8 @@ ol {
 }
 
 .slider-wrapper {
-  min-height: calc(100vh - 85px);
+  height: 100vh;
+  min-height: 650px;
   width: 100vw;
   position: relative;
   box-shadow: 1px 1px 1px black;
