@@ -135,7 +135,7 @@ $signUpButtonColor: #4169E1;
                 align-items: center;
 
                 .slide-content_inner-block {
-                    padding-top: 90px;
+                    padding-top: 40px;
                     margin-top: 115px;
                     display: flex;
                     flex-direction: column;
@@ -237,9 +237,9 @@ $signUpButtonColor: #4169E1;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            justify-content: space-between;
             gap: 30px;
             width: 100%;
+            min-height: 366px;
 
             .slide-one-li {
                 opacity: 0;
@@ -274,11 +274,11 @@ $signUpButtonColor: #4169E1;
         .slide-content_inner-block {
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: flex-end;
             min-height: 600px;
 
             .slide-content-button-wrapper {
-                align-self: flex-end;
+                width: 100%;
                 .yeap-button {
                     line-height: 23px;
                 }
@@ -287,7 +287,7 @@ $signUpButtonColor: #4169E1;
             .slide-content-text-wrapper {
                 display: flex;
                 flex-direction: column;
-                gap: 15px;
+                gap: 25px;
                 max-width: 700px;
                 align-items: flex-end;
 
@@ -311,7 +311,7 @@ $signUpButtonColor: #4169E1;
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
-                    gap: 35px;
+                    gap: 25px;
     
                     .slide-two-list {
                         display: flex;
@@ -355,103 +355,112 @@ $signUpButtonColor: #4169E1;
             .slide-content_inner-block {
                 display: flex;
                 flex-direction: column;
-                gap: 35px;
+                gap: 40px;
 
-                .slide-three-list {
-                    // padding-left: 0;
+                .slide-three-content {
                     display: flex;
                     flex-direction: column;
-                    gap: 15px;
-
-                    .slide-three-li {
-                        display: grid;
-                        grid-template-columns: auto 1fr;
-                        max-width: 550px;
-                        grid-column-gap: 7px;
-                        opacity: 0;
-    
-                            &.slide-one-li-left {
-                                animation: .5s slide_one_left_appearance ease;
-                                opacity: 1;
-    
-                            }
-                    }
-                }
-
-                .smile-icon {
-                    width: 36px;
-                    
-                    &.smile-icon-sad {
-                        fill: #fff;
-                    }
-
-                    &.smile-icon-cool {
-                        fill: #C2C2C2;
-                    }
-                }
-
-                .slide-content-text-wrapper {
-                    display: flex;
-                    flex-direction: column;
+                    gap: 35px;
                     align-items: center;
-
-                    .title-third-slide {
-                        opacity: 0;
-
-                        &.title-third-slide-isshown {
-                            opacity: 1;
-                            animation:.5s slide_two_subtitle_appearance ease;
-                        }
-                    }
-
-                    .slide-content-subtitle {
-                        margin-bottom: 15px;
-
-                        &.subtitle-third-slide {
+                    min-height: 366px;
+                    
+                    .slide-three-list {
+                        // padding-left: 0;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+    
+                        .slide-three-li {
+                            display: grid;
+                            grid-template-columns: auto 1fr;
+                            max-width: 550px;
+                            grid-column-gap: 7px;
                             opacity: 0;
-
-                            &.subtitle-third-slide-isshown {
-                                opacity: 1;
-                                animation: .5s slide_one_left_appearance ease;
-                            }
-                        }
-
-                        .just-try-it-wrapper {
-                            position: relative;
-
-                            >a {
-                                text-decoration: none;
-                                color: inherit;
-                                transition: color .3s ease;
-
-                                &:hover {
-                                    color: $redText2;
+        
+                                &.slide-one-li-left {
+                                    animation: .5s slide_one_left_appearance ease;
+                                    opacity: 1;
+        
                                 }
-                            }
-
-                            &::after {
-                                content: "";
-                                display: block;
-                                position: absolute;
-                                left: 0;
-                                width: 0%;
-                                height: 4px;
-                                background-color: $redText2;
-                                transition: width 0.3s ease-out;
-                            }
-
-                           &.just-try-it-wrapper-isLink {
-                                &::after {
-                                    width: 100%;
-                                }
-                           }
                         }
                     }
-
-                    .red-text {
-                        color: $redText2;
+    
+                    .smile-icon {
+                        width: 36px;
+                        
+                        &.smile-icon-sad {
+                            fill: #fff;
+                        }
+    
+                        &.smile-icon-cool {
+                            fill: #C2C2C2;
+                        }
+                    }
+    
+                    .slide-content-text-wrapper {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+    
+                        .title-third-slide {
+                            opacity: 0;
+    
+                            &.title-third-slide-isshown {
+                                opacity: 1;
+                                animation:.5s slide_two_subtitle_appearance ease;
+                            }
+                        }
+    
+                        .slide-content-subtitle {
+                            margin-bottom: 15px;
+    
+                            &.subtitle-third-slide {
+                                opacity: 0;
+    
+                                &.subtitle-third-slide-isshown {
+                                    opacity: 1;
+                                    animation: .5s slide_one_left_appearance ease;
+                                }
+                            }
+    
+                            .just-try-it-wrapper {
+                                position: relative;
+    
+                                >a {
+                                    text-decoration: none;
+                                    color: inherit;
+                                    transition: color .3s ease;
+    
+                                    &:hover {
+                                        color: $redText2;
+                                    }
+                                }
+    
+                                &::after {
+                                    content: "";
+                                    display: block;
+                                    position: absolute;
+                                    left: 0;
+                                    width: 0%;
+                                    height: 4px;
+                                    background-color: $redText2;
+                                    transition: width 0.3s ease-out;
+                                }
+    
+                               &.just-try-it-wrapper-isLink {
+                                    &::after {
+                                        width: 100%;
+                                    }
+                               }
+                            }
+                        }
+    
+                        .red-text {
+                            color: $redText2;
+                        }
                     }
                 }
+
 
                 .slide-content-buttons-wrapper {
                     display: flex;

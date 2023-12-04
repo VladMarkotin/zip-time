@@ -39,9 +39,6 @@
                 <div class="slide slide-two" style="display: none;"> 
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
-                            <div class="slide-content-button-wrapper">
-                                <button class="yeap-button">Cool!<br>Tell me more</button>
-                            </div>
                             <div class="slide-content-text-wrapper">
                                 <h2 class="slide-content-title"><span class="red-text">Quipl</span> is a day planing system which gonna solve all mentioned problems</h2>
                                 <div class="slide-two-content">
@@ -69,6 +66,9 @@
                                         </li>
                                     </ul>
                                 </div>
+                                <div class="slide-content-button-wrapper">
+                                    <button class="yeap-button">Cool!<br>Tell me more</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,20 +77,22 @@
                     <div class="slide-content">
                         <div class="slide-content_inner-block">
                             <h2 class="slide-content-title">Wait.. wait.. But</h2>
-                            <ul class="slide-three-list">
-                                <li class="slide-three-li">
-                                    <span class="slide-three-li-number slide-content-text">1 . </span>
-                                    <p class="slide-content-text">It`s hard to me to set a clearly defined task or to divide it on subtasks <span ><svg xmlns="http://www.w3.org/2000/svg" class="smile-icon smile-icon-sad" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7,9.5C7,8.7 7.7,8 8.5,8C9.3,8 10,8.7 10,9.5C10,10.3 9.3,11 8.5,11C7.7,11 7,10.3 7,9.5M14.77,17.23C14.32,16.5 13.25,16 12,16C10.75,16 9.68,16.5 9.23,17.23L7.81,15.81C8.71,14.72 10.25,14 12,14C13.75,14 15.29,14.72 16.19,15.81L14.77,17.23M15.5,11C14.7,11 14,10.3 14,9.5C14,8.7 14.7,8 15.5,8C16.3,8 17,8.7 17,9.5C17,10.3 16.3,11 15.5,11Z" /></svg></span></p>
-                                </li>
-                                <li class="slide-three-li">
-                                    <span class="slide-three-li-number slide-content-text">2 . </span>
-                                    <p class="slide-content-text">I doubt to start something new and complex cause I simply don`t know how to start <span ><svg xmlns="http://www.w3.org/2000/svg" class="smile-icon smile-icon-sad" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7,9.5C7,8.7 7.7,8 8.5,8C9.3,8 10,8.7 10,9.5C10,10.3 9.3,11 8.5,11C7.7,11 7,10.3 7,9.5M14.77,17.23C14.32,16.5 13.25,16 12,16C10.75,16 9.68,16.5 9.23,17.23L7.81,15.81C8.71,14.72 10.25,14 12,14C13.75,14 15.29,14.72 16.19,15.81L14.77,17.23M15.5,11C14.7,11 14,10.3 14,9.5C14,8.7 14.7,8 15.5,8C16.3,8 17,8.7 17,9.5C17,10.3 16.3,11 15.5,11Z" /></svg></span></p>
-                                </li>
-                            </ul>
-                            <div class="slide-content-text-wrapper">
-                                <h3 class="slide-content-subtitle title-third-slide">Will Quipl help me?</h3>
-                                <h3 class="slide-content-subtitle subtitle-third-slide"><span class="red-text">Quipl</span> & <span class="red-text">ChatGPT</span> always ready to help <span><svg xmlns="http://www.w3.org/2000/svg" class="smile-icon smile-icon-cool" viewBox="0 0 24 24"><path d="M3.22,7.22C4.91,4.11 8.21,2 12,2C15.79,2 19.09,4.11 20.78,7.22L20,8H4L3.22,7.22M21.4,8.6C21.78,9.67 22,10.81 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12C2,10.81 2.22,9.67 2.6,8.6L4,10H5C5,11.38 7.12,12.5 8.5,12.5C9.88,12.5 11.25,11.38 11.25,10H12.75C12.75,11.38 14.12,12.5 15.5,12.5C16.88,12.5 19,11.38 19,10H20L21.4,8.6M16.19,15.42L14.77,14C14.32,14.72 13.25,15.23 12,15.23C10.75,15.23 9.68,14.72 9.23,14L7.81,15.42C8.71,16.5 10.25,17.23 12,17.23C13.75,17.23 15.29,16.5 16.19,15.42Z" /></svg></span></h3>
-                                <h3 class="slide-content-subtitle subtitle-third-slide">Key things you need are focus and constancy.<span class="just-try-it-wrapper"><a href="{{ route('register') }}"> Just try it!</a></span></h3>
+                            <div class="slide-three-content">
+                                <ul class="slide-three-list">
+                                    <li class="slide-three-li">
+                                        <span class="slide-three-li-number slide-content-text">1 . </span>
+                                        <p class="slide-content-text">It`s hard to me to set a clearly defined task or to divide it on subtasks <span ><svg xmlns="http://www.w3.org/2000/svg" class="smile-icon smile-icon-sad" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7,9.5C7,8.7 7.7,8 8.5,8C9.3,8 10,8.7 10,9.5C10,10.3 9.3,11 8.5,11C7.7,11 7,10.3 7,9.5M14.77,17.23C14.32,16.5 13.25,16 12,16C10.75,16 9.68,16.5 9.23,17.23L7.81,15.81C8.71,14.72 10.25,14 12,14C13.75,14 15.29,14.72 16.19,15.81L14.77,17.23M15.5,11C14.7,11 14,10.3 14,9.5C14,8.7 14.7,8 15.5,8C16.3,8 17,8.7 17,9.5C17,10.3 16.3,11 15.5,11Z" /></svg></span></p>
+                                    </li>
+                                    <li class="slide-three-li">
+                                        <span class="slide-three-li-number slide-content-text">2 . </span>
+                                        <p class="slide-content-text">I doubt to start something new and complex cause I simply don`t know how to start <span ><svg xmlns="http://www.w3.org/2000/svg" class="smile-icon smile-icon-sad" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7,9.5C7,8.7 7.7,8 8.5,8C9.3,8 10,8.7 10,9.5C10,10.3 9.3,11 8.5,11C7.7,11 7,10.3 7,9.5M14.77,17.23C14.32,16.5 13.25,16 12,16C10.75,16 9.68,16.5 9.23,17.23L7.81,15.81C8.71,14.72 10.25,14 12,14C13.75,14 15.29,14.72 16.19,15.81L14.77,17.23M15.5,11C14.7,11 14,10.3 14,9.5C14,8.7 14.7,8 15.5,8C16.3,8 17,8.7 17,9.5C17,10.3 16.3,11 15.5,11Z" /></svg></span></p>
+                                    </li>
+                                </ul>
+                                <div class="slide-content-text-wrapper">
+                                    <h3 class="slide-content-subtitle title-third-slide">Will Quipl help me?</h3>
+                                    <h3 class="slide-content-subtitle subtitle-third-slide"><span class="red-text">Quipl</span> & <span class="red-text">ChatGPT</span> always ready to help <span><svg xmlns="http://www.w3.org/2000/svg" class="smile-icon smile-icon-cool" viewBox="0 0 24 24"><path d="M3.22,7.22C4.91,4.11 8.21,2 12,2C15.79,2 19.09,4.11 20.78,7.22L20,8H4L3.22,7.22M21.4,8.6C21.78,9.67 22,10.81 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12C2,10.81 2.22,9.67 2.6,8.6L4,10H5C5,11.38 7.12,12.5 8.5,12.5C9.88,12.5 11.25,11.38 11.25,10H12.75C12.75,11.38 14.12,12.5 15.5,12.5C16.88,12.5 19,11.38 19,10H20L21.4,8.6M16.19,15.42L14.77,14C14.32,14.72 13.25,15.23 12,15.23C10.75,15.23 9.68,14.72 9.23,14L7.81,15.42C8.71,16.5 10.25,17.23 12,17.23C13.75,17.23 15.29,16.5 16.19,15.42Z" /></svg></span></h3>
+                                    <h3 class="slide-content-subtitle subtitle-third-slide">Key things you need are focus and constancy.<span class="just-try-it-wrapper"><a href="{{ route('register') }}"> Just try it!</a></span></h3>
+                                </div>
                             </div>
                             <div class="slide-content-buttons-wrapper">
                                 <a href="{{ route('login') }}">
