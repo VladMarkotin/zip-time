@@ -464,7 +464,7 @@ var SlideContentController = /*#__PURE__*/function () {
   }, {
     key: "initThirdSlide",
     value: function initThirdSlide() {
-      this.removeAddedClasses('slide-one-li-left', 'title-third-slide-isshown', 'subtitle-third-slide-isshown');
+      this.removeAddedClasses('slide-one-li-left', 'title-third-slide-isshown', 'subtitle-third-slide-isshown', 'just-try-it-wrapper-isLink');
       var slideThreeWrapper = document.querySelector('.slide-three');
       var slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
       var getTimerLi = this.getTimerCreator();

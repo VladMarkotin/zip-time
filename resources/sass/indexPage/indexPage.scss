@@ -377,6 +377,18 @@ $signUpButtonColor: #4169E1;
                     }
                 }
 
+                .smile-icon {
+                    width: 32px;
+                    
+                    &.smile-icon-sad {
+                        fill: #fff;
+                    }
+
+                    &.smile-icon-cool {
+                        fill: #C2C2C2;
+                    }
+                }
+
                 .slide-content-text-wrapper {
                     display: flex;
                     flex-direction: column;
