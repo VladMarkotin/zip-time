@@ -299,6 +299,15 @@ ol {
   animation: 0.5s slide_one_left_appearance ease;
   opacity: 1;
 }
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .smile-icon {
+  width: 36px;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .smile-icon.smile-icon-sad {
+  fill: #fff;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .smile-icon.smile-icon-cool {
+  fill: #C2C2C2;
+}
 .slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper {
   display: flex;
   flex-direction: column;
