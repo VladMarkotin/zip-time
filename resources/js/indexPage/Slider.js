@@ -71,21 +71,45 @@ class SlideContentController {
     }
 
     static initThirdSlide() {
-        this.removeAddedClasses('slide-one-li-left');
+        this.removeAddedClasses('slide-one-li-left', 'title-third-slide-isshown', 'subtitle-third-slide-isshown');
 
         const slideThreeWrapper = document.querySelector('.slide-three');
         const slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
-        const getTimer = this.getTimerCreator();
-        const slideThreeTimer = getTimer(slideThreeLiCollect)
+        const getTimerLi = this.getTimerCreator();
+        const slideThreeLiTimer = getTimerLi(slideThreeLiCollect)
+        const slideContentTitle = slideThreeWrapper.querySelector('.title-third-slide');
+        const slideThreeSubtitleCollect = slideThreeWrapper.querySelectorAll('.subtitle-third-slide');
+        const getTimerSubtitle = this.getTimerCreator(1000 ,2400);
+        const slideThreeSubtitleTimer = getTimerSubtitle(slideThreeSubtitleCollect);
+        const justTryIt = slideThreeWrapper.querySelector('.just-try-it-wrapper');
+
+        new Promise((resolve) => {
+            for (let i = 0; i < slideThreeLiCollect.length; i++) {
+                setTimeout(() => {
+                    slideThreeLiCollect[i].classList.add('slide-one-li-left');
+                    if (i === slideThreeLiCollect.length - 1) setTimeout(() => resolve(), 900)
+                }, slideThreeLiTimer.next().value)
+            }
+        })
+        .then(() => {
+            return new Promise((resolve) => {
+                slideContentTitle.classList.add('title-third-slide-isshown');
+    
+                for (let i = 0; i < slideThreeSubtitleCollect.length;i++) {
+                    setTimeout(() => {
+                        slideThreeSubtitleCollect[i].classList.add('subtitle-third-slide-isshown');
+                        if (i === slideThreeSubtitleCollect.length - 1) setTimeout(() => resolve(), 900)
+                    }, slideThreeSubtitleTimer.next().value);
+                }
+            })
+        })
+        .then(() => {
+            justTryIt.classList.add('just-try-it-wrapper-isLink');
+        })
         
-        for (let i = 0; i < slideThreeLiCollect.length; i++) {
-            setTimeout(() => {
-                slideThreeLiCollect[i].classList.add('slide-one-li-left');
-            }, slideThreeTimer.next().value)
-        }
     }
     
-    static getTimerCreator(firstSlideTimerValue = 100 ,timerValue) {
+    static getTimerCreator(firstSlideTimerValue = 200 ,timerValue) {
         const defaultTimerValue = timerValue || this.#defaultTimerValue;
 
         return function* (items, interval = defaultTimerValue) {

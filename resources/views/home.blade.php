@@ -88,9 +88,9 @@
                                 </li>
                             </ul>
                             <div class="slide-content-text-wrapper">
-                                <h3 class="slide-content-subtitle">Will Quipl help me?</h3>
-                                <h3 class="slide-content-subtitle"><span class="red-text">Quipl</span> & <span class="red-text">ChatGPT</span> always ready to help :)</h3>
-                                <h3 class="slide-content-subtitle">Key things you need are focus and constancy. Just try it!</h3>
+                                <h3 class="slide-content-subtitle title-third-slide">Will Quipl help me?</h3>
+                                <h3 class="slide-content-subtitle subtitle-third-slide"><span class="red-text">Quipl</span> & <span class="red-text">ChatGPT</span> always ready to help :)</h3>
+                                <h3 class="slide-content-subtitle subtitle-third-slide">Key things you need are focus and constancy.<span class="just-try-it-wrapper"><a href="{{ route('register') }}"> Just try it!</a></span></h3>
                             </div>
                             <div class="slide-content-buttons-wrapper">
                                 <a href="{{ route('login') }}">

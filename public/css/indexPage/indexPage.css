@@ -304,8 +304,46 @@ ol {
   flex-direction: column;
   align-items: center;
 }
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .title-third-slide {
+  opacity: 0;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .title-third-slide.title-third-slide-isshown {
+  opacity: 1;
+  animation: 0.5s slide_two_subtitle_appearance ease;
+}
 .slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-subtitle {
   margin-bottom: 15px;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-subtitle.subtitle-third-slide {
+  opacity: 0;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-subtitle.subtitle-third-slide.subtitle-third-slide-isshown {
+  opacity: 1;
+  animation: 0.5s slide_one_left_appearance ease;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-subtitle .just-try-it-wrapper {
+  position: relative;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-subtitle .just-try-it-wrapper > a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-subtitle .just-try-it-wrapper > a:hover {
+  color: #F80000;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-subtitle .just-try-it-wrapper::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background-color: #F80000;
+  transition: width 0.3s ease-out;
+}
+.slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-subtitle .just-try-it-wrapper.just-try-it-wrapper-isLink::after {
+  width: 100%;
 }
 .slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-text-wrapper .red-text {
   color: #F80000;

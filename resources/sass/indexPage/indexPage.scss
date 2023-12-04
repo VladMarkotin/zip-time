@@ -382,8 +382,57 @@ $signUpButtonColor: #4169E1;
                     flex-direction: column;
                     align-items: center;
 
+                    .title-third-slide {
+                        opacity: 0;
+
+                        &.title-third-slide-isshown {
+                            opacity: 1;
+                            animation:.5s slide_two_subtitle_appearance ease;
+                        }
+                    }
+
                     .slide-content-subtitle {
                         margin-bottom: 15px;
+
+                        &.subtitle-third-slide {
+                            opacity: 0;
+
+                            &.subtitle-third-slide-isshown {
+                                opacity: 1;
+                                animation: .5s slide_one_left_appearance ease;
+                            }
+                        }
+
+                        .just-try-it-wrapper {
+                            position: relative;
+
+                            >a {
+                                text-decoration: none;
+                                color: inherit;
+                                transition: color .3s ease;
+
+                                &:hover {
+                                    color: $redText2;
+                                }
+                            }
+
+                            &::after {
+                                content: "";
+                                display: block;
+                                position: absolute;
+                                left: 0;
+                                width: 0%;
+                                height: 4px;
+                                background-color: $redText2;
+                                transition: width 0.3s ease-out;
+                            }
+
+                           &.just-try-it-wrapper-isLink {
+                                &::after {
+                                    width: 100%;
+                                }
+                           }
+                        }
                     }
 
                     .red-text {
