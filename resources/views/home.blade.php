@@ -188,10 +188,10 @@
                             <svg class="statistics-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7,10H12V15H7M19,19H5V8H19M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z" /></svg>
                         </div>
                         <div class="statistics-counter-wrapper">
-                            <h2 class="statistics-counter title-index-page">360</h2>
+                            <h2 class="statistics-counter title-index-page">{{ $statData['created'] }}</h2>
                         </div>
                         <div class="statistics-text-wrapper">
-                            <p class="statistics-text text-index-page">Total day plans are created</p>
+                            <p class="statistics-text text-index-page">Total number of plans per day </p>
                         </div>
                     </div>
                     <div class="statistics-item element-animation">
@@ -199,7 +199,7 @@
                             <svg class="statistics-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" /></svg>
                         </div>
                         <div class="statistics-counter-wrapper">
-                            <h2 class="statistics-counter title-index-page">690</h2>
+                            <h2 class="statistics-counter title-index-page">{{ $statData['completed_tasks'] }}</h2>
                         </div>
                         <div class="statistics-text-wrapper">
                             <p class="statistics-text text-index-page">Tasks are successfully completed</p>
@@ -210,7 +210,7 @@
                             <svg class="statistics-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" /></svg>
                         </div>
                         <div class="statistics-counter-wrapper">
-                            <h2 class="statistics-counter title-index-page">420</h2>
+                            <h2 class="statistics-counter title-index-page">{{ $statData['completed_days'] }}</h2>
                         </div>
                         <div class="statistics-text-wrapper">
                             <p class="statistics-text text-index-page">Days are successfully completed</p>
@@ -221,10 +221,10 @@
                             <svg class="statistics-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,7H11V14H3V5H1V20H3V17H21V20H23V11A4,4 0 0,0 19,7M7,13A3,3 0 0,0 10,10A3,3 0 0,0 7,7A3,3 0 0,0 4,10A3,3 0 0,0 7,13Z" /></svg>
                         </div>
                         <div class="statistics-counter-wrapper">
-                            <h2 class="statistics-counter title-index-page">114</h2>
+                            <h2 class="statistics-counter title-index-page">{{ $statData['weekends'] }}</h2>
                         </div>
                         <div class="statistics-text-wrapper">
-                            <p class="statistics-text text-index-page">Total weekends are taken</p>
+                            <p class="statistics-text text-index-page">Deserved weekends amount</p>
                         </div>
                     </div>
                 </div>
