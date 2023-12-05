@@ -586,6 +586,7 @@
 					},
 					hashCode: this.item.hash,
 					isShowPreloader: false,
+					defaultConfigs: {},
 				}
 			},
 		components : {Alert, AddHashCode, AddHashCodeButton, Preloader, CreateSubplanGPT},
@@ -831,10 +832,21 @@
 			renameHashCode(newHashCode) {
 				this.hashCode = newHashCode;
 			},
+			getConfigs(data=null) {
+				axios.post('/get-default-configs')
+					.then((response) => {
+						
+						this.defaultConfigs = response.data
+						this.defaultConfigs = JSON.parse(this.defaultConfigs[0].config_data)
+						//console.log(this.defaultConfigs.cardRules[0].maxMark )
+						
+					  })
+			},
 		},
 
 		created() {
 			this.editHashCodeData();
+			this.getConfigs(); 
 		},
 
 		mounted() {

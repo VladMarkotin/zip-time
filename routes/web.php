@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\DefaultConfigs;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -106,7 +107,7 @@ Route::middleware(['auth'])->group(function () {
 
 });
 Route::post('/get-default-configs', function (){
-    
+    exit(DefaultConfigs::getConfigs());
 });
 
 Route::get('/event', function (){
