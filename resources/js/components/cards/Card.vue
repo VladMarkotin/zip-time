@@ -480,9 +480,11 @@
 			<form class="d-flex align-center" :id="!num ? 'card-mark' : false">
 				<template v-if="[4,3].includes(item.type)">
 					<div>Mark</div>
-					<v-text-field class="ml-1" style="width : 54px" v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)">
+					<v-text-field class="ml-1" style="width : 54px" v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)" 
+					@focus="focusedInput=!focusedInput" @blur="focusedInput=!focusedInput">
 						<v-icon slot="append">mdi-percent</v-icon>
 					</v-text-field>
+					
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
 							<v-btn icon v-on="on" v-on:click="sendMark(item)">
@@ -491,6 +493,7 @@
 						</template>
 						<span>Update</span>
 					</v-tooltip>
+					<span class="mark-info" v-if="focusedInput"> test text</span>
 				</template>
 				
 				<template v-else-if="[2,1].includes(item.type)">
@@ -552,6 +555,7 @@
 					done: 'v-card-done',
 					completedPercent : 0,
 					completedProgressBar: 0,
+					focusedInput: false,
 					subTasks: {
 						title: '',
 						text: '',
@@ -831,6 +835,10 @@
 			renameHashCode(newHashCode) {
 				this.hashCode = newHashCode;
 			},
+
+			getConfigs(taskData = null) {
+				
+			}
 		},
 
 		created() {
@@ -854,5 +862,9 @@
 	}
 	.v-progress-circular {
   		margin: 1rem;
+	}
+	.mark-info{
+		font-size: 12px;
+		font-family: Tahoma;
 	}
 </style>
