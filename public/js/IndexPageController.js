@@ -904,6 +904,7 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 var _statisticsCounterBlock = /*#__PURE__*/new WeakMap();
 var _time = /*#__PURE__*/new WeakMap();
 var _step = /*#__PURE__*/new WeakMap();
+var _stepInitialVal = /*#__PURE__*/new WeakMap();
 var _statisticsCounter = /*#__PURE__*/new WeakMap();
 var _statisticsCounterMin = /*#__PURE__*/new WeakMap();
 var _statisticsCounterMax = /*#__PURE__*/new WeakMap();
@@ -916,9 +917,13 @@ var StatisticsCounter = /*#__PURE__*/function () {
     });
     _classPrivateFieldInitSpec(this, _time, {
       writable: true,
-      value: 1200
+      value: 1500
     });
     _classPrivateFieldInitSpec(this, _step, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _stepInitialVal, {
       writable: true,
       value: 1
     });
@@ -945,18 +950,37 @@ var StatisticsCounter = /*#__PURE__*/function () {
       var statCounterMaxVal = +_classPrivateFieldGet(this, _statisticsCounter).dataset.counterval;
       _classPrivateFieldSet(this, _statisticsCounterMin, this.isNaNCheck(statCounterMinVal));
       _classPrivateFieldSet(this, _statisticsCounterMax, this.isNaNCheck(statCounterMaxVal));
+      _classPrivateFieldSet(this, _step, this.getStep(_classPrivateFieldGet(this, _stepInitialVal)));
       var n = _classPrivateFieldGet(this, _statisticsCounterMin);
       var t = Math.round(_classPrivateFieldGet(this, _time) / (_classPrivateFieldGet(this, _statisticsCounterMax) / _classPrivateFieldGet(this, _step)));
       var interval = setInterval(function () {
         n = n + _classPrivateFieldGet(_this, _step);
-        if (n === _classPrivateFieldGet(_this, _statisticsCounterMax)) clearInterval(interval);
-        _classPrivateFieldGet(_this, _statisticsCounter).innerHTML = n;
+        if (n >= _classPrivateFieldGet(_this, _statisticsCounterMax)) {
+          clearInterval(interval);
+          _classPrivateFieldGet(_this, _statisticsCounter).innerHTML = _classPrivateFieldGet(_this, _statisticsCounterMax);
+        } else {
+          _classPrivateFieldGet(_this, _statisticsCounter).innerHTML = n;
+        }
       }, t);
     }
   }, {
     key: "isNaNCheck",
     value: function isNaNCheck(value) {
       return !Number.isNaN(value) ? value : 0;
+    }
+  }, {
+    key: "getStep",
+    value: function getStep(val) {
+      var t = Math.round(_classPrivateFieldGet(this, _time) / (_classPrivateFieldGet(this, _statisticsCounterMax) / val));
+      if (t < _classPrivateFieldGet(this, _time) / 30) {
+        val++;
+        return this.getStep(val);
+      }
+      if (t > _classPrivateFieldGet(this, _time)) {
+        val--;
+        return this.getStep(val);
+      }
+      return val;
     }
   }]);
   return StatisticsCounter;
