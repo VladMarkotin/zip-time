@@ -4,6 +4,11 @@ class BlocksAppearanceController {
     #ourAdvantagesTimer = null;
     #statisticsItems    = null;
     #statisticsTimer    = null;
+    #statisticsCounter  = null
+
+    constructor(statisticsCounter) {
+        this.#statisticsCounter = statisticsCounter;
+    }
 
     init() {
         this.#animatedElements = document.querySelectorAll('.element-animation');
@@ -13,14 +18,16 @@ class BlocksAppearanceController {
         if (this.#statisticsItems.length) this.#statisticsTimer = getTimer(this.#statisticsItems, 150);
 
         const options = {
-            threshold: [0.5],
+            threshold: [0.4],
         }
 
         const observer = new IntersectionObserver((entry) => {
             entry.forEach(change => {
-                if (change.isIntersecting) {
-                    const isOuAdvItem = change.target.classList.contains('our-advantages-item');
-                    const isStatisticItem = change.target.classList.contains('statistics-item');
+                const curentElement = change.target;
+
+                if (change.isIntersecting && !curentElement.classList.contains('element-show')) {
+                    const isOuAdvItem = curentElement.classList.contains('our-advantages-item');
+                    const isStatisticItem = curentElement.classList.contains('statistics-item');
 
                     switch (true) {
                         case isOuAdvItem:
@@ -49,7 +56,9 @@ class BlocksAppearanceController {
     }
 
     addElemShowClass(elem) {
-        elem.target.classList.add('element-show');
+        elem = elem.target;
+        elem.classList.add('element-show');
+        if (elem.classList.contains('statistics-item')) this.createStatisticsCounter(elem);
     }
 
     showList(change, generator) {
@@ -63,6 +72,11 @@ class BlocksAppearanceController {
         setTimeout(() => {
             this.addElemShowClass(change);
         }, time ? time : 0);
+    }
+
+    createStatisticsCounter(elem) {
+        const statisticsCounter = new this.#statisticsCounter(elem);
+        statisticsCounter.init();
     }
 }
 

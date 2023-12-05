@@ -2,6 +2,7 @@ import BlocksAppearanceController from "./BlocksAppearanceController";
 import OurAdvantagesController from "./OurAdvantages";
 import ReviewsSlider from "./ReviewsSlider";
 import mainSliderClasses from "./Slider";
+import StatisticsCounter from "./StatisticsCounter";
 
 class IndexPageController {
     #blocksAppearanceController = null;
@@ -14,8 +15,11 @@ class IndexPageController {
     #sliderFacade               = null;
     #slideContentController     = null;
 
-    init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController) {
-        this.#blocksAppearanceController = new blocksAppearanceController;
+    #statisticsCounter          = null;
+
+    init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter) {
+        this.#statisticsCounter = statisticsCounter;
+        this.#blocksAppearanceController = new blocksAppearanceController(this.#statisticsCounter);
         this.#ourAdvantagesController = new ourAdvantagesController;
         this.#reviewsSlider = new reviewsSlider;
 
@@ -44,4 +48,4 @@ const indexPageController = new IndexPageController;
 
 const {slideArrowController, slider, slideItem, sliderFacade, SlideContentController} = mainSliderClasses;
 
-indexPageController.init(BlocksAppearanceController, OurAdvantagesController, ReviewsSlider, slideArrowController, slideItem, slider, sliderFacade, SlideContentController);
+indexPageController.init(BlocksAppearanceController, OurAdvantagesController, ReviewsSlider, slideArrowController, slideItem, slider, sliderFacade, SlideContentController, StatisticsCounter);

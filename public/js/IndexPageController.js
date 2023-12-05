@@ -34,8 +34,9 @@ var _ourAdvantagesItems = /*#__PURE__*/new WeakMap();
 var _ourAdvantagesTimer = /*#__PURE__*/new WeakMap();
 var _statisticsItems = /*#__PURE__*/new WeakMap();
 var _statisticsTimer = /*#__PURE__*/new WeakMap();
+var _statisticsCounter = /*#__PURE__*/new WeakMap();
 var BlocksAppearanceController = /*#__PURE__*/function () {
-  function BlocksAppearanceController() {
+  function BlocksAppearanceController(statisticsCounter) {
     _classCallCheck(this, BlocksAppearanceController);
     _classPrivateFieldInitSpec(this, _animatedElements, {
       writable: true,
@@ -57,6 +58,11 @@ var BlocksAppearanceController = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
+    _classPrivateFieldInitSpec(this, _statisticsCounter, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldSet(this, _statisticsCounter, statisticsCounter);
   }
   _createClass(BlocksAppearanceController, [{
     key: "init",
@@ -68,13 +74,14 @@ var BlocksAppearanceController = /*#__PURE__*/function () {
       if (_classPrivateFieldGet(this, _ourAdvantagesItems).length) _classPrivateFieldSet(this, _ourAdvantagesTimer, getTimer(_classPrivateFieldGet(this, _ourAdvantagesItems), 200));
       if (_classPrivateFieldGet(this, _statisticsItems).length) _classPrivateFieldSet(this, _statisticsTimer, getTimer(_classPrivateFieldGet(this, _statisticsItems), 150));
       var options = {
-        threshold: [0.5]
+        threshold: [0.4]
       };
       var observer = new IntersectionObserver(function (entry) {
         entry.forEach(function (change) {
-          if (change.isIntersecting) {
-            var isOuAdvItem = change.target.classList.contains('our-advantages-item');
-            var isStatisticItem = change.target.classList.contains('statistics-item');
+          var curentElement = change.target;
+          if (change.isIntersecting && !curentElement.classList.contains('element-show')) {
+            var isOuAdvItem = curentElement.classList.contains('our-advantages-item');
+            var isStatisticItem = curentElement.classList.contains('statistics-item');
             switch (true) {
               case isOuAdvItem:
                 _this.showList(change, _classPrivateFieldGet(_this, _ourAdvantagesTimer));
@@ -132,7 +139,9 @@ var BlocksAppearanceController = /*#__PURE__*/function () {
   }, {
     key: "addElemShowClass",
     value: function addElemShowClass(elem) {
-      elem.target.classList.add('element-show');
+      elem = elem.target;
+      elem.classList.add('element-show');
+      if (elem.classList.contains('statistics-item')) this.createStatisticsCounter(elem);
     }
   }, {
     key: "showList",
@@ -147,6 +156,12 @@ var BlocksAppearanceController = /*#__PURE__*/function () {
       setTimeout(function () {
         _this2.addElemShowClass(change);
       }, time ? time : 0);
+    }
+  }, {
+    key: "createStatisticsCounter",
+    value: function createStatisticsCounter(elem) {
+      var statisticsCounter = new (_classPrivateFieldGet(this, _statisticsCounter))(elem);
+      statisticsCounter.init();
     }
   }]);
   return BlocksAppearanceController;
@@ -861,6 +876,93 @@ var mainSliderClasses = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (mainSliderClasses);
 
+/***/ }),
+
+/***/ "./resources/js/indexPage/StatisticsCounter.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/indexPage/StatisticsCounter.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _statisticsCounterBlock = /*#__PURE__*/new WeakMap();
+var _time = /*#__PURE__*/new WeakMap();
+var _step = /*#__PURE__*/new WeakMap();
+var _statisticsCounter = /*#__PURE__*/new WeakMap();
+var _statisticsCounterMin = /*#__PURE__*/new WeakMap();
+var _statisticsCounterMax = /*#__PURE__*/new WeakMap();
+var StatisticsCounter = /*#__PURE__*/function () {
+  function StatisticsCounter(elem) {
+    _classCallCheck(this, StatisticsCounter);
+    _classPrivateFieldInitSpec(this, _statisticsCounterBlock, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _time, {
+      writable: true,
+      value: 1200
+    });
+    _classPrivateFieldInitSpec(this, _step, {
+      writable: true,
+      value: 1
+    });
+    _classPrivateFieldInitSpec(this, _statisticsCounter, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _statisticsCounterMin, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _statisticsCounterMax, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldSet(this, _statisticsCounterBlock, elem);
+  }
+  _createClass(StatisticsCounter, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _statisticsCounter, _classPrivateFieldGet(this, _statisticsCounterBlock).querySelector('.statistics-counter'));
+      var statCounterMinVal = +_classPrivateFieldGet(this, _statisticsCounter).innerHTML;
+      var statCounterMaxVal = +_classPrivateFieldGet(this, _statisticsCounter).dataset.counterval;
+      _classPrivateFieldSet(this, _statisticsCounterMin, this.isNaNCheck(statCounterMinVal));
+      _classPrivateFieldSet(this, _statisticsCounterMax, this.isNaNCheck(statCounterMaxVal));
+      var n = _classPrivateFieldGet(this, _statisticsCounterMin);
+      var t = Math.round(_classPrivateFieldGet(this, _time) / (_classPrivateFieldGet(this, _statisticsCounterMax) / _classPrivateFieldGet(this, _step)));
+      var interval = setInterval(function () {
+        n = n + _classPrivateFieldGet(_this, _step);
+        if (n === _classPrivateFieldGet(_this, _statisticsCounterMax)) clearInterval(interval);
+        _classPrivateFieldGet(_this, _statisticsCounter).innerHTML = n;
+      }, t);
+    }
+  }, {
+    key: "isNaNCheck",
+    value: function isNaNCheck(value) {
+      return !Number.isNaN(value) ? value : 0;
+    }
+  }]);
+  return StatisticsCounter;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (StatisticsCounter);
+
 /***/ })
 
 /******/ 	});
@@ -930,6 +1032,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OurAdvantages */ "./resources/js/indexPage/OurAdvantages.js");
 /* harmony import */ var _ReviewsSlider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ReviewsSlider */ "./resources/js/indexPage/ReviewsSlider.js");
 /* harmony import */ var _Slider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Slider */ "./resources/js/indexPage/Slider.js");
+/* harmony import */ var _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./StatisticsCounter */ "./resources/js/indexPage/StatisticsCounter.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
@@ -947,6 +1050,7 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 
 
 
+
 var _blocksAppearanceController = /*#__PURE__*/new WeakMap();
 var _ourAdvantagesController = /*#__PURE__*/new WeakMap();
 var _reviewsSlider = /*#__PURE__*/new WeakMap();
@@ -955,6 +1059,7 @@ var _slideItem = /*#__PURE__*/new WeakMap();
 var _slider = /*#__PURE__*/new WeakMap();
 var _sliderFacade = /*#__PURE__*/new WeakMap();
 var _slideContentController = /*#__PURE__*/new WeakMap();
+var _statisticsCounter = /*#__PURE__*/new WeakMap();
 var IndexPageController = /*#__PURE__*/function () {
   function IndexPageController() {
     _classCallCheck(this, IndexPageController);
@@ -990,12 +1095,17 @@ var IndexPageController = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
+    _classPrivateFieldInitSpec(this, _statisticsCounter, {
+      writable: true,
+      value: null
+    });
   }
   _createClass(IndexPageController, [{
     key: "init",
-    value: function init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController) {
+    value: function init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter) {
       var _this = this;
-      _classPrivateFieldSet(this, _blocksAppearanceController, new blocksAppearanceController());
+      _classPrivateFieldSet(this, _statisticsCounter, statisticsCounter);
+      _classPrivateFieldSet(this, _blocksAppearanceController, new blocksAppearanceController(_classPrivateFieldGet(this, _statisticsCounter)));
       _classPrivateFieldSet(this, _ourAdvantagesController, new ourAdvantagesController());
       _classPrivateFieldSet(this, _reviewsSlider, new reviewsSlider());
       _classPrivateFieldSet(this, _slideArrowController, new slideArrowController());
@@ -1023,7 +1133,7 @@ var slideArrowController = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slide
   slideItem = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slideItem,
   sliderFacade = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].sliderFacade,
   SlideContentController = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].SlideContentController;
-indexPageController.init(_BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__["default"], _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__["default"], _ReviewsSlider__WEBPACK_IMPORTED_MODULE_2__["default"], slideArrowController, slideItem, slider, sliderFacade, SlideContentController);
+indexPageController.init(_BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__["default"], _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__["default"], _ReviewsSlider__WEBPACK_IMPORTED_MODULE_2__["default"], slideArrowController, slideItem, slider, sliderFacade, SlideContentController, _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__["default"]);
 })();
 
 /******/ })()
