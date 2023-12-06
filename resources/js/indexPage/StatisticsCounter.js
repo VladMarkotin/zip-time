@@ -33,7 +33,7 @@ class StatisticsCounter {
     }
 
     isNaNCheck(value) {
-        return !Number.isNaN(value) ? value : 0;
+        return !Number.isNaN(value) && typeof value === 'number' ? value : 0;
     }
 
     getStep(val) {

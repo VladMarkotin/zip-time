@@ -966,7 +966,7 @@ var StatisticsCounter = /*#__PURE__*/function () {
   }, {
     key: "isNaNCheck",
     value: function isNaNCheck(value) {
-      return !Number.isNaN(value) ? value : 0;
+      return !Number.isNaN(value) && typeof value === 'number' ? value : 0;
     }
   }, {
     key: "getStep",

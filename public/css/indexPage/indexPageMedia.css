@@ -1,4 +1,8 @@
 @media screen and (max-width: 1225px) {
+  .slider-wrapper .slide .slide-content {
+    padding: 0 50px;
+  }
+
   .about-us-wrapper {
     padding: 0 50px;
     width: 100%;
@@ -25,6 +29,20 @@
   }
 }
 @media screen and (max-width: 1075px) {
+  .slider-wrapper {
+    min-height: 690px;
+  }
+  .slider-wrapper .slide .slide-content {
+    padding: 0 130px;
+  }
+  .slider-wrapper .slide .slide-content .slide-content-3d-title {
+    max-width: 700px;
+    text-align: center;
+  }
+  .slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-three-content .slide-content-text-wrapper {
+    text-align: center;
+  }
+
   .statistics-section {
     padding: 0 130px;
   }
@@ -33,6 +51,10 @@
   }
 }
 @media screen and (max-width: 1035px) {
+  .slider-wrapper .slide-one .slide-one-list {
+    min-height: 0;
+  }
+
   .about-us-wrapper {
     padding: 0 130px;
     grid-template-columns: 1fr;
@@ -79,6 +101,29 @@
     grid-template-columns: repeat(auto-fill, 305px);
   }
 }
+@media screen and (max-width: 810px) {
+  .slider-wrapper .slide .slide-content .slide-content_inner-block .slide-content-title {
+    font-size: 26px;
+  }
+  .slider-wrapper .slide .slide-content .slide-content_inner-block .slide-content-subtitle {
+    font-size: 24px;
+  }
+  .slider-wrapper .slide-one .slide-one-list .slide-one-li:nth-child(even) {
+    align-self: flex-start;
+  }
+  .slider-wrapper .slide-two .slide-content .slide-content_inner-block .slide-content-text-wrapper {
+    gap: 35px;
+  }
+}
+@media screen and (max-width: 775px) {
+  .slide-three .slide-content .slide-content_inner-block .slide-three-content .slide-content-text-wrapper .subtitle-third-slide:nth-child(2) .br {
+    display: initial;
+  }
+
+  .slider-wrapper .slide-two .slide-two-list .slide-two-li:nth-child(1) .br {
+    display: initial;
+  }
+}
 @media screen and (max-width: 768px) {
   .our-advantages-wrapper .our-advantages-content {
     grid-template-columns: repeat(auto-fill, 305px);
@@ -87,6 +132,16 @@
 @media screen and (max-width: 740px) {
   .slider-wrapper .slide .slide-content .slide-content_inner-block {
     max-width: 450px;
+  }
+
+  .slider-wrapper .slide-two .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-title {
+    text-align: center;
+  }
+  .slider-wrapper .slide-two .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-content-title .red-text {
+    font-size: 34px;
+  }
+  .slider-wrapper .slide-two .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-two-content {
+    align-items: center;
   }
 
   .about-us-section .inner-block {
@@ -129,6 +184,40 @@
 
   .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper {
     max-width: 450px;
+  }
+}
+@media screen and (max-width: 740px) {
+  .slider-wrapper .slide-two .slide-two-list .slide-two-li:nth-child(4) .br {
+    display: initial;
+  }
+}
+@media screen and (max-width: 690px) {
+  .slider-wrapper {
+    min-height: 820px;
+  }
+  .slider-wrapper .slide-one .slide-content .slide-content_inner-block .slide-content-3d-title {
+    font-size: 40px;
+  }
+}
+@media screen and (max-width: 650px) {
+  .slider-wrapper .slide-one .slide-content .slide-content_inner-block .slide-content-3d-title .br {
+    display: initial;
+  }
+}
+@media screen and (max-width: 625px) {
+  .slider-wrapper {
+    min-height: 850px;
+  }
+  .slider-wrapper .slide-two .slide-two-list .slide-two-li:nth-child(1) .br {
+    display: none;
+  }
+}
+@media screen and (max-width: 620px) {
+  .slider-wrapper .slide-two .slide-two-list .slide-two-li:nth-child(4) .br {
+    display: none;
+  }
+  .slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-content-buttons-wrapper {
+    flex-direction: column;
   }
 }
 @media screen and (max-width: 520px) {
@@ -193,10 +282,5 @@
   }
   .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide-text-wrapper .reviews-slide-text {
     font-size: 28px;
-  }
-}
-@media (max-height: 547px) {
-  .slider-wrapper {
-    min-height: 750px;
   }
 }
