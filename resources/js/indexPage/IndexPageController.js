@@ -3,6 +3,7 @@ import OurAdvantagesController from "./OurAdvantages";
 import ReviewsSlider from "./ReviewsSlider";
 import mainSliderClasses from "./Slider";
 import StatisticsCounter from "./StatisticsCounter";
+import ProgressBar from "./ProgressBar";
 
 class IndexPageController {
     #blocksAppearanceController = null;
@@ -16,12 +17,14 @@ class IndexPageController {
     #slideContentController     = null;
 
     #statisticsCounter          = null;
+    #progressBar                = null;
 
-    init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter) {
+    init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter, progressBar) {
         this.#statisticsCounter = statisticsCounter;
         this.#blocksAppearanceController = new blocksAppearanceController(this.#statisticsCounter);
         this.#ourAdvantagesController = new ourAdvantagesController;
         this.#reviewsSlider = new reviewsSlider;
+        this.#progressBar   = new progressBar;
 
         this.#slideArrowController = new slideArrowController;
         this.#slideItem = slideItem;
@@ -34,12 +37,15 @@ class IndexPageController {
         this.#reviewsSlider.init();
         this.#slideArrowController.init();
         this.#sliderFacade.init();
+        this.#progressBar.init();
 
         window.addEventListener('resize', () => {
             this.#reviewsSlider.init();
             this.#reviewsSlider.move(this.#reviewsSlider.currentSlideIndex);
-
+            
             this.#sliderFacade.init();
+            
+            this.#progressBar.init();
         });
     }
 }
@@ -48,4 +54,4 @@ const indexPageController = new IndexPageController;
 
 const {slideArrowController, slider, slideItem, sliderFacade, SlideContentController} = mainSliderClasses;
 
-indexPageController.init(BlocksAppearanceController, OurAdvantagesController, ReviewsSlider, slideArrowController, slideItem, slider, sliderFacade, SlideContentController, StatisticsCounter);
+indexPageController.init(BlocksAppearanceController, OurAdvantagesController, ReviewsSlider, slideArrowController, slideItem, slider, sliderFacade, SlideContentController, StatisticsCounter, ProgressBar);

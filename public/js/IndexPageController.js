@@ -245,6 +245,102 @@ var OurAdvantagesController = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/indexPage/ProgressBar.js":
+/*!***********************************************!*\
+  !*** ./resources/js/indexPage/ProgressBar.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _progressBar = /*#__PURE__*/new WeakMap();
+var _minHeigt = /*#__PURE__*/new WeakMap();
+var _isProgressBarExists = /*#__PURE__*/new WeakMap();
+var _windowHeight = /*#__PURE__*/new WeakMap();
+var _app = /*#__PURE__*/new WeakMap();
+var ProgressBar = /*#__PURE__*/function () {
+  function ProgressBar() {
+    _classCallCheck(this, ProgressBar);
+    _classPrivateFieldInitSpec(this, _progressBar, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _minHeigt, {
+      writable: true,
+      value: 3500
+    });
+    _classPrivateFieldInitSpec(this, _isProgressBarExists, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _windowHeight, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _app, {
+      writable: true,
+      value: null
+    });
+  }
+  _createClass(ProgressBar, [{
+    key: "init",
+    value: function init() {
+      _classPrivateFieldSet(this, _progressBar, document.createElement('div'));
+      _classPrivateFieldGet(this, _progressBar).classList.add('progress-bar');
+      _classPrivateFieldSet(this, _app, document.getElementById('app'));
+      _classPrivateFieldSet(this, _isProgressBarExists, !!this.findProgressBar());
+      this.calPercents = this.calPercents.bind(this);
+      _classPrivateFieldSet(this, _windowHeight, document.documentElement.scrollHeight - document.documentElement.clientHeight);
+      if (!_classPrivateFieldGet(this, _isProgressBarExists) && _classPrivateFieldGet(this, _windowHeight) >= _classPrivateFieldGet(this, _minHeigt)) _classPrivateFieldGet(this, _app).prepend(_classPrivateFieldGet(this, _progressBar));
+      if (_classPrivateFieldGet(this, _windowHeight) >= _classPrivateFieldGet(this, _minHeigt)) {
+        this.calPercents();
+        if (!window.onscroll) window.onscroll = this.calPercents;
+      }
+      if (_classPrivateFieldGet(this, _isProgressBarExists) && _classPrivateFieldGet(this, _windowHeight) < _classPrivateFieldGet(this, _minHeigt)) {
+        console.log(12345);
+        this.findProgressBar().remove();
+        window.onscroll = null;
+      }
+    }
+  }, {
+    key: "updateWidth",
+    value: function updateWidth(per) {
+      this.findProgressBar().style.width = "".concat(per, "%");
+    }
+  }, {
+    key: "calPercents",
+    value: function calPercents(e) {
+      var windowScroll = document.body.scrollTop;
+      var per = windowScroll / _classPrivateFieldGet(this, _windowHeight) * 100;
+      this.updateWidth(per);
+    }
+  }, {
+    key: "findProgressBar",
+    value: function findProgressBar() {
+      return _classPrivateFieldGet(this, _app).querySelector('.progress-bar');
+    }
+  }]);
+  return ProgressBar;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProgressBar);
+
+/***/ }),
+
 /***/ "./resources/js/indexPage/ReviewsSlider.js":
 /*!*************************************************!*\
   !*** ./resources/js/indexPage/ReviewsSlider.js ***!
@@ -1057,6 +1153,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ReviewsSlider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ReviewsSlider */ "./resources/js/indexPage/ReviewsSlider.js");
 /* harmony import */ var _Slider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Slider */ "./resources/js/indexPage/Slider.js");
 /* harmony import */ var _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./StatisticsCounter */ "./resources/js/indexPage/StatisticsCounter.js");
+/* harmony import */ var _ProgressBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ProgressBar */ "./resources/js/indexPage/ProgressBar.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
@@ -1075,6 +1172,7 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 
 
 
+
 var _blocksAppearanceController = /*#__PURE__*/new WeakMap();
 var _ourAdvantagesController = /*#__PURE__*/new WeakMap();
 var _reviewsSlider = /*#__PURE__*/new WeakMap();
@@ -1084,6 +1182,7 @@ var _slider = /*#__PURE__*/new WeakMap();
 var _sliderFacade = /*#__PURE__*/new WeakMap();
 var _slideContentController = /*#__PURE__*/new WeakMap();
 var _statisticsCounter = /*#__PURE__*/new WeakMap();
+var _progressBar = /*#__PURE__*/new WeakMap();
 var IndexPageController = /*#__PURE__*/function () {
   function IndexPageController() {
     _classCallCheck(this, IndexPageController);
@@ -1123,15 +1222,20 @@ var IndexPageController = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
+    _classPrivateFieldInitSpec(this, _progressBar, {
+      writable: true,
+      value: null
+    });
   }
   _createClass(IndexPageController, [{
     key: "init",
-    value: function init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter) {
+    value: function init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter, progressBar) {
       var _this = this;
       _classPrivateFieldSet(this, _statisticsCounter, statisticsCounter);
       _classPrivateFieldSet(this, _blocksAppearanceController, new blocksAppearanceController(_classPrivateFieldGet(this, _statisticsCounter)));
       _classPrivateFieldSet(this, _ourAdvantagesController, new ourAdvantagesController());
       _classPrivateFieldSet(this, _reviewsSlider, new reviewsSlider());
+      _classPrivateFieldSet(this, _progressBar, new progressBar());
       _classPrivateFieldSet(this, _slideArrowController, new slideArrowController());
       _classPrivateFieldSet(this, _slideItem, slideItem);
       _classPrivateFieldSet(this, _slider, slider);
@@ -1142,10 +1246,12 @@ var IndexPageController = /*#__PURE__*/function () {
       _classPrivateFieldGet(this, _reviewsSlider).init();
       _classPrivateFieldGet(this, _slideArrowController).init();
       _classPrivateFieldGet(this, _sliderFacade).init();
+      _classPrivateFieldGet(this, _progressBar).init();
       window.addEventListener('resize', function () {
         _classPrivateFieldGet(_this, _reviewsSlider).init();
         _classPrivateFieldGet(_this, _reviewsSlider).move(_classPrivateFieldGet(_this, _reviewsSlider).currentSlideIndex);
         _classPrivateFieldGet(_this, _sliderFacade).init();
+        _classPrivateFieldGet(_this, _progressBar).init();
       });
     }
   }]);
@@ -1157,7 +1263,7 @@ var slideArrowController = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slide
   slideItem = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slideItem,
   sliderFacade = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].sliderFacade,
   SlideContentController = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].SlideContentController;
-indexPageController.init(_BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__["default"], _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__["default"], _ReviewsSlider__WEBPACK_IMPORTED_MODULE_2__["default"], slideArrowController, slideItem, slider, sliderFacade, SlideContentController, _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__["default"]);
+indexPageController.init(_BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__["default"], _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__["default"], _ReviewsSlider__WEBPACK_IMPORTED_MODULE_2__["default"], slideArrowController, slideItem, slider, sliderFacade, SlideContentController, _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__["default"], _ProgressBar__WEBPACK_IMPORTED_MODULE_5__["default"]);
 })();
 
 /******/ })()

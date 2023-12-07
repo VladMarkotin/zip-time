@@ -30,6 +30,13 @@ ol {
   list-style: none;
 }
 
+//переменные
+$mainSHadeRed: #5c1a1a;
+$yeapButtonColor: #3490dc;
+$redText: #960018; 
+$redText2: #F80000;
+$signUpButtonColor: #4169E1;
+
 // кастомные классы
 
 .main {
@@ -70,14 +77,19 @@ ol {
     display: none;
 }
 
+.progress-bar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 5px;
+    z-index: 10000;
+    background-color: $redText !important;
+    border-radius: 2px;
+}
+
 
 //верстка по странице
-
-$mainSHadeRed: #5c1a1a;
-$yeapButtonColor: #3490dc;
-$redText: #960018; 
-$redText2: #F80000;
-$signUpButtonColor: #4169E1;
 
 .slider-wrapper {
     height: 100vh;
