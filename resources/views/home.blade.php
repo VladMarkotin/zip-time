@@ -309,6 +309,30 @@
                 </div>
             </div>
         </section>
+        <section class="quotes-section">
+            <div class="inner-block">
+                <div class="quotes-wrapper">
+                    <div class="quotes-content">
+                        <div class="quotes-list-wrapper">
+                            <ul class="quotes-list">
+                                <li class="quotes-li quotes-item element-animation">
+                                    <div class="quotes-text text-index-page">“The most precious resource we all have is time”</div>
+                                    <div class="quotes-author">― Steve Jobs</div>
+                                </li>
+                                <li class="quotes-li quotes-item element-animation">
+                                    <div class="quotes-text text-index-page">“We must use time creatively - and forever realize that the time is always hope to do great things.”</div>
+                                    <div class="quotes-author">― Martin Luther King Jr</div>
+                                </li>
+                                <li class="quotes-li quotes-item element-animation">
+                                    <div class="quotes-text text-index-page">“The wisest are the most annoyed at the loss of time”</div>
+                                    <div class="quotes-author">― Dante Alighieri</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         @endguest
     
 @endsection

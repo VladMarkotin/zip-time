@@ -729,6 +729,75 @@ ol {
   background: #5c1a1a;
 }
 
+.quotes-section .quotes-wrapper {
+  background-image: url("/images/index_page/quotes-wrapper.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+  box-shadow: 2px 2px 4px #444;
+  z-index: 1;
+  max-height: 500px;
+}
+.quotes-section .quotes-wrapper::before {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+.quotes-section .quotes-wrapper .quotes-content {
+  height: 100%;
+  position: relative;
+  z-index: 3;
+  padding: 35px 45px;
+}
+.quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper {
+  max-width: 650px;
+  height: 100%;
+}
+.quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list {
+  height: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+  font-size: 28px;
+  line-height: 40px;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+  text-shadow: 1px 1px 1px black;
+}
+.quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li.element-show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li .quotes-text {
+  color: #eaf3f2;
+  text-shadow: 1px 1px 1px #000000;
+  font-size: inherit;
+}
+.quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li .quotes-author {
+  font-size: inherit;
+  color: #eaf3f2;
+  text-shadow: 1px 1px 1px #000000;
+  color: #ff8562;
+  font-style: italic;
+}
+
 @keyframes slide_one_left_appearance {
   from {
     opacity: 0;

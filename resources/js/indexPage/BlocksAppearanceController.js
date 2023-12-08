@@ -7,6 +7,8 @@ class BlocksAppearanceController {
     #statisticsCounter  = null;
     #aboutUsItems       = null;
     #aboutUsTimer       = null;
+    #quotesItems        = null;
+    #quotesTimer        = null;
 
     constructor(statisticsCounter) {
         this.#statisticsCounter = statisticsCounter;
@@ -17,9 +19,12 @@ class BlocksAppearanceController {
         this.#ourAdvantagesItems = document.querySelectorAll('.our-advantages-item');
         this.#statisticsItems = document.querySelectorAll('.statistics-item');
         this.#aboutUsItems = document.querySelectorAll('.about-us-item');
+        this.#quotesItems  = document.querySelectorAll('.quotes-item');
+
         if (this.#ourAdvantagesItems.length) this.#ourAdvantagesTimer = getTimer(this.#ourAdvantagesItems, 200);
         if (this.#statisticsItems.length) this.#statisticsTimer = getTimer(this.#statisticsItems, 150);
         if (this.#aboutUsItems.length) this.#aboutUsTimer = getTimer(this.#aboutUsItems, 200);
+        if (this.#quotesItems.length) this.#quotesTimer = getTimer(this.#quotesItems, 150);
 
         const options = {
             threshold: [0.25],
@@ -33,6 +38,7 @@ class BlocksAppearanceController {
                     const isOuAdvItem = curentElement.classList.contains('our-advantages-item');
                     const isStatisticItem = curentElement.classList.contains('statistics-item');
                     const isAboutUsItem = curentElement.classList.contains('about-us-item');
+                    const isQuotesItem = curentElement.classList.contains('quotes-item');
 
                     switch (true) {
                         case isAboutUsItem:
@@ -44,6 +50,9 @@ class BlocksAppearanceController {
                         case isStatisticItem:
                             this.showList(change, this.#statisticsTimer);
                         break
+                        case isQuotesItem:
+                            this.showList(change, this.#quotesTimer);
+                        break;
                         default:
                             this.addElemShowClass(change);
                     }
