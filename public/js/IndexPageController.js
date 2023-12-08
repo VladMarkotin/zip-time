@@ -558,7 +558,7 @@ var SlideContentController = /*#__PURE__*/function () {
       var slideTwoWrapper = document.querySelector('.slide-two');
       var slideTwoSubtitle = slideTwoWrapper.querySelector('.slide-content-subtitle');
       var slideTwoLiCollect = slideTwoWrapper.querySelectorAll('.slide-two-list .slide-two-li');
-      var getTimer = this.getTimerCreator(1000, 2400);
+      var getTimer = this.getTimerCreator(900, 1400);
       var slideTwoLiTimer = getTimer(slideTwoLiCollect);
       setTimeout(function () {
         slideTwoSubtitle.classList.add('slide-content-subtitle-isshown');
@@ -578,11 +578,11 @@ var SlideContentController = /*#__PURE__*/function () {
       this.removeAddedClasses('slide-one-li-left', 'title-third-slide-isshown', 'subtitle-third-slide-isshown', 'just-try-it-wrapper-isLink');
       var slideThreeWrapper = document.querySelector('.slide-three');
       var slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
-      var getTimerLi = this.getTimerCreator();
+      var getTimerLi = this.getTimerCreator(900, 1400);
       var slideThreeLiTimer = getTimerLi(slideThreeLiCollect);
       var slideContentTitle = slideThreeWrapper.querySelector('.title-third-slide');
       var slideThreeSubtitleCollect = slideThreeWrapper.querySelectorAll('.subtitle-third-slide');
-      var getTimerSubtitle = this.getTimerCreator(1000, 2400);
+      var getTimerSubtitle = this.getTimerCreator(1200, 2600);
       var slideThreeSubtitleTimer = getTimerSubtitle(slideThreeSubtitleCollect);
       var justTryIt = slideThreeWrapper.querySelector('.just-try-it-wrapper');
       new Promise(function (resolve) {
@@ -685,7 +685,7 @@ var _slideContentMap = {
 };
 var _defaultTimerValue = {
   writable: true,
-  value: 1600
+  value: 900
 };
 var _sliderWrapper = /*#__PURE__*/new WeakMap();
 var _slideLeftArrow = /*#__PURE__*/new WeakMap();

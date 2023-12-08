@@ -14,7 +14,7 @@ class SlideContentController {
         },
     ]
 
-    static #defaultTimerValue = 1600;
+    static #defaultTimerValue = 900;
 
     static init(slideNumber) {
         const currentMethod = this.#slideContentMap.find(item => item.number === slideNumber).method;
@@ -56,7 +56,7 @@ class SlideContentController {
         const slideTwoWrapper = document.querySelector('.slide-two');
         const slideTwoSubtitle = slideTwoWrapper.querySelector('.slide-content-subtitle');
         const slideTwoLiCollect = slideTwoWrapper.querySelectorAll('.slide-two-list .slide-two-li');
-        const getTimer = this.getTimerCreator(1000 ,2400);
+        const getTimer = this.getTimerCreator(900 ,1400);
         const slideTwoLiTimer = getTimer(slideTwoLiCollect);
         
         setTimeout(() => {
@@ -75,11 +75,11 @@ class SlideContentController {
 
         const slideThreeWrapper = document.querySelector('.slide-three');
         const slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
-        const getTimerLi = this.getTimerCreator();
+        const getTimerLi = this.getTimerCreator(900, 1400);
         const slideThreeLiTimer = getTimerLi(slideThreeLiCollect)
         const slideContentTitle = slideThreeWrapper.querySelector('.title-third-slide');
         const slideThreeSubtitleCollect = slideThreeWrapper.querySelectorAll('.subtitle-third-slide');
-        const getTimerSubtitle = this.getTimerCreator(1000 ,2400);
+        const getTimerSubtitle = this.getTimerCreator(1200 ,2600);
         const slideThreeSubtitleTimer = getTimerSubtitle(slideThreeSubtitleCollect);
         const justTryIt = slideThreeWrapper.querySelector('.just-try-it-wrapper');
 
