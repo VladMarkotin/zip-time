@@ -112,17 +112,38 @@
         </section>
         <section class="about-us-section white-background">
             <div class="inner-block">
-                <div class="about-us-wrapper element-animation">
+                <div class="about-us-wrapper ">
                     <div class="about-us-title-wrapper">
-                        <h2 class="about-us-title title-index-page">some title</h2>
+                        <h2 class="about-us-title title-index-page">Have you answered “Yeap” at <br class="br">least once?</h2>
                     </div>
                     <div class="about-us-text-wrapper">
-                        <p class="text-index-page">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem eveniet iusto magni temporibus. Perspiciatis non ut, natus deleniti odio aliquid ducimus perferendis saepe quibusdam veritatis qui sint harum similique consectetur inventore doloribus dolor quae dolores earum adipisci recusandae aut accusantium.</p>
+                        <p class="text-index-page">Welcome on board! Quipl gonna fix this points!</p>
                         
-                        <p class="text-index-page">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium, sunt, vero consequatur magni natus molestiae adipisci commodi quaerat quia pariatur exercitationem. Quia hic sint aut vel quisquam? Molestiae, laboriosam numquam, maxime quasi culpa, quo incidunt eligendi quia aperiam reprehenderit dolorum?</p>
+                        <ul class="about-us-list">
+                            <li class="about-us-li about-us-item element-animation">
+                                <span class="about-us-li-number text-index-page">1.</span>
+                                <p class="text-index-page">Begin planning! Every day no less then 2 required tasks. The crucial word is “required”. If at least one task was`t completed, the plan failed</p>
+                            </li>
+                            <li class="about-us-li about-us-item element-animation">
+                                <span class="about-us-li-number text-index-page">2.</span>
+                                <p class="text-index-page">Do it! You got all day. You may complete all tasks in any order until day isn`t over (23:59)</p>
+                            </li>
+                            <li class="about-us-li about-us-item element-animation">
+                                <span class="about-us-li-number text-index-page">3.</span>
+                                <p class="text-index-page">After task is done - rate yourself. Put mark from 15% to 100%. The only and most honest judge is you!</p>
+                            </li>
+                            <li class="about-us-li about-us-item element-animation">
+                                <span class="about-us-li-number text-index-page">4.</span>
+                                <p class="text-index-page">After all tasks have been done - close day plan. If you forget to do this before the end of the day, Quipl will do it itself!</p>
+                            </li>
+                            <li class="about-us-li about-us-item element-animation">
+                                <span class="about-us-li-number text-index-page">5.</span>
+                                <p class="text-index-page"><span class="red-text">Congratulations!</span> Just see your history, statistic and realize you are awesome!</p>
+                            </li>
+                        </ul>
                     </div>
                     <div class="about-us-img-wrapper">
-                        <img src="/images/index_page/home_slider1.jpg">
+                        <img src="/images/index_page/about_us.jpg">
                     </div>
                 </div>
             </div>

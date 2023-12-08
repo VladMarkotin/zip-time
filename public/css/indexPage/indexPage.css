@@ -474,25 +474,42 @@ ol {
   grid-template-rows: auto auto;
   grid-row-gap: 10px;
   grid-column-gap: 30px;
-  opacity: 0;
-  transition: all 0.55s ease;
-  transform: translateX(-10px);
-}
-.about-us-wrapper.element-show {
-  opacity: 1;
-  transform: translateX(0);
 }
 .about-us-wrapper .about-us-title-wrapper {
   grid-column: 1/3;
   display: flex;
 }
-.about-us-wrapper .about-us-text-wrapper p:not(:last-child) {
-  margin-bottom: 15px;
+.about-us-wrapper .about-us-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.about-us-wrapper .about-us-text-wrapper .about-us-list {
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.about-us-wrapper .about-us-text-wrapper .about-us-list .about-us-li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 8px;
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.about-us-wrapper .about-us-text-wrapper .about-us-list .about-us-li.element-show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.about-us-wrapper .about-us-text-wrapper .about-us-list .about-us-li .red-text {
+  color: #960018;
 }
 .about-us-wrapper .about-us-img-wrapper {
   position: relative;
   min-width: 450px;
   min-height: 300px;
+  box-shadow: 2px 2px 4px #444;
 }
 .about-us-wrapper .about-us-img-wrapper > img {
   position: absolute;

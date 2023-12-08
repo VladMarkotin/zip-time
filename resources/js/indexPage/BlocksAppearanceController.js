@@ -4,7 +4,9 @@ class BlocksAppearanceController {
     #ourAdvantagesTimer = null;
     #statisticsItems    = null;
     #statisticsTimer    = null;
-    #statisticsCounter  = null
+    #statisticsCounter  = null;
+    #aboutUsItems       = null;
+    #aboutUsTimer       = null;
 
     constructor(statisticsCounter) {
         this.#statisticsCounter = statisticsCounter;
@@ -14,11 +16,13 @@ class BlocksAppearanceController {
         this.#animatedElements = document.querySelectorAll('.element-animation');
         this.#ourAdvantagesItems = document.querySelectorAll('.our-advantages-item');
         this.#statisticsItems = document.querySelectorAll('.statistics-item');
+        this.#aboutUsItems = document.querySelectorAll('.about-us-item');
         if (this.#ourAdvantagesItems.length) this.#ourAdvantagesTimer = getTimer(this.#ourAdvantagesItems, 200);
         if (this.#statisticsItems.length) this.#statisticsTimer = getTimer(this.#statisticsItems, 150);
+        if (this.#aboutUsItems.length) this.#aboutUsTimer = getTimer(this.#aboutUsItems, 200);
 
         const options = {
-            threshold: [0.4],
+            threshold: [0.25],
         }
 
         const observer = new IntersectionObserver((entry) => {
@@ -28,8 +32,12 @@ class BlocksAppearanceController {
                 if (change.isIntersecting && !curentElement.classList.contains('element-show')) {
                     const isOuAdvItem = curentElement.classList.contains('our-advantages-item');
                     const isStatisticItem = curentElement.classList.contains('statistics-item');
+                    const isAboutUsItem = curentElement.classList.contains('about-us-item');
 
                     switch (true) {
+                        case isAboutUsItem:
+                            this.showList(change, this.#aboutUsTimer);
+                        break;
                         case isOuAdvItem:
                             this.showList(change, this.#ourAdvantagesTimer);
                         break;
