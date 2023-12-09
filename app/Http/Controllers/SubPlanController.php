@@ -114,13 +114,14 @@ class SubPlanController extends Controller
 
     public function completeSubTask(Request $request)
     {
-        $id = $request->get('task_id');
-        SubPlan::whereId($id)->update(['is_ready' => true]);
+        $id       = $request->get('task_id');
+        $is_ready = $request->get('is_task_ready');
+        SubPlan::whereId($id)->update(['is_ready' => $is_ready]);
         $parentTaskId = $this->getParentTaskId($id);
         return (
             response()->json([
                 'status' => 'success', 
-                'message' => 'Subtask has been completed',
+                'message' => 'subtask has been completed',
                 'completedPercent' =>  $this->subPlanService->countPercentOfCompletedWork(['task_id' => $parentTaskId]),
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)

@@ -617,7 +617,7 @@ export default {
                   steps: [
                   {  
                      tooltipClass: 'custom-tooltip first-slide',
-                     intro: 'Hello, dear user! Now you will be explained, how to use some basic functional application «Zip-time». We hope that we will manage to help you to plan your time efficiently and hope you will spend a good day with us!',
+                     intro: 'Hello, dear user! Now you will be explained, how to use some basic functional application «Quipl». We hope that we will manage to help you to plan your time efficiently and hope you will spend a good day with us!',
                   },
                   {  
                      element: document.getElementById('plan-wrapper'),

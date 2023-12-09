@@ -64,310 +64,96 @@
 		
 		<v-list>
 			<v-list-item>
-				<v-row class="m-0 p-0">
-					<v-col class="p-0">
-						<v-row class="m-0 p-0">
-							<v-col class="p-0 d-flex">
-								<v-list-item-content>Time:</v-list-item-content>
-							</v-col>
-							<v-col class="p-0">
-								<v-list-item-content class="align-end" v-if="item.time.includes('00:')">{{item.time}}
-									minutes
-								</v-list-item-content>
-								<v-list-item-content class="align-end" v-else-if="item.time.includes('01:00')">{{item.time}}
-									hour
-								</v-list-item-content>
-								<v-list-item-content class="align-end" v-else>{{item.time}}
-									hours
-								</v-list-item-content>
-							</v-col>
-						</v-row>
-					</v-col>
-					<v-col class="p-0" cols="auto" style="min-width: 53px;">
-						<v-dialog
-							v-model="dialog"
-							persistent
-							width="500"
-							>
-							<template v-slot:activator="{ props }">
-								<v-btn icon @click="dialog=true">
-									<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
-								</v-btn>
-							</template>
-							<v-card>
-								<v-card-title class="text-h5">
-								Edit card
-								</v-card-title>
-								<v-card-text>
-									Edit task`s priority:
-									
-									<v-select
-										:items="priorities"
-										v-model= priority
-										label="Set Priority"
-										solo
-									></v-select>
-									 Edit task`s time: 
-									 <v-time-picker
-									   v-model="time"
-									   color="red">
-									</v-time-picker>
-								</v-card-text>
-								<v-card-actions>
-								<v-spacer></v-spacer>
-								<v-btn
-									color="green-darken-1"
-									variant="text"
-									@click="dialog = false"
-								>
-									Cancel
-								</v-btn>
-								<v-btn
-									color="green-darken-1"
-									variant="text"
-									@click="changeTime(item)"
-								>
-									Save
-								</v-btn>
-								</v-card-actions>
-							</v-card>
-							</v-dialog>
-					</v-col>
-				</v-row>
-				
+				<v-list-item-content>Time:</v-list-item-content>
+				<v-list-item-content class="align-end" v-if="item.time.includes('00:')">{{item.time}}
+					 minutes
+				</v-list-item-content>
+                <v-list-item-content class="align-end" v-else-if="item.time.includes('01:00')">{{item.time}}
+					 hour
+				</v-list-item-content>
+				<v-list-item-content class="align-end" v-else>{{item.time}}
+					 hours
+				</v-list-item-content>
+				<v-dialog
+					v-model="dialog"
+					persistent
+					width="500"
+					>
+					<template v-slot:activator="{ props }">
+						<template>
+							<EditButton 
+							@click="dialog=true"
+							/>
+						</template>
+					<!-- <v-btn icon @click="dialog=true"> тут пока не удалять
+						<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
+					</v-btn> --> 
+				</template>
+					<v-card>
+						<v-card-title class="text-h5">
+						Edit card
+						</v-card-title>
+						<v-card-text>
+							Edit task`s priority:
+							
+							<v-select
+								:items="priorities"
+								v-model= priority
+								label="Set Priority"
+								solo
+							></v-select>
+							 Edit task`s time: 
+							 <v-time-picker
+							   v-model="time"
+							   color="red">
+							</v-time-picker>
+						</v-card-text>
+						<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn
+							color="green-darken-1"
+							variant="text"
+							@click="dialog = false"
+						>
+							Cancel
+						</v-btn>
+						<v-btn
+							color="green-darken-1"
+							variant="text"
+							@click="changeTime(item)"
+						>
+							Save
+						</v-btn>
+						</v-card-actions>
+					</v-card>
+					</v-dialog>
 			</v-list-item>
 
 			<v-list-item>
-				<v-row class="p-0 m-0">
-					<v-col class="p-0">
-						<v-row class="p-0 m-0">
-							<v-col class="p-0 d-flex">
-								<v-list-item-content>Details:</v-list-item-content>
-							</v-col>
-							<v-col class="p-0">
-								<v-list-item-content class="align-end">
-									<v-list-item-content class="p-0 overflow-visible">
-										<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
-									</v-list-item-content>
-								</v-list-item-content>
-							</v-col>
-						</v-row>
-					</v-col>
-					<v-col class="p-0" cols="auto" style="min-width: 53px;">
-						<div 
-						class="d-flex flex-column align-self-start"
-						>
-							<CreateSubplanGPT 
-								:requestData="{
-									label: 'Request: create subplan for',
-									taskName: item.taskName,
-									taskHash: item.hash,
-									taskId: item.taskId,
-								}"
-							/>
-							<v-dialog
-								v-model="dialogDetails"
-								scrollable
-								width="auto"
-								>
-								<template v-slot:activator="{ props }">
-									<v-btn
-									icon
-									v-bind="props"
-									@click="getAllDetailsForTask(item)"
-									:id="!num ? 'card-details' : false"
-									>
-									<v-icon color="#D71700">{{ icons.mdiChartGantt }}</v-icon>
-									</v-btn>
-								</template>
-								<v-card
-											width="800"
-											title="This is a title"
-											subtitle="This is a subtitle"
-											text="This is content">
-										<v-card-title>
-											<v-row>
-												<v-col >
-													<p class="text-xs-center">Plan`s details</p>
-												</v-col>
-												<v-col>
-													<v-progress-circular
-													:rotate="360"
-													:size="100"
-													:width="10"
-													:model-value="completedPercent"
-													color="red"
-													:value="completedPercent"
-													>
-													{{ completedPercent }}
-												</v-progress-circular>
-												</v-col>
-											</v-row>
-										</v-card-title>
-										<v-divider></v-divider>
-										<v-card-text style="height: 300px;">
-											<template>
-												<v-row>
-													<v-col>
-
-														<v-text-field
-														width="20px"
-														v-model="subTasks.title"
-														:counter="256"
-														label="Subtask title"
-														v-on:keyup.enter="addDetail"
-														required
-														></v-text-field>
-													</v-col>
-													<v-col>
-
-													<v-text-field
-													width="20px"
-													v-model="subTasks.text"
-													v-on:keyup.enter="addDetail"
-													:counter="1000"
-													label="Subtask details"
-													required
-													></v-text-field>
-													</v-col>
-											
-													<v-col>
-														<v-checkbox
-														 label="is required subtask?"
-														 v-model="subTasks.checkpoint">
-														</v-checkbox>
-													</v-col>
-													<v-col>
-														<v-btn icon>
-															<v-icon md="1"
-															color="#D71700"
-															v-on:click="addDetail(item)"> {{ icons.mdiPlex }}
-														</v-icon>
-													</v-btn>
-													</v-col>
-										
-												</v-row>
-												<v-divider></v-divider>
-												<v-row>
-
-													<template>
-														<!--Display subTask-->
-														<v-expansion-panels>
-															<v-expansion-panel
-															v-for="(v, i) in details"
-															:key="i"
-															>
-															<v-expansion-panel-header
-															>
-															<p class="text-md-center">{{ v.title }} </p> 
-																<v-icon color="#D71700" v-if="v.checkpoint == 1">
-																	{{ icons.mdiExclamation }}
-															
-																</v-icon>	
-																<v-btn icon @click="editTask(v)">
-																	<v-icon color="#D71700">{{ icons.mdiPencil }}</v-icon>
-																</v-btn>
-																<v-icon color="#D71700" v-if="v.is_ready">
-																	{{ icons.mdiMarkerCheck }}
-																</v-icon>
-															</v-expansion-panel-header>
-															<v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
-																<v-divider></v-divider>
-																{{ v.text }}
-																<v-row>
-																	<v-col>
-
-																		<v-checkbox
-																			v-model="v.is_ready"
-																			label="Is Ready?"
-																			color="red"
-																			@change="completed(v)"
-																			hide-details
-																		></v-checkbox>
-																	</v-col>
-																	<v-col>
-
-																		<v-btn icon v-on:click="deleteSubTask(v)"
-																		v-if="v.checkpoint != 1"> 
-																			<v-icon md="1"
-																				color="#D71700">
-																				{{ icons.mdiDelete }}
-																			</v-icon>
-																		</v-btn>
-																	</v-col>
-																</v-row>
-															</v-expansion-panel-content>
-													
-														</v-expansion-panel>
-														</v-expansion-panels>
-													</template>
-												</v-row>
-											</template>
-										</v-card-text>
-										<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlertInDetails">{{ alert.text }}</v-alert> 
-										<v-divider></v-divider>
-										<v-card-actions>
-											<v-row>
-												<v-col>
-
-													<v-btn
-													color="blue-darken-1"
-													variant="text"
-													@click="dialogDetails = false"
-													>
-													Close
-													</v-btn>
-												</v-col>
-										
-											</v-row>
-										</v-card-actions>
-								</v-card>
-						</v-dialog>
-						<v-dialog
-							v-model="dialogEditSubTask"
-							persistent
-							width="500"
-							>
-					
-							<v-card>
-								<v-card-title class="text-h5">
-								Edit Subtask
-								</v-card-title>
-								<v-card-text>
-									Edit Subtask`s title:
-									<v-text-field class="ml-1"  v-model="subTasks.title">
-								
-									</v-text-field>
-									Edit Subtask`s text:
-									<v-text-field class="ml-1"  v-model="subTasks.text">
-								
-									</v-text-field>
-							
-								</v-card-text>
-								<v-card-actions>
-								<v-spacer></v-spacer>
-								<v-btn
-									color="green-darken-1"
-									variant="text"
-									@click="dialogEditSubTask = false"
-								>
-									Cancel
-								</v-btn>
-								<v-btn
-									color="green-darken-1"
-									variant="text"
-									@click="saveChangesInSubtask({ title: subTasks.title, text: subTasks.text })"
-								>
-									Save
-								</v-btn>
-								</v-card-actions>
-							</v-card>
-							</v-dialog>	 
-						</div>
-					</v-col>
-				</v-row>
-				
-				
+				<v-list-item-content>Details:</v-list-item-content>
+				<v-list-item-content class="align-end">
+					<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
+				</v-list-item-content>
+				<template>
+					<AddDetails 
+					:num              = "num"
+					:item             = "item"
+					:details          = "details"
+					:completedPercent = "completedPercent"
+					@updateDetails          = "updateDetails"
+					@updateCompletedPercent = "updateCompletedPercent"
+					/>
+				</template>
+				<template>
+					<CreateSubplanGPT 
+					:requestData="{
+						label: 'Request: create subplan for',
+						taskName: item.taskName,
+						taskHash: item.hash,
+						taskId: item.taskId,
+					}"
+					/>
+				</template>
 			</v-list-item>
 			<v-list-item>
 				<v-row class="p-0 m-0">
@@ -523,13 +309,15 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline, mdiChartGantt, mdiPlex, mdiDelete,
-		mdiMarkerCheck, mdiExclamation, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
+	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline,
+		mdiMarkerCheck, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
 	import AddHashCodeButton from '../UI/AddHashCodeButton.vue';
 	import Preloader from '../UI/Preloader.vue';
 	import CreateSubplanGPT from '../dialogs/CreateSubplanGPT.vue'
+	import AddDetails from '../dialogs/AddDetails/AddDetails.vue';
+	import EditButton from '../UI/EditButton.vue';
 	export default
 	{
 		props : ['item', 'num'],
@@ -537,17 +325,15 @@
 		{
 			return {
 					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline,
-						 mdiChartGantt, mdiPlex, mdiDelete, mdiExclamation,mdiCircle, mdiMusicAccidentalSharp  }, //mdiContentSaveCheckOutline
+						mdiCircle, mdiMusicAccidentalSharp  }, //mdiContentSaveCheckOutline
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
-					isShowAlertInDetails: false,
 					alert      : {type: 'success', text: 'success'},
 					isReady    : true,
 					dialog     : false,  
 					dialogEditSubTask : false, 
 					subTaskTitle: false,
 					dialogNotes: false,
-					dialogDetails: false,
 					checked: true,
 					time       : this.item.time,
 					priority   : this.item.priority,
@@ -595,94 +381,19 @@
 					defaultConfigs: {},
 				}
 			},
-		components : {Alert, AddHashCode, AddHashCodeButton, Preloader, CreateSubplanGPT},
+		components : {Alert, AddHashCode, AddHashCodeButton, Preloader, CreateSubplanGPT, AddDetails, EditButton},
 		methods :
 		{
 			closeHashCodeDialog() {
       	   		this.isShowAddHashCodeDialog = false;
       		},
-
-			getAllDetailsForTask(item) {
-				this.dialogDetails = true
-				axios.post('/get-sub-tasks',{task_id : item.taskId})
-				.then((response) => {
-					this.details = []
-					response.data.data.forEach(element => {
-						this.details.push({
-							title: element.title,
-							text:  element.text,
-							taskId: element.id,
-							is_ready: element.is_ready, 
-							checkpoint: element.checkpoint
-						}) 
-					});
-					this.completedPercent = response.data.completedPercent
-					//console.log(this.details)
-					this.setAlertData(response.data.status, response.data.message)
-				  })
+				
+			updateDetails(details) {
+				this.details = details;
 			},
 
-			addDetail(item){
-				//console.log(item.taskId)
-				this.subTasks.task_id = this.item.taskId
-				this.details.push(this.subTasks) 
-				this.createSubPlan(this.subTasks)
-				this.subTasks = {};
-			},
-
-			createSubPlan(item){
-				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
-				.then((response) => {
-					//console.log(response)
-					this.isShowAlertInDetails = true;
-					this.setAlertData(response.data.elements, response.data.message)
-					this.completedPercent = response.data.completedPercent
-					item.taskId = response.data.taskId
-					setTimeout( () => {
-						this.isShowAlertInDetails = false;
-						//debugger;
-					},3000)
-				  })
-				  .catch(function (error) {
-					console.log(error)
-				  })
-			},
-
-			deleteSubTask(item){
-				var index = this.details.indexOf(item)
-				console.log(item)
-				axios.post('/del-sub-task',{task_id : item.taskId})
-				.then((response) => {
-					//this.isShowAlert = true;
-					console.log(this.details)
-					this.setAlertData(response.data.status, response.data.message)
-					this.details.splice(index, 1);
-					this.completedPercent = response.data.completedPercent
-				})
-			},
-
-			completed(item){
-				var index = this.details.indexOf(item)
-				axios.post('/complete-sub-task',{task_id : item.taskId})
-				.then((response) => {
-					//this.isShowAlert = true;
-					console.log(this.details)
-					this.completedPercent = response.data.completedPercent
-					this.setAlertData(response.data.status, response.data.message)
-					//this.details.splice(index, 1);
-				})
-			},
-
-			saveNotes(){
-				axios.post('/add-sub-task',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
-				.then((response) => {
-					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message)
-					setTimeout( () => {
-						this.isShowAlert = false;
-						//debugger;
-					},3000)
-				  })
+			updateCompletedPercent(compPercent) {
+				this.completedPercent = compPercent;
 			},
 
 			/*Notes*/
@@ -715,7 +426,7 @@
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
 				.then((response) => {
 					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message)
+					this.setAlertData({type: response.data.status, text: response.data.message})
 					setTimeout( () => {
 						this.isShowAlert = false;
 						//debugger;
@@ -735,6 +446,7 @@
 					},3000)
 				  })
 			},
+			
 			sendMark(item)
 			{	
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
@@ -748,13 +460,9 @@
 					},3000)
 				  })
 			},
-			toggleAlertDialog()
-			{
-				this.isShowAlert = !this.isShowAlert
-			},
 			
-			setAlertData(type,text)
-			{
+			setAlertData(type, text)
+			{	
 				this.alert.type = type
 				this.alert.text = text
 			},
@@ -779,35 +487,6 @@
 
 				  	this.newHashCodeData = {...this.newHashCodeData, time: this.time, priority: this.priority.toString()};
 				}
-			},
-			
-			editTask(item) {
-				this.dialogEditSubTask = true
-				this.subTasks.task_id = item.taskId
-				this.subTasks.title = item.title
-				this.subTasks.text = item.text
-				console.log(item)
-			},
-			saveChangesInSubtask(item){
-				//this.subTasks.task_id = item.taskId
-				this.subTasks.title = item.title
-				this.subTasks.text = item.text		
-						
-				axios.post('/edit-subtask',{id : this.subTasks.task_id , title : this.subTasks.title , text: this.subTasks.text }) // type : item.type
-					.then((response) => {
-						
-						if (response.data.status == 'success') {
-							item.title = this.subTasks.title
-							item.text = this.subTasks.text
-							this.dialogEditSubTask = false
-							this.dialog = false
-						}
-						this.setAlertData(response.data.status, response.data.message)
-						setTimeout( () => {
-							this.isShowAlert = false;
-						},3000)
-				  })
-				this.subTasks = {};
 			},
 
 			editHashCodeData() {
@@ -854,10 +533,6 @@
 			this.editHashCodeData();
 			this.getConfigs(); 
 		},
-
-		mounted() {
-			
-		}
 	}
 	
 </script>
