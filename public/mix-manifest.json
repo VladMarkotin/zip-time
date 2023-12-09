@@ -1,5 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/IndexPageController.js": "/js/IndexPageController.js",
+    "/js/NavMenu.js": "/js/NavMenu.js",
     "/css/customTooltip.css": "/css/customTooltip.css",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/css/indexPage/indexPageMedia.css": "/css/indexPage/indexPageMedia.css",
+    "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css"
 }
