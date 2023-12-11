@@ -45,24 +45,38 @@ class SubPlanService
     private function getTaskQuantity(array $data)
     {
         //have to sum current subtasks and prev undone tasks
-        $subPlanQuantity = SubPlan::where([['task_id', $data['task_id'] ] ])
-        ->get()
-        ->count();
+        $savedTaskId = SubPlan::select('saved_task_id')->where([['task_id', $data['task_id'] ] ])->get()->toArray()[0]['saved_task_id']; //вот это точно надо поправить
+
+        if ($savedTaskId) {
+            $subPlanQuantity = SubPlan::where([['saved_task_id', $savedTaskId ]])
+            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->get()
+            ->count();
+        } else {
+            $subPlanQuantity = SubPlan::where([['task_id', $data['task_id']]])
+            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->get()
+            ->count();
+        }
+        
+
         $prevUndoneSubPlan = SubPlan::where([['saved_task_id', $this->getSavedTaskId($data) ]])
-        ->where('created_at', '<', date('Y-m-d').' 00:00:00')
-        ->where('is_ready', 0)
+        ->where('is_failed', 1)
         ->get()
         ->count();
         //die(var_dump($subPlanQuantity + $prevUndoneSubPlan));//+ $prevUndoneSubPlan
+
         return ($subPlanQuantity + $prevUndoneSubPlan);
     }
 
     private function completedTaskQuantity(array $data)
     {
         $doneSubPlanQuantity = SubPlan::where([['task_id', $data['task_id'] ], ['is_ready', 1] ])
-        ->get()->count();
+        ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+        ->get()
+        ->count();
         $prevDoneSubPlanQuantity = SubPlan::where([['saved_task_id', $this->getSavedTaskId($data) ]])
-        ->where('updated_at', date('Y-m-d'))
+        ->where('is_failed', 1)
         ->where('is_ready', 1)
         ->get()
         ->count();
