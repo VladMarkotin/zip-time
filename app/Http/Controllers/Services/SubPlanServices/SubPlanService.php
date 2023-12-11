@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\Services\SubPlanServices;
 
-
 use App\Models\SubPlan;
 use App\Models\Tasks;
 use App\Models\SavedTask;
@@ -70,5 +69,45 @@ class SubPlanService
         //die(var_dump($prevDoneSubPlanQuantity));
         
         return ($prevDoneSubPlanQuantity + $doneSubPlanQuantity);
+    }
+
+    public function addIsFailedStatus()
+    {
+        $currentUserSavTaskId = SavedTask::select('id')
+        ->where('user_id', Auth::id())
+        ->get()
+        ->toArray();
+
+        $currentSubtasksId = SubPlan::select(['id'])
+        ->where('is_ready', 0)
+        ->where('created_at', '<', date('Y-m-d').' 00:00:00')
+        ->where('is_failed', 0)
+        ->whereIn('saved_task_id', $currentUserSavTaskId)
+        ->get()
+        ->toArray();
+
+        if (count($currentSubtasksId)) {
+            foreach($currentSubtasksId as $id) {
+                SubPlan::whereId($id)->update(['is_failed' => 1]);
+            };
+        }
+
+        return $currentUserSavTaskId;
+    }
+
+    public function removeCheckpointStatus($currentUserSavTaskId) {
+        $currentSubtasksId = SubPlan::select(['id'])
+        ->where('is_ready', 0)
+        ->where('checkpoint', 1)
+        ->where('created_at', '<', date('Y-m-d').' 00:00:00')
+        ->whereIn('saved_task_id', $currentUserSavTaskId)
+        ->get()
+        ->toArray();
+
+        if (count($currentSubtasksId)) {
+            foreach($currentSubtasksId as $id) {
+                SubPlan::whereId($id)->update(['checkpoint' => 0]);
+            };
+        }
     }
 }

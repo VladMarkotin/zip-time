@@ -69,6 +69,9 @@ class SubPlanController extends Controller
 
     public function getSubPlan(Request $request)
     {
+        $currentUserSavTaskId = $this->subPlanService->addIsFailedStatus();
+        $this->subPlanService->removeCheckpointStatus($currentUserSavTaskId);
+
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
         $subPlan = SubPlan::where('task_id', $request->get('task_id'))->get()->toArray();
         //die(var_dump($request->get('task_id'))); 
