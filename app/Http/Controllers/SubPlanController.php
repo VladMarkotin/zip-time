@@ -77,11 +77,11 @@ class SubPlanController extends Controller
 
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
         $subPlan = SubPlan::where('task_id', $request->get('task_id'))->where('created_at', '>', date('Y-m-d').' 00:00:00')->get()->toArray();
-        //die(var_dump($request->get('task_id'))); 
-        //die(var_dump($savedTaskId));   
+        
+        // die(var_dump($request->get('task_id'))); 
+        // die(var_dump($savedTaskId));   
 
         if ($savedTaskId) {
-
             $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
             ->where('is_failed', 1)
             ->get()
@@ -93,11 +93,12 @@ class SubPlanController extends Controller
             }
         }
        //die(var_dump(count($subPlan)));
+
         return (
             response()->json([
                 'status' => 'success', 
                 'data' => $subPlan, 
-                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $request->get('task_id')]), 
+                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $request->get('task_id')]),
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
@@ -106,13 +107,14 @@ class SubPlanController extends Controller
     public function delSubTask(Request $request)
     {
         $id = $request->get('task_id');
-        $subPlan = SubPlan::select('task_id')->where('id',$id)->get()->toArray();
+        // $subPlan = SubPlan::select('task_id')->where('id',$id)->get()->toArray();
+        $lastTaskId = $this->getLastTaskId($id);
         $res = SubPlan::where('id',$id)->delete();
         //die(var_dump($subPlan[0]['task_id']));
         return (
             response()->json([
                 'status' => 'success', 
-                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $subPlan[0]['task_id']]), 
+                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $lastTaskId]), 
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
@@ -123,8 +125,8 @@ class SubPlanController extends Controller
         $id       = $request->get('task_id');
         $is_ready = $request->get('is_task_ready');
         SubPlan::whereId($id)->update(['is_ready' => $is_ready]);
-        $parentTaskId = $this->getParentTaskId($id);
-        $completedPercent = $this->subPlanService->countPercentOfCompletedWork(['task_id' => $parentTaskId]);
+        $lastTaskId = $this->getLastTaskId($id);
+        $completedPercent = $this->subPlanService->countPercentOfCompletedWork(['task_id' => $lastTaskId]);
 
         return (
             response()->json([
@@ -150,10 +152,15 @@ class SubPlanController extends Controller
         );
     }
 
-    private function getParentTaskId($id)
-    {
+    private function getLastTaskId($id)
+    {   
+        $savedTaskId = SubPlan::find($id);
+        
+        if ($savedTaskId) {
+            $savedTaskId = $savedTaskId->saved_task_id;
+            return $subPlan = SubPlan::select('task_id')->where('saved_task_id', $savedTaskId)->orderBy('created_at', 'desc')->get()->toArray()[0]['task_id'];
+        } 
         $subPlan = SubPlan::select('task_id')->where('id',$id)->get()->toArray();
-
-        return $subPlan[0]['task_id'];
+        return count($subPlan) ? $subPlan[0]['task_id'] : $subPlan;
     }
 }

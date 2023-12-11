@@ -45,7 +45,11 @@ class SubPlanService
     private function getTaskQuantity(array $data)
     {
         //have to sum current subtasks and prev undone tasks
-        $savedTaskId = SubPlan::select('saved_task_id')->where([['task_id', $data['task_id'] ] ])->get()->toArray()[0]['saved_task_id']; //вот это точно надо поправить
+        $savedTaskId = SubPlan::select('saved_task_id')->where([['task_id', $data['task_id'] ] ])->get()->toArray();
+
+        if (count($savedTaskId)) {
+            $savedTaskId = $savedTaskId[0]['saved_task_id'];
+        }
 
         if ($savedTaskId) {
             $subPlanQuantity = SubPlan::where([['saved_task_id', $savedTaskId ]])
