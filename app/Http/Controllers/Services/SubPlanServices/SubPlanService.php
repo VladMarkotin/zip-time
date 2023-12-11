@@ -58,7 +58,7 @@ class SubPlanService
             ->get()
             ->count();
         }
-        
+
 
         $prevUndoneSubPlan = SubPlan::where([['saved_task_id', $this->getSavedTaskId($data) ]])
         ->where('is_failed', 1)
@@ -121,6 +121,22 @@ class SubPlanService
         if (count($currentSubtasksId)) {
             foreach($currentSubtasksId as $id) {
                 SubPlan::whereId($id)->update(['checkpoint' => 0]);
+            };
+        }
+    }
+
+    public function removeIsFailedFromReady($currentUserSavTaskId) {
+        $readyFailedSubtasksId =  SubPlan::select(['id'])
+        ->where('is_ready', 1)
+        ->where('is_failed', 1)
+        ->where('updated_at', '<', date('Y-m-d').' 00:00:00') //тут добавить поле в котором будет дата последнеей активации чекбокса после которого статус реди
+        ->whereIn('saved_task_id', $currentUserSavTaskId)
+        ->get()
+        ->toArray();
+        
+        if (count($readyFailedSubtasksId)) {
+            foreach($readyFailedSubtasksId as $id) {
+                SubPlan::whereId($id)->update(['is_failed' => 0]);
             };
         }
     }
