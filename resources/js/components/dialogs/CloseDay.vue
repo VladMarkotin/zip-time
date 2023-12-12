@@ -36,10 +36,12 @@
 							multiple
 							active-class="primary--text"
 							v-model="chosenChips"
+							selected-class="text-primary"
 							>
 							<v-chip
 								v-for="tag in tags"
 								:key="tag"
+								:input-value="chosenChips.includes(tag)"
 							>
 								{{ tag }}
 							</v-chip>
@@ -162,11 +164,23 @@
 				} 
 			},
 			async created() {
-				await axios.post('/getSavedTasks')
+				await axios.post('/getSavedTasks', {selection: 1}) //get most popular hash codes for next week`s day  
 				.then((response) => {
 					this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
-					
+					/*for (let i = 0; i < this.tags.length/2; i++) {
+						this.chosenChips.push(this.tags[i])
+					}
+					console.log(this.chosenChips)*/
 				})
+			},
+			async selectFirstThreeChips() {
+				// Очистите массив selectedChips перед выбором новых элементов
+				//this.chosenChips = [];
+
+				// Выделите первые 3 чипа и добавьте их значения в массив selectedChips
+				for (let i = 0; i < 3; i++) {
+					this.chosenChips(this.tags[i]);
+				}
 			},
 			async mounted() {
 			try {

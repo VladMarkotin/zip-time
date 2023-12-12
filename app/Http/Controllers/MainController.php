@@ -156,10 +156,15 @@ class MainController
         return response()->json($createResponce('Hash code already exists', 'error'));
     }
 
-    public function getSavedTasks()
+    public function getSavedTasks(Request $request) //check it later
     {
         $id = Auth::id();
-        $hashCodes = $this->savedTaskRepository->getUserHashCodes($id);
+        $selection = $request->input('selection');
+        if (isset($selection)) {
+            $hashCodes = $this->savedTaskRepository->getMostPopularHashesOnNextDay($id);
+        } else{
+            $hashCodes = $this->savedTaskRepository->getUserHashCodes($id);
+        }
 
         return response()->json([
             'id' => $id,
