@@ -76,11 +76,27 @@ class SubPlanController extends Controller
         }
 
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
-        $subPlan = SubPlan::where('task_id', $request->get('task_id'))->where('created_at', '>', date('Y-m-d').' 00:00:00')->get()->toArray();
-        
-        // die(var_dump($request->get('task_id'))); 
-        // die(var_dump($savedTaskId));   
 
+        $id = $request->get('task_id');
+        
+        if ($savedTaskId) {
+            $subPlan = SubPlan::where([['saved_task_id', $savedTaskId ]])
+            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->get()
+            ->toArray();
+
+            $lastId = count($subPlan) ? [$subPlan[count($subPlan) - 1]] : []; //тут сделать нормальную сортировку
+        } else {
+            $subPlan = SubPlan::where('task_id', $request->get('task_id'))->where('created_at', '>', date('Y-m-d').' 00:00:00')->get()->toArray();
+
+            $lastId = SubPlan::select('id')
+            ->where('task_id', $id)
+            ->get()
+            ->toArray();
+        }
+
+        $lastTaskId = count($lastId) ? $this->getLastTaskId($lastId[0]['id']) : null;
+        
         if ($savedTaskId) {
             $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
             ->where('is_failed', 1)
@@ -98,7 +114,7 @@ class SubPlanController extends Controller
             response()->json([
                 'status' => 'success', 
                 'data' => $subPlan, 
-                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $request->get('task_id')]),
+                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $lastTaskId ? $lastTaskId : $request->get('task_id')]),
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );

@@ -75,10 +75,30 @@ class SubPlanService
 
     private function completedTaskQuantity(array $data)
     {
-        $doneSubPlanQuantity = SubPlan::where([['task_id', $data['task_id'] ], ['is_ready', 1] ])
-        ->where('created_at', '>', date('Y-m-d').' 00:00:00')
-        ->get()
-        ->count();
+        $savedTaskId = SubPlan::select('saved_task_id')->where([['task_id', $data['task_id'] ] ])->get()->toArray();
+
+        if (count($savedTaskId)) {
+            $savedTaskId = $savedTaskId[0]['saved_task_id'];
+        }
+
+        if ($savedTaskId) {
+            $doneSubPlanQuantity = SubPlan::where([['saved_task_id', $savedTaskId ]])
+            ->where('is_ready', 1)
+            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->get()
+            ->count();
+        } else {
+            $doneSubPlanQuantity = SubPlan::where([['task_id', $data['task_id']]])
+            ->where('is_ready', 1)
+            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->get()
+            ->count();
+        }
+
+        // $doneSubPlanQuantity = SubPlan::where([['task_id', $data['task_id'] ], ['is_ready', 1] ])
+        // ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+        // ->get()
+        // ->count();
         $prevDoneSubPlanQuantity = SubPlan::where([['saved_task_id', $this->getSavedTaskId($data) ]])
         ->where('is_failed', 1)
         ->where('is_ready', 1)
