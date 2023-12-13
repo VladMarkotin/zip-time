@@ -41,7 +41,7 @@ class SavedTask2Repository
            WHERE t2.user_id=$id
           AND DAYOFWEEK(t2.date) = DAYOFWEEK(now() + interval 1 day)
           AND t1.hash_code <> '#'
-          AND s.status=$id
+          AND s.status=$status
          GROUP BY t1.hash_code
            order by t1.type DESC, t1.priority DESC, num DESC";
         $result = DB::select($query);
