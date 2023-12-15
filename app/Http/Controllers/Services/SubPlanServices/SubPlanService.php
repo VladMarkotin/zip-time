@@ -109,59 +109,58 @@ class SubPlanService
         return ($prevDoneSubPlanQuantity + $doneSubPlanQuantity);
     }
 
-    public function addIsFailedStatus()
-    {
-        $currentUserSavTaskId = SavedTask::select('id')
+    public function getCurrentUserSavTasksId() {
+        $currentUserSavTasksId = SavedTask::select('id')
         ->where('user_id', Auth::id())
         ->get()
         ->toArray();
 
+        return $currentUserSavTasksId;
+    }
+
+    public function addIsFailedStatus($currentUserSavTasksId)
+    {
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
         ->where('created_at', '<', date('Y-m-d').' 00:00:00')
         ->where('is_failed', 0)
-        ->whereIn('saved_task_id', $currentUserSavTaskId)
+        ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
 
         if (count($currentSubtasksId)) {
-            foreach($currentSubtasksId as $id) {
-                SubPlan::whereId($id)->update(['is_failed' => 1]);
-            };
+            SubPlan::whereIn('id', $currentSubtasksId)->update(['is_failed' => 1]);
         }
-
-        return $currentUserSavTaskId;
     }
 
-    public function removeCheckpointStatus($currentUserSavTaskId) {
+    public function removeCheckpointStatus($currentUserSavTasksId) 
+    {
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
         ->where('checkpoint', 1)
         ->where('created_at', '<', date('Y-m-d').' 00:00:00')
-        ->whereIn('saved_task_id', $currentUserSavTaskId)
+        ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
 
         if (count($currentSubtasksId)) {
-            foreach($currentSubtasksId as $id) {
-                SubPlan::whereId($id)->update(['checkpoint' => 0]);
-            };
+            SubPlan::whereIn('id', $currentSubtasksId)->update(['checkpoint' => 0]);
         }
     }
 
-    public function removeIsFailedFromReady($currentUserSavTaskId) {
+    public function removeIsFailedFromReady($currentUserSavTasksId) 
+    {
         $readyFailedSubtasksId =  SubPlan::select(['id'])
         ->where('is_ready', 1)
         ->where('is_failed', 1)
-        ->where('updated_at', '<', date('Y-m-d').' 00:00:00') //тут добавить поле в котором будет дата последнеей активации чекбокса после которого статус реди
-        ->whereIn('saved_task_id', $currentUserSavTaskId)
+        ->whereNotNull('done_at')
+        ->where('done_at', '<', date('Y-m-d').' 00:00:00')
+        ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
         
         if (count($readyFailedSubtasksId)) {
-            foreach($readyFailedSubtasksId as $id) {
-                SubPlan::whereId($id)->update(['is_failed' => 0]);
-            };
+            SubPlan::whereIn('id', $readyFailedSubtasksId)->update(['is_failed' => 0]);
         }
     }
 }

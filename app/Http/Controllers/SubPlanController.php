@@ -69,10 +69,12 @@ class SubPlanController extends Controller
 
     public function getSubPlan(Request $request)
     {
-        $currentUserSavTaskId = $this->subPlanService->addIsFailedStatus();
-        if (count($currentUserSavTaskId)) {
-            $this->subPlanService->removeCheckpointStatus($currentUserSavTaskId);
-            $this->subPlanService->removeIsFailedFromReady($currentUserSavTaskId);
+        $currentUserSavTasksId = $this->subPlanService->getCurrentUserSavTasksId();
+
+        if (count($currentUserSavTasksId)) {
+            $this->subPlanService->addIsFailedStatus($currentUserSavTasksId);
+            $this->subPlanService->removeCheckpointStatus($currentUserSavTasksId);
+            $this->subPlanService->removeIsFailedFromReady($currentUserSavTasksId);
         }
 
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
@@ -144,6 +146,8 @@ class SubPlanController extends Controller
         $lastTaskId = $this->getLastTaskId($id);
         $completedPercent = $this->subPlanService->countPercentOfCompletedWork(['task_id' => $lastTaskId]);
 
+        $this->editDoneAtColumn($id, $is_ready);
+
         return (
             response()->json([
                 'status' => 'success', 
@@ -152,6 +156,12 @@ class SubPlanController extends Controller
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
+    }
+
+    private function editDoneAtColumn($id, $is_ready) 
+    {
+        $date = !empty($is_ready) ? date('Y-m-d H:i:s') : null;
+        SubPlan::whereId($id)->update(['done_at' => $date]);
     }
 
     public function editSubTask(Request $request)
