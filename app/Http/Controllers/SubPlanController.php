@@ -59,7 +59,7 @@ class SubPlanController extends Controller
         /**end */
         //die(var_dump($savedTaskId));
 
-        $userTime = $this->subPlanService->getUserTime();
+        $userTime = $this->subPlanService->getUserTime('Y-m-d H:i:s');
         if (!empty($userTime)) {
             $subPlan['created_at_user_time'] = $userTime;
         }
@@ -77,6 +77,7 @@ class SubPlanController extends Controller
     public function getSubPlan(Request $request)
     {
         $currentUserSavTasksId = $this->subPlanService->getCurrentUserSavTasksId();
+        $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
 
         if (count($currentUserSavTasksId)) {
             $this->subPlanService->addIsFailedStatus($currentUserSavTasksId);
@@ -90,13 +91,13 @@ class SubPlanController extends Controller
         
         if ($savedTaskId) {
             $subPlan = SubPlan::where([['saved_task_id', $savedTaskId ]])
-            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->where('created_at', '>', $currentUserTime.' 00:00:00')
             ->get()
             ->toArray();
 
             $lastId = count($subPlan) ? [$subPlan[count($subPlan) - 1]] : []; //тут сделать нормальную сортировку
         } else {
-            $subPlan = SubPlan::where('task_id', $request->get('task_id'))->where('created_at', '>', date('Y-m-d').' 00:00:00')->get()->toArray();
+            $subPlan = SubPlan::where('task_id', $request->get('task_id'))->where('created_at', '>', $currentUserTime.' 00:00:00')->get()->toArray();
 
             $lastId = SubPlan::select('id')
             ->where('task_id', $id)
@@ -169,7 +170,7 @@ class SubPlanController extends Controller
 
     private function editDoneAtColumn($id, $is_ready) 
     {
-        $date = !empty($is_ready) ? $this->subPlanService->getUserTime() : null;
+        $date = !empty($is_ready) ? $this->subPlanService->getUserTime('Y-m-d H:i:s') : null;
         SubPlan::whereId($id)->update(['done_at_user_time' => $date]);
     }
 

@@ -47,6 +47,7 @@ class SubPlanService
     {
         //have to sum current subtasks and prev undone tasks
         $savedTaskId = SubPlan::select('saved_task_id')->where([['task_id', $data['task_id'] ] ])->get()->toArray();
+        $currentUserTime = $this->getUserTime('Y-m-d');
 
         if (count($savedTaskId)) {
             $savedTaskId = $savedTaskId[0]['saved_task_id'];
@@ -54,12 +55,12 @@ class SubPlanService
 
         if ($savedTaskId) {
             $subPlanQuantity = SubPlan::where([['saved_task_id', $savedTaskId ]])
-            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->where('created_at', '>', $currentUserTime.' 00:00:00')
             ->get()
             ->count();
         } else {
             $subPlanQuantity = SubPlan::where([['task_id', $data['task_id']]])
-            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->where('created_at', '>', $currentUserTime.' 00:00:00')
             ->get()
             ->count();
         }
@@ -77,6 +78,7 @@ class SubPlanService
     private function completedTaskQuantity(array $data)
     {
         $savedTaskId = SubPlan::select('saved_task_id')->where([['task_id', $data['task_id'] ] ])->get()->toArray();
+        $currentUserTime = $this->getUserTime('Y-m-d');
 
         if (count($savedTaskId)) {
             $savedTaskId = $savedTaskId[0]['saved_task_id'];
@@ -85,13 +87,13 @@ class SubPlanService
         if ($savedTaskId) {
             $doneSubPlanQuantity = SubPlan::where([['saved_task_id', $savedTaskId ]])
             ->where('is_ready', 1)
-            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->where('created_at', '>', $currentUserTime.' 00:00:00')
             ->get()
             ->count();
         } else {
             $doneSubPlanQuantity = SubPlan::where([['task_id', $data['task_id']]])
             ->where('is_ready', 1)
-            ->where('created_at', '>', date('Y-m-d').' 00:00:00')
+            ->where('created_at', '>', $currentUserTime.' 00:00:00')
             ->get()
             ->count();
         }
@@ -123,7 +125,7 @@ class SubPlanService
     {
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
-        ->where('created_at', '<', $this->getUserTime() . ' 00:00:00')
+        ->where('created_at', '<', $this->getUserTime('Y-m-d') . ' 00:00:00')
         ->where('is_failed', 0)
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
@@ -139,7 +141,7 @@ class SubPlanService
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
         ->where('checkpoint', 1)
-        ->where('created_at', '<', $this->getUserTime() . ' 00:00:00')
+        ->where('created_at', '<', $this->getUserTime('Y-m-d') . ' 00:00:00')
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
@@ -155,7 +157,7 @@ class SubPlanService
         ->where('is_ready', 1)
         ->where('is_failed', 1)
         ->whereNotNull('done_at_user_time')
-        ->where('done_at_user_time', '<', $this->getUserTime() . ' 00:00:00')
+        ->where('done_at_user_time', '<', $this->getUserTime('Y-m-d') . ' 00:00:00')
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
@@ -165,7 +167,7 @@ class SubPlanService
         }
     }
 
-    public function getUserTime() 
+    public function getUserTime($format) 
     {
         $currentUserTimeZone = User::select(['timezone'])
         ->where('id', Auth::id())
@@ -176,7 +178,7 @@ class SubPlanService
             $currentUserTimeZone = $currentUserTimeZone[0]['timezone'];
             date_default_timezone_set($currentUserTimeZone);
             
-            return date('Y-m-d H:i:s');
+            return date($format);
         }
     }
 }
