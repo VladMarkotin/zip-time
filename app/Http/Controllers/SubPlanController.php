@@ -24,6 +24,15 @@ class SubPlanController extends Controller
     {
         //TODO Validation
         $subPlan = $request->all()['sub_plan'];
+
+        // $userTimestamp = $request->user_time; //тут пробовал определить время юзера по юникс метке с клиента
+        // $createdAtUserTime = date('Y-m-d H:i:s' , $userTimestamp);
+        // dd($createdAtUserTime);
+        $userTime = $this->subPlanService->getUserTime();
+        if (!empty($userTime)) {
+            $createdAtUserTime = $userTime;
+        }
+
         /*$errors = Validator::make($subPlan, [
             '*.title' => 'required|string|min:2|max:32',
             //'*.text' => 'required',
@@ -158,10 +167,12 @@ class SubPlanController extends Controller
         );
     }
 
+    
+
     private function editDoneAtColumn($id, $is_ready) 
     {
         $date = !empty($is_ready) ? date('Y-m-d H:i:s') : null;
-        SubPlan::whereId($id)->update(['done_at' => $date]);
+        SubPlan::whereId($id)->update(['done_at_user_time' => $date]);
     }
 
     public function editSubTask(Request $request)

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDoneAtColumn extends Migration
+class CreateDoneAtUserTimeColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateDoneAtColumn extends Migration
     public function up()
     {
         Schema::table('subplans', function (Blueprint $table) {
-            $table->timestamp('done_at')->nullable();
+            $table->timestamp('done_at_user_time')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class CreateDoneAtColumn extends Migration
     public function down()
     {
         Schema::table('subplans', function (Blueprint $table) {
-            $table->dropColumn('done_at');
+            $table->dropColumn('done_at_user_time');
         });
     }
 }

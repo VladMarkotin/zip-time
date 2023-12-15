@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Services\SubPlanServices;
 use App\Models\SubPlan;
 use App\Models\Tasks;
 use App\Models\SavedTask;
+use App\Models\User;
 use Auth;
 
 class SubPlanService
@@ -153,14 +154,29 @@ class SubPlanService
         $readyFailedSubtasksId =  SubPlan::select(['id'])
         ->where('is_ready', 1)
         ->where('is_failed', 1)
-        ->whereNotNull('done_at')
-        ->where('done_at', '<', date('Y-m-d').' 00:00:00')
+        ->whereNotNull('done_at_user_time')
+        ->where('done_at_user_time', '<', date('Y-m-d').' 00:00:00')
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
         
         if (count($readyFailedSubtasksId)) {
             SubPlan::whereIn('id', $readyFailedSubtasksId)->update(['is_failed' => 0]);
+        }
+    }
+
+    public function getUserTime() 
+    {
+        $currentUserTimeZone = User::select(['timezone'])
+        ->where('id', Auth::id())
+        ->get()
+        ->toArray();
+
+        if (count($currentUserTimeZone)) {
+            $currentUserTimeZone = $currentUserTimeZone[0]['timezone'];
+            date_default_timezone_set($currentUserTimeZone);
+            
+            return date('Y-m-d H:i:s');
         }
     }
 }
