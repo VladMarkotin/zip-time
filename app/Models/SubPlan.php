@@ -20,6 +20,8 @@ class SubPlan extends Model
         'weight',
         'checkpoint',
         'is_ready',
+        'created_at_user_time',
+        'done_at_user_time'
     ];
     protected $guarded = [];
 }

@@ -14,7 +14,7 @@ class CreateCreatedAtUserTime extends Migration
     public function up()
     {
         Schema::table('subplans', function (Blueprint $table) {
-            $table->timestamp('created_at_user_time')->nullable()->after('created_at');;
+            $table->timestamp('created_at_user_time')->nullable()->after('updated_at');
         });
     }
 

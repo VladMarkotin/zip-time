@@ -123,7 +123,7 @@ class SubPlanService
     {
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
-        ->where('created_at', '<', date('Y-m-d').' 00:00:00')
+        ->where('created_at', '<', $this->getUserTime() . ' 00:00:00')
         ->where('is_failed', 0)
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
@@ -139,7 +139,7 @@ class SubPlanService
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
         ->where('checkpoint', 1)
-        ->where('created_at', '<', date('Y-m-d').' 00:00:00')
+        ->where('created_at', '<', $this->getUserTime() . ' 00:00:00')
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
@@ -155,7 +155,7 @@ class SubPlanService
         ->where('is_ready', 1)
         ->where('is_failed', 1)
         ->whereNotNull('done_at_user_time')
-        ->where('done_at_user_time', '<', date('Y-m-d').' 00:00:00')
+        ->where('done_at_user_time', '<', $this->getUserTime() . ' 00:00:00')
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
