@@ -111,8 +111,7 @@ export default {
                     this.setAlertData({type: response.data.status, text: response.data.message});
 				  })
 			},
-
-           
+     
 
     },
 }
