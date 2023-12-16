@@ -119,7 +119,16 @@ class SubPlanService
         return $previousSubTasks;
     }
 
-    public function getCurrentUserSavTasksId() {
+    public function updateOldSubtasks() {
+        $currentUserSavTasksId = $this->getCurrentUserSavTasksId();
+        if (count($currentUserSavTasksId)) {
+            $this->addIsFailedStatus($currentUserSavTasksId);
+            $this->removeCheckpointStatus($currentUserSavTasksId);
+            $this->removeIsFailedFromReady($currentUserSavTasksId);
+        }
+    }
+
+    private function getCurrentUserSavTasksId() {
         $currentUserSavTasksId = SavedTask::select('id')
         ->where('user_id', Auth::id())
         ->get()
@@ -128,7 +137,7 @@ class SubPlanService
         return $currentUserSavTasksId;
     }
 
-    public function addIsFailedStatus($currentUserSavTasksId)
+    private function addIsFailedStatus($currentUserSavTasksId)
     {
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
@@ -143,7 +152,7 @@ class SubPlanService
         }
     }
 
-    public function removeCheckpointStatus($currentUserSavTasksId) 
+    private function removeCheckpointStatus($currentUserSavTasksId) 
     {
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)

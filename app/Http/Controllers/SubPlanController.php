@@ -76,8 +76,7 @@ class SubPlanController extends Controller
 
     public function getSubPlan(Request $request)
     {
-        $this->updateOldSubtasks(); //перенести
-
+        
         $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
         $id = $request->get('task_id');
@@ -179,16 +178,6 @@ class SubPlanController extends Controller
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
-    }
-
-    private function updateOldSubtasks() {
-        $currentUserSavTasksId = $this->subPlanService->getCurrentUserSavTasksId();
-
-        if (count($currentUserSavTasksId)) {
-            $this->subPlanService->addIsFailedStatus($currentUserSavTasksId);
-            $this->subPlanService->removeCheckpointStatus($currentUserSavTasksId);
-            $this->subPlanService->removeIsFailedFromReady($currentUserSavTasksId);
-        }
     }
 
     private function getLastTaskId($id)
