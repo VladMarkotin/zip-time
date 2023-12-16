@@ -9,7 +9,8 @@ use Auth;
 
 class SubPlanService
 {
-    private $subPlan = null;
+    private $subPlan         = null;
+    private $currentUserTime = null;
 
     public function __construct(SubPlan $subPlan)
     {
@@ -17,7 +18,9 @@ class SubPlanService
     }
 
     public function countPercentOfCompletedWork(array $data)
-    {
+    {   
+        $this->currentUserTime = $this->getUserTime('Y-m-d');
+
         $taskQuantity = $this->getTaskQuantity($data);
         $completedTaskQuantity = $this->completedTaskQuantity($data);
         //die(var_dump($taskQuantity));
@@ -46,70 +49,74 @@ class SubPlanService
     private function getTaskQuantity(array $data)
     {
         //have to sum current subtasks and prev undone tasks
+        $currentUserTime = $this->currentUserTime;
         $savedTaskId = SubPlan::select('saved_task_id')->where([['task_id', $data['task_id'] ] ])->get()->toArray();
-        $currentUserTime = $this->getUserTime('Y-m-d');
 
         if (count($savedTaskId)) {
             $savedTaskId = $savedTaskId[0]['saved_task_id'];
         }
 
-        if ($savedTaskId) {
-            $subPlanQuantity = SubPlan::where([['saved_task_id', $savedTaskId ]])
+        $getSubPlanQuantity = function($columnName, $columnVal, $currentUserTime) {
+            $subPlanQuantity = SubPlan::where([[$columnName, $columnVal]])
             ->where('created_at', '>', $currentUserTime.' 00:00:00')
             ->get()
             ->count();
-        } else {
-            $subPlanQuantity = SubPlan::where([['task_id', $data['task_id']]])
-            ->where('created_at', '>', $currentUserTime.' 00:00:00')
-            ->get()
-            ->count();
-        }
 
+            return $subPlanQuantity;
+        };
+
+        $subPlanQuantity = $savedTaskId
+            ? $getSubPlanQuantity('saved_task_id', $savedTaskId, $currentUserTime)
+            : $getSubPlanQuantity('task_id', $data['task_id'], $currentUserTime);
 
         $prevUndoneSubPlan = SubPlan::where([['saved_task_id', $this->getSavedTaskId($data) ]])
         ->where('is_failed', 1)
         ->get()
         ->count();
-        //die(var_dump($subPlanQuantity + $prevUndoneSubPlan));//+ $prevUndoneSubPlan
 
         return ($subPlanQuantity + $prevUndoneSubPlan);
     }
 
     private function completedTaskQuantity(array $data)
     {
+        $currentUserTime = $this->currentUserTime;
         $savedTaskId = SubPlan::select('saved_task_id')->where([['task_id', $data['task_id'] ] ])->get()->toArray();
-        $currentUserTime = $this->getUserTime('Y-m-d');
 
         if (count($savedTaskId)) {
             $savedTaskId = $savedTaskId[0]['saved_task_id'];
         }
 
-        if ($savedTaskId) {
-            $doneSubPlanQuantity = SubPlan::where([['saved_task_id', $savedTaskId ]])
+        $getDoneSubPlanQuantity = function($columnName, $columnVal, $currentUserTime) {
+            $doneSubPlanQuantity = SubPlan::where([[$columnName, $columnVal]])
             ->where('is_ready', 1)
             ->where('created_at', '>', $currentUserTime.' 00:00:00')
             ->get()
             ->count();
-        } else {
-            $doneSubPlanQuantity = SubPlan::where([['task_id', $data['task_id']]])
-            ->where('is_ready', 1)
-            ->where('created_at', '>', $currentUserTime.' 00:00:00')
-            ->get()
-            ->count();
-        }
 
-        // $doneSubPlanQuantity = SubPlan::where([['task_id', $data['task_id'] ], ['is_ready', 1] ])
-        // ->where('created_at', '>', date('Y-m-d').' 00:00:00')
-        // ->get()
-        // ->count();
+            return $doneSubPlanQuantity;
+        };
+
+        $doneSubPlanQuantity = $savedTaskId 
+            ? $getDoneSubPlanQuantity('saved_task_id', $savedTaskId, $currentUserTime)
+            : $getDoneSubPlanQuantity('task_id', $data['task_id'], $currentUserTime);
+
         $prevDoneSubPlanQuantity = SubPlan::where([['saved_task_id', $this->getSavedTaskId($data) ]])
         ->where('is_failed', 1)
         ->where('is_ready', 1)
         ->get()
         ->count();
-        //die(var_dump($prevDoneSubPlanQuantity));
         
         return ($prevDoneSubPlanQuantity + $doneSubPlanQuantity);
+    }
+
+    public function getFailedSubtasks($savedTaskId)
+    {
+        $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
+        ->where('is_failed', 1)
+        ->get()
+        ->toArray();  
+
+        return $previousSubTasks;
     }
 
     public function getCurrentUserSavTasksId() {

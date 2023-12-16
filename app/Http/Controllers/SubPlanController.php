@@ -76,28 +76,35 @@ class SubPlanController extends Controller
 
     public function getSubPlan(Request $request)
     {
-        $currentUserSavTasksId = $this->subPlanService->getCurrentUserSavTasksId();
+        $this->updateOldSubtasks(); //перенести
+
         $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
-
-        if (count($currentUserSavTasksId)) {
-            $this->subPlanService->addIsFailedStatus($currentUserSavTasksId);
-            $this->subPlanService->removeCheckpointStatus($currentUserSavTasksId);
-            $this->subPlanService->removeIsFailedFromReady($currentUserSavTasksId);
-        }
-
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
-
         $id = $request->get('task_id');
-        
-        if ($savedTaskId) {
-            $subPlan = SubPlan::where([['saved_task_id', $savedTaskId ]])
+
+        $getSubplan = function($columnName, $columnVal, $currentUserTime) {
+            $subPlan = SubPlan::where([[$columnName, $columnVal]])
             ->where('created_at', '>', $currentUserTime.' 00:00:00')
             ->get()
             ->toArray();
 
-            $lastId = count($subPlan) ? [$subPlan[count($subPlan) - 1]] : []; //тут сделать нормальную сортировку
+            return $subPlan;
+        };
+        
+        if ($savedTaskId) {
+            $subPlan = $getSubplan('saved_task_id', $savedTaskId, $currentUserTime);
+
+            $lastId = count($subPlan) ? [$subPlan[count($subPlan) - 1]] : [];
+
+            $failedSubtasks = $this->subPlanService->getFailedSubtasks($savedTaskId);
+            
+            if (count($failedSubtasks)) {
+                foreach ($failedSubtasks as $v) {
+                    $subPlan[] = $v;
+                }
+            }
         } else {
-            $subPlan = SubPlan::where('task_id', $request->get('task_id'))->where('created_at', '>', $currentUserTime.' 00:00:00')->get()->toArray();
+            $subPlan = $getSubplan('task_id', $request->get('task_id'), $currentUserTime);
 
             $lastId = SubPlan::select('id')
             ->where('task_id', $id)
@@ -106,19 +113,6 @@ class SubPlanController extends Controller
         }
 
         $lastTaskId = count($lastId) ? $this->getLastTaskId($lastId[0]['id']) : null;
-        
-        if ($savedTaskId) {
-            $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
-            ->where('is_failed', 1)
-            ->get()
-            ->toArray();  
-            if (count($previousSubTasks)) {
-                foreach ($previousSubTasks as $v) {
-                    $subPlan[] = $v;
-                }
-            }
-        }
-       //die(var_dump(count($subPlan)));
 
         return (
             response()->json([
@@ -133,10 +127,9 @@ class SubPlanController extends Controller
     public function delSubTask(Request $request)
     {
         $id = $request->get('task_id');
-        // $subPlan = SubPlan::select('task_id')->where('id',$id)->get()->toArray();
         $lastTaskId = $this->getLastTaskId($id);
         $res = SubPlan::where('id',$id)->delete();
-        //die(var_dump($subPlan[0]['task_id']));
+        
         return (
             response()->json([
                 'status' => 'success', 
@@ -186,6 +179,16 @@ class SubPlanController extends Controller
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
+    }
+
+    private function updateOldSubtasks() {
+        $currentUserSavTasksId = $this->subPlanService->getCurrentUserSavTasksId();
+
+        if (count($currentUserSavTasksId)) {
+            $this->subPlanService->addIsFailedStatus($currentUserSavTasksId);
+            $this->subPlanService->removeCheckpointStatus($currentUserSavTasksId);
+            $this->subPlanService->removeIsFailedFromReady($currentUserSavTasksId);
+        }
     }
 
     private function getLastTaskId($id)
