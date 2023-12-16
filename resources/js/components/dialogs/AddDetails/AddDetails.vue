@@ -96,8 +96,8 @@ export default {
 				.then((response) => {
 					const details = []
 					response.data.data.forEach(element => {
-						details.push({
-							title: element.title,
+                        details.push({
+                            title: element.title,
 							text:  element.text,
 							taskId: element.id,
 							is_ready: element.is_ready, 

@@ -35,6 +35,7 @@ use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Models\TimetableModel;
 use App\Models\DefaultConfigs;
 use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
+use App\Http\Controllers\Services\SubPlanServices\SubPlanService;
 use App\Models\SavedNotes;
 use App\Models\SavedTask;
 use App\Http\Controllers\NoteController;
@@ -65,6 +66,7 @@ class MainController
     private $checkCheckpoints          = null;
     private $noteController            = null;
     private $defaultSavedTasks         = null;
+    private $subPlanService            = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -85,7 +87,8 @@ class MainController
                                 PersonalResultsService $personalResultsService,
                                 DefaultConfigs $defaultConfigs,
                                 NoteController $noteController,
-                                DefaultSavedTasks $defaultSavedTasks
+                                DefaultSavedTasks $defaultSavedTasks,
+                                SubPlanService $subPlanService
                                 )
     {
         
@@ -110,6 +113,7 @@ class MainController
         $this->checkCheckpoints          = $checkCheckpoints;
         $this->noteController            = $noteController;
         $this->defaultSavedTasks         = $defaultSavedTasks;
+        $this->subPlanService            = $subPlanService;
     }
 
     public function addHashCode(Request $request)
@@ -258,6 +262,7 @@ class MainController
         $responseArray = json_decode($response->content());
         
         if($responseArray->status == 'success') {
+            $this->subPlanService->updateOldSubtasks();
 
             $responseArrayAsArray["status"]  = $responseArray->status;
             /*This is for creating weekend*/
