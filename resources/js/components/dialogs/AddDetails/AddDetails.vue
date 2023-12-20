@@ -23,6 +23,7 @@
             @updateAlertData        = "setAlertData"
             @updateCompletedPercent = "updateCompletedPercent"
             @closeAddDetailsDialog  = "closeAddDetailsDialog"
+            @showAllSubTasks        = "showAllSubTasks(item)"
             />
         </template>
     </v-dialog>
@@ -50,6 +51,7 @@ export default {
     data() {
         return {
             isShowDialogDetails: false,
+            isShowAllDialogDetails: false,
             alert: {type: 'success', text: 'success'},
             icons: {mdiChartGantt, },
         }
@@ -63,6 +65,10 @@ export default {
         closeAddDetailsDialog() {
             this.isShowDialogDetails = false;
         },
+
+        showAllSubTasks(item) {
+           this.getAllDetailsForTask(item, 'all')
+        }, 
 
         updateDetails(details) {
             this.$emit('updateDetails', details);
@@ -90,9 +96,12 @@ export default {
             return compPercent;
         },
 
-        getAllDetailsForTask(item) {
+        getAllDetailsForTask(item, mode=null) {
 				this.showAddDetailsDialog();
-				axios.post('/get-sub-tasks',{task_id : item.taskId})
+                let data = {task_id : item.taskId}
+                //mode means get all notes for all time 
+                if(mode === 'all')  data.mode = 'all';
+				axios.post('/get-sub-tasks',data)
 				.then((response) => {
 					const details = []
 					response.data.data.forEach(element => {
