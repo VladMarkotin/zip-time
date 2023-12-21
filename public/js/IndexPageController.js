@@ -39,6 +39,8 @@ var _aboutUsItems = /*#__PURE__*/new WeakMap();
 var _aboutUsTimer = /*#__PURE__*/new WeakMap();
 var _quotesItems = /*#__PURE__*/new WeakMap();
 var _quotesTimer = /*#__PURE__*/new WeakMap();
+var _philosofyItems = /*#__PURE__*/new WeakMap();
+var _philosofyTimer = /*#__PURE__*/new WeakMap();
 var BlocksAppearanceController = /*#__PURE__*/function () {
   function BlocksAppearanceController(statisticsCounter) {
     _classCallCheck(this, BlocksAppearanceController);
@@ -82,6 +84,14 @@ var BlocksAppearanceController = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
+    _classPrivateFieldInitSpec(this, _philosofyItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _philosofyTimer, {
+      writable: true,
+      value: null
+    });
     _classPrivateFieldSet(this, _statisticsCounter, statisticsCounter);
   }
   _createClass(BlocksAppearanceController, [{
@@ -93,10 +103,12 @@ var BlocksAppearanceController = /*#__PURE__*/function () {
       _classPrivateFieldSet(this, _statisticsItems, document.querySelectorAll('.statistics-item'));
       _classPrivateFieldSet(this, _aboutUsItems, document.querySelectorAll('.about-us-item'));
       _classPrivateFieldSet(this, _quotesItems, document.querySelectorAll('.quotes-item'));
+      _classPrivateFieldSet(this, _philosofyItems, document.querySelectorAll('.philosofy-item'));
       if (_classPrivateFieldGet(this, _ourAdvantagesItems).length) _classPrivateFieldSet(this, _ourAdvantagesTimer, getTimer(_classPrivateFieldGet(this, _ourAdvantagesItems), 200));
       if (_classPrivateFieldGet(this, _statisticsItems).length) _classPrivateFieldSet(this, _statisticsTimer, getTimer(_classPrivateFieldGet(this, _statisticsItems), 150));
       if (_classPrivateFieldGet(this, _aboutUsItems).length) _classPrivateFieldSet(this, _aboutUsTimer, getTimer(_classPrivateFieldGet(this, _aboutUsItems), 200));
       if (_classPrivateFieldGet(this, _quotesItems).length) _classPrivateFieldSet(this, _quotesTimer, getTimer(_classPrivateFieldGet(this, _quotesItems), 150));
+      if (_classPrivateFieldGet(this, _philosofyItems).length) _classPrivateFieldSet(this, _philosofyTimer, getTimer(_classPrivateFieldGet(this, _philosofyItems), 150));
       var options = {
         threshold: [0.25]
       };
@@ -108,6 +120,7 @@ var BlocksAppearanceController = /*#__PURE__*/function () {
             var isStatisticItem = curentElement.classList.contains('statistics-item');
             var isAboutUsItem = curentElement.classList.contains('about-us-item');
             var isQuotesItem = curentElement.classList.contains('quotes-item');
+            var isPhilosofyItem = curentElement.classList.contains('philosofy-item');
             switch (true) {
               case isAboutUsItem:
                 _this.showList(change, _classPrivateFieldGet(_this, _aboutUsTimer));
@@ -117,6 +130,9 @@ var BlocksAppearanceController = /*#__PURE__*/function () {
                 break;
               case isStatisticItem:
                 _this.showList(change, _classPrivateFieldGet(_this, _statisticsTimer));
+                break;
+              case isPhilosofyItem:
+                _this.showList(change, _classPrivateFieldGet(_this, _philosofyTimer));
                 break;
               case isQuotesItem:
                 _this.showList(change, _classPrivateFieldGet(_this, _quotesTimer));

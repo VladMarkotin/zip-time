@@ -9,6 +9,8 @@ class BlocksAppearanceController {
     #aboutUsTimer       = null;
     #quotesItems        = null;
     #quotesTimer        = null;
+    #philosofyItems     = null;
+    #philosofyTimer     = null;
 
     constructor(statisticsCounter) {
         this.#statisticsCounter = statisticsCounter;
@@ -20,11 +22,13 @@ class BlocksAppearanceController {
         this.#statisticsItems = document.querySelectorAll('.statistics-item');
         this.#aboutUsItems = document.querySelectorAll('.about-us-item');
         this.#quotesItems  = document.querySelectorAll('.quotes-item');
+        this.#philosofyItems = document.querySelectorAll('.philosofy-item');
 
         if (this.#ourAdvantagesItems.length) this.#ourAdvantagesTimer = getTimer(this.#ourAdvantagesItems, 200);
         if (this.#statisticsItems.length) this.#statisticsTimer = getTimer(this.#statisticsItems, 150);
         if (this.#aboutUsItems.length) this.#aboutUsTimer = getTimer(this.#aboutUsItems, 200);
         if (this.#quotesItems.length) this.#quotesTimer = getTimer(this.#quotesItems, 150);
+        if (this.#philosofyItems.length) this.#philosofyTimer = getTimer(this.#philosofyItems, 150);
 
         const options = {
             threshold: [0.25],
@@ -39,6 +43,7 @@ class BlocksAppearanceController {
                     const isStatisticItem = curentElement.classList.contains('statistics-item');
                     const isAboutUsItem = curentElement.classList.contains('about-us-item');
                     const isQuotesItem = curentElement.classList.contains('quotes-item');
+                    const isPhilosofyItem = curentElement.classList.contains('philosofy-item');
 
                     switch (true) {
                         case isAboutUsItem:
@@ -50,6 +55,9 @@ class BlocksAppearanceController {
                         case isStatisticItem:
                             this.showList(change, this.#statisticsTimer);
                         break
+                        case isPhilosofyItem:
+                            this.showList(change, this.#philosofyTimer);
+                        break;
                         case isQuotesItem:
                             this.showList(change, this.#quotesTimer);
                         break;

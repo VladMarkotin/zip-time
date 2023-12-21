@@ -815,14 +815,6 @@ $signUpButtonColor: #4169E1;
             width: 65%;
             display: flex;
             flex-direction: column;
-            opacity: 0;
-            transition: all .55s ease;
-            transform: translateX(-10px);
-
-            &.element-show {
-                opacity: 1;
-                transform: translateX(0);
-            }
 
             .philosofy-slider {
                 width: 100%;
@@ -860,6 +852,17 @@ $signUpButtonColor: #4169E1;
                                     display: grid;
                                     grid-template-columns: auto 1fr;
                                     grid-column-gap: 7px;
+                                    &.element-animation {
+                                        opacity: 0;
+                                        transition: all .55s ease;
+                                        transform: translateX(-10px);
+                            
+                                        &.element-show {
+                                            opacity: 1;
+                                            transform: translateX(0);
+                                        }
+                                    }
+                                    
                                 }
                             }
 

@@ -258,7 +258,7 @@
                     <div class="philosofy-title-wrapper">
                         <h2 class="philosofy-title title-index-page">Quipl's philosofy</h2>
                     </div>
-                    <div class="philosofy-slider-wrapper element-animation">
+                    <div class="philosofy-slider-wrapper">
                         <div class="philosofy-slider">
                             <div class="philosofy-slider-line">
                                 <div class="philosofy-slide philosofy-slide-one">
@@ -267,15 +267,15 @@
                                     </div>
                                     <div class="philosofy-list-wrapper">
                                         <ul class="philosofy-list">
-                                            <li class="philosofy-li">
+                                            <li class="philosofy-li philosofy-item element-animation">
                                                 <span class="philosofy-li-number philosofy-slide-text text-index-page">1 .</span>
                                                 <p class="philosofy-slide-text text-index-page">The daily plan should consist of at least 2 required jobs.</p>
                                             </li>
-                                            <li class="philosofy-li">
+                                            <li class="philosofy-li philosofy-item element-animation">
                                                 <span class="philosofy-li-number philosofy-slide-text text-index-page">2 .</span>
                                                 <p class="philosofy-slide-text text-index-page">You can't canceled or “fail” none of them.</p>
                                             </li>
-                                            <li class="philosofy-li">
+                                            <li class="philosofy-li philosofy-item element-animation">
                                                 <span class="philosofy-li-number philosofy-slide-text text-index-page">3 .</span>
                                                 <p class="philosofy-slide-text text-index-page">To “fail” means do not have time to grade the assignment before the end of the day (23:59)</p>
                                             </li>

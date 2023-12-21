@@ -667,13 +667,6 @@ ol {
   width: 65%;
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  transition: all 0.55s ease;
-  transform: translateX(-10px);
-}
-.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper.element-show {
-  opacity: 1;
-  transform: translateX(0);
 }
 .philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider {
   width: 100%;
@@ -711,6 +704,15 @@ ol {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-column-gap: 7px;
+}
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .philosofy-list-wrapper .philosofy-list .philosofy-li.element-animation {
+  opacity: 0;
+  transition: all 0.55s ease;
+  transform: translateX(-10px);
+}
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .philosofy-list-wrapper .philosofy-list .philosofy-li.element-animation.element-show {
+  opacity: 1;
+  transform: translateX(0);
 }
 .philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider-buttons {
   display: flex;
