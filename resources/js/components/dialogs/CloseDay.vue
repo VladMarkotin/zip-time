@@ -102,8 +102,8 @@
 				value: 0,
 				isShowProgress: false,
 				tags: [],
-				chosenChips: []
-				
+				chosenChips: [],
+				minDefActiveChipsQuant: 4,
 			}),
 			components : {Alert},
 			methods :
@@ -166,7 +166,8 @@
 			async created() {
 				await axios.post('/getSavedTasks', {selection: 1}) //get most popular hash codes for next week`s day  
 				.then((response) => {
-					this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
+					this.tags = response.data.hash_codes.map((obj) => obj.hash_code);
+					this.chosenChips = this.tags.map((_, index) => index + 1 <= this.minDefActiveChipsQuant && index); //minDefActiveChipsQuant хардкодом задал в дате равную 4м
 					/*for (let i = 0; i < this.tags.length/2; i++) {
 						this.chosenChips.push(this.tags[i])
 					}
