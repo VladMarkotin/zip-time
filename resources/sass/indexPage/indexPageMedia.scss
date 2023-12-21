@@ -510,6 +510,16 @@ $maxContentWidth480: 270px;
             }
         }
     }
+
+    .philosofy-wrapper {
+        .philosofy-slider-wrapper {
+            .philosofy-slider {
+                .philosofy-list {
+                    padding: 0;
+                }
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 520px) {
@@ -673,12 +683,13 @@ $maxContentWidth480: 270px;
         .philosofy-wrapper {
             .philosofy-slider-wrapper {
                 max-width: $maxContentWidth480;
-
                 .philosofy-slider {
                     .philosofy-slider-line {
-                        .philosofy-slide-text-wrapper {
+                        .philosofy-slide {
                             .philosofy-slide-text {
-                                font-size: 28px;
+                                font-size: 16px;
+                                line-height: 30px;
+                                font-weight: 400;
                             }
                         }
                     }

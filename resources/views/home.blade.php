@@ -252,52 +252,48 @@
                 </div>
             </div>
         </section>
-        <section class="philosofy-section">
+        <section class="philosofy-section white-background">
             <div class="philosofy-inner-block">
                 <div class="philosofy-wrapper">
+                    <div class="philosofy-title-wrapper">
+                        <h2 class="philosofy-title title-index-page">Quipl's philosofy</h2>
+                    </div>
                     <div class="philosofy-slider-wrapper element-animation">
                         <div class="philosofy-slider">
                             <div class="philosofy-slider-line">
                                 <div class="philosofy-slide philosofy-slide-one">
-                                    <div class="philosofy-slide-icon-wrapper">
-                                        <svg class="philosofy-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
-                                    </div>
-                                    <div class="philosofy-slide-title-wrapper">
-                                        <h3 class="reviws-slide-title title-index-page">Some title</h3>
-                                    </div>
                                     <div class="philosofy-slide-text-wrapper">
-                                        <p class="philosofy-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
+                                        <p class="philosofy-slide-text text-index-page">Quipl has borrowed crutial ideas from “Getting Things Done” (GTD) method but we complemented it with some intresting points:</p>
                                     </div>
-                                    <div class="philosofy-slide-author-wrapper">
-                                       <p class="philosofy-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
+                                    <div class="philosofy-list-wrapper">
+                                        <ul class="philosofy-list">
+                                            <li class="philosofy-li">
+                                                <span class="philosofy-li-number philosofy-slide-text text-index-page">1 .</span>
+                                                <p class="philosofy-slide-text text-index-page">The daily plan should consist of at least 2 required jobs.</p>
+                                            </li>
+                                            <li class="philosofy-li">
+                                                <span class="philosofy-li-number philosofy-slide-text text-index-page">2 .</span>
+                                                <p class="philosofy-slide-text text-index-page">You can't canceled or “fail” none of them.</p>
+                                            </li>
+                                            <li class="philosofy-li">
+                                                <span class="philosofy-li-number philosofy-slide-text text-index-page">3 .</span>
+                                                <p class="philosofy-slide-text text-index-page">To “fail” means do not have time to grade the assignment before the end of the day (23:59)</p>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="philosofy-slide philosofy-slide-two">
-                                    <div class="philosofy-slide-icon-wrapper">
-                                        <svg class="philosofy-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
-                                    </div>
-                                    <div class="reviws-slide-title-wrapper">
-                                        <h3 class="reviws-slide-title title-index-page">Some title</h3>
-                                    </div>
-                                    <div class="philosofy-slide-text-wrapper">
-                                        <p class="philosofy-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
-                                    </div>
-                                    <div class="philosofy-slide-author-wrapper">
-                                       <p class="philosofy-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
-                                    </div>
-                                </div>
-                                <div class="philosofy-slide philosofy-slide-three">
-                                    <div class="philosofy-slide-icon-wrapper">
-                                        <svg class="philosofy-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
-                                    </div>
-                                    <div class="reviws-slide-title-wrapper">
-                                        <h3 class="reviws-slide-title title-index-page">Some title</h3>
-                                    </div>
-                                    <div class="philosofy-slide-text-wrapper">
-                                        <p class="philosofy-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
-                                    </div>
-                                    <div class="philosofy-slide-author-wrapper">
-                                       <p class="philosofy-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
+                                <div class="philosofy-list-wrapper">
+                                        <ul class="philosofy-list">
+                                            <li class="philosofy-li">
+                                                <span class="philosofy-li-number philosofy-slide-text text-index-page">4 .</span>
+                                                <p class="philosofy-slide-text text-index-page">You evaluate yourself :) You are the only one who can do this accurately. Evaluate yourself for each job.</p>
+                                            </li>
+                                            <li class="philosofy-li">
+                                                <span class="philosofy-li-number philosofy-slide-text text-index-page">5 .</span>
+                                                <p class="philosofy-slide-text text-index-page">In the end of the day (23:59) Quipl will automatically closed your day plan </p>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

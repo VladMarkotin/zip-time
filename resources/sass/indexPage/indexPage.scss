@@ -801,14 +801,20 @@ $signUpButtonColor: #4169E1;
 
     .philosofy-wrapper {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        .philosofy-title-wrapper {
+            .philosofy-title {
+                margin-bottom: 0;
+            }
+        }
 
         .philosofy-slider-wrapper {
             width: 65%;
             display: flex;
             flex-direction: column;
-            gap: 30px;
             opacity: 0;
             transition: all .55s ease;
             transform: translateX(-10px);
@@ -821,6 +827,7 @@ $signUpButtonColor: #4169E1;
             .philosofy-slider {
                 width: 100%;
                 overflow: hidden;
+                padding: 30px 0 45px;
 
                 .philosofy-slider-line {
                     display: flex;
@@ -831,38 +838,31 @@ $signUpButtonColor: #4169E1;
                     .philosofy-slide {
                         display: flex;
                         flex-direction: column;
-                        gap: 18px;
+                        gap: 15px;
                         text-align: center;
 
-                        .philosofy-slide-icon-wrapper {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-
-                            .philosofy-slide-icon {
-                                height: 60px;
-                                width: 50px;
-                                fill: #444;;
-                            }
-                        }
-
-                        .reviws-slide-title {
-                            font-size: 16px;
-                            font-weight: 500;
-                            letter-spacing: 0.3em;
-                            margin: 0;
-                            text-transform: uppercase;
-                        }
-
                         .philosofy-slide-text {
-                            font-size: 32px;
+                            font-size: 24px;
                             font-weight: 400;
                             line-height: 1.4;
+                            text-align: justify;
                         }
 
-                        .philosofy-slide-author {
-                            font-size: 14px;
-                            font-weight: 400;
+                        .philosofy-list-wrapper {
+                            display: flex;
+                            justify-content: flex-start;
+
+                            .philosofy-list {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 8px;
+                                .philosofy-li {
+                                    display: grid;
+                                    grid-template-columns: auto 1fr;
+                                    grid-column-gap: 7px;
+                                }
+                            }
+
                         }
                     }
                 }
@@ -872,11 +872,11 @@ $signUpButtonColor: #4169E1;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                gap: 6px;
+                gap: 9px;
 
                 .philosofy-slider-button {
-                    width: 15px;
-                    height: 5px;
+                    width: 20px;
+                    height: 8px;
                     background: rgba(0, 0, 0, 0.5);
 
                     &.philosofy-slider-active-button {

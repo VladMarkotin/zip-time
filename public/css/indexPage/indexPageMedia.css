@@ -270,6 +270,10 @@
   .slider-wrapper .slide-two .slide-content .slide-content_inner-block .slide-content-text-wrapper .slide-two-content .slide-two-list {
     padding: 0;
   }
+
+  .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-list {
+    padding: 0;
+  }
 }
 @media screen and (max-width: 520px) {
   .slider-wrapper {
@@ -374,8 +378,10 @@
   .philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper {
     max-width: 270px;
   }
-  .philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide-text-wrapper .philosofy-slide-text {
-    font-size: 28px;
+  .philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .philosofy-slide-text {
+    font-size: 16px;
+    line-height: 30px;
+    font-weight: 400;
   }
 
   .quotes-section .quotes-wrapper {
