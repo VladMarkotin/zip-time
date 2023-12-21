@@ -252,57 +252,57 @@
                 </div>
             </div>
         </section>
-        <section class="reviews-section">
-            <div class="reviews-inner-block">
-                <div class="reviews-wrapper">
-                    <div class="reviews-slider-wrapper element-animation">
-                        <div class="reviews-slider">
-                            <div class="reviews-slider-line">
-                                <div class="reviews-slide reviews-slide-one">
-                                    <div class="reviews-slide-icon-wrapper">
-                                        <svg class="reviews-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
+        <section class="philosofy-section">
+            <div class="philosofy-inner-block">
+                <div class="philosofy-wrapper">
+                    <div class="philosofy-slider-wrapper element-animation">
+                        <div class="philosofy-slider">
+                            <div class="philosofy-slider-line">
+                                <div class="philosofy-slide philosofy-slide-one">
+                                    <div class="philosofy-slide-icon-wrapper">
+                                        <svg class="philosofy-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
                                     </div>
-                                    <div class="reviws-slide-title-wrapper">
+                                    <div class="philosofy-slide-title-wrapper">
                                         <h3 class="reviws-slide-title title-index-page">Some title</h3>
                                     </div>
-                                    <div class="reviews-slide-text-wrapper">
-                                        <p class="reviews-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
+                                    <div class="philosofy-slide-text-wrapper">
+                                        <p class="philosofy-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
                                     </div>
-                                    <div class="reviews-slide-author-wrapper">
-                                       <p class="reviews-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
+                                    <div class="philosofy-slide-author-wrapper">
+                                       <p class="philosofy-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
                                     </div>
                                 </div>
-                                <div class="reviews-slide reviews-slide-two">
-                                    <div class="reviews-slide-icon-wrapper">
-                                        <svg class="reviews-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
+                                <div class="philosofy-slide philosofy-slide-two">
+                                    <div class="philosofy-slide-icon-wrapper">
+                                        <svg class="philosofy-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
                                     </div>
                                     <div class="reviws-slide-title-wrapper">
                                         <h3 class="reviws-slide-title title-index-page">Some title</h3>
                                     </div>
-                                    <div class="reviews-slide-text-wrapper">
-                                        <p class="reviews-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
+                                    <div class="philosofy-slide-text-wrapper">
+                                        <p class="philosofy-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
                                     </div>
-                                    <div class="reviews-slide-author-wrapper">
-                                       <p class="reviews-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
+                                    <div class="philosofy-slide-author-wrapper">
+                                       <p class="philosofy-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
                                     </div>
                                 </div>
-                                <div class="reviews-slide reviews-slide-three">
-                                    <div class="reviews-slide-icon-wrapper">
-                                        <svg class="reviews-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
+                                <div class="philosofy-slide philosofy-slide-three">
+                                    <div class="philosofy-slide-icon-wrapper">
+                                        <svg class="philosofy-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
                                     </div>
                                     <div class="reviws-slide-title-wrapper">
                                         <h3 class="reviws-slide-title title-index-page">Some title</h3>
                                     </div>
-                                    <div class="reviews-slide-text-wrapper">
-                                        <p class="reviews-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
+                                    <div class="philosofy-slide-text-wrapper">
+                                        <p class="philosofy-slide-text text-index-page">"Lorem ipsum dolor sit amet consectetur adipisicing elit. A unde in accusantium cum necessitatibus optio itaque soluta explicabo debitis obcaecati."</p>
                                     </div>
-                                    <div class="reviews-slide-author-wrapper">
-                                       <p class="reviews-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
+                                    <div class="philosofy-slide-author-wrapper">
+                                       <p class="philosofy-slide-author text-index-page">Lorem ipsum dolor sit amet.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="reviews-slider-buttons">
+                        <div class="philosofy-slider-buttons">
                             
                         </div>
                     </div>

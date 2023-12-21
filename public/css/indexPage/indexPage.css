@@ -649,17 +649,17 @@ ol {
   line-height: 30px;
 }
 
-.reviews-inner-block {
+.philosofy-inner-block {
   max-width: 1170px;
   margin: 0 auto;
   padding: 90px 0;
 }
-.reviews-inner-block .reviews-wrapper {
+.philosofy-inner-block .philosofy-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper {
   width: 65%;
   display: flex;
   flex-direction: column;
@@ -668,64 +668,64 @@ ol {
   transition: all 0.55s ease;
   transform: translateX(-10px);
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper.element-show {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper.element-show {
   opacity: 1;
   transform: translateX(0);
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider {
   width: 100%;
   overflow: hidden;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line {
   display: flex;
   position: relative;
   left: 0;
   transition: all 0.4s ease;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide {
   display: flex;
   flex-direction: column;
   gap: 18px;
   text-align: center;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide .reviews-slide-icon-wrapper {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .philosofy-slide-icon-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide .reviews-slide-icon-wrapper .reviews-slide-icon {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .philosofy-slide-icon-wrapper .philosofy-slide-icon {
   height: 60px;
   width: 50px;
   fill: #444;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide .reviws-slide-title {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .reviws-slide-title {
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.3em;
   margin: 0;
   text-transform: uppercase;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide .reviews-slide-text {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .philosofy-slide-text {
   font-size: 32px;
   font-weight: 400;
   line-height: 1.4;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide .reviews-slide-author {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .philosofy-slide-author {
   font-size: 14px;
   font-weight: 400;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider-buttons {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider-buttons {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 6px;
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider-buttons .reviews-slider-button {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider-buttons .philosofy-slider-button {
   width: 15px;
   height: 5px;
   background: rgba(0, 0, 0, 0.5);
 }
-.reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider-buttons .reviews-slider-button.reviews-slider-active-button {
+.philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider-buttons .philosofy-slider-button.philosofy-slider-active-button {
   background: #5c1a1a;
 }
 

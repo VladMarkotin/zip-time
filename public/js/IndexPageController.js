@@ -447,13 +447,13 @@ var ReviewsSlider = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       var _this = this;
-      _classPrivateFieldSet(this, _slider, document.querySelector('.reviews-slider'));
-      _classPrivateFieldSet(this, _sliderLine, _classPrivateFieldGet(this, _slider).querySelector('.reviews-slider-line'));
-      _classPrivateFieldSet(this, _sliderItems, _classPrivateFieldGet(this, _sliderLine).querySelectorAll('.reviews-slide'));
+      _classPrivateFieldSet(this, _slider, document.querySelector('.philosofy-slider'));
+      _classPrivateFieldSet(this, _sliderLine, _classPrivateFieldGet(this, _slider).querySelector('.philosofy-slider-line'));
+      _classPrivateFieldSet(this, _sliderItems, _classPrivateFieldGet(this, _sliderLine).querySelectorAll('.philosofy-slide'));
       _classPrivateFieldSet(this, _sliderItemsCounter, _classPrivateFieldGet(this, _sliderItems).length);
       _classPrivateFieldSet(this, _sliderWidth, getComputedStyle(_classPrivateFieldGet(this, _slider)).width);
-      _classPrivateFieldSet(this, _sliderButtonsWrapper, document.querySelector('.reviews-slider-buttons'));
-      _classPrivateFieldSet(this, _activeClassVal, 'reviews-slider-active-button');
+      _classPrivateFieldSet(this, _sliderButtonsWrapper, document.querySelector('.philosofy-slider-buttons'));
+      _classPrivateFieldSet(this, _activeClassVal, 'philosofy-slider-active-button');
       this.move = this.move.bind(this);
       _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter);
       this.cleanButtonWrapper();
@@ -473,7 +473,7 @@ var ReviewsSlider = /*#__PURE__*/function () {
       var _this2 = this;
       if (_classPrivateFieldGet(this, _sliderItemsCounter)) {
         var sliderButton = document.createElement('button');
-        sliderButton.classList.add('reviews-slider-button');
+        sliderButton.classList.add('philosofy-slider-button');
         if (index === _classPrivateFieldGet(this, _currentSlideIndex)) sliderButton.classList.add(_classPrivateFieldGet(this, _activeClassVal));
         sliderButton.addEventListener('click', function (e) {
           _this2.move(index, e);
@@ -484,7 +484,7 @@ var ReviewsSlider = /*#__PURE__*/function () {
   }, {
     key: "move",
     value: function move(index, e) {
-      var sliderButtons = _classPrivateFieldGet(this, _sliderButtonsWrapper).querySelectorAll('.reviews-slider-button');
+      var sliderButtons = _classPrivateFieldGet(this, _sliderButtonsWrapper).querySelectorAll('.philosofy-slider-button');
       var _iterator = _createForOfIteratorHelper(sliderButtons),
         _step;
       try {

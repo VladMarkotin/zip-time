@@ -9,13 +9,13 @@ class ReviewsSlider {
     #currentSlideIndex    = 0;
 
     init() {
-        this.#slider =  document.querySelector('.reviews-slider');
-        this.#sliderLine = this.#slider.querySelector('.reviews-slider-line');
-        this.#sliderItems = this.#sliderLine.querySelectorAll('.reviews-slide');
+        this.#slider =  document.querySelector('.philosofy-slider');
+        this.#sliderLine = this.#slider.querySelector('.philosofy-slider-line');
+        this.#sliderItems = this.#sliderLine.querySelectorAll('.philosofy-slide');
         this.#sliderItemsCounter = this.#sliderItems.length;
         this.#sliderWidth = getComputedStyle(this.#slider).width;
-        this.#sliderButtonsWrapper = document.querySelector('.reviews-slider-buttons');
-        this.#activeClassVal = 'reviews-slider-active-button';
+        this.#sliderButtonsWrapper = document.querySelector('.philosofy-slider-buttons');
+        this.#activeClassVal = 'philosofy-slider-active-button';
 
         this.move = this.move.bind(this)
 
@@ -36,7 +36,7 @@ class ReviewsSlider {
     createButton(index) {
         if (this.#sliderItemsCounter) {
             const sliderButton = document.createElement('button');
-            sliderButton.classList.add('reviews-slider-button');
+            sliderButton.classList.add('philosofy-slider-button');
             if (index === this.#currentSlideIndex) sliderButton.classList.add(this.#activeClassVal);
 
             sliderButton.addEventListener('click', (e) => {
@@ -48,7 +48,7 @@ class ReviewsSlider {
     }
 
     move(index, e) {
-        const sliderButtons = this.#sliderButtonsWrapper.querySelectorAll('.reviews-slider-button');
+        const sliderButtons = this.#sliderButtonsWrapper.querySelectorAll('.philosofy-slider-button');
 
         for (const item of sliderButtons) {
             if (item.classList.contains(this.#activeClassVal)) item.classList.remove(this.#activeClassVal)

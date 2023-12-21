@@ -55,17 +55,6 @@ $maxContentWidth480: 270px;
 
 }
 
-@media screen and (max-width: 1175px) {
-
-    .reviews-inner-block {
-        .reviews-wrapper {
-            .reviews-slider-wrapper  {
-                // width: 75%;
-            }
-        }
-    }
-}
-
 @media screen and (max-width: 1075px) {
     .slider-wrapper {
         min-height: 690px;
@@ -359,9 +348,9 @@ $maxContentWidth480: 270px;
         }
     }
 
-    .reviews-inner-block {
-        .reviews-wrapper {
-            .reviews-slider-wrapper {
+    .philosofy-inner-block {
+        .philosofy-wrapper {
+            .philosofy-slider-wrapper {
                 max-width: $maxContentWidth740;
             }
         }
@@ -579,9 +568,9 @@ $maxContentWidth480: 270px;
         }
     }
 
-    .reviews-inner-block {
-        .reviews-wrapper {
-            .reviews-slider-wrapper {
+    .philosofy-inner-block {
+        .philosofy-wrapper {
+            .philosofy-slider-wrapper {
                 max-width: $maxContentWidth520;
             }
         }
@@ -680,15 +669,15 @@ $maxContentWidth480: 270px;
         }
     }
 
-    .reviews-inner-block {
-        .reviews-wrapper {
-            .reviews-slider-wrapper {
+    .philosofy-inner-block {
+        .philosofy-wrapper {
+            .philosofy-slider-wrapper {
                 max-width: $maxContentWidth480;
 
-                .reviews-slider {
-                    .reviews-slider-line {
-                        .reviews-slide-text-wrapper {
-                            .reviews-slide-text {
+                .philosofy-slider {
+                    .philosofy-slider-line {
+                        .philosofy-slide-text-wrapper {
+                            .philosofy-slide-text {
                                 font-size: 28px;
                             }
                         }

@@ -794,17 +794,17 @@ $signUpButtonColor: #4169E1;
     }
 }
 
-.reviews-inner-block {
+.philosofy-inner-block {
     max-width: 1170px;
     margin: 0 auto;
     padding: 90px 0;
 
-    .reviews-wrapper {
+    .philosofy-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
 
-        .reviews-slider-wrapper {
+        .philosofy-slider-wrapper {
             width: 65%;
             display: flex;
             flex-direction: column;
@@ -818,28 +818,28 @@ $signUpButtonColor: #4169E1;
                 transform: translateX(0);
             }
 
-            .reviews-slider {
+            .philosofy-slider {
                 width: 100%;
                 overflow: hidden;
 
-                .reviews-slider-line {
+                .philosofy-slider-line {
                     display: flex;
                     position: relative;
                     left: 0;
                     transition: all .4s ease;
 
-                    .reviews-slide {
+                    .philosofy-slide {
                         display: flex;
                         flex-direction: column;
                         gap: 18px;
                         text-align: center;
 
-                        .reviews-slide-icon-wrapper {
+                        .philosofy-slide-icon-wrapper {
                             display: flex;
                             justify-content: center;
                             align-items: center;
 
-                            .reviews-slide-icon {
+                            .philosofy-slide-icon {
                                 height: 60px;
                                 width: 50px;
                                 fill: #444;;
@@ -854,13 +854,13 @@ $signUpButtonColor: #4169E1;
                             text-transform: uppercase;
                         }
 
-                        .reviews-slide-text {
+                        .philosofy-slide-text {
                             font-size: 32px;
                             font-weight: 400;
                             line-height: 1.4;
                         }
 
-                        .reviews-slide-author {
+                        .philosofy-slide-author {
                             font-size: 14px;
                             font-weight: 400;
                         }
@@ -868,18 +868,18 @@ $signUpButtonColor: #4169E1;
                 }
             }
 
-            .reviews-slider-buttons {
+            .philosofy-slider-buttons {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 gap: 6px;
 
-                .reviews-slider-button {
+                .philosofy-slider-button {
                     width: 15px;
                     height: 5px;
                     background: rgba(0, 0, 0, 0.5);
 
-                    &.reviews-slider-active-button {
+                    &.philosofy-slider-active-button {
                         background: $mainSHadeRed;
                     }
                 }
