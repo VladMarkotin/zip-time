@@ -589,15 +589,6 @@ var SlideContentController = /*#__PURE__*/function () {
       for (var i = 0; i < slideOneLiCollect.length; i++) {
         _loop();
       }
-      var sliderContetWrapper = document.querySelector('.slide-content');
-      var slider3dText = sliderContetWrapper.querySelector('.slide-content-3d-title');
-      var slider3dActiveClass = 'slide-content-3d-title-active';
-      sliderContetWrapper.addEventListener('mousemove', function () {
-        slider3dText.classList.add(slider3dActiveClass);
-      });
-      sliderContetWrapper.addEventListener('mouseleave', function () {
-        if (slider3dText.classList.contains(slider3dActiveClass)) slider3dText.classList.remove(slider3dActiveClass);
-      });
     }
   }, {
     key: "initSecondSlide",

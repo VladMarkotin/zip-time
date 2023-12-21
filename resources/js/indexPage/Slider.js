@@ -36,18 +36,6 @@ class SlideContentController {
                 currentLi.classList.add(classAdded);
             }, slideOneLiTimer.next().value)
         }
-
-        const sliderContetWrapper = document.querySelector('.slide-content');
-        const slider3dText = sliderContetWrapper.querySelector('.slide-content-3d-title');
-        const slider3dActiveClass = 'slide-content-3d-title-active';
-
-        sliderContetWrapper.addEventListener('mousemove', () => {
-            slider3dText.classList.add(slider3dActiveClass);
-        });
-
-        sliderContetWrapper.addEventListener('mouseleave', () => {
-            if (slider3dText.classList.contains(slider3dActiveClass)) slider3dText.classList.remove(slider3dActiveClass);
-        })
     }
 
     static initSecondSlide() {

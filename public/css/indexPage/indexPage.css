@@ -167,17 +167,10 @@ ol {
   color: #fff;
 }
 .slider-wrapper .slide .slide-content .slide-content_inner-block .slide-content-3d-title {
-  margin-top: -12px;
-  align-self: center;
-  transform: perspective(300px) rotateX(15deg) scaleY(0.8);
-  transition: all 0.5s;
   font-family: "Montserrat", sans-serif;
   font-size: 45px;
   letter-spacing: 3px;
   color: #C2C2C2;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 4px 0 #808080;
-}
-.slider-wrapper .slide .slide-content .slide-content_inner-block .slide-content-3d-title-active {
   transform: perspective(1000px) rotateX(15deg) scale(1.07);
   text-shadow: 0 0 10px black, 0 1px 0 #808080;
 }
