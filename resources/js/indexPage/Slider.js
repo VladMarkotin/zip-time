@@ -41,7 +41,7 @@ class SlideContentController {
         const slider3dText = sliderContetWrapper.querySelector('.slide-content-3d-title');
         const slider3dActiveClass = 'slide-content-3d-title-active';
 
-        sliderContetWrapper.addEventListener('mouseenter', () => {
+        sliderContetWrapper.addEventListener('mousemove', () => {
             slider3dText.classList.add(slider3dActiveClass);
         });
 

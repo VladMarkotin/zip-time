@@ -592,7 +592,7 @@ var SlideContentController = /*#__PURE__*/function () {
       var sliderContetWrapper = document.querySelector('.slide-content');
       var slider3dText = sliderContetWrapper.querySelector('.slide-content-3d-title');
       var slider3dActiveClass = 'slide-content-3d-title-active';
-      sliderContetWrapper.addEventListener('mouseenter', function () {
+      sliderContetWrapper.addEventListener('mousemove', function () {
         slider3dText.classList.add(slider3dActiveClass);
       });
       sliderContetWrapper.addEventListener('mouseleave', function () {
