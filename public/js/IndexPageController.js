@@ -277,6 +277,146 @@ var OurAdvantagesController = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/indexPage/PhilosofySlider.js":
+/*!***************************************************!*\
+  !*** ./resources/js/indexPage/PhilosofySlider.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _slider = /*#__PURE__*/new WeakMap();
+var _sliderLine = /*#__PURE__*/new WeakMap();
+var _sliderItems = /*#__PURE__*/new WeakMap();
+var _sliderItemsCounter = /*#__PURE__*/new WeakMap();
+var _sliderWidth = /*#__PURE__*/new WeakMap();
+var _sliderButtonsWrapper = /*#__PURE__*/new WeakMap();
+var _activeClassVal = /*#__PURE__*/new WeakMap();
+var _currentSlideIndex = /*#__PURE__*/new WeakMap();
+var PhilosofySlider = /*#__PURE__*/function () {
+  function PhilosofySlider() {
+    _classCallCheck(this, PhilosofySlider);
+    _classPrivateFieldInitSpec(this, _slider, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderLine, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderItemsCounter, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderWidth, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderButtonsWrapper, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _activeClassVal, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _currentSlideIndex, {
+      writable: true,
+      value: 0
+    });
+  }
+  _createClass(PhilosofySlider, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _slider, document.querySelector('.philosofy-slider'));
+      _classPrivateFieldSet(this, _sliderLine, _classPrivateFieldGet(this, _slider).querySelector('.philosofy-slider-line'));
+      _classPrivateFieldSet(this, _sliderItems, _classPrivateFieldGet(this, _sliderLine).querySelectorAll('.philosofy-slide'));
+      _classPrivateFieldSet(this, _sliderItemsCounter, _classPrivateFieldGet(this, _sliderItems).length);
+      _classPrivateFieldSet(this, _sliderWidth, getComputedStyle(_classPrivateFieldGet(this, _slider)).width);
+      _classPrivateFieldSet(this, _sliderButtonsWrapper, document.querySelector('.philosofy-slider-buttons'));
+      _classPrivateFieldSet(this, _activeClassVal, 'philosofy-slider-active-button');
+      this.move = this.move.bind(this);
+      _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter);
+      this.cleanButtonWrapper();
+      _classPrivateFieldGet(this, _sliderItems).forEach(function (item, index) {
+        item.style.width = _classPrivateFieldGet(_this, _sliderWidth);
+        _this.createButton(index);
+      });
+    }
+  }, {
+    key: "cleanButtonWrapper",
+    value: function cleanButtonWrapper() {
+      _classPrivateFieldGet(this, _sliderButtonsWrapper).innerHTML = '';
+    }
+  }, {
+    key: "createButton",
+    value: function createButton(index) {
+      var _this2 = this;
+      if (_classPrivateFieldGet(this, _sliderItemsCounter)) {
+        var sliderButton = document.createElement('button');
+        sliderButton.classList.add('philosofy-slider-button');
+        if (index === _classPrivateFieldGet(this, _currentSlideIndex)) sliderButton.classList.add(_classPrivateFieldGet(this, _activeClassVal));
+        sliderButton.addEventListener('click', function (e) {
+          _this2.move(index, e);
+        });
+        _classPrivateFieldGet(this, _sliderButtonsWrapper).append(sliderButton);
+      }
+    }
+  }, {
+    key: "move",
+    value: function move(index, e) {
+      var sliderButtons = _classPrivateFieldGet(this, _sliderButtonsWrapper).querySelectorAll('.philosofy-slider-button');
+      var _iterator = _createForOfIteratorHelper(sliderButtons),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var item = _step.value;
+          if (item.classList.contains(_classPrivateFieldGet(this, _activeClassVal))) item.classList.remove(_classPrivateFieldGet(this, _activeClassVal));
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      if (e) e.target.classList.add(_classPrivateFieldGet(this, _activeClassVal));else sliderButtons[index].classList.add(_classPrivateFieldGet(this, _activeClassVal));
+      _classPrivateFieldGet(this, _sliderLine).style.left = "-".concat(Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * index, "px");
+      _classPrivateFieldSet(this, _currentSlideIndex, index);
+    }
+  }, {
+    key: "currentSlideIndex",
+    get: function get() {
+      return _classPrivateFieldGet(this, _currentSlideIndex);
+    }
+  }]);
+  return PhilosofySlider;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PhilosofySlider);
+
+/***/ }),
+
 /***/ "./resources/js/indexPage/ProgressBar.js":
 /*!***********************************************!*\
   !*** ./resources/js/indexPage/ProgressBar.js ***!
@@ -370,146 +510,6 @@ var ProgressBar = /*#__PURE__*/function () {
   return ProgressBar;
 }();
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProgressBar);
-
-/***/ }),
-
-/***/ "./resources/js/indexPage/ReviewsSlider.js":
-/*!*************************************************!*\
-  !*** ./resources/js/indexPage/ReviewsSlider.js ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
-function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
-function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
-function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
-function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
-function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
-function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
-var _slider = /*#__PURE__*/new WeakMap();
-var _sliderLine = /*#__PURE__*/new WeakMap();
-var _sliderItems = /*#__PURE__*/new WeakMap();
-var _sliderItemsCounter = /*#__PURE__*/new WeakMap();
-var _sliderWidth = /*#__PURE__*/new WeakMap();
-var _sliderButtonsWrapper = /*#__PURE__*/new WeakMap();
-var _activeClassVal = /*#__PURE__*/new WeakMap();
-var _currentSlideIndex = /*#__PURE__*/new WeakMap();
-var ReviewsSlider = /*#__PURE__*/function () {
-  function ReviewsSlider() {
-    _classCallCheck(this, ReviewsSlider);
-    _classPrivateFieldInitSpec(this, _slider, {
-      writable: true,
-      value: null
-    });
-    _classPrivateFieldInitSpec(this, _sliderLine, {
-      writable: true,
-      value: null
-    });
-    _classPrivateFieldInitSpec(this, _sliderItems, {
-      writable: true,
-      value: null
-    });
-    _classPrivateFieldInitSpec(this, _sliderItemsCounter, {
-      writable: true,
-      value: null
-    });
-    _classPrivateFieldInitSpec(this, _sliderWidth, {
-      writable: true,
-      value: null
-    });
-    _classPrivateFieldInitSpec(this, _sliderButtonsWrapper, {
-      writable: true,
-      value: null
-    });
-    _classPrivateFieldInitSpec(this, _activeClassVal, {
-      writable: true,
-      value: null
-    });
-    _classPrivateFieldInitSpec(this, _currentSlideIndex, {
-      writable: true,
-      value: 0
-    });
-  }
-  _createClass(ReviewsSlider, [{
-    key: "init",
-    value: function init() {
-      var _this = this;
-      _classPrivateFieldSet(this, _slider, document.querySelector('.philosofy-slider'));
-      _classPrivateFieldSet(this, _sliderLine, _classPrivateFieldGet(this, _slider).querySelector('.philosofy-slider-line'));
-      _classPrivateFieldSet(this, _sliderItems, _classPrivateFieldGet(this, _sliderLine).querySelectorAll('.philosofy-slide'));
-      _classPrivateFieldSet(this, _sliderItemsCounter, _classPrivateFieldGet(this, _sliderItems).length);
-      _classPrivateFieldSet(this, _sliderWidth, getComputedStyle(_classPrivateFieldGet(this, _slider)).width);
-      _classPrivateFieldSet(this, _sliderButtonsWrapper, document.querySelector('.philosofy-slider-buttons'));
-      _classPrivateFieldSet(this, _activeClassVal, 'philosofy-slider-active-button');
-      this.move = this.move.bind(this);
-      _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter);
-      this.cleanButtonWrapper();
-      _classPrivateFieldGet(this, _sliderItems).forEach(function (item, index) {
-        item.style.width = _classPrivateFieldGet(_this, _sliderWidth);
-        _this.createButton(index);
-      });
-    }
-  }, {
-    key: "cleanButtonWrapper",
-    value: function cleanButtonWrapper() {
-      _classPrivateFieldGet(this, _sliderButtonsWrapper).innerHTML = '';
-    }
-  }, {
-    key: "createButton",
-    value: function createButton(index) {
-      var _this2 = this;
-      if (_classPrivateFieldGet(this, _sliderItemsCounter)) {
-        var sliderButton = document.createElement('button');
-        sliderButton.classList.add('philosofy-slider-button');
-        if (index === _classPrivateFieldGet(this, _currentSlideIndex)) sliderButton.classList.add(_classPrivateFieldGet(this, _activeClassVal));
-        sliderButton.addEventListener('click', function (e) {
-          _this2.move(index, e);
-        });
-        _classPrivateFieldGet(this, _sliderButtonsWrapper).append(sliderButton);
-      }
-    }
-  }, {
-    key: "move",
-    value: function move(index, e) {
-      var sliderButtons = _classPrivateFieldGet(this, _sliderButtonsWrapper).querySelectorAll('.philosofy-slider-button');
-      var _iterator = _createForOfIteratorHelper(sliderButtons),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var item = _step.value;
-          if (item.classList.contains(_classPrivateFieldGet(this, _activeClassVal))) item.classList.remove(_classPrivateFieldGet(this, _activeClassVal));
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-      if (e) e.target.classList.add(_classPrivateFieldGet(this, _activeClassVal));else sliderButtons[index].classList.add(_classPrivateFieldGet(this, _activeClassVal));
-      _classPrivateFieldGet(this, _sliderLine).style.left = "-".concat(Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * index, "px");
-      _classPrivateFieldSet(this, _currentSlideIndex, index);
-    }
-  }, {
-    key: "currentSlideIndex",
-    get: function get() {
-      return _classPrivateFieldGet(this, _currentSlideIndex);
-    }
-  }]);
-  return ReviewsSlider;
-}();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReviewsSlider);
 
 /***/ }),
 
@@ -1182,7 +1182,7 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BlocksAppearanceController */ "./resources/js/indexPage/BlocksAppearanceController.js");
 /* harmony import */ var _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OurAdvantages */ "./resources/js/indexPage/OurAdvantages.js");
-/* harmony import */ var _ReviewsSlider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ReviewsSlider */ "./resources/js/indexPage/ReviewsSlider.js");
+/* harmony import */ var _PhilosofySlider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PhilosofySlider */ "./resources/js/indexPage/PhilosofySlider.js");
 /* harmony import */ var _Slider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Slider */ "./resources/js/indexPage/Slider.js");
 /* harmony import */ var _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./StatisticsCounter */ "./resources/js/indexPage/StatisticsCounter.js");
 /* harmony import */ var _ProgressBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ProgressBar */ "./resources/js/indexPage/ProgressBar.js");
@@ -1207,7 +1207,7 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 
 var _blocksAppearanceController = /*#__PURE__*/new WeakMap();
 var _ourAdvantagesController = /*#__PURE__*/new WeakMap();
-var _reviewsSlider = /*#__PURE__*/new WeakMap();
+var _philosofySlider = /*#__PURE__*/new WeakMap();
 var _slideArrowController = /*#__PURE__*/new WeakMap();
 var _slideItem = /*#__PURE__*/new WeakMap();
 var _slider = /*#__PURE__*/new WeakMap();
@@ -1226,7 +1226,7 @@ var IndexPageController = /*#__PURE__*/function () {
       writable: true,
       value: null
     });
-    _classPrivateFieldInitSpec(this, _reviewsSlider, {
+    _classPrivateFieldInitSpec(this, _philosofySlider, {
       writable: true,
       value: null
     });
@@ -1261,12 +1261,12 @@ var IndexPageController = /*#__PURE__*/function () {
   }
   _createClass(IndexPageController, [{
     key: "init",
-    value: function init(blocksAppearanceController, ourAdvantagesController, reviewsSlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter, progressBar) {
+    value: function init(blocksAppearanceController, ourAdvantagesController, philosofySlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter, progressBar) {
       var _this = this;
       _classPrivateFieldSet(this, _statisticsCounter, statisticsCounter);
       _classPrivateFieldSet(this, _blocksAppearanceController, new blocksAppearanceController(_classPrivateFieldGet(this, _statisticsCounter)));
       _classPrivateFieldSet(this, _ourAdvantagesController, new ourAdvantagesController());
-      _classPrivateFieldSet(this, _reviewsSlider, new reviewsSlider());
+      _classPrivateFieldSet(this, _philosofySlider, new philosofySlider());
       _classPrivateFieldSet(this, _progressBar, new progressBar());
       _classPrivateFieldSet(this, _slideArrowController, new slideArrowController());
       _classPrivateFieldSet(this, _slideItem, slideItem);
@@ -1275,13 +1275,13 @@ var IndexPageController = /*#__PURE__*/function () {
       _classPrivateFieldSet(this, _sliderFacade, new sliderFacade(new (_classPrivateFieldGet(this, _slider))(), _classPrivateFieldGet(this, _slideItem), _classPrivateFieldGet(this, _slideContentController)));
       _classPrivateFieldGet(this, _blocksAppearanceController).init();
       _classPrivateFieldGet(this, _ourAdvantagesController).init();
-      _classPrivateFieldGet(this, _reviewsSlider).init();
+      _classPrivateFieldGet(this, _philosofySlider).init();
       _classPrivateFieldGet(this, _slideArrowController).init();
       _classPrivateFieldGet(this, _sliderFacade).init();
       _classPrivateFieldGet(this, _progressBar).init();
       window.addEventListener('resize', function () {
-        _classPrivateFieldGet(_this, _reviewsSlider).init();
-        _classPrivateFieldGet(_this, _reviewsSlider).move(_classPrivateFieldGet(_this, _reviewsSlider).currentSlideIndex);
+        _classPrivateFieldGet(_this, _philosofySlider).init();
+        _classPrivateFieldGet(_this, _philosofySlider).move(_classPrivateFieldGet(_this, _philosofySlider).currentSlideIndex);
         _classPrivateFieldGet(_this, _sliderFacade).init();
         _classPrivateFieldGet(_this, _progressBar).init();
       });
@@ -1295,7 +1295,7 @@ var slideArrowController = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slide
   slideItem = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slideItem,
   sliderFacade = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].sliderFacade,
   SlideContentController = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].SlideContentController;
-indexPageController.init(_BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__["default"], _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__["default"], _ReviewsSlider__WEBPACK_IMPORTED_MODULE_2__["default"], slideArrowController, slideItem, slider, sliderFacade, SlideContentController, _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__["default"], _ProgressBar__WEBPACK_IMPORTED_MODULE_5__["default"]);
+indexPageController.init(_BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__["default"], _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__["default"], _PhilosofySlider__WEBPACK_IMPORTED_MODULE_2__["default"], slideArrowController, slideItem, slider, sliderFacade, SlideContentController, _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__["default"], _ProgressBar__WEBPACK_IMPORTED_MODULE_5__["default"]);
 })();
 
 /******/ })()

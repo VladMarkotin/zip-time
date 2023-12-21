@@ -1,4 +1,4 @@
-class ReviewsSlider {
+class PhilosofySlider {
     #slider               = null;
     #sliderLine           = null;
     #sliderItems          = null;
@@ -66,4 +66,4 @@ class ReviewsSlider {
     }
 }
 
-export default ReviewsSlider;
+export default PhilosofySlider;
