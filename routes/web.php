@@ -29,7 +29,7 @@ Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->na
 
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
-
+ 
 Route::middleware(['auth'])->group(function () {
 
  
