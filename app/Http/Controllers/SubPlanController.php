@@ -76,14 +76,20 @@ class SubPlanController extends Controller
 
     public function getSubPlan(Request $request)
     {
-        
-        $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
+        $mode = $request->get('mode');
+        //want to get all details for task
+        if(isset($mode)) {
+            $currentUserTime = '1999-12-31';
+        } else {
+            $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
+        }
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
         $id = $request->get('task_id');
 
         $getSubplan = function($columnName, $columnVal, $currentUserTime) {
             $subPlan = SubPlan::where([[$columnName, $columnVal]])
             ->where('created_at', '>', $currentUserTime.' 00:00:00')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->toArray();
 
@@ -117,7 +123,9 @@ class SubPlanController extends Controller
             response()->json([
                 'status' => 'success', 
                 'data' => $subPlan, 
-                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $lastTaskId ? $lastTaskId : $request->get('task_id')]),
+                'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(
+                    ['task_id' => $lastTaskId ? $lastTaskId : $request->get('task_id')]
+                ),
             ], 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );

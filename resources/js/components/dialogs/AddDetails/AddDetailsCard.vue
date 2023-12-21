@@ -203,6 +203,15 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
+                <v-row class="d-flex align-items-center justify-content-start">
+                    <v-col
+                    cols="auto"
+                    >
+                        <v-btn color="blue-darken-1" variant="text" @click="$emit('showAllSubTasks')">
+                            View all subtasks
+                        </v-btn>
+                    </v-col>
+                </v-row>
                 <v-row class="d-flex align-items-center justify-content-end">
                     <v-col
                     cols="auto"
@@ -300,7 +309,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 modifiedDetailTemplate: {id: null, title: '', text: ''},
             }
         },
-        components: {EditDetails, AddSubtaskButton, EditButton},
+        components: {EditDetails, AddSubtaskButton, EditButton, },
         methods: {
             updateDetails(details) {
                 this.$emit('updateDetails', details);
