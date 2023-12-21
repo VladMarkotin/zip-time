@@ -168,7 +168,7 @@ class MainController
         return response()->json([
             'id' => $id,
             'hash_codes' => $hashCodes,
-        ]);//
+        ]);
     }
 
     public function getDefaultSavedTasks()
