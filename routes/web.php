@@ -31,7 +31,7 @@ Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'r
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
  
 Route::middleware(['auth'])->group(function () {
-
+ 
  
     Route::get('/notifications',      [App\Http\Controllers\NotificationController::class, 'notificationsHistory']);
                       
