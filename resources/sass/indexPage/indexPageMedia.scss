@@ -42,6 +42,17 @@ $maxContentWidth480: 270px;
         }
     }
 
+    .quotes-section {
+        .quotes-wrapper {
+            padding: 0 50px;
+
+            .quotes-content {
+                padding: 35px 0;
+            }
+        }
+
+    }
+
 }
 
 @media screen and (max-width: 1175px) {
@@ -88,6 +99,12 @@ $maxContentWidth480: 270px;
 
         .statistics-content {
             grid-template-columns: repeat(auto-fill, 185px);
+        }
+    }
+
+    .quotes-section {
+        .quotes-wrapper {
+            padding: 0 130px;
         }
     }
 }
@@ -148,6 +165,12 @@ $maxContentWidth480: 270px;
 
         padding: 0 50px;
     }
+
+    .quotes-section {
+        .quotes-wrapper {
+            padding: 0 50px;
+        }
+    }
 }
 
 @media screen and (max-width: 824px)  {
@@ -196,6 +219,19 @@ $maxContentWidth480: 270px;
         }
     }
 
+    .quotes-section {
+        .quotes-wrapper {
+            .quotes-content {
+                .quotes-list-wrapper {
+                    .quotes-list {
+                        .quotes-li {
+                            font-size: 26px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 775px) {
@@ -326,6 +362,18 @@ $maxContentWidth480: 270px;
     .reviews-inner-block {
         .reviews-wrapper {
             .reviews-slider-wrapper {
+                max-width: $maxContentWidth740;
+            }
+        }
+    }
+
+    .quotes-section {
+        .quotes-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .quotes-content {
                 max-width: $maxContentWidth740;
             }
         }
@@ -538,6 +586,15 @@ $maxContentWidth480: 270px;
             }
         }
     }
+
+    .quotes-section {
+        .quotes-wrapper {
+            max-height: 550px;
+            .quotes-content {
+                max-width: $maxContentWidth520;
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -633,6 +690,25 @@ $maxContentWidth480: 270px;
                         .reviews-slide-text-wrapper {
                             .reviews-slide-text {
                                 font-size: 28px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .quotes-section {
+        .quotes-wrapper {
+            max-height: 720px;
+            .quotes-content {
+                max-width: $maxContentWidth480;
+                .quotes-list-wrapper {
+                    .quotes-list {
+                        .quotes-li {
+                            font-size: 24px;
+                            .quotes-text {
+                                line-height: 33px;
                             }
                         }
                     }

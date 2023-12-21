@@ -27,6 +27,13 @@
   .statistics-section .statistics-content {
     grid-template-columns: repeat(auto-fill, 240px);
   }
+
+  .quotes-section .quotes-wrapper {
+    padding: 0 50px;
+  }
+  .quotes-section .quotes-wrapper .quotes-content {
+    padding: 35px 0;
+  }
 }
 @media screen and (max-width: 1075px) {
   .slider-wrapper {
@@ -48,6 +55,10 @@
   }
   .statistics-section .statistics-content {
     grid-template-columns: repeat(auto-fill, 185px);
+  }
+
+  .quotes-section .quotes-wrapper {
+    padding: 0 130px;
   }
 }
 @media screen and (max-width: 1035px) {
@@ -96,6 +107,10 @@
   .statistics-section {
     padding: 0 50px;
   }
+
+  .quotes-section .quotes-wrapper {
+    padding: 0 50px;
+  }
 }
 @media screen and (max-width: 824px) {
   .our-advantages-wrapper .our-advantages-content {
@@ -114,6 +129,10 @@
   }
   .slider-wrapper .slide-two .slide-content .slide-content_inner-block .slide-content-text-wrapper {
     gap: 35px;
+  }
+
+  .quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li {
+    font-size: 26px;
   }
 }
 @media screen and (max-width: 775px) {
@@ -184,6 +203,15 @@
   }
 
   .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper {
+    max-width: 450px;
+  }
+
+  .quotes-section .quotes-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .quotes-section .quotes-wrapper .quotes-content {
     max-width: 450px;
   }
 }
@@ -283,6 +311,13 @@
   .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper {
     max-width: 420px;
   }
+
+  .quotes-section .quotes-wrapper {
+    max-height: 550px;
+  }
+  .quotes-section .quotes-wrapper .quotes-content {
+    max-width: 420px;
+  }
 }
 @media screen and (max-width: 480px) {
   .slider-wrapper .slide .slide-content {
@@ -341,6 +376,19 @@
   }
   .reviews-inner-block .reviews-wrapper .reviews-slider-wrapper .reviews-slider .reviews-slider-line .reviews-slide-text-wrapper .reviews-slide-text {
     font-size: 28px;
+  }
+
+  .quotes-section .quotes-wrapper {
+    max-height: 720px;
+  }
+  .quotes-section .quotes-wrapper .quotes-content {
+    max-width: 270px;
+  }
+  .quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li {
+    font-size: 24px;
+  }
+  .quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li .quotes-text {
+    line-height: 33px;
   }
 }
 @media screen and (max-width: 430px) {
