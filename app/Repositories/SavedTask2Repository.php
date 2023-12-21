@@ -33,6 +33,23 @@ class SavedTask2Repository
         return ($savedTasks);
     }
 
+    /*get the most popular hashes based on next week`s day */
+    public function getMostPopularHashesOnNextDay($id, $status = 1)
+    {
+        $query = "SELECT t1.hash_code,  COUNT(t1.id) num FROM tasks t1 JOIN timetables t2 ON t1.timetable_id = t2.id
+        JOIN saved_tasks s ON (s.hash_code = t1.hash_code AND s.user_id = 1 )
+           WHERE t2.user_id=$id
+          AND DAYOFWEEK(t2.date) = DAYOFWEEK(now() + interval 1 day)
+          AND t1.hash_code <> '#'
+          AND s.status=$status
+         GROUP BY t1.hash_code
+           order by t1.type DESC, t1.priority DESC, num DESC";
+        $result = DB::select($query);
+        
+        return $result;
+    }
+    /* end */
+
     public function getSavedTaskByHashCode(array $params)
     {
         /*Must do it better (task`s types store in db)*/
