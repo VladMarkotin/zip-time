@@ -129,11 +129,14 @@
             :headers="headers"
             :items="items"
             class="elevation-1"
-            @dblclick:tr="deleteItem"
             id="plan-tasks-table"
             >
             <template v-slot:item="props">
-               <tr align="center"  ref="refWord">
+               <tr 
+               align="center"  
+               ref="refWord"
+               @dblclick="deleteItem(props.item)"
+               >
                   <td>{{ props.item.hash }}</td>
                   <td>{{ props.item.taskName }}</td>
                   <td>{{ props.item.type }}</td>
@@ -298,7 +301,24 @@ export default {
                 text: 'Task Type',
                 value: 'type',
                 align: 'right',
-               //  sort: (a, b) => console.log(a, b),
+                sort: (taskTypeOne, taskTypeTwo) => {
+
+                   const getPrior = (taskType) => {
+                     const typePrior = {
+                        'required job':     5,
+                        'non required job': 4,
+                        'required task':    3,
+                        'task':             2,
+                        'reminder':         1,
+                     }
+
+                     return typePrior[taskType];
+                  }
+
+                  const [taskOnePrior, taskTwoPrior] = ([taskTypeOne, taskTypeTwo].map(item => getPrior(item)));
+                  
+                  return taskOnePrior - taskTwoPrior;
+                },
             },
             {
                 text: 'Task Priority',
@@ -478,9 +498,9 @@ export default {
                 details: '',
                 notes: ''
             }
-            console.log(this.items);
         },
         deleteItem(item) {
+            console.log('+');
             var index = this.items.indexOf(item)
             this.items.splice(index, 1);
         },
