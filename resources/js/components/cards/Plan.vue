@@ -285,44 +285,46 @@ export default {
         preparedTask: {},
         headers: [{
                 text: '#code',
-                value: '',
+                value: 'hash',
                 align: 'right'
             },
             {
                 text: 'Task name',
                 align: 'start',
-                value: 'task',
+                value: 'taskName',
                 groupable: false,
             },
             {
                 text: 'Task Type',
-                value: '',
-                align: 'right'
+                value: 'type',
+                align: 'right',
+               //  sort: (a, b) => console.log(a, b),
             },
             {
                 text: 'Task Priority',
-                value: '',
+                value: 'priority',
                 align: 'right'
             },
             {
                 text: 'Time',
-                value: '',
+                value: 'time',
                 align: 'right'
             },
             {
                 text: 'Details',
-                value: '',
-                align: 'right'
+                value: 'details',
+                align: 'right',
             },
             {
                 text: 'Notes',
-                value: '',
-                align: 'right'
+                value: 'notes',
+                align: 'right',
             },
             {
                 text: 'Action',
                 value: '',
-                align: 'center'
+                align: 'center',
+                sortable: false,
             },
         ],
         items: [],
@@ -476,6 +478,7 @@ export default {
                 details: '',
                 notes: ''
             }
+            console.log(this.items);
         },
         deleteItem(item) {
             var index = this.items.indexOf(item)
