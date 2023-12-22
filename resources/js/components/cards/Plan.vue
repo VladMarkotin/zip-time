@@ -129,11 +129,14 @@
             :headers="headers"
             :items="items"
             class="elevation-1"
-            @dblclick:tr="deleteItem"
             id="plan-tasks-table"
             >
             <template v-slot:item="props">
-               <tr align="center"  ref="refWord">
+               <tr 
+               align="center"  
+               ref="refWord"
+               @dblclick="deleteItem(props.item)"
+               >
                   <td>{{ props.item.hash }}</td>
                   <td>{{ props.item.taskName }}</td>
                   <td>{{ props.item.type }}</td>
@@ -285,44 +288,63 @@ export default {
         preparedTask: {},
         headers: [{
                 text: '#code',
-                value: '',
-                align: 'right'
+                value: 'hash',
+                align: 'center'
             },
             {
                 text: 'Task name',
-                align: 'start',
-                value: 'task',
+                align: 'center',
+                value: 'taskName',
                 groupable: false,
             },
             {
                 text: 'Task Type',
-                value: '',
-                align: 'right'
+                value: 'type',
+                align: 'center',
+                sort: (taskTypeOne, taskTypeTwo) => {
+
+                   const getPrior = (taskType) => {
+                     const typePrior = {
+                        'required job':     5,
+                        'non required job': 4,
+                        'required task':    3,
+                        'task':             2,
+                        'reminder':         1,
+                     }
+
+                     return typePrior[taskType];
+                  }
+
+                  const [taskOnePrior, taskTwoPrior] = ([taskTypeOne, taskTypeTwo].map(item => getPrior(item)));
+                  
+                  return taskOnePrior - taskTwoPrior;
+                },
             },
             {
                 text: 'Task Priority',
-                value: '',
-                align: 'right'
+                value: 'priority',
+                align: 'center'
             },
             {
                 text: 'Time',
-                value: '',
-                align: 'right'
+                value: 'time',
+                align: 'center'
             },
             {
                 text: 'Details',
-                value: '',
-                align: 'right'
+                value: 'details',
+                align: 'center',
             },
             {
                 text: 'Notes',
-                value: '',
-                align: 'right'
+                value: 'notes',
+                align: 'center',
             },
             {
                 text: 'Action',
                 value: '',
-                align: 'center'
+                align: 'center',
+                sortable: false,
             },
         ],
         items: [],
@@ -478,6 +500,7 @@ export default {
             }
         },
         deleteItem(item) {
+            console.log('+');
             var index = this.items.indexOf(item)
             this.items.splice(index, 1);
         },
