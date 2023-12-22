@@ -148,7 +148,7 @@
 							time : '',
 						},
 						hashCodes : [],
-						types : ['required job','non required job','required task','task','reminder'],
+						types : ['required job','non required job','required task','task'],
 						priorities : [1,2,3],
 						menu : false/*for task.time*/,
 						icons : {mdiPlusBox,mdiClockTimeFourOutline},

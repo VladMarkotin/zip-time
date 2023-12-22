@@ -309,7 +309,7 @@ export default {
                         'non required job': 4,
                         'required task':    3,
                         'task':             2,
-                        'reminder':         1,
+                        
                      }
 
                      return typePrior[taskType];
@@ -390,7 +390,7 @@ export default {
     computed : {
         taskTypes() {
             return this.
-               day_status == 'Weekend' ? ['non required job', 'task', 'reminder'] : ['required job', 'non required job', 'required task', 'task', 'reminder']
+               day_status == 'Weekend' ? ['non required job', 'task', 'reminder'] : ['required job', 'non required job', 'required task', 'task']
         }
     },
     methods: {
