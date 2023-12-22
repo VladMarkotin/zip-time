@@ -23,7 +23,6 @@ class ProgressBar {
         }
         
         if (this.#isProgressBarExists && this.#windowHeight < this.#minHeigt) {
-            console.log(12345);
             this.findProgressBar().remove();
             window.onscroll = null;
         }

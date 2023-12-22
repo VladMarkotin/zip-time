@@ -500,7 +500,6 @@ var ProgressBar = /*#__PURE__*/function () {
         if (!window.onscroll) window.onscroll = this.calPercents;
       }
       if (_classPrivateFieldGet(this, _isProgressBarExists) && _classPrivateFieldGet(this, _windowHeight) < _classPrivateFieldGet(this, _minHeigt)) {
-        console.log(12345);
         this.findProgressBar().remove();
         window.onscroll = null;
       }
