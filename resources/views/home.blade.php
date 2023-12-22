@@ -152,10 +152,10 @@
             <div class="inner-block">
                 <div class="our-advantages-wrapper element-animation">
                     <div class="our-advantages-title-wrapper">
-                        <h2 class="our-advantages-title title-index-page">some title</h2>
+                        <h2 class="our-advantages-title title-index-page">Why Quipl useful?</h2>
                     </div>
                     <div class="our-advantages-text-wrapper">
-                        <p class="text-index-page">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt, et!</p>
+                        <p class="text-index-page">By using Quipl you get</p>
                     </div>
                     <div class="our-advantages-content">
                         <div class="our-advantages-item element-animation">
@@ -168,7 +168,7 @@
                                 <h3 class="title-index-page our-advantages-title">Statistic</h3>
                             </div>
                             <div class="our-advantages-text">
-                                <p class="text-index-page ">Lorem ipsum dolor sit amet adipisicing elit. Necessitatibus nihil ipsam deleniti voluptatum.</p>
+                                <p class="text-index-page ">Now you will always know your efficiency. Moreover, you will be able to observe the dynamics of your success. No more rhetorical questions about whether you are doing enough</p>
                             </div>
                         </div>
                         <div class="our-advantages-item element-animation">
@@ -181,7 +181,7 @@
                                 <h3 class="title-index-page our-advantages-title">Responsibility</h3>
                             </div>
                             <div class="our-advantages-text">
-                                <p class="text-index-page ">Lorem ipsum dolor sit amet adipisicing elit. Necessitatibus nihil ipsam deleniti voluptatum.</p>
+                                <p class="text-index-page ">No more “I will think about it tomorrow”. Start getting things done right now! Yes, it may be very difficult to do something. You don't have to do everything perfectly right away. But it's important just do And, gradually youwill achieve the ideal</p>
                             </div>
                         </div>
                         <div class="our-advantages-item element-animation">
@@ -194,7 +194,7 @@
                                 <h3 class="title-index-page our-advantages-title">History</h3>
                             </div>
                             <div class="our-advantages-text">
-                                <p class="text-index-page ">Lorem ipsum dolor sit amet adipisicing elit. Necessitatibus nihil ipsam deleniti voluptatum.</p>
+                                <p class="text-index-page ">Every success and every mistake has its own story. Quipl will help you remember successes and draw conclusions from mistakes</p>
                             </div>
                         </div>
                     </div>

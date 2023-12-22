@@ -399,6 +399,7 @@ ol {
   text-transform: uppercase;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  text-shadow: 1px 1px 1px black;
   transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
 }
 .yeap-button:hover, .yeap-button:focus {
@@ -572,7 +573,7 @@ ol {
   margin-bottom: 0;
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item .our-advantages-text .text-index-page {
-  text-align: center;
+  text-align: justify;
 }
 .our-advantages-wrapper .our-advantages-content .our-advantages-item-focus {
   background-color: #5c1a1a;

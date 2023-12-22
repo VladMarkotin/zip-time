@@ -498,6 +498,7 @@ $signUpButtonColor: #4169E1;
     text-transform: uppercase;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
+    text-shadow: 1px 1px 1px black;
 
     &:hover,
     &:focus {
@@ -698,7 +699,7 @@ $signUpButtonColor: #4169E1;
 
             .our-advantages-text {
                 .text-index-page {
-                    text-align: center;
+                    text-align: justify;
                 }
             }
         }
