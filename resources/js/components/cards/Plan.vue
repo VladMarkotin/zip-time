@@ -289,18 +289,18 @@ export default {
         headers: [{
                 text: '#code',
                 value: 'hash',
-                align: 'right'
+                align: 'center'
             },
             {
                 text: 'Task name',
-                align: 'start',
+                align: 'center',
                 value: 'taskName',
                 groupable: false,
             },
             {
                 text: 'Task Type',
                 value: 'type',
-                align: 'right',
+                align: 'center',
                 sort: (taskTypeOne, taskTypeTwo) => {
 
                    const getPrior = (taskType) => {
@@ -323,22 +323,22 @@ export default {
             {
                 text: 'Task Priority',
                 value: 'priority',
-                align: 'right'
+                align: 'center'
             },
             {
                 text: 'Time',
                 value: 'time',
-                align: 'right'
+                align: 'center'
             },
             {
                 text: 'Details',
                 value: 'details',
-                align: 'right',
+                align: 'center',
             },
             {
                 text: 'Notes',
                 value: 'notes',
-                align: 'right',
+                align: 'center',
             },
             {
                 text: 'Action',
