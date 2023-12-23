@@ -8,7 +8,6 @@
                label="Day status"
                v-model="day_status"
                @change="isWeekendAvailable"
-              
                item-disabled="disable"
                item-text="status"
                required
