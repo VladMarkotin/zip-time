@@ -10,7 +10,7 @@ class Messages
 					'close_day' => [
 					   'first_day' => 'Congratulations!..',
 					   'second_day' => '',
-					   'usual_day' => '',
+					   'usual_day' => 'Your day plan has been completed :) Good work!',
 					   'after_1_week' => '',
 					   'after_1_month' => '',
 					],
@@ -49,12 +49,9 @@ class Messages
                      'create_plan' => [
                         'message' => []
                      ],
-                     'estimate' => [
-                         'message' => []
-                     ],
 				],
-				'info' => [
-				
+				'close_day' => [
+                    'success' => [''],
 				],
 				'chg_user_status' => [
 						''

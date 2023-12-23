@@ -126,11 +126,20 @@ class EstimationService
                 $data['mark'] = $makeMarkValid(2); //it means that user gives an own mark for checking
                 $data['comment'] = $makeCommentValid($data['comment']);
                 $response = $this->estimateDayRepository->closeDay($data);
+                //$response=true;
                 if($response){
-                  $this->userRatings-> rateCompletedDay(2) ;  //  get rating as day completed
+                  $this->userRatings->rateCompletedDay(2) ;  //  get rating as day completed
+                  $message = $this->motivationMessageService->getMessage([
+                    'user_id' => Auth::id(),
+                    'lang' => 'en',
+                    'type' => 'greetings',
+                    'state' => 'close_day',
+                    'index' => 'usual_day'
+                  ]);
+                  
                     return [
                         "status" => "success",
-                        "message" => "Your day plan has been completed :) Good work!"
+                        "message" => $message, //"Your day plan has been completed :) Good work!"
                     ];
                     
                 }

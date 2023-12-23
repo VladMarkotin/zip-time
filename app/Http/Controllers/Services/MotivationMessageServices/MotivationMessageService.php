@@ -91,8 +91,8 @@ class MotivationMessageService
 			case 'close_day':
 				$arrLen = count($this->messages[$data['lang']][$data['type']]['close_day']);
 				$ind = $this->getRandIndex($arrLen);
-				
-				return $this->messages[$data['lang']][$data['type']]['close_day'][$ind-1];
+				//die(var_dump($this->messages[$data['lang']]) );
+				return $this->messages[$data['lang']][$data['type']][$data['state']][$index];
 		}
 	}
 
