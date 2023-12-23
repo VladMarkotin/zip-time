@@ -39,9 +39,11 @@ use App\Http\Controllers\Services\SubPlanServices\SubPlanService;
 use App\Models\SavedNotes;
 use App\Models\SavedTask;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\Services\MotivationMessageServices\MotivationMessageService;
 use App\Models\User;
 use App\Models\DefaultSavedTasks;
 use Illuminate\Support\Facades\Log;
+
 
 class MainController
 {
@@ -67,6 +69,7 @@ class MainController
     private $noteController            = null;
     private $defaultSavedTasks         = null;
     private $subPlanService            = null;
+    private $motivationMessageService  = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -88,7 +91,8 @@ class MainController
                                 DefaultConfigs $defaultConfigs,
                                 NoteController $noteController,
                                 DefaultSavedTasks $defaultSavedTasks,
-                                SubPlanService $subPlanService
+                                SubPlanService $subPlanService,
+                                MotivationMessageService $motivationMessageService
                                 )
     {
         
@@ -114,6 +118,7 @@ class MainController
         $this->noteController            = $noteController;
         $this->defaultSavedTasks         = $defaultSavedTasks;
         $this->subPlanService            = $subPlanService;
+        $this->motivationMessageService  = $motivationMessageService;
     }
 
     public function addHashCode(Request $request)
@@ -276,10 +281,16 @@ class MainController
             $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
 
             $jsonPlanForDay = $planForDay;
+            $message = $this->motivationMessageService->getMessage([
+                'user_id' => Auth::id(),
+                'lang' => 'en',
+                'type' => 'greetings',
+                'state' => 'create_plan',
+            ]);
             $finalResponseArray = [
                 "plan" => $jsonPlanForDay,
                 "status" => "success",
-                "message" => 'Plan has been successfully created! We wish you to realize conceived :) '
+                "message" => $message,
             ];
 
             return $finalResponseArray;
@@ -354,9 +365,17 @@ class MainController
         $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
         
         if (!$checkSubPlan) {
+            $message = $this->motivationMessageService->getMessage([
+                'user_id' => Auth::id(),
+                'lang' => 'en',
+                'type' => 'greetings',
+                'state' => 'estimate',
+                'index' => 'error_undone'
+            ]);
             return response()->json([
                 'status' => 'error',
-                'message' => 'Error! Some required subtasks are still undone',
+                //'message' => 'Error! Some required subtasks are still undone',
+                'message' => $message
             ]);//
         }
         //checkCheckpoints
@@ -395,8 +414,18 @@ class MainController
              && (in_array($type, [1,2])) ) {
             $data['action'] = '3';
             $checkedData = $this->estimationService->handleEstimationRequest($data);
-            
-            return json_encode(['status' => 'success', 'message' => 'Task has been updated.'], JSON_UNESCAPED_UNICODE);
+            $message = $this->motivationMessageService->getMessage([
+                'user_id' => Auth::id(),
+                'lang' => 'en',
+                'type' => 'greetings',
+                'state' => 'estimate',
+                'index' => 'success'
+            ]);
+            return json_encode(
+                [
+                    'status' => 'success',
+                    'message' => $message
+                ], JSON_UNESCAPED_UNICODE);
         }
         $data['mark'] = ($request->get('mark') && (!$request->get('is_ready'))) ? 
             $request->get('mark') : $request->get('is_ready');
@@ -406,12 +435,30 @@ class MainController
             $planForDay = $this->currentPlanInfo->getLastDayPlan($params); //получаю задания для составленного плана на день
             //get today`s note Amount
             $noteAmount = $this->noteController->countTodayNoteAmount($checkedData);
-
-            return json_encode(['status' => 'success', 'message' => 'Task has been updated.',
+            $message = $this->motivationMessageService->getMessage([
+                'user_id' => Auth::id(),
+                'lang' => 'en',
+                'type' => 'greetings',
+                'state' => 'estimate',
+                'index' => 'success'
+            ]);
+            return json_encode(['status' => 'success', 'message' => $message,
              'noteAmount' => $noteAmount], JSON_UNESCAPED_UNICODE);
         }
+        $message = $this->motivationMessageService->getMessage([
+            'user_id' => Auth::id(),
+            'lang' => 'en',
+            'type' => 'greetings',
+            'state' => 'estimate',
+            'index' => 'error'
+        ]);
 
-        return json_encode(["status" => 'error', "message" => 'Error during estimation.'], JSON_UNESCAPED_UNICODE);
+        return json_encode(
+            [
+                "status" => 'error', "message" => $message
+            ],
+                 JSON_UNESCAPED_UNICODE
+            );
     }
 
     /*

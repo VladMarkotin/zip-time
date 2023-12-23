@@ -12,23 +12,30 @@ namespace App\Http\Controllers\Services;
 use App\Repositories\EstimateTaskRepository;
 use App\Repositories\EstimationRepository;
 use App\Models\DefaultConfigs;
+use App\Http\Controllers\Services\MotivationMessageServices\MotivationMessageService;
+use Illuminate\Support\Facades\Auth;
+
 
 class EstimationService
 {
     private $estimateTaskRepository = null;
     private $estimateDayRepository  = null;
     private $userRatings            = null;  
-    private $defaultConfigs         = null;   
+    private $defaultConfigs         = null;
+    private $motivationMessageService  = null;
+   
 
     public function __construct(EstimateTaskRepository $estimateTaskRepository,
                                 EstimationRepository $estimationRepository,
                                 RatingService $userRatings,
-                                DefaultConfigs $defaultConfigs)
+                                DefaultConfigs $defaultConfigs,
+                                MotivationMessageService $motivationMessageService)
     {
         $this->estimateTaskRepository = $estimateTaskRepository;
         $this->estimateDayRepository  = $estimationRepository;
         $this->userRatings            = $userRatings;
         $this->defaultConfigs         = $defaultConfigs;
+        $this->motivationMessageService = $motivationMessageService;
     }
     /**
      * @param array $data
@@ -127,7 +134,16 @@ class EstimationService
                     ];
                     
                 }
-
+                $message = $this->motivationMessageService->getMessage([
+                    'user_id' => Auth::id(),
+                    'lang' => 'en',
+                    'type' => 'errors',
+                    'state' => 'close_day',
+                    'index' => 'message'
+                ]);
+                //die(var_dump($message));
+                return ["status" => "error", "message" => $message];
+                exit;
                 return ["status" => "error", "message" => "You can`t close your day plan! Either some required jobs/tasks are incomplete
                                                            or you final mark lower then minimum (". $defaultConfigs->cardRules[0]->minFinalMark ."%)"];
 
