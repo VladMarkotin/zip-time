@@ -523,6 +523,9 @@ ol {
   transition: all 0.55s ease;
   transform: translateX(-10px);
 }
+.our-advantages-wrapper .our-advantages-title_main {
+  text-align: center;
+}
 .our-advantages-wrapper.element-show {
   opacity: 1;
   transform: translateX(0);

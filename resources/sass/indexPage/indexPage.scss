@@ -642,6 +642,10 @@ $signUpButtonColor: #4169E1;
     transition: all .55s ease;
     transform: translateX(-10px);
 
+    .our-advantages-title_main {
+        text-align: center;
+    }
+
     &.element-show {
         opacity: 1;
         transform: translateX(0);

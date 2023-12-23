@@ -152,7 +152,7 @@
             <div class="inner-block">
                 <div class="our-advantages-wrapper element-animation">
                     <div class="our-advantages-title-wrapper">
-                        <h2 class="our-advantages-title title-index-page">Why Quipl useful?</h2>
+                        <h2 class="our-advantages-title_main title-index-page">Why Quipl useful?</h2>
                     </div>
                     <div class="our-advantages-text-wrapper">
                         <p class="text-index-page">By using Quipl you get</p>
