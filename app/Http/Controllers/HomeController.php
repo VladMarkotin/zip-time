@@ -11,11 +11,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\EstimationRepository;
 use App\Http\Controllers\Services\RatingService;
 use App\Http\Controllers\Services\GetDayPlanService;
+use App\Http\Controllers\Services\IndexStatServices\IndexStatService;
 
 
 class HomeController extends Controller
 {
+    private $indexStatService = null;
 
+    public function __construct(IndexStatService $indexStatService)
+    {
+        $this->indexStatService = $indexStatService;
+    }
     /**
      * Show the application dashboard.
      *
@@ -23,6 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $statData = $this->indexStatService->countStatIndex();
+
+        return view('home')->with(['statData' => $statData]);
     }
 }

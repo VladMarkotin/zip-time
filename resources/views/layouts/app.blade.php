@@ -12,7 +12,12 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/custom.js') }}" defer></script>
-
+    @guest
+        @if(Route::currentRouteName() == 'welcome')
+            <script src="js/IndexPageController.js" defer></script>
+        @endif
+    @endguest
+    <script src="js/NavMenu.js" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -24,9 +29,22 @@
 
     <link rel="stylesheet" src='https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/introjs.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    @guest
+        @if(Route::currentRouteName() == 'welcome')
+            <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+        @endif
+    @endguest
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    @guest
+        @if(Route::currentRouteName() == 'welcome')
+            <link href="{{ asset('css/indexPage/indexPage.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/indexPage/indexPageMedia.css') }}" rel="stylesheet">
+        @endif
+    @endguest
     @livewireStyles
 
 
@@ -49,7 +67,7 @@
     <livewire:add-log />
 
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm nav-menu">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
                     {{ config('app.name', 'Laravel') }}
@@ -150,7 +168,7 @@
         </nav>
 
 
-        <main class="py-0">
+        <main class="py-0 main">
 
             @yield('content')
         </main>
