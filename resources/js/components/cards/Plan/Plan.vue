@@ -127,13 +127,7 @@
          <v-divider></v-divider>
          <PreplanTasksTable 
          :items          = "items"
-         :showAlert      = "showAlert"
-         :alertType      = "alertType"
-         :serverMessage  = "serverMessage"
-         :isShowProgress = "isShowProgress"
-         :value          = "value"
          @deleteItem  = "deleteItem"
-         @formSubmit  = "formSubmit"
          />
          <!-- <v-data-table
             :headers="headers"
@@ -171,7 +165,7 @@
                   </td>
                </tr>
             </template>
-         </v-data-table>
+         </v-data-table> -->
          <v-row>
          <v-col>
             <div 
@@ -239,7 +233,7 @@
          </div>
          <template v-if="isShowEmergencyCallDialog">
 	         <EmergencyCall  v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
-         </template> -->
+         </template>
       </v-container>
    </v-card>
 </template>
@@ -257,9 +251,9 @@ import {
     mdiShareVariant,
    //  mdiDelete,
     mdiStarThreePointsOutline,
-   //  mdiClockStart,
+    mdiClockStart,
     mdiAlarm,
-   //  mdiCarEmergency,
+    mdiCarEmergency,
     mdiPlus,
     mdiPlusBox,
     mdiCancel,
@@ -275,7 +269,7 @@ export default {
         showIcon: 0,
         day_status: 'Work Day',
         menu: false/*for defaultSelected.time*/,
-      //   isShowEmergencyCallDialog : false,
+        isShowEmergencyCallDialog : false,
         defaultSelected: {
             hash: '#',
             hashCodes: [],
@@ -354,12 +348,12 @@ export default {
             // mdiDelete,
             mdiPencil,
             mdiStarThreePointsOutline,
-            // mdiClockStart,
+            mdiClockStart,
             mdiAlarm,
             mdiPlus,
             mdiPlusBox,
             mdiCancel,
-            // mdiCarEmergency,
+            mdiCarEmergency,
         },
         hashCodes: [],
         hashNames: '#',
@@ -419,9 +413,9 @@ export default {
                      })]
             }; //тут костыль
         },
-      //   toggleEmergencyCallDialog(){
-		// 		this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
-		// 	},
+        toggleEmergencyCallDialog(){
+				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
+			},
         inputChangeHandler() {
             if (this.showIcon < 4) {
                 this.showIcon += 1
