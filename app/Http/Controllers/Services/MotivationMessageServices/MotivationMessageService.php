@@ -4,79 +4,28 @@ namespace App\Http\Controllers\Services\MotivationMessageServices;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Services\MotivationMessageServices\Messages;
+use App\Http\Controllers\Services\MotivationMessageServices\AnalizeUserDetailsService;
 
 
 class MotivationMessageService
 {
-    /*private $messages = [
-        'en' =>
-	       [
-				'greetings' => [
-					'close_day' => [
-					   'first_day' => 'Congratulations!..',
-					   'second_day' => '',
-					   'usual_day' => '',
-					   'after_1_week' => '',
-					   'after_1_month' => '',
-					],
-					'create_plan' => [
-					   'usual_day' => [
-						  'Plan has been successfully created! We wish you to realize conceived :)',
-					   ],
-					   'second_day' => [],
-					   'after_1_week' => [],
-					   'after_1_month' => [],
-					   'after_weekend' => [],
-					   'after_fail' => [],
-					   'after_emergency' => [],
-					],
-					'estimate' => [
-						'success' => [
-							'Task has been updated.'
-						],
-						'error_undone'    => [
-							'Error! Some required subtasks are still undone.'
-						],
-						'error' => [
-							'Error during estimation',
-						],
-						'details' => 'In average, your mark for this job = ..%'
-					],
-					
-				],
-				'errors' => [
-				    'close_day' => [
-                        [
-							'message' => ["You can`t close your day plan! Either some required jobs/tasks are incomplete
-                                                           or you final mark lower then minimum
-									(%)"],
-						],
-                     ],
-                     'create_plan' => [
-                        'message' => []
-                     ],
-                     'estimate' => [
-                         'message' => []
-                     ],
-				],
-				'info' => [
-				
-				],
-				'chg_user_status' => [
-						''
-				]
-		   ]
-
-    ];*/
+	private $analizeUserDetailsService = null;
 	private $messages = [];
 
-    public function __construct()
-    {}
+    public function __construct(AnalizeUserDetailsService $analizeUserDetailsService)
+    {
+		$this->analizeUserDetailsService = $analizeUserDetailsService;
+	}
 
     public function getMessage(array $data)
     {
 		$this->messages = Messages::getMessages();
-		$index = (isset($data['index'])) ? $data['index'] : 'usual_day'; //get index
+		//Have to define get index` logic
+		/**
+		 * Have to understand user`s index
+		 * need service to analize user`s details
+		 */
+		$index = $this->analizeUserDetailsService->analizeUserDetails($data);
 		switch($data['state']) {
 			case 'create_plan':
 				$arrLen = count($this->messages[$data['lang']][$data['type']]['create_plan'][$index]);
@@ -91,7 +40,7 @@ class MotivationMessageService
 			case 'close_day':
 				$arrLen = count($this->messages[$data['lang']][$data['type']]['close_day']);
 				$ind = $this->getRandIndex($arrLen);
-				//die(var_dump($this->messages[$data['lang']]) );
+				
 				return $this->messages[$data['lang']][$data['type']][$data['state']][$index];
 		}
 	}

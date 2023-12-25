@@ -40,6 +40,7 @@ use App\Models\SavedNotes;
 use App\Models\SavedTask;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\Services\MotivationMessageServices\MotivationMessageService;
+use App\Http\Controllers\Services\MotivationMessageServices\AnalizeUserDetailsService;
 use App\Models\User;
 use App\Models\DefaultSavedTasks;
 use Illuminate\Support\Facades\Log;
@@ -70,6 +71,7 @@ class MainController
     private $defaultSavedTasks         = null;
     private $subPlanService            = null;
     private $motivationMessageService  = null;
+    private $analizeUserDetailsService = null;
 
     public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
                                 AddPlanService $addPlanService,
@@ -93,6 +95,7 @@ class MainController
                                 DefaultSavedTasks $defaultSavedTasks,
                                 SubPlanService $subPlanService,
                                 MotivationMessageService $motivationMessageService
+                                //AnalizeUserDetailsService $analizeUserDetailsService
                                 )
     {
         
@@ -119,6 +122,7 @@ class MainController
         $this->defaultSavedTasks         = $defaultSavedTasks;
         $this->subPlanService            = $subPlanService;
         $this->motivationMessageService  = $motivationMessageService;
+        //$this->analizeUserDetailsService = $analizeUserDetailsService;
     }
 
     public function addHashCode(Request $request)

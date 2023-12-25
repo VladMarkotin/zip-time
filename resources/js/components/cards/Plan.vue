@@ -531,7 +531,7 @@ export default {
                            currentObj.$root.currComponent = "ReadyDayPlan"
                            
                         }
-                    }, 5e3)
+                    }, 7e3)
                 })
                 .catch(function(error) {
                     currentObj.output = error;

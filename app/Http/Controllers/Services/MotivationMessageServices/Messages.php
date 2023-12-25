@@ -18,12 +18,32 @@ class Messages
 					   'usual_day' => [
 						  'Plan has been successfully created! We wish you to realize conceived :)',
 					   ],
-					   'second_day' => [],
-					   'after_1_week' => [],
-					   'after_1_month' => [],
-					   'after_weekend' => [],
-					   'after_fail' => [],
-					   'after_emergency' => [],
+					   'first_day' => [
+						'Your first plan has been created! 
+						This is just the first step on the path to success, but you are already ahead of
+						others. Keep winning!'					   ],
+					   'second_day' => [
+						  'Second plan has been created! Remember, success requires persistence
+					         and hard work.'
+						],
+					   'after_1_week' => [
+						'You`ve using Quipl for 7 days. 
+						 Yes, the period is not that long. However, the main thing is that
+						 success is 7 days closer'
+					   ],
+					   'after_1_month' => [
+						 'You`ve using Quipl for 30 days. It`s time to think about your effectiveness.
+						  After the close of this day, look at the "statistics" section'
+					   ],
+					   'after_weekend' => [
+						  'Glad to see you after the weekend. We hope you had a good rest and are ready for new achievements'
+					    ],
+					   'after_fail' => [
+						  'The path to success is not always smooth. We are glad that despite your yesterday failure you returned.'
+					   ],
+					   'after_emergency' => [
+						  'Welcome back! We hope the emergency mode helped you. And now it`s time to conquer the peaks again'
+					   ],
 					],
 					'estimate' => [
 						'success' => [
