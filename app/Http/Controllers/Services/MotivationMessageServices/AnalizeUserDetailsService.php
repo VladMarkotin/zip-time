@@ -25,6 +25,9 @@ class AnalizeUserDetailsService
         switch($data['state']) {
             case 'create_plan':
                 return $index = $this->defineState($data);
+            case 'estimate':
+                if ($data['index'])
+                    return $data['index'];
                 
         }
     }
