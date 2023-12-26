@@ -86,10 +86,9 @@
                         </v-row>
                         <v-divider></v-divider>
                         <v-row>
-    
                             <template>
                                 <!--Display subTask-->
-                                <v-expansion-panels>
+                                <v-expansion-panels v-if="!isLoading">
                                     <v-expansion-panel v-for="(v, i) in details" :key="i">
                                         <v-expansion-panel-header>
                                             <v-row class="p-0 m-0">
@@ -188,6 +187,7 @@
     
                                     </v-expansion-panel>
                                 </v-expansion-panels>
+                                <DefaultPreloader v-else/>
                             </template>
                         </v-row>
                     </template>
@@ -209,11 +209,11 @@
                     >
                         <v-btn 
                         v-if="isSavedTask"
-                        @click="$emit('showAllSubTasks')"
+                        @click="showSubtasks"
                         color="blue-darken-1" 
                         variant="text" 
                         >
-                            View all subtasks
+                            {{ displayedDetails[displayedDetails.currentMode].showSubtasksButtonText}}
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -251,6 +251,7 @@
 import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import EditButton from '../../UI/EditButton.vue';
+import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
@@ -268,6 +269,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             alert: {
                 type: Object,
+            },
+            isLoading: {
+                type: Boolean,
+                required: true,
             }
         },
         data() {
@@ -317,9 +322,18 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 isShowEditDetailsDialog: false,
                 isSavedTask: this.item.hash !== '#',
                 modifiedDetailTemplate: {id: null, title: '', text: ''},
+                displayedDetails: {
+                    currentMode: 'actual',
+                    all: {
+                        showSubtasksButtonText: 'Test'
+                    },
+                    actual: {
+                        showSubtasksButtonText: 'View all subtasks',
+                    }
+                },
             }
         },
-        components: {EditDetails, AddSubtaskButton, EditButton, },
+        components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader},
         methods: {
             updateDetails(details) {
                 this.$emit('updateDetails', details);
@@ -430,6 +444,25 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
             closeEditDetailsDialog() {
                 this.isShowEditDetailsDialog = false;
+            },
+
+            showSubtasks() {
+               const updateDispDataCurrentMode = (mode) => this.displayedDetails.currentMode = mode;
+
+               switch(this.displayedDetails.currentMode) {
+                    case 'actual':
+                        updateDispDataCurrentMode('all');
+                        this.$emit('showAllSubTasks', this.item);
+                    break;
+                    case 'all':
+                        updateDispDataCurrentMode('actual');
+                        this.$emit('showActualSubTasks', this.item);
+                    break;
+                    default:
+                        updateDispDataCurrentMode('all');
+                        this.$emit('showAllSubTasks', this.item);
+               }
+
             }
         },
 
