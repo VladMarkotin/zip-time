@@ -120,9 +120,9 @@ class SubPlanController extends Controller
 
         if (count($subPlan) > 1) {
 
-            usort($subPlan, function($a, $b) {
-                if ($a['created_at'] === $b['created_at']) return 0;
-                return $a['created_at'] > $b['created_at'] ? 1 : -1;
+            usort($subPlan, function($subtaskA, $subtaskB) {
+                if ($subtaskA['created_at'] === $subtaskB['created_at']) return 0;
+                return $subtaskA['created_at'] > $subtaskB['created_at'] ? 1 : -1;
             });
         }
 
