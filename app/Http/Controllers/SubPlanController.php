@@ -118,6 +118,14 @@ class SubPlanController extends Controller
         $lastTaskId = count($lastId) ? $this->getLastTaskId($lastId[0]['id']) : null;
         $subPlan = $this->subPlanService->addIsOldCompleatedStatus($subPlan);
 
+        if (count($subPlan) > 1) {
+
+            usort($subPlan, function($a, $b) {
+                if ($a['created_at'] === $b['created_at']) return 0;
+                return $a['created_at'] > $b['created_at'] ? 1 : -1;
+            });
+        }
+
         return (
             response()->json([
                 'status' => 'success', 
