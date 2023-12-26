@@ -77,19 +77,19 @@ class SubPlanController extends Controller
     public function getSubPlan(Request $request)
     {
         $mode = $request->get('mode');
+        $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
+        $id = $request->get('task_id');
         //want to get all details for task
         if(isset($mode)) {
             $currentUserTime = '1999-12-31';
         } else {
             $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
         }
-        $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
-        $id = $request->get('task_id');
 
         $getSubplan = function($columnName, $columnVal, $currentUserTime) {
             $subPlan = SubPlan::where([[$columnName, $columnVal]])
-            ->where('created_at', '>', $currentUserTime.' 00:00:00')
-            ->orderBy('created_at', 'desc')
+            ->where('created_at', '>=', $currentUserTime.' 00:00:00')
+            ->orderBy('is_ready', 'asc')
             ->get()
             ->toArray();
 

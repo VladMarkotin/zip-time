@@ -71,8 +71,8 @@ class SubPlanGPTController extends Controller
                         'task_id'  => $request->input('taskId'),
                         'saved_task_id'    => $savedTaskId[0]->id, //todo later
                         'title'       => $el,
-                        // 'created_at' => ,
-                        // 'updated_at' => ,
+                        'created_at' => DB::raw('CURRENT_TIMESTAMP(0)'),
+                        'updated_at' => DB::raw('CURRENT_TIMESTAMP(0)'),
                     ];
                 }
                 DB::table('subplans')->insert($dataSet);
