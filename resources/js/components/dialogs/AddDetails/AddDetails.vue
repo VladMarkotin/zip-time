@@ -57,7 +57,7 @@ export default {
             alert: {type: 'success', text: 'success'},
             icons: {mdiChartGantt, },
             isLoading: false,
-            minPreloaderDispTime: 1000,
+            minPreloaderDispTime: 500,
         }
     },
     components: {AddDetailsCard},
@@ -130,7 +130,9 @@ export default {
                             text:  element.text,
                             taskId: element.id,
                             is_ready: element.is_ready, 
-                            checkpoint: element.checkpoint
+                            checkpoint: element.checkpoint,
+                            is_old_compleated: element.is_old_compleated,
+                            done_at_user_time: element.done_at_user_time,
                         }) 
                     });
                     this.updateDetails(details);

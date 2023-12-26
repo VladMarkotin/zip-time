@@ -121,22 +121,24 @@
                                                             <span>This subtask has required status</span>
                                                         </v-tooltip>
                                                         </v-col>
-                                                        <v-col 
+                                                        <v-col
                                                         cols="4"
                                                         class="p-0 m-0 d-flex justify-content-center align-items-center"
                                                         >
                                                         <template>
-                                                            <EditButton 
-                                                            @click="createModifiedDetailTemplate(v)"
-                                                            :tooltipValue="'Edit subtask'"
-                                                            />
+                                                            <div v-show="!v.is_old_compleated">
+                                                                <EditButton 
+                                                                @click="createModifiedDetailTemplate(v)"
+                                                                :tooltipValue="'Edit subtask'"
+                                                                />
+                                                            </div>
                                                         </template>
                                                         </v-col>
                                                         <v-col 
                                                         cols="4"
                                                         class="p-0 m-0 d-flex justify-content-center align-items-center"
                                                         >
-                                                            <v-icon color="#D71700" v-if="v.is_ready">
+                                                            <v-icon color="#D71700" v-if="v.is_ready" class="p-1">
                                                                 {{ icons.mdiMarkerCheck }}
                                                             </v-icon>
                                                         </v-col>
@@ -144,7 +146,10 @@
                                                 </v-col>
                                             </v-row>
                                         </v-expansion-panel-header>
-                                        <v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
+                                        <v-expansion-panel-content 
+                                        v-if="!v.is_old_compleated"
+                                        v-bind:class="{ done: v.is_ready }"
+                                        >
                                             <v-divider></v-divider>
                                             <v-row class="p-0 m-0">
                                                 <v-col 
@@ -180,6 +185,30 @@
                                                                 </v-icon>
                                                             </v-btn>
                                                         </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                            </v-row>
+                                        </v-expansion-panel-content>
+                                        <v-expansion-panel-content 
+                                        v-else
+                                        v-bind:class="{ done: v.is_ready }"
+                                        >
+                                            <v-divider></v-divider>
+                                            <v-row class="p-0 m-0">
+                                                <v-col 
+                                                class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
+                                                cols="9"
+                                                >
+                                                    <p> {{ v.text }}</p>
+                                                </v-col>
+                                                <v-col 
+                                                cols="3"
+                                                >
+                                                    <v-row class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper">
+                                                        <p class="completeon-date-text">Completeon date:</p>
+                                                    </v-row>
+                                                    <v-row class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper">
+                                                        <p class="completeon-date-text">{{ getSubtaskComptimeText(v.done_at_user_time) }}</p>
                                                     </v-row>
                                                 </v-col>
                                             </v-row>
@@ -474,7 +503,20 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                         this.$emit('showAllSubTasks', this.item);
                }
 
-            }
+            },
+
+            getSubtaskComptimeText(fullDate) {
+                if (!fullDate) return '';
+
+                const spaceIndex = fullDate.trim().indexOf(' ');
+
+                if (spaceIndex === -1) {
+                    return '';
+                }
+
+                const date = fullDate.slice(0, spaceIndex).replace(/-/g, '.');
+                return date;
+            },
         },
 
         mounted() {
@@ -523,5 +565,11 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .completeon-date-text {
+        text-align: center;
+        color: rgba(0,0,0,.6);
+        font-weight: bold;
     }
 </style>
