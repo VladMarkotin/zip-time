@@ -414,7 +414,7 @@
 				
 				axios.post('/get-today-note-amount',{task_id : item.taskId,details : item.details,note : item.notes,type : item.type})
 				.then((response) => {
-					console.log(response.data)
+					// console.log(response.data)
 					this.noteInfo.todayAmount = response.data.amount //response.data.noteAmount
 				  })
 

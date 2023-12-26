@@ -77,12 +77,8 @@ class SubPlanController extends Controller
     public function getSubPlan(Request $request)
     {
         $mode = $request->get('mode');
-        //want to get all details for task
-        if(isset($mode)) {
-            $currentUserTime = '1999-12-31';
-        } else {
-            $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
-        }
+        $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
+
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
         $id = $request->get('task_id');
 
@@ -98,16 +94,18 @@ class SubPlanController extends Controller
         
         if ($savedTaskId) {
             $subPlan = $getSubplan('saved_task_id', $savedTaskId, $currentUserTime);
-
             $lastId = count($subPlan) ? [$subPlan[count($subPlan) - 1]] : [];
 
-            $failedSubtasks = $this->subPlanService->getFailedSubtasks($savedTaskId);
+            $oldSubtasks = isset($mode)
+                ? $this->subPlanService->getAllPreviousSubtasks($savedTaskId)
+                : $this->subPlanService->getFailedSubtasks($savedTaskId);
             
-            if (count($failedSubtasks)) {
-                foreach ($failedSubtasks as $v) {
-                    $subPlan[] = $v;
+            if (count($oldSubtasks)) {
+                foreach ($oldSubtasks as $v) {
+                    array_unshift($subPlan, $v);
                 }
             }
+
         } else {
             $subPlan = $getSubplan('task_id', $request->get('task_id'), $currentUserTime);
 
@@ -118,6 +116,7 @@ class SubPlanController extends Controller
         }
 
         $lastTaskId = count($lastId) ? $this->getLastTaskId($lastId[0]['id']) : null;
+        $subPlan = $this->subPlanService->addIsOldCompleatedStatus($subPlan);
 
         return (
             response()->json([

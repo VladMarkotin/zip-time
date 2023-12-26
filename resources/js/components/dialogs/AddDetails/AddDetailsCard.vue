@@ -207,7 +207,12 @@
                     <v-col
                     cols="auto"
                     >
-                        <v-btn color="blue-darken-1" variant="text" @click="$emit('showAllSubTasks')">
+                        <v-btn 
+                        v-if="isSavedTask"
+                        @click="$emit('showAllSubTasks')"
+                        color="blue-darken-1" 
+                        variant="text" 
+                        >
                             View all subtasks
                         </v-btn>
                     </v-col>
@@ -216,7 +221,11 @@
                     <v-col
                     cols="auto"
                     >
-                        <v-btn color="blue-darken-1" variant="text" @click="$emit('closeAddDetailsDialog')">
+                        <v-btn 
+                        @click="$emit('closeAddDetailsDialog')"
+                        color="blue-darken-1" 
+                        variant="text" 
+                        >
                             Close
                         </v-btn>
                     </v-col>
@@ -306,6 +315,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 ],
                 isSubTasksInputValValid: false,
                 isShowEditDetailsDialog: false,
+                isSavedTask: this.item.hash !== '#',
                 modifiedDetailTemplate: {id: null, title: '', text: ''},
             }
         },

@@ -111,8 +111,28 @@ class SubPlanService
 
     public function getFailedSubtasks($savedTaskId)
     {
-        $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
+        $failedSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
         ->where('is_failed', 1)
+        ->get()
+        ->toArray();  
+
+        return $failedSubTasks;
+    }
+
+    public function addIsOldCompleatedStatus(Array $subPlan) {
+        return array_map(function($detail) {
+            $isOlDetail = $detail['created_at'] < ($this->getUserTime('Y-m-d') . ' 00:00:00');
+            $isCompleatedDetail = empty($detail['is_failed']);
+
+            $detail['is_old_compleated'] = $isOlDetail && $isCompleatedDetail;
+            return $detail;
+        }, $subPlan);
+    }
+
+    public function getAllPreviousSubtasks($savedTaskId)
+    {
+        $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
+        ->where('created_at', '<', $this->getUserTime('Y-m-d') . ' 00:00:00')
         ->get()
         ->toArray();  
 
