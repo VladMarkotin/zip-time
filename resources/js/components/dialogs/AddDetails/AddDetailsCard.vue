@@ -187,7 +187,15 @@
     
                                     </v-expansion-panel>
                                 </v-expansion-panels>
-                                <DefaultPreloader v-else/>
+                                <v-row
+                                v-else 
+                                class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                >
+                                    <DefaultPreloader
+                                    :size="96"
+                                    :width="7"
+                                    />
+                                </v-row>
                             </template>
                         </v-row>
                     </template>
@@ -325,7 +333,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 displayedDetails: {
                     currentMode: 'actual',
                     all: {
-                        showSubtasksButtonText: 'Test'
+                        showSubtasksButtonText: 'View actual subtasks'
                     },
                     actual: {
                         showSubtasksButtonText: 'View all subtasks',
@@ -361,6 +369,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
 
             addDetail(){
+                if (this.isLoading) return;
+
                 if (this.isSubTasksInputValValid) {
                     this.subTasks.task_id = this.item.taskId
                     this.updateDetails([...this.details, this.subTasks]);
@@ -447,6 +457,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
 
             showSubtasks() {
+               if (this.isLoading) return;
                const updateDispDataCurrentMode = (mode) => this.displayedDetails.currentMode = mode;
 
                switch(this.displayedDetails.currentMode) {
@@ -467,7 +478,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         },
 
         mounted() {
-
            const subtasksInputs = [this.$refs.subtaskTitleInput, this.$refs.subtaskTextInput]
            
            if (subtasksInputs.every(item => item)) {

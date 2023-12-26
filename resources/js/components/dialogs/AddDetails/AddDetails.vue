@@ -57,6 +57,7 @@ export default {
             alert: {type: 'success', text: 'success'},
             icons: {mdiChartGantt, },
             isLoading: false,
+            minPreloaderDispTime: 1000,
         }
     },
     components: {AddDetailsCard},
@@ -100,31 +101,46 @@ export default {
         },
 
         getAllDetailsForTask(item, mode=null) {
-				this.showAddDetailsDialog();
-                let data = {task_id : item.taskId}
-                //mode means get all notes for all time 
-                if(mode === 'all')  data.mode = 'all';
-                this.isLoading = true;
-				axios.post('/get-sub-tasks',data)
-				.then((response) => {
+
+            const controllLoadingTime = (time, callback) => {
+				if (time > this.minPreloaderDispTime) callback();
+				else setTimeout(callback, this.minPreloaderDispTime - time);
+			}
+            
+			this.showAddDetailsDialog();
+            let data = {task_id : item.taskId}
+            
+            //mode means get all notes for all time 
+            if(mode === 'all')  data.mode = 'all';
+
+            this.isLoading = true;
+            const loadingStart = Date.now();
+
+			axios.post('/get-sub-tasks',data)
+			.then((response) => {
+                const loadingEnd = Date.now();
+
+                controllLoadingTime(loadingEnd - loadingStart, () => {
                     this.isLoading = false;
-					const details = []
-					response.data.data.forEach(element => {
+    
+                    const details = []
+                    response.data.data.forEach(element => {
                         details.push({
                             title: element.title,
-							text:  element.text,
-							taskId: element.id,
-							is_ready: element.is_ready, 
-							checkpoint: element.checkpoint
-						}) 
-					});
+                            text:  element.text,
+                            taskId: element.id,
+                            is_ready: element.is_ready, 
+                            checkpoint: element.checkpoint
+                        }) 
+                    });
                     this.updateDetails(details);
                     const completedPercent = this.checkCompletedPercent(response.data.completedPercent); 
-                    
+                        
                     this.updateCompletedPercent(completedPercent);
                     this.setAlertData({type: response.data.status, text: response.data.message});
-				  })
-			},
+                });
+				})
+		},
      
 
     },
