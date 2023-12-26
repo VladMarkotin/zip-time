@@ -218,7 +218,7 @@
                                 </v-expansion-panels>
                                 <v-row
                                 v-else 
-                                class="p-0 m-0 d-flex justify-content-center align-items-center"
+                                class="p-0 m-0 mt-6 d-flex justify-content-center align-items-center"
                                 >
                                     <DefaultPreloader
                                     :size="96"
