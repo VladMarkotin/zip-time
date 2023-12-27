@@ -71,28 +71,12 @@ class CreateDayPlanRepository
                                     $dataForTasks[$index]['note']         = $v['notes'];
                                     $dataForTasks[$index]['created_at']   = DB::raw('CURRENT_TIMESTAMP(0)');
                                     $dataForTasks[$index]['updated_at']   = DB::raw('CURRENT_TIMESTAMP(0)');
-                                    /* !!! Add note in notes if hash_code and note are existing*/
-                                    //Но сначала мне надо получить saved_task_id
-                                    if( ($dataForTasks[$index]['hash_code']) && ($dataForTasks[$index]['note'] && (!$k)) ){
-                                        $params = [
-                                            "hash_code"     => $dataForTasks[$index]['hash_code'],
-                                            "user_id"       => Auth::id(),
-                                            "note"          => $dataForTasks[$index]['note']
-                                        ];
-                                        $response = $this->savedNotes->addNoteForSavedTask($params);
-                                        //work but with copies!;
-                                        if($response){
-                                            $this->addNoteToSavedTask->addSavedNote($params);
-                                            $k++;
-                                        }
-                                    }
                                 }
 
                             }
                         }
                     }
                 }
-                //var_dump($dataForTasks);
                 //Save info about tasks              
                 Tasks::insert($dataForTasks);
             });
