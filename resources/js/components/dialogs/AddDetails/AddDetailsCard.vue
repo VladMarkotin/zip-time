@@ -517,7 +517,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             completed(item){
 				axios.post('/complete-sub-task',{task_id : item.taskId, is_task_ready: item.is_ready})
 				.then((response) => {
-                    console.log(response);
                     this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
 				})
 			},

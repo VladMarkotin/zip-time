@@ -148,7 +148,8 @@ export default {
                             checkpoint: element.checkpoint,
                             is_old_compleated: element.is_old_compleated,
                             done_at_user_time: element.done_at_user_time,
-                            created_at_date: element.created_at_user_time.slice(
+                            is_ready: element.is_ready,
+                            created_at_date: element.created_at_user_time.slice(//получаю дату без времени
                                 0, element.created_at_user_time.trim().indexOf(' ')
                             ),
                         }) 
