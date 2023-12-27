@@ -240,7 +240,7 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-                <v-row class="d-flex align-items-center justify-content-start">
+                <v-row class="d-flex align-items-center justify-content-between p-0 m-0">
                     <v-col
                     cols="auto"
                     >
@@ -253,8 +253,6 @@
                             {{ displayedDetails[displayedDetails.currentMode].showSubtasksButtonText}}
                         </v-btn>
                     </v-col>
-                </v-row>
-                <v-row class="d-flex align-items-center justify-content-end">
                     <v-col
                     cols="auto"
                     >
