@@ -15,17 +15,19 @@
         </template>
         <template v-if="isShowDialogDetails">
             <AddDetailsCard 
-            :item             = "item"
-			:details          = "details"
-			:completedPercent = "completedPercent"
-            :alert            = "alert"
-            :isLoading        = "isLoading"
-            @updateDetails          = "updateDetails"
-            @updateAlertData        = "setAlertData"
-            @updateCompletedPercent = "updateCompletedPercent"
-            @closeAddDetailsDialog  = "closeAddDetailsDialog"
-            @showAllSubTasks        = "showAllSubTasks"
-            @showActualSubTasks     = "getAllDetailsForTask"
+            :item               = "item"
+			:details            = "details"
+			:completedPercent   = "completedPercent"
+            :alert              = "alert"
+            :isLoading          = "isLoading"
+            :detailsSortingCrit = "detailsSortingCrit"
+            @updateDetails            = "updateDetails"
+            @updateAlertData          = "setAlertData"
+            @updateCompletedPercent   = "updateCompletedPercent"
+            @updateDetailsSortingCrit = "updateDetailsSortingCrit"
+            @closeAddDetailsDialog    = "closeAddDetailsDialog"
+            @showAllSubTasks          = "showAllSubTasks"
+            @showActualSubTasks       = "getAllDetailsForTask"
             />
         </template>
     </v-dialog>
@@ -48,7 +50,11 @@ export default {
         completedPercent: {
             type: Number,
             required: true,
-        }
+        },
+        detailsSortingCrit: {
+            type: String,
+            required: true,
+        },
     },
     data() {
         return {
@@ -61,6 +67,11 @@ export default {
         }
     },
     components: {AddDetailsCard},
+    watch: {
+        isShowDialogDetails(isShowDialog) {
+            if (!isShowDialog) this.$emit('resetSortingToDefVal');
+        },
+    },
     methods: {
         showAddDetailsDialog() {
             this.isShowDialogDetails = true;
@@ -76,6 +87,10 @@ export default {
 
         updateDetails(details) {
             this.$emit('updateDetails', details);
+        },
+
+        updateDetailsSortingCrit(sortCritVal) {
+            this.$emit('updateDetailsSortingCrit', sortCritVal)
         },
 
         setAlertData({type, text}) {
@@ -133,6 +148,9 @@ export default {
                             checkpoint: element.checkpoint,
                             is_old_compleated: element.is_old_compleated,
                             done_at_user_time: element.done_at_user_time,
+                            created_at_date: element.created_at_user_time.slice(
+                                0, element.created_at_user_time.trim().indexOf(' ')
+                            ),
                         }) 
                     });
                     this.updateDetails(details);

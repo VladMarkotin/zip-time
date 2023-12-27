@@ -29,7 +29,7 @@
                             >
                                 <v-text-field 
                                 width="20px" 
-                                v-model="subTasks.title" 
+                                v-model="newDetail.title" 
                                 v-on:keyup.enter="addDetail" 
                                 :counter="subtaskRules.subtaskTitle.maxLength" 
                                 label="Subtask title"
@@ -44,7 +44,7 @@
                             >
                                 <v-text-field 
                                 width="20px" 
-                                v-model="subTasks.text" 
+                                v-model="newDetail.text" 
                                 v-on:keyup.enter="addDetail" 
                                 :counter="subtaskRules.subtaskText.maxLength"
                                 label="Subtask details" 
@@ -64,7 +64,7 @@
                                     >
                                         <v-checkbox 
                                         label="is required subtask?" 
-                                        v-model="subTasks.checkpoint">
+                                        v-model="newDetail.checkpoint">
                                         </v-checkbox>
                                     </v-col>
                                     <v-col
@@ -240,6 +240,31 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
+                <v-row class="p-0 m-0 d-flex justify-content-center">
+                    <v-col 
+                    class="p-0 m-0 subtasks-radiobuttons-wrapper"
+                    cols="auto"
+                    >    
+                        <v-radio-group 
+                        v-model="detailsSortBy"
+                        row
+                        >
+                            <v-radio
+                            v-for="(button, index) in radioButtons"
+                            :key="index"
+                            class="subtasks-radiobutton"
+                            :value="button.value"
+                            color="red darken-3"
+                            >
+                                <template v-slot:label>
+                                    <span class="radioButton-label">{{ button.label }}</span>
+                                </template>
+                            </v-radio>
+                        </v-radio-group>
+                    </v-col>
+                </v-row>
+            </v-card-actions>
+            <v-card-actions>
                 <v-row class="d-flex align-items-center justify-content-between p-0 m-0">
                     <v-col
                     cols="auto"
@@ -308,18 +333,23 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             isLoading: {
                 type: Boolean,
                 required: true,
-            }
+            },
+            detailsSortingCrit: {
+                type: String,
+                required: true,
+            },
         },
         data() {
             return {
                 icons: {mdiExclamation, mdiMarkerCheck, mdiDelete},
-                subTasks: {
+                newDetail: {
 						title: '',
 						text: '',
 						position:1,
 						weight: 100,
 						checkpoint: false,
 						is_ready: false,
+                        created_at_date: '',
 					},
                 isShowAlertInDetails: false,
                 alertDisplayTime: 1500,
@@ -366,9 +396,19 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                         showSubtasksButtonText: 'View all subtasks',
                     }
                 },
+                detailsSortBy: null,
+                radioButtons: [
+                    {value: 'created-at-asc', label: 'Old first',},
+                    {value: 'created-at-desc', label: 'New first',},
+                ]
             }
         },
         components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader},
+        watch: {
+            detailsSortBy(sortCritVal) {
+                this.updateDetailsSortingCrit(sortCritVal);
+            }
+        },
         methods: {
             updateDetails(details) {
                 this.$emit('updateDetails', details);
@@ -380,6 +420,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
             updateAlertData(alertData) {
                 this.$emit('updateAlertData', alertData);
+            },
+
+            updateDetailsSortingCrit(sortCritVal) {
+                this.$emit('updateDetailsSortingCrit', sortCritVal)
             },
 
             checkCompletedPercent(complPercentResp) {
@@ -399,10 +443,23 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 if (this.isLoading) return;
 
                 if (this.isSubTasksInputValValid) {
-                    this.subTasks.task_id = this.item.taskId
-                    this.updateDetails([...this.details, this.subTasks]);
-                    this.createSubPlan(this.subTasks)
-                    this.subTasks = {};
+
+                    const dateNow = new Date;
+                    const dataOpt = {year: 'numeric', month: 'numeric', day: 'numeric'};
+                    const date = dateNow.toLocaleString("en-CA", dataOpt);
+                    
+                    this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: date};
+                    this.updateDetails([...this.details, this.newDetail]);
+                    this.createSubPlan(this.newDetail)
+                    this.newDetail = {
+						title: '',
+						text: '',
+						position:1,
+						weight: 100,
+						checkpoint: false,
+						is_ready: false,
+                        created_at_date: '',
+					};
                     this.checkInputsValue();
                 } else {
 					this.$emit('updateAlertData', {type: 'error', text: 'Invalid data'});
@@ -433,8 +490,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
             checkInputsValue() {
                 this.isSubTasksInputValValid = new Array(
-                    ...this.subtaskTitleRules.map(check => check(this.subTasks.title)),
-                    ...this.subtaskTextRules.map(check => check(this.subTasks.text)),
+                    ...this.subtaskTitleRules.map(check => check(this.newDetail.title)),
+                    ...this.subtaskTextRules.map(check => check(this.newDetail.text)),
                 ).every(checkResult => checkResult === true);
             },
 
@@ -517,6 +574,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
         },
 
+        created() {
+            this.detailsSortBy = this.detailsSortingCrit
+        },
+
         mounted() {
            const subtasksInputs = [this.$refs.subtaskTitleInput, this.$refs.subtaskTextInput]
            
@@ -569,5 +630,15 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         text-align: center;
         color: rgba(0,0,0,.6);
         font-weight: bold;
+    }
+
+    .subtasks-radiobuttons-wrapper .v-input--selection-controls {
+       padding: 0;
+       margin: 0;
+    }
+
+    .radioButton-label {
+        margin-bottom: 0;
+        margin-top: 0.5rem;
     }
 </style>
