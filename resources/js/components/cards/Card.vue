@@ -542,6 +542,7 @@
 		background-color : #A10000;
 		color : white
 	}
+	
 	.v-card-done {
 		background-color: #ededed;
 	}
