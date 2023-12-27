@@ -84,8 +84,8 @@ class SubPlanController extends Controller
 
         $getSubplan = function($columnName, $columnVal, $currentUserTime) {
             $subPlan = SubPlan::where([[$columnName, $columnVal]])
-            ->where('created_at', '>', $currentUserTime.' 00:00:00')
-            ->orderBy('created_at', 'desc')
+            ->where('created_at_user_time', '>', $currentUserTime.' 00:00:00')
+            ->orderBy('created_at_user_time', 'desc')
             ->get()
             ->toArray();
 

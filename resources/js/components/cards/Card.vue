@@ -397,7 +397,6 @@
 
 			sortDetails() {
 				if (this.details.length < 2) return;
-				console.log(this.details);
 
 				const formatDate = (date) => Date.parse(date.created_at_date);
 
