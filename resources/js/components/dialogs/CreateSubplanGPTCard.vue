@@ -46,12 +46,7 @@
                 <v-divider></v-divider>
                 <v-list-item class="subplan-gpt-subtasks-list-wrapper">
                     <v-list-item-content v-if="isLoading">
-                        <v-progress-circular 
-                        indeterminate
-                        color="#A10000"
-                        size="48"
-                        width="5"
-                        ></v-progress-circular>
+                        <DefaultPreloader />
                     </v-list-item-content>
                     <v-list-item-content v-else-if="subtasksFromChatGPT.length == 0 && isLoading == false">
                         {{ subtasksFromChatGPTWelcome }}
@@ -103,6 +98,7 @@
 </template>
 
 <script>
+    import DefaultPreloader from '../UI/DefaultPreloader.vue';
     import { mdiPlayOutline, mdiCogRefresh } from '@mdi/js';
     export default {
         props: ['requestData'],
@@ -130,6 +126,7 @@
                 }
             }
         },
+        components: {DefaultPreloader,},
         watch: {
             taskName() {
                 this.checkTaskNameValue();

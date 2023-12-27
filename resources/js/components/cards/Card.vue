@@ -136,12 +136,15 @@
 				</v-list-item-content>
 				<template>
 					<AddDetails 
-					:num              = "num"
-					:item             = "item"
-					:details          = "details"
-					:completedPercent = "completedPercent"
-					@updateDetails          = "updateDetails"
-					@updateCompletedPercent = "updateCompletedPercent"
+					:num                = "num"
+					:item               = "item"
+					:details            = "details"
+					:completedPercent   = "completedPercent"
+					:detailsSortingCrit = "detailsSortingCrit"
+					@updateDetails            = "updateDetails"
+					@updateCompletedPercent   = "updateCompletedPercent"
+					@updateDetailsSortingCrit = "updateDetailsSortingCrit"
+					@resetSortingToDefVal     = "resetSortingToDefVal"
 					/>
 				</template>
 				<template>
@@ -344,23 +347,9 @@
 					completedPercent : 0,
 					completedProgressBar: 0,
 					focusedInput: false,
-					subTasks: {
-						title: '',
-						text: '',
-						position:1,
-						weight: 100,
-						checkpoint: false,
-						is_ready: false,
-					},
-					createdSubTasks: {
-						title: '',
-						text: '',
-						position:1,
-						weight: 100,
-						checkpoint: false,
-						is_ready: false,
-					},
 					details: [],
+					detailsSortingDefaultVal: 'created-at-asc',
+					detailsSortingCrit: 'created-at-asc',
 					ex4: [],
 					noteInfo: {
 						todayAmount: 0
@@ -390,10 +379,48 @@
 				
 			updateDetails(details) {
 				this.details = details;
+				this.sortDetails();
 			},
 
 			updateCompletedPercent(compPercent) {
 				this.completedPercent = compPercent;
+			},
+
+			updateDetailsSortingCrit(sortCritVal) {
+				this.detailsSortingCrit = sortCritVal;
+				this.sortDetails();
+			},
+
+			resetSortingToDefVal() {
+				this.detailsSortingCrit = this.detailsSortingDefaultVal;
+			},
+
+			sortDetails() {
+				if (this.details.length < 2) return;
+
+				const formatDate = (date) => Date.parse(date.created_at_date);
+
+				switch (this.detailsSortingCrit) {
+					case 'created-at-asc':
+						this.details.sort((detailA, detailB) => {
+							const detailADate = formatDate(detailA);
+							const detailBDate = formatDate(detailB);
+
+							return detailADate - detailBDate;
+						});
+					break;
+					case 'created-at-desc':
+						this.details.sort((detailA, detailB) => {
+							const detailADate = formatDate(detailA);
+							const detailBDate = formatDate(detailB);
+
+							return detailBDate - detailADate;
+						});
+					break;
+					default:
+
+					break;
+				}
 			},
 
 			/*Notes*/
@@ -414,7 +441,7 @@
 				
 				axios.post('/get-today-note-amount',{task_id : item.taskId,details : item.details,note : item.notes,type : item.type})
 				.then((response) => {
-					console.log(response.data)
+					// console.log(response.data)
 					this.noteInfo.todayAmount = response.data.amount //response.data.noteAmount
 				  })
 

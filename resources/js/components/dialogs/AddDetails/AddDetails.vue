@@ -15,15 +15,19 @@
         </template>
         <template v-if="isShowDialogDetails">
             <AddDetailsCard 
-            :item             = "item"
-			:details          = "details"
-			:completedPercent = "completedPercent"
-            :alert            = "alert"
-            @updateDetails          = "updateDetails"
-            @updateAlertData        = "setAlertData"
-            @updateCompletedPercent = "updateCompletedPercent"
-            @closeAddDetailsDialog  = "closeAddDetailsDialog"
-            @showAllSubTasks        = "showAllSubTasks(item)"
+            :item               = "item"
+			:details            = "details"
+			:completedPercent   = "completedPercent"
+            :alert              = "alert"
+            :isLoading          = "isLoading"
+            :detailsSortingCrit = "detailsSortingCrit"
+            @updateDetails            = "updateDetails"
+            @updateAlertData          = "setAlertData"
+            @updateCompletedPercent   = "updateCompletedPercent"
+            @updateDetailsSortingCrit = "updateDetailsSortingCrit"
+            @closeAddDetailsDialog    = "closeAddDetailsDialog"
+            @showAllSubTasks          = "showAllSubTasks"
+            @showActualSubTasks       = "getAllDetailsForTask"
             />
         </template>
     </v-dialog>
@@ -46,7 +50,11 @@ export default {
         completedPercent: {
             type: Number,
             required: true,
-        }
+        },
+        detailsSortingCrit: {
+            type: String,
+            required: true,
+        },
     },
     data() {
         return {
@@ -54,9 +62,16 @@ export default {
             isShowAllDialogDetails: false,
             alert: {type: 'success', text: 'success'},
             icons: {mdiChartGantt, },
+            isLoading: false,
+            minPreloaderDispTime: 500,
         }
     },
     components: {AddDetailsCard},
+    watch: {
+        isShowDialogDetails(isShowDialog) {
+            if (!isShowDialog) this.$emit('resetSortingToDefVal');
+        },
+    },
     methods: {
         showAddDetailsDialog() {
             this.isShowDialogDetails = true;
@@ -72,6 +87,10 @@ export default {
 
         updateDetails(details) {
             this.$emit('updateDetails', details);
+        },
+
+        updateDetailsSortingCrit(sortCritVal) {
+            this.$emit('updateDetailsSortingCrit', sortCritVal)
         },
 
         setAlertData({type, text}) {
@@ -97,29 +116,51 @@ export default {
         },
 
         getAllDetailsForTask(item, mode=null) {
-				this.showAddDetailsDialog();
-                let data = {task_id : item.taskId}
-                //mode means get all notes for all time 
-                if(mode === 'all')  data.mode = 'all';
-				axios.post('/get-sub-tasks',data)
-				.then((response) => {
-					const details = []
-					response.data.data.forEach(element => {
+
+            const controllLoadingTime = (time, callback) => {
+				if (time > this.minPreloaderDispTime) callback();
+				else setTimeout(callback, this.minPreloaderDispTime - time);
+			}
+            
+			this.showAddDetailsDialog();
+            let data = {task_id : item.taskId}
+            
+            //mode means get all notes for all time 
+            if(mode === 'all')  data.mode = 'all';
+
+            this.isLoading = true;
+            const loadingStart = Date.now();
+
+			axios.post('/get-sub-tasks',data)
+			.then((response) => {
+                const loadingEnd = Date.now();
+
+                controllLoadingTime(loadingEnd - loadingStart, () => {
+                    this.isLoading = false;
+    
+                    const details = []
+                    response.data.data.forEach(element => {
                         details.push({
                             title: element.title,
-							text:  element.text,
-							taskId: element.id,
-							is_ready: element.is_ready, 
-							checkpoint: element.checkpoint
-						}) 
-					});
+                            text:  element.text,
+                            taskId: element.id,
+                            is_ready: element.is_ready, 
+                            checkpoint: element.checkpoint,
+                            is_old_compleated: element.is_old_compleated,
+                            done_at_user_time: element.done_at_user_time,
+                            created_at_date: element.created_at_user_time.slice(
+                                0, element.created_at_user_time.trim().indexOf(' ')
+                            ),
+                        }) 
+                    });
                     this.updateDetails(details);
                     const completedPercent = this.checkCompletedPercent(response.data.completedPercent); 
-                    
+                        
                     this.updateCompletedPercent(completedPercent);
                     this.setAlertData({type: response.data.status, text: response.data.message});
-				  })
-			},
+                });
+				})
+		},
      
 
     },
