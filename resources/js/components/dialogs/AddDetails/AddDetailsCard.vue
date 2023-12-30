@@ -239,7 +239,7 @@
                 </div>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions>
+            <v-card-actions v-if="details.length > 1">
                 <v-row class="p-0 m-0 d-flex justify-content-center">
                     <v-col 
                     class="p-0 m-0 subtasks-radiobuttons-wrapper"
@@ -270,7 +270,7 @@
                     cols="auto"
                     >
                         <v-btn 
-                        v-if="isSavedTask"
+                        v-if="isSavedTask && details.length"
                         @click="showSubtasks"
                         color="blue-darken-1" 
                         variant="text" 
@@ -520,7 +520,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 				axios.post('/complete-sub-task',{task_id : item.taskId, is_task_ready: item.is_ready})
 				.then((response) => {
                     this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
-                    // this.updateDetailsSortingCrit(this.detailsSortBy); раскомментить если хочу, что бы массив сортировался при клике на чекбокс
+                    // this.updateDetailsSortingCrit(this.detailsSortBy); //раскомментить если хочу, что бы массив сортировался при клике на чекбокс
 				})
 			},
 

@@ -407,13 +407,10 @@
 						switch (direction) {
 							case 'asc':
 								return detailADate - detailBDate 
-							break;
 							case 'desc':
 								return detailBDate - detailADate;
-							break;
 							default:
 								return detailADate - detailBDate 
-							break;
 						}
 				}
 
