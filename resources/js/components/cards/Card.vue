@@ -417,8 +417,53 @@
 							return detailBDate - detailADate;
 						});
 					break;
-					default:
+					case 'is_ready-asc':
+						this.details.sort((detailA, detailB) => {
 
+							const sortByCreatedAt = (detailA, detailB) => {
+								const detailADate = formatDate(detailA);
+								const detailBDate = formatDate(detailB);
+
+								return detailADate - detailBDate;
+							}
+
+							if (detailA.is_ready || detailB.is_ready) {
+								if (detailA.is_ready && !detailB.is_ready) return -1;
+								if (!detailA.is_ready && detailB.is_ready) return 1;
+
+								return  sortByCreatedAt(detailA, detailB);
+							} else {
+								return sortByCreatedAt(detailA, detailB);
+							}
+						});
+					break;
+					case 'unfulfilled-asc':
+						this.details.sort((detailA, detailB) => {
+
+						const sortByCreatedAt = (detailA, detailB) => {
+							const detailADate = formatDate(detailA);
+							const detailBDate = formatDate(detailB);
+
+							return detailADate - detailBDate;
+						}
+
+						if (!detailA.is_ready || !detailB.is_ready) {
+							if (!detailA.is_ready && detailB.is_ready) return -1;
+							if (detailA.is_ready && !detailB.is_ready) return 1;
+
+							return  sortByCreatedAt(detailA, detailB);
+						} else {
+							return sortByCreatedAt(detailA, detailB);
+						}
+					});
+					break;
+					default:
+						this.details.sort((detailA, detailB) => {
+							const detailADate = formatDate(detailA);
+							const detailBDate = formatDate(detailB);
+
+							return detailADate - detailBDate;
+						});
 					break;
 				}
 			},

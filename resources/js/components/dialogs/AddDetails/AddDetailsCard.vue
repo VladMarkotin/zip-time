@@ -400,6 +400,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 radioButtons: [
                     {value: 'created-at-asc', label: 'Old first',},
                     {value: 'created-at-desc', label: 'New first',},
+                    {value: 'is_ready-asc', label: 'Ready first',},
+                    {value: 'unfulfilled-asc', label: 'Unfulfilled first',},
                 ]
             }
         },
@@ -518,6 +520,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 				axios.post('/complete-sub-task',{task_id : item.taskId, is_task_ready: item.is_ready})
 				.then((response) => {
                     this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
+                    // this.updateDetailsSortingCrit(this.detailsSortBy); раскомментить если хочу, что бы массив сортировался при клике на чекбокс
 				})
 			},
 
