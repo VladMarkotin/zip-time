@@ -29,6 +29,12 @@ class SubPlanService
         return round($result, 2).'%';
     }
 
+    public function saveSubtasks(array $data)
+    {
+        $savedTaskId = $this->getSavedTaskId($data);
+        SubPlan::where('task_id', $data['task_id'])->update(['saved_task_id' => $savedTaskId]);
+    }
+
     public function getSavedTaskId(array $data)
     {
         $hashCode = Tasks::select('hash_code')->where('id', $data['task_id'])->get()->toArray();
