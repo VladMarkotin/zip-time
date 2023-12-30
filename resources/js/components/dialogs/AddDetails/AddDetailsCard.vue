@@ -401,7 +401,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     {value: 'created-at-asc', label: 'Old first',},
                     {value: 'created-at-desc', label: 'New first',},
                     {value: 'is_ready-asc', label: 'Ready first',},
-                    {value: 'unfulfilled-asc', label: 'Unfulfilled first',},
+                    {value: 'unready-asc', label: 'Unready first',},
                 ]
             }
         },

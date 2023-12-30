@@ -438,7 +438,7 @@
 							}
 						});
 					break;
-					case 'unfulfilled-asc':
+					case 'unready-asc':
 						this.details.sort((detailA, detailB) => {
 
 						if (!detailA.is_ready || !detailB.is_ready) {
