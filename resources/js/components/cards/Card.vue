@@ -400,69 +400,63 @@
 
 				const formatDate = (date) => Date.parse(date.created_at_date);
 
+				const sortByCreatedAt = (detailA, detailB, direction = 'asc') => {
+						const detailADate = formatDate(detailA);
+						const detailBDate = formatDate(detailB);
+
+						switch (direction) {
+							case 'asc':
+								return detailADate - detailBDate 
+							break;
+							case 'desc':
+								return detailBDate - detailADate;
+							break;
+							default:
+								return detailADate - detailBDate 
+							break;
+						}
+				}
+
 				switch (this.detailsSortingCrit) {
 					case 'created-at-asc':
 						this.details.sort((detailA, detailB) => {
-							const detailADate = formatDate(detailA);
-							const detailBDate = formatDate(detailB);
-
-							return detailADate - detailBDate;
+							return sortByCreatedAt(detailA, detailB, 'asc');
 						});
 					break;
 					case 'created-at-desc':
 						this.details.sort((detailA, detailB) => {
-							const detailADate = formatDate(detailA);
-							const detailBDate = formatDate(detailB);
-
-							return detailBDate - detailADate;
+							return sortByCreatedAt(detailA, detailB, 'desc');
 						});
 					break;
 					case 'is_ready-asc':
 						this.details.sort((detailA, detailB) => {
 
-							const sortByCreatedAt = (detailA, detailB) => {
-								const detailADate = formatDate(detailA);
-								const detailBDate = formatDate(detailB);
-
-								return detailADate - detailBDate;
-							}
-
 							if (detailA.is_ready || detailB.is_ready) {
 								if (detailA.is_ready && !detailB.is_ready) return -1;
 								if (!detailA.is_ready && detailB.is_ready) return 1;
 
-								return  sortByCreatedAt(detailA, detailB);
+								return sortByCreatedAt(detailA, detailB, 'asc');
 							} else {
-								return sortByCreatedAt(detailA, detailB);
+								return sortByCreatedAt(detailA, detailB, 'asc');
 							}
 						});
 					break;
 					case 'unfulfilled-asc':
 						this.details.sort((detailA, detailB) => {
 
-						const sortByCreatedAt = (detailA, detailB) => {
-							const detailADate = formatDate(detailA);
-							const detailBDate = formatDate(detailB);
-
-							return detailADate - detailBDate;
-						}
-
 						if (!detailA.is_ready || !detailB.is_ready) {
 							if (!detailA.is_ready && detailB.is_ready) return -1;
 							if (detailA.is_ready && !detailB.is_ready) return 1;
 
-							return  sortByCreatedAt(detailA, detailB);
+							return sortByCreatedAt(detailA, detailB, 'asc');
 						} else {
-							return sortByCreatedAt(detailA, detailB);
+							return sortByCreatedAt(detailA, detailB, 'asc');
 						}
 					});
 					break;
 					default:
 						this.details.sort((detailA, detailB) => {
-							const detailADate = formatDate(detailA);
-							const detailBDate = formatDate(detailB);
-
-							return detailADate - detailBDate;
+							return sortByCreatedAt(detailA, detailB, 'asc');
 						});
 					break;
 				}
