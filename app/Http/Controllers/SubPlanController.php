@@ -84,7 +84,7 @@ class SubPlanController extends Controller
 
         $getSubplan = function($columnName, $columnVal, $currentUserTime) {
             $subPlan = SubPlan::where([[$columnName, $columnVal]])
-            ->where('created_at_user_time', '>', $currentUserTime.' 00:00:00')
+            ->where('created_at_user_time', '>=', $currentUserTime.' 00:00:00')
             ->orderBy('created_at_user_time', 'desc')
             ->get()
             ->toArray();
@@ -201,7 +201,7 @@ class SubPlanController extends Controller
         
         if ($savedTaskId) {
             $savedTaskId = $savedTaskId->saved_task_id;
-            return $subPlan = SubPlan::select('task_id')->where('saved_task_id', $savedTaskId)->orderBy('created_at', 'desc')->get()->toArray()[0]['task_id'];
+            return $subPlan = SubPlan::select('task_id')->where('saved_task_id', $savedTaskId)->orderBy('created_at_user_time', 'desc')->get()->toArray()[0]['task_id'];
         } 
         $subPlan = SubPlan::select('task_id')->where('id',$id)->get()->toArray();
         return count($subPlan) ? $subPlan[0]['task_id'] : $subPlan;
