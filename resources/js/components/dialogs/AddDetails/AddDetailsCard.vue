@@ -29,7 +29,7 @@
                             >
                                 <v-text-field 
                                 width="20px" 
-                                v-model="subTasks.title" 
+                                v-model="newDetail.title" 
                                 v-on:keyup.enter="addDetail" 
                                 :counter="subtaskRules.subtaskTitle.maxLength" 
                                 label="Subtask title"
@@ -44,7 +44,7 @@
                             >
                                 <v-text-field 
                                 width="20px" 
-                                v-model="subTasks.text" 
+                                v-model="newDetail.text" 
                                 v-on:keyup.enter="addDetail" 
                                 :counter="subtaskRules.subtaskText.maxLength"
                                 label="Subtask details" 
@@ -64,7 +64,7 @@
                                     >
                                         <v-checkbox 
                                         label="is required subtask?" 
-                                        v-model="subTasks.checkpoint">
+                                        v-model="newDetail.checkpoint">
                                         </v-checkbox>
                                     </v-col>
                                     <v-col
@@ -86,10 +86,9 @@
                         </v-row>
                         <v-divider></v-divider>
                         <v-row>
-    
                             <template>
                                 <!--Display subTask-->
-                                <v-expansion-panels>
+                                <v-expansion-panels v-if="!isLoading">
                                     <v-expansion-panel v-for="(v, i) in details" :key="i">
                                         <v-expansion-panel-header>
                                             <v-row class="p-0 m-0">
@@ -122,22 +121,24 @@
                                                             <span>This subtask has required status</span>
                                                         </v-tooltip>
                                                         </v-col>
-                                                        <v-col 
+                                                        <v-col
                                                         cols="4"
                                                         class="p-0 m-0 d-flex justify-content-center align-items-center"
                                                         >
                                                         <template>
-                                                            <EditButton 
-                                                            @click="createModifiedDetailTemplate(v)"
-                                                            :tooltipValue="'Edit subtask'"
-                                                            />
+                                                            <div v-show="!v.is_old_compleated">
+                                                                <EditButton 
+                                                                @click="createModifiedDetailTemplate(v)"
+                                                                :tooltipValue="'Edit subtask'"
+                                                                />
+                                                            </div>
                                                         </template>
                                                         </v-col>
                                                         <v-col 
                                                         cols="4"
                                                         class="p-0 m-0 d-flex justify-content-center align-items-center"
                                                         >
-                                                            <v-icon color="#D71700" v-if="v.is_ready">
+                                                            <v-icon color="#D71700" v-if="v.is_ready" class="p-1">
                                                                 {{ icons.mdiMarkerCheck }}
                                                             </v-icon>
                                                         </v-col>
@@ -145,7 +146,10 @@
                                                 </v-col>
                                             </v-row>
                                         </v-expansion-panel-header>
-                                        <v-expansion-panel-content v-bind:class="{ done: v.is_ready }">
+                                        <v-expansion-panel-content 
+                                        v-if="!v.is_old_compleated"
+                                        v-bind:class="{ done: v.is_ready }"
+                                        >
                                             <v-divider></v-divider>
                                             <v-row class="p-0 m-0">
                                                 <v-col 
@@ -185,9 +189,42 @@
                                                 </v-col>
                                             </v-row>
                                         </v-expansion-panel-content>
+                                        <v-expansion-panel-content 
+                                        v-else
+                                        v-bind:class="{ done: v.is_ready }"
+                                        >
+                                            <v-divider></v-divider>
+                                            <v-row class="p-0 m-0">
+                                                <v-col 
+                                                class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
+                                                cols="9"
+                                                >
+                                                    <p> {{ v.text }}</p>
+                                                </v-col>
+                                                <v-col 
+                                                cols="3"
+                                                >
+                                                    <v-row class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper">
+                                                        <p class="completeon-date-text">Completeon date:</p>
+                                                    </v-row>
+                                                    <v-row class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper">
+                                                        <p class="completeon-date-text">{{ getSubtaskComptimeText(v.done_at_user_time) }}</p>
+                                                    </v-row>
+                                                </v-col>
+                                            </v-row>
+                                        </v-expansion-panel-content>
     
                                     </v-expansion-panel>
                                 </v-expansion-panels>
+                                <v-row
+                                v-else 
+                                class="p-0 m-0 mt-6 d-flex justify-content-center align-items-center"
+                                >
+                                    <DefaultPreloader
+                                    :size="96"
+                                    :width="7"
+                                    />
+                                </v-row>
                             </template>
                         </v-row>
                     </template>
@@ -202,21 +239,53 @@
                 </div>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions>
-                <v-row class="d-flex align-items-center justify-content-start">
-                    <v-col
+            <v-card-actions v-if="details.length > 1">
+                <v-row class="p-0 m-0 d-flex justify-content-center">
+                    <v-col 
+                    class="p-0 m-0 subtasks-radiobuttons-wrapper"
                     cols="auto"
-                    >
-                        <v-btn color="blue-darken-1" variant="text" @click="$emit('showAllSubTasks')">
-                            View all subtasks
-                        </v-btn>
+                    >    
+                        <v-radio-group 
+                        v-model="detailsSortBy"
+                        row
+                        >
+                            <v-radio
+                            v-for="(button, index) in radioButtons"
+                            :key="index"
+                            class="subtasks-radiobutton"
+                            :value="button.value"
+                            color="red darken-3"
+                            >
+                                <template v-slot:label>
+                                    <span class="radioButton-label">{{ button.label }}</span>
+                                </template>
+                            </v-radio>
+                        </v-radio-group>
                     </v-col>
                 </v-row>
-                <v-row class="d-flex align-items-center justify-content-end">
+            </v-card-actions>
+            <v-card-actions>
+                <v-row class="d-flex align-items-center justify-content-between p-0 m-0">
                     <v-col
                     cols="auto"
                     >
-                        <v-btn color="blue-darken-1" variant="text" @click="$emit('closeAddDetailsDialog')">
+                        <v-btn 
+                        v-if="isSavedTask && details.length"
+                        @click="showSubtasks"
+                        color="blue-darken-1" 
+                        variant="text" 
+                        >
+                            {{ displayedDetails[displayedDetails.currentMode].showSubtasksButtonText}}
+                        </v-btn>
+                    </v-col>
+                    <v-col
+                    cols="auto"
+                    >
+                        <v-btn 
+                        @click="$emit('closeAddDetailsDialog')"
+                        color="blue-darken-1" 
+                        variant="text" 
+                        >
                             Close
                         </v-btn>
                     </v-col>
@@ -242,6 +311,7 @@
 import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import EditButton from '../../UI/EditButton.vue';
+import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
@@ -259,18 +329,27 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             alert: {
                 type: Object,
-            }
+            },
+            isLoading: {
+                type: Boolean,
+                required: true,
+            },
+            detailsSortingCrit: {
+                type: String,
+                required: true,
+            },
         },
         data() {
             return {
                 icons: {mdiExclamation, mdiMarkerCheck, mdiDelete},
-                subTasks: {
+                newDetail: {
 						title: '',
 						text: '',
 						position:1,
 						weight: 100,
 						checkpoint: false,
 						is_ready: false,
+                        created_at_date: '',
 					},
                 isShowAlertInDetails: false,
                 alertDisplayTime: 1500,
@@ -306,10 +385,32 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 ],
                 isSubTasksInputValValid: false,
                 isShowEditDetailsDialog: false,
+                isSavedTask: this.item.hash !== '#',
                 modifiedDetailTemplate: {id: null, title: '', text: ''},
+                displayedDetails: {
+                    currentMode: 'actual',
+                    all: {
+                        showSubtasksButtonText: 'View actual subtasks'
+                    },
+                    actual: {
+                        showSubtasksButtonText: 'View all subtasks',
+                    }
+                },
+                detailsSortBy: null,
+                radioButtons: [
+                    {value: 'created-at-asc', label: 'Old first',},
+                    {value: 'created-at-desc', label: 'New first',},
+                    {value: 'is_ready-asc', label: 'Ready first',},
+                    {value: 'unready-asc', label: 'Unready first',},
+                ]
             }
         },
-        components: {EditDetails, AddSubtaskButton, EditButton, },
+        components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader},
+        watch: {
+            detailsSortBy(sortCritVal) {
+                this.updateDetailsSortingCrit(sortCritVal);
+            }
+        },
         methods: {
             updateDetails(details) {
                 this.$emit('updateDetails', details);
@@ -321,6 +422,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
             updateAlertData(alertData) {
                 this.$emit('updateAlertData', alertData);
+            },
+
+            updateDetailsSortingCrit(sortCritVal) {
+                this.$emit('updateDetailsSortingCrit', sortCritVal)
             },
 
             checkCompletedPercent(complPercentResp) {
@@ -337,11 +442,26 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
 
             addDetail(){
+                if (this.isLoading) return;
+
                 if (this.isSubTasksInputValValid) {
-                    this.subTasks.task_id = this.item.taskId
-                    this.updateDetails([...this.details, this.subTasks]);
-                    this.createSubPlan(this.subTasks)
-                    this.subTasks = {};
+
+                    const dateNow = new Date;
+                    const dataOpt = {year: 'numeric', month: 'numeric', day: 'numeric'};
+                    const date = dateNow.toLocaleString("en-CA", dataOpt);
+                    
+                    this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: date};
+                    this.updateDetails([...this.details, this.newDetail]);
+                    this.createSubPlan(this.newDetail)
+                    this.newDetail = {
+						title: '',
+						text: '',
+						position:1,
+						weight: 100,
+						checkpoint: false,
+						is_ready: false,
+                        created_at_date: '',
+					};
                     this.checkInputsValue();
                 } else {
 					this.$emit('updateAlertData', {type: 'error', text: 'Invalid data'});
@@ -372,8 +492,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
             checkInputsValue() {
                 this.isSubTasksInputValValid = new Array(
-                    ...this.subtaskTitleRules.map(check => check(this.subTasks.title)),
-                    ...this.subtaskTextRules.map(check => check(this.subTasks.text)),
+                    ...this.subtaskTitleRules.map(check => check(this.newDetail.title)),
+                    ...this.subtaskTextRules.map(check => check(this.newDetail.text)),
                 ).every(checkResult => checkResult === true);
             },
 
@@ -399,8 +519,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             completed(item){
 				axios.post('/complete-sub-task',{task_id : item.taskId, is_task_ready: item.is_ready})
 				.then((response) => {
-                    console.log(response);
                     this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
+                    // this.updateDetailsSortingCrit(this.detailsSortBy); //раскомментить если хочу, что бы массив сортировался при клике на чекбокс
 				})
 			},
 
@@ -420,11 +540,47 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
             closeEditDetailsDialog() {
                 this.isShowEditDetailsDialog = false;
-            }
+            },
+
+            showSubtasks() {
+               if (this.isLoading) return;
+               const updateDispDataCurrentMode = (mode) => this.displayedDetails.currentMode = mode;
+
+               switch(this.displayedDetails.currentMode) {
+                    case 'actual':
+                        updateDispDataCurrentMode('all');
+                        this.$emit('showAllSubTasks', this.item);
+                    break;
+                    case 'all':
+                        updateDispDataCurrentMode('actual');
+                        this.$emit('showActualSubTasks', this.item);
+                    break;
+                    default:
+                        updateDispDataCurrentMode('all');
+                        this.$emit('showAllSubTasks', this.item);
+               }
+
+            },
+
+            getSubtaskComptimeText(fullDate) {
+                if (!fullDate) return '';
+
+                const spaceIndex = fullDate.trim().indexOf(' ');
+
+                if (spaceIndex === -1) {
+                    return '';
+                }
+
+                const date = fullDate.slice(0, spaceIndex).replace(/-/g, '.');
+                return date;
+            },
+        },
+
+        created() {
+            this.detailsSortBy = this.detailsSortingCrit
         },
 
         mounted() {
-
            const subtasksInputs = [this.$refs.subtaskTitleInput, this.$refs.subtaskTextInput]
            
            if (subtasksInputs.every(item => item)) {
@@ -470,5 +626,21 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .completeon-date-text {
+        text-align: center;
+        color: rgba(0,0,0,.6);
+        font-weight: bold;
+    }
+
+    .subtasks-radiobuttons-wrapper .v-input--selection-controls {
+       padding: 0;
+       margin: 0;
+    }
+
+    .radioButton-label {
+        margin-bottom: 0;
+        margin-top: 0.5rem;
     }
 </style>
