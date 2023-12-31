@@ -141,7 +141,7 @@ class MainController
                     $this->savedTaskRepository->saveNewHashCode($transformData);
                     if ($taskId) {
                         Tasks::where('id', $taskId)->update(['hash_code' => $params['hash_code'] ]);
-                        $this->subPlanService ->saveSubtasks(['task_id' => $taskId]);
+                        $this->subPlanService ->saveSubtasks(['task_id' => $taskId]); 
                     }
                     $response = $this->notesService->addNoteForSavedTask($params);
                     if($response){
