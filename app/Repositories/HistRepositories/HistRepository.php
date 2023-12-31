@@ -124,7 +124,7 @@ class HistRepository
             $withFailed    = $addWithFailed();
             $withEmergency = $addWithEmergency();
             $userId        = Auth::id();
-            $query        .= " WHERE timetables.date BETWEEN '".$this->period['from'] .
+            $query        .= " WHERE timetables.date BETWEEN '".$this->period['from']['date'] .
             "' AND '".$this->period['to']."' AND timetables.day_status IN (-1,0,1,3) 
             AND timetables.user_id = $userId ORDER BY time DESC, priority DESC";
             $response      = DB::select($query);
