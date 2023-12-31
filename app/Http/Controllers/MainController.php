@@ -145,7 +145,7 @@ class MainController
                     }
                     $response = $this->notesService->addNoteForSavedTask($params);
                     if($response){
-                        $this->notesRepository->addSavedNote($params);
+                        $this->notesRepository->addSavedNote($params); 
                     }
                 });
             } catch(\Exception $e){
