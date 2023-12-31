@@ -270,7 +270,7 @@
                     cols="auto"
                     >
                         <v-btn 
-                        v-if="isSavedTask && details.length"
+                        v-if="isSavedTask"
                         @click="showSubtasks"
                         color="blue-darken-1" 
                         variant="text" 
