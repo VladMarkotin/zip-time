@@ -488,9 +488,12 @@ class MainController
             if($preparedPlan){
                 $preparedPlan = explode(';', $preparedPlan);
                 $preparedTasks = $this->getSavedTasksByHashCode($preparedPlan);
+                
+                return ($preparedTasks);
             }
+
+            exit;
             
-            return ($preparedTasks);
         }
         
         return [];
