@@ -12,8 +12,9 @@
 				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
 			</v-list-item>
 			<v-list-item>
-				<v-list-item-content class="key">Own mark:</v-list-item-content>
-				<v-list-item-content class="align-end">{{data.dayOwnMark}} %</v-list-item-content>
+				<v-list-item-content class="key" >Own mark:</v-list-item-content>
+                <v-list-item-content class="align-end" v-if="data.dayOwnMark > 0 ">{{data.dayOwnMark}} %</v-list-item-content>
+				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
 			</v-list-item>
 			<v-list-item>
 				<v-list-item-content class="key">Comment:</v-list-item-content>
