@@ -289,10 +289,9 @@
 				
 				<template v-else-if="[2,1].includes(item.type)">
 					<div>Ready?</div>
-					<v-checkbox color="#D71700" 
-					@change="updateIsReadyState(item)"
-					v-model="item.is_ready"
-					@input="checked = $event.target.checked"
+					<v-checkbox color="#D71700"
+					@change="updateIsReadyState(item)" 
+					v-model="isTaskReady"
 					:true-value=99
 					:false-value=-1
 					>
@@ -368,6 +367,7 @@
 					hashCode: this.item.hash,
 					isShowPreloader: false,
 					defaultConfigs: {},
+					isTaskReady: -1,
 				}
 			},
 		components : {Alert, AddHashCode, AddHashCodeButton, Preloader, CreateSubplanGPT, AddDetails, EditButton},
@@ -488,9 +488,9 @@
 			sendIsReadyState(item)
 			{
 				console.log(
-					{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type}
+					{task_id : item.taskId,details : item.details,note : item.notes, type : item.type}
 				);
-				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,/*is_ready : 0,*/type : item.type})
+				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message);
@@ -503,13 +503,13 @@
 			updateIsReadyState(item)
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,
-					is_ready : item.is_ready,type : item.type})
+					is_ready : this.isTaskReady,type : item.type})
 				.then((response) => {
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					setTimeout( () => {
 						this.isShowAlert = false;
-						console.log(item.is_ready)
+						console.log(this.isTaskReady);
 					},3000)
 				  })
 			},
