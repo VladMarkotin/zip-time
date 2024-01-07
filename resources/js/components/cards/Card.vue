@@ -289,13 +289,15 @@
 				
 				<template v-else-if="[2,1].includes(item.type)">
 					<div>Ready?</div>
-					<v-checkbox color="#D71700"
-					@change="updateIsReadyState(item)" 
-					v-model="isTaskReady"
-					:true-value=99
-					:false-value=-1
-					>
-					</v-checkbox>
+					<div @click="updateIsReadyState(item)">
+						<v-checkbox color="#D71700"
+						readonly
+						v-model="isTaskReady"
+						:true-value="isTaskReadyCheckboxTrueVal"
+						:false-value="isTaskReadyCheckboxFalseVal"
+						>
+						</v-checkbox>
+					</div>
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
 							<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
@@ -368,6 +370,8 @@
 					isShowPreloader: false,
 					defaultConfigs: {},
 					isTaskReady: -1,
+					isTaskReadyCheckboxTrueVal: 99,
+					isTaskReadyCheckboxFalseVal: -1,
 				}
 			},
 		components : {Alert, AddHashCode, AddHashCodeButton, Preloader, CreateSubplanGPT, AddDetails, EditButton},
@@ -502,9 +506,23 @@
 			
 			updateIsReadyState(item)
 			{
+				const getNewCheckboxVal = (oldVal) => {
+					switch (oldVal) {
+						case this.isTaskReadyCheckboxTrueVal:
+							return this.isTaskReadyCheckboxFalseVal;
+						break;
+						case this.isTaskReadyCheckboxFalseVal:
+							return this.isTaskReadyCheckboxTrueVal;
+						break;
+					}
+				}
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,
-					is_ready : this.isTaskReady,type : item.type})
+					is_ready : getNewCheckboxVal(this.isTaskReady),type : item.type})
 				.then((response) => {
+					if (response.data.status === 'success') {
+						this.isTaskReady = getNewCheckboxVal(this.isTaskReady);
+					}
+					
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					setTimeout( () => {
