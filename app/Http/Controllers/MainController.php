@@ -352,13 +352,15 @@ class MainController
     public function estimateTask(Request $request)
     {
         /**Before estimation check subplans */
-        $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
-        
-        if (!$checkSubPlan) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error! Some required subtasks are still undone',
-            ]);//
+        if ($request->get('is_ready')) {     
+            $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
+            
+            if (!$checkSubPlan) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Error! Some required subtasks are still undone',
+                ]);//
+            }
         }
         //checkCheckpoints
         /**end */
