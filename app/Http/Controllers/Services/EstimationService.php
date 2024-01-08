@@ -113,6 +113,7 @@ class EstimationService
         $isTaskReady = function () use ($data){
             $data['is_ready'] = intval($data['is_ready']);
         };
+        
         switch($data['action']){
 
             case '2': //user wants to finish day plan

@@ -24,7 +24,14 @@ class NoteController extends Controller
         $savedTaskId = SavedTask::select('id')->where([['hash_code', $request->get('hash')], ['user_id', Auth::id()]])
         ->orderBy('created_at', 'desc')
         ->get()
-        ->toArray()[0]['id'];
+        ->toArray();
+
+        if (!count($savedTaskId)) {
+            return json_encode([]);
+        }
+
+        $savedTaskId = $savedTaskId[0]['id'];
+
         //get notes for saved Task
         $notes = SavedNotes::select('note', 'created_at')
         ->where('saved_task_id', $savedTaskId)
