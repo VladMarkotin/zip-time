@@ -472,7 +472,7 @@
 				.then((response) => {
 					
 					this.notesList = response.data
-					console.log(this.notesList[0].created_at)
+					// console.log(this.notesList[0].created_at)
 					
 				  })
 			},
