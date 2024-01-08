@@ -266,11 +266,21 @@
 		<v-divider></v-divider>
 		<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
 		<v-card-title class="font-weight-bold">
-			<form class="d-flex align-center" :id="!num ? 'card-mark' : false">
+			<form 
+			class="d-flex align-center" 
+			:id="!num ? 'card-mark' : false"
+			>
 				<template v-if="[4,3].includes(item.type)">
 					<div>Mark</div>
-					<v-text-field class="ml-1" style="width : 54px" v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)" 
-					@focus="focusedInput=!focusedInput" @blur="focusedInput=!focusedInput">
+					<v-text-field 
+					class="ml-1" 
+					style="width : 54px" 
+					v-model="item.mark" 
+					v-on:keypress.enter.prevent="sendMark(item)" 
+					@focus="focusedInput=!focusedInput" 
+					@blur="focusedInput=!focusedInput"
+					@change="checkIsSavedMark(item)"
+					>
 						<v-icon slot="append">mdi-percent</v-icon>
 					</v-text-field>
 					
@@ -282,7 +292,20 @@
 						</template>
 						<span>Update</span>
 					</v-tooltip>
-					<span class="mark-info" v-if="focusedInput">Ratings` range 
+					<div 
+					v-if="isShowUpdateCardNotification"
+					class="update-card-notification-wrapper" 
+					>
+						<span 
+						class="update-card-notification" 
+						>
+							Don't forget to save your changes
+						</span>
+					</div>
+					<span 
+					v-if="focusedInput && !isShowUpdateCardNotification"
+					class="mark-info" 
+					>Ratings` range 
 						from {{ defaultConfigs.cardRules[0].minMark }}
 					    to {{ defaultConfigs.cardRules[0].maxMark }}</span>
 				</template>
@@ -348,6 +371,7 @@
 					completedPercent : 0,
 					completedProgressBar: 0,
 					focusedInput: false,
+					isShowUpdateCardNotification: false,
 					details: [],
 					detailsSortingDefaultVal: 'created-at-asc',
 					detailsSortingCrit: 'created-at-asc',
@@ -540,6 +564,7 @@
 					this.setAlertData(response.data.status, response.data.message)
 					item.notes = ""
 					this.noteInfo.todayAmount = response.data.noteAmount
+					this.checkIsSavedMark(item);
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
@@ -602,6 +627,7 @@
 			renameHashCode(newHashCode) {
 				this.hashCode = newHashCode;
 			},
+
 			getConfigs(data=null) {
 				axios.post('/get-default-configs')
 					.then((response) => {
@@ -612,6 +638,16 @@
 						
 					  })
 			},
+
+			checkIsSavedMark(item) {
+				axios.post('/get-task-mark',{task_id : item.taskId})
+				.then((response) => {
+					const {data} = response;
+					if (data.status === 'success') {
+						this.isShowUpdateCardNotification = +item.mark !== data.mark;
+					}
+				})
+			}
 		},
 
 		created() {
@@ -637,5 +673,11 @@
 	.mark-info{
 		font-size: 10px;
 		font-family: Sans-serif;
+	}
+
+	.update-card-notification {
+		font-size: 14px;
+		font-family: Sans-serif;
+		color: #A10000;
 	}
 </style>
