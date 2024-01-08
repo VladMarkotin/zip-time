@@ -8,6 +8,7 @@ import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/dist/vuetify.min.css';
 import ChatGPTIcon from './components/icons/ChatGPTIcon.vue';
 import GPTRecreateIcon from './components/icons/GPTRecreateIcon.vue';
+import store from './store';
 
 Vue.use(HighchartsVue);
 Vue.use(Vuetify);
@@ -39,6 +40,7 @@ const app =
 						}
 					}
 				}),
+				// store: store,
 				components: {app},
 				data: {alertDelay: 5e3, currComponent: {name: '', props: {}}},
 				computed:

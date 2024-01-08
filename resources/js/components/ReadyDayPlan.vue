@@ -29,14 +29,12 @@
                 title="Required tasks:"
                 v-if="isExistsRequiredTasks(data)"
                 v-bind:items="getRequiredTasks(data)"
-                @updateItems="$emit('updateItems')"
             />
             <v-divider></v-divider>
             <Cards
                 title="Non required tasks:"
                 v-if="isExistsNonRequiredTasks(data)"
                 v-bind:items="getNonRequiredTasks(data)"
-                @updateItems="$emit('updateItems')"
             />
         </v-data-iterator>
         <div class="d-flex justify-space-between mt-3">
