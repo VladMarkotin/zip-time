@@ -494,7 +494,7 @@
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
 					if (response.data.status === 'success' && this.item.hash !== '#' && this.item.notes) {
-						this.$emit('updateItem', {...this.item, notes: ''});
+						this.item.notes = '';
 					}
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message);

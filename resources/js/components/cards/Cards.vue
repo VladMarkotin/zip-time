@@ -6,7 +6,6 @@
                 <Card 
                 v-bind:item="item" 
                 v-bind:num="i" 
-                @updateItem="updateItems"
                 />
             </v-col>
         </v-row>
@@ -17,14 +16,5 @@
     export default {
     props : ['title','items'],
     components : {Card},
-    methods: {
-        updateItems(newItem) {
-            const newItems = [...this.items.map(item => {
-                if (item.taskId !== newItem.taskId) return item;
-                return newItem;
-            })];
-            this.$emit('updateItems', newItems);
-        }
-    }
     }
 </script>
