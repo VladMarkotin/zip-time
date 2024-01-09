@@ -269,7 +269,7 @@
 			<v-row class="p-0 m-0">
 				<v-col class="p-0 m-0" cols="auto">
 					<form 
-					class="d-flex align-center" 
+					class="d-flex align-center gap-1" 
 					:id="!num ? 'card-mark' : false"
 					>
 						<template v-if="[4,3].includes(item.type)">
@@ -692,7 +692,8 @@
 	}
 
 	.update-card-notification {
-		font-size: 18px;
+		font-size: 13px;
+		text-transform: uppercase;
 		font-family: Sans-serif;
 		color: #A10000;
 		animation: .3s show ease;
@@ -701,6 +702,7 @@
 
 	.button-attention{
 		background-color: #DCDCDC;
+		box-shadow: #434B4D 0px 0px 10px;
 	}
 
 	@keyframes show {
