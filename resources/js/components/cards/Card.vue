@@ -174,6 +174,7 @@
 					</v-col>
 					<v-col class="p-0 d-flex flex-column justify-center" cols="auto" style="min-width: 53px;">
 						<v-dialog
+						v-if="item.hash !== '#'"
 						v-model="dialogNotes"
 						scrollable
 						width="auto"
@@ -493,7 +494,7 @@
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
-					this.isItToCleanNoteInputCheck(response, item);
+					this.isItNessesaryToCleanNoteInput(response, item);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message);
 					setTimeout( () => {
@@ -534,7 +535,7 @@
 			{	
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
 				.then((response) => {
-					this.isItToCleanNoteInputCheck(response, item);
+					this.isItNessesaryToCleanNoteInput(response, item);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					this.noteInfo.todayAmount = response.data.noteAmount
@@ -544,7 +545,7 @@
 				  })
 			},
 
-			isItToCleanNoteInputCheck(response, item) {
+			isItNessesaryToCleanNoteInput(response, item) {
 				if (response.data.status === 'success' && item.hash !== '#' && item.notes) {
 					item.notes = '';
 				}
