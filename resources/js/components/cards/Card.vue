@@ -14,7 +14,7 @@
 				:notes          = "newHashCodeData.notes"
 				:taskId 		=  "item.taskId"
 				@close          = "closeHashCodeDialog"
-				@addHashCode    = "renameHashCode"
+				@addHashCode    = "createUnsavedTaskSaved"
 				/>
 			</template>
 			<template v-if="isShowPreloader">
@@ -494,7 +494,7 @@
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
-					this.isItNessesaryToCleanNoteInput(response, item);
+					this.isItNessesaryToCleanNoteInput(response);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message);
 					setTimeout( () => {
@@ -535,7 +535,7 @@
 			{	
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
 				.then((response) => {
-					this.isItNessesaryToCleanNoteInput(response, item);
+					this.isItNessesaryToCleanNoteInput(response);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					this.noteInfo.todayAmount = response.data.noteAmount
@@ -545,10 +545,14 @@
 				  })
 			},
 
-			isItNessesaryToCleanNoteInput(response, item) {
-				if (response.data.status === 'success' && item.hash !== '#' && item.notes) {
-					item.notes = '';
+			isItNessesaryToCleanNoteInput(response) {
+				if (response.data.status === 'success' && this.item.hash !== '#' && this.item.notes) {
+					this.cleanNoteInput();
 				}
+			},
+
+			cleanNoteInput() {
+				this.item.notes = '';
 			},
 			
 			setAlertData(type, text)
@@ -604,9 +608,16 @@
 				}
 			},
 
+			createUnsavedTaskSaved(newHashCode) {
+				this.renameHashCode(newHashCode);
+				this.cleanNoteInput();
+			},
+
 			renameHashCode(newHashCode) {
+				this.item.hash = newHashCode;
 				this.hashCode = newHashCode;
 			},
+
 			getConfigs(data=null) {
 				axios.post('/get-default-configs')
 					.then((response) => {
