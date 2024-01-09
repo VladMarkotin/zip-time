@@ -493,9 +493,7 @@
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
-					if (response.data.status === 'success' && this.item.hash !== '#' && this.item.notes) {
-						this.item.notes = '';
-					}
+					this.isItToCleanNoteInputCheck(response, item);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message);
 					setTimeout( () => {
@@ -536,14 +534,20 @@
 			{	
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
 				.then((response) => {
+					this.isItToCleanNoteInputCheck(response, item);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
-					item.notes = ""
 					this.noteInfo.todayAmount = response.data.noteAmount
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
 				  })
+			},
+
+			isItToCleanNoteInputCheck(response, item) {
+				if (response.data.status === 'success' && item.hash !== '#' && item.notes) {
+					item.notes = '';
+				}
 			},
 			
 			setAlertData(type, text)
