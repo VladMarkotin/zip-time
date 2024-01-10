@@ -11,7 +11,6 @@
 				:type           = "newHashCodeData.type"
 				:priority       = "newHashCodeData.priority"
 				:details        = "newHashCodeData.details"
-				:notes          = "newHashCodeData.notes"
 				:taskId 		=  "item.taskId"
 				@close          = "closeHashCodeDialog"
 				@addHashCode    = "createUnsavedTaskSaved"
@@ -220,9 +219,6 @@
 													  <v-divider v-if="item.created_at == new Date('d.m.Y').toString()"></v-divider>
 												</v-card-title>
 												<v-card-text class="bg-white text--primary">
-													<b>
-														{{ item.note }}
-													</b>
 													<v-checkbox
 														v-model="ex4[i]"
 														label="red"
@@ -365,7 +361,6 @@
 						type: 		this.item.type,
 						priority: 	this.item.priority,
 						details: 	this.item.details,
-						notes: 		this.item.notes,
 					},
 					hashCode: this.item.hash,
 					isShowPreloader: false,
@@ -547,11 +542,11 @@
 
 			isItNessesaryToCleanNoteInput(response) {
 				if (response.data.status === 'success' && this.item.hash !== '#' && this.item.notes) {
-					this.cleanNoteInput();
+					this.cleanNotesInput();
 				}
 			},
 
-			cleanNoteInput() {
+			cleanNotesInput() {
 				this.item.notes = '';
 			},
 			
@@ -610,7 +605,7 @@
 
 			createUnsavedTaskSaved(newHashCode) {
 				this.renameHashCode(newHashCode);
-				this.cleanNoteInput();
+				this.cleanNotesInput();
 			},
 
 			renameHashCode(newHashCode) {
