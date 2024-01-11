@@ -127,8 +127,10 @@ class MainController
         $params['type']         = $request->input('type');
         $params['priority']     = $request->input('priority');
         $params['details']      = $request->input('details');
-        $params['note']         = $request->input('notes');
         $taskId = $request->input('task_id');
+        if (isset($taskId)) {
+            $params['note']     = Tasks::find($taskId)->note;
+        }
         $taskId    = (isset($taskId)) ? $request->input('task_id') : null;
         //die(var_dump($params));
         $createResponce         = fn($message, $status) => ['message' => $message, 'status'  => $status,];

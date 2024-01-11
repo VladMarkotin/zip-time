@@ -7,6 +7,7 @@ use App\Models\SubPlan;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Services\SubPlanServices\SubPlanService;
+use App\Models\Tasks;
 use Carbon\Carbon;
 
 class SubPlanController extends Controller
@@ -155,20 +156,37 @@ class SubPlanController extends Controller
 
     public function completeSubTask(Request $request)
     {
-        $id       = $request->get('task_id');
-        $is_ready = $request->get('is_task_ready');
-        SubPlan::whereId($id)->update(['is_ready' => $is_ready]);
-        $lastTaskId = $this->getLastTaskId($id);
-        $completedPercent = $this->subPlanService->countPercentOfCompletedWork(['task_id' => $lastTaskId]);
+        $subtask_id          = $request->get('subtask_id');
+        $is_subtask_ready    = $request->get('is_subtask_ready');
+        $task_id             = $request->get('task_id');
+        $is_subtask_required = $request->get('is_subtask_required');
 
-        $this->editDoneAtColumn($id, $is_ready);
+        $response = [
+            'status'               => 'success', 
+            'message'              => 'subtask has been completed',
+            'completedPercent'     =>  null,
+            'resetDayMarkToDefVal' => false,
+        ];
+
+        SubPlan::whereId($subtask_id)->update(['is_ready' => $is_subtask_ready]);
+        $lastTaskId = $this->getLastTaskId($subtask_id);
+        $response['completedPercent'] = $this->subPlanService->countPercentOfCompletedWork(['task_id' => $lastTaskId]);
+
+        $this->editDoneAtColumn($subtask_id, $is_subtask_ready);
+
+        if (!$is_subtask_ready && $is_subtask_required) {
+            $task                  = Tasks::find($task_id);
+            $mark                  = $task->mark;
+            $defaultMarkFieldValue = -1; //убрать костыль
+
+            if ((int) $mark !== $defaultMarkFieldValue) { //убрать костыль
+                $task->update(['mark' => $defaultMarkFieldValue]);
+                $response['resetDayMarkToDefVal'] = true;
+            }
+        }
 
         return (
-            response()->json([
-                'status' => 'success', 
-                'message' => 'subtask has been completed',
-                'completedPercent' =>  $completedPercent,
-            ], 200)
+            response()->json($response, 200)
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
         );
     }

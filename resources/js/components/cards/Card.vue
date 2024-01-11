@@ -11,10 +11,9 @@
 				:type           = "newHashCodeData.type"
 				:priority       = "newHashCodeData.priority"
 				:details        = "newHashCodeData.details"
-				:notes          = "newHashCodeData.notes"
 				:taskId 		=  "item.taskId"
 				@close          = "closeHashCodeDialog"
-				@addHashCode    = "renameHashCode"
+				@addHashCode    = "createUnsavedTaskSaved"
 				/>
 			</template>
 			<template v-if="isShowPreloader">
@@ -145,6 +144,7 @@
 					@updateCompletedPercent   = "updateCompletedPercent"
 					@updateDetailsSortingCrit = "updateDetailsSortingCrit"
 					@resetSortingToDefVal     = "resetSortingToDefVal"
+					@resetDayMarkToDefVal     = "resetDayMarkToDefVal"
 					/>
 				</template>
 				<template>
@@ -174,6 +174,7 @@
 					</v-col>
 					<v-col class="p-0 d-flex flex-column justify-center" cols="auto" style="min-width: 53px;">
 						<v-dialog
+						v-if="item.hash !== '#'"
 						v-model="dialogNotes"
 						scrollable
 						width="auto"
@@ -219,9 +220,6 @@
 													  <v-divider v-if="item.created_at == new Date('d.m.Y').toString()"></v-divider>
 												</v-card-title>
 												<v-card-text class="bg-white text--primary">
-													<b>
-														{{ item.note }}
-													</b>
 													<v-checkbox
 														v-model="ex4[i]"
 														label="red"
@@ -364,12 +362,11 @@
 						type: 		this.item.type,
 						priority: 	this.item.priority,
 						details: 	this.item.details,
-						notes: 		this.item.notes,
 					},
 					hashCode: this.item.hash,
 					isShowPreloader: false,
 					defaultConfigs: {},
-					isTaskReady: -1,
+					isTaskReady: this.item.is_ready,
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
 				}
@@ -397,6 +394,18 @@
 
 			resetSortingToDefVal() {
 				this.detailsSortingCrit = this.detailsSortingDefaultVal;
+			},
+
+			resetDayMarkToDefVal() {
+				const currentTaskType = this.item.type;
+				
+				if ([1,2].includes(currentTaskType)) {
+					this.isTaskReady = this.isTaskReadyCheckboxFalseVal;
+				}
+
+				if ([3,4].includes(currentTaskType)) {
+					this.item.mark = '';
+				}
 			},
 
 			sortDetails() {
@@ -493,9 +502,7 @@
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
-					if (response.data.status === 'success' && this.item.hash !== '#' && this.item.notes) {
-						this.item.notes = '';
-					}
+					this.isItNessesaryToCleanNoteInput(response);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message);
 					setTimeout( () => {
@@ -527,7 +534,6 @@
 					this.setAlertData(response.data.status, response.data.message)
 					setTimeout( () => {
 						this.isShowAlert = false;
-						console.log(this.isTaskReady);
 					},3000)
 				  })
 			},
@@ -536,14 +542,24 @@
 			{	
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
 				.then((response) => {
+					this.isItNessesaryToCleanNoteInput(response);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
-					item.notes = ""
 					this.noteInfo.todayAmount = response.data.noteAmount
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
 				  })
+			},
+
+			isItNessesaryToCleanNoteInput(response) {
+				if (response.data.status === 'success' && this.item.hash !== '#' && this.item.notes) {
+					this.cleanNotesInput();
+				}
+			},
+
+			cleanNotesInput() {
+				this.item.notes = '';
 			},
 			
 			setAlertData(type, text)
@@ -599,9 +615,16 @@
 				}
 			},
 
+			createUnsavedTaskSaved(newHashCode) {
+				this.renameHashCode(newHashCode);
+				this.cleanNotesInput();
+			},
+
 			renameHashCode(newHashCode) {
+				this.item.hash = newHashCode;
 				this.hashCode = newHashCode;
 			},
+
 			getConfigs(data=null) {
 				axios.post('/get-default-configs')
 					.then((response) => {

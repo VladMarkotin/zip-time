@@ -94,9 +94,13 @@ class DataTransformationService
             $transformData["plan"][$k]['type']     = $v->type;
             $transformData["plan"][$k]['priority'] = $v->priority;
             $transformData["plan"][$k]['details']  = htmlspecialchars_decode($v->details);
-            $transformData["plan"][$k]['mark']     = ($v->mark != -1) ? $v->mark: "";
-            //don`t want to show last note in text field. Fix it 09.09.23
-            $transformData["plan"][$k]['notes']    = "";//htmlspecialchars_decode($v->note);
+            $transformData["plan"][$k]['mark'] = ($v->mark != -1) ? $v->mark: "";
+            // Рома менял условие, добавил очистку поля с заметкой
+            // только не несохраненных задач 09.01.24
+            //  don`t want to show last note in text field. Fix it 09.09.23
+            $transformData["plan"][$k]['notes']    = $v->hash_code === '#'
+                ?  htmlspecialchars_decode($v->note)
+                :  "";
             if( ($v->type == 1) || ($v->type == 2) ){
                 $transformData["plan"][$k]['is_ready'] = $v->mark; //Must Be isReady
             }
