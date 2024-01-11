@@ -144,6 +144,7 @@
 					@updateCompletedPercent   = "updateCompletedPercent"
 					@updateDetailsSortingCrit = "updateDetailsSortingCrit"
 					@resetSortingToDefVal     = "resetSortingToDefVal"
+					@resetDayMarkToDefVal     = "resetDayMarkToDefVal"
 					/>
 				</template>
 				<template>
@@ -395,6 +396,18 @@
 				this.detailsSortingCrit = this.detailsSortingDefaultVal;
 			},
 
+			resetDayMarkToDefVal() {
+				const currentTaskType = this.item.type;
+				
+				if ([1,2].includes(currentTaskType)) {
+					this.isTaskReady = this.isTaskReadyCheckboxFalseVal;
+				}
+
+				if ([3,4].includes(currentTaskType)) {
+					this.item.mark = '';
+				}
+			},
+
 			sortDetails() {
 				if (this.details.length < 2) return;
 
@@ -521,7 +534,6 @@
 					this.setAlertData(response.data.status, response.data.message)
 					setTimeout( () => {
 						this.isShowAlert = false;
-						console.log(this.isTaskReady);
 					},3000)
 				  })
 			},

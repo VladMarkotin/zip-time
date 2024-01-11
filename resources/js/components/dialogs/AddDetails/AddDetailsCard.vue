@@ -516,9 +516,22 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 				})
 			},
 
-            completed(item){
-				axios.post('/complete-sub-task',{task_id : item.taskId, is_task_ready: item.is_ready})
+            completed(subtask){
+                const taskId = this.item.taskId;
+                const isSubtaskRequired = !!subtask.checkpoint;
+
+				axios.post('/complete-sub-task',{
+                    subtask_id : subtask.taskId, 
+                    is_subtask_ready: subtask.is_ready,
+                    is_subtask_required: isSubtaskRequired,
+                    task_id: taskId,
+                })
 				.then((response) => {
+                    const resetDayMarkToDefVal = 'resetDayMarkToDefVal';
+
+                    if (response.data[resetDayMarkToDefVal]) {
+                        this.$emit(resetDayMarkToDefVal);
+                    }
                     this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
                     // this.updateDetailsSortingCrit(this.detailsSortBy); //раскомментить если хочу, что бы массив сортировался при клике на чекбокс
 				})

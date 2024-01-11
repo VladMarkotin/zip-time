@@ -28,6 +28,7 @@
             @closeAddDetailsDialog    = "closeAddDetailsDialog"
             @showAllSubTasks          = "showAllSubTasks"
             @showActualSubTasks       = "getAllDetailsForTask"
+            @resetDayMarkToDefVal     = "$emit('resetDayMarkToDefVal')"
             />
         </template>
     </v-dialog>
@@ -162,8 +163,6 @@ export default {
                 });
 				})
 		},
-     
-
     },
 }
 </script>
