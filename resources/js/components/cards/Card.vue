@@ -365,7 +365,7 @@
 					hashCode: this.item.hash,
 					isShowPreloader: false,
 					defaultConfigs: {},
-					isTaskReady: this.item.mark,
+					isTaskReady: this.item.is_ready,
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
 				}
@@ -626,7 +626,6 @@
 		},
 
 		created() {
-			console.log(this.isTaskReady);
 			this.editHashCodeData();
 			this.getConfigs(); 
 		},

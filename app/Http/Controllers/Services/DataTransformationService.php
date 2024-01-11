@@ -94,13 +94,7 @@ class DataTransformationService
             $transformData["plan"][$k]['type']     = $v->type;
             $transformData["plan"][$k]['priority'] = $v->priority;
             $transformData["plan"][$k]['details']  = htmlspecialchars_decode($v->details);
-            //Рома добавил проверку, что бы невыполненные таски не приводились 
-            //к пустой строке, 11.01.23
-            if (in_array($v->type,[1,2])) {
-                $transformData["plan"][$k]['mark'] = $v->mark;
-            } else {
-                $transformData["plan"][$k]['mark'] = ($v->mark != -1) ? $v->mark: "";
-            }
+            $transformData["plan"][$k]['mark'] = ($v->mark != -1) ? $v->mark: "";
             // Рома менял условие, добавил очистку поля с заметкой
             // только не несохраненных задач 09.01.24
             //  don`t want to show last note in text field. Fix it 09.09.23
