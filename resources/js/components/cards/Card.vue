@@ -295,7 +295,7 @@
 						v-model="isTaskReady"
 						:true-value="isTaskReadyCheckboxTrueVal"
 						:false-value="isTaskReadyCheckboxFalseVal"
-						>
+						> 
 						</v-checkbox>
 					</div>
 					<v-tooltip right>
