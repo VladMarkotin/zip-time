@@ -23,7 +23,7 @@ class SubPlanController extends Controller
 
     public function createSubPlan(Request $request)
     {
-        //TODO Validation
+        //TODO 
         $subPlan = $request->all()['sub_plan'];
 
         /*$errors = Validator::make($subPlan, [
@@ -65,14 +65,34 @@ class SubPlanController extends Controller
             $subPlan['created_at_user_time'] = $userTime;
         }
         
-        $taskId = SubPlan::create($subPlan)->id;
+        $task_id              = $subPlan['task_id'];
+        $subtask_id           = SubPlan::create($subPlan)->id;
+        $completedPercent     = $this->subPlanService->countPercentOfCompletedWork(['task_id' => $subPlan['task_id']]);
+        $resetDayMarkToDefVal = $this->getResetDayMarkToDefVal(
+            $subPlan['is_ready'],
+            $subPlan['checkpoint'],
+            $task_id
+        );
 
-        return ( response()->json([
-            'message' => 'subtask has been added',
-            'elements' => $subPlan, 
-            'taskId' => $taskId,
-            'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(['task_id' => $subPlan['task_id']]),
-        ]) );
+        $createResponse = function($subPlan, $subtask_id, $completedPercent, $resetDayMarkToDefVal) 
+        {
+            return [
+                'message'              => 'subtask has been added',
+                'elements'             => $subPlan, 
+                'subtaskId'            => $subtask_id,
+                'completedPercent'     => $completedPercent,
+                'resetDayMarkToDefVal' => $resetDayMarkToDefVal,
+            ];
+        };
+
+        $response = $createResponse(
+            $subPlan, 
+            $subtask_id, 
+            $completedPercent, 
+            $resetDayMarkToDefVal
+        );
+
+        return (response()->json($response));
     }
 
     public function getSubPlan(Request $request)
@@ -165,7 +185,7 @@ class SubPlanController extends Controller
             'status'               => 'success', 
             'message'              => 'subtask has been completed',
             'completedPercent'     =>  null,
-            'resetDayMarkToDefVal' => false,
+            'resetDayMarkToDefVal' =>  null,
         ];
 
         SubPlan::whereId($subtask_id)->update(['is_ready' => $is_subtask_ready]);
@@ -174,16 +194,11 @@ class SubPlanController extends Controller
 
         $this->editDoneAtColumn($subtask_id, $is_subtask_ready);
 
-        if (!$is_subtask_ready && $is_subtask_required) {
-            $task                  = Tasks::find($task_id);
-            $mark                  = $task->mark;
-            $defaultMarkFieldValue = -1; //убрать костыль
-
-            if ((int) $mark !== $defaultMarkFieldValue) { //убрать костыль
-                $task->update(['mark' => $defaultMarkFieldValue]);
-                $response['resetDayMarkToDefVal'] = true;
-            }
-        }
+        $response['resetDayMarkToDefVal'] = $this->getResetDayMarkToDefVal(
+            $is_subtask_ready, 
+            $is_subtask_required, 
+            $task_id
+        );
 
         return (
             response()->json($response, 200)
@@ -191,7 +206,23 @@ class SubPlanController extends Controller
         );
     }
 
-    
+    private function getResetDayMarkToDefVal($is_subtask_ready, $is_subtask_required, $task_id)
+    {
+        if (!$is_subtask_ready && $is_subtask_required) {
+            $task                  = Tasks::find($task_id);
+            $mark                  = $task->mark;
+            //тут значени задано хардкодом, если значение поля mark отличается от дефолтного, 
+            //то сбрасываю до дефолтного
+            $defaultMarkFieldValue = -1;
+
+            if ((int) $mark !== $defaultMarkFieldValue) { 
+                $task->update(['mark' => $defaultMarkFieldValue]);
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private function editDoneAtColumn($id, $is_ready) 
     {
