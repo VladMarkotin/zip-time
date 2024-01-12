@@ -695,7 +695,7 @@
 					const {data} = response;
 					if (data.status === 'success') {
 						this.isShowUpdateCardNotification = getIsShowUpdateCardNotification(
-							item.mark,
+							item.mark.trim(),
 							data.mark
 						);
 					}
