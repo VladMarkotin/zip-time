@@ -323,24 +323,32 @@
 					</form>
 				</v-col>
 				<v-col class="p-0 m-0 d-flex align-center" style="width: 100%;">
-					<div
-					v-if="isShowUpdateCardNotification"
-					style="width: inherit;"
-					class="d-flex justify-content-center"
+					<transition
+					enter-active-class="notification_appearance"
+					leave-active-class="notification_leave"
+					mode="out-in"
 					>
-						<span 
-						class="update-card-notification" 
+						<div
+						v-if="isShowUpdateCardNotification"
+						style="width: inherit;"
+						class="d-flex justify-content-center"
+						key="updante-card-not"
 						>
-							Don't forget to save your mark!
+							<span 
+							class="update-card-notification" 
+							>
+								Don't forget to save your mark!
+							</span>
+						</div>
+						<span 
+						v-if="focusedInput && !isShowUpdateCardNotification"
+						class="mark-info" 
+						key="rating-range"
+						>Ratings` range 
+							from {{ defaultConfigs.cardRules[0].minMark }}
+							to {{ defaultConfigs.cardRules[0].maxMark }}
 						</span>
-					</div>
-					<span 
-					v-if="focusedInput && !isShowUpdateCardNotification"
-					class="mark-info" 
-					>Ratings` range 
-						from {{ defaultConfigs.cardRules[0].minMark }}
-						to {{ defaultConfigs.cardRules[0].maxMark }}
-					</span>
+					</transition>
 				</v-col>
 			</v-row>
 		</v-card-title>
@@ -728,8 +736,6 @@
 		text-transform: uppercase;
 		font-family: Sans-serif;
 		/* color: #A10000; */
-		animation: .3s show ease;
-		position: relative;
 	}
 
 	.button-attention{
@@ -737,8 +743,23 @@
 		box-shadow: rgba(0,0,0,.87) 0px 0px 8px;
 	}
 
+	.notification_appearance {
+		position: relative;
+		animation: .3s show ease;
+	}
+
+	.notification_leave {
+		position: relative;
+		animation: .3s leave ease;
+	}
+
 	@keyframes show {
 		from { opacity: 0; top: -10px;}
 		to { opacity: 1; top: 0;}
+	}
+
+	@keyframes leave {
+		from { opacity: 1; top: 0;}
+		to { opacity: 0; top: 10px;}
 	}
 </style>
