@@ -104,7 +104,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/create-gpt-subplan-request', [App\Http\Controllers\SubPlanGPTController::class, 'makeRequestToGPT'])->name('create-gpt-subplan-request');
     Route::post('/create-gpt-subplan', [App\Http\Controllers\SubPlanGPTController::class, 'createSubPlanViaGPT'])->name('create-gpt-sub-task');
 
-
+    //Get task mark
+    Route::post('/get-task-mark', [App\Http\Controllers\MainController::class, 'getTaskMark'])->name('get-task-mark');
 });
 Route::post('/get-default-configs', function (){
     exit(DefaultConfigs::getConfigs());

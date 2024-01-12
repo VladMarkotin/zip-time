@@ -264,48 +264,93 @@
 		<v-divider></v-divider>
 		<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
 		<v-card-title class="font-weight-bold">
-			<form class="d-flex align-center" :id="!num ? 'card-mark' : false">
-				<template v-if="[4,3].includes(item.type)">
-					<div>Mark</div>
-					<v-text-field class="ml-1" style="width : 54px" v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)" 
-					@focus="focusedInput=!focusedInput" @blur="focusedInput=!focusedInput">
-						<v-icon slot="append">mdi-percent</v-icon>
-					</v-text-field>
-					
-					<v-tooltip right>
-						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="sendMark(item)">
-								<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
-							</v-btn>
+			<v-row class="p-0 m-0">
+				<v-col class="p-0 m-0" cols="auto">
+					<form 
+					class="d-flex align-center gap-1" 
+					:id="!num ? 'card-mark' : false"
+					>
+						<template v-if="[4,3].includes(item.type)">
+							<div>Mark</div>
+							<v-text-field 
+							class="ml-1" 
+							style="width : 54px" 
+							v-model="item.mark" 
+							v-on:keypress.enter.prevent="sendMark(item)" 
+							@focus="focusedInput=!focusedInput" 
+							@blur="focusedInput=!focusedInput"
+							@input="checkIsSavedMark(item)"
+							>
+								<v-icon slot="append">mdi-percent</v-icon>
+							</v-text-field>
+							
+							<v-tooltip right>
+								<template v-slot:activator="{on}">
+									<v-btn 
+									:class="{'button-attention' : isShowUpdateCardNotification}"
+									icon
+									v-on="on" 
+									v-on:click="sendMark(item)"
+									>
+										<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
+									</v-btn>
+								</template>
+								<span>Update</span>
+							</v-tooltip>
+							
 						</template>
-						<span>Update</span>
-					</v-tooltip>
-					<span class="mark-info" v-if="focusedInput">Ratings` range 
-						from {{ defaultConfigs.cardRules[0].minMark }}
-					    to {{ defaultConfigs.cardRules[0].maxMark }}</span>
-				</template>
-				
-				<template v-else-if="[2,1].includes(item.type)">
-					<div>Ready?</div>
-					<div @click="updateIsReadyState(item)">
-						<v-checkbox color="#D71700"
-						readonly
-						v-model="isTaskReady"
-						:true-value="isTaskReadyCheckboxTrueVal"
-						:false-value="isTaskReadyCheckboxFalseVal"
+						
+						<template v-else-if="[2,1].includes(item.type)">
+							<div>Ready?</div>
+							<div @click="updateIsReadyState(item)">
+								<v-checkbox color="#D71700"
+								readonly
+								v-model="isTaskReady"
+								:true-value="isTaskReadyCheckboxTrueVal"
+								:false-value="isTaskReadyCheckboxFalseVal"
+								>
+								</v-checkbox>
+							</div>
+							<v-tooltip right>
+								<template v-slot:activator="{on}">
+									<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
+										<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
+									</v-btn>
+								</template>
+								<span>Update</span>
+							</v-tooltip>
+						</template>
+					</form>
+				</v-col>
+				<v-col class="p-0 m-0 d-flex align-center" style="width: 100%;">
+					<transition
+					enter-active-class="notification_appearance"
+					leave-active-class="notification_leave"
+					mode="out-in"
+					>
+						<div
+						v-if="isShowUpdateCardNotification"
+						style="width: inherit;"
+						class="d-flex justify-content-center"
+						key="updante-card-not"
 						>
-						</v-checkbox>
-					</div>
-					<v-tooltip right>
-						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
-								<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
-							</v-btn>
-						</template>
-						<span>Update</span>
-					</v-tooltip>
-				</template>
-			</form>
+							<span 
+							class="update-card-notification" 
+							>
+								Don't forget to save your mark!
+							</span>
+						</div>
+						<span 
+						v-if="focusedInput && !isShowUpdateCardNotification"
+						class="mark-info" 
+						key="rating-range"
+						>Ratings` range 
+							from {{ defaultConfigs.cardRules[0].minMark }}
+							to {{ defaultConfigs.cardRules[0].maxMark }}
+						</span>
+					</transition>
+				</v-col>
+			</v-row>
 		</v-card-title>
 	</div>
 	</v-card>
@@ -346,6 +391,7 @@
 					completedPercent : 0,
 					completedProgressBar: 0,
 					focusedInput: false,
+					isShowUpdateCardNotification: false,
 					details: [],
 					detailsSortingDefaultVal: 'created-at-asc',
 					detailsSortingCrit: 'created-at-asc',
@@ -546,6 +592,7 @@
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					this.noteInfo.todayAmount = response.data.noteAmount
+					this.checkIsSavedMark(item);
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
@@ -635,6 +682,25 @@
 						
 					  })
 			},
+
+			checkIsSavedMark(item) {
+
+				const getIsShowUpdateCardNotification = (markInInput, savedMark) => {
+					if (markInInput === '' && savedMark === -1) return false;
+					return +markInInput !== savedMark;
+				};
+
+				axios.post('/get-task-mark',{task_id : item.taskId})
+				.then((response) => {
+					const {data} = response;
+					if (data.status === 'success') {
+						this.isShowUpdateCardNotification = getIsShowUpdateCardNotification(
+							item.mark,
+							data.mark
+						);
+					}
+				})
+			}
 		},
 		
 		created() {
@@ -660,5 +726,39 @@
 	.mark-info{
 		font-size: 10px;
 		font-family: Sans-serif;
+	}
+
+	.update-card-notification {
+		color: rgba(0,0,0,.87);
+		font-size: 12px;
+		font-weight: 700;
+		text-transform: uppercase;
+		font-family: Sans-serif;
+		/* color: #A10000; */
+	}
+
+	.button-attention{
+		background-color: #DCDCDC;
+		box-shadow: rgba(0,0,0,.87) 0px 0px 8px;
+	}
+
+	.notification_appearance {
+		position: relative;
+		animation: .3s show ease;
+	}
+
+	.notification_leave {
+		position: relative;
+		animation: .3s leave ease;
+	}
+
+	@keyframes show {
+		from { opacity: 0; top: -10px;}
+		to { opacity: 1; top: 0;}
+	}
+
+	@keyframes leave {
+		from { opacity: 1; top: 0;}
+		to { opacity: 0; top: 10px;}
 	}
 </style>

@@ -533,4 +533,21 @@ class MainController
 
         return $lastTimeTableId;
     }
+
+    public function getTaskMark(Request $request)
+    {
+        $taskId = $request->task_id;
+        $response = [];
+
+        try {
+            $mark = Tasks::find($taskId)->mark;
+            $response['mark'] = (int) $mark;
+            $response['status'] = 'success';
+        } catch(\Exception $e) {
+            $response['status'] = 'error';
+        } finally {
+            return response()->json($response);
+        }
+
+    }
 }
