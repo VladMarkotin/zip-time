@@ -94,7 +94,7 @@
 						</v-card-title>
 						<v-card-text>
 							Edit task`s priority:
-							
+	
 							<v-select
 								:items="priorities"
 								v-model= priority
@@ -637,6 +637,7 @@
 			},
 		},
 
+		
 		created() {
 			this.editHashCodeData();
 			this.getConfigs(); 
