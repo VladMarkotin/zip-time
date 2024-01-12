@@ -636,7 +636,6 @@
 					  })
 			},
 		},
-
 		
 		created() {
 			this.editHashCodeData();
