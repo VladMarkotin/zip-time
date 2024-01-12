@@ -264,48 +264,85 @@
 		<v-divider></v-divider>
 		<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
 		<v-card-title class="font-weight-bold">
-			<form class="d-flex align-center" :id="!num ? 'card-mark' : false">
-				<template v-if="[4,3].includes(item.type)">
-					<div>Mark</div>
-					<v-text-field class="ml-1" style="width : 54px" v-model="item.mark" v-on:keypress.enter.prevent="sendMark(item)" 
-					@focus="focusedInput=!focusedInput" @blur="focusedInput=!focusedInput">
-						<v-icon slot="append">mdi-percent</v-icon>
-					</v-text-field>
-					
-					<v-tooltip right>
-						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="sendMark(item)">
-								<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
-							</v-btn>
+			<v-row class="p-0 m-0">
+				<v-col class="p-0 m-0" cols="auto">
+					<form 
+					class="d-flex align-center gap-1" 
+					:id="!num ? 'card-mark' : false"
+					>
+						<template v-if="[4,3].includes(item.type)">
+							<div>Mark</div>
+							<v-text-field 
+							class="ml-1" 
+							style="width : 54px" 
+							v-model="item.mark" 
+							v-on:keypress.enter.prevent="sendMark(item)" 
+							@focus="focusedInput=!focusedInput" 
+							@blur="focusedInput=!focusedInput"
+							@change="checkIsSavedMark(item)"
+							>
+								<v-icon slot="append">mdi-percent</v-icon>
+							</v-text-field>
+							
+							<v-tooltip right>
+								<template v-slot:activator="{on}">
+									<v-btn 
+									:class="{'button-attention' : isShowUpdateCardNotification}"
+									icon
+									v-on="on" 
+									v-on:click="sendMark(item)"
+									>
+										<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
+									</v-btn>
+								</template>
+								<span>Update</span>
+							</v-tooltip>
+							
 						</template>
-						<span>Update</span>
-					</v-tooltip>
-					<span class="mark-info" v-if="focusedInput">Ratings` range 
-						from {{ defaultConfigs.cardRules[0].minMark }}
-					    to {{ defaultConfigs.cardRules[0].maxMark }}</span>
-				</template>
-				
-				<template v-else-if="[2,1].includes(item.type)">
-					<div>Ready?</div>
-					<div @click="updateIsReadyState(item)">
-						<v-checkbox color="#D71700"
-						readonly
-						v-model="isTaskReady"
-						:true-value="isTaskReadyCheckboxTrueVal"
-						:false-value="isTaskReadyCheckboxFalseVal"
+						
+						<template v-else-if="[2,1].includes(item.type)">
+							<div>Ready?</div>
+							<div @click="updateIsReadyState(item)">
+								<v-checkbox color="#D71700"
+								readonly
+								v-model="isTaskReady"
+								:true-value="isTaskReadyCheckboxTrueVal"
+								:false-value="isTaskReadyCheckboxFalseVal"
+								>
+								</v-checkbox>
+							</div>
+							<v-tooltip right>
+								<template v-slot:activator="{on}">
+									<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
+										<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
+									</v-btn>
+								</template>
+								<span>Update</span>
+							</v-tooltip>
+						</template>
+					</form>
+				</v-col>
+				<v-col class="p-0 m-0 d-flex align-center" style="width: 100%;">
+					<div
+					v-if="isShowUpdateCardNotification"
+					style="width: inherit;"
+					class="d-flex justify-content-center"
+					>
+						<span 
+						class="update-card-notification" 
 						>
-						</v-checkbox>
+							Don't forget to save your mark!
+						</span>
 					</div>
-					<v-tooltip right>
-						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
-								<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
-							</v-btn>
-						</template>
-						<span>Update</span>
-					</v-tooltip>
-				</template>
-			</form>
+					<span 
+					v-if="focusedInput && !isShowUpdateCardNotification"
+					class="mark-info" 
+					>Ratings` range 
+						from {{ defaultConfigs.cardRules[0].minMark }}
+						to {{ defaultConfigs.cardRules[0].maxMark }}
+					</span>
+				</v-col>
+			</v-row>
 		</v-card-title>
 	</div>
 	</v-card>
@@ -346,6 +383,7 @@
 					completedPercent : 0,
 					completedProgressBar: 0,
 					focusedInput: false,
+					isShowUpdateCardNotification: false,
 					details: [],
 					detailsSortingDefaultVal: 'created-at-asc',
 					detailsSortingCrit: 'created-at-asc',
@@ -546,6 +584,7 @@
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					this.noteInfo.todayAmount = response.data.noteAmount
+					this.checkIsSavedMark(item);
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
@@ -635,6 +674,18 @@
 						
 					  })
 			},
+
+			checkIsSavedMark(item) {
+				if (!item.mark) return this.isShowUpdateCardNotification = false;
+
+				axios.post('/get-task-mark',{task_id : item.taskId})
+				.then((response) => {
+					const {data} = response;
+					if (data.status === 'success') {
+						this.isShowUpdateCardNotification = +item.mark !== data.mark;
+					}
+				})
+			}
 		},
 
 		
@@ -661,5 +712,24 @@
 	.mark-info{
 		font-size: 10px;
 		font-family: Sans-serif;
+	}
+
+	.update-card-notification {
+		font-size: 13px;
+		text-transform: uppercase;
+		font-family: Sans-serif;
+		color: #A10000;
+		animation: .3s show ease;
+		position: relative;
+	}
+
+	.button-attention{
+		background-color: #DCDCDC;
+		box-shadow: #434B4D 0px 0px 10px;
+	}
+
+	@keyframes show {
+		from { opacity: 0; top: -10px;}
+		to { opacity: 1; top: 0;}
 	}
 </style>
