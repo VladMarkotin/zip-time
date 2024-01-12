@@ -279,7 +279,7 @@
 							v-on:keypress.enter.prevent="sendMark(item)" 
 							@focus="focusedInput=!focusedInput" 
 							@blur="focusedInput=!focusedInput"
-							@change="checkIsSavedMark(item)"
+							@input="checkIsSavedMark(item)"
 							>
 								<v-icon slot="append">mdi-percent</v-icon>
 							</v-text-field>
@@ -676,13 +676,20 @@
 			},
 
 			checkIsSavedMark(item) {
-				if (!item.mark) return this.isShowUpdateCardNotification = false;
+
+				const getIsShowUpdateCardNotification = (markInInput, savedMark) => {
+					if (markInInput === '' && savedMark === -1) return false;
+					return +markInInput !== savedMark;
+				};
 
 				axios.post('/get-task-mark',{task_id : item.taskId})
 				.then((response) => {
 					const {data} = response;
 					if (data.status === 'success') {
-						this.isShowUpdateCardNotification = +item.mark !== data.mark;
+						this.isShowUpdateCardNotification = getIsShowUpdateCardNotification(
+							item.mark,
+							data.mark
+						);
 					}
 				})
 			}
@@ -715,17 +722,19 @@
 	}
 
 	.update-card-notification {
-		font-size: 13px;
+		color: rgba(0,0,0,.87);
+		font-size: 12px;
+		font-weight: 700;
 		text-transform: uppercase;
 		font-family: Sans-serif;
-		color: #A10000;
+		/* color: #A10000; */
 		animation: .3s show ease;
 		position: relative;
 	}
 
 	.button-attention{
 		background-color: #DCDCDC;
-		box-shadow: #434B4D 0px 0px 10px;
+		box-shadow: rgba(0,0,0,.87) 0px 0px 8px;
 	}
 
 	@keyframes show {
