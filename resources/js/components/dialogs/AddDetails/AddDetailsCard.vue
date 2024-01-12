@@ -475,11 +475,14 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 			createSubPlan(item){
 				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
 				.then((response) => {
+                    const respData = response.data;
+
 					this.isShowAlertInDetails = true;
-					this.$emit('updateAlertData', {type: response.status === 200 ? 'success' : 'error', text: response.data.message});
-					const completedPercent = this.checkCompletedPercent(response.data.completedPercent);
+                    this.checkResetDayMarkToDefVal(respData);
+					this.$emit('updateAlertData', {type: response.status === 200 ? 'success' : 'error', text: respData.message});
+					const completedPercent = this.checkCompletedPercent(respData.completedPercent);
                     this.updateCompletedPercent(completedPercent);
-					item.taskId = response.data.taskId // ?
+					item.taskId = respData.subtaskId // ?
 					setTimeout( () => {
 						this.isShowAlertInDetails = false;
 						//debugger;
@@ -527,13 +530,13 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     task_id: taskId,
                 })
 				.then((response) => {
-                    const resetDayMarkToDefVal = 'resetDayMarkToDefVal';
-
-                    if (response.data[resetDayMarkToDefVal]) {
-                        this.$emit(resetDayMarkToDefVal);
+                    const respData = response.data;
+                    if (respData.status === 'success') {
+                        this.checkResetDayMarkToDefVal(response.data);
+                        this.updateCompletedPercent(this.editCompletedPercet(respData.completedPercent));
+                        //раскомментить если хочу, что бы массив сортировался при клике на чекбокс
+                        // this.updateDetailsSortingCrit(this.detailsSortBy); 
                     }
-                    this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
-                    // this.updateDetailsSortingCrit(this.detailsSortBy); //раскомментить если хочу, что бы массив сортировался при клике на чекбокс
 				})
 			},
 
@@ -586,6 +589,14 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
                 const date = fullDate.slice(0, spaceIndex).replace(/-/g, '.');
                 return date;
+            },
+
+            checkResetDayMarkToDefVal(respData) {
+                const resetDayMarkToDefVal = 'resetDayMarkToDefVal';
+    
+                if (respData[resetDayMarkToDefVal]) {
+                    this.$emit(resetDayMarkToDefVal);
+                }
             },
         },
 
