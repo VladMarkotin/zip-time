@@ -354,15 +354,12 @@ class MainController
     public function estimateTask(Request $request)
     {
         /**Before estimation check subplans */
-        if ($request->get('is_ready')) {     
-            $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
-            
-            if (!$checkSubPlan) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Error! Some required subtasks are still undone',
-                ]);//
-            }
+        $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
+        if (!$checkSubPlan) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error! Some required subtasks are still undone',
+            ]);//
         }
         //checkCheckpoints
         /**end */
@@ -535,5 +532,22 @@ class MainController
         $lastTimeTableId = $this->currentPlanInfo->getLastTimetableId($params);
 
         return $lastTimeTableId;
+    }
+
+    public function getTaskMark(Request $request)
+    {
+        $taskId = $request->task_id;
+        $response = [];
+
+        try {
+            $mark = Tasks::find($taskId)->mark;
+            $response['mark'] = (int) $mark;
+            $response['status'] = 'success';
+        } catch(\Exception $e) {
+            $response['status'] = 'error';
+        } finally {
+            return response()->json($response);
+        }
+
     }
 }
