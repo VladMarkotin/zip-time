@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Events\FinishDayEvent;
+use App\Models\ChallengeModel;
 
 class EstimateTaskRepository
 {
@@ -106,6 +108,11 @@ class EstimateTaskRepository
             $dataForTasks["timetable_id"] =  $this->getPlanRepository->getLastTimetableId($dataForLastTimeTableId);
             $dataForTasks['mark'] = $data['mark'];
             $this->complexUpdate($dataForTasks, $dataForNotes);
+
+            //test. Delete this line
+            $ch = ChallengeModel::find(1);
+            FinishDayEvent::dispatch($ch);
+            //end test
         }
 
         return true;
