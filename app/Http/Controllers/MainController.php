@@ -361,7 +361,7 @@ class MainController
                 'message' => 'Error! Some required subtasks are still undone',
             ]);//
         }
-        //checkCheckpoints
+        //checkCheckpoints 
         /**end */
         $isReady = null;
         $type = $request->get('type');
