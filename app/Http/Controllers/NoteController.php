@@ -8,14 +8,63 @@ use App\Models\SavedNotes;
 use App\Models\Tasks;
 use App\Models\SavedTask;
 use Carbon\Carbon;
+use Exception;
 
 class NoteController extends Controller
 {
     private $savedNotes = null;
+    private $carbon     = null;
 
-    public function __construct(SavedNotes $savedNotes)
+    public function __construct(
+        SavedNotes $savedNotes,
+        Carbon     $carbon
+    )
     {
         $this->savedNotes = $savedNotes;
+        $this->carbon     = $carbon;
+    }
+
+    //переделать параметры
+    public function addNote(array $data, $addNoteFromNotesDialog = true)
+    {
+        $saved_task_id = $this->getSavedTaskId($data);
+        $task_id       = $data['id'];
+        $note          = $data['note'];
+
+        $response = [
+            'status' => null,
+            'text'   => null,
+        ];
+
+        try {
+            if (isset($saved_task_id)) {
+                $savedNoteData = [
+                    'saved_task_id' => $saved_task_id,
+                    'note'          => $note,
+                    'created_at'    => $this->carbon::now(),
+                    'updated_at'    => $this->carbon::now(),
+                ];
+    
+                SavedNotes::create($savedNoteData);
+            } else {
+                $current_task = Tasks::find($task_id);
+                $current_task->update(['note' => $note]);
+            }
+
+            $response['status'] = 'success';
+            $response['text']   = 'note was added successfully';
+        } catch(Exception $error) {
+            $response['status'] = 'error';
+            $response['text']   = 'something has happened';
+        } finally {//если этот метод дергается напрямую с клиента, то отдам туда json
+            if ($addNoteFromNotesDialog) {
+                
+            } else {
+                $response['saved_task_id'] = $saved_task_id;
+                return $response;
+            }
+        }
+ 
     }
 
     public function getSavedNotes(Request $request)

@@ -9,6 +9,8 @@ use App\Http\Controllers\Services\SubPlanServices\CheckpointService;
 use App\Http\Controllers\Services\EstimationService;
 use App\Repositories\DayPlanRepositories\GetPlanRepository;
 use App\Http\Controllers\NoteController;
+use App\Models\Tasks;
+use App\Models\SubPlan;
 
 class EstimationController extends Controller
 {
@@ -32,15 +34,34 @@ class EstimationController extends Controller
 
     public function estimateTask(Request $request)
     {
-        dd($this->noteController);
+        $task_id  =  $request->get('task_id');
+        $doesUserHaveUncomplReqSubtask  = !$this->checkCheckpoints->checkCheckpoints(['task_id' => $task_id]);
+
+        $currentMethod = $doesUserHaveUncomplReqSubtask
+            ? 'estimateTaskWithUncomReqSubtask'
+            : 'estimateTaskWithoutUncomReqSubtask';
+        
+        $response = $this->$currentMethod($request);
+        
+        return $response;
+    }
+
+    /**
+     * I am waiting: {task_id: <id>, mark: <>, details: "", note: "" }
+     */
+    private function estimateTaskWithoutUncomReqSubtask(Request $request)
+    {
         /**Before estimation check subplans */
-        $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
-        if (!$checkSubPlan) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error! Some required subtasks are still undone',
-            ]);//
-        }
+        
+        //раскомментить всю эту проверку, когда разделим логику по добавлению заметок и выставлению отметок
+        // $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
+        // if (!$checkSubPlan) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Error! Some required subtasks are still undone',
+        //     ]);
+        // }
+        
         //checkCheckpoints
         /**end */
         $isReady = null;
@@ -94,5 +115,27 @@ class EstimationController extends Controller
         }
 
         return json_encode(["status" => 'error', "message" => 'Error during estimation.'], JSON_UNESCAPED_UNICODE);
+    }
+
+    private function estimateTaskWithUncomReqSubtask(Request $request)
+    {
+        
+        $task_id = $request->get('task_id');
+        $note    = $request->get('note');
+        $data    = ['id' => $task_id, 'note' => $note];
+        
+        $response = [
+            'status' => 'error',
+            'message' => 'Error! Some required subtasks are still undone',
+        ];
+        
+        $addingNoteData = $this->noteController->addNote($data, false);
+
+        if (($addingNoteData['status'] === 'success') && isset($addingNoteData['saved_task_id'])) {
+            $noteAmount = $this->noteController->countTodayNoteAmount($data);
+            $response['noteAmount'] = $noteAmount;
+        }
+
+        return response()->json($response);
     }
 }
