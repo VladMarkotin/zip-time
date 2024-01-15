@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     //get info about closed day
     Route::post('/getClosedPlanInfo', [App\Http\Controllers\MainController::class, 'getClosedDayInfo']);
     //estimate Task
-    Route::post('/estimate', [App\Http\Controllers\MainController::class, 'estimateTask']);
+    Route::post('/estimate', [App\Http\Controllers\EstimationController::class, 'estimateTask']);
     //Estimate day
     Route::post('/closeDay', [App\Http\Controllers\MainController::class, 'estimateDay']);
 

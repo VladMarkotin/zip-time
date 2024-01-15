@@ -220,6 +220,9 @@
 													  <v-divider v-if="item.created_at == new Date('d.m.Y').toString()"></v-divider>
 												</v-card-title>
 												<v-card-text class="bg-white text--primary">
+													<b>
+														{{ item.note }}
+													</b>
 													<v-checkbox
 														v-model="ex4[i]"
 														label="red"
