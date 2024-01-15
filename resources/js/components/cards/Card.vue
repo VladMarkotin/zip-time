@@ -603,8 +603,15 @@
 			},
 
 			isItNessesaryToCleanNoteInput(response) {
-				if (response.data.status === 'success' && this.item.hash !== '#' && this.item.notes) {
-					this.cleanNotesInput();
+				//поле noteWasAddedSuccessfully прийдет с бэкенда только если была обязательная невыполненная задача
+				// и удалось успешно добавить заметку
+				if (this.item.hash !== '#' && this.item.notes) {
+					if (
+						response.data.status === 'success' 
+						|| (response.data.status === 'error' && response.data.noteWasAddedSuccessfully) 
+					) {
+						this.cleanNotesInput();
+					}
 				}
 			},
 

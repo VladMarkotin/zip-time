@@ -41,9 +41,10 @@ class EstimationController extends Controller
             ? 'estimateTaskWithUncomReqSubtask'
             : 'estimateTaskWithoutUncomReqSubtask';
         
-        $response = $this->$currentMethod($request);
-        
-        return $response;
+            
+        $response = json_encode($this->$currentMethod($request), JSON_UNESCAPED_UNICODE);
+
+        return  $response;
     }
 
     /**
@@ -99,7 +100,7 @@ class EstimationController extends Controller
             $data['action'] = '3';
             $checkedData = $this->estimationService->handleEstimationRequest($data);
             
-            return json_encode(['status' => 'success', 'message' => 'Task has been updated.'], JSON_UNESCAPED_UNICODE);
+            return ['status' => 'success', 'message' => 'Task has been updated.'];
         }
         $data['mark'] = ($request->get('mark') && (!$request->get('is_ready'))) ? 
             $request->get('mark') : $request->get('is_ready');
@@ -110,11 +111,10 @@ class EstimationController extends Controller
             //get today`s note Amount
             $noteAmount = $this->noteController->countTodayNoteAmount($checkedData);
 
-            return json_encode(['status' => 'success', 'message' => 'Task has been updated.',
-             'noteAmount' => $noteAmount], JSON_UNESCAPED_UNICODE);
+            return ['status' => 'success', 'message' => 'Task has been updated.','noteAmount' => $noteAmount];
         }
 
-        return json_encode(["status" => 'error', "message" => 'Error during estimation.'], JSON_UNESCAPED_UNICODE);
+        return ["status" => 'error', "message" => 'Error during estimation.'];
     }
 
     private function estimateTaskWithUncomReqSubtask(Request $request)
@@ -133,9 +133,11 @@ class EstimationController extends Controller
 
         if (($addingNoteData['status'] === 'success') && isset($addingNoteData['saved_task_id'])) {
             $noteAmount = $this->noteController->countTodayNoteAmount($data);
-            $response['noteAmount'] = $noteAmount;
+            $response['noteAmount']       = $noteAmount;
+            $response['noteWasAddedSuccessfully'] = true;
         }
 
-        return response()->json($response);
+
+        return $response;
     }
 }
