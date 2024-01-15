@@ -145,9 +145,12 @@ class MainController
                         Tasks::where('id', $taskId)->update(['hash_code' => $params['hash_code'] ]);
                         $this->subPlanService ->saveSubtasks(['task_id' => $taskId]); 
                     }
-                    $response = $this->notesService->addNoteForSavedTask($params);
-                    if($response){
-                        $this->notesRepository->addSavedNote($params); 
+                    if (isset($params['note'])) {
+                        $response = $this->notesService->addNoteForSavedTask($params);
+                        
+                        if($response){
+                            $this->notesRepository->addSavedNote($params); 
+                        }
                     }
                 });
             } catch(\Exception $e){
