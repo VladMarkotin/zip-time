@@ -129,11 +129,11 @@ class EstimationController extends Controller
             'message' => 'Error! Some required subtasks are still undone',
         ];
         
-        $addingNoteData = $this->noteController->addNote($data, false);
+        $addingNoteData = $this->noteController->addNote($request, false);
 
         if (($addingNoteData['status'] === 'success') && isset($addingNoteData['saved_task_id'])) {
             $noteAmount = $this->noteController->countTodayNoteAmount($data);
-            $response['noteAmount']       = $noteAmount;
+            $response['noteAmount']               = $noteAmount;
             $response['noteWasAddedSuccessfully'] = true;
         }
 

@@ -9,6 +9,7 @@ use App\Models\Tasks;
 use App\Models\SavedTask;
 use Carbon\Carbon;
 use Exception;
+use PhpParser\Node\Expr\Cast\Bool_;
 
 class NoteController extends Controller
 {
@@ -24,12 +25,12 @@ class NoteController extends Controller
         $this->carbon     = $carbon;
     }
 
-    //переделать параметры
-    public function addNote(array $data, $addNoteFromNotesDialog = true)
+    public function addNote(Request $request, $isReturnResponse = true)
     {
+        $task_id       = $request->get('task_id');
+        $note          = $request->get('note');
+        $data          = ['id' => $task_id, 'note' => $note];
         $saved_task_id = $this->getSavedTaskId($data);
-        $task_id       = $data['id'];
-        $note          = $data['note'];
 
         $response = [
             'status' => null,
@@ -57,12 +58,11 @@ class NoteController extends Controller
             $response['status'] = 'error';
             $response['text']   = 'something has happened';
         } finally {//если этот метод дергается напрямую с клиента, то отдам туда json
-            if ($addNoteFromNotesDialog) {
-                
-            } else {
-                $response['saved_task_id'] = $saved_task_id;
-                return $response;
-            }
+            if ($isReturnResponse) {
+                return ;
+            } 
+            $response['saved_task_id'] = $saved_task_id;
+            return $response;
         }
  
     }
