@@ -549,6 +549,7 @@
 			/**end */
 			sendIsReadyState(item)
 			{
+				console.log(item);
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
 					this.isItNessesaryToCleanNoteInput(response);
@@ -575,6 +576,7 @@
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,
 					is_ready : getNewCheckboxVal(this.isTaskReady),type : item.type})
 				.then((response) => {
+					this.isItNessesaryToCleanNoteInput(response);
 					if (response.data.status === 'success') {
 						this.isTaskReady = getNewCheckboxVal(this.isTaskReady);
 					}
