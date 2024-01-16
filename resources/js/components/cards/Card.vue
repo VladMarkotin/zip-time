@@ -220,6 +220,9 @@
 													  <v-divider v-if="item.created_at == new Date('d.m.Y').toString()"></v-divider>
 												</v-card-title>
 												<v-card-text class="bg-white text--primary">
+													<b>
+														{{ item.note }}
+													</b>
 													<v-checkbox
 														v-model="ex4[i]"
 														label="red"
@@ -546,6 +549,7 @@
 			/**end */
 			sendIsReadyState(item)
 			{
+				console.log(item);
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
 					this.isItNessesaryToCleanNoteInput(response);
@@ -572,6 +576,7 @@
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,
 					is_ready : getNewCheckboxVal(this.isTaskReady),type : item.type})
 				.then((response) => {
+					this.isItNessesaryToCleanNoteInput(response);
 					if (response.data.status === 'success') {
 						this.isTaskReady = getNewCheckboxVal(this.isTaskReady);
 					}
@@ -600,8 +605,15 @@
 			},
 
 			isItNessesaryToCleanNoteInput(response) {
-				if (response.data.status === 'success' && this.item.hash !== '#' && this.item.notes) {
-					this.cleanNotesInput();
+				//поле noteWasAddedSuccessfully прийдет с бэкенда только если была обязательная невыполненная задача
+				// и удалось успешно добавить заметку
+				if (this.item.hash !== '#' && this.item.notes) {
+					if (
+						response.data.status === 'success' 
+						|| (response.data.status === 'error' && response.data.noteWasAddedSuccessfully) 
+					) {
+						this.cleanNotesInput();
+					}
 				}
 			},
 

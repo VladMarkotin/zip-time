@@ -145,9 +145,12 @@ class MainController
                         Tasks::where('id', $taskId)->update(['hash_code' => $params['hash_code'] ]);
                         $this->subPlanService ->saveSubtasks(['task_id' => $taskId]); 
                     }
-                    $response = $this->notesService->addNoteForSavedTask($params);
-                    if($response){
-                        $this->notesRepository->addSavedNote($params); 
+                    if (isset($params['note'])) {
+                        $response = $this->notesService->addNoteForSavedTask($params);
+                        
+                        if($response){
+                            $this->notesRepository->addSavedNote($params); 
+                        }
                     }
                 });
             } catch(\Exception $e){
@@ -348,6 +351,7 @@ class MainController
         return response()->json($response); //comment
     }
 
+<<<<<<< HEAD
     /**
      * I am waiting: {task_id: <id>, mark: <>, details: "", note: "" }
      */
@@ -416,6 +420,8 @@ class MainController
         return json_encode(["status" => 'error', "message" => 'Error during estimation.'], JSON_UNESCAPED_UNICODE);
     }
 
+=======
+>>>>>>> 8c17e0b77181252ee82b03962fb30cea9a8c6c96
     /*
      * For adding job/task after creation of day plan
      * {"hash_code":<string>, "name": <string>, "type": <string>, "priority": <int>, "time": <string>}*/
