@@ -40,7 +40,6 @@ class EstimationController extends Controller
         $currentMethod = $doesUserHaveUncomplReqSubtask
             ? 'estimateTaskWithUncomReqSubtask'
             : 'estimateTaskWithoutUncomReqSubtask';
-        
             
         $response = json_encode($this->$currentMethod($request), JSON_UNESCAPED_UNICODE);
 
@@ -113,13 +112,14 @@ class EstimationController extends Controller
 
             return ['status' => 'success', 'message' => 'Task has been updated.','noteAmount' => $noteAmount];
         }
-        //если провалена проверка на валидность поля с отметкой
+        //если провалена проверка на валидность все равно надо добавить заметки
 
         $responseTemplate = [
             "status" => 'error', 
             "message" => 'Error during estimation.'
         ];
-
+        
+        //логика по добавлению заметок в этом методе
         $response = $this->createResponseWithError($responseTemplate, $request, $data);
 
         return $response;
@@ -127,7 +127,6 @@ class EstimationController extends Controller
 
     private function estimateTaskWithUncomReqSubtask(Request $request)
     {
-        
         $task_id = $request->get('task_id');
         $note    = $request->get('note');
         $data    = ['id' => $task_id, 'note' => $note];
@@ -136,7 +135,8 @@ class EstimationController extends Controller
             'status' => 'error',
             'message' => 'Error! Some required subtasks are still undone',
         ];
-        
+
+        //логика по добавлению заметок в этом методе
         $response = $this->createResponseWithError($responseTemplate, $request, $data);
 
         return $response;
