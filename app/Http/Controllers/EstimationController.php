@@ -113,8 +113,16 @@ class EstimationController extends Controller
 
             return ['status' => 'success', 'message' => 'Task has been updated.','noteAmount' => $noteAmount];
         }
+        //если провалена проверка на валидность поля с отметкой
 
-        return ["status" => 'error', "message" => 'Error during estimation.'];
+        $responseTemplate = [
+            "status" => 'error', 
+            "message" => 'Error during estimation.'
+        ];
+
+        $response = $this->createResponseWithError($responseTemplate, $request, $data);
+
+        return $response;
     }
 
     private function estimateTaskWithUncomReqSubtask(Request $request)
@@ -124,19 +132,25 @@ class EstimationController extends Controller
         $note    = $request->get('note');
         $data    = ['id' => $task_id, 'note' => $note];
         
-        $response = [
+        $responseTemplate = [
             'status' => 'error',
             'message' => 'Error! Some required subtasks are still undone',
         ];
         
+        $response = $this->createResponseWithError($responseTemplate, $request, $data);
+
+        return $response;
+    }
+
+    private function createResponseWithError(array $response, Request $request, $noteAmountData)
+    {
         $addingNoteData = $this->noteController->addNote($request, false);
 
         if (($addingNoteData['status'] === 'success') && isset($addingNoteData['saved_task_id'])) {
-            $noteAmount = $this->noteController->countTodayNoteAmount($data);
+            $noteAmount = $this->noteController->countTodayNoteAmount($noteAmountData);
             $response['noteAmount']               = $noteAmount;
             $response['noteWasAddedSuccessfully'] = true;
         }
-
 
         return $response;
     }
