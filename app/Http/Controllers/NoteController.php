@@ -9,20 +9,23 @@ use App\Models\Tasks;
 use App\Models\SavedTask;
 use Carbon\Carbon;
 use Exception;
-use PhpParser\Node\Expr\Cast\Bool_;
+use App\Http\Controllers\Services\NotesService;
 
 class NoteController extends Controller
 {
-    private $savedNotes = null;
-    private $carbon     = null;
+    private $savedNotes   = null;
+    private $notesService = null;
+    private $carbon       = null;
 
     public function __construct(
-        SavedNotes $savedNotes,
-        Carbon     $carbon
+        SavedNotes   $savedNotes,
+        NotesService $notesService,
+        Carbon       $carbon
     )
     {
-        $this->savedNotes = $savedNotes;
-        $this->carbon     = $carbon;
+        $this->savedNotes   = $savedNotes;
+        $this->notesService = $notesService;
+        $this->carbon       = $carbon;
     }
 
     public function addNote(Request $request, $isReturnResponse = true)
@@ -31,6 +34,11 @@ class NoteController extends Controller
         $note          = $request->get('note');
         $data          = ['id' => $task_id, 'note' => $note];
         $saved_task_id = $this->getSavedTaskId($data);
+        
+        $noteAfterValidation = $this->notesService->addNoteForSavedTask($data);
+        if (!$noteAfterValidation) {
+            $noteAfterValidation = $this->notesService->makeNoteValid($note);
+        }
 
         $response = [
             'status' => null,
@@ -41,7 +49,7 @@ class NoteController extends Controller
             if (isset($saved_task_id)) {
                 $savedNoteData = [
                     'saved_task_id' => $saved_task_id,
-                    'note'          => $note,
+                    'note'          => $noteAfterValidation,
                     'created_at'    => $this->carbon::now(),
                     'updated_at'    => $this->carbon::now(),
                 ];
@@ -49,7 +57,7 @@ class NoteController extends Controller
                 SavedNotes::create($savedNoteData);
             } else {
                 $current_task = Tasks::find($task_id);
-                $current_task->update(['note' => $note]);
+                $current_task->update(['note' => $noteAfterValidation]);
             }
 
             $response['status'] = 'success';

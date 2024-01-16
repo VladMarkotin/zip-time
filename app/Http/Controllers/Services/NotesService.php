@@ -51,6 +51,21 @@ class NotesService
         return $note;
     }
 
+    public function makeNoteValid($note)
+    {
+        //может прийти или null или большая строка
+        if (isset($note)) {
+            $note = htmlspecialchars($note);
+            
+            if(strlen($note) > 255){
+                $diff = strlen($note) - 255;
+                $note = substr($note, 0, -$diff);
+            }
+        }
+
+        return $note;
+    }
+
     private function saveNote(array $params)
     {
 
