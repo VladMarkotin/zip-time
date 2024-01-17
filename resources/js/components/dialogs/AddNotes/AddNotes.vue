@@ -22,6 +22,7 @@
 		<template v-if="isShowNotesDialog">
             <AddNotesCard 
             :isLoading = "isLoading"
+            :notesList = "notesList"
             />
         </template>
 	</v-dialog> 
@@ -35,6 +36,7 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
             num:  {},
             notesList: {
                 type: Array,
+                required: true,
             },
             notesTodayAmount: {
                 type: Number,
