@@ -173,6 +173,17 @@
 						</v-row>
 					</v-col>
 					<v-col class="p-0 d-flex flex-column justify-center" cols="auto" style="min-width: 53px;">
+						<template
+						v-if="item.hash !== '#'"
+						>
+							<AddNotes 
+							:num              = "num"
+							:item             = "item"
+							:notesTodayAmount = "noteInfo.todayAmount"
+							@updateNotesTodayAmount = "setNotesTodayAmount"
+							@updateNotesList        = "setNotesList"
+							/>
+						</template>
 						<!-- <v-dialog
 						v-if="item.hash !== '#'"
 						v-model="dialogNotes"
@@ -357,7 +368,7 @@
 	</v-card>
 </template>
 <script>
-	import {mdiUpdate, mdiPencil, mdiNotebookEditOutline,
+	import {mdiUpdate, mdiPencil,
 		mdiMarkerCheck, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
@@ -365,6 +376,7 @@
 	import Preloader from '../UI/Preloader.vue';
 	import CreateSubplanGPT from '../dialogs/CreateSubplanGPT.vue'
 	import AddDetails from '../dialogs/AddDetails/AddDetails.vue';
+	import AddNotes from '../dialogs/AddNotes/AddNotes.vue';
 	import EditButton from '../UI/EditButton.vue';
 	export default
 	{
@@ -372,7 +384,7 @@
 		data()
 		{
 			return {
-					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil, mdiNotebookEditOutline,
+					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil,
 						mdiCircle, mdiMusicAccidentalSharp  }, //mdiContentSaveCheckOutline
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
@@ -386,7 +398,6 @@
 					time       : this.item.time,
 					priority   : this.item.priority,
 					priorities : [1,2,3], //['normal', 'important', 'super important']
-					notesList  : null,
 					id: this.item.id,
 					done: 'v-card-done',
 					completedPercent : 0,
@@ -398,7 +409,8 @@
 					detailsSortingCrit: 'created-at-asc',
 					ex4: [],
 					noteInfo: {
-						todayAmount: 0
+						todayAmount: 0,
+						notesList:   new Array,
 					},
 					isShow : true,
 					isShowAddHashCodeDialog : false,
@@ -418,7 +430,16 @@
 					isTaskReadyCheckboxFalseVal: -1,
 				}
 			},
-		components : {Alert, AddHashCode, AddHashCodeButton, Preloader, CreateSubplanGPT, AddDetails, EditButton},
+		components : {
+			Alert, 
+			AddHashCode, 
+			AddHashCodeButton, 
+			Preloader, 
+			CreateSubplanGPT, 
+			AddDetails,
+			AddNotes, 
+			EditButton
+		},
 		methods :
 		{
 			closeHashCodeDialog() {
@@ -521,28 +542,36 @@
 
 			/*Notes*/
 
-			getAllNotesForTask(item) {
-				this.dialogNotes = true
-				/**query for getting all notes */
-				axios.post('/get-saved-notes',{task_id : item.taskId, hash: item.hash})
-				.then((response) => {
-					
-					this.notesList = response.data
-					// console.log(this.notesList[0].created_at)
-					
-				  })
+			setNotesTodayAmount(todayAmount) {
+				this.noteInfo.todayAmount = todayAmount;
 			},
 
-			getTodayNoteAmount(item){
+			setNotesList(notesList) {
+				this.noteInfo.notesList = notesList;
+			},
+			
+			// getAllNotesForTask(item) {
+			// 	this.dialogNotes = true
+			// 	/**query for getting all notes */
+			// 	axios.post('/get-saved-notes',{task_id : item.taskId, hash: item.hash})
+			// 	.then((response) => {
+					
+			// 		this.notesList = response.data
+			// 		// console.log(this.notesList[0].created_at)
+					
+			// 	  })
+			// },
+
+			// getTodayNoteAmount(item){
 				
-				axios.post('/get-today-note-amount',{task_id : item.taskId,details : item.details,
-				            note : item.notes,type : item.type})
-				.then((response) => {
-					// console.log(response.data)
-					this.noteInfo.todayAmount = response.data.amount //response.data.noteAmount
-				  })
+			// 	axios.post('/get-today-note-amount',{task_id : item.taskId,details : item.details,
+			// 	            note : item.notes,type : item.type})
+			// 	.then((response) => {
+			// 		// console.log(response.data)
+			// 		this.noteInfo.todayAmount = response.data.amount //response.data.noteAmount
+			// 	  })
 
-			},
+			// },
 
 			/**end */
 			sendIsReadyState(item)
