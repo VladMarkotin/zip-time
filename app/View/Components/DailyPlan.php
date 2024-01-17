@@ -4,26 +4,26 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class WeekEnds extends Component
+class DailyPlan extends Component
 {
-
+    public $isDayPlanCompleted;
     public $personal;
     public $default;
-    public $isWeekendTaken;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct( $personal, $default,$isWeekendTaken )
+    public function __construct( $personal, $default, $isDayPlanCompleted)
     {
 
-        
+        $this->isDayPlanCompleted = $isDayPlanCompleted;
         $this->personal = $personal;
         $this->default = $default;
-        $this->isWeekendTaken=$isWeekendTaken;
+
     }
-    
+
     /**
      * Get the view / contents that represent the component.
      *
@@ -31,6 +31,6 @@ class WeekEnds extends Component
      */
     public function render()
     {
-        return view('components.week-ends');
+        return view('components.daily-plan');
     }
 }

@@ -183,8 +183,9 @@ class MainController
          * взять выходной*/
         $id       = Auth::id();
         $response = $this->weekendRepository->isWeekendAvailable();
+        $weekendDays = $this->weekendRepository-> weekendNumber();
         $isWeekendAvailable = false;
-        if(count($response) > 0){
+        if(count($response) >=  $weekendDays){
             $isWeekendAvailable = true;
         }
 
@@ -252,6 +253,8 @@ class MainController
         $response = $this->planService->checkPlan($data); //проблема здесь
         $responseArray = json_decode($response->content());
         
+ 
+
         if($responseArray->status == 'success') {
 
             $responseArrayAsArray["status"]  = $responseArray->status;

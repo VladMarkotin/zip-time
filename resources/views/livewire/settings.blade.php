@@ -1,5 +1,5 @@
 <div>
-
+    {{-- {{dd( $config) }} --}}
     <div class="container" style="display:flex; justify-content:space-around; width:100%">
         @include('livewire.update')
         @include('livewire.info')
@@ -24,16 +24,10 @@
         <div class="tab-content" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab"
                 wire:ignore.self>
-
-
                 <x-saved-tasks :savedTasks="$savedTasks" />
-
-
                 {{ $savedTasks->links('livewire.pagination') }}
             </div>
             <!--  Saved tasks end  -->
-
-
 
             <!--  static   start-->
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"
@@ -41,34 +35,18 @@
 
             <!--  static end -->
 
-
-
-
-
             <!--  Personal Settings   -->
             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab"
                 wire:ignore.self>
+                <div class=" ">
+                    <x-timezone :timezones="$timezones" :currentTz="$currentTz" />
 
-           
-                   <x-timezone :timezones="$timezones" :currentTz="$currentTz" />
-
-            <x-week-ends  />
-  
-           
-
-
-
-
-
-
-
+                    <x-week-ends :personal="$config['personalConfigs']" :default="$config['defaultConfigs']" :isWeekendTaken="$config['isWeekendTaken']"/>
+                   
+                    <x-daily-plan :personal="$config['personalConfigs']" :default="$config['defaultConfigs']" :isDayPlanCompleted="$config['isDayPlanCompleted']"/>
+                </div>
 
             </div>
-
-
-
             <!--  Personal Settings  end -->
-
-
         </div>
-      </div>
+    </div>
