@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\Services\Challenges\Contracts\ChallengeContract;
+use App\Http\Controllers\Services\Challenges\CompleteNTasks;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        //$this->app->singleton(ChallengeContract::class, CompleteNTasks::class);
     }
 
     /**

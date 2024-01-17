@@ -6,9 +6,16 @@ use Auth;
 use DB;
 use App\Models\ChallengeModel;
 use App\Models\UsersChallenges;
+use App\Http\Controllers\Services\Challenges\CompleteNTasks;
 
 class ChallengeService
 {
+    private $challenges = [];
+
+    public function __construct(CompleteNTasks $completeNTasks)
+    {
+        $this->challenges['completeNTasks'] = $completeNTasks;
+    }
     /**
      * Wrapper for counting all indexes for challenge
      * $data = [

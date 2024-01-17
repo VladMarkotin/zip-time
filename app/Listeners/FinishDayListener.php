@@ -7,6 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Auth;
 use App\Models\ChallengeModel;
 use App\Http\Controllers\Services\Challenges\ChallengeService;
+use App\Http\Controllers\Services\Challenges\CompleteNTasks;
 
 class FinishDayListener
 {
@@ -16,7 +17,7 @@ class FinishDayListener
      *
      * @return void
      */
-    public function __construct(ChallengeService $challengeService)
+    public function __construct(CompleteNTasks $challengeService)
     {
         $this->challengeService = $challengeService;
     }
@@ -32,10 +33,13 @@ class FinishDayListener
         $query = "SELECT COUNT(tasks.id) q FROM `tasks` JOIN timetables ON tasks.timetable_id = timetables.id 
             JOIN users ON timetables.user_id = ".Auth::id()." 
                WHERE tasks.mark <> -1";
-
+        $terms = ChallengeModel::select('terms')->where('index', 'estimate_task')->get()->toArray()[0]['terms'];
+        $chId = ChallengeModel::select('id')->where('index', 'estimate_task')->get()->toArray()[0]['id'];
         $result = $this->challengeService->doChallenge([
             'index' => 'estimate_task',
             'query' => $query,
+            'terms' => json_decode($terms),
+            'ch_id' => $chId,
         ]);
         //die(var_dump($result)); //OK
     }

@@ -11,6 +11,9 @@ use App\Repositories\DayPlanRepositories\GetPlanRepository;
 use App\Http\Controllers\NoteController;
 use App\Models\Tasks;
 use App\Models\SubPlan;
+use App\Events\FinishDayEvent;
+use App\Listeners\FinishDayListener;
+use App\Models\ChallengeModel;
 
 class EstimationController extends Controller
 {
@@ -40,7 +43,9 @@ class EstimationController extends Controller
         $currentMethod = $doesUserHaveUncomplReqSubtask
             ? 'estimateTaskWithUncomReqSubtask'
             : 'estimateTaskWithoutUncomReqSubtask';
-            
+        $challengeModel = new ChallengeModel();    
+        FinishDayEvent::dispatch($challengeModel);
+        //FinishDayListener::dispatch();
         $response = json_encode($this->$currentMethod($request), JSON_UNESCAPED_UNICODE);
 
         return  $response;
