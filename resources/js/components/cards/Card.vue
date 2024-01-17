@@ -173,7 +173,7 @@
 						</v-row>
 					</v-col>
 					<v-col class="p-0 d-flex flex-column justify-center" cols="auto" style="min-width: 53px;">
-						<v-dialog
+						<!-- <v-dialog
 						v-if="item.hash !== '#'"
 						v-model="dialogNotes"
 						scrollable
@@ -205,7 +205,6 @@
 								<v-card-text style="height: 300px;">
 									<template>
 										<div class="d-flex align-center flex-column">
-    										
 												<v-card
 												width="800"
 												title="This is a title"
@@ -238,7 +237,6 @@
 												There are no any notes
 											</span>
 										</div>
-										
 									</template>
 								</v-card-text>
 								<v-divider></v-divider>
@@ -259,7 +257,7 @@
 								</v-btn>
 								</v-card-actions>
 							</v-card>
-							</v-dialog> 
+							</v-dialog>  -->
 					</v-col>
 				</v-row>	
 			</v-list-item>
