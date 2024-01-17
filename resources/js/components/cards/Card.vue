@@ -180,8 +180,8 @@
 							:num              = "num"
 							:item             = "item"
 							:notesTodayAmount = "noteInfo.todayAmount"
-							@updateNotesTodayAmount = "setNotesTodayAmount"
-							@updateNotesList        = "setNotesList"
+							:notesList        = "noteInfo.notesList"  
+							@updateNotesInfo  = "setNotesInfo"
 							/>
 						</template>
 						<!-- <v-dialog
@@ -542,12 +542,8 @@
 
 			/*Notes*/
 
-			setNotesTodayAmount(todayAmount) {
-				this.noteInfo.todayAmount = todayAmount;
-			},
-
-			setNotesList(notesList) {
-				this.noteInfo.notesList = notesList;
+			setNotesInfo(data) {
+				Object.assign(this.noteInfo, data);
 			},
 			
 			// getAllNotesForTask(item) {

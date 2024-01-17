@@ -86,6 +86,9 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
     export default {
         props: {
             num:  {},
+            notesList: {
+                type: Array,
+            },
             notesTodayAmount: {
                 type: Number,
             },
@@ -114,34 +117,31 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
                     hash:     this.item.hash
                 })
 				.then((response) => {
-					this.updateNotesList(response.data); 
+                    const notesList = response.data;
+					this.updateNotesInfo({notesList}); 
 				})
 			},
 
             getTodayNoteAmount(){
-				
 				axios.post('/get-today-note-amount',{
                     task_id : this.item.taskId,
                     details : this.item.details,
 				    note :    this.item.notes,
                     type :    this.item.type})
 				.then((response) => {
-					this.updateNotesTodayAmount(response.data.amount); 
+                    const todayAmount = response.data.amount;
+					this.updateNotesInfo({todayAmount}); 
 				  })
 
 			},
 
-            updateNotesTodayAmount(todayAmount) {
-                this.$emit('updateNotesTodayAmount', todayAmount);
-            },
-
-            updateNotesList(notesList) {
-                this.$emit('updateNotesList', notesList);
+            updateNotesInfo(dataObj) {
+                this.$emit('updateNotesInfo', dataObj);
             }
         },
 
         created() {
             this.getTodayNoteAmount();
-        }
+        },
     }
 </script>
