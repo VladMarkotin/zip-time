@@ -14,7 +14,8 @@
         </v-row>
 		<v-divider></v-divider>
         <v-card-text 
-        style="height: 470px; position: relative;"
+        class="pb-0"
+        style="height: 450px; position: relative; overflow-x: hidden"
         >
             <v-list 
             v-if="!isLoading"
@@ -55,33 +56,46 @@
                 :width="7"
                 />
             </v-list>
-        <transition
-        enter-active-class="custom-alert_appearance"
-		leave-active-class="custom-alert_leave"
-        >
-            <v-alert 
-            v-if="isShowAlert"
-            class="custom-alert"
-            :type="alertData.type"
-            >
-                {{ alertData.text }}
-            </v-alert>
-        </transition>
         </v-card-text>
-        <v-divider></v-divider>
-		<v-card-actions>
-			    <v-btn
-					color="blue-darken-1"
-					variant="text"
-				>
-					Close
-				</v-btn>
-				<v-btn
-					color="blue-darken-1"
-					variant="text"
-				>
-					Save
-				</v-btn>
+        <v-divider class="m-0"></v-divider>
+		<v-card-actions 
+        class="px-4"
+        >
+        <v-row 
+        class="d-flex justify-content-between align-items-center p-0 m-0"
+        style="min-height: 72px;"
+        >
+            <v-col 
+            class="p-0 m-0"
+            style="width: 100%;"
+            >
+                <transition
+                enter-active-class="custom-alert_appearance"
+                leave-active-class="custom-alert_leave"
+                >
+                    <v-alert 
+                    v-if="isShowAlert"
+                    class="custom-alert"
+                    :type="alertData.type"
+                    >
+                        {{ alertData.text }}
+                    </v-alert>
+                </transition>
+            </v-col>
+            <v-col
+            class="p-0 m-0 d-flex justify-content-end"
+            cols="4"
+            >
+                <v-btn
+                color="blue-darken-1"
+                variant="text"
+                class="close-button"
+                >
+                    Close
+                </v-btn>        
+            </v-col>
+        </v-row>
+
 		</v-card-actions>
 	</v-card>
 </template>
@@ -173,11 +187,8 @@ import DeleteButton from '../../UI/DeleteButton.vue';
     }
 
     .custom-alert {
-        position: absolute;
-        width: 450px;
-        margin: 0;
-        bottom: 0;
-        left: 0;
+        margin-bottom: 0;
+        position: relative;
     }
 
     .custom-alert_appearance {
@@ -189,12 +200,12 @@ import DeleteButton from '../../UI/DeleteButton.vue';
     }
 
     @keyframes custom_alert_show {
-		from { opacity: 0; bottom: 10px;}
-		to { opacity: 1; bottom: 0;}
+		from { opacity: 0; left: -10px;}
+		to { opacity: 1; left: 0;}
 	}
 
 	@keyframes custom_alert_leave {
-		from { opacity: 1; bottom: 0;}
-		to { opacity: 0; bottom: -10px;}
+		from { opacity: 1; left: 0;}
+		to { opacity: 0; left: 10px;}
 	}
 </style>
