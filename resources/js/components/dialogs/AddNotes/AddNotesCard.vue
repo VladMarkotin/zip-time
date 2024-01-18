@@ -14,7 +14,7 @@
         </v-row>
 		<v-divider></v-divider>
         <v-card-text 
-        style="height: 470px; position: relative; overflow:hidden;"
+        style="height: 470px; position: relative;"
         >
             <v-list 
             v-if="!isLoading"
@@ -102,6 +102,8 @@ import DeleteButton from '../../UI/DeleteButton.vue';
         data() {
             return {
                 isShowAlert: false,
+                closeAlertTime: 0,
+                showAlerTime: 1500, //менять время показа алерта
                 alertData: {
                     type: '',
                     text: '',
@@ -127,9 +129,11 @@ import DeleteButton from '../../UI/DeleteButton.vue';
                         this.setAlertData(data);
                         this.isShowAlert = true;
                         
-                        setTimeout(() => {
+                        clearTimeout(this.closeAlertTime); //вот тут не уверен
+
+                        this.closeAlertTime = setTimeout(() => {
                             this.removeAlert();
-                        }, 1500)
+                        }, this.showAlerTime)
                     }
                 })
             },
