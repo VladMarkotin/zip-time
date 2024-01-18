@@ -6,13 +6,12 @@
 		<v-divider class="mt-2 mb-2"></v-divider>
         <v-row class="m-0">
             <v-col class="p-0 m-0">
-                <v-expansion-panels
-                >
+                <v-expansion-panels>
                     <v-expansion-panel>
                         <v-expansion-panel-header>
                             <template v-slot:default="{ open }">
-                                <v-row class="p-0 m-0">
-                                    <v-col class="p-0 m-0">         
+                                <v-row class="p-0 m-0" style="min-height: 36px;">
+                                    <v-col class="p-0 m-0 d-flex justify-content-start d-flex align-items-center">         
                                         <p 
                                         v-if="open"
                                         class="m-0"
@@ -26,15 +25,12 @@
                                             Add New Note
                                         </p>
                                     </v-col>
-                                    <v-col class="p-0 m-0">
-                                        <v-fade-transition leave-absolute>
-                                            <span
-                                            v-if="open && isNewNoteInpuValValid"
-                                            key="add_note_key"
-                                            >
-                                            Enter a name for the trip
-                                            </span>
-                                        </v-fade-transition>
+                                    <v-col class="p-0 m-0 d-flex justify-content-end d-flex align-items-center">
+                                        <AddSubtaskButton 
+                                        v-if="open && isNewNoteInpuValValid"
+                                        :tooltip="'Add note'"
+                                        @addSubtask="addNewNote"
+                                        />
                                     </v-col>
                                 </v-row>
                             </template>
@@ -150,6 +146,7 @@
 <script>
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import DeleteButton from '../../UI/DeleteButton.vue';
+import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
     export default {
         props: {
             notesList: {
@@ -186,6 +183,7 @@ import DeleteButton from '../../UI/DeleteButton.vue';
         components: {
             DefaultPreloader,
             DeleteButton,
+            AddSubtaskButton,
         },
 
         methods: {
@@ -226,6 +224,10 @@ import DeleteButton from '../../UI/DeleteButton.vue';
                 this.isNewNoteInpuValValid = 
                 this.noteRules.map(check => check(this.newNoteInpuVal))
                 .every(checkResult => checkResult === true);
+            },
+
+            addNewNote() {
+                console.log('+++++');
             }
         }
     }
