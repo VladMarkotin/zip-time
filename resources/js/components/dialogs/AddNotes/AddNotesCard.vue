@@ -1,8 +1,17 @@
 <template>
     <v-card
-	width="400"
+	width="450"
     >
 		<v-card-title>Notes list</v-card-title>
+		<v-divider></v-divider>
+        <v-row class="m-0">
+            <v-col class="px-6 pt-0 pb-0">
+                <v-text-field
+                label="New note"
+                >
+                </v-text-field>
+            </v-col>
+        </v-row>
 		<v-divider></v-divider>
         <v-card-text 
         style="height: 470px; position: relative; overflow:hidden;"
@@ -126,7 +135,6 @@ import DeleteButton from '../../UI/DeleteButton.vue';
             },
 
             setAlertData({status, message}) {
-                console.log(status);
                 this.alertData = {
                     type: status,
                     text: message,
@@ -162,7 +170,7 @@ import DeleteButton from '../../UI/DeleteButton.vue';
 
     .custom-alert {
         position: absolute;
-        width: 400px;
+        width: 450px;
         margin: 0;
         bottom: 0;
         left: 0;
