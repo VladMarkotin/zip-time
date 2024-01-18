@@ -16,13 +16,11 @@
                     style="min-height: 180px;"
                     >
                     <v-row class="p-4 m-0">
-                        <v-col class="p-0 m-0" style="width: 100%;">
+                        <v-col class="p-0 m-0 d-flex justify-content-between align-items-center" style="width: 100%;">
                             <v-card-title class="p-0 m-0">
                                 Note from {{ item.created_at }}
                             </v-card-title>
-                        </v-col>
-                        <v-col class="p-0 m-0" cols="1">
-                            x
+                            <DeleteButton />
                         </v-col>
                     </v-row>
                         <v-card-text class="bg-white text--primary">
@@ -65,6 +63,7 @@
 
 <script>
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
+import DeleteButton from '../../UI/DeleteButton.vue';
     export default {
         props: {
             notesList: {
@@ -82,6 +81,7 @@ import DefaultPreloader from '../../UI/DefaultPreloader.vue';
         },
         components: {
             DefaultPreloader,
+            DeleteButton,
         },
     }
 </script>
