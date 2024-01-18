@@ -3,16 +3,63 @@
 	width="450"
     >
 		<v-card-title>Notes list</v-card-title>
-		<v-divider></v-divider>
+		<v-divider class="mt-2 mb-2"></v-divider>
         <v-row class="m-0">
-            <v-col class="px-6 pt-0 pb-0">
-                <v-text-field
-                label="New note"
+            <v-col class="p-0 m-0">
+                <v-expansion-panels
                 >
-                </v-text-field>
+                    <v-expansion-panel>
+                        <v-expansion-panel-header>
+                            <template v-slot:default="{ open }">
+                                <v-row class="p-0 m-0">
+                                    <v-col class="p-0 m-0">         
+                                        <p 
+                                        v-if="open"
+                                        class="m-0"
+                                        >
+                                            Close this menu
+                                        </p>
+                                        <p 
+                                        v-else="open"
+                                        class="m-0"
+                                        >
+                                            Add New Note
+                                        </p>
+                                    </v-col>
+                                    <v-col class="p-0 m-0">
+                                        <v-fade-transition leave-absolute>
+                                            <span
+                                            v-if="open && isNewNoteInpuValValid"
+                                            key="add_note_key"
+                                            >
+                                            Enter a name for the trip
+                                            </span>
+                                        </v-fade-transition>
+                                    </v-col>
+                                </v-row>
+                            </template>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content style="padding: 0 16px;">
+                            <!-- prepend-inner-icon="mdi-comment" -->
+                            <v-textarea 
+                            v-model="newNoteInpuVal"
+                            outlined 
+                            label="new note"
+                            counter="256" 
+                            no-resize
+                            rows="3"
+                            :rules = "noteRules"
+                            :success = "isNewNoteInpuValValid"
+                            clearable
+                            @input="checkNewNoteInputVal"
+                            >
+                            </v-textarea>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
             </v-col>
         </v-row>
-		<v-divider></v-divider>
+		<v-divider class="mt-2 mb-2"></v-divider>
         <v-card-text 
         class="pb-0"
         style="height: 450px; position: relative; overflow-x: hidden"
@@ -121,7 +168,18 @@ import DeleteButton from '../../UI/DeleteButton.vue';
                 alertData: {
                     type: '',
                     text: '',
-                }
+                },
+                newNoteInpuVal: '',
+                isNewNoteInpuValValid: false,
+                noteRules: [
+                    (val) => {
+                        const errorMessage = "Your note can't be empty";
+
+                        if (!val) return errorMessage;
+                        val = val.trim();
+                        return val.length ? true : errorMessage;
+                    }
+                ]
             };
         },
 
@@ -162,6 +220,12 @@ import DeleteButton from '../../UI/DeleteButton.vue';
             removeAlert() {
                 this.isShowAlert = false;
                 this.setAlertData('', '');
+            },
+
+            checkNewNoteInputVal() {
+                this.isNewNoteInpuValValid = 
+                this.noteRules.map(check => check(this.newNoteInpuVal))
+                .every(checkResult => checkResult === true);
             }
         }
     }
