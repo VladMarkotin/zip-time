@@ -46,7 +46,18 @@
                 :width="7"
                 />
             </v-list>
-        <v-alert class="alert">Hello</v-alert>
+        <transition
+        enter-active-class="custom-alert_appearance"
+		leave-active-class="custom-alert_leave"
+        >
+            <v-alert 
+            v-if="isShowAlert"
+            class="custom-alert"
+            :type="alertData.type"
+            >
+                {{ alertData.text }}
+            </v-alert>
+        </transition>
         </v-card-text>
         <v-divider></v-divider>
 		<v-card-actions>
@@ -81,7 +92,11 @@ import DeleteButton from '../../UI/DeleteButton.vue';
         },
         data() {
             return {
-
+                isShowAlert: false,
+                alertData: {
+                    type: '',
+                    text: '',
+                }
             };
         },
 
@@ -100,8 +115,27 @@ import DeleteButton from '../../UI/DeleteButton.vue';
                         const todayAmount  = newNotesList.length;
 
                         this.$emit('updateNotesInfo', {notesList: newNotesList, todayAmount});
+                        this.setAlertData(data);
+                        this.isShowAlert = true;
+                        
+                        setTimeout(() => {
+                            this.removeAlert();
+                        }, 1500)
                     }
                 })
+            },
+
+            setAlertData({status, message}) {
+                console.log(status);
+                this.alertData = {
+                    type: status,
+                    text: message,
+                };
+            },
+
+            removeAlert() {
+                this.isShowAlert = false;
+                this.setAlertData('', '');
             }
         }
     }
@@ -126,13 +160,29 @@ import DeleteButton from '../../UI/DeleteButton.vue';
     transform: translateX(30px);
     }
 
-    .alert {
+    .custom-alert {
         position: absolute;
         width: 400px;
-        background-color: green;
-        z-index: 10000;
         margin: 0;
         bottom: 0;
         left: 0;
     }
+
+    .custom-alert_appearance {
+        animation: .3s custom_alert_show ease;
+    }
+
+    .custom-alert_leave {
+        animation: .3s custom_alert_leave ease;
+    }
+
+    @keyframes custom_alert_show {
+		from { opacity: 0; bottom: 10px;}
+		to { opacity: 1; bottom: 0;}
+	}
+
+	@keyframes custom_alert_leave {
+		from { opacity: 1; bottom: 0;}
+		to { opacity: 0; bottom: -10px;}
+	}
 </style>
