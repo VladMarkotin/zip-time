@@ -90,7 +90,7 @@ class NoteController extends Controller
         $savedTaskId = $savedTaskId[0]['id'];
 
         //get notes for saved Task
-        $notes = SavedNotes::select('note', 'created_at')
+        $notes = SavedNotes::select('id', 'note', 'created_at')
         ->where('saved_task_id', $savedTaskId)
         ->orderBy('created_at', 'desc')
         ->get()
@@ -147,5 +147,10 @@ class NoteController extends Controller
         }
 
         return null;
+    }
+
+    public function destroy (Request $request)
+    {
+        $note_id = $request->get('note_id');
     }
 }

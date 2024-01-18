@@ -15,12 +15,15 @@
                     width="800"
                     style="min-height: 180px;"
                     >
-                    <v-row class="p-4 m-0">
+                    <v-row class="p-3 m-0">
                         <v-col class="p-0 m-0 d-flex justify-content-between align-items-center" style="width: 100%;">
                             <v-card-title class="p-0 m-0">
                                 Note from {{ item.created_at }}
                             </v-card-title>
-                            <DeleteButton />
+                            <DeleteButton 
+                            :tooltipValue = "'delete note'"
+                            @delete       = "deleteNote(item.id)"
+                            />
                         </v-col>
                     </v-row>
                         <v-card-text class="bg-white text--primary">
@@ -79,9 +82,16 @@ import DeleteButton from '../../UI/DeleteButton.vue';
 
             };
         },
+
         components: {
             DefaultPreloader,
             DeleteButton,
         },
+
+        methods: {
+            deleteNote(noteId) {
+                axios.post('/delete-note', {note_id: noteId})
+            }
+        }
     }
 </script>
