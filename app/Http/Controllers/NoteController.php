@@ -152,5 +152,23 @@ class NoteController extends Controller
     public function destroy (Request $request)
     {
         $note_id = $request->get('note_id');
+
+        $response = [
+            'status'  => '',
+            'message' => '',
+        ];
+
+        try {
+            $current_note = $this->savedNotes::find($note_id);
+            $current_note->delete();
+
+            $response['status'] = 'success';
+            $response['message'] = 'note has been removed';
+        } catch (Exception $error) {
+            $response['status'] = 'error';
+            $response['message'] = 'something has happend';
+        } finally {
+            return response()->json($response);
+        }
     }
 }

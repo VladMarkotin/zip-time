@@ -23,6 +23,7 @@
             <AddNotesCard 
             :isLoading = "isLoading"
             :notesList = "notesList"
+            @updateNotesInfo = "updateNotesInfo"
             />
         </template>
 	</v-dialog> 
