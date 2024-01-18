@@ -4,15 +4,14 @@
     >
 		<v-card-title>Notes list</v-card-title>
 		<v-divider></v-divider>
-        <v-card-text style="min-height: 468px;">
+        <v-card-text style="height: 470px; position: relative;">
             <v-list 
             v-if="!isLoading"
-            style="min-height: inherit;"
             >
             <transition-group name="list" tag="div" class="notes-wrapper">
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <v-card
-                    width="800"
+                    style="width: 100%;"
                     >
                     <v-row class="p-3 m-0">
                         <v-col class="p-0 m-0 d-flex justify-content-between align-items-center" style="width: 100%;">
@@ -36,7 +35,7 @@
             </transition-group>
             </v-list>
             <v-list
-            style="min-height: inherit;"
+            style="height: 100%;"
             v-else
             class="d-flex justify-content-center align-items-center"
             >
@@ -113,7 +112,7 @@ import DeleteButton from '../../UI/DeleteButton.vue';
     }
     
     .list-item {
-        
+        width: 100%;
     }
     .list-enter-active, .list-leave-active {
     transition: all .3s;
