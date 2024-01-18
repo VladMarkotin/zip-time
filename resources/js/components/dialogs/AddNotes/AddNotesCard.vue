@@ -4,7 +4,9 @@
     >
 		<v-card-title>Notes list</v-card-title>
 		<v-divider></v-divider>
-        <v-card-text style="height: 470px; position: relative;">
+        <v-card-text 
+        style="height: 470px; position: relative; overflow:hidden;"
+        >
             <v-list 
             v-if="!isLoading"
             >
@@ -44,6 +46,7 @@
                 :width="7"
                 />
             </v-list>
+        <v-alert class="alert">Hello</v-alert>
         </v-card-text>
         <v-divider></v-divider>
 		<v-card-actions>
@@ -121,5 +124,15 @@ import DeleteButton from '../../UI/DeleteButton.vue';
     .list-leave-to  {
     opacity: 0;
     transform: translateX(30px);
+    }
+
+    .alert {
+        position: absolute;
+        width: 400px;
+        background-color: green;
+        z-index: 10000;
+        margin: 0;
+        bottom: 0;
+        left: 0;
     }
 </style>
