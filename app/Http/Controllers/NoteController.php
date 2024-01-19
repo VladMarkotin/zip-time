@@ -58,11 +58,14 @@ class NoteController extends Controller
                 ];
     
                 SavedNotes::create($savedNoteData);
-
                 if ($isReturnResponse) {
-                    $current_saved_task = $this->savedTask::find($saved_task_id);
-                    $all_notes = $current_saved_task->notes->toArray();
-                    
+                    //вынести в функцию, код дублируется в методе getSavedNotes
+                    $all_notes = $this->savedNotes::select('id', 'note', 'created_at')
+                    ->where('saved_task_id', $saved_task_id)
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+                    ->toArray();
+
                     $response['all_notes'] = $all_notes;
                 }
             } else {

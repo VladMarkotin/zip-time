@@ -201,13 +201,7 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 
                         this.$emit('updateNotesInfo', {notesList: newNotesList, todayAmount});
                         this.setAlertData(data);
-                        this.isShowAlert = true;
-                        
-                        clearTimeout(this.closeAlertTime); //вот тут не уверен
-
-                        this.closeAlertTime = setTimeout(() => {
-                            this.removeAlert();
-                        }, this.showAlerTime)
+                        this.showAlert();
                     }
                 })
             },
@@ -217,6 +211,16 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
                     type: status,
                     text: message,
                 };
+            },
+
+            showAlert() {
+                this.isShowAlert = true;
+                        
+                clearTimeout(this.closeAlertTime); //вот тут не уверен
+
+                this.closeAlertTime = setTimeout(() => {
+                    this.removeAlert();
+                }, this.showAlerTime)
             },
 
             removeAlert() {
@@ -238,10 +242,18 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
                     const {data} = response;
 
                     if (data.status === 'success') {
-                        console.log(data);
+                        const notesList   = data.all_notes;
+                        const todayAmount = notesList.length;
+                        this.$emit('updateNotesInfo', {notesList, todayAmount});
+                        this.setAlertData({status: data.status, message: data.text});
+
+                        this.newNoteInpuVal = '';
+                        this.isNewNoteInpuValValid = false;
+
+                        this.showAlert();
                     }
                 })
-            }
+            },
         }
     }
 </script>
