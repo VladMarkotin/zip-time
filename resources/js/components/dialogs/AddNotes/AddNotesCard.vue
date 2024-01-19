@@ -200,9 +200,10 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
                         const todayAmount  = newNotesList.length;
 
                         this.$emit('updateNotesInfo', {notesList: newNotesList, todayAmount});
-                        this.setAlertData(data);
-                        this.showAlert();
                     }
+                    
+                    this.setAlertData(data);
+                    this.showAlert();
                 })
             },
 
@@ -240,18 +241,20 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
                 axios.post('/add-note', {task_id, note})
                 .then(response => {
                     const {data} = response;
+                    console.log(data);
 
                     if (data.status === 'success') {
                         const notesList   = data.all_notes;
                         const todayAmount = notesList.length;
                         this.$emit('updateNotesInfo', {notesList, todayAmount});
-                        this.setAlertData({status: data.status, message: data.text});
-
+                        
                         this.newNoteInpuVal = '';
                         this.isNewNoteInpuValValid = false;
-
-                        this.showAlert();
+                        
                     }
+
+                    this.setAlertData({status: data.status, message: data.text});
+                    this.showAlert();
                 })
             },
         }

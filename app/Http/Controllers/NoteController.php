@@ -56,7 +56,7 @@ class NoteController extends Controller
                     'created_at'    => $this->carbon::now(),
                     'updated_at'    => $this->carbon::now(),
                 ];
-    
+
                 SavedNotes::create($savedNoteData);
                 if ($isReturnResponse) {
                     //вынести в функцию, код дублируется в методе getSavedNotes
@@ -165,7 +165,6 @@ class NoteController extends Controller
     public function destroy (Request $request)
     {
         $note_id = $request->get('note_id');
-
         $response = [
             'status'  => '',
             'message' => '',
@@ -174,7 +173,7 @@ class NoteController extends Controller
         try {
             $current_note = $this->savedNotes::find($note_id);
             $current_note->delete();
-
+            
             $response['status'] = 'success';
             $response['message'] = 'note has been removed';
         } catch (Exception $error) {
