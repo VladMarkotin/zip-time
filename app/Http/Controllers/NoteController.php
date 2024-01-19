@@ -14,16 +14,19 @@ use App\Http\Controllers\Services\NotesService;
 class NoteController extends Controller
 {
     private $savedNotes   = null;
+    private $savedTask    = null;
     private $notesService = null;
     private $carbon       = null;
 
     public function __construct(
         SavedNotes   $savedNotes,
+        SavedTask    $savedTask,
         NotesService $notesService,
         Carbon       $carbon
     )
     {
         $this->savedNotes   = $savedNotes;
+        $this->savedTask    = $savedTask;
         $this->notesService = $notesService;
         $this->carbon       = $carbon;
     }
@@ -55,6 +58,13 @@ class NoteController extends Controller
                 ];
     
                 SavedNotes::create($savedNoteData);
+
+                if ($isReturnResponse) {
+                    $current_saved_task = $this->savedTask::find($saved_task_id);
+                    $all_notes = $current_saved_task->notes->toArray();
+                    
+                    $response['all_notes'] = $all_notes;
+                }
             } else {
                 $current_task = Tasks::find($task_id);
                 $current_task->update(['note' => $noteAfterValidation]);
@@ -67,7 +77,7 @@ class NoteController extends Controller
             $response['text']   = 'something has happened';
         } finally {//если этот метод дергается напрямую с клиента, то отдам туда json
             if ($isReturnResponse) {
-                return ;
+                return response()->json($response);
             } 
             $response['saved_task_id'] = $saved_task_id;
             return $response;

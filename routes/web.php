@@ -100,6 +100,7 @@ Route::middleware(['auth'])->group(function () {
     
     //Upgrade notes functionality
     Route::post('get-today-note-amount',[App\Http\Controllers\NoteController::class, 'getTodayNoteAmount'])->name('get-note-amount');
+    Route::post('add-note',[App\Http\Controllers\NoteController::class, 'addNote'])->name('notes.create');
     
     //Local chatGPT functionality
     Route::post('/create-gpt-subplan-request', [App\Http\Controllers\SubPlanGPTController::class, 'makeRequestToGPT'])->name('create-gpt-subplan-request');

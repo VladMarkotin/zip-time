@@ -156,6 +156,10 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
             isLoading: {
                 type: Boolean,
             },
+            item: {
+                type: Object,
+                required: true,
+            },
         },
         data() {
             return {
@@ -227,7 +231,16 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
             },
 
             addNewNote() {
-                console.log('+++++');
+                const task_id = this.item.taskId;
+                const note    = this.newNoteInpuVal.trim();
+                axios.post('/add-note', {task_id, note})
+                .then(response => {
+                    const {data} = response;
+
+                    if (data.status === 'success') {
+                        console.log(data);
+                    }
+                })
             }
         }
     }

@@ -23,6 +23,7 @@
             <AddNotesCard 
             :isLoading = "isLoading"
             :notesList = "notesList"
+            :item       = "item"
             @updateNotesInfo = "updateNotesInfo"
             />
         </template>
