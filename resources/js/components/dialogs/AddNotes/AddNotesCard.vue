@@ -37,19 +37,21 @@
                         </v-expansion-panel-header>
                         <v-expansion-panel-content style="padding: 0 16px;">
                             <!-- prepend-inner-icon="mdi-comment" -->
-                            <v-textarea 
-                            v-model="newNoteInpuVal"
-                            outlined 
-                            label="new note"
-                            counter="256" 
-                            no-resize
-                            rows="3"
-                            :rules = "noteRules"
-                            :success = "isNewNoteInpuValValid"
-                            clearable
-                            @input="checkNewNoteInputVal"
-                            >
-                            </v-textarea>
+                            <div class="pt-2">
+                                <v-textarea 
+                                v-model="newNoteInpuVal"
+                                outlined 
+                                label="new note"
+                                counter="256" 
+                                no-resize
+                                rows="3"
+                                :rules = "noteRules"
+                                :success = "isNewNoteInpuValValid"
+                                clearable
+                                @input="checkNewNoteInputVal"
+                                >
+                                </v-textarea>
+                            </div>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
