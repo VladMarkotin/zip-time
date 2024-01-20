@@ -6,9 +6,8 @@
     >
         <template v-slot:activator="{ on,}">
             <v-btn
-            dark
-            v-on="on"
             icon
+            v-on="on"
             >
                 <v-icon color="black">{{icon.mdiCog}}</v-icon>
             </v-btn>

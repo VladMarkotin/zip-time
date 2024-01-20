@@ -117,6 +117,7 @@
                 color="blue-darken-1"
                 variant="text"
                 class="close-button"
+                @click="closeAddNotesDialog"
                 >
                     Close
                 </v-btn>        
@@ -270,6 +271,10 @@ import EditNotesDialog from './EditNotesDialog.vue';
 
             closeEditNotesDialog() {
                 this.isShowEditNotesDialog = false;
+            },
+
+            closeAddNotesDialog() {
+                this.$emit('closeAddNotesDialog');
             },
 
             setEditableNoteData(id) {

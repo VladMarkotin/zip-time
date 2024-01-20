@@ -24,7 +24,8 @@
             :isLoading = "isLoading"
             :notesList = "notesList"
             :item       = "item"
-            @updateNotesInfo = "updateNotesInfo"
+            @updateNotesInfo     = "updateNotesInfo"
+            @closeAddNotesDialog = "closeAddNotesDialog"
             />
         </template>
 	</v-dialog> 
@@ -108,6 +109,10 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
 
             updateNotesInfo(dataObj) {
                 this.$emit('updateNotesInfo', dataObj);
+            },
+
+            closeAddNotesDialog() {
+                this.isShowNotesDialog = false;
             }
         },
 
