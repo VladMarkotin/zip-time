@@ -59,9 +59,6 @@ import { mdiCog } from '@mdi/js';
                 this.$emit(event, id);
             }
         },
-        created() {
-            console.log(this.attachTo);
-        }
     }
 </script>
 

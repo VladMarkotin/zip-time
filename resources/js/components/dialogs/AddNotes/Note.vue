@@ -21,7 +21,7 @@
             </v-col>
         </v-row>
             <v-card-text class="bg-white text--primary">
-                <b>
+                <b style="white-space: pre-line;">
                     {{ item.note }}
                 </b>
             </v-card-text>
