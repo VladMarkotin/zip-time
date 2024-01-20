@@ -1,8 +1,9 @@
 <template>
     <v-card
     style="width: 100%;"
+    class="p-3"
     >
-        <v-row class="p-3 m-0">
+        <v-row class="p-0 m-0">
             <v-col 
             class="p-0 m-0 d-flex justify-content-between align-items-center" 
             style="width: 100%;"
@@ -20,12 +21,11 @@
                 />
             </v-col>
         </v-row>
-            <v-card-text class="bg-white text--primary">
-                <b style="white-space: pre-line;">
-                    {{ item.note }}
-                </b>
-            </v-card-text>
-            <v-divider v-if="item.created_at == new Date('d.m.Y')"></v-divider>
+        <v-card-text class="bg-white text--primary p-0 m-0">
+            <b style="white-space: pre-line;">
+                {{ item.note }}
+            </b>
+        </v-card-text>
     </v-card>
 </template>
 
