@@ -7,10 +7,11 @@
                 <v-card-title class="p-0 m-0">
                     Note from {{ item.created_at }}
                 </v-card-title>
-                <!-- <DeleteButton 
-                :tooltipValue = "'delete note'"
-                @delete       = "deleteNote(item.id)"
-                /> -->
+                <SettingsMenu 
+                :item    = "item"
+                :options = "options"
+                @deleteNote = "deleteNote"
+                />
             </v-col>
         </v-row>
             <v-card-text class="bg-white text--primary">
@@ -23,12 +24,32 @@
 </template>
 
 <script>
+import SettingsMenu from '../../UI/SettingsMenu.vue';
     export default {
         props: {
             item: {
                 type: Object,
                 required: true,
             },
+        },
+
+        data() {
+            return {
+                options: [
+                    {title: 'remove', event: 'deleteNote'},
+                    {title: 'edit', event: 'editNote'},
+                ],
+            }
+        },
+
+        components: {
+            SettingsMenu
+        },
+
+        methods: {
+            deleteNote(id) {
+                this.$emit('deleteNote', id);
+            }
         },
     }
 </script>

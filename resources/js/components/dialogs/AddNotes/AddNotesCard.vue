@@ -67,6 +67,7 @@
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
                     :item = "item"
+                    @deleteNote = "deleteNote"
                     />
                 </v-list-item>
             </transition-group>
@@ -127,7 +128,6 @@
 
 <script>
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
-import DeleteButton from '../../UI/DeleteButton.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import Note from './Note.vue';
     export default {
@@ -171,13 +171,12 @@ import Note from './Note.vue';
                         val = val.trim();
                         return val.length <= 256 ? true : errorMessage;
                     },
-                ]
+                ],
             };
         },
 
         components: {
             DefaultPreloader,
-            DeleteButton,
             AddSubtaskButton,
             Note,
         },
