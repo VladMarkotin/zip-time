@@ -34,7 +34,12 @@
                 >
                     Cancel
                 </v-btn>
-                <v-btn>Save</v-btn>
+                <v-btn
+                :disabled="!isEditableNoteInpuValValid"
+                @click="saveChangesInNote"
+                >
+                    Save
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -102,6 +107,14 @@ import ResetButton from '../../UI/ResetButton.vue';
 
             closeEditNotesDialog() {
                 this.$emit('closeEditNotesDialog');
+            },
+
+            saveChangesInNote() {
+                const {id} = this.editableNoteData;
+                const note = this.editableNoteInputVal;
+
+                this.$emit('editNote', {id, note});
+                this.closeEditNotesDialog();
             }
         }
     }

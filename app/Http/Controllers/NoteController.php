@@ -59,7 +59,6 @@ class NoteController extends Controller
 
                 SavedNotes::create($savedNoteData);
                 if ($isReturnResponse) {
-                    //вынести в функцию, код дублируется в методе getSavedNotes
                     $all_notes = $this->getNotes($saved_task_id);
 
                     $response['all_notes'] = $all_notes;
@@ -82,6 +81,16 @@ class NoteController extends Controller
             return $response;
         }
  
+    }
+
+    private function getNoteAfterValidation($note)
+    {
+        $data = ['note' => $note];
+        
+        $noteAfterValidation = $this->notesService->addNoteForSavedTask($data);
+        if (!$noteAfterValidation) {
+            $noteAfterValidation = $this->notesService->makeNoteValid($note);
+        }
     }
 
     private function getNotes($saved_task_id)
@@ -179,6 +188,41 @@ class NoteController extends Controller
             
             $response['status'] = 'success';
             $response['message'] = 'note has been removed';
+        } catch (Exception $error) {
+            $response['status'] = 'error';
+            $response['message'] = 'something has happend';
+        } finally {
+            return response()->json($response);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $note_id = $request->get('note_id');
+        $note    = $request->get('note');
+        $task_id = $request->get('task_id');
+
+        $saved_task_id = $this->getSavedTaskId(['id' => $task_id]);
+        
+        $noteAfterValidation = $this->notesService->addNoteForSavedTask(['note' => $note]);
+        if (!$noteAfterValidation) {
+            $noteAfterValidation = $this->notesService->makeNoteValid($note);
+        }
+
+        $response = [
+            'status'  => '',
+            'message' => '',
+        ];
+
+        try {
+            $current_note = $this->savedNotes::find($note_id);
+            $current_note->update(['note' => $noteAfterValidation]);
+
+            $all_notes = $this->getNotes($saved_task_id);
+            $response['all_notes'] = $all_notes;
+            
+            $response['status'] = 'success';
+            $response['message'] = 'note has been updated';
         } catch (Exception $error) {
             $response['status'] = 'error';
             $response['message'] = 'something has happend';

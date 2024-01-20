@@ -131,6 +131,7 @@
             :editableNoteData      = "editableNoteData"
             :noteRules             = "noteRules"
             @closeEditNotesDialog  = "closeEditNotesDialog"
+            @editNote              = "editNote"
             />
         </template>
 	</v-card>
@@ -246,7 +247,6 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 axios.post('/add-note', {task_id, note})
                 .then(response => {
                     const {data} = response;
-                    console.log(data);
 
                     if (data.status === 'success') {
                         const notesList   = data.all_notes;
@@ -275,6 +275,24 @@ import EditNotesDialog from './EditNotesDialog.vue';
             setEditableNoteData(id) {
                 const currenNote = this.notesList.find(note => note.id === id);
                 this.editableNoteData = {...currenNote};
+            },
+
+            editNote(updatedNote) {
+                const task_id = this.item.taskId;
+                const note_id = updatedNote.id;
+                const note    = updatedNote.note;
+                axios.post('/update-note', {note_id, note, task_id})
+                .then(response => {
+                    const {data} = response;
+
+                    if (data.status === 'success') {
+                        const notesList   = data.all_notes;
+                        this.$emit('updateNotesInfo', {notesList,});
+                    }
+
+                    this.setAlertData({status: data.status, message: data.message});
+                    this.showAlert();
+                })
             }
         },
 
