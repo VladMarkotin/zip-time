@@ -65,27 +65,9 @@
             >
             <transition-group name="list" tag="div" class="notes-wrapper">
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
-                    <v-card
-                    style="width: 100%;"
-                    >
-                    <v-row class="p-3 m-0">
-                        <v-col class="p-0 m-0 d-flex justify-content-between align-items-center" style="width: 100%;">
-                            <v-card-title class="p-0 m-0">
-                                Note from {{ item.created_at }}
-                            </v-card-title>
-                            <DeleteButton 
-                            :tooltipValue = "'delete note'"
-                            @delete       = "deleteNote(item.id)"
-                            />
-                        </v-col>
-                    </v-row>
-                        <v-card-text class="bg-white text--primary">
-                            <b>
-                                {{ item.note }}
-                            </b>
-                        </v-card-text>
-                        <v-divider v-if="item.created_at == new Date('d.m.Y')"></v-divider>
-                    </v-card>
+                    <Note 
+                    :item = "item"
+                    />
                 </v-list-item>
             </transition-group>
             </v-list>
@@ -147,6 +129,7 @@
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import DeleteButton from '../../UI/DeleteButton.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
+import Note from './Note.vue';
     export default {
         props: {
             notesList: {
@@ -179,7 +162,15 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
                         if (!val) return errorMessage;
                         val = val.trim();
                         return val.length ? true : errorMessage;
-                    }
+                    },
+
+                    (val) => {
+                        let errorMessage = "Your note is too long";
+
+                        if (!val) return "Your note can't be empty";
+                        val = val.trim();
+                        return val.length <= 256 ? true : errorMessage;
+                    },
                 ]
             };
         },
@@ -188,6 +179,7 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
             DefaultPreloader,
             DeleteButton,
             AddSubtaskButton,
+            Note,
         },
 
         methods: {
