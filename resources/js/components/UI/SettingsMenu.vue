@@ -18,10 +18,10 @@
             v-for="(option, index) in options"
             link
             :key="index"
+            @click="selectOption(option)"
             >
-                <v-list-item-title 
-                class="option"
-                @click="selectOption(option)"
+            <v-list-item-title 
+            class="option"
                 >
                     {{ option.title }}
                 </v-list-item-title>

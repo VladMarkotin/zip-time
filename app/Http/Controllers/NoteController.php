@@ -13,10 +13,11 @@ use App\Http\Controllers\Services\NotesService;
 
 class NoteController extends Controller
 {
-    private $savedNotes   = null;
-    private $savedTask    = null;
-    private $notesService = null;
-    private $carbon       = null;
+    private $savedNotes       = null;
+    private $savedTask        = null;
+    private $notesService     = null;
+    private $carbon           = null;
+    private $responseTemplate = null;
 
     public function __construct(
         SavedNotes   $savedNotes,
@@ -25,10 +26,14 @@ class NoteController extends Controller
         Carbon       $carbon
     )
     {
-        $this->savedNotes   = $savedNotes;
-        $this->savedTask    = $savedTask;
-        $this->notesService = $notesService;
-        $this->carbon       = $carbon;
+        $this->savedNotes       = $savedNotes;
+        $this->savedTask        = $savedTask;
+        $this->notesService     = $notesService;
+        $this->carbon           = $carbon;
+        $this->responseTemplate = [
+            'status'  => '',
+            'message' => '',
+        ];
     }
 
     public function addNote(Request $request, $isReturnResponse = true)
@@ -38,10 +43,7 @@ class NoteController extends Controller
         $data          = ['id' => $task_id, 'note' => $note];
         $saved_task_id = $this->getSavedTaskId($data);
         
-        $noteAfterValidation = $this->notesService->addNoteForSavedTask($data);
-        if (!$noteAfterValidation) {
-            $noteAfterValidation = $this->notesService->makeNoteValid($note);
-        }
+        $noteAfterValidation = $this->getNoteAfterValidation($note);
 
         $response = [
             'status' => null,
@@ -91,6 +93,8 @@ class NoteController extends Controller
         if (!$noteAfterValidation) {
             $noteAfterValidation = $this->notesService->makeNoteValid($note);
         }
+
+        return $noteAfterValidation;
     }
 
     private function getNotes($saved_task_id)
@@ -177,10 +181,7 @@ class NoteController extends Controller
     public function destroy (Request $request)
     {
         $note_id = $request->get('note_id');
-        $response = [
-            'status'  => '',
-            'message' => '',
-        ];
+        $response = $this->responseTemplate;
 
         try {
             $current_note = $this->savedNotes::find($note_id);
@@ -204,15 +205,9 @@ class NoteController extends Controller
 
         $saved_task_id = $this->getSavedTaskId(['id' => $task_id]);
         
-        $noteAfterValidation = $this->notesService->addNoteForSavedTask(['note' => $note]);
-        if (!$noteAfterValidation) {
-            $noteAfterValidation = $this->notesService->makeNoteValid($note);
-        }
+        $noteAfterValidation = $this->getNoteAfterValidation($note);
 
-        $response = [
-            'status'  => '',
-            'message' => '',
-        ];
+        $response = $this->responseTemplate;
 
         try {
             $current_note = $this->savedNotes::find($note_id);
