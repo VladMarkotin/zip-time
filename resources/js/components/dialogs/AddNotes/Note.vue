@@ -10,7 +10,8 @@
                 <SettingsMenu 
                 :item    = "item"
                 :options = "options"
-                @deleteNote = "deleteNote"
+                @deleteNote         = "deleteNote"
+                @showEditNotesDialog = "showEditNotesDialog"
                 />
             </v-col>
         </v-row>
@@ -37,7 +38,7 @@ import SettingsMenu from '../../UI/SettingsMenu.vue';
             return {
                 options: [
                     {title: 'remove', event: 'deleteNote'},
-                    {title: 'edit', event: 'editNote'},
+                    {title: 'edit', event: 'showEditNotesDialog'},
                 ],
             }
         },
@@ -49,6 +50,10 @@ import SettingsMenu from '../../UI/SettingsMenu.vue';
         methods: {
             deleteNote(id) {
                 this.$emit('deleteNote', id);
+            },
+
+            showEditNotesDialog(id) {
+                this.$emit('showEditNotesDialog', id);
             }
         },
     }

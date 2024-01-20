@@ -60,11 +60,7 @@ class NoteController extends Controller
                 SavedNotes::create($savedNoteData);
                 if ($isReturnResponse) {
                     //вынести в функцию, код дублируется в методе getSavedNotes
-                    $all_notes = $this->savedNotes::select('id', 'note', 'created_at')
-                    ->where('saved_task_id', $saved_task_id)
-                    ->orderBy('created_at', 'desc')
-                    ->get()
-                    ->toArray();
+                    $all_notes = $this->getNotes($saved_task_id);
 
                     $response['all_notes'] = $all_notes;
                 }
@@ -88,6 +84,17 @@ class NoteController extends Controller
  
     }
 
+    private function getNotes($saved_task_id)
+    {
+        $notes = SavedNotes::select('id', 'note', 'created_at')
+        ->where('saved_task_id', $saved_task_id)
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->toArray();
+
+        return $notes;
+    }
+
     public function getSavedNotes(Request $request)
     {
         //get id of saved_task
@@ -103,11 +110,7 @@ class NoteController extends Controller
         $savedTaskId = $savedTaskId[0]['id'];
 
         //get notes for saved Task
-        $notes = SavedNotes::select('id', 'note', 'created_at')
-        ->where('saved_task_id', $savedTaskId)
-        ->orderBy('created_at', 'desc')
-        ->get()
-        ->toArray();
+        $notes = $this->getNotes($savedTaskId);
         //die(var_dump($notes));
         return json_encode( $notes, JSON_UNESCAPED_UNICODE);
     }

@@ -67,7 +67,8 @@
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
                     :item = "item"
-                    @deleteNote = "deleteNote"
+                    @deleteNote         = "deleteNote"
+                    @showEditNotesDialog = "showEditNotesDialog"
                     />
                 </v-list-item>
             </transition-group>
@@ -121,8 +122,17 @@
                 </v-btn>        
             </v-col>
         </v-row>
-
 		</v-card-actions>
+        <template
+        v-if="isShowEditNotesDialog"
+        >
+            <EditNotesDialog 
+            :isShowEditNotesDialog = "isShowEditNotesDialog"
+            :editableNoteData      = "editableNoteData"
+            :noteRules             = "noteRules"
+            @closeEditNotesDialog  = "closeEditNotesDialog"
+            />
+        </template>
 	</v-card>
 </template>
 
@@ -130,6 +140,7 @@
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import Note from './Note.vue';
+import EditNotesDialog from './EditNotesDialog.vue';
     export default {
         props: {
             notesList: {
@@ -172,6 +183,8 @@ import Note from './Note.vue';
                         return val.length <= 256 ? true : errorMessage;
                     },
                 ],
+                isShowEditNotesDialog: false,
+                editableNoteData: {},
             };
         },
 
@@ -179,6 +192,7 @@ import Note from './Note.vue';
             DefaultPreloader,
             AddSubtaskButton,
             Note,
+            EditNotesDialog,
         },
 
         methods: {
@@ -248,7 +262,22 @@ import Note from './Note.vue';
                     this.showAlert();
                 })
             },
-        }
+
+            showEditNotesDialog(id) {
+                this.setEditableNoteData(id);
+                this.isShowEditNotesDialog = true;
+            },
+
+            closeEditNotesDialog() {
+                this.isShowEditNotesDialog = false;
+            },
+
+            setEditableNoteData(id) {
+                const currenNote = this.notesList.find(note => note.id === id);
+                this.editableNoteData = {...currenNote};
+            }
+        },
+
     }
 </script>
 
