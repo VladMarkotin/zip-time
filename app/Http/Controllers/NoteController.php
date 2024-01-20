@@ -99,7 +99,7 @@ class NoteController extends Controller
 
     private function getNotes($saved_task_id)
     {
-        $notes = SavedNotes::select('id', 'note', 'created_at')
+        $notes = SavedNotes::select('id', 'note', 'created_at', 'updated_at')
         ->where('saved_task_id', $saved_task_id)
         ->orderBy('created_at', 'desc')
         ->get()

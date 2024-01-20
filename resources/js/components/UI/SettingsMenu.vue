@@ -2,6 +2,7 @@
     <v-menu
     bottom
     right
+    :attach="attachTo ? `#${attachTo}` : false"
     >
         <template v-slot:activator="{ on,}">
             <v-btn
@@ -41,6 +42,9 @@ import { mdiCog } from '@mdi/js';
             options: {
                 type: Array,
             },
+            attachTo: {
+                type: String,
+            }
         },
         data() {
             return {
@@ -55,6 +59,9 @@ import { mdiCog } from '@mdi/js';
                 this.$emit(event, id);
             }
         },
+        created() {
+            console.log(this.attachTo);
+        }
     }
 </script>
 

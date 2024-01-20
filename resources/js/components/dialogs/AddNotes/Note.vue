@@ -3,13 +3,18 @@
     style="width: 100%;"
     >
         <v-row class="p-3 m-0">
-            <v-col class="p-0 m-0 d-flex justify-content-between align-items-center" style="width: 100%;">
+            <v-col 
+            class="p-0 m-0 d-flex justify-content-between align-items-center" 
+            style="width: 100%;"
+            :id="getVMenuWrapperId(item.id)"
+            >
                 <v-card-title class="p-0 m-0">
                     Note from {{ item.created_at }}
                 </v-card-title>
                 <SettingsMenu 
-                :item    = "item"
-                :options = "options"
+                :item     =  "item"
+                :options  =  "options"
+                :attachTo = "getVMenuWrapperId(item.id)"
                 @deleteNote         = "deleteNote"
                 @showEditNotesDialog = "showEditNotesDialog"
                 />
@@ -54,6 +59,10 @@ import SettingsMenu from '../../UI/SettingsMenu.vue';
 
             showEditNotesDialog(id) {
                 this.$emit('showEditNotesDialog', id);
+            },
+
+            getVMenuWrapperId(id) {
+                return `v_menu_wrapper_${id}`;
             }
         },
     }

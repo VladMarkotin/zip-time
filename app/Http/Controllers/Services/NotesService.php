@@ -65,9 +65,4 @@ class NotesService
 
         return $note;
     }
-
-    private function saveNote(array $params)
-    {
-
-    }
 } 
