@@ -6,20 +6,26 @@ use App\Models\Tasks;
 use App\Models\SavedTask;
 use App\Models\User;
 use Auth;
+use App\Http\Controllers\Services\GetUserTimeService;
 
 class SubPlanService
 {
-    private $subPlan         = null;
-    private $currentUserTime = null;
+    private $subPlan            = null;
+    private $currentUserTime    = null;
+    private $getUserTimeService = null;
 
-    public function __construct(SubPlan $subPlan)
+    public function __construct(
+        SubPlan $subPlan,
+        GetUserTimeService $getUserTimeService
+    )
     {
-        $this->subPlan = $subPlan;
+        $this->subPlan            = $subPlan;
+        $this->getUserTimeService = $getUserTimeService;
     }
 
     public function countPercentOfCompletedWork(array $data)
     {   
-        $this->currentUserTime = $this->getUserTime('Y-m-d');
+        $this->currentUserTime = $this->getUserTimeService->getUserTime('Y-m-d');
 
         $taskQuantity = $this->getTaskQuantity($data);
         $completedTaskQuantity = $this->completedTaskQuantity($data);
@@ -127,7 +133,7 @@ class SubPlanService
 
     public function addIsOldCompleatedStatus(Array $subPlan) {
         return array_map(function($detail) {
-            $isOlDetail = $detail['created_at_user_time'] < ($this->getUserTime('Y-m-d') . ' 00:00:00');
+            $isOlDetail = $detail['created_at_user_time'] < ($this->getUserTimeService->getUserTime('Y-m-d') . ' 00:00:00');
             $isCompleatedDetail = empty($detail['is_failed']) && $detail['is_ready'];
 
             $detail['is_old_compleated'] = $isOlDetail && $isCompleatedDetail;
@@ -138,7 +144,7 @@ class SubPlanService
     public function getAllPreviousSubtasks($savedTaskId)
     {
         $previousSubTasks = SubPlan::where('saved_task_id', $savedTaskId)
-        ->where('created_at_user_time', '<', $this->getUserTime('Y-m-d') . ' 00:00:00')
+        ->where('created_at_user_time', '<', $this->getUserTimeService->getUserTime('Y-m-d') . ' 00:00:00')
         ->get()
         ->toArray();  
 
@@ -167,7 +173,7 @@ class SubPlanService
     {
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
-        ->where('created_at_user_time', '<', $this->getUserTime('Y-m-d') . ' 00:00:00')
+        ->where('created_at_user_time', '<', $this->getUserTimeService->getUserTime('Y-m-d') . ' 00:00:00')
         ->where('is_failed', 0)
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
@@ -183,7 +189,7 @@ class SubPlanService
         $currentSubtasksId = SubPlan::select(['id'])
         ->where('is_ready', 0)
         ->where('checkpoint', 1)
-        ->where('created_at_user_time', '<', $this->getUserTime('Y-m-d') . ' 00:00:00')
+        ->where('created_at_user_time', '<', $this->getUserTimeService->getUserTime('Y-m-d') . ' 00:00:00')
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
@@ -199,28 +205,13 @@ class SubPlanService
         ->where('is_ready', 1)
         ->where('is_failed', 1)
         ->whereNotNull('done_at_user_time')
-        ->where('done_at_user_time', '<', $this->getUserTime('Y-m-d') . ' 00:00:00')
+        ->where('done_at_user_time', '<', $this->getUserTimeService->getUserTime('Y-m-d') . ' 00:00:00')
         ->whereIn('saved_task_id', $currentUserSavTasksId)
         ->get()
         ->toArray();
         
         if (count($readyFailedSubtasksId)) {
             SubPlan::whereIn('id', $readyFailedSubtasksId)->update(['is_failed' => 0]);
-        }
-    }
-
-    public function getUserTime($format) 
-    {
-        $currentUserTimeZone = User::select(['timezone'])
-        ->where('id', Auth::id())
-        ->get()
-        ->toArray();
-
-        if (count($currentUserTimeZone)) {
-            $currentUserTimeZone = $currentUserTimeZone[0]['timezone'];
-            date_default_timezone_set($currentUserTimeZone);
-            
-            return date($format);
         }
     }
 }
