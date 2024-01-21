@@ -89,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
 
     //getting notes for concrete task
     Route::post('/get-saved-notes', [App\Http\Controllers\NoteController::class, 'getSavedNotes'])->name('getSavedNotes');
-
+    
     //Upgrade details in functionality in plan
     Route::post('/add-sub-task', [App\Http\Controllers\SubPlanController::class, 'createSubPlan'])->name('addSubTask'); //
     Route::post('/get-sub-tasks', [App\Http\Controllers\SubPlanController::class, 'getSubPlan'])->name('get-sub-tasks');//del-sub-task
@@ -99,6 +99,9 @@ Route::middleware(['auth'])->group(function () {
     
     //Upgrade notes functionality
     Route::post('get-today-note-amount',[App\Http\Controllers\NoteController::class, 'getTodayNoteAmount'])->name('get-note-amount');
+    Route::post('add-note',[App\Http\Controllers\NoteController::class, 'addNote'])->name('notes.create');
+    Route::post('/delete-note', [App\Http\Controllers\NoteController::class, 'destroy'])->name('notes.destroy');
+    Route::post('/update-note', [App\Http\Controllers\NoteController::class, 'update'])->name('notes.update');
     
     //Local chatGPT functionality
     Route::post('/create-gpt-subplan-request', [App\Http\Controllers\SubPlanGPTController::class, 'makeRequestToGPT'])->name('create-gpt-subplan-request');

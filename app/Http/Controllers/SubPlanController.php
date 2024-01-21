@@ -9,16 +9,23 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Services\SubPlanServices\SubPlanService;
 use App\Models\Tasks;
 use Carbon\Carbon;
+use App\Http\Controllers\Services\GetUserTimeService;
 
 class SubPlanController extends Controller
 {
-    private $subPlan = null;
-    private $subPlanService = null;
+    private $subPlan            = null;
+    private $subPlanService     = null;
+    private $getUserTimeService = null;
 
-    public function __construct(SubPlan $subPlan, SubPlanService $subPlanService)
+    public function __construct(
+        SubPlan            $subPlan, 
+        SubPlanService     $subPlanService,
+        GetUserTimeService $getUserTimeService
+    )
     {
-        $this->subPlan        = $subPlan;
-        $this->subPlanService = $subPlanService;
+        $this->subPlan            = $subPlan;
+        $this->subPlanService     = $subPlanService;
+        $this->getUserTimeService = $getUserTimeService;
     }
 
     public function createSubPlan(Request $request)
@@ -60,7 +67,7 @@ class SubPlanController extends Controller
         /**end */
         //die(var_dump($savedTaskId));
 
-        $userTime = $this->subPlanService->getUserTime('Y-m-d H:i:s');
+        $userTime = $this->getUserTimeService->getUserTime('Y-m-d H:i:s');
         if (!empty($userTime)) {
             $subPlan['created_at_user_time'] = $userTime;
         }
@@ -98,7 +105,7 @@ class SubPlanController extends Controller
     public function getSubPlan(Request $request)
     {
         $mode = $request->get('mode');
-        $currentUserTime = $this->subPlanService->getUserTime('Y-m-d');
+        $currentUserTime = $this->getUserTimeService->getUserTime('Y-m-d');
 
         $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
         $id = $request->get('task_id');
@@ -226,7 +233,7 @@ class SubPlanController extends Controller
 
     private function editDoneAtColumn($id, $is_ready) 
     {
-        $date = !empty($is_ready) ? $this->subPlanService->getUserTime('Y-m-d H:i:s') : null;
+        $date = !empty($is_ready) ? $this->getUserTimeService->getUserTime('Y-m-d H:i:s') : null;
         SubPlan::whereId($id)->update(['done_at_user_time' => $date]);
     }
 

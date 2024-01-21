@@ -1,5 +1,5 @@
 <template>
-    <v-tooltip bottom>
+    <v-tooltip right>
         <template v-slot:activator="{ on: tooltip  }">
             <v-btn 
             v-on="tooltip"
@@ -16,7 +16,7 @@
                 </v-icon>
             </v-btn>
         </template>
-        <span>Add subtask</span>
+        <span>{{tooltip}}</span>
     </v-tooltip>
 </template>
 
@@ -27,7 +27,11 @@ export default {
             buttonSize: {
                 type: Number,
                 default: 36,
-            }
+            },
+            tooltip: {
+                type: String,
+                default: 'Add subtask'
+            },
         },
         data() {
             return {
