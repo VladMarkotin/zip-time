@@ -560,6 +560,12 @@ hr.underline {
 }
 
 /* ====================== */
+/* не удалять */
+
+.main {
+    overflow: hidden;
+    max-width: 100%;
+}
 
 @keyframes stickyMenuAppearance {
     from { opacity: 0; transform: translate3d(0, -100%, 0)}

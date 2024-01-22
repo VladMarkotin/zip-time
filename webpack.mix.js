@@ -20,5 +20,6 @@ mix
     .sass('resources/sass/indexPage/indexPage.scss', 'public/css/indexPage')
     .sass('resources/sass/indexPage/indexPageMedia.scss', 'public/css/indexPage')
     .sass('resources/sass/loginPage/loginPage.scss', 'public/css/loginPage')
+    .sass('resources/sass/loginPage/loginPageMedia.scss', 'public/css/loginPage')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');

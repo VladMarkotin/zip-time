@@ -35,6 +35,9 @@
             <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
         @endif
+        @if(Route::currentRouteName() == 'login')
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        @endif
     @endguest
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -43,6 +46,10 @@
         @if(Route::currentRouteName() == 'welcome')
             <link href="{{ asset('css/indexPage/indexPage.css') }}" rel="stylesheet">
             <link href="{{ asset('css/indexPage/indexPageMedia.css') }}" rel="stylesheet">
+        @endif
+        @if(Route::currentRouteName() == 'login')
+            <link href="{{ asset('css/loginPage/loginPage.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/loginPage/loginPageMedia.css') }}" rel="stylesheet">
         @endif
     @endguest
     @livewireStyles

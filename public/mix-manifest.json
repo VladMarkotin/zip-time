@@ -2,8 +2,9 @@
     "/js/app.js": "/js/app.js",
     "/js/IndexPageController.js": "/js/IndexPageController.js",
     "/js/NavMenu.js": "/js/NavMenu.js",
-    "/css/app.css": "/css/app.css",
     "/css/customTooltip.css": "/css/customTooltip.css",
+    "/css/app.css": "/css/app.css",
+    "/css/loginPage/loginPageMedia.css": "/css/loginPage/loginPageMedia.css",
     "/css/loginPage/loginPage.css": "/css/loginPage/loginPage.css",
     "/css/indexPage/indexPageMedia.css": "/css/indexPage/indexPageMedia.css",
     "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css"
