@@ -172,14 +172,20 @@
                      <span>Emergency mode</span>
             </v-tooltip>
          </v-col>
+         <transition
+         enter-active-class="create-day-alert_appearance"
+         leave-active-class="create-day-alert_leave"
+         >
             <v-alert
+               v-if="showAlert"
                color="#404040"
                text
-               class="elevation-1"
-               :value="showAlert"
+               class="elevation-1 create-day-alert"
                :type="alertType"
-               >{{serverMessage}}
-            </v-alert>
+               >
+                  {{serverMessage}}
+               </v-alert>
+         </transition>
          </v-row>
          <div class="v-progress-circular" v-if="isShowProgress == true">
             <v-progress-circular
@@ -279,7 +285,8 @@ export default {
         dialogDelete: false,
         isShowProgress: false,
         value: 0,
-        interval: {}
+        interval: {},
+        closeAlertTime: 0,
     }),
     computed : {
         taskTypes() {
@@ -400,31 +407,46 @@ export default {
 
         formSubmit(e) {
             let currentObj = this;
-            currentObj.isShowProgress = true;
             axios.post('/addPlan', currentObj.getPostParams())
-                .then(function(response) { 
-                    currentObj.alertType = response.data.status;
-                    currentObj.serverMessage = response.data.message;
-                    currentObj.showAlert = true;
-                    currentObj.isShowProgress = true
-                    currentObj.interval = setInterval(() => {
-							if (currentObj.value === 100) {
-								clearInterval(currentObj.interval)
-								return (currentObj.value = 100)
-							}
-                        currentObj.value += 20
-							}, 500)
-                    setTimeout(() => {
-                        currentObj.showAlert = false
-                        currentObj.isShowProgress = false
-                        document.location.reload();
-                        if (response.data.status == 'success') {
-                           const data = JSON.parse(response.config.data)
-                           currentObj.$root.currComponentProps = data.plan
-                           currentObj.$root.currComponent = "ReadyDayPlan"
-                           
-                        }
-                    }, 5e3)
+            .then(function(response) { 
+               const {status} = response.data;
+               
+               currentObj.alertType = response.data.status;
+               currentObj.serverMessage = response.data.message;
+               currentObj.showAlert = true;
+
+               if (status === 'success') {
+                     currentObj.isShowProgress = true;
+
+                     currentObj.interval = setInterval(() => {
+                      if (currentObj.value === 100) {
+                         clearInterval(currentObj.interval)
+                         return (currentObj.value = 100)
+                      }
+                         currentObj.value += 20
+                      }, 500)
+                     setTimeout(() => {
+                         currentObj.showAlert = false
+                         currentObj.isShowProgress = false
+                         document.location.reload();
+                         if (response.data.status == 'success') {
+                            const data = JSON.parse(response.config.data)
+                            currentObj.$root.currComponentProps = data.plan
+                            currentObj.$root.currComponent = "ReadyDayPlan"
+                            
+                         }
+                     }, 5e3)
+                  }  
+                  
+                  if (status === 'error') {
+                     clearTimeout(currentObj.closeAlertTime);
+
+                     currentObj.closeAlertTime = setTimeout(() => {
+                        currentObj.showAlert = false;
+                     }, 4500);
+
+                  }
+
                 })
                 .catch(function(error) {
                     currentObj.output = error;
@@ -771,5 +793,27 @@ export default {
 	.v-progress-circular{
 		width: 50px;
 		margin: auto;
+	}
+
+   .create-day-alert {
+      position: relative;
+   }
+
+   .create-day-alert_appearance {
+      animation: .3s alert_appearance ease;
+   }
+
+   .create-day-alert_leave {
+      animation: .3s alert_leave ease;
+   }
+
+   @keyframes alert_appearance {
+		from { opacity: 0; left: -10px;}
+		to { opacity: 1; left: 0;}
+	}
+
+	@keyframes alert_leave {
+		from { opacity: 1; left: 0;}
+		to { opacity: 0; left: 10px;}
 	}
 </style>
