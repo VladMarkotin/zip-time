@@ -19,5 +19,6 @@ mix
     .css('resources/css/app.css', 'public/css/app.css')
     .sass('resources/sass/indexPage/indexPage.scss', 'public/css/indexPage')
     .sass('resources/sass/indexPage/indexPageMedia.scss', 'public/css/indexPage')
+    .sass('resources/sass/authPage/authPage.scss', 'public/css/authPage')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');
