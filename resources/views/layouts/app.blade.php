@@ -66,7 +66,7 @@
     <livewire:dropdown />
     <livewire:add-log />
 
-    <div id="app">
+    <div id="app" class="root">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm nav-menu">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
@@ -173,6 +173,16 @@
             @yield('content')
         </main>
 
+        <footer class="footer">
+            <div class="footer-info">
+                <p class="footer-text">
+                    footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras
+                    adipiscing.
+                </p>
+                <p class="footer-text">© 2023</p>
+            </div>
+        </footer>
     </div>
     <livewire:scripts />
     @stack('script')
@@ -188,15 +198,5 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<footer class="footer">
-    <div class="footer-info">
-        <p class="footer-text">
-            footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras
-            adipiscing.
-        </p>
-        <p class="footer-text">© 2023</p>
-    </div>
-</footer>
 
 </html>

@@ -9994,10 +9994,24 @@ h3 {
 html {
     height: 100%;
 }
-
-#app {
+/* тут прибит футер */
+.root {
     position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+.main {
+    flex: 1 1 auto;
+}
+/* ------------- */
+
+/* желательно перенести (min-height 100vh висит на body и на корневом узле)*/
+.v-application--wrap {
+  min-height: 0vh !important;
+}
+/* ------------- */
 
 .navbar {
     background-color: rgb(34,34,34);
