@@ -92,10 +92,10 @@
                                  <v-btn 
                                  icon 
                                  v-on="on"
-                                 class="buttonOne"
+                                 class="activator-taskTypeTooltip"
                                  >
                                     <v-icon 
-                                    color="#000000DD"
+                                    color="#272421DD"
                                     md="1"
                                     > 
                                        {{icons.mdiHelpCircleOutline}}
@@ -503,7 +503,7 @@ export default {
             })
             .join('');
          
-            return taskTypeInfo[typeFormated];
+            return taskTypeInfo[typeFormated] || '';
       }
     },
     created() {
@@ -833,7 +833,7 @@ export default {
 		margin: auto;
 	}
 
-   .buttonOne.v-btn:focus::before {
-  opacity: 0 !important;
- }
+   .activator-taskTypeTooltip.v-btn:focus::before {
+      opacity: 0 !important;
+   }
 </style>
