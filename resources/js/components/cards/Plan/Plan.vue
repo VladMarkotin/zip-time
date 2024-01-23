@@ -83,14 +83,16 @@
                      >
                         <template v-slot:item="{item}" >
                            <v-list-item >{{ item }}</v-list-item>
+                           <!-- open-on-hover -->
                            <v-menu
-                           right
-                           open-on-hover
+                           :nudge-right="55"
+                           :nudge-top="8"
                            >
                               <template v-slot:activator="{ on, attrs }">
                                  <v-btn 
                                  icon 
                                  v-on="on"
+                                 class="buttonOne"
                                  >
                                     <v-icon 
                                     color="#000000DD"
@@ -100,9 +102,17 @@
                                     </v-icon>
                                  </v-btn>
                               </template>
-                              <v-list>
-                                 <h1>111111111111111111111111111</h1>
-                              </v-list>
+                              <v-card
+                              min-height="200"
+                              width="300"
+                              >
+                                 <v-card-title class="justify-content-center">{{ item }}</v-card-title>
+                                 <v-card-text>
+                                    <p class="text--primary text-justify mb-0">
+                                       {{ getTaskTypeInfo(item) }}
+                                    </p>
+                                 </v-card-text>
+                              </v-card>
                            </v-menu>
                         </template>
                      </v-select>
@@ -306,7 +316,7 @@ export default {
         dialogDelete: false,
         isShowProgress: false,
         value: 0,
-        interval: {}
+        interval: {},
     }),
     computed : {
         taskTypes() {
@@ -472,6 +482,29 @@ export default {
          this.defaultSelected.hash = this.newHashCode;
          this.isShowAddHashCodeDialog = false;
       },
+
+      getTaskTypeInfo(type) {
+         const taskTypeInfo = {
+            requiredJob:
+               'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum iste exercitationem doloremque cumque esse ea ipsam odit, consectetur numquam animi vel assumenda optio,',
+            nonRequiredJob: 
+               'earum dolorem voluptate laudantium beatae voluptates ducimus alias velit a ullam. Fuga ex odit tempore odio saepe dolore aut deleniti, veniam assumenda repudiandae',
+            requiredTask:   
+               'totam sed voluptatem, exercitationem impedit! Cupiditate velit ea animi aliquid harum alias, mollitia excepturi nostrum eius magnam voluptate eum voluptatum nulla culpa,',
+            task:           
+               'ratione qui saepe temporibus recusandae beatae distinctio?',
+         }
+
+         //приходит строка с типом таски, трансформирую ее в CamelCase 
+         const typeFormated = type.split(' ')
+            .map((word,index) => {
+               if (index === 0) return word;
+               return word[0].toUpperCase() + word.slice(1)
+            })
+            .join('');
+         
+            return taskTypeInfo[typeFormated];
+      }
     },
     created() {
         let currentObj = this;
@@ -799,4 +832,8 @@ export default {
 		width: 50px;
 		margin: auto;
 	}
+
+   .buttonOne.v-btn:focus::before {
+  opacity: 0 !important;
+ }
 </style>
