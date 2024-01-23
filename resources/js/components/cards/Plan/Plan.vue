@@ -80,7 +80,32 @@
                      required
                      :items="taskTypes"
                      v-model="defaultSelected.type"
-                     ></v-select>
+                     >
+                        <template v-slot:item="{item}" >
+                           <v-list-item >{{ item }}</v-list-item>
+                           <v-menu
+                           right
+                           open-on-hover
+                           >
+                              <template v-slot:activator="{ on, attrs }">
+                                 <v-btn 
+                                 icon 
+                                 v-on="on"
+                                 >
+                                    <v-icon 
+                                    color="#000000DD"
+                                    md="1"
+                                    > 
+                                       {{icons.mdiHelpCircleOutline}}
+                                    </v-icon>
+                                 </v-btn>
+                              </template>
+                              <v-list>
+                                 <h1>111111111111111111111111111</h1>
+                              </v-list>
+                           </v-menu>
+                        </template>
+                     </v-select>
                </v-col>
                <v-col cols="1" md="1">
                   <v-select
@@ -218,6 +243,7 @@ import {
     mdiPlus,
     mdiPlusBox,
     mdiCancel,
+    mdiHelpCircleOutline,
 } from '@mdi/js'
 
 export default {
@@ -254,6 +280,7 @@ export default {
             mdiPlusBox,
             mdiCancel,
             mdiCarEmergency,
+            mdiHelpCircleOutline,
         },
         hashCodes: [],
         hashNames: '#',
