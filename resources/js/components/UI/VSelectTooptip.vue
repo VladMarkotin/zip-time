@@ -38,6 +38,10 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
             item: {
                 type: String,
                 required: true,
+            },
+            tooltipData: {
+                type: Object,
+                required: true,
             }
         },
         data() {
@@ -47,17 +51,6 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
         },
         methods: {
             getText(type){
-                const taskTypeInfo = {
-                    requiredJob:
-                    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum iste exercitationem doloremque cumque esse ea ipsam odit, consectetur numquam animi vel assumenda optio,',
-                    nonRequiredJob: 
-                    'earum dolorem voluptate laudantium beatae voluptates ducimus alias velit a ullam. Fuga ex odit tempore odio saepe dolore aut deleniti, veniam assumenda repudiandae',
-                    requiredTask:   
-                    'totam sed voluptatem, exercitationem impedit! Cupiditate velit ea animi aliquid harum alias, mollitia excepturi nostrum eius magnam voluptate eum voluptatum nulla culpa,',
-                    task:           
-                    'ratione qui saepe temporibus recusandae beatae distinctio?',
-                }
-
                 //приходит строка с типом таски, трансформирую ее в CamelCase 
                 const typeFormated = type.split(' ')
                     .map((word,index) => {
@@ -66,7 +59,7 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
                     })
                     .join('');
                 
-                    return taskTypeInfo[typeFormated] || '';
+                    return this.tooltipData[typeFormated] || '';
                 }
         }
     }
