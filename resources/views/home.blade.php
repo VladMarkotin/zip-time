@@ -330,11 +330,5 @@
             </div>
         </section>
         @endguest
-    
 @endsection
-<style>
-    #app {
-        background: initial;
-    }
-</style>
 

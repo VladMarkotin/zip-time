@@ -5,6 +5,7 @@ class PageSmoothAppear {
         window.addEventListener('load', () => {
             mainPreloader.remove();    
             document.getElementById('app').style.opacity = 1;
+            console.log('страница загрузилась');
         });
 
     }
