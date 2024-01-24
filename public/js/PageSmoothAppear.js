@@ -17,8 +17,8 @@ var PageSmoothAppear = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       var mainPreloader = document.getElementById('main_preloader_wrapper');
-      mainPreloader.remove();
       window.addEventListener('load', function () {
+        mainPreloader.remove();
         document.getElementById('app').style.opacity = 1;
       });
     }
