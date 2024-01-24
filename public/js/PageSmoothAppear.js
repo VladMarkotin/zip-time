@@ -16,8 +16,10 @@ var PageSmoothAppear = /*#__PURE__*/function () {
   _createClass(PageSmoothAppear, null, [{
     key: "init",
     value: function init() {
+      var mainPreloader = document.getElementById('main_preloader_wrapper');
+      mainPreloader.remove();
       window.addEventListener('load', function () {
-        document.body.style.opacity = 1;
+        document.getElementById('app').style.opacity = 1;
       });
     }
   }]);

@@ -1,7 +1,11 @@
 class PageSmoothAppear {
+
     static init() {
+        const mainPreloader = document.getElementById('main_preloader_wrapper');
+        mainPreloader.remove();    
+        
         window.addEventListener('load', () => {
-            document.body.style.opacity = 1;
+            document.getElementById('app').style.opacity = 1;
         });
     }
 }

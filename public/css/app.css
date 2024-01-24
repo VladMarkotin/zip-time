@@ -10559,8 +10559,17 @@ hr.underline {
     overflow: hidden;
     max-width: 100%;
 }
+/* ====================== */
 
 @keyframes stickyMenuAppearance {
     from { opacity: 0; transform: translate3d(0, -100%, 0)}
     to { opacity: 1; top: 0; transform: none;}
 }
+
+/* ====================== */
+/* Cтили для прелоадера основного */
+#main_preloader_wrapper {
+    
+}
+
+/* ====================== */

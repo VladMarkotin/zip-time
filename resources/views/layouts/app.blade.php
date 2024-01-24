@@ -70,13 +70,12 @@
     <livewire:styles />
 </head>
 
-<body style="opacity:0;transition:.5s;">
-
-    <livewire:feedback />
-    <livewire:dropdown />
-    <livewire:add-log />
-
-    <div id="app" class="root">
+<body>
+    @include('preloader')
+    <div id="app" class="root" style="opacity:0; transition: .5s opacity">
+        <livewire:feedback />
+        <livewire:dropdown />
+        <livewire:add-log />
         <nav class="navbar navbar-expand-md navbar-light shadow-sm nav-menu">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
