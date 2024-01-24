@@ -375,7 +375,7 @@ var PhilosofySlider = /*#__PURE__*/function () {
       _classPrivateFieldSet(this, _sliderButtonsWrapper, document.querySelector('.philosofy-slider-buttons'));
       _classPrivateFieldSet(this, _activeClassVal, 'philosofy-slider-active-button');
       this.move = this.move.bind(this);
-      _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter);
+      _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter) + 'px';
       this.cleanButtonWrapper();
       _classPrivateFieldGet(this, _sliderItems).forEach(function (item, index) {
         item.style.width = _classPrivateFieldGet(_this, _sliderWidth);
