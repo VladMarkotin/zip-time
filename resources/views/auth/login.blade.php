@@ -33,8 +33,8 @@
         </section>
     </div>
     
-    {{-- <div class="facebook-link">
+    <div class="facebook-link">
         <Facebook/>
-    </div>                                     --}}
+    </div>                                    
 </div>
 @endsection

@@ -12,6 +12,9 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/custom.js') }}" defer></script>
+    {{-- костыль, что бы замаскировать дергание страницы при загрузке --}}
+    <script src="{{ asset('js/PageSmoothAppear.js') }}" defer></script>
+    {{--  --}}
     @guest
         @if(Route::currentRouteName() == 'welcome')
             <script src="js/IndexPageController.js" defer></script>
@@ -67,7 +70,7 @@
     <livewire:styles />
 </head>
 
-<body>
+<body style="opacity:0;transition:.5s;">
 
     <livewire:feedback />
     <livewire:dropdown />
