@@ -77,14 +77,24 @@ ol {
                 font-size: 29px;
                 line-height: 48.41px;
                 margin-bottom: 65px;
-                text-align: center;
+                text-align: left;
+            }
+
+            .login-icons-wrapper {
+                display: flex;
+                justify-content: space-between;
             }
         }
-    
-        .login-icons-wrapper {
+        
+        .login-links-wrapper {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
+
+            .facebook-link {
+                display: flex;
+                justify-content: flex-end;
+            }
         }
     }
 }

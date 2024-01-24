@@ -70,10 +70,18 @@ ol {
   font-size: 29px;
   line-height: 48.41px;
   margin-bottom: 65px;
-  text-align: center;
+  text-align: left;
 }
-.inner-block .login-section .login-icons-wrapper {
+.inner-block .login-section .login-info .login-icons-wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+}
+.inner-block .login-section .login-links-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.inner-block .login-section .login-links-wrapper .facebook-link {
+  display: flex;
+  justify-content: flex-end;
 }
