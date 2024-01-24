@@ -586,68 +586,39 @@ hr.underline {
     justify-content: center;
     align-items: center;
 }
+
 #main_preloader{
     width: 100px;
     height: 100px;
-    margin: 50px auto 0;
+    margin: 0 auto;
     position: relative;
-    animation: flipA steps(1) infinite;
-    animation-duration: 2s;
 }
 #main_preloader:before,
 #main_preloader:after{
     content: "";
-    background: rgb(34,34,34);;
     width: 100%;
-    height: 50%;
-    transform-origin: 50% 50%;
+    height: 100%;
+    border-width: 50px;
+    border-style: double;
+    border-color: transparent;
+    border-right-color: transparent;
+    border-right-color: #A10000;
+    border-radius: 50%;
     position: absolute;
     top: 0;
-    left: 0;
-    animation: flipB 2s linear infinite;
-    clip-path: polygon(0 0,100% 0,50% 100%);
+    right: 0;
+    animation: spin 1s infinite;
+    animation-delay: -0.25s;
 }
 #main_preloader:after{
-    transform-origin: 50% 50%; 
-    animation: flipC 2s linear infinite;
+    left: 0;
+    border-right-color: transparent;
+    border-left-color: #A10000;
+    animation: spin 1s infinite;
+    animation-delay: 0;
 }
-@keyframes flipA{
-    0%, 75%, 100% { transform: rotate(0); }
-    25%, 50% { transform: rotate(90deg); }
-}  
-@keyframes flipB{
-    0%{ transform: translateY(0) rotateX(0deg); }
-    6.25%{ transform: translateY(0) rotateX(0deg); }
-    12.5%{ transform: translateY(-50%) rotateX(90deg); }
-    18.75%{ transform: translateY(0) rotateX(180deg); }
-    31.25%{ transform: translateY(0) rotateX(180deg); }
-    37.5%{ transform: translateY(-50%) rotateX(270deg); }
-    43.75%{ transform: translateY(0) rotateX(360deg); }
-    50%{ transform: translateY(0) rotateX(360deg); }
-    56.25%{ transform: translateY(0) rotateX(360deg); }
-    62.5%{ transform: translateY(-50%) rotateX(450deg); }
-    68.75%{ transform: translateY(0) rotateX(540deg); }
-    81.25%{ transform: translateY(0) rotateX(540deg); }
-    87.5%{ transform: translateY(-50%) rotateX(630deg); }
-    93.75%{ transform: translateY(0) rotateX(720deg); }
-    100%{ transform: translateY(0) rotateX(720deg); }
-}
-@keyframes flipC{
-    0%{ transform: translateY(100%) rotateZ(180deg) rotateX(0deg); }
-    6.25%{ transform: translateY(100%) rotateZ(180deg) rotateX(0deg); }
-    12.5%{ transform: translateY(150%) rotateZ(180deg) rotateX(90deg); }
-    18.75%{ transform: translateY(100%) rotateZ(180deg) rotateX(180deg); }
-    31.25%{ transform: translateY(100%) rotateZ(180deg) rotateX(180deg); }
-    37.5%{ transform: translateY(150%) rotateZ(180deg) rotateX(270deg); }
-    43.75%{ transform: translateY(100%) rotateZ(180deg) rotateX(360deg); }
-    50%{ transform: translateY(100%) rotateZ(180deg) rotateX(360deg); }
-    56.25%{ transform: translateY(100%) rotateZ(180deg) rotateX(360deg); }
-    62.5%{ transform: translateY(150%) rotateZ(180deg) rotateX(450deg); }
-    68.75%{ transform: translateY(100%) rotateZ(180deg) rotateX(540deg); }
-    81.25%{ transform: translateY(100%) rotateZ(180deg) rotateX(540deg); }
-    87.5%{ transform: translateY(150%) rotateZ(180deg) rotateX(630deg); }
-    93.75%{ transform: translateY(100%) rotateZ(180deg) rotateX(720deg); }
-    100%{ transform: translateY(100%) rotateZ(180deg) rotateX(720deg); }        
+@keyframes spin{ 
+    0%{ transform: rotate(360deg);} 
 }
 
 /* ====================== */
