@@ -29,12 +29,14 @@
                     </div>
                 </div>
             </div>
-            <div class="login-links-wrapper">2</div>
+            <div class="login-links-wrapper">
+                <div class="facebook-link">
+                    <Facebook/>
+                </div>   
+            </div>
         </section>
     </div>
     
-    <div class="facebook-link">
-        <Facebook/>
-    </div>                                    
+                                   
 </div>
 @endsection
