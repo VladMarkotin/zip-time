@@ -58,7 +58,7 @@ ol {
 }
 .inner-block .login-section .login-info .title-login-page {
   text-align: center;
-  margin-bottom: 30px;
+  margin: 45px 0;
   font-weight: 600;
   font-size: 44px;
 }
@@ -76,7 +76,7 @@ ol {
 .inner-block .login-section .login-links-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 }
 .inner-block .login-section .login-links-wrapper .facebook-link {
   display: flex;
