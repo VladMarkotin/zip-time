@@ -63,7 +63,24 @@
 								v-bind:items="types" 
 								v-model="task.type"
 								@change="compareWithTemplate"
-								></v-select>
+								>
+								<template v-slot:item="{item}">
+									<v-list-item >{{ item }}</v-list-item>
+									<VSelectTooptip 
+                          			:item="item"
+                           			:tooltipData = "{
+                             			requiredJob:
+                                 			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum iste exercitationem doloremque cumque esse ea ipsam odit, consectetur numquam animi vel assumenda optio,',
+                              			nonRequiredJob: 
+                                 			'earum dolorem voluptate laudantium beatae voluptates ducimus alias velit a ullam. Fuga ex odit tempore odio saepe dolore aut deleniti, veniam assumenda repudiandae',
+                              			requiredTask:   
+                                 			'totam sed voluptatem, exercitationem impedit! Cupiditate velit ea animi aliquid harum alias, mollitia excepturi nostrum eius magnam voluptate eum voluptatum nulla culpa,',
+                              			task:           
+                                 			'ratione qui saepe temporibus recusandae beatae distinctio?',
+                           			}"
+                           			/>
+								</template>
+								</v-select>
 							</v-col>
 							<v-col
 							cols="1"
@@ -124,10 +141,18 @@
 	import CloseButton from '../UI/CloseButton.vue';
 	import TimePickerMenu from '../TimePickerMenu.vue';
 	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
+	import VSelectTooptip from '../UI/VSelectTooptip.vue';
 
 	export default
 		{
-			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, TimePickerMenu},
+			components : {
+				AddHashCode, 
+				AddHashCodeButton, 
+				CleanHashCodeButton, 
+				CloseButton, 
+				TimePickerMenu,
+				VSelectTooptip,
+			},
 			data()
 			{
 				return {
