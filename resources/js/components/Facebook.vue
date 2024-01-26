@@ -7,7 +7,7 @@
       </div>
       <div class="login-facebook-button__text-wrapper">
         <span class="login-facebook-button__text"><span class="bold">Continue with</span> Facebook</span>
-        <span class="login-facebook-button__text secure-login-text">secure login</span>
+        <span class="login-facebook-button__text secure-login-text">secured log in</span>
       </div>
     </button>
   </a>
