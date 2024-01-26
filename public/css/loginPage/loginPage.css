@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body,
 h1,
 h2,
@@ -48,7 +49,8 @@ ol {
   max-width: 800px;
   min-height: 450px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto;
+  grid-column-gap: 50px;
   padding: 35px;
   border-radius: 25px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 2px 18px rgba(0, 0, 0, 0.08);
@@ -76,9 +78,48 @@ ol {
 .inner-block .login-section .login-links-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
-.inner-block .login-section .login-links-wrapper .facebook-link {
+.inner-block .login-section .login-links-wrapper .facebook-link-wrapper {
   display: flex;
   justify-content: flex-end;
+  height: 100%;
+  align-items: center;
+}
+.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 50px;
+}
+.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text {
+  margin-bottom: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #7D7F7D;
+}
+.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link {
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  color: #8A9597;
+}
+.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: #8A9597;
+  transition: width 0.3s ease-out;
+  /*задаём время анимации*/
+}
+.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:hover::after, .inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:focus::after {
+  width: 100%;
 }
