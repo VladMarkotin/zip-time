@@ -745,7 +745,6 @@
 		},
 	}
 	
-	
 </script>
 <style scoped>
 	.v-card-title
