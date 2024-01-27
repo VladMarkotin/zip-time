@@ -100,7 +100,7 @@
     left: 0;
     width: 0%;
     height: 100%;
-    background-color: #00693E;
+    background-color: #003399;
     transition: all 0.3s;
     border-radius: 10rem;
     z-index: -1;
