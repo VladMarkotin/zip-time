@@ -62,7 +62,7 @@ class SubPlanGPTController extends Controller
                 ->select('id')
                 ->where('user_id',   '=', Auth::id())
                 ->where('hash_code', '=', $hash)
-                //->union($savedDefaultTask)
+                //->union($savedDefaultTask) 
                 ->get()
                 ->toArray();
                 
