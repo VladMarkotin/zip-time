@@ -73,6 +73,7 @@ class SubPlanGPTController extends Controller
                         'title'       => $el,
                         'created_at' => DB::raw('CURRENT_TIMESTAMP(0)'),
                         'updated_at' => DB::raw('CURRENT_TIMESTAMP(0)'),
+                        'created_at_user_time' => DB::raw('CURRENT_TIMESTAMP(0)'),
                     ];
                 }
                 DB::table('subplans')->insert($dataSet);
