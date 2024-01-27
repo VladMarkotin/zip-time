@@ -19,7 +19,7 @@ class PhilosofySlider {
 
         this.move = this.move.bind(this)
 
-        this.#sliderLine.style.width = Number.parseInt(this.#sliderWidth) * this.#sliderItemsCounter;
+        this.#sliderLine.style.width = Number.parseInt(this.#sliderWidth) * this.#sliderItemsCounter + 'px';
         
         this.cleanButtonWrapper();
         this.#sliderItems.forEach((item, index) => {

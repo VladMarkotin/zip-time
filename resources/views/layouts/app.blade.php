@@ -12,6 +12,9 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/custom.js') }}" defer></script>
+    {{-- костыль, что бы замаскировать дергание страницы при загрузке --}}
+    <script src="{{ asset('js/PageSmoothAppear.js') }}" defer></script>
+    {{--  --}}
     @guest
         @if(Route::currentRouteName() == 'welcome')
             <script src="js/IndexPageController.js" defer></script>
@@ -35,6 +38,10 @@
             <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
         @endif
+        @if(Route::currentRouteName() == 'login')
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+        @endif
     @endguest
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -43,6 +50,10 @@
         @if(Route::currentRouteName() == 'welcome')
             <link href="{{ asset('css/indexPage/indexPage.css') }}" rel="stylesheet">
             <link href="{{ asset('css/indexPage/indexPageMedia.css') }}" rel="stylesheet">
+        @endif
+        @if(Route::currentRouteName() == 'login')
+            <link href="{{ asset('css/loginPage/loginPage.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/loginPage/loginPageMedia.css') }}" rel="stylesheet">
         @endif
     @endguest
     @livewireStyles
@@ -61,12 +72,11 @@
 </head>
 
 <body>
-
+    @include('preloader')
     <livewire:feedback />
     <livewire:dropdown />
     <livewire:add-log />
-
-    <div id="app">
+    <div id="app" class="root" style="opacity:0; transition: .5s opacity">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm nav-menu">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="text-align:center;">
@@ -173,6 +183,16 @@
             @yield('content')
         </main>
 
+        <footer class="footer">
+            <div class="footer-info">
+                <p class="footer-text">
+                    footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras
+                    adipiscing.
+                </p>
+                <p class="footer-text">© 2023</p>
+            </div>
+        </footer>
     </div>
     <livewire:scripts />
     @stack('script')
@@ -188,15 +208,5 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<footer class="footer">
-    <div class="footer-info">
-        <p class="footer-text">
-            footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras
-            adipiscing.
-        </p>
-        <p class="footer-text">© 2023</p>
-    </div>
-</footer>
 
 </html>
