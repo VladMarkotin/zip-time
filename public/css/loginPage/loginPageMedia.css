@@ -41,3 +41,55 @@
     width: 40px;
   }
 }
+@media screen and (max-width: 740px) {
+  .inner-block {
+    max-width: 450px;
+    padding: 0;
+  }
+  .inner-block .login-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .login-info {
+    margin-top: 30px;
+  }
+  .login-info .title-login-page {
+    margin: 0;
+  }
+  .login-info .subtitle-login-page {
+    margin: 20px 0;
+    line-height: 31px;
+  }
+
+  .login-links-wrapper {
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .login-links-wrapper .login-links-inner-block {
+    height: auto;
+    display: block;
+  }
+  .login-links-wrapper .login-links-inner-block .facebook-link-wrapper {
+    margin-bottom: 20px;
+  }
+}
+@media screen and (max-width: 520px) {
+  .inner-block {
+    max-width: 420px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .inner-block {
+    max-width: 270px;
+  }
+
+  .login-info .title-login-page {
+    font-size: 32px;
+  }
+  .login-info .subtitle-login-page {
+    text-align: justify;
+    font-size: 20px;
+    line-height: 26px;
+  }
+}

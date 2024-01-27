@@ -77,7 +77,7 @@ html {
     /* margin-bottom: 0px; */
     flex-direction: column;
     justify-content: space-evenly;
-    height: 220px;
+    /* height: 220px; */
     background: linear-gradient(180deg, #5c1a1a 0%, #1a1411 45.31%);
 }
 

@@ -125,4 +125,23 @@
     font-size: 10px;
     line-height: 11px;
   }
+
+  @media screen and (max-width: 480px) {
+    .login-facebook-button__text {
+      font-size: 11px;
+    }
+
+    .secure-login-text {
+      font-size: 9px;
+    }
+
+    .login-facebook-button {
+      padding: 7px 12px;
+    }
+
+    .login-facebook-icon {
+      height: 30px;
+      width: 30px;
+    }
+  }
 </style>
