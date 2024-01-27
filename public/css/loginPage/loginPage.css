@@ -53,36 +53,43 @@ ol {
   min-height: 450px;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
   grid-column-gap: 10px;
   padding: 35px;
   border-radius: 25px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 2px 18px rgba(0, 0, 0, 0.08);
 }
-.inner-block .login-section .login-info {
+
+.login-icons-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-info {
   color: #000000;
   text-align: center;
+  grid-column: 1/2;
 }
-.inner-block .login-section .login-info .title-login-page {
+.login-info .title-login-page {
   margin: 45px 0;
   font-weight: 600;
   font-size: 44px;
 }
-.inner-block .login-section .login-info .subtitle-login-page {
+.login-info .subtitle-login-page {
   font-weight: 900;
   font-size: 30px;
   line-height: 38px;
   margin-bottom: 65px;
 }
-.inner-block .login-section .login-info .login-icons-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
-.inner-block .login-section .login-links-wrapper {
+
+.login-links-wrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  grid-row: 1/4;
+  grid-column: 2/3;
 }
-.inner-block .login-section .login-links-wrapper .login-links-inner-block {
+.login-links-wrapper .login-links-inner-block {
   height: 100%;
   display: flex;
   flex-direction: column;
