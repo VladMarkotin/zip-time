@@ -8,7 +8,7 @@ p,
 ul[class],
 ol[class],
 li {
-  margin: 0;
+    margin: 0;
 }
 
 body {
@@ -22,12 +22,12 @@ input,
 button,
 textarea,
 select {
-  font: inherit;
+    font: inherit;
 }
 
 ul,
 ol {
-  list-style: none;
+    list-style: none;
 }
 
 // кастомные классы
@@ -43,7 +43,7 @@ ol {
 //верстка по странице
 
 .inner-block {
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -51,7 +51,8 @@ ol {
     max-width: 1170px;
     margin: 0 auto;
     min-height: inherit;
-    
+    padding: 0 50px;
+
     .login-section {
         max-width: 800px;
         min-height: 450px;
@@ -60,87 +61,92 @@ ol {
         grid-column-gap: 10px;
         padding: 35px;
         border-radius: 25px;
-        box-shadow: 0 1px 4px rgba(0,0,0,.04),0 2px 18px rgba(0,0,0,.08);;
-    
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04),
+            0 2px 18px rgba(0, 0, 0, 0.08);
+
         .login-info {
             color: #000000;
-    
+            text-align: center;
+
             .title-login-page {
-                text-align: center;
                 margin: 45px 0;
                 font-weight: 600;
                 font-size: 44px;
             }
-        
+
             .subtitle-login-page {
                 font-weight: 900;
                 font-size: 30px;
                 line-height: 38px;
                 margin-bottom: 65px;
-                text-align: left;
             }
 
             .login-icons-wrapper {
                 display: flex;
                 justify-content: space-between;
-
             }
         }
-        
+
         .login-links-wrapper {
             display: flex;
             flex-direction: column;
+            align-items: flex-end;
 
-            .facebook-link-wrapper {
-                display: flex;
-                justify-content: flex-end;
+            .login-links-inner-block {
                 height: 100%;
-                align-items: center;
-            }
-
-            .privacy-policy-wrapper {
                 display: flex;
-                justify-content: flex-end;
-                min-height: 50px;
+                flex-direction: column;
+            }
+        }
+    }
+}
 
-                .privacy-policy-text-wrapper {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
+.facebook-link-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+}
 
-                    .privacy-policy-text {
-                        margin-bottom: 0;
-                        font-family: 'Inter', sans-serif;
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 17px;
-                        color: #7D7F7D;
+.privacy-policy-wrapper {
+    display: flex;
+    justify-content: center;
+    min-height: 50px;
 
-                        .privacy-policy-link {
-                            color: inherit;
-                            text-decoration: none;
-                            position: relative;
-                            color: #8A9597;
+    .privacy-policy-text-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-                            &::after {
-                                content: "";
-                                display: block;
-                                position: absolute;
-                                left: 0; 
-                                width: 0;
-                                height: 1.5px;
-                                background-color: #8A9597;
-                                transition: width 0.3s ease-out; /*задаём время анимации*/
-                            }
+        .privacy-policy-text {
+            margin-bottom: 0;
+            font-family: "Inter", sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+            color: #7d7f7d;
 
-                            &:hover::after,
-                            &:focus::after {
-                                width: 100%;
-                            }
-                        }
-                    }
+            .privacy-policy-link {
+                color: inherit;
+                text-decoration: none;
+                position: relative;
+                color: #8a9597;
+
+                &::after {
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    left: 0;
+                    width: 0;
+                    height: 1.5px;
+                    background-color: #8a9597;
+                    transition: width 0.3s ease-out;
                 }
 
+                &:hover::after,
+                &:focus::after {
+                    width: 100%;
+                }
             }
         }
     }

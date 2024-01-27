@@ -53,15 +53,17 @@
                 </div>
             </div>
             <div class="login-links-wrapper">
-                <div class="facebook-link-wrapper">
-                    <Facebook/>
-                </div>  
-                <div class="privacy-policy-wrapper">
-                    <div class="privacy-policy-text-wrapper">
-                        <p class="privacy-policy-text">By using Quipl you accept</p>
-                        <p class="privacy-policy-text">our <a href="#" class="privacy-policy-link">Privacy Policy</a></p>
-                    </div>
-                </div> 
+                <div class="login-links-inner-block">
+                    <div class="facebook-link-wrapper">
+                        <Facebook/>
+                    </div>  
+                    <div class="privacy-policy-wrapper">
+                        <div class="privacy-policy-text-wrapper">
+                            <p class="privacy-policy-text">By using Quipl you accept</p>
+                            <p class="privacy-policy-text">our <a href="#" class="privacy-policy-link">Privacy Policy</a></p>
+                        </div>
+                    </div> 
+                </div>
             </div>
         </section>
     </div>

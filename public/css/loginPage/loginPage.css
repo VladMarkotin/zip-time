@@ -1,4 +1,3 @@
-@charset "UTF-8";
 body,
 h1,
 h2,
@@ -47,6 +46,7 @@ ol {
   max-width: 1170px;
   margin: 0 auto;
   min-height: inherit;
+  padding: 0 50px;
 }
 .inner-block .login-section {
   max-width: 800px;
@@ -60,9 +60,9 @@ ol {
 }
 .inner-block .login-section .login-info {
   color: #000000;
+  text-align: center;
 }
 .inner-block .login-section .login-info .title-login-page {
-  text-align: center;
   margin: 45px 0;
   font-weight: 600;
   font-size: 44px;
@@ -72,7 +72,6 @@ ol {
   font-size: 30px;
   line-height: 38px;
   margin-bottom: 65px;
-  text-align: left;
 }
 .inner-block .login-section .login-info .login-icons-wrapper {
   display: flex;
@@ -81,48 +80,55 @@ ol {
 .inner-block .login-section .login-links-wrapper {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
 }
-.inner-block .login-section .login-links-wrapper .facebook-link-wrapper {
-  display: flex;
-  justify-content: flex-end;
+.inner-block .login-section .login-links-wrapper .login-links-inner-block {
   height: 100%;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
-.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper {
+
+.facebook-link-wrapper {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.privacy-policy-wrapper {
+  display: flex;
+  justify-content: center;
   min-height: 50px;
 }
-.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper {
+.privacy-policy-wrapper .privacy-policy-text-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text {
+.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text {
   margin-bottom: 0;
   font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  color: #7D7F7D;
+  color: #7d7f7d;
 }
-.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link {
+.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link {
   color: inherit;
   text-decoration: none;
   position: relative;
-  color: #8A9597;
+  color: #8a9597;
 }
-.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link::after {
+.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link::after {
   content: "";
   display: block;
   position: absolute;
   left: 0;
   width: 0;
   height: 1.5px;
-  background-color: #8A9597;
+  background-color: #8a9597;
   transition: width 0.3s ease-out;
-  /*задаём время анимации*/
 }
-.inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:hover::after, .inner-block .login-section .login-links-wrapper .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:focus::after {
+.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:hover::after, .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:focus::after {
   width: 100%;
 }
