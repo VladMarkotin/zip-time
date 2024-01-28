@@ -30,6 +30,7 @@ Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->na
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
  
+Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
 Route::middleware(['auth'])->group(function () {
  
  
@@ -41,7 +42,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/getDefaultSavedTasks', [App\Http\Controllers\MainController::class, 'getDefaultSavedTasks']);
     Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode']);
     Route::post('/getPreparedPlan', [App\Http\Controllers\MainController::class, 'getPreparedPlan']);//check whether we got prepared plan
-    Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
     Route::post('isWeekendAvailable',[App\Http\Controllers\MainController::class, 'isWeekendAvailable']);
     Route::post('/getEduStep', [App\Http\Controllers\MainController::class, 'getEduStep']);
     Route::post('/updateEduStep', [App\Http\Controllers\MainController::class, 'updateEduStep']);
