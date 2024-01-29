@@ -1,4 +1,5 @@
 <template>  
+
 	<v-card :id="!num ? 'card-wrapper' : false">
 		<div class="card-demo">
 			<template v-if="isShowAddHashCodeDialog">
