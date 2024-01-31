@@ -2,7 +2,7 @@
     <h5 class="card-header">Daily Plan Settings </h5>
     <div class="card-body">
         <div class="form-row">
-            <div class="form-group col-md-8">
+            {{-- <div class="form-group col-md-8">
                 <label for="inputState">Set day`s plan minimal mark <br> Min mark can not be less than
                     {{ $default['minFinalMark'] }}</label>
                 <form wire:submit.prevent="minFinalMark">
@@ -18,7 +18,7 @@
 
                     </div>
                 </form>
-            </div>
+            </div> --}}
 
             <div class="form-group col-md-8">
                 <label for="inputState">Set day`s plan minimal required jobs amount</label>

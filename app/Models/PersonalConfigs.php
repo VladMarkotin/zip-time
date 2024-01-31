@@ -11,7 +11,7 @@ class PersonalConfigs extends Model
     use HasFactory;
 
     protected $table = 'personal_configs';
-    protected $fillable = [ 'user_id', 'config_block_id', 'config_data', 'created_at', 'updated_at'];
+    protected $fillable = [ 'user_id', 'config_block_id', 'config_data','last_updates', 'created_at', 'updated_at'];
 
     public static function getConfigs()
     {

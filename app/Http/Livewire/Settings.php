@@ -7,15 +7,12 @@ use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\SavedTask;
-use App\Models\SavedNotes;
 use Carbon\CarbonImmutable;
 use Livewire\WithPagination;
 use App\Models\DefaultConfigs;
 use App\Models\TimetableModel;
 use App\Models\PersonalConfigs;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use App\Http\Livewire\LWServices\TaskStatService as TSS;
 use App\Http\Livewire\LWServices\SavedNoteService as SNS;
 
@@ -146,42 +143,41 @@ class Settings extends Component
 
     public function UpdatedSetWeekendDays()
     {
-        // if((Cookie::get('weekend-days')) == null){
-        // $defaultConfigs =DefaultConfigs::find(3);
-        //     Cookie::queue(Cookie::make('weekend-days',  $now , $lifetime));
-        //      $this->dispatchBrowserEvent('message', [
-        //     'text' => 'weekend days set ',
-        //      ]);         
-        // }else{
-        //      $this->dispatchBrowserEvent('message', [
-        //     'text' => ' already set for this week',
-        //      ]);      
-        // } 
-
-        if( $this->config['isWeekendTaken'] == null )
-        {
+        if ($this->config['isWeekendTaken'] == null) {
+            $now = CarbonImmutable::now();
+            $weekEndDate = $now->endOfWeek()->endOfDay();
             $personalConfigs = PersonalConfigs::getConfigs();
-            $data = json_decode($personalConfigs->config_data);
-            $data->rules[0]->weekends = $this->setWeekendDays;
-            $personalConfigs->config_data = json_encode($data);
-            $personalConfigs->save();
-        }
-      
-    }
+            $updated_at = json_decode($personalConfigs->last_updates);
 
-
-    public function minFinalMark()
-    {
-       
-        if ($this->minMark >=  $this->config['defaultConfigs']['minFinalMark'] &&  $this->config['isDayPlanCompleted'] == null ) 
-        {
-            $personalConfigs = PersonalConfigs::getConfigs();
-            $data = json_decode($personalConfigs->config_data);
-            $data->rules[0]->minFinalMark = $this->minMark;
-            $personalConfigs->config_data = json_encode($data);
-            $personalConfigs->save();
+            if ($now->gt($updated_at->weekend_updated_at)) {
+                $data = json_decode($personalConfigs->config_data);
+                $data->rules[0]->weekends = $this->setWeekendDays;
+                $updated_at = json_decode($personalConfigs->last_updates);
+                $updated_at->weekend_updated_at = $weekEndDate;
+                $personalConfigs->config_data = json_encode($data);
+                $personalConfigs->last_updates = json_encode($updated_at);
+                $personalConfigs->save();
+            } else {
+                $this->dispatchBrowserEvent('message', [
+                    'text' => 'Already set for the week',
+                ]);
+            }
         }
     }
+
+
+    // public function minFinalMark()
+    // {
+
+    //     if ($this->minMark >=  $this->config['defaultConfigs']['minFinalMark'] &&  $this->config['isDayPlanCompleted'] == null ) 
+    //     {
+    //         $personalConfigs = PersonalConfigs::getConfigs();
+    //         $data = json_decode($personalConfigs->config_data);
+    //         $data->rules[0]->minFinalMark = $this->minMark;
+    //         $personalConfigs->config_data = json_encode($data);
+    //         $personalConfigs->save();
+    //     }
+    // }
 
     public function updatedMinJobAmount()
     {
@@ -194,7 +190,7 @@ class Settings extends Component
 
     public function mount()
     {
-       
+
         $timetablemodel = new TimetableModel;
         $isWeekendTaken = $timetablemodel->isWeekendTaken();
         $this->config['isWeekendTaken'] =  $isWeekendTaken;
@@ -207,11 +203,14 @@ class Settings extends Component
         $this->config['defaultConfigs'] = get_object_vars($defaultConfigs);
 
         $data = PersonalConfigs::getConfigs();
-        $personalConfigs = json_decode($data->config_data)->rules[0];
-        $this->config['personalConfigs'] = get_object_vars($personalConfigs);
+        $personalRulesConfigs = json_decode($data->config_data)->rules[0];
+        $personalUpdatedAt = json_decode($data->last_updates);
+        $this->config['personalConfigs']['rules'] = get_object_vars($personalRulesConfigs);
+        $this->config['personalConfigs']['time_stamps'] = get_object_vars($personalUpdatedAt);
 
-        $this->minMark = $this->config['personalConfigs']['minFinalMark'];
-        $this->setWeekendDays = $this->config['personalConfigs']['weekends'];
-        $this->minJobAmount = $this->config['personalConfigs']['minRequiredTaskQuantity'];
+        // $this->minMark = $this->config['personalConfigs']['minFinalMark'];
+        $this->setWeekendDays = $this->config['personalConfigs']['rules']['weekends'];
+        $this->minJobAmount = $this->config['personalConfigs']['rules']['minRequiredTaskQuantity'];
+        //   dd(  $this->config);
     }
 }
