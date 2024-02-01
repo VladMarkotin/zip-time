@@ -40,20 +40,24 @@
                      md="3" 
                      class="p-0 m-0 d-flex justify-content-center align-items-center"
                      >
-                        <template v-if="defaultSelected.taskName.length > 3">
-                           <AddHashCodeButton 
-                           :tooltipPosition = "{bottom: true}"
-                           :buttonSize      = "26"
-                           @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
-                           />
-                        </template>
+                     <transition 
+                     enter-active-class="button_appearance"
+                     leave-active-class="button_leave"
+                     >
+                        <AddHashCodeButton 
+                        v-if="defaultSelected.taskName.length > 3"
+                        :tooltipPosition = "{bottom: true}"
+                        :buttonSize      = "26"
+                        @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
+                        />
+                     </transition>
                      </v-col>
                      <v-col 
+                     id="plan-hash"
                      class="p-0 m-0"
                      md="6"
                      >
                         <v-select
-                           id="plan-hash"
                            :items="defaultSelected.hashCodes"
                            value="defaultSelected.hashCodes[0]"
                            v-model="defaultSelected.hash"
@@ -62,15 +66,12 @@
                         </v-select>
                      </v-col>    
                      <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center">
-                        <template
+                        <CleanHashCodeButton 
                         v-if="defaultSelected.hash.length > 1"
-                        >    
-                           <CleanHashCodeButton 
-                           :tooltipPosition = "{bottom: true}"
-                           :tooltipText     = "'Clear'"
-                           @clearCurrentHashCode="clearCurrentHashCode"
-                           />
-                        </template>
+                        :tooltipPosition = "{bottom: true}"
+                        :tooltipText     = "'Clear'"
+                        @clearCurrentHashCode="clearCurrentHashCode"
+                        />
                      </v-col>
                   </v-row>
                </v-col>
@@ -826,4 +827,21 @@ export default {
 		from { opacity: 1; left: 0;}
 		to { opacity: 0; left: 10px;}
 	}
+
+   @keyframes button_appearance {
+		from { opacity: 0; top: -5px;}
+		to { opacity: 1; top: 0;}
+	}
+
+	@keyframes button_leave {
+		from { opacity: 1; top: 0;}
+		to { opacity: 0; top: 5px;}
+	}
+
+   .button_appearance {
+      animation: .25s button_appearance ease;
+   }
+   .button_leave {
+      animation: .25s button_leave ease; 
+   }
 </style>
