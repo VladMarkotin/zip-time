@@ -443,9 +443,11 @@ export default {
          
          this.setAlert({serverMessage: 'The task has been successfully added', alertType: 'success'});
         },
+
         deleteItem(item) {
             var index = this.items.indexOf(item)
             this.items.splice(index, 1);
+            this.setAlert({serverMessage: 'The task has been successfully removed', alertType: 'success'});
         },
 
         formSubmit(e) {
