@@ -397,19 +397,34 @@ export default {
             });
         },
 
-        addTask(e) {
+        checkDefaultSelected() {
          const {taskName} = this.defaultSelected;
-         this.showAlert = false;
 
          if (taskName.trim() === '') {
-            this.serverMessage = 'The task\'s name field can\'t be empty';
-            this.alertType = 'error';
+            return 'The task\'s name field can\'t be empty';
+         }
+
+         return true;
+        },
+
+        setAlert({serverMessage, alertType}) {
+            this.serverMessage = serverMessage;
+            this.alertType = alertType;
             this.showAlert = true;
 
             clearTimeout(this.closeAlertTime);
             this.closeAlertTime = setTimeout(() => {
                this.showAlert = false;
             }, 4500);
+        },
+
+        addTask() {
+         
+         this.showAlert = false;
+         const checkTaskResult = this.checkDefaultSelected();
+
+         if (checkTaskResult !== true) {
+            this.setAlert({serverMessage: checkTaskResult, alertType: 'error'});
             return;
          }
 
@@ -425,6 +440,8 @@ export default {
                 details: '',
                 notes: ''
             }
+         
+         this.setAlert({serverMessage: 'The task has been successfully added', alertType: 'success'});
         },
         deleteItem(item) {
             var index = this.items.indexOf(item)
