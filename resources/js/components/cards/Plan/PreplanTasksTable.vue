@@ -9,7 +9,7 @@
                 <transition-group name="preplanTr" tag="tbody">
                     <tr v-for="(item, index) in items" :key="item.uniqKey" align="center" ref="refWord" @dblclick="deleteItem(item)">
                         <td>{{ item.hash }}</td>
-                        <td>{{ item.taskName }}</td>
+                        <td class="preplan-table-taskName">{{ item.taskName }}</td>
                         <td>{{ item.type }}</td>
                         <td>{{ item.priority }}</td>
                         <td>{{ item.time }}</td>
@@ -145,4 +145,11 @@ export default {
   opacity: 0; 
 }
 
+
+#plan-tasks-table .preplan-table-taskName {
+    max-width: 130px;
+    max-height: 60px;
+    overflow: auto;
+    word-wrap: break-word; /* Перенос слов, если не помещаются */
+}
 </style>
