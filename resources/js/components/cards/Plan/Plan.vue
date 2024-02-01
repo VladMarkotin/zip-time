@@ -31,7 +31,7 @@
          </div>
          <v-divider></v-divider>
          <div>
-            <v-row align="center" class="d-flex mb-2 justify-content-between" >
+            <v-row align="center" class="d-flex justify-content-between" >
                <v-col
                   md="3"
                   >
@@ -118,7 +118,7 @@
                </v-col>
             
                <v-col md="1">
-                  <v-tooltip right>
+                  <v-tooltip bottom>
                      <template v-slot:activator="{ on }">
                         <div v-on="on">
                            <v-btn icon>
@@ -398,8 +398,23 @@ export default {
         },
 
         addTask(e) {
-            this.items.push(this.defaultSelected);
-            this.showIcon = 0;
+         const {taskName} = this.defaultSelected;
+         this.showAlert = false;
+
+         if (taskName.trim() === '') {
+            this.serverMessage = 'The task\'s name field can\'t be empty';
+            this.alertType = 'error';
+            this.showAlert = true;
+
+            clearTimeout(this.closeAlertTime);
+            this.closeAlertTime = setTimeout(() => {
+               this.showAlert = false;
+            }, 4500);
+            return;
+         }
+
+         this.items.push(this.defaultSelected);
+         this.showIcon = 0;
          this.defaultSelected = {
                 hashCodes: this.defaultSelected.hashCodes,
                 hash: '#',
@@ -421,7 +436,6 @@ export default {
             axios.post('/addPlan', currentObj.getPostParams())
             .then(function(response) { 
                const {status} = response.data;
-               
                currentObj.alertType = response.data.status;
                currentObj.serverMessage = response.data.message;
                currentObj.showAlert = true;
