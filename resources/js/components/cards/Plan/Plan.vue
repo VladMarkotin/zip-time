@@ -15,7 +15,7 @@
          </div>
          <v-divider></v-divider>
          <div>
-            <v-row align="center" class="d-flex mb-2" >
+            <v-row align="center" class="d-flex mb-2 justify-content-between" >
                <v-col md="1">
                   <template v-if="defaultSelected.taskName.length > 3">
                      <AddHashCodeButton 
@@ -81,7 +81,7 @@
                      @keypress.enter = "addTask"
                      ></v-text-field>
                </v-col>
-               <v-col cols="1" md="3">
+               <v-col md="2">
                   <v-select
                      :label="placeholders[1]"
                      required
@@ -89,7 +89,7 @@
                      v-model="defaultSelected.type"
                      ></v-select>
                </v-col>
-               <v-col cols="1" md="1">
+               <v-col md="1">
                   <v-select
                      :label="placeholders[2]"
                      required
@@ -113,7 +113,7 @@
                   </v-menu>
                </v-col>
             
-               <v-col cols="1" md="1">
+               <v-col md="1">
                   <v-tooltip right>
                      <template v-slot:activator="{ on }">
                         <div v-on="on">
