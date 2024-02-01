@@ -1,5 +1,21 @@
 <template>
    <v-card id="plan-wrapper">
+      <template v-if="isShowAddHashCodeDialog">    
+         <AddHashCode
+         :width          = "450"
+         :hashCodeVal    = "newHashCode"
+         :isShowDialog   = "isShowAddHashCodeDialog"
+         :taskName       = "defaultSelected.taskName"
+         :time           = "defaultSelected.time"
+         :type           = "defaultSelected.type"
+         :priority       = "defaultSelected.priority"
+         :details        = "defaultSelected.details"
+         :notes          = "defaultSelected.notes"
+         @close          = "closeHashCodeDialog"
+         @changeHashCode = "changeHashCode"
+         @addHashCode    = "addHashCode"
+         />
+      </template>
       <v-card-title style="background-color: #A10000;color: white;" >Create your day plan!</v-card-title>
       <v-container>
          <div id="plan-day-status">
@@ -16,38 +32,25 @@
          <v-divider></v-divider>
          <div>
             <v-row align="center" class="d-flex mb-2 justify-content-between" >
-               <v-col md="1">
-                  <template v-if="defaultSelected.taskName.length > 3">
-                     <AddHashCodeButton 
-                     :tooltipPosition = "{bottom: true}"
-                     :buttonSize      = "26"
-                     @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
-                     />
-                  </template>
-                  <template v-if="isShowAddHashCodeDialog">    
-                     <AddHashCode
-                     :width          = "450"
-                     :hashCodeVal    = "newHashCode"
-                     :isShowDialog   = "isShowAddHashCodeDialog"
-                     :taskName       = "defaultSelected.taskName"
-                     :time           = "defaultSelected.time"
-                     :type           = "defaultSelected.type"
-                     :priority       = "defaultSelected.priority"
-                     :details        = "defaultSelected.details"
-                     :notes          = "defaultSelected.notes"
-                     @close          = "closeHashCodeDialog"
-                     @changeHashCode = "changeHashCode"
-                     @addHashCode    = "addHashCode"
-                     />
-                  </template>
-               </v-col>
                <v-col
-                  md="2"
+                  md="3"
                   >
                   <v-row class="p-0 m-0 d-flex justify-content-between"> 
+                     <v-col
+                     md="3" 
+                     class="p-0 m-0 d-flex justify-content-center align-items-center"
+                     >
+                        <template v-if="defaultSelected.taskName.length > 3">
+                           <AddHashCodeButton 
+                           :tooltipPosition = "{bottom: true}"
+                           :buttonSize      = "26"
+                           @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
+                           />
+                        </template>
+                     </v-col>
                      <v-col 
                      class="p-0 m-0"
-                     md="8"
+                     md="6"
                      >
                         <v-select
                            id="plan-hash"
@@ -58,7 +61,7 @@
                            required>
                         </v-select>
                      </v-col>    
-                     <v-col md="4" class="p-0 m-0 d-flex justify-content-center align-items-center">
+                     <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center">
                         <template
                         v-if="defaultSelected.hash.length > 1"
                         >    
