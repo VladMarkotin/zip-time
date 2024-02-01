@@ -16,53 +16,57 @@
          <v-divider></v-divider>
          <div>
             <v-row align="center" class="d-flex mb-2" >
-               <v-col cols="2" sm="1" v-if="defaultSelected.hash == '#'" no-gutters>
-                  <div class="text-center pa-2 ma-2">
-                     <template v-if="defaultSelected.taskName.length > 3">
-                        <AddHashCodeButton 
-                        @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
-                        />
-                     </template>
-                     <template v-if="isShowAddHashCodeDialog">    
-                        <AddHashCode
-                        :width          = "450"
-                        :hashCodeVal    = "newHashCode"
-                        :isShowDialog   = "isShowAddHashCodeDialog"
-                        :taskName       = "defaultSelected.taskName"
-                        :time           = "defaultSelected.time"
-                        :type           = "defaultSelected.type"
-                        :priority       = "defaultSelected.priority"
-                        :details        = "defaultSelected.details"
-                        :notes          = "defaultSelected.notes"
-                        @close          = "closeHashCodeDialog"
-                        @changeHashCode = "changeHashCode"
-                        @addHashCode    = "addHashCode"
-                        />
-                     </template>
-                  </div>
-               </v-col>
-               <v-col
-                  id="plan-hash"
-                  cols="1"
-                  md="1"
-                  :offset="defaultSelected.hash == '#' ? 0 : 1"
-                  :offset-md="defaultSelected.hash == '#' ? 0 : 1"
-                  >
-                  <v-select
-                     :items="defaultSelected.hashCodes"
-                     value="defaultSelected.hashCodes[0]"
-                     v-model="defaultSelected.hash"
-                     @change="onChange"
-                     required>
-                  </v-select>
-               </v-col>
-               <v-col v-if="defaultSelected.hash.length > 1">
-                  <template>    
-                     <CleanHashCodeButton 
-                     :tooltipText="'Clear'"
-                     @clearCurrentHashCode="clearCurrentHashCode"
+               <v-col md="1">
+                  <template v-if="defaultSelected.taskName.length > 3">
+                     <AddHashCodeButton 
+                     @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
                      />
                   </template>
+                  <template v-if="isShowAddHashCodeDialog">    
+                     <AddHashCode
+                     :width          = "450"
+                     :hashCodeVal    = "newHashCode"
+                     :isShowDialog   = "isShowAddHashCodeDialog"
+                     :taskName       = "defaultSelected.taskName"
+                     :time           = "defaultSelected.time"
+                     :type           = "defaultSelected.type"
+                     :priority       = "defaultSelected.priority"
+                     :details        = "defaultSelected.details"
+                     :notes          = "defaultSelected.notes"
+                     @close          = "closeHashCodeDialog"
+                     @changeHashCode = "changeHashCode"
+                     @addHashCode    = "addHashCode"
+                     />
+                  </template>
+               </v-col>
+               <v-col
+                  md="2"
+                  >
+                  <v-row class="p-0 m-0 d-flex justify-content-between"> 
+                     <v-col 
+                     class="p-0 m-0"
+                     md="8"
+                     >
+                        <v-select
+                           id="plan-hash"
+                           :items="defaultSelected.hashCodes"
+                           value="defaultSelected.hashCodes[0]"
+                           v-model="defaultSelected.hash"
+                           @change="onChange"
+                           required>
+                        </v-select>
+                     </v-col>    
+                     <v-col md="4" class="p-0 m-0 d-flex justify-content-center align-items-center">
+                        <template
+                        v-if="defaultSelected.hash.length > 1"
+                        >    
+                           <CleanHashCodeButton 
+                           :tooltipText="'Clear'"
+                           @clearCurrentHashCode="clearCurrentHashCode"
+                           />
+                        </template>
+                     </v-col>
+                  </v-row>
                </v-col>
                <v-col cols="4" md="3">
                   <v-text-field
