@@ -1,5 +1,5 @@
 <template>
-    <v-tooltip right>
+    <v-tooltip v-bind="tooltipPosition">
         <template v-slot:activator="{ on: tooltip  }">
             <v-btn 
             icon 
@@ -30,6 +30,11 @@ import {mdiPlusBox,} from '@mdi/js'
             },
 
             buttonSize: {
+            },
+
+            tooltipPosition: {
+                type: Object,
+                default: () => ({ right: true }) 
             }
         },
         data: () => ({

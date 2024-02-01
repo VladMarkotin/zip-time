@@ -19,6 +19,7 @@
                <v-col md="1">
                   <template v-if="defaultSelected.taskName.length > 3">
                      <AddHashCodeButton 
+                     :tooltipPosition = "{bottom: true}"
                      @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
                      />
                   </template>
