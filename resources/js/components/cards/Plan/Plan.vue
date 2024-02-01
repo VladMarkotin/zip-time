@@ -236,6 +236,7 @@ import {
     mdiPlusBox,
     mdiCancel,
 } from '@mdi/js'
+import { uuid } from 'vue-uuid';
 
 export default {
    components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable,},
@@ -428,7 +429,7 @@ export default {
             return;
          }
 
-         this.items.push(this.defaultSelected);
+         this.items.push({...this.defaultSelected, uniqKey: uuid.v1()});
          this.showIcon = 0;
          this.defaultSelected = {
                 hashCodes: this.defaultSelected.hashCodes,

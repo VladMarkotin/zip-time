@@ -7,7 +7,7 @@
         id="plan-tasks-table">
             <template v-slot:body="{ items }">
                 <transition-group name="fade" tag="tbody">
-                    <tr v-for="(item, index) in items" :key="index" align="center" ref="refWord" @dblclick="deleteItem(item)">
+                    <tr v-for="(item, index) in items" :key="item.uniqKey" align="center" ref="refWord" @dblclick="deleteItem(item)">
                         <td>{{ item.hash }}</td>
                         <td>{{ item.taskName }}</td>
                         <td>{{ item.type }}</td>
@@ -42,7 +42,6 @@
 
 <script>
 import { mdiDelete, } from '@mdi/js'
-
 export default {
     props: {
         items: {
@@ -140,9 +139,9 @@ export default {
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s; /* настройте продолжительность и свойства анимации по вашему усмотрению */
+  transition: opacity 0.3s;
 }
 .fade-enter, .fade-leave-to {
-  opacity: 0; /* начальное состояние или состояние после завершения анимации */
+  opacity: 0; 
 }
 </style>
