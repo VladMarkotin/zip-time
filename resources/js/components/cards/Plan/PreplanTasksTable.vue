@@ -5,34 +5,36 @@
         :items="items" 
         class="elevation-1" 
         id="plan-tasks-table">
-            <template v-slot:item="props">
-                <tr align="center" ref="refWord" @dblclick="deleteItem(props.item)">
-                    <td>{{ props.item.hash }}</td>
-                    <td>{{ props.item.taskName }}</td>
-                    <td>{{ props.item.type }}</td>
-                    <td>{{ props.item.priority }}</td>
-                    <td>{{ props.item.time }}</td>
-                    <td>{{ props.item.details }}</td>
-                    <td>{{ props.item.notes }}</td>
-                    <td>
-                        <v-tooltip right>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn 
-                                v-bind="attrs" v-on="on"
-                                v-on:click="deleteItem(props.item)"
-                                color="#D71700" 
-                                style="text-color:#ffffff" 
-                                icon 
-                                >
-                                    <v-icon md="1" color="#D71700">
-                                        {{ icons.mdiDelete }}
-                                    </v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Delete task</span>
-                        </v-tooltip>
-                    </td>
-                </tr>
+            <template v-slot:body="{ items }">
+                <transition-group name="fade" tag="tbody">
+                    <tr v-for="(item, index) in items" :key="index" align="center" ref="refWord" @dblclick="deleteItem(item)">
+                        <td>{{ item.hash }}</td>
+                        <td>{{ item.taskName }}</td>
+                        <td>{{ item.type }}</td>
+                        <td>{{ item.priority }}</td>
+                        <td>{{ item.time }}</td>
+                        <td>{{ item.details }}</td>
+                        <td>{{ item.notes }}</td>
+                        <td>
+                            <v-tooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn 
+                                    v-bind="attrs" v-on="on"
+                                    v-on:click="deleteItem(item)"
+                                    color="#D71700" 
+                                    style="text-color:#ffffff" 
+                                    icon 
+                                    >
+                                        <v-icon md="1" color="#D71700">
+                                            {{ icons.mdiDelete }}
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Delete task</span>
+                            </v-tooltip>
+                        </td>
+                    </tr>
+                </transition-group>
             </template>
         </v-data-table>
     </div>
@@ -135,5 +137,12 @@ export default {
   bottom: 0;
   background-color: white; 
   z-index: 1; 
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s; /* настройте продолжительность и свойства анимации по вашему усмотрению */
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0; /* начальное состояние или состояние после завершения анимации */
 }
 </style>
