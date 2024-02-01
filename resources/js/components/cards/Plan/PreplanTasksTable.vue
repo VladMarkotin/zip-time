@@ -6,7 +6,7 @@
         class="elevation-1" 
         id="plan-tasks-table">
             <template v-slot:body="{ items }">
-                <transition-group name="fade" tag="tbody">
+                <transition-group name="preplanTr" tag="tbody">
                     <tr v-for="(item, index) in items" :key="item.uniqKey" align="center" ref="refWord" @dblclick="deleteItem(item)">
                         <td>{{ item.hash }}</td>
                         <td>{{ item.taskName }}</td>
@@ -138,10 +138,11 @@ export default {
   z-index: 1; 
 }
 
-.fade-enter-active, .fade-leave-active {
+.preplanTr-enter-active, .preplanTr-leave-active {
   transition: opacity 0.3s;
 }
-.fade-enter, .fade-leave-to {
+.preplanTr-enter, .preplanTr-leave-to {
   opacity: 0; 
 }
+
 </style>
