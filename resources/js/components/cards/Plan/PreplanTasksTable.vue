@@ -1,39 +1,41 @@
 <template>
-    <v-data-table 
-    :headers="headers" 
-    :items="items" 
-    class="elevation-1" 
-    id="plan-tasks-table">
-        <template v-slot:item="props">
-            <tr align="center" ref="refWord" @dblclick="deleteItem(props.item)">
-                <td>{{ props.item.hash }}</td>
-                <td>{{ props.item.taskName }}</td>
-                <td>{{ props.item.type }}</td>
-                <td>{{ props.item.priority }}</td>
-                <td>{{ props.item.time }}</td>
-                <td>{{ props.item.details }}</td>
-                <td>{{ props.item.notes }}</td>
-                <td>
-                    <v-tooltip right>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn 
-                            v-bind="attrs" v-on="on"
-                            v-on:click="deleteItem(props.item)"
-                            color="#D71700" 
-                            style="text-color:#ffffff" 
-                            icon 
-                            >
-                                <v-icon md="1" color="#D71700">
-                                    {{ icons.mdiDelete }}
-                                </v-icon>
-                            </v-btn>
-                        </template>
-                        <span>Delete task</span>
-                    </v-tooltip>
-                </td>
-            </tr>
-        </template>
-    </v-data-table>
+    <div class="table-max-height-wrapper">
+        <v-data-table 
+        :headers="headers" 
+        :items="items" 
+        class="elevation-1" 
+        id="plan-tasks-table">
+            <template v-slot:item="props">
+                <tr align="center" ref="refWord" @dblclick="deleteItem(props.item)">
+                    <td>{{ props.item.hash }}</td>
+                    <td>{{ props.item.taskName }}</td>
+                    <td>{{ props.item.type }}</td>
+                    <td>{{ props.item.priority }}</td>
+                    <td>{{ props.item.time }}</td>
+                    <td>{{ props.item.details }}</td>
+                    <td>{{ props.item.notes }}</td>
+                    <td>
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn 
+                                v-bind="attrs" v-on="on"
+                                v-on:click="deleteItem(props.item)"
+                                color="#D71700" 
+                                style="text-color:#ffffff" 
+                                icon 
+                                >
+                                    <v-icon md="1" color="#D71700">
+                                        {{ icons.mdiDelete }}
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Delete task</span>
+                        </v-tooltip>
+                    </td>
+                </tr>
+            </template>
+        </v-data-table>
+    </div>
 </template>
 
 <script>
@@ -119,3 +121,19 @@ export default {
     },
 }
 </script>
+
+<style>
+.table-max-height-wrapper {
+    max-height: 260px;
+    overflow-y: auto;
+    position: relative; 
+}
+
+.table-max-height-wrapper .v-data-footer {
+  height: 60px;
+  position: sticky;
+  bottom: 0;
+  background-color: white; 
+  z-index: 1; 
+}
+</style>
