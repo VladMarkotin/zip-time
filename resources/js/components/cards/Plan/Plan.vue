@@ -20,6 +20,7 @@
                   <template v-if="defaultSelected.taskName.length > 3">
                      <AddHashCodeButton 
                      :tooltipPosition = "{bottom: true}"
+                     :buttonSize      = "26"
                      @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
                      />
                   </template>
@@ -62,14 +63,15 @@
                         v-if="defaultSelected.hash.length > 1"
                         >    
                            <CleanHashCodeButton 
-                           :tooltipText="'Clear'"
+                           :tooltipPosition = "{bottom: true}"
+                           :tooltipText     = "'Clear'"
                            @clearCurrentHashCode="clearCurrentHashCode"
                            />
                         </template>
                      </v-col>
                   </v-row>
                </v-col>
-               <v-col cols="4" md="3">
+               <v-col md="3">
                   <v-text-field
                      :placeholder=" placeholders[0] "
                      :counter="25"
