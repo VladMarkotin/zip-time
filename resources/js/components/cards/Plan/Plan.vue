@@ -153,24 +153,38 @@
             style="min-height: 36px; width: 36px;"
             v-if="!isShowProgress"
             >
-               <div v-if="items.length > 0">
-                  <div class=" d-flex justify-space-between">
-                     <v-tooltip right>
-                        <template v-slot:activator="{ on, attrs }">
-                           <v-btn id="plan-creating" color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
-                              v-on="on">
-                              <v-icon md="1"
-                                 color="#D71700"
-                                 large
-                                 >
-                                 {{icons.mdiClockStart}}
-                              </v-icon>
-                           </v-btn>
-                           </template>
-                           <span>Create plan</span>
-                     </v-tooltip>        
-                     </div>
+            <transition
+            enter-active-class="button_appearance"
+            >
+               <div 
+               style="position: relative;"
+               class=" d-flex justify-space-between" 
+               v-if="items.length > 0"
+               >
+                  <v-tooltip right>
+                     <template v-slot:activator="{ on, attrs }">
+                        <v-btn 
+                        id="plan-creating" 
+                        v-on:click="formSubmit()" 
+                        v-bind="attrs"
+                        v-on="on"
+                        color="#D71700" 
+                        style="text-color:#ffffff" 
+                        icon 
+                        >
+                           <v-icon 
+                           md="1"
+                           color="#D71700"
+                           large
+                           >
+                              {{icons.mdiClockStart}}
+                           </v-icon>
+                        </v-btn>
+                     </template>
+                     <span>Create plan</span>
+                  </v-tooltip>        
                </div>
+            </transition>
             </div>
             <div class="v-progress-circular" v-if="isShowProgress" style="height: inherit">
                <v-progress-circular
@@ -441,6 +455,7 @@ export default {
          
          this.showAlert = false;
          const checkTaskResult = this.checkDefaultSelected();
+         const {taskName}      = this.defaultSelected;
 
          if (checkTaskResult !== true) {
             this.setAlert({serverMessage: checkTaskResult, alertType: 'error'});
@@ -460,13 +475,15 @@ export default {
                 notes: ''
             }
          
-         this.setAlert({serverMessage: 'The task has been successfully added', alertType: 'success'});
+         this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success'});
         },
 
         deleteItem(item) {
-            var index = this.items.indexOf(item)
+            const index = this.items.indexOf(item)
+            const {taskName} = this.items[index];
+
             this.items.splice(index, 1);
-            this.setAlert({serverMessage: 'The task has been successfully removed', alertType: 'success'});
+            this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success'});
         },
 
         formSubmit(e) {
