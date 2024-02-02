@@ -431,16 +431,32 @@ export default {
         },
 
         checkDefaultSelected() {
-         const {taskName} = this.defaultSelected;
+         let {taskName} = this.defaultSelected;
+         taskName = taskName.trim();
 
-         if (taskName.trim() === '') {
-            return 'The task\'s name field can\'t be empty';
+         if (taskName.length < 4) {
+            return 'The task\'s name must be more than 3 characters long';
+         }
+
+         if (taskName.length > 255) {
+            return 'The task\'s name can\'t consist of more than 255 characters';
          }
 
          return true;
         },
 
         setAlert({serverMessage, alertType}) {
+         //если длина названия таски очень большая, то оставляю первые 25 символов только
+         const regex = /The task (.+?) has/g;
+         const matches = regex.exec(serverMessage);
+         if (matches) {
+            const taskName = matches[1]; 
+            
+            if (taskName && taskName.length > 25) {
+               serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+            }
+         }
+
             this.serverMessage = serverMessage;
             this.alertType = alertType;
             this.showAlert = true;
@@ -474,7 +490,8 @@ export default {
                 details: '',
                 notes: ''
             }
-         
+            // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
+            // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
          this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success'});
         },
 
@@ -483,6 +500,8 @@ export default {
             const {taskName} = this.items[index];
 
             this.items.splice(index, 1);
+             // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
+            // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
             this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success'});
         },
 
