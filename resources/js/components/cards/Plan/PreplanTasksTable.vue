@@ -6,8 +6,18 @@
         class="elevation-1" 
         id="plan-tasks-table">
             <template v-slot:body="{ items }">
-                <transition-group name="preplanTr" tag="tbody">
-                    <tr v-for="(item, index) in items" :key="item.uniqKey" align="center" ref="refWord" @dblclick="deleteItem(item)">
+                <tbody  v-if="!items || items.length === 0" >
+                    <tr>
+                        <td :colspan="headers.length" class="text-center body-1">Your day plan is still empty</td>
+                    </tr>
+                </tbody>
+                <transition-group name="preplanTr" tag="tbody" v-else >
+                    <tr 
+                    v-for="(item) in items" 
+                    :key="item.uniqKey" 
+                    align="center" 
+                    ref="refWord" 
+                    @dblclick="deleteItem(item)">
                         <td>{{ item.hash }}</td>
                         <td class="preplan-table-taskName">{{ item.taskName }}</td>
                         <td>{{ item.type }}</td>
@@ -34,6 +44,7 @@
                             </v-tooltip>
                         </td>
                     </tr>
+                    
                 </transition-group>
             </template>
         </v-data-table>
