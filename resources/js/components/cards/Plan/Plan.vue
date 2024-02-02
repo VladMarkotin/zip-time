@@ -139,14 +139,20 @@
          :items          = "items"
          @deleteItem  = "deleteItem"
          />
-         <v-row>
-         <v-col>
+         <v-row 
+         class="d-flex justify-content-between align-items-center"
+         style="min-height: 80px;"
+         >
+         <v-col 
+         class="d-flex justify-content-start align-items-end"
+         cols="1"
+         >
             <div 
             id="plan-creating-wrapper"
             style="min-height: 36px; width: 36px;"
             >
                <div v-if="items.length > 0">
-                  <div class=" d-flex justify-space-between mt-3">
+                  <div class=" d-flex justify-space-between">
                      <v-tooltip right>
                         <template v-slot:activator="{ on, attrs }">
                            <v-btn id="plan-creating" color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
@@ -165,8 +171,26 @@
                </div>
             </div>
          </v-col>
-         <v-col>
-
+         <v-col cols="9">     
+            <transition
+            enter-active-class="create-day-alert_appearance"
+            leave-active-class="create-day-alert_leave"
+            >
+               <v-alert
+                  v-if="showAlert"
+                  color="#404040"
+                  text
+                  class="elevation-1 create-day-alert mb-0 d-flex justify-content-center align-items-center" 
+                  :type="alertType"
+                  >
+                     {{serverMessage}}
+                  </v-alert>
+            </transition>
+         </v-col>
+         <v-col 
+         class="d-flex justify-content-end align-items-end"
+         cols="1"
+         >
             <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
@@ -183,20 +207,6 @@
                      <span>Emergency mode</span>
             </v-tooltip>
          </v-col>
-         <transition
-         enter-active-class="create-day-alert_appearance"
-         leave-active-class="create-day-alert_leave"
-         >
-            <v-alert
-               v-if="showAlert"
-               color="#404040"
-               text
-               class="elevation-1 create-day-alert"
-               :type="alertType"
-               >
-                  {{serverMessage}}
-               </v-alert>
-         </transition>
          </v-row>
          <div class="v-progress-circular" v-if="isShowProgress == true">
             <v-progress-circular
@@ -416,7 +426,7 @@ export default {
             clearTimeout(this.closeAlertTime);
             this.closeAlertTime = setTimeout(() => {
                this.showAlert = false;
-            }, 4500);
+            }, 3000);
         },
 
         addTask() {
@@ -488,7 +498,7 @@ export default {
 
                      currentObj.closeAlertTime = setTimeout(() => {
                         currentObj.showAlert = false;
-                     }, 4500);
+                     }, 3000);
 
                   }
 
