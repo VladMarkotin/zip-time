@@ -157,9 +157,12 @@ class Settings extends Component
                 $personalConfigs->config_data = json_encode($data);
                 $personalConfigs->last_updates = json_encode($updated_at);
                 $personalConfigs->save();
+                $this->dispatchBrowserEvent('message', [
+                    'text' => 'Weekend days set for this week',
+                ]);
             } else {
                 $this->dispatchBrowserEvent('message', [
-                    'text' => 'Already set for the week',
+                    'text' => 'Already set for this week',
                 ]);
             }
         }
@@ -199,6 +202,7 @@ class Settings extends Component
         $this->config['isDayPlanCompleted'] =  $isDayPlanCompleted;
 
         $data = DefaultConfigs::getConfigs();
+     
         $defaultConfigs = json_decode(($data)[1]->config_data)->rules[0];
         $this->config['defaultConfigs'] = get_object_vars($defaultConfigs);
 

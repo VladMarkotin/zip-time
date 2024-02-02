@@ -30,12 +30,12 @@
 
                         <div class="col-auto ">
                             <select id="inputState" class="form-control" wire:model="minJobAmount">
-                                <option value="">Default *( {{ $default['minRequiredTaskQuantity'] }} day a week)
+                                <option value="">Default *( {{ $default['minRequiredTaskQuantity'] }} tasks a week)
                                 </option>
-                                <option value="3">3 tasks</option>
-                                <option value="4">4 tasks</option>
-                                <option value="5">5 tasks</option>
-                                <option value="6">6 tasks</option>
+                                <option value="3">3 tasks a week</option>
+                                <option value="4">4 tasks a week</option>
+                                <option value="5">5 tasks a week</option>
+                                <option value="6">6 tasks a week</option>
                             </select>
                         </div>
                     </div>
