@@ -141,15 +141,17 @@
          />
          <v-row 
          class="d-flex justify-content-between align-items-center"
-         style="min-height: 80px;"
+         style="height: 80px;"
          >
          <v-col 
-         class="d-flex justify-content-start align-items-end"
+         class="d-flex justify-content-start align-items-center"
          cols="1"
+         style="height: 100%;"
          >
             <div 
             id="plan-creating-wrapper"
             style="min-height: 36px; width: 36px;"
+            v-if="!isShowProgress"
             >
                <div v-if="items.length > 0">
                   <div class=" d-flex justify-space-between">
@@ -170,8 +172,24 @@
                      </div>
                </div>
             </div>
+            <div class="v-progress-circular" v-if="isShowProgress" style="height: inherit">
+               <v-progress-circular
+                  style="height: inherit"
+                     :rotate="90"
+                     :size="100"
+                     :width="5"
+                     :value="value"
+                     color="red"
+                     class="v-progress-circular"
+                  >
+                     {{ value }}
+                  </v-progress-circular>
+            </div>
          </v-col>
-         <v-col cols="9">     
+         <v-col 
+         cols="9"
+         style="height: 100%;"
+         >     
             <transition
             enter-active-class="create-day-alert_appearance"
             leave-active-class="create-day-alert_leave"
@@ -188,8 +206,9 @@
             </transition>
          </v-col>
          <v-col 
-         class="d-flex justify-content-end align-items-end"
+         class="d-flex justify-content-end align-items-center"
          cols="1"
+         style="height: 100%;"
          >
             <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
@@ -208,18 +227,7 @@
             </v-tooltip>
          </v-col>
          </v-row>
-         <div class="v-progress-circular" v-if="isShowProgress == true">
-            <v-progress-circular
-                  :rotate="90"
-                  :size="100"
-                  :width="5"
-                  :value="value"
-                  color="red"
-                  class="v-progress-circular"
-               >
-                  {{ value }}
-               </v-progress-circular>
-         </div>
+         
          <template v-if="isShowEmergencyCallDialog">
 	         <EmergencyCall  v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
          </template>
