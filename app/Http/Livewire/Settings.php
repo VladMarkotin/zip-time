@@ -189,6 +189,9 @@ class Settings extends Component
         $data->rules[0]->minRequiredTaskQuantity = $this->minJobAmount;
         $personalConfigs->config_data = json_encode($data);
         $personalConfigs->save();
+        $this->dispatchBrowserEvent('message', [
+            'text' => 'required jobs amount has been set',
+        ]);
     }
 
     public function mount()
