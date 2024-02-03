@@ -14,8 +14,9 @@
         ref="picker"
         v-model="selectedTime"
         color="#D71700"
-        @input="updateSelectedTime"
         :format="timeFormat"
+        @click:hour="selectinghourifusehoursonly"
+        @input="updateSelectedTime"
         >
         </v-time-picker>
         <v-btn 
@@ -48,6 +49,12 @@
             toggleTimeFormat() {
                 this.timeFormat = this.timeFormat === 'ampm' ? '24hr' : 'ampm';
             },
+            
+            selectinghourifusehoursonly() {
+                this.$nextTick(() => {
+                    this.$refs.picker.selectingHour = true;
+                });
+            }
         },
     }
 </script>
