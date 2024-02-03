@@ -123,16 +123,10 @@
                id="plan-time" 
                cols="1" 
                md="1">
-                  <v-menu ref="v-menu" v-bind:close-on-content-click="false" v-model="menu">
-                     <template v-slot:activator="{on}">
-                        <v-text-field label="Time" prepend-icon="mdi-clock-time-four-outline" readonly v-model="defaultSelected.time" v-on="on"></v-text-field>
-                     </template>
-                     <v-time-picker
-                        color="#D71700"
-                        v-on:click:minute="$refs['v-menu'].save(defaultSelected.time)"
-                        v-model="defaultSelected.time">
-                     </v-time-picker>
-                  </v-menu>
+                  <CustomTimepicker 
+                  :time = "defaultSelected.time"
+                  @updateTime = "setTime"
+                  />
                </v-col>
             
                <v-col md="1">
@@ -274,6 +268,7 @@ import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../../dialogs/EmergencyCall.vue';
 import PreplanTasksTable from './PreplanTasksTable.vue';
 import VSelectTooptip from '../../UI/VSelectTooptip.vue';
+import CustomTimepicker from '../../UI/CustomTimepicker.vue';
 import {
     mdiAccount,
     mdiPlex,
@@ -290,7 +285,7 @@ import {
 import { uuid } from 'vue-uuid';
 
 export default {
-   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip},
+   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip, CustomTimepicker},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
@@ -585,6 +580,10 @@ export default {
          this.defaultSelected.hash = this.newHashCode;
          this.isShowAddHashCodeDialog = false;
       },
+
+      setTime(newTime) {
+         this.defaultSelected.time = newTime;
+      }
     },
     created() {
         let currentObj = this;
