@@ -23,7 +23,6 @@
                         <td>{{ item.type }}</td>
                         <td>{{ item.priority }}</td>
                         <td>{{ item.time }}</td>
-                        <td>{{ item.details }}</td>
                         <td>{{ item.notes }}</td>
                         <td>
                             <v-tooltip right>
@@ -107,12 +106,6 @@ export default {
                 align: 'center'
             },
             {
-                text: 'Details',
-                value: 'details',
-                align: 'center',
-                sortable: false,
-            },
-            {
                 text: 'Notes',
                 value: 'notes',
                 align: 'center',
@@ -158,7 +151,8 @@ export default {
 
 
 #plan-tasks-table .preplan-table-taskName {
-    max-width: 130px;
+    width: 250px;
+    max-width: 300px;
     max-height: 60px;
     overflow: auto;
     word-wrap: break-word; /* Перенос слов, если не помещаются */
