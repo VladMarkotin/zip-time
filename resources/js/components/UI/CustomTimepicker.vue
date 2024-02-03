@@ -21,10 +21,12 @@
         @input="updateSelectedTime"
         >
         </v-time-picker>
-        <v-btn 
-        @click="toggleTimeFormat">
-            Toggle Time Format
-        </v-btn>
+        <v-card-actions class="px-4 d-flex justify-content-center align-items-center">
+            <v-btn 
+            @click="toggleTimeFormat">
+                Toggle Time Format
+            </v-btn>
+        </v-card-actions>
     </v-menu>
 </template>
 
@@ -43,7 +45,7 @@
                 timeFormat: 'ampm',
             }
         },
-        
+
         watch: {
             time(newVal) {
                 this.selectedTime = newVal;
