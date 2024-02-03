@@ -43,6 +43,13 @@
                 timeFormat: 'ampm',
             }
         },
+        
+        watch: {
+            time(newVal) {
+                this.selectedTime = newVal;
+            }
+        },
+
         methods: {
             updateSelectedTime(newTime) {
                 this.$emit('updateTime', newTime);
