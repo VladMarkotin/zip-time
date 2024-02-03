@@ -91,7 +91,25 @@
                      required
                      :items="taskTypes"
                      v-model="defaultSelected.type"
-                     ></v-select>
+                     >
+                     <template v-slot:item="{item}" >
+                           <v-list-item >{{ item }}</v-list-item>
+                           <!-- open-on-hover -->
+                           <VSelectTooptip 
+                           :item="item"
+                           :tooltipData = "{
+                              requiredJob:
+                                 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum iste exercitationem doloremque cumque esse ea ipsam odit, consectetur numquam animi vel assumenda optio,',
+                              nonRequiredJob: 
+                                 'earum dolorem voluptate laudantium beatae voluptates ducimus alias velit a ullam. Fuga ex odit tempore odio saepe dolore aut deleniti, veniam assumenda repudiandae',
+                              requiredTask:   
+                                 'totam sed voluptatem, exercitationem impedit! Cupiditate velit ea animi aliquid harum alias, mollitia excepturi nostrum eius magnam voluptate eum voluptatum nulla culpa,',
+                              task:           
+                                 'ratione qui saepe temporibus recusandae beatae distinctio?',
+                           }"
+                           />
+                        </template>
+                  </v-select>
                </v-col>
                <v-col md="1">
                   <v-select
@@ -255,6 +273,7 @@ import CleanHashCodeButton from '../../UI/CleanHashCodeButton.vue';
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../../dialogs/EmergencyCall.vue';
 import PreplanTasksTable from './PreplanTasksTable.vue';
+import VSelectTooptip from '../../UI/VSelectTooptip.vue';
 import {
     mdiAccount,
     mdiPlex,
@@ -271,7 +290,7 @@ import {
 import { uuid } from 'vue-uuid';
 
 export default {
-   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable,},
+   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
