@@ -3,30 +3,34 @@
     v-model="menu"
     v-bind:close-on-content-click="false" 
     @input="onMenuToggled"
+
     >
         <template v-slot:activator="{on}">
             <v-text-field 
             label="Time" 
-            prepend-icon="mdi-clock-time-four-outline" 
+            :prepend-icon="isIconInner ? '' : 'mdi-clock-time-four-outline'"
+            :prepend-inner-icon="isIconInner ? 'mdi-clock-time-four-outline' : ''"
             readonly 
             v-model="selectedTime" 
             v-on="on"></v-text-field>
         </template>
-        <v-time-picker
-        ref="picker"
-        v-model="selectedTime"
-        color="#D71700"
-        :format="timeFormat"
-        @click:hour="selectinghourifusehoursonly"
-        @input="updateSelectedTime"
-        >
-        </v-time-picker>
-        <v-card-actions class="px-4 d-flex justify-content-center align-items-center">
-            <v-btn 
-            @click="toggleTimeFormat">
-                Toggle Time Format
-            </v-btn>
-        </v-card-actions>
+        <v-card style="text-align: center;">
+            <v-time-picker
+            ref="picker"
+            v-model="selectedTime"
+            color="#D71700"
+            :format="timeFormat"
+            @click:hour="selectinghourifusehoursonly"
+            @input="updateSelectedTime"
+            >
+            </v-time-picker>
+            <v-card-actions class="px-4 d-flex justify-content-center align-items-center" style="background-color: #FFFFFF;">
+                <v-btn 
+                @click="toggleTimeFormat">
+                    Toggle Time Format
+                </v-btn>
+            </v-card-actions>
+        </v-card>
     </v-menu>
 </template>
 
@@ -36,7 +40,12 @@
             time: {
                 type: String,
                 required: true,
-            }
+            },
+
+            isIconInner: {
+                type: Boolean,
+                default: false,
+            },
         },
         data() {
             return {
