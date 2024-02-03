@@ -1,6 +1,8 @@
 <template>
     <v-menu 
+    v-model="menu"
     v-bind:close-on-content-click="false" 
+    @input="onMenuToggled"
     >
         <template v-slot:activator="{on}">
             <v-text-field 
@@ -36,13 +38,13 @@
         },
         data() {
             return {
+                menu: false,
                 selectedTime: this.time,
                 timeFormat: 'ampm',
             }
         },
         methods: {
             updateSelectedTime(newTime) {
-                
                 this.$emit('updateTime', newTime);
             },
 
@@ -52,8 +54,18 @@
             
             selectinghourifusehoursonly() {
                 this.$nextTick(() => {
-                    this.$refs.picker.selectingHour = true;
+                    this.resetToHourSelection();
                 });
+            },
+
+            onMenuToggled(val) {
+                if (!val) {
+                    this.resetToHourSelection();
+                }
+            },
+
+            resetToHourSelection() {
+                this.$refs.picker.selectingHour = true;
             }
         },
     }

@@ -410,7 +410,6 @@ export default {
                .then(function(response) {
                   currentObj.defaultSelected.taskName = response.data[1];
                   currentObj.defaultSelected.type = response.data[2];
-                  console.log(response.data[2])
                   currentObj.defaultSelected.priority = `${response.data[3]}`;
                   currentObj.defaultSelected.time = response.data[5];
                   currentObj.defaultSelected.details = response.data[4];
@@ -419,7 +418,6 @@ export default {
                 .catch(function(error) {
                     currentObj.output = error;
                 });
-           
         },
 
          onChangeForPresentation(event) {
