@@ -23,15 +23,13 @@
         enter-active-class="vselect-tooltip-appearance"
         >
             <v-card
-            min-height="200"
-            width="300"
+            :min-height = minHeight
+            :width      = width
             v-if="isMenuOpen"
             >
                 <v-card-title class="justify-content-center">{{ item }}</v-card-title>
                 <v-card-text>
-                    <p class="text--primary text-justify mb-0">
-                        {{ getText(item) }}
-                    </p>
+                    <p class="text--primary text-justify mb-0" v-html="getText(item)"></p>
                 </v-card-text>
             </v-card>
         </transition>
@@ -42,6 +40,13 @@
 import { mdiHelpCircleOutline,} from '@mdi/js'
     export default {
         props: {
+            width: {
+                type: Number,
+                default: 310
+            },
+            minHeight: {
+                type: Number,
+            },
             item: {
                 type: String,
                 required: true,
