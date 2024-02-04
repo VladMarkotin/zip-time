@@ -27,9 +27,13 @@
             :width      = width
             v-if="isMenuOpen"
             >
-                <v-card-title class="justify-content-center">{{ item }}</v-card-title>
-                <v-card-text>
-                    <p class="text--primary text-justify mb-0" v-html="getText(item)"></p>
+                <v-card-title 
+                :class="isShowDescription ? 'justify-content-center' : 'justify-content-center single-title'"
+                >
+                    {{ getText(item, 'titles') }}
+                </v-card-title>
+                <v-card-text  v-if="isShowDescription">
+                    <p class="text--primary text-justify mb-0" v-html="getText(item, 'descriptions')"></p>
                 </v-card-text>
             </v-card>
         </transition>
@@ -54,6 +58,10 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
             tooltipData: {
                 type: Object,
                 required: true,
+            },
+            isShowDescription: {
+                type: Boolean,
+                default: true,
             }
         },
         data() {
@@ -63,16 +71,18 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
             }
         },
         methods: {
-            getText(type){
+            getText(itemKey, mainKey){
+                if (!this.tooltipData[mainKey]) return '';
+
                 //приходит строка с типом таски, трансформирую ее в CamelCase 
-                const typeFormated = type.split(' ')
+                const keyFormated = itemKey.split(' ')
                     .map((word,index) => {
                     if (index === 0) return word;
                     return word[0].toUpperCase() + word.slice(1)
                     })
                     .join('');
                 
-                    return this.tooltipData[typeFormated] || '';
+                    return this.tooltipData[mainKey][keyFormated] || '';
                 }
         }
     }
@@ -85,6 +95,12 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
 
     .vselect-tooltip-appearance {
       animation: .3s vselect_tooltip_appearance ease;
+   }
+
+   .single-title {
+    font-size: 1rem !important;
+    padding: 7px 11px !important;
+    line-height: normal;
    }
 
    @keyframes vselect_tooltip_appearance {
