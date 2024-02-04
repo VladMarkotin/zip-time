@@ -1,5 +1,5 @@
 <template>
-    <v-tooltip right>
+    <v-tooltip v-bind="tooltipPosition">
 		<template v-slot:activator="{on}">
 			<v-btn icon v-on="on" v-on:click="$emit('clearCurrentHashCode')">
 				<v-icon color="#D71700">{{icon.mdiBackspace}}</v-icon>
@@ -15,6 +15,11 @@ import {mdiBackspace} from '@mdi/js';
         props: {
             tooltipText: {
                 default: 'Clear current hash code',
+            },
+
+            tooltipPosition: {
+                type: Object,
+                default: () => ({ right: true }) 
             }
         },
         data() {

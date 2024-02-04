@@ -63,7 +63,15 @@
 								v-bind:items="types" 
 								v-model="task.type"
 								@change="compareWithTemplate"
-								></v-select>
+								>
+								<template v-slot:item="{item}">
+									<v-list-item >{{ item }}</v-list-item>
+									<VSelectTooptip 
+                          			:item        = "item"
+									:tooltipData = "tooltipTypesData"
+                           			/>
+								</template>
+							</v-select>
 							</v-col>
 							<v-col
 							cols="1"
@@ -83,7 +91,18 @@
 								v-bind:items="priorities" 
 								v-model="task.priority"
 								@change="compareWithTemplate"
-								></v-select>
+								>
+								<template v-slot:item="{item}" >
+									<v-list-item >{{ item }}</v-list-item>
+									<!-- open-on-hover -->
+									<VSelectTooptip 
+									:item              = "String(item)"
+									:width             = "200"
+									:tooltipData       = "tooltipPrioritiesData"
+									:isShowDescription = "false"
+									/>
+								</template>
+								</v-select>
 							</v-col>
 							<v-col
 							cols="1"
@@ -123,11 +142,12 @@
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
 	import CloseButton from '../UI/CloseButton.vue';
 	import TimePickerMenu from '../TimePickerMenu.vue';
+	import VSelectTooptip from '../UI/VSelectTooptip.vue';
 	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
 
 	export default
 		{
-			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, TimePickerMenu},
+			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, TimePickerMenu, VSelectTooptip},
 			data()
 			{
 				return {
@@ -157,6 +177,34 @@
 						isShowAddHashCodeDialog : false,
 						isChangedHashCodeTemplate: false,
 					}
+			},
+			computed: {
+				tooltipTypesData() {
+					return {
+						titles: {
+							requiredJob: 'required job',
+							nonRequiredJob: 'non required job',
+							requiredTask: 'required task',
+							task: 'task',
+						},
+						descriptions: {
+							requiredJob: `<span style="text-indent: -1em; padding-left: 1em;">Main entity of your plan. By adding a required job, you kind of sign a commitment with yourself that you will at least start doing it today. After finishing working on a job, you should evaluate the effort you spent.</span><br><span style="text-indent: -1em; padding-left: 1em;">By 23:59 all (!) required jobs should be evaluated</span>`,
+							nonRequiredJob: `<span style="text-indent: -1em; padding-left: 1em;">Some of your day\`s jobs could be not so important but, anyway, you want to evaluate your efforts. So, non required jobs are exactly what you need. Failure to comply has no consequences. Moreover, to complete all non required jobs is a perfect way to increase your final day grade</span>`,
+							requiredTask: `<span style="text-indent: -1em; padding-left: 1em;">We often have a plenty of small (but important) tasks (e.g “call to the boss”). It would be difficult to evaluate the result of such task, but, anyway, you have to do it.</span>`,
+							task: `<span style="text-indent: -1em; padding-left: 1em;">Anything that\`s not so important and hard to evaluate but necessary personally for you ( E.g. “night out with friends” )</span>`,
+						},
+					}
+        		},
+
+				tooltipPrioritiesData() {
+					return {
+						titles: {
+							'1' : 'usual',
+							'2' : 'important',
+							'3' : 'extremly imortant',
+						}
+					}
+        		}
 			},
 			methods :
 			{
