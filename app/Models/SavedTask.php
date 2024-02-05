@@ -12,4 +12,9 @@ class SavedTask extends Model
     protected $table = 'saved_tasks';
     protected $fillable = ['hash_code', 'task_name', 'time','type','details','status',
                              'created_at', 'updated_at'];
+
+    public function notes()
+    {
+        return $this->hasMany(SavedNotes::class, 'saved_task_id', 'id');
+    }
 }

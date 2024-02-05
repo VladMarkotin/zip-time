@@ -16,8 +16,8 @@ trait UserGroupTrait
     
      static function defineRateGroup($data, $config) {
         $conf = json_decode($config[0]['config_data']);
-        $ratingGroup = [];
-        //have to define rating`s frames 
+        $ratingGroup = []; 
+        //have to define rating`s frames
         $isRatingBelongsToGroup = function (array $group, $rate) {
             foreach ($group as $v) {
                 if ($rate >= $v->from && ($rate <= $v->to)) { 

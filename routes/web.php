@@ -30,6 +30,7 @@ Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->na
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
  
+Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
 Route::middleware(['auth'])->group(function () {
  
  
@@ -41,7 +42,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/getDefaultSavedTasks', [App\Http\Controllers\MainController::class, 'getDefaultSavedTasks']);
     Route::post('/getSavedTask', [App\Http\Controllers\MainController::class, 'getSavedTaskByHashCode']);
     Route::post('/getPreparedPlan', [App\Http\Controllers\MainController::class, 'getPreparedPlan']);//check whether we got prepared plan
-    Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
     Route::post('isWeekendAvailable',[App\Http\Controllers\MainController::class, 'isWeekendAvailable']);
     Route::post('/getEduStep', [App\Http\Controllers\MainController::class, 'getEduStep']);
     Route::post('/updateEduStep', [App\Http\Controllers\MainController::class, 'updateEduStep']);
@@ -89,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
 
     //getting notes for concrete task
     Route::post('/get-saved-notes', [App\Http\Controllers\NoteController::class, 'getSavedNotes'])->name('getSavedNotes');
-
+    
     //Upgrade details in functionality in plan
     Route::post('/add-sub-task', [App\Http\Controllers\SubPlanController::class, 'createSubPlan'])->name('addSubTask'); //
     Route::post('/get-sub-tasks', [App\Http\Controllers\SubPlanController::class, 'getSubPlan'])->name('get-sub-tasks');//del-sub-task
@@ -99,6 +99,9 @@ Route::middleware(['auth'])->group(function () {
     
     //Upgrade notes functionality
     Route::post('get-today-note-amount',[App\Http\Controllers\NoteController::class, 'getTodayNoteAmount'])->name('get-note-amount');
+    Route::post('add-note',[App\Http\Controllers\NoteController::class, 'addNote'])->name('notes.create');
+    Route::post('/delete-note', [App\Http\Controllers\NoteController::class, 'destroy'])->name('notes.destroy');
+    Route::post('/update-note', [App\Http\Controllers\NoteController::class, 'update'])->name('notes.update');
     
     //Local chatGPT functionality
     Route::post('/create-gpt-subplan-request', [App\Http\Controllers\SubPlanGPTController::class, 'makeRequestToGPT'])->name('create-gpt-subplan-request');

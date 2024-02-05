@@ -8,9 +8,11 @@ import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/dist/vuetify.min.css';
 import ChatGPTIcon from './components/icons/ChatGPTIcon.vue';
 import GPTRecreateIcon from './components/icons/GPTRecreateIcon.vue';
+import UUID from "vue-uuid";
 
 Vue.use(HighchartsVue);
 Vue.use(Vuetify);
+Vue.use(UUID);
 
 Vue.component('ClosedReadyDayPlan', require('./components/cards/ClosedReadyDayPlan.vue').default);
 Vue.component('History', require('./components/cards/History.vue').default);

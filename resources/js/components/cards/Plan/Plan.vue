@@ -1,5 +1,21 @@
 <template>
    <v-card id="plan-wrapper">
+      <template v-if="isShowAddHashCodeDialog">    
+         <AddHashCode
+         :width          = "450"
+         :hashCodeVal    = "newHashCode"
+         :isShowDialog   = "isShowAddHashCodeDialog"
+         :taskName       = "defaultSelected.taskName"
+         :time           = "defaultSelected.time"
+         :type           = "defaultSelected.type"
+         :priority       = "defaultSelected.priority"
+         :details        = "defaultSelected.details"
+         :notes          = "defaultSelected.notes"
+         @close          = "closeHashCodeDialog"
+         @changeHashCode = "changeHashCode"
+         @addHashCode    = "addHashCode"
+         />
+      </template>
       <v-card-title style="background-color: #A10000;color: white;" >Create your day plan!</v-card-title>
       <v-container>
          <div id="plan-day-status">
@@ -15,56 +31,51 @@
          </div>
          <v-divider></v-divider>
          <div>
-            <v-row align="center" class="d-flex mb-2" >
-               <v-col cols="2" sm="1" v-if="defaultSelected.hash == '#'" no-gutters>
-                  <div class="text-center pa-2 ma-2">
-                     <template v-if="defaultSelected.taskName.length > 3">
+            <v-row align="center" class="d-flex justify-content-between" >
+               <v-col
+                  md="3"
+                  >
+                  <v-row class="p-0 m-0 d-flex justify-content-between"> 
+                     <v-col
+                     md="3" 
+                     class="p-0 m-0 d-flex justify-content-center align-items-center"
+                     >
+                     <transition 
+                     enter-active-class="button_appearance"
+                     leave-active-class="button_leave"
+                     >
                         <AddHashCodeButton 
+                        v-if="defaultSelected.taskName.length > 3"
+                        :tooltipPosition = "{bottom: true}"
+                        :buttonSize      = "26"
                         @addHashCodeButtonClick="isShowAddHashCodeDialog = true"
                         />
-                     </template>
-                     <template v-if="isShowAddHashCodeDialog">    
-                        <AddHashCode
-                        :width          = "450"
-                        :hashCodeVal    = "newHashCode"
-                        :isShowDialog   = "isShowAddHashCodeDialog"
-                        :taskName       = "defaultSelected.taskName"
-                        :time           = "defaultSelected.time"
-                        :type           = "defaultSelected.type"
-                        :priority       = "defaultSelected.priority"
-                        :details        = "defaultSelected.details"
-                        :notes          = "defaultSelected.notes"
-                        @close          = "closeHashCodeDialog"
-                        @changeHashCode = "changeHashCode"
-                        @addHashCode    = "addHashCode"
+                     </transition>
+                     </v-col>
+                     <v-col 
+                     id="plan-hash"
+                     class="p-0 m-0"
+                     md="6"
+                     >
+                        <v-select
+                           :items="defaultSelected.hashCodes"
+                           value="defaultSelected.hashCodes[0]"
+                           v-model="defaultSelected.hash"
+                           @change="onChange"
+                           required>
+                        </v-select>
+                     </v-col>    
+                     <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center">
+                        <CleanHashCodeButton 
+                        v-if="defaultSelected.hash.length > 1"
+                        :tooltipPosition = "{bottom: true}"
+                        :tooltipText     = "'Clear'"
+                        @clearCurrentHashCode="clearCurrentHashCode"
                         />
-                     </template>
-                  </div>
+                     </v-col>
+                  </v-row>
                </v-col>
-               <v-col
-                  id="plan-hash"
-                  cols="1"
-                  md="1"
-                  :offset="defaultSelected.hash == '#' ? 0 : 1"
-                  :offset-md="defaultSelected.hash == '#' ? 0 : 1"
-                  >
-                  <v-select
-                     :items="defaultSelected.hashCodes"
-                     value="defaultSelected.hashCodes[0]"
-                     v-model="defaultSelected.hash"
-                     @change="onChange"
-                     required>
-                  </v-select>
-               </v-col>
-               <v-col v-if="defaultSelected.hash.length > 1">
-                  <template>    
-                     <CleanHashCodeButton 
-                     :tooltipText="'Clear'"
-                     @clearCurrentHashCode="clearCurrentHashCode"
-                     />
-                  </template>
-               </v-col>
-               <v-col cols="4" md="3">
+               <v-col md="3">
                   <v-text-field
                      :placeholder=" placeholders[0] "
                      :counter="25"
@@ -74,21 +85,41 @@
                      @keypress.enter = "addTask"
                      ></v-text-field>
                </v-col>
-               <v-col cols="1" md="3">
+               <v-col md="2">
                   <v-select
                      :label="placeholders[1]"
                      required
                      :items="taskTypes"
                      v-model="defaultSelected.type"
-                     ></v-select>
+                     >
+                     <template v-slot:item="{item}" >
+                           <v-list-item >{{ item }}</v-list-item>
+                           <!-- open-on-hover -->
+                           <VSelectTooptip 
+                           :item="item"
+                           :tooltipData = "tooltipTypesData"
+                           />
+                     </template>
+                  </v-select>
                </v-col>
-               <v-col cols="1" md="1">
+               <v-col md="1">
                   <v-select
                      :label="placeholders[2]"
                      required
                      :items="taskPriority"
                      v-model="defaultSelected.priority"
-                     ></v-select>
+                     >
+                     <template v-slot:item="{item}" >
+                           <v-list-item >{{ item }}</v-list-item>
+                           <!-- open-on-hover -->
+                           <VSelectTooptip 
+                           :item              = "item"
+                           :width             = "200"
+                           :tooltipData       = "tooltipPrioritiesData"
+                           :isShowDescription = "false"
+                           />
+                     </template>
+                  </v-select>
                </v-col>
                <v-col
                id="plan-time" 
@@ -106,8 +137,8 @@
                   </v-menu>
                </v-col>
             
-               <v-col cols="1" md="1">
-                  <v-tooltip right>
+               <v-col md="1">
+                  <v-tooltip bottom>
                      <template v-slot:activator="{ on }">
                         <div v-on="on">
                            <v-btn icon>
@@ -128,34 +159,91 @@
          :items          = "items"
          @deleteItem  = "deleteItem"
          />
-         <v-row>
-         <v-col>
+         <v-row 
+         class="d-flex justify-content-between align-items-center"
+         style="height: 80px;"
+         >
+         <v-col 
+         class="d-flex justify-content-start align-items-center"
+         cols="1"
+         style="height: 100%;"
+         >
             <div 
             id="plan-creating-wrapper"
             style="min-height: 36px; width: 36px;"
+            v-if="!isShowProgress"
             >
-               <div v-if="items.length > 0">
-                  <div class=" d-flex justify-space-between mt-3">
-                     <v-tooltip right>
-                        <template v-slot:activator="{ on, attrs }">
-                           <v-btn id="plan-creating" color="#D71700" style="text-color:#ffffff" icon v-on:click="formSubmit()" v-bind="attrs"
-                              v-on="on">
-                              <v-icon md="1"
-                                 color="#D71700"
-                                 large
-                                 >
-                                 {{icons.mdiClockStart}}
-                              </v-icon>
-                           </v-btn>
-                           </template>
-                           <span>Create plan</span>
-                     </v-tooltip>        
-                     </div>
+            <transition
+            enter-active-class="button_appearance"
+            >
+               <div 
+               style="position: relative;"
+               class=" d-flex justify-space-between" 
+               v-if="items.length > 0"
+               >
+                  <v-tooltip right>
+                     <template v-slot:activator="{ on, attrs }">
+                        <v-btn 
+                        id="plan-creating" 
+                        v-on:click="formSubmit()" 
+                        v-bind="attrs"
+                        v-on="on"
+                        color="#D71700" 
+                        style="text-color:#ffffff" 
+                        icon 
+                        >
+                           <v-icon 
+                           md="1"
+                           color="#D71700"
+                           large
+                           >
+                              {{icons.mdiClockStart}}
+                           </v-icon>
+                        </v-btn>
+                     </template>
+                     <span>Create plan</span>
+                  </v-tooltip>        
                </div>
+            </transition>
+            </div>
+            <div class="v-progress-circular" v-if="isShowProgress" style="height: inherit">
+               <v-progress-circular
+                  style="height: inherit"
+                     :rotate="90"
+                     :size="100"
+                     :width="5"
+                     :value="value"
+                     color="red"
+                     class="v-progress-circular"
+                  >
+                     {{ value }}
+                  </v-progress-circular>
             </div>
          </v-col>
-         <v-col>
-
+         <v-col 
+         cols="9"
+         style="height: 100%;"
+         >     
+            <transition
+            enter-active-class="create-day-alert_appearance"
+            leave-active-class="create-day-alert_leave"
+            >
+               <v-alert
+                  v-if="showAlert"
+                  color="#404040"
+                  text
+                  class="elevation-1 create-day-alert mb-0 d-flex justify-content-center align-items-center" 
+                  :type="alertType"
+                  >
+                     {{serverMessage}}
+                  </v-alert>
+            </transition>
+         </v-col>
+         <v-col 
+         class="d-flex justify-content-end align-items-center"
+         cols="1"
+         style="height: 100%;"
+         >
             <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
@@ -172,27 +260,8 @@
                      <span>Emergency mode</span>
             </v-tooltip>
          </v-col>
-            <v-alert
-               color="#404040"
-               text
-               class="elevation-1"
-               :value="showAlert"
-               :type="alertType"
-               >{{serverMessage}}
-            </v-alert>
          </v-row>
-         <div class="v-progress-circular" v-if="isShowProgress == true">
-            <v-progress-circular
-                  :rotate="90"
-                  :size="100"
-                  :width="5"
-                  :value="value"
-                  color="red"
-                  class="v-progress-circular"
-               >
-                  {{ value }}
-               </v-progress-circular>
-         </div>
+         
          <template v-if="isShowEmergencyCallDialog">
 	         <EmergencyCall  v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
          </template>
@@ -206,6 +275,7 @@ import CleanHashCodeButton from '../../UI/CleanHashCodeButton.vue';
 import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../../dialogs/EmergencyCall.vue';
 import PreplanTasksTable from './PreplanTasksTable.vue';
+import VSelectTooptip from '../../UI/VSelectTooptip.vue';
 import {
     mdiAccount,
     mdiPlex,
@@ -219,9 +289,10 @@ import {
     mdiPlusBox,
     mdiCancel,
 } from '@mdi/js'
+import { uuid } from 'vue-uuid';
 
 export default {
-   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable,},
+   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
@@ -279,12 +350,40 @@ export default {
         dialogDelete: false,
         isShowProgress: false,
         value: 0,
-        interval: {}
+        interval: {},
+        closeAlertTime: 0,
     }),
     computed : {
         taskTypes() {
             return this.
                day_status == 'Weekend' ? ['non required job', 'task', 'reminder'] : ['required job', 'non required job', 'required task', 'task']
+        },
+
+        tooltipTypesData() {
+            return {
+               titles: {
+                  requiredJob: 'required job',
+                  nonRequiredJob: 'non required job',
+                  requiredTask: 'required task',
+                  task: 'task',
+               },
+               descriptions: {
+                  requiredJob: `<span style="text-indent: -1em; padding-left: 1em;">Main entity of your plan. By adding a required job, you kind of sign a commitment with yourself that you will at least start doing it today. After finishing working on a job, you should evaluate the effort you spent.</span><br><span style="text-indent: -1em; padding-left: 1em;">By 23:59 all (!) required jobs should be evaluated</span>`,
+                  nonRequiredJob: `<span style="text-indent: -1em; padding-left: 1em;">Some of your day\`s jobs could be not so important but, anyway, you want to evaluate your efforts. So, non required jobs are exactly what you need. Failure to comply has no consequences. Moreover, to complete all non required jobs is a perfect way to increase your final day grade</span>`,
+                  requiredTask: `<span style="text-indent: -1em; padding-left: 1em;">We often have a plenty of small (but important) tasks (e.g “call to the boss”). It would be difficult to evaluate the result of such task, but, anyway, you have to do it.</span>`,
+                  task: `<span style="text-indent: -1em; padding-left: 1em;">Anything that\`s not so important and hard to evaluate but necessary personally for you ( e.g. “night out with friends” )</span>`,
+               },
+            }
+        },
+
+        tooltipPrioritiesData() {
+            return {
+               titles: {
+                  '1' : 'usual',
+                  '2' : 'important',
+                  '3' : 'extremly imortant',
+               }
+            }
         }
     },
     methods: {
@@ -379,9 +478,56 @@ export default {
             });
         },
 
-        addTask(e) {
-            this.items.push(this.defaultSelected);
-            this.showIcon = 0;
+        checkDefaultSelected() {
+         let {taskName} = this.defaultSelected;
+         taskName = taskName.trim();
+
+         if (taskName.length < 4) {
+            return 'The task\'s name must be more than 3 characters long';
+         }
+
+         if (taskName.length > 255) {
+            return 'The task\'s name can\'t consist of more than 255 characters';
+         }
+
+         return true;
+        },
+
+        setAlert({serverMessage, alertType}) {
+         //если длина названия таски очень большая, то оставляю первые 25 символов только
+         const regex = /The task (.+?) has/g;
+         const matches = regex.exec(serverMessage);
+         if (matches) {
+            const taskName = matches[1]; 
+            
+            if (taskName && taskName.length > 25) {
+               serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+            }
+         }
+
+            this.serverMessage = serverMessage;
+            this.alertType = alertType;
+            this.showAlert = true;
+
+            clearTimeout(this.closeAlertTime);
+            this.closeAlertTime = setTimeout(() => {
+               this.showAlert = false;
+            }, 3000);
+        },
+
+        addTask() {
+         
+         this.showAlert = false;
+         const checkTaskResult = this.checkDefaultSelected();
+         const {taskName}      = this.defaultSelected;
+
+         if (checkTaskResult !== true) {
+            this.setAlert({serverMessage: checkTaskResult, alertType: 'error'});
+            return;
+         }
+
+         this.items.push({...this.defaultSelected, uniqKey: uuid.v1()});
+         this.showIcon = 0;
          this.defaultSelected = {
                 hashCodes: this.defaultSelected.hashCodes,
                 hash: '#',
@@ -392,39 +538,62 @@ export default {
                 details: '',
                 notes: ''
             }
+            // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
+            // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
+         this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success'});
         },
+
         deleteItem(item) {
-            var index = this.items.indexOf(item)
+            const index = this.items.indexOf(item)
+            const {taskName} = this.items[index];
+
             this.items.splice(index, 1);
+             // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
+            // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
+            this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success'});
         },
 
         formSubmit(e) {
             let currentObj = this;
-            currentObj.isShowProgress = true;
             axios.post('/addPlan', currentObj.getPostParams())
-                .then(function(response) { 
-                    currentObj.alertType = response.data.status;
-                    currentObj.serverMessage = response.data.message;
-                    currentObj.showAlert = true;
-                    currentObj.isShowProgress = true
-                    currentObj.interval = setInterval(() => {
-							if (currentObj.value === 100) {
-								clearInterval(currentObj.interval)
-								return (currentObj.value = 100)
-							}
-                        currentObj.value += 20
-							}, 500)
-                    setTimeout(() => {
-                        currentObj.showAlert = false
-                        currentObj.isShowProgress = false
-                        document.location.reload();
-                        if (response.data.status == 'success') {
-                           const data = JSON.parse(response.config.data)
-                           currentObj.$root.currComponentProps = data.plan
-                           currentObj.$root.currComponent = "ReadyDayPlan"
-                           
-                        }
-                    }, 5e3)
+            .then(function(response) { 
+               const {status} = response.data;
+               currentObj.alertType = response.data.status;
+               currentObj.serverMessage = response.data.message;
+               currentObj.showAlert = true;
+
+               if (status === 'success') {
+                     currentObj.isShowProgress = true;
+
+                     currentObj.interval = setInterval(() => {
+                      if (currentObj.value === 100) {
+                         clearInterval(currentObj.interval)
+                         return (currentObj.value = 100)
+                      }
+                         currentObj.value += 20
+                      }, 500)
+                     setTimeout(() => {
+                         currentObj.showAlert = false
+                         currentObj.isShowProgress = false
+                         document.location.reload();
+                         if (response.data.status == 'success') {
+                            const data = JSON.parse(response.config.data)
+                            currentObj.$root.currComponentProps = data.plan
+                            currentObj.$root.currComponent = "ReadyDayPlan"
+                            
+                         }
+                     }, 5e3)
+                  }  
+                  
+                  if (status === 'error') {
+                     clearTimeout(currentObj.closeAlertTime);
+
+                     currentObj.closeAlertTime = setTimeout(() => {
+                        currentObj.showAlert = false;
+                     }, 3000);
+
+                  }
+
                 })
                 .catch(function(error) {
                     currentObj.output = error;
@@ -764,7 +933,6 @@ export default {
       }
     },
 
-    
 }
 </script>
 <style scoped>
@@ -772,4 +940,43 @@ export default {
 		width: 50px;
 		margin: auto;
 	}
+
+   .create-day-alert {
+      position: relative;
+   }
+
+   .create-day-alert_appearance {
+      animation: .3s alert_appearance ease;
+   }
+
+   .create-day-alert_leave {
+      animation: .3s alert_leave ease;
+   }
+
+   @keyframes alert_appearance {
+		from { opacity: 0; left: -10px;}
+		to { opacity: 1; left: 0;}
+	}
+
+	@keyframes alert_leave {
+		from { opacity: 1; left: 0;}
+		to { opacity: 0; left: 10px;}
+	}
+
+   @keyframes button_appearance {
+		from { opacity: 0; top: -5px;}
+		to { opacity: 1; top: 0;}
+	}
+
+	@keyframes button_leave {
+		from { opacity: 1; top: 0;}
+		to { opacity: 0; top: 5px;}
+	}
+
+   .button_appearance {
+      animation: .25s button_appearance ease;
+   }
+   .button_leave {
+      animation: .25s button_leave ease; 
+   }
 </style>

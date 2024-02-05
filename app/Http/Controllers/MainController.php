@@ -298,23 +298,24 @@ class MainController
 
     public function getCreatedPlanIfExists()
     {
+        if (Auth::id()) {
+            $data = [
+                "id"      => Auth::id(),
+                "date"    => Carbon::today()
+            ];
+            $createdDayPlan = ($this->getDayPlanService->getPlan($data));//plan which has been already created if it exists
+            if($createdDayPlan){
+                if($createdDayPlan[0]->day_status == 0){
+                    $createdDayPlan = $this->dataTransformationService->transformDataForEmergencyRequest($createdDayPlan);
+                    
+                    return json_encode($createdDayPlan, JSON_UNESCAPED_UNICODE);
+                }
+                $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
 
-        $data = [
-            "id"      => Auth::id(),
-            "date"    => Carbon::today()
-        ];
-        $createdDayPlan = ($this->getDayPlanService->getPlan($data));//plan which has been already created if it exists
-        if($createdDayPlan){
-            if($createdDayPlan[0]->day_status == 0){
-                $createdDayPlan = $this->dataTransformationService->transformDataForEmergencyRequest($createdDayPlan);
-                
-                return json_encode($createdDayPlan, JSON_UNESCAPED_UNICODE);
+                return json_encode($transformData, JSON_UNESCAPED_UNICODE);
             }
-            $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
-
-            return json_encode($transformData, JSON_UNESCAPED_UNICODE);
         }
-
+        exit;
         return "";
     }
 

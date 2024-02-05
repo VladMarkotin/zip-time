@@ -13,19 +13,27 @@ use App\Http\Controllers\Services\NotesService;
 
 class NoteController extends Controller
 {
-    private $savedNotes   = null;
-    private $notesService = null;
-    private $carbon       = null;
+    private $savedNotes       = null;
+    private $savedTask        = null;
+    private $notesService     = null;
+    private $carbon           = null;
+    private $responseTemplate = null;
 
     public function __construct(
         SavedNotes   $savedNotes,
+        SavedTask    $savedTask,
         NotesService $notesService,
         Carbon       $carbon
     )
     {
-        $this->savedNotes   = $savedNotes;
-        $this->notesService = $notesService;
-        $this->carbon       = $carbon;
+        $this->savedNotes       = $savedNotes;
+        $this->savedTask        = $savedTask;
+        $this->notesService     = $notesService;
+        $this->carbon           = $carbon;
+        $this->responseTemplate = [
+            'status'  => '',
+            'message' => '',
+        ];
     }
 
     public function addNote(Request $request, $isReturnResponse = true)
@@ -35,10 +43,7 @@ class NoteController extends Controller
         $data          = ['id' => $task_id, 'note' => $note];
         $saved_task_id = $this->getSavedTaskId($data);
         
-        $noteAfterValidation = $this->notesService->addNoteForSavedTask($data);
-        if (!$noteAfterValidation) {
-            $noteAfterValidation = $this->notesService->makeNoteValid($note);
-        }
+        $noteAfterValidation = $this->getNoteAfterValidation($note);
 
         $response = [
             'status' => null,
@@ -53,8 +58,13 @@ class NoteController extends Controller
                     'created_at'    => $this->carbon::now(),
                     'updated_at'    => $this->carbon::now(),
                 ];
-    
+
                 SavedNotes::create($savedNoteData);
+                if ($isReturnResponse) {
+                    $all_notes = $this->getNotes($saved_task_id);
+
+                    $response['all_notes'] = $all_notes;
+                }
             } else {
                 $current_task = Tasks::find($task_id);
                 $current_task->update(['note' => $noteAfterValidation]);
@@ -67,12 +77,35 @@ class NoteController extends Controller
             $response['text']   = 'something has happened';
         } finally {//если этот метод дергается напрямую с клиента, то отдам туда json
             if ($isReturnResponse) {
-                return ;
+                return response()->json($response);
             } 
             $response['saved_task_id'] = $saved_task_id;
             return $response;
         }
  
+    }
+
+    private function getNoteAfterValidation($note)
+    {
+        $data = ['note' => $note];
+        
+        $noteAfterValidation = $this->notesService->addNoteForSavedTask($data);
+        if (!$noteAfterValidation) {
+            $noteAfterValidation = $this->notesService->makeNoteValid($note);
+        }
+
+        return $noteAfterValidation;
+    }
+
+    private function getNotes($saved_task_id)
+    {
+        $notes = SavedNotes::select('id', 'note', 'created_at', 'updated_at')
+        ->where('saved_task_id', $saved_task_id)
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->toArray();
+
+        return $notes;
     }
 
     public function getSavedNotes(Request $request)
@@ -90,11 +123,7 @@ class NoteController extends Controller
         $savedTaskId = $savedTaskId[0]['id'];
 
         //get notes for saved Task
-        $notes = SavedNotes::select('note', 'created_at')
-        ->where('saved_task_id', $savedTaskId)
-        ->orderBy('created_at', 'desc')
-        ->get()
-        ->toArray();
+        $notes = $this->getNotes($savedTaskId);
         //die(var_dump($notes));
         return json_encode( $notes, JSON_UNESCAPED_UNICODE);
     }
@@ -147,5 +176,53 @@ class NoteController extends Controller
         }
 
         return null;
+    }
+
+    public function destroy (Request $request)
+    {
+        $note_id = $request->get('note_id');
+        $response = $this->responseTemplate;
+
+        try {
+            $current_note = $this->savedNotes::find($note_id);
+            $current_note->delete();
+            
+            $response['status'] = 'success';
+            $response['message'] = 'note has been removed';
+        } catch (Exception $error) {
+            $response['status'] = 'error';
+            $response['message'] = 'something has happend';
+        } finally {
+            return response()->json($response);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $note_id = $request->get('note_id');
+        $note    = $request->get('note');
+        $task_id = $request->get('task_id');
+
+        $saved_task_id = $this->getSavedTaskId(['id' => $task_id]);
+        
+        $noteAfterValidation = $this->getNoteAfterValidation($note);
+
+        $response = $this->responseTemplate;
+
+        try {
+            $current_note = $this->savedNotes::find($note_id);
+            $current_note->update(['note' => $noteAfterValidation]);
+
+            $all_notes = $this->getNotes($saved_task_id);
+            $response['all_notes'] = $all_notes;
+            
+            $response['status'] = 'success';
+            $response['message'] = 'note has been updated';
+        } catch (Exception $error) {
+            $response['status'] = 'error';
+            $response['message'] = 'something has happend';
+        } finally {
+            return response()->json($response);
+        }
     }
 }
