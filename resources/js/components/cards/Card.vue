@@ -74,7 +74,10 @@
 				<v-list-item-content class="align-end" v-else>{{item.time}}
 					 hours
 				</v-list-item-content>
-				<v-dialog
+				<EditCardData 
+				:currentTaskPriority="item.priority"
+				/>
+				<!-- <v-dialog
 					v-model="dialog"
 					persistent
 					width="500"
@@ -85,9 +88,6 @@
 							@click="dialog=true"
 							/>
 						</template>
-					<!-- <v-btn icon @click="dialog=true"> тут пока не удалять
-						<v-icon color="#D71700">{{icons.mdiPencil}}</v-icon>
-					</v-btn> --> 
 				</template>
 					<v-card>
 						<v-card-title class="text-h5">
@@ -126,7 +126,7 @@
 						</v-btn>
 						</v-card-actions>
 					</v-card>
-					</v-dialog>
+					</v-dialog> -->
 			</v-list-item>
 
 			<v-list-item>
@@ -185,91 +185,6 @@
 							@updateNotesInfo  = "setNotesInfo"
 							/>
 						</template>
-						<!-- <v-dialog
-						v-if="item.hash !== '#'"
-						v-model="dialogNotes"
-						scrollable
-						width="auto"
-						>
-						<template v-slot:activator="{ props }">
-							<div class="d-flex justify-space-between align-center">
-								<v-btn
-								icon
-								v-bind="props"
-								@click="getAllNotesForTask(item)"
-								:id="!num ? 'card-notes' : false"
-								>
-								<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
-								</v-btn>
-								<span>
-									{{ getTodayNoteAmount(item) }}
-									{{ noteInfo.todayAmount }}
-								</span>
-							</div>
-						</template>
-						<v-card
-									width="400"
-									title="This is a title"
-									subtitle="This is a subtitle"
-									text="This is content">
-								<v-card-title>Notes list</v-card-title>
-								<v-divider></v-divider>
-								<v-card-text style="height: 300px;">
-									<template>
-										<div class="d-flex align-center flex-column">
-												<v-card
-												width="800"
-												title="This is a title"
-												subtitle="This is a subtitle"
-												text="This is content"
-												v-model="notesList"
-												v-for="(item, i) in notesList"
-      											:key="i"
-												>
-												<v-card-title >
-         											 Note from {{ item.created_at }}
-													  <v-divider v-if="item.created_at == new Date('d.m.Y').toString()"></v-divider>
-												</v-card-title>
-												<v-card-text class="bg-white text--primary">
-													<b>
-														{{ item.note }}
-													</b>
-													<v-checkbox
-														v-model="ex4[i]"
-														label="red"
-														color="red"
-														value="red"
-														hide-details
-													></v-checkbox>
-												</v-card-text>
-												<v-divider v-if="item.created_at == new Date('d.m.Y')"></v-divider>
-
-											</v-card>
-											<span v-if="noteInfo.todayAmount == 0">
-												There are no any notes
-											</span>
-										</div>
-									</template>
-								</v-card-text>
-								<v-divider></v-divider>
-								<v-card-actions>
-								<v-btn
-									color="blue-darken-1"
-									variant="text"
-									@click="dialogNotes = false"
-								>
-									Close
-								</v-btn>
-								<v-btn
-									color="blue-darken-1"
-									variant="text"
-									@click="dialogNotes = false"
-								>
-									Save
-								</v-btn>
-								</v-card-actions>
-							</v-card>
-							</v-dialog>  -->
 					</v-col>
 				</v-row>	
 			</v-list-item>
@@ -378,7 +293,7 @@
 	import CreateSubplanGPT from '../dialogs/CreateSubplanGPT.vue'
 	import AddDetails from '../dialogs/AddDetails/AddDetails.vue';
 	import AddNotes from '../dialogs/AddNotes/AddNotes.vue';
-	import EditButton from '../UI/EditButton.vue';
+	import EditCardData from '../dialogs/EditCardData.vue';
 	export default
 	{
 		props : ['item', 'num'],
@@ -398,7 +313,7 @@
 					checked: true,
 					time       : this.item.time,
 					priority   : this.item.priority,
-					priorities : [1,2,3], //['normal', 'important', 'super important']
+					// priorities : [1,2,3], //['normal', 'important', 'super important']
 					id: this.item.id,
 					done: 'v-card-done',
 					completedPercent : 0,
@@ -439,7 +354,7 @@
 			CreateSubplanGPT, 
 			AddDetails,
 			AddNotes, 
-			EditButton
+			EditCardData,
 		},
 		methods :
 		{
@@ -541,36 +456,10 @@
 				}
 			},
 
-			/*Notes*/
-
 			setNotesInfo(data) {
 				Object.assign(this.noteInfo, data);
 			},
 			
-			// getAllNotesForTask(item) {
-			// 	this.dialogNotes = true
-			// 	/**query for getting all notes */
-			// 	axios.post('/get-saved-notes',{task_id : item.taskId, hash: item.hash})
-			// 	.then((response) => {
-					
-			// 		this.notesList = response.data
-			// 		// console.log(this.notesList[0].created_at)
-					
-			// 	  })
-			// },
-
-			// getTodayNoteAmount(item){
-				
-			// 	axios.post('/get-today-note-amount',{task_id : item.taskId,details : item.details,
-			// 	            note : item.notes,type : item.type})
-			// 	.then((response) => {
-			// 		// console.log(response.data)
-			// 		this.noteInfo.todayAmount = response.data.amount //response.data.noteAmount
-			// 	  })
-
-			// },
-
-			/**end */
 			sendIsReadyState(item)
 			{
 				console.log(item);
