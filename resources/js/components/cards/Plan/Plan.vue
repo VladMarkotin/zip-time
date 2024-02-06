@@ -525,7 +525,7 @@ export default {
                 hashCodes: this.defaultSelected.hashCodes,
                 hash: '#',
                 taskName: '',
-                time: '00:00',
+                time: '01:00',
                 type: this.day_status == 'Weekend' ? 'non required job' : 'required job',
                 priority: '1',
                 details: '',
