@@ -545,24 +545,28 @@
 			changeTime(newData)
 			{
 				const {priority: newPriority, time: newTime} = newData;
-				// if ( (item.time != this.time ) || (item.priority != this.priority) ) {
-				// 	axios.post('/edit-card',{task_id : item.taskId, time : this.time, priority: this.priority}) // type : item.type
-				// 	.then((response) => {
-				// 		this.isShowAlert = true;
-						
-				// 		if (response.data.status == 'success') {
-				// 			item.time = this.time
-				// 			item.priority = this.priority
-				// 			this.dialog = false
-				// 		}
-				// 		this.setAlertData(response.data.status, response.data.message)
-				// 		setTimeout( () => {
-				// 			this.isShowAlert = false;
-				// 		},3000)
-				//   })
 
-				//   	this.newHashCodeData = {...this.newHashCodeData, time: this.time, priority: this.priority.toString()};
-				// }
+				if ((this.item.time != newTime ) || (this.item.priority != newPriority) ) {
+					axios.post('/edit-card',{
+						task_id : this.item.taskId, 
+						time : newTime, 
+						priority: newPriority}) 
+					.then((response) => {
+						this.isShowAlert = true;
+						
+						if (response.data.status == 'success') {
+							this.item.time = newTime;
+							this.item.priority = newPriority;
+						}
+
+						this.setAlertData(response.data.status, response.data.message)
+						setTimeout( () => {
+							this.isShowAlert = false;
+						},3000)
+				  })
+
+				  	this.newHashCodeData = {...this.newHashCodeData, time: newTime, priority: newPriority.toString()};
+				}
 			},
 
 			editHashCodeData() {

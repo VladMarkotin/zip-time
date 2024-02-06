@@ -106,6 +106,7 @@ import EditButton from '../UI/EditButton.vue';
 
             saveChanges() {
                 this.$emit('saveChanges', {priority: this.selectedPriority, time: this.selectedTime});
+                this.isShowEditCardDataDialog = false;
             }
         },
 
