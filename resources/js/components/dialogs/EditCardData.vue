@@ -86,6 +86,15 @@ import EditButton from '../UI/EditButton.vue';
                 timeFormat: 'ampm',
             }
         },
+        watch: {
+            isShowEditCardDataDialog(isDialogOpen) {
+                const isSelectingMinutes = !this.$refs.picker.selectingHour;
+
+                if (!isDialogOpen && isSelectingMinutes) {
+                    this.resetToHourSelection();
+                }
+            }
+        },
         components: {EditButton,},
         methods: {
             toggleTimeFormat() {
