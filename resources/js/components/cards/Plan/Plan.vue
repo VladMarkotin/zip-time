@@ -519,7 +519,7 @@ export default {
             return;
          }
 
-         this.items.push({...this.defaultSelected, uniqKey: uuid.v1()});
+         this.items.push({...this.defaultSelected, uniqKey: this.generateUniqKey()});
          this.showIcon = 0;
          this.defaultSelected = {
                 hashCodes: this.defaultSelected.hashCodes,
@@ -610,6 +610,10 @@ export default {
 
       setTime(newTime) {
          this.defaultSelected.time = newTime;
+      },
+
+      generateUniqKey() {
+         return uuid.v1();
       }
     },
     created() {
@@ -668,6 +672,7 @@ export default {
                      currentObj.preparedTask.time = response.data[i][0].time;
                      currentObj.preparedTask.details = response.data[i][0].details;
                      currentObj.preparedTask.notes = response.data[i][0].note;
+                     currentObj.preparedTask.uniqKey = currentObj.generateUniqKey();
                      
                      currentObj.items.push(currentObj.preparedTask);
                      currentObj.preparedTask = {};
