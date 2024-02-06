@@ -18,7 +18,17 @@
                         v-model="selectedPriority"
                         label="Set Priority"
                         solo
-                    ></v-select>
+                    >
+                    <template v-slot:item="{item}" >
+                           <v-list-item >{{ item }}</v-list-item>
+                           <VSelectTooptip 
+                           :item              = "String(item)"
+                           :width             = "200"
+						   :tooltipData       = "tooltipPrioritiesData"
+						   :isShowDescription = "false"
+                           />
+                        </template>
+                </v-select>
                 </v-row>
                 <v-row class="p-0 m-0">
                     <h4 class="p-0" style="font-size: 1rem;">Edit task`s time:</h4>
@@ -65,6 +75,7 @@
 
 <script>
 import EditButton from '../UI/EditButton.vue';
+import VSelectTooptip from '../UI/VSelectTooptip.vue';
     export default {
         props: {
             currentTaskPriority: {
@@ -86,16 +97,29 @@ import EditButton from '../UI/EditButton.vue';
                 timeFormat: 'ampm',
             }
         },
+        components: {EditButton, VSelectTooptip},
+        computed: {
+            tooltipPrioritiesData() {
+					return {
+						titles: {
+							'1' : 'usual',
+							'2' : 'important',
+							'3' : 'extremly imortant',
+						}
+					}
+        		}
+        },
         watch: {
             isShowEditCardDataDialog(isDialogOpen) {
-                const isSelectingMinutes = !this.$refs.picker.selectingHour;
-
-                if (!isDialogOpen && isSelectingMinutes) {
-                    this.resetToHourSelection();
+                if (this.$refs.picker) {
+                    const isSelectingMinutes = !this.$refs.picker.selectingHour;
+    
+                    if (!isDialogOpen && isSelectingMinutes) {
+                        this.resetToHourSelection();
+                    }
                 }
             }
         },
-        components: {EditButton,},
         methods: {
             toggleTimeFormat() {
                 this.timeFormat = this.timeFormat === 'ampm' ? '24hr' : 'ampm';
