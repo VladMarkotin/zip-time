@@ -75,7 +75,9 @@
 					 hours
 				</v-list-item-content>
 				<EditCardData 
-				:currentTaskPriority="item.priority"
+				:currentTaskPriority = "item.priority"
+				:currentTaskTime     = "item.time"
+				@saveChanges = "changeTime"
 				/>
 				<!-- <v-dialog
 					v-model="dialog"
@@ -540,26 +542,27 @@
 				this.alert.text = text
 			},
 
-			changeTime(item)
+			changeTime(newData)
 			{
-				if ( (item.time != this.time ) || (item.priority != this.priority) ) {
-					axios.post('/edit-card',{task_id : item.taskId, time : this.time, priority: this.priority}) // type : item.type
-					.then((response) => {
-						this.isShowAlert = true;
+				const {priority: newPriority, time: newTime} = newData;
+				// if ( (item.time != this.time ) || (item.priority != this.priority) ) {
+				// 	axios.post('/edit-card',{task_id : item.taskId, time : this.time, priority: this.priority}) // type : item.type
+				// 	.then((response) => {
+				// 		this.isShowAlert = true;
 						
-						if (response.data.status == 'success') {
-							item.time = this.time
-							item.priority = this.priority
-							this.dialog = false
-						}
-						this.setAlertData(response.data.status, response.data.message)
-						setTimeout( () => {
-							this.isShowAlert = false;
-						},3000)
-				  })
+				// 		if (response.data.status == 'success') {
+				// 			item.time = this.time
+				// 			item.priority = this.priority
+				// 			this.dialog = false
+				// 		}
+				// 		this.setAlertData(response.data.status, response.data.message)
+				// 		setTimeout( () => {
+				// 			this.isShowAlert = false;
+				// 		},3000)
+				//   })
 
-				  	this.newHashCodeData = {...this.newHashCodeData, time: this.time, priority: this.priority.toString()};
-				}
+				//   	this.newHashCodeData = {...this.newHashCodeData, time: this.time, priority: this.priority.toString()};
+				// }
 			},
 
 			editHashCodeData() {
