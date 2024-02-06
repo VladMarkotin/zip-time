@@ -110,14 +110,23 @@
 							>	
 							</v-col>
 						</v-row>
-						<template>
-							<TimePickerMenu 
-							:menuParent = "menu"
-							:timeParent = "task.time"
-							@changeMenuModel="changeMenuModel"
-							@changeTimeModel="changeTimeModel"
-							/>
-						</template>
+						<v-row class="p-0 m-0">
+							<v-col
+							cols="1"
+							class="p-0 m-0"
+							></v-col>
+							<v-col class="p-0 m-0">
+								<CustomTimepicker 
+								:time     = "task.time"
+								:isIconInner = "true"
+								@updateTime = "setTime"
+								/>
+							</v-col>
+							<v-col
+							cols="1"
+							class="p-0 m-0"
+							></v-col>
+						</v-row>
 					</v-container>
 				</v-card-text>
 				<v-divider></v-divider>
@@ -141,13 +150,13 @@
 	import AddHashCodeButton from '../UI/AddHashCodeButton.vue';
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
 	import CloseButton from '../UI/CloseButton.vue';
-	import TimePickerMenu from '../TimePickerMenu.vue';
 	import VSelectTooptip from '../UI/VSelectTooptip.vue';
 	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
+	import CustomTimepicker from '../UI/CustomTimepicker.vue';
 
 	export default
 		{
-			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, TimePickerMenu, VSelectTooptip},
+			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, VSelectTooptip, CustomTimepicker},
 			data()
 			{
 				return {
@@ -315,15 +324,6 @@
 					this.$emit('toggleAddJobTaskDialog')
 				},
 
-				changeMenuModel(menu) {
-					this.menu = menu;
-				},
-
-				changeTimeModel(time) {
-					this.task = {...this.task, time};
-					this.compareWithTemplate();
-				},
-
 				compareWithTemplate() {
 
 					if (this.task.hashCode !== '#') {
@@ -344,6 +344,11 @@
 					}
 
 				},
+
+				setTime(time) {
+					this.task = {...this.task, time};
+					this.compareWithTemplate();
+				}
 			},
 			async created()
 			{
