@@ -125,16 +125,10 @@
                id="plan-time" 
                cols="1" 
                md="1">
-                  <v-menu ref="v-menu" v-bind:close-on-content-click="false" v-model="menu">
-                     <template v-slot:activator="{on}">
-                        <v-text-field label="Time" prepend-icon="mdi-clock-time-four-outline" readonly v-model="defaultSelected.time" v-on="on"></v-text-field>
-                     </template>
-                     <v-time-picker
-                        color="#D71700"
-                        v-on:click:minute="$refs['v-menu'].save(defaultSelected.time)"
-                        v-model="defaultSelected.time">
-                     </v-time-picker>
-                  </v-menu>
+                  <CustomTimepicker 
+                  :time = "defaultSelected.time"
+                  @updateTime = "setTime"
+                  />
                </v-col>
             
                <v-col md="1">
@@ -276,6 +270,7 @@ import Vuetify from 'vuetify/lib'
 import EmergencyCall from '../../dialogs/EmergencyCall.vue';
 import PreplanTasksTable from './PreplanTasksTable.vue';
 import VSelectTooptip from '../../UI/VSelectTooptip.vue';
+import CustomTimepicker from '../../UI/CustomTimepicker.vue';
 import {
     mdiAccount,
     mdiPlex,
@@ -292,7 +287,7 @@ import {
 import { uuid } from 'vue-uuid';
 
 export default {
-   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip},
+   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip, CustomTimepicker},
     data: () => ({
         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
         showPlusIcon: 0,
@@ -444,7 +439,6 @@ export default {
                .then(function(response) {
                   currentObj.defaultSelected.taskName = response.data[1];
                   currentObj.defaultSelected.type = response.data[2];
-                  console.log(response.data[2])
                   currentObj.defaultSelected.priority = `${response.data[3]}`;
                   currentObj.defaultSelected.time = response.data[5];
                   currentObj.defaultSelected.details = response.data[4];
@@ -453,7 +447,6 @@ export default {
                 .catch(function(error) {
                     currentObj.output = error;
                 });
-           
         },
 
          onChangeForPresentation(event) {
@@ -526,13 +519,13 @@ export default {
             return;
          }
 
-         this.items.push({...this.defaultSelected, uniqKey: uuid.v1()});
+         this.items.push({...this.defaultSelected, uniqKey: this.generateUniqKey()});
          this.showIcon = 0;
          this.defaultSelected = {
                 hashCodes: this.defaultSelected.hashCodes,
                 hash: '#',
                 taskName: '',
-                time: '00:00',
+                time: '01:00',
                 type: this.day_status == 'Weekend' ? 'non required job' : 'required job',
                 priority: '1',
                 details: '',
@@ -614,6 +607,14 @@ export default {
          this.defaultSelected.hash = this.newHashCode;
          this.isShowAddHashCodeDialog = false;
       },
+
+      setTime(newTime) {
+         this.defaultSelected.time = newTime;
+      },
+
+      generateUniqKey() {
+         return uuid.v1();
+      }
     },
     created() {
         let currentObj = this;
@@ -671,6 +672,7 @@ export default {
                      currentObj.preparedTask.time = response.data[i][0].time;
                      currentObj.preparedTask.details = response.data[i][0].details;
                      currentObj.preparedTask.notes = response.data[i][0].note;
+                     currentObj.preparedTask.uniqKey = currentObj.generateUniqKey();
                      
                      currentObj.items.push(currentObj.preparedTask);
                      currentObj.preparedTask = {};
@@ -933,6 +935,7 @@ export default {
       }
     },
 
+    
 }
 </script>
 <style scoped>
