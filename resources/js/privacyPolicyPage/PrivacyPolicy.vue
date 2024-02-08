@@ -7,3 +7,7 @@
 
     }
 </script>
+
+<style scoped>
+      @import url('/css/privacyPolicyPage/privacyPolicyPage.css');
+</style>
