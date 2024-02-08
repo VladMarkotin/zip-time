@@ -1,0 +1,41 @@
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+.inner-block {
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 90px 0;
+}
+
+.privacy-policy-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
