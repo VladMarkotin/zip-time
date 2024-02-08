@@ -2,8 +2,8 @@
     <div class="inner-block">
         <v-card>
             <v-row class="d-flex m-0" >
-                <v-col cols="4" class="m-0" style="position: relative;">
-                    <aside class="aside privacy-navigation">
+                <v-col ref="parent" cols="4" class="m-0" style="position: relative;"  v-scroll="handleScroll">
+                    <aside ref="aside" class="aside privacy-navigation">
                         <v-list
                         max-width="350"
                         >
@@ -41,7 +41,32 @@
                     {title: 'Contact Us'},
                 ]
             }
-        }
+        },
+        methods: {
+            handleScroll() {
+                const parentRect = this.$refs.parent.getBoundingClientRect();
+                const asideRect = this.$refs.aside.getBoundingClientRect();
+
+                if (asideRect.top < parentRect.top) {
+                    this.$refs.aside.style.top = `${parentRect.top}px`; // Если aside находится выше родительского элемента
+                } 
+                if (asideRect.bottom > parentRect.bottom) {
+                    this.$refs.aside.style.top = `${parentRect.bottom - asideRect.height}px`; // Если aside находится ниже родительского элемента
+                }
+            },
+
+            onResize() {
+                this.handleScroll();
+            }
+        },
+            mounted() {
+                this.handleScroll();
+                window.addEventListener('resize', this.onResize);
+            },
+
+            beforeDestroy() {
+                window.removeEventListener('resize', this.onResize);
+            },
     }
 </script>
 

@@ -37,4 +37,5 @@ ol {
 
 .aside {
   position: fixed;
+  top: 75px;
 }
