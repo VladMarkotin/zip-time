@@ -35,7 +35,6 @@ ol {
   padding: 90px 0;
 }
 
-.privacy-policy-container {
-  display: grid;
-  grid-template-columns: auto 1fr;
+.aside {
+  position: fixed;
 }

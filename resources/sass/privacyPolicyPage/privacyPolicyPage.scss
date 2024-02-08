@@ -37,9 +37,8 @@ ol {
    
 }
 
-.privacy-policy-container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-}
-
 //верстка по странице
+
+.aside {
+    position: fixed;
+}
