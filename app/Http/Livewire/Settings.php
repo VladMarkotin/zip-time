@@ -190,7 +190,7 @@ class Settings extends Component
         $personalConfigs->config_data = json_encode($data);
         $personalConfigs->save();
         $this->dispatchBrowserEvent('message', [
-            'text' => 'required jobs amount has been set',
+            'text' => 'required jobs amount has been set ',
         ]);
     }
 
