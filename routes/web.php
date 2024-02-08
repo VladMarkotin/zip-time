@@ -29,7 +29,9 @@ Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->na
 
 Route::get('login/{provider}', [App\Http\Controllers\SocialController::class, 'redirect']);
 Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::class,'Callback']);
- 
+
+Route::get('/privacy', [App\Http\Controllers\PrivacyPolicyController::class, 'index'])->name('privacy.index');
+
 Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
 Route::middleware(['auth'])->group(function () {
  
