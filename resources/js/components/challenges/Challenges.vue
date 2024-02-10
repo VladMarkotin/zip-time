@@ -6,7 +6,7 @@
         :show-arrows=true
     >
     <v-window-item
-      v-for="n in length"
+      v-for="n in allChallenges"
       :key="`card-${n}`"
     >
       <v-card
@@ -39,6 +39,8 @@
 </div>
 </template>
 <script>
+import store from '../../store'
+
 export default {
     name: 'Challenges',
 
@@ -50,7 +52,12 @@ export default {
 
       showChallenges: 0
     }),
-
+    store,
+    computed: {
+        allChallenges(){
+                return this.$store.getters.allChallenges
+        }
+    },
     beforeUnmount () {
       clearInterval(this.interval)
     },
