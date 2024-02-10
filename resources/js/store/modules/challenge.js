@@ -1,12 +1,25 @@
 
 
 export default {
-    actions:{},
-
-    mutations:{},
+    actions:{
+        async fetchChallenges(ctx) {
+            const result = await axios.post(
+                'get-challenges',
+            );
+            ctx.commit('updateChallenges', result)
+        }
+    },
+    
+    mutations:{
+        updateChallenges(state, ch) {
+            //console.log(ch.data)
+            //ch.data.forEach((element) => console.log(element));
+            state.challenges.push(ch.data.completness)
+        }
+    },
 
     state: {
-        challenges: [1,2,3]
+        challenges: []
     },
 
     getters: {

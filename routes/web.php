@@ -109,6 +109,9 @@ Route::middleware(['auth'])->group(function () {
 
     //Get task mark
     Route::post('/get-task-mark', [App\Http\Controllers\MainController::class, 'getTaskMark'])->name('get-task-mark');
+    
+    //Get challenges
+    Route::post('get-challenges', [App\Http\Controllers\ChallengeController::class, 'getUsersChallenges']);
 });
 Route::post('/get-default-configs', function (){
     exit(DefaultConfigs::getConfigs());

@@ -40,6 +40,7 @@
 </template>
 <script>
 import store from '../../store'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     name: 'Challenges',
@@ -53,23 +54,23 @@ export default {
       showChallenges: 0
     }),
     store,
-    computed: {
-        allChallenges(){
-                return this.$store.getters.allChallenges
-        }
-    },
+    computed: mapGetters(['allChallenges']),
     beforeUnmount () {
       clearInterval(this.interval)
     },
     mounted () {
-      this.interval = setInterval(() => {
+      /*this.interval = setInterval(() => {
         if (this.value === 100) {
           return (this.value = 0)
         }
         this.value += 10
-      }, 1000)
+      }, 1000)*/
+      this.fetchChallenges();
+      this.value = this.allChallenges[0]
+      console.log(this.allChallenges)
     },
     methods: {
+        ...mapActions(['fetchChallenges']),
 
         showCh() {
             
