@@ -12,8 +12,13 @@ class DefaultConfigs extends Model
     protected $table = 'default_configs';
     protected $fillable = [ 'config_data', 'config_block_id', 'created_at', 'updated_at'];
 
+    // public static function getConfigs()
+    // {
+    //    return self::select('*')->where('config_block_id', 2)->get()->toJson(JSON_UNESCAPED_UNICODE);
+    // }
+
     public static function getConfigs()
     {
-       return self::select('*')->where('config_block_id', 2)->get()->toJson(JSON_UNESCAPED_UNICODE);
+       return self::select('*')->where('config_block_id', 2)->get();
     }
-}
+ }

@@ -8,16 +8,18 @@
 namespace App\Http\Controllers\Services;
 
 
+use App\Models\DefaultConfigs;
 use Illuminate\Support\Carbon;
+use App\Models\PersonalConfigs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Repositories\DayPlanRepositories\GetPlanRepository;
 use App\Http\Controllers\Services\DataTransformationService;
-use App\Models\DefaultConfigs;
 
 class AddPlanService
 {
 
+    private $minTaskQuantity;
     private $getPlanRepository         = null;
     private $dataTransformationService = null;
     private $transformWeekendData      = null; //here will store transform data for weekend.You have to get it when create day plan for weekend
@@ -66,7 +68,7 @@ class AddPlanService
 
         return response()->json([
             'status' => 'error',
-            'message' => 'Invalid day plan! Too few tasks! It has to be 2 or more required tasks.'
+            'message' => "Invalid day plan! Too few tasks! It has to be $this->minTaskQuantity or more required tasks."
         ]);
     }
 
@@ -112,8 +114,9 @@ class AddPlanService
             $taskQuantity = count($data['plan']);
             switch ($data["day_status"]) {
                 case 2: //Work Day
-                    $defaultConfigs = json_decode(DefaultConfigs::select('config_data')->where('config_block_id', 2)->get()->toArray()[0]['config_data']);
-                    if($taskQuantity >= $defaultConfigs->cardRules[0]->minRequiredTaskQuantity){ //
+                    $this->minTaskQuantity =json_decode( PersonalConfigs::getConfigs()->config_data)
+                    ->rules[0]->minRequiredTaskQuantity;
+                    if($taskQuantity >=  $this->minTaskQuantity){ //
                         /* Check quantity of required tasks. In this case it has to be more than 1! */
                         $i = 0;
                         array_filter($data['plan'], function ($v) use(&$i){
