@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @media screen and (max-width: 1225px) {
   .inner-block {
     padding: 0 50px;
@@ -43,5 +44,14 @@
 @media screen and (max-width: 480px) {
   .inner-block {
     max-width: 270px;
+  }
+
+  .custom-card-text {
+    text-align: justify;
+    /* Пример изменения размера шрифта для маленьких экранов */
+  }
+
+  .br {
+    display: initial;
   }
 }

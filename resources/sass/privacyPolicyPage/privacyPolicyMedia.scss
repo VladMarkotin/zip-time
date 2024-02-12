@@ -53,4 +53,12 @@ $maxContentWidth480: 270px;
     .inner-block {
         max-width: $maxContentWidth480;
     }
+
+    .custom-card-text {
+        text-align: justify; /* Пример изменения размера шрифта для маленьких экранов */
+    }
+
+    .br {
+        display: initial;
+    }
 }

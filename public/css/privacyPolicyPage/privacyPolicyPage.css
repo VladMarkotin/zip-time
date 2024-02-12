@@ -35,6 +35,10 @@ ol {
   padding: 90px 0;
 }
 
+.br {
+  display: none;
+}
+
 .aside {
   position: fixed;
   top: 75px;
