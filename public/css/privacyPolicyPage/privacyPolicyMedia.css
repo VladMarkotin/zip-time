@@ -46,6 +46,10 @@
     max-width: 270px;
   }
 
+  .custom-card-title {
+    justify-content: center;
+  }
+
   .custom-card-text {
     text-align: justify;
     /* Пример изменения размера шрифта для маленьких экранов */

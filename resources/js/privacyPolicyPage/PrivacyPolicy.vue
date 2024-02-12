@@ -25,7 +25,7 @@
                 </v-col>
                <v-col class="m-0">
                 <section class="privacy-policy-section pt-0" id="introduction">
-                    <v-card-title tag="h1"  class="privacy-policy-title privacy-policy-main-title ">Privacy Policy</v-card-title>
+                    <v-card-title tag="h1"  class="privacy-policy-title privacy-policy-main-title custom-card-title">Privacy Policy</v-card-title>
                     <v-card-text class="custom-card-text">Last updated: December 26, 2023</v-card-text>
                     <v-card-text class="pt-0 custom-card-text">This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</v-card-text>
                     <v-card-text class="pt-0 pb-0 custom-card-text">We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the Privacy Policy Generator.</v-card-text>
@@ -33,7 +33,7 @@
                     <section class="privacy-policy-section" id="interpretation_and_definitions">
                         <v-card-title 
                         tag="h2" 
-                        class="privacy-policy-title privacy-policy-section-title">Interpretation and<br class="br"/> Definitions</v-card-title>
+                        class="privacy-policy-title privacy-policy-section-title ">Interpretation and<br class="br"/> Definitions</v-card-title>
                         <v-card-title tag="h3" class="privacy-policy-title privacy-policy-section-subtitle pt-0">Interpretation</v-card-title>
                         <v-card-text class="custom-card-text">The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</v-card-text>
                         <v-card-title tag="h3" class="privacy-policy-title privacy-policy-section-subtitle pt-0">Definitions</v-card-title>
