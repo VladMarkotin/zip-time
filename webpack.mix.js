@@ -22,5 +22,7 @@ mix
     .sass('resources/sass/indexPage/indexPageMedia.scss', 'public/css/indexPage')
     .sass('resources/sass/loginPage/loginPage.scss', 'public/css/loginPage')
     .sass('resources/sass/loginPage/loginPageMedia.scss', 'public/css/loginPage')
+    .sass('resources/sass/privacyPolicyPage/privacyPolicyPage.scss', 'public/css/privacyPolicyPage')
+    .sass('resources/sass/privacyPolicyPage/privacyPolicyMedia.scss', 'public/css/privacyPolicyPage')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');

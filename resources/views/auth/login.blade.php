@@ -38,7 +38,7 @@
                     <div class="privacy-policy-wrapper">
                         <div class="privacy-policy-text-wrapper">
                             <p class="privacy-policy-text">By using Quipl you accept</p>
-                            <p class="privacy-policy-text">our <a href="#" class="privacy-policy-link">Privacy Policy</a></p>
+                            <p class="privacy-policy-text">our <a href="{{ route('privacy.index') }}" class="privacy-policy-link">Privacy Policy</a></p>
                         </div>
                     </div> 
                 </div>

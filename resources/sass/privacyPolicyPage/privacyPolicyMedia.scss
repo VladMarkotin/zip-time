@@ -1,0 +1,68 @@
+$maxContentWidth740: 450px;
+$maxContentWidth520: 420px;
+$maxContentWidth480: 270px;
+
+@media screen and (max-width: 1225px) {
+    .inner-block {
+        padding: 0 50px;
+    }
+}
+
+@media screen and (max-width: 1075px) {
+    .inner-block {
+        padding: 0 130px;
+    }
+
+    .aside-wrapper {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 980px) {
+    .inner-block {
+        padding: 0 50px;
+    }
+}
+
+@media screen and (max-width: 740px) {
+    .inner-block {
+        padding: 40px 0;
+        max-width: $maxContentWidth740;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .inner-block {
+        max-width: $maxContentWidth520;
+    }
+
+    .privacy-policy-main-title {
+        font-size: 1.8rem;
+      }
+      
+      .privacy-policy-section-title {
+        font-size: 1.3rem;
+      }
+      
+      .privacy-policy-section-subtitle {
+        font-size: 1rem;
+      }
+}
+
+@media screen and (max-width: 480px) {
+    .inner-block {
+        max-width: $maxContentWidth480;
+    }
+
+    .custom-card-title {
+        justify-content: center;
+    }
+
+    .custom-card-text {
+        text-align: justify; /* Пример изменения размера шрифта для маленьких экранов */
+    }
+
+    .br {
+        display: initial;
+    }
+}
