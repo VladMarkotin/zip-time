@@ -2,7 +2,12 @@
     <div class="inner-block">
         <v-card>
             <v-row class="d-flex m-0" >
-                <v-col ref="parent" cols="4" class="m-0" style="position: relative;"  v-scroll="handlePosition">
+                <v-col 
+                ref="parent" 
+                cols="4" 
+                class="m-0 aside-wrapper" 
+                style="position: relative;"  
+                v-scroll="handlePosition">
                     <aside ref="aside" class="aside privacy-navigation">
                         <v-list
                         max-width="350"
@@ -19,14 +24,15 @@
                     </aside>
                 </v-col>
                <v-col class="m-0">
-                    <v-card-title tag="h1" id="introduction" class="privacy-policy-title privacy-policy-main-title">Privacy Policy</v-card-title>
+                <section class="privacy-policy-section pt-0" id="introduction">
+                    <v-card-title tag="h1"  class="privacy-policy-title privacy-policy-main-title">Privacy Policy</v-card-title>
                     <v-card-text>Last updated: December 26, 2023</v-card-text>
                     <v-card-text class="pt-0">This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</v-card-text>
                     <v-card-text class="pt-0 pb-0">We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the Privacy Policy Generator.</v-card-text>
-                    <section class="privacy-policy-section">
+                </section>
+                    <section class="privacy-policy-section" id="interpretation_and_definitions">
                         <v-card-title 
                         tag="h2" 
-                        id="interpretation_and_definitions" 
                         class="privacy-policy-title privacy-policy-section-title">Interpretation and Definitions</v-card-title>
                         <v-card-title tag="h3" class="privacy-policy-title privacy-policy-section-subtitle pt-0">Interpretation</v-card-title>
                         <v-card-text>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</v-card-text>
@@ -48,9 +54,8 @@
                             <li class="privacy-policy-li"><span class="font-weight-bold">You</span> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
                         </ul>
                     </section>
-                    <section class="privacy-policy-section">
+                    <section class="privacy-policy-section" id="collecting_and_using_personal_data">
                         <v-card-title 
-                        id="collecting_and_using_personal_data"
                         tag="h2" 
                         class="privacy-policy-title privacy-policy-section-title">
                             Collecting and Using Your Personal Data
@@ -212,35 +217,31 @@
                         </v-card-title>
                         <v-card-text class="pt-0">The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.</v-card-text>
                     </section>
-                    <section class="privacy-policy-section">
+                    <section class="privacy-policy-section" id="childrens_privacy" >
                         <v-card-title 
                         tag="h2" 
-                        id="childrens_privacy" 
                         class="privacy-policy-title privacy-policy-section-title">Children's Privacy</v-card-title>
                         <v-card-text class="pt-0">Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers.</v-card-text>
                         <v-card-text class="pt-0">If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent's consent before We collect and use that information.</v-card-text>
                     </section>
-                    <section class="privacy-policy-section">
+                    <section class="privacy-policy-section" id="links_to_other_websites" >
                         <v-card-title 
                         tag="h2" 
-                        id="links_to_other_websites" 
                         class="privacy-policy-title privacy-policy-section-title">Links to Other Websites</v-card-title>
                         <v-card-text class="pt-0">Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.</v-card-text>
                         <v-card-text class="pt-0">We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.</v-card-text>
                     </section>
-                    <section class="privacy-policy-section">
+                    <section class="privacy-policy-section" id="changes_to_this_privacy_policy" >
                         <v-card-title 
                         tag="h2" 
-                        id="changes_to_this_privacy_policy" 
                         class="privacy-policy-title privacy-policy-section-title">Changes to this Privacy Policy</v-card-title>
                         <v-card-text class="pt-0">We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</v-card-text>
                         <v-card-text class="pt-0">We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the "Last updated" date at the top of this Privacy Policy.</v-card-text>
                         <v-card-text class="pt-0">You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</v-card-text>
                     </section>
-                    <section class="privacy-policy-section">
+                    <section class="privacy-policy-section" id="contact_us">
                         <v-card-title 
                         tag="h2" 
-                        id="contact_us" 
                         class="privacy-policy-title privacy-policy-section-title">Contact Us</v-card-title>
                         <v-card-text class="pt-0">If you have any questions about this Privacy Policy, You can contact us:</v-card-text>
                         <ul class="privacy-policy-list">
@@ -269,17 +270,25 @@
                 ]
             }
         },
+        computed: {
+            isShowNavigation() {
+                return window.innerWidth > 950;
+            }
+        },
         methods: {
             handlePosition() {
                 const parentRect = this.$refs.parent.getBoundingClientRect();
                 const asideRect = this.$refs.aside.getBoundingClientRect();
 
-                if (asideRect.top < parentRect.top) {
-                    this.$refs.aside.style.top = `${parentRect.top}px`; // Если aside находится выше родительского элемента
-                } 
-                if (asideRect.bottom > parentRect.bottom) {
-                    this.$refs.aside.style.top = `${parentRect.bottom - asideRect.height}px`; // Если aside находится ниже родительского элемента
+                if (parentRect && asideRect) {
+                    if (asideRect.top < parentRect.top) {
+                        this.$refs.aside.style.top = `${parentRect.top}px`; // Если aside находится выше родительского элемента
+                    } 
+                    if (asideRect.bottom > parentRect.bottom) {
+                        this.$refs.aside.style.top = `${parentRect.bottom - asideRect.height}px`; // Если aside находится ниже родительского элемента
+                    }
                 }
+
             },
 
             onResize() {
@@ -306,4 +315,5 @@
 
 <style scoped>
       @import url('/css/privacyPolicyPage/privacyPolicyPage.css');
+      @import url('/css/privacyPolicyPage/privacyPolicyMedia.css');
 </style>

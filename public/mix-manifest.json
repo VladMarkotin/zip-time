@@ -9,5 +9,6 @@
     "/css/loginPage/loginPage.css": "/css/loginPage/loginPage.css",
     "/css/indexPage/indexPageMedia.css": "/css/indexPage/indexPageMedia.css",
     "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css",
+    "/css/privacyPolicyPage/privacyPolicyMedia.css": "/css/privacyPolicyPage/privacyPolicyMedia.css",
     "/css/privacyPolicyPage/privacyPolicyPage.css": "/css/privacyPolicyPage/privacyPolicyPage.css"
 }
