@@ -134,6 +134,25 @@ export default {
     position: relative; 
 }
 
+.table-max-height-wrapper::-webkit-scrollbar {
+  width: 15px;
+}
+
+.table-max-height-wrapper::-webkit-scrollbar-track {
+  background: #e6e6e6;
+  border-left: 1px solid #dadada;
+}
+
+.table-max-height-wrapper::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border: solid 3px #e6e6e6;
+  border-radius: 7px;
+}
+
+.table-max-height-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgb(161, 0, 0);;
+}
+
 .table-max-height-wrapper .v-data-footer {
   height: 60px;
   position: sticky;
