@@ -79,7 +79,7 @@ class SocialController extends Controller
             'last_updates' => '{"weekend_updated_at":"0:0:0"}'
         ];
 
-        collect($def_config_data)->map(function ($data) use ($default_config) { $default_config->create($data); });
+        //collect($def_config_data)->map(function ($data) use ($default_config) { $default_config->create($data); });
         $personal_config->create($personal_config_data);
     }
 }
