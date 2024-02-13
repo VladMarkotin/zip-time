@@ -22,11 +22,11 @@
                 :rotate="360"
                 :size="100"
                 :width="15"
-                :value="value"
-                :model-value="value"
+                :value="n.completness"
+                :model-value="n.completness"
                 color="red"
                 >
-                {{ value }}
+                {{ n.completness }}
                 </v-progress-circular>
             </div>
         </div>
@@ -51,7 +51,7 @@ export default {
       value: 100,
       interval: {},
 
-      showChallenges: 0
+      showChallenges: 1
     }),
     store,
     computed: mapGetters(['allChallenges']),
@@ -66,8 +66,9 @@ export default {
         this.value += 10
       }, 1000)*/
       this.fetchChallenges();
-      this.value = this.allChallenges[0]
-      console.log(this.allChallenges)
+      //this.value = this.allChallenges[0]
+      
+      //console.log(this.allChallenges)
     },
     methods: {
         ...mapActions(['fetchChallenges']),

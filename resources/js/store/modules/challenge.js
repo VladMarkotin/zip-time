@@ -12,9 +12,8 @@ export default {
     
     mutations:{
         updateChallenges(state, ch) {
-            //console.log(ch.data)
-            //ch.data.forEach((element) => console.log(element));
-            state.challenges.push(ch.data.completness)
+            let obj = JSON.parse(JSON.stringify(ch.data))
+            state.challenges.push(obj)
         }
     },
 
