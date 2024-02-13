@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <privacy-policy></privacy-policy>
+    <v-app>
+        <privacy-policy></privacy-policy>
+    </v-app>
 @endsection
