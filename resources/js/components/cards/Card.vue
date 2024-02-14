@@ -1,6 +1,6 @@
 <template>  
 
-	<v-card :id="!num ? 'card-wrapper' : false">
+	<v-card :id="!num ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
 		<div class="card-demo">
 			<template v-if="isShowAddHashCodeDialog">
 				<AddHashCode 
@@ -79,56 +79,6 @@
 				:currentTaskTime     = "item.time"
 				@saveChanges = "changeTime"
 				/>
-				<!-- <v-dialog
-					v-model="dialog"
-					persistent
-					width="500"
-					>
-					<template v-slot:activator="{ props }">
-						<template>
-							<EditButton 
-							@click="dialog=true"
-							/>
-						</template>
-				</template>
-					<v-card>
-						<v-card-title class="text-h5">
-						Edit card
-						</v-card-title>
-						<v-card-text>
-							Edit task`s priority:
-	
-							<v-select
-								:items="priorities"
-								v-model= priority
-								label="Set Priority"
-								solo
-							></v-select>
-							 Edit task`s time: 
-							 <v-time-picker
-							   v-model="time"
-							   color="red">
-							</v-time-picker>
-						</v-card-text>
-						<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn
-							color="green-darken-1"
-							variant="text"
-							@click="dialog = false"
-						>
-							Cancel
-						</v-btn>
-						<v-btn
-							color="green-darken-1"
-							variant="text"
-							@click="changeTime(item)"
-						>
-							Save
-						</v-btn>
-						</v-card-actions>
-					</v-card>
-					</v-dialog> -->
 			</v-list-item>
 
 			<v-list-item>
@@ -191,9 +141,11 @@
 				</v-row>	
 			</v-list-item>
 		</v-list>
-		<v-divider></v-divider>
-		<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
-		<v-card-title class="font-weight-bold">
+		<v-divider class="m-2"></v-divider>
+		<div style="min-height: 60px;">
+			<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
+		</div>
+		<v-card-title class="font-weight-bold pt-0">
 			<v-row class="p-0 m-0">
 				<v-col class="p-0 m-0" cols="auto">
 					<form 
@@ -205,11 +157,11 @@
 							<v-text-field 
 							class="ml-1" 
 							style="width : 54px" 
-							v-model="item.mark" 
+							v-model="jobMarkInputValue" 
 							v-on:keypress.enter.prevent="sendMark(item)" 
-							@focus="focusedInput=!focusedInput" 
-							@blur="focusedInput=!focusedInput"
-							@input="checkIsSavedMark(item)"
+							@keypress = "filterJobMarkInputValue($event, item.taskId)"
+							@focus    = "focusedInput=!focusedInput" 
+							@blur     = "focusedInput=!focusedInput"
 							>
 								<v-icon slot="append">mdi-percent</v-icon>
 							</v-text-field>
@@ -344,6 +296,7 @@
 					isShowPreloader: false,
 					defaultConfigs: {},
 					isTaskReady: this.item.is_ready,
+					jobMarkInputValue: String(this.item.mark),
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
 				}
@@ -357,6 +310,49 @@
 			AddDetails,
 			AddNotes, 
 			EditCardData,
+		},
+		computed: {
+			isCurrentTaskReady() {
+				const {type} = this.item;
+
+				const checkTask = (data) => {
+					const {type, mark} = data;
+					const cardRules = this.defaultConfigs.cardRules;
+
+					if (cardRules) {
+						const maxMark = +cardRules[0].maxMark;
+						const minMark = +cardRules[0].minMark;
+						switch (type) {
+							case 'task':
+								return mark === 99 //хардкод
+									? 'card-wrapper_ready'
+									: 'card-wrapper_unready';
+							case 'job':
+								return mark >= minMark && mark <= maxMark
+									? 'card-wrapper_ready'
+									: 'card-wrapper_unready';
+							default:
+								return 'card-wrapper_unready';
+						}
+					}
+
+				}
+				
+				switch(type) {
+					case 1:
+					case 2:
+						return checkTask({type: 'task', mark: this.isTaskReady});
+					break;
+					case 3:
+					case 4:
+						return checkTask({type: 'job', mark: this.item.mark});
+					break;
+					default:
+						return 'card-wrapper_unready';
+				}
+
+				
+			},
 		},
 		methods :
 		{
@@ -390,7 +386,7 @@
 				}
 
 				if ([3,4].includes(currentTaskType)) {
-					this.item.mark = '';
+					this.jobMarkInputValue = '';
 				}
 			},
 
@@ -464,7 +460,6 @@
 			
 			sendIsReadyState(item)
 			{
-				console.log(item);
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
 					this.isItNessesaryToCleanNoteInput(response);
@@ -506,13 +501,25 @@
 			
 			sendMark(item)
 			{	
-				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
+				axios.post('/estimate',{
+					task_id : item.taskId,
+					details : item.details,
+					note    : item.notes,
+					mark    : this.jobMarkInputValue,
+					type    : item.type
+				})
 				.then((response) => {
 					this.isItNessesaryToCleanNoteInput(response);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					this.noteInfo.todayAmount = response.data.noteAmount
-					this.checkIsSavedMark(item);
+					this.checkIsSavedMark(item.taskId);
+
+					const {data} = response;
+					if (data.status === 'success') {
+						this.item.mark = +this.jobMarkInputValue;
+					}
+
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
@@ -615,20 +622,34 @@
 					  })
 			},
 
-			checkIsSavedMark(item) {
+			filterJobMarkInputValue(e, taskId) {
+				const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+				const keyPressed  = e.key;
 
-				const getIsShowUpdateCardNotification = (markInInput, savedMark) => {
+				 if (!keysAllowed.includes(keyPressed)) {
+					e.preventDefault();
+					return;
+				}
+
+				this.checkIsSavedMark(taskId);
+			},
+
+			checkIsSavedMark(taskId) {
+				const isShowUpdateCardNotification = (markInInput, savedMark) => {
 					if (markInInput === '' && savedMark === -1) return false;
 					return +markInInput !== savedMark;
 				};
 
-				axios.post('/get-task-mark',{task_id : item.taskId})
+				axios.post('/get-task-mark',{task_id : taskId})
 				.then((response) => {
 					const {data} = response;
+					const savedMark = data.mark;
+					const markInInput = this.jobMarkInputValue.trim();
+					
 					if (data.status === 'success') {
-						this.isShowUpdateCardNotification = getIsShowUpdateCardNotification(
-							item.mark.trim(),
-							data.mark
+						this.isShowUpdateCardNotification = isShowUpdateCardNotification(
+							markInInput,
+							savedMark
 						);
 					}
 				})
@@ -693,4 +714,44 @@
 		from { opacity: 1; top: 0;}
 		to { opacity: 0; top: 10px;}
 	}
+	/* стили для вдавливания карточки */
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper {
+		transition:  all .3s ease;
+		position: relative;
+	}
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_unready {
+		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+		top: 0;
+		left: 0;
+	}
+
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready {
+		box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+		top: 5px;
+    	left: 3px;
+	}
+	/* ============================================ */
+	/* тут эффекты затемнения готовой карточки и иконка */
+	/* .v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready::before {
+		content: "";
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 50%;
+  		transform: translateX(-50%);
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0,0,0, 0.035);
+		z-index: 1;
+		transition: all .3s ease;
+		background-image: url('/images/task_ready_icon.svg');
+		background-position: top right;
+		background-repeat: no-repeat;
+		background-size: 150px 150px; 
+	}
+
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready:hover::before {
+		width: 0;
+	} */
+	/* ============================================ */
 </style>

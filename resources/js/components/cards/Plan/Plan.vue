@@ -150,7 +150,8 @@
          </div>
          <v-divider></v-divider>
          <PreplanTasksTable 
-         :items          = "items"
+         :items           = "items"
+         :isShowPreloader = "showPreloaderInsteadTable"
          @deleteItem  = "deleteItem"
          />
          <v-row 
@@ -347,6 +348,7 @@ export default {
         value: 0,
         interval: {},
         closeAlertTime: 0,
+        showPreloaderInsteadTable: false,
     }),
     computed : {
         taskTypes() {
@@ -618,6 +620,8 @@ export default {
     },
     created() {
         let currentObj = this;
+        currentObj.showPreloaderInsteadTable = true;
+
         axios.post('/getSavedTasks')
             .then(function(response) {
                  currentObj.defaultSelected.hashCodes = response.data.hash_codes;
@@ -682,6 +686,9 @@ export default {
          })
          .catch(function(error) {
             currentObj.output = error;
+         })
+         .finally(() => {
+            currentObj.showPreloaderInsteadTable = false;
          });
     },
 
