@@ -1,6 +1,6 @@
 <template>  
 
-	<v-card :id="!num ? 'card-wrapper' : false">
+	<v-card :id="!num ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
 		<div class="card-demo">
 			<template v-if="isShowAddHashCodeDialog">
 				<AddHashCode 
@@ -79,56 +79,6 @@
 				:currentTaskTime     = "item.time"
 				@saveChanges = "changeTime"
 				/>
-				<!-- <v-dialog
-					v-model="dialog"
-					persistent
-					width="500"
-					>
-					<template v-slot:activator="{ props }">
-						<template>
-							<EditButton 
-							@click="dialog=true"
-							/>
-						</template>
-				</template>
-					<v-card>
-						<v-card-title class="text-h5">
-						Edit card
-						</v-card-title>
-						<v-card-text>
-							Edit task`s priority:
-	
-							<v-select
-								:items="priorities"
-								v-model= priority
-								label="Set Priority"
-								solo
-							></v-select>
-							 Edit task`s time: 
-							 <v-time-picker
-							   v-model="time"
-							   color="red">
-							</v-time-picker>
-						</v-card-text>
-						<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn
-							color="green-darken-1"
-							variant="text"
-							@click="dialog = false"
-						>
-							Cancel
-						</v-btn>
-						<v-btn
-							color="green-darken-1"
-							variant="text"
-							@click="changeTime(item)"
-						>
-							Save
-						</v-btn>
-						</v-card-actions>
-					</v-card>
-					</v-dialog> -->
 			</v-list-item>
 
 			<v-list-item>
@@ -357,6 +307,22 @@
 			AddDetails,
 			AddNotes, 
 			EditCardData,
+		},
+		computed: {
+			isCurrentTaskReady() {
+				const {type, mark} = this.item;
+				
+				switch(type) {
+					case 3:
+					case 4:
+						if (mark == 99) {
+							return 'card-wrapper_ready';
+						}
+					break;
+				}
+
+				return 'card-wrapper_unready';
+			},
 		},
 		methods :
 		{
@@ -692,5 +658,43 @@
 	@keyframes leave {
 		from { opacity: 1; top: 0;}
 		to { opacity: 0; top: 10px;}
+	}
+	/* стили для вдавливания карточки */
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper {
+		transition:  all .3s ease;
+		position: relative;
+	}
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_unready {
+		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+		top: 0;
+		left: 0;
+	}
+
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready {
+		box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+		top: 5px;
+    	left: 3px;
+	}
+
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready::before {
+		content: "";
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 50%;
+  		transform: translateX(-50%);
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0,0,0, 0.04);
+		z-index: 1;
+		transition: all .3s ease;
+		background-image: url('/images/task_ready_icon.svg');
+		background-position: top right;
+		background-repeat: no-repeat;
+		background-size: 150px 150px; 
+	}
+
+	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready:hover::before {
+		width: 0;
 	}
 </style>

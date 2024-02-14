@@ -30,6 +30,12 @@ ol {
   list-style: none;
 }
 
+//верстка по странице
+
+.v-application--wrap {
+  background-color: #f8fafc;
+}
+
 .inner-block {
     max-width: 1170px;
     margin: 0 auto;
@@ -39,8 +45,6 @@ ol {
 .br {
   display: none;
 }
-
-//верстка по странице
 
 .aside {
   position: fixed;

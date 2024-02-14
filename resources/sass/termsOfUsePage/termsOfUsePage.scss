@@ -1,0 +1,64 @@
+// сброс стилей
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li {
+  margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+//верстка по странице
+
+.v-application--wrap {
+  background-color: #f8fafc;
+}
+
+.inner-block {
+    max-width: 1170px;
+    margin: 0 auto;
+    padding: 90px 0;
+}
+
+.termsOfUse-section {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.termsOfUse-title {
+    font-weight: bold;
+}
+  
+.termsOfUse-main-title {
+    font-size: 2rem;
+}
+  
+.termsOfUse-section-title {
+    font-size: 1.5rem;
+}
+  
+.termsOfUse-section-subtitle {
+    font-size: 1.2rem;
+}

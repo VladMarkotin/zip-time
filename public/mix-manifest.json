@@ -8,5 +8,9 @@
     "/css/loginPage/loginPageMedia.css": "/css/loginPage/loginPageMedia.css",
     "/css/loginPage/loginPage.css": "/css/loginPage/loginPage.css",
     "/css/indexPage/indexPageMedia.css": "/css/indexPage/indexPageMedia.css",
-    "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css"
+    "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css",
+    "/css/termsOfUsePage/termsOfUseMedia.css": "/css/termsOfUsePage/termsOfUseMedia.css",
+    "/css/termsOfUsePage/termsOfUsePage.css": "/css/termsOfUsePage/termsOfUsePage.css",
+    "/css/privacyPolicyPage/privacyPolicyMedia.css": "/css/privacyPolicyPage/privacyPolicyMedia.css",
+    "/css/privacyPolicyPage/privacyPolicyPage.css": "/css/privacyPolicyPage/privacyPolicyPage.css"
 }

@@ -29,6 +29,10 @@ ol {
   list-style: none;
 }
 
+.v-application--wrap {
+  background-color: #f8fafc;
+}
+
 .inner-block {
   max-width: 1170px;
   margin: 0 auto;
