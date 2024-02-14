@@ -141,9 +141,11 @@
 				</v-row>	
 			</v-list-item>
 		</v-list>
-		<v-divider></v-divider>
-		<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
-		<v-card-title class="font-weight-bold">
+		<v-divider class="m-2"></v-divider>
+		<div style="min-height: 60px;">
+			<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
+		</div>
+		<v-card-title class="font-weight-bold pt-0">
 			<v-row class="p-0 m-0">
 				<v-col class="p-0 m-0" cols="auto">
 					<form 
