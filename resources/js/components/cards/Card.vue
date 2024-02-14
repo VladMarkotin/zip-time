@@ -315,18 +315,25 @@
 
 				const checkTask = (data) => {
 					const {type, mark} = data;
-					switch (type) {
-						case 'task':
-							return mark === 99 //хардкод
-								? 'card-wrapper_ready'
-								: 'card-wrapper_unready';
-						case 'job':
-							return mark >= 10 && mark <= 100 //хардкод
-								? 'card-wrapper_ready'
-								: 'card-wrapper_unready';
-						default:
-							return 'card-wrapper_unready';
+					const cardRules = this.defaultConfigs.cardRules;
+
+					if (cardRules) {
+						const maxMark = +cardRules[0].maxMark;
+						const minMark = +cardRules[0].minMark;
+						switch (type) {
+							case 'task':
+								return mark === 99 //хардкод
+									? 'card-wrapper_ready'
+									: 'card-wrapper_unready';
+							case 'job':
+								return mark >= minMark && mark <= maxMark
+									? 'card-wrapper_ready'
+									: 'card-wrapper_unready';
+							default:
+								return 'card-wrapper_unready';
+						}
 					}
+
 				}
 				
 				switch(type) {
