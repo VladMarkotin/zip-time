@@ -7,13 +7,15 @@ export default {
                 'get-challenges',
             );
             ctx.commit('updateChallenges', result)
+            
         }
     },
     
     mutations:{
         updateChallenges(state, ch) {
-            let obj = JSON.parse(JSON.stringify(ch.data))
+            const obj = ch.data.challenges
             state.challenges.push(obj)
+            //console.log(state.challenges)
         }
     },
 
@@ -22,8 +24,8 @@ export default {
     },
 
     getters: {
-        allChallenges(state) {
-            return state.challenges
+         allChallenges(state) {
+            return  (state.challenges[0] )
         }
     },
 }

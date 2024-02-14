@@ -6,8 +6,8 @@
         :show-arrows=true
     >
     <v-window-item
-      v-for="n in allChallenges"
-      :key="`card-${n}`"
+      v-for="n in allChallenges[0]"
+      :key="`card-${n.id}`"
     >
       <v-card
         elevation="2"
@@ -58,17 +58,17 @@ export default {
     beforeUnmount () {
       clearInterval(this.interval)
     },
-    mounted () {
+    async mounted () {
       /*this.interval = setInterval(() => {
         if (this.value === 100) {
           return (this.value = 0)
         }
         this.value += 10
       }, 1000)*/
-      this.fetchChallenges();
+       this.fetchChallenges();
       //this.value = this.allChallenges[0]
       
-      //console.log(this.allChallenges)
+      console.log(this.allChallenges)
     },
     methods: {
         ...mapActions(['fetchChallenges']),
