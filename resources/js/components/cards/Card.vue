@@ -314,26 +314,29 @@
 				const {type} = this.item;
 
 				const checkTask = (data) => {
-					const {type} = data;
+					const {type, mark} = data;
 					switch (type) {
-						case 'job':
-							const {mark} = data;
-							return mark >= 10 && mark <= 100
+						case 'task':
+							return mark === 99 //хардкод
 								? 'card-wrapper_ready'
 								: 'card-wrapper_unready';
-						break;
+						case 'job':
+							return mark >= 10 && mark <= 100 //хардкод
+								? 'card-wrapper_ready'
+								: 'card-wrapper_unready';
+						default:
+							return 'card-wrapper_unready';
 					}
 				}
 				
 				switch(type) {
 					case 1:
 					case 2:
-						
+						return checkTask({type: 'task', mark: this.isTaskReady});
 					break;
 					case 3:
 					case 4:
-						const { mark } = this.item;
-						return checkTask({type: 'job', mark});
+						return checkTask({type: 'job', mark: this.item.mark});
 					break;
 					default:
 						return 'card-wrapper_unready';
