@@ -730,8 +730,9 @@
 		top: 5px;
     	left: 3px;
 	}
-
-	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready::before {
+	/* ============================================ */
+	/* тут эффекты затемнения готовой карточки и иконка */
+	/* .v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready::before {
 		content: "";
 		display: block;
 		position: absolute;
@@ -751,5 +752,6 @@
 
 	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready:hover::before {
 		width: 0;
-	}
+	} */
+	/* ============================================ */
 </style>
