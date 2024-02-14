@@ -155,11 +155,11 @@
 							<v-text-field 
 							class="ml-1" 
 							style="width : 54px" 
-							v-model="item.mark" 
+							v-model="jobMarkInputValue" 
 							v-on:keypress.enter.prevent="sendMark(item)" 
-							@focus="focusedInput=!focusedInput" 
-							@blur="focusedInput=!focusedInput"
-							@input="checkIsSavedMark(item)"
+							@keypress = "filterJobMarkInputValue($event, item.taskId)"
+							@focus    = "focusedInput=!focusedInput" 
+							@blur     = "focusedInput=!focusedInput"
 							>
 								<v-icon slot="append">mdi-percent</v-icon>
 							</v-text-field>
@@ -294,6 +294,7 @@
 					isShowPreloader: false,
 					defaultConfigs: {},
 					isTaskReady: this.item.is_ready,
+					jobMarkInputValue: String(this.item.mark),
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
 				}
@@ -310,18 +311,35 @@
 		},
 		computed: {
 			isCurrentTaskReady() {
-				const {type, mark} = this.item;
+				const {type} = this.item;
+
+				const checkTask = (data) => {
+					const {type} = data;
+					switch (type) {
+						case 'job':
+							const {mark} = data;
+							return mark >= 10 && mark <= 100
+								? 'card-wrapper_ready'
+								: 'card-wrapper_unready';
+						break;
+					}
+				}
 				
 				switch(type) {
+					case 1:
+					case 2:
+						
+					break;
 					case 3:
 					case 4:
-						if (mark == 99) {
-							return 'card-wrapper_ready';
-						}
+						const { mark } = this.item;
+						return checkTask({type: 'job', mark});
 					break;
+					default:
+						return 'card-wrapper_unready';
 				}
 
-				return 'card-wrapper_unready';
+				
 			},
 		},
 		methods :
@@ -356,7 +374,7 @@
 				}
 
 				if ([3,4].includes(currentTaskType)) {
-					this.item.mark = '';
+					this.jobMarkInputValue = '';
 				}
 			},
 
@@ -430,7 +448,6 @@
 			
 			sendIsReadyState(item)
 			{
-				console.log(item);
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
 					this.isItNessesaryToCleanNoteInput(response);
@@ -472,13 +489,25 @@
 			
 			sendMark(item)
 			{	
-				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,mark : item.mark,type : item.type})
+				axios.post('/estimate',{
+					task_id : item.taskId,
+					details : item.details,
+					note    : item.notes,
+					mark    : this.jobMarkInputValue,
+					type    : item.type
+				})
 				.then((response) => {
 					this.isItNessesaryToCleanNoteInput(response);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 					this.noteInfo.todayAmount = response.data.noteAmount
-					this.checkIsSavedMark(item);
+					this.checkIsSavedMark(item.taskId);
+
+					const {data} = response;
+					if (data.status === 'success') {
+						this.item.mark = +this.jobMarkInputValue;
+					}
+
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
@@ -581,20 +610,34 @@
 					  })
 			},
 
-			checkIsSavedMark(item) {
+			filterJobMarkInputValue(e, taskId) {
+				const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+				const keyPressed  = e.key;
 
-				const getIsShowUpdateCardNotification = (markInInput, savedMark) => {
+				 if (!keysAllowed.includes(keyPressed)) {
+					e.preventDefault();
+					return;
+				}
+
+				this.checkIsSavedMark(taskId);
+			},
+
+			checkIsSavedMark(taskId) {
+				const isShowUpdateCardNotification = (markInInput, savedMark) => {
 					if (markInInput === '' && savedMark === -1) return false;
 					return +markInInput !== savedMark;
 				};
 
-				axios.post('/get-task-mark',{task_id : item.taskId})
+				axios.post('/get-task-mark',{task_id : taskId})
 				.then((response) => {
 					const {data} = response;
+					const savedMark = data.mark;
+					const markInInput = this.jobMarkInputValue.trim();
+					
 					if (data.status === 'success') {
-						this.isShowUpdateCardNotification = getIsShowUpdateCardNotification(
-							item.mark.trim(),
-							data.mark
+						this.isShowUpdateCardNotification = isShowUpdateCardNotification(
+							markInInput,
+							savedMark
 						);
 					}
 				})
@@ -685,7 +728,7 @@
   		transform: translateX(-50%);
 		height: 100%;
 		width: 100%;
-		background-color: rgba(0,0,0, 0.04);
+		background-color: rgba(0,0,0, 0.035);
 		z-index: 1;
 		transition: all .3s ease;
 		background-image: url('/images/task_ready_icon.svg');
