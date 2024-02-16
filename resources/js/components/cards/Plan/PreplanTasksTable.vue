@@ -218,6 +218,7 @@ export default {
     flex-grow: 1;
     display: flex;
     justify-content: center;
+    color: rgba(0,0,0,.6);
 }
 
 .tasks-counter-enter-active, .tasks-counter-leave-active {
