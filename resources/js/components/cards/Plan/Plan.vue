@@ -985,6 +985,7 @@ export default {
    .button_appearance {
       animation: .25s button_appearance ease;
    }
+   
    .button_leave {
       animation: .25s button_leave ease; 
    }
