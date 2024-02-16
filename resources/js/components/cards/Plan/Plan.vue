@@ -29,6 +29,15 @@
                required
                ></v-select>
          </div>
+         <div style="min-height: 24px;">
+            <transition name="tasks-counter">
+               <div 
+               v-if="items.length"
+               class="tasks-counter-wrapper">
+                  <p class="body-1 tasks-counter">{{ taskCounter }}</p>
+               </div>
+            </transition>
+         </div>
          <v-divider></v-divider>
          <div>
             <v-row align="center" class="d-flex justify-content-between" >
@@ -381,6 +390,12 @@ export default {
                   '3' : 'extremly imortant',
                }
             }
+        },
+
+        taskCounter() {
+            const tasksQuantity = this.items.length;
+
+            return `There ${tasksQuantity > 1 ? 'are' : 'is'} ${tasksQuantity} ${tasksQuantity > 1 ? 'tasks' : 'task'} in your day plan`
         }
     },
     methods: {
@@ -987,5 +1002,27 @@ export default {
    }
    .button_leave {
       animation: .25s button_leave ease; 
+   }
+
+   .tasks-counter-wrapper {
+      flex-grow: 1;
+      display: flex;
+      justify-content: flex-start;
+   }
+
+   .tasks-counter {
+      margin: 0;
+      color: rgba(0,0,0,.6);
+   }
+
+   .tasks-counter-enter-active, .tasks-counter-leave-active {
+      position: relative;
+   }
+   .tasks-counter-enter, .tasks-counter-leave-to {
+      opacity: 0;
+      transform: translateX(-10%); /* Начальное положение при появлении и исчезновении */
+   }
+   .tasks-counter-enter-active, .tasks-counter-leave-active {
+      transition: all 0.5s;
    }
 </style>
