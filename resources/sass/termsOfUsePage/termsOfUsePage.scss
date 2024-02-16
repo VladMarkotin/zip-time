@@ -42,6 +42,10 @@ ol {
     padding: 90px 0;
 }
 
+.br {
+  display: none;
+}
+
 .termsOfUse-section {
     padding-top: 24px;
     padding-bottom: 24px;
@@ -61,4 +65,8 @@ ol {
   
 .termsOfUse-section-subtitle {
     font-size: 1.2rem;
+}
+
+.termsOfUse-li {
+  padding-bottom: 16px;
 }

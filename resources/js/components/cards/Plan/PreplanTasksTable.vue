@@ -48,15 +48,6 @@
                             
                         </transition-group>
                     </template>
-                    <template v-slot:footer.prepend>
-                        <transition name="tasks-counter">
-                            <div 
-                            v-if="items.length"
-                            class="tasks-counter-wrapper">
-                                <p class="body-1">{{ taksCounter }}</p>
-                            </div>
-                        </transition>
-                    </template>
                 </v-data-table>
             </div>
         </transition>
@@ -149,13 +140,6 @@ export default {
         ],
     }),
     components: { DefaultPreloader},
-    computed: {
-        taksCounter() {
-            const tasksQuantity = this.items.length;
-
-            return `There ${tasksQuantity > 1 ? 'are' : 'is'} ${tasksQuantity} ${tasksQuantity > 1 ? 'tasks' : 'task'} in your day plan`
-        }
-    },
     methods: {
         deleteItem(item) {
             this.$emit('deleteItem', item);
@@ -205,30 +189,12 @@ export default {
   opacity: 0; 
 }
 
-
 #plan-tasks-table .preplan-table-taskName {
     width: 250px;
     max-width: 300px;
     max-height: 60px;
     overflow: auto;
     word-wrap: break-word; /* Перенос слов, если не помещаются */
-}
-
-.tasks-counter-wrapper {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-}
-
-.tasks-counter-enter-active, .tasks-counter-leave-active {
-  position: relative;
-}
-.tasks-counter-enter, .tasks-counter-leave-to {
-  opacity: 0;
-  transform: translateX(-10%); /* Начальное положение при появлении и исчезновении */
-}
-.tasks-counter-enter-active, .tasks-counter-leave-active {
-  transition: all 0.5s;
 }
 
 .table-preloader-wrapper {
