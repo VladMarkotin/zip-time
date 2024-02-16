@@ -6,8 +6,8 @@
         :show-arrows=true
     >
     <v-window-item
-      v-for="n in allChallenges[0]"
-      :key="`card-${n.id}`"
+      v-for="challenge in allChallenges"
+      :key="`card-${challenge.id}`"
     >
       <v-card
         elevation="2"
@@ -22,11 +22,10 @@
                 :rotate="360"
                 :size="100"
                 :width="15"
-                :value="n.completness"
-                :model-value="n.completness"
+                :value="challenge.completeness"
                 color="red"
                 >
-                {{ n.completness }}
+                  {{ challenge.completeness }}%
                 </v-progress-circular>
             </div>
         </div>
@@ -50,8 +49,7 @@ export default {
       onboarding: 0,
       value: 100,
       interval: {},
-
-      showChallenges: 1
+      showChallenges: 1,
     }),
     store,
     computed: mapGetters(['allChallenges']),
@@ -68,7 +66,6 @@ export default {
        this.fetchChallenges();
       //this.value = this.allChallenges[0]
       
-      console.log(this.allChallenges)
     },
     methods: {
         ...mapActions(['fetchChallenges']),

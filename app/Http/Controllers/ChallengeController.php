@@ -18,7 +18,8 @@ class ChallengeController extends Controller
         ->toArray();
         Log::info('User registered', ['name' => $challenges2]);
         //$challenges3 = json_encode( ['completness' => $challenges2[0]['completeness']] ); //
-        $challenges3 = json_encode( ['challenges' => $challenges2] ); //
-        die($challenges3);
+        $challenges3 = ['challenges' => $challenges2]; //
+        
+        return response()->json(['challenges' => $challenges3]);
     }
 }

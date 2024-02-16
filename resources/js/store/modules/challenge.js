@@ -3,18 +3,24 @@
 export default {
     actions:{
         async fetchChallenges(ctx) {
-            const result = await axios.post(
-                'get-challenges',
-            );
-            ctx.commit('updateChallenges', result)
-            
+            try {
+                const result = await axios.post(
+                    'get-challenges',
+                );
+                ctx.commit('updateChallenges', result)
+            } catch(error) {
+                console.error(error);
+            }
         }
     },
     
     mutations:{
         updateChallenges(state, ch) {
-            const obj = ch.data.challenges
-            state.challenges.push(obj)
+            const {challenges} = ch.data.challenges;
+            state.challenges = challenges;
+            
+            // const obj = ch.data.challenges
+            // state.challenges.push(obj)
             //console.log(state.challenges)
         }
     },
@@ -25,7 +31,7 @@ export default {
 
     getters: {
          allChallenges(state) {
-            return  (state.challenges[0] )
+            return  state.challenges;
         }
     },
 }
