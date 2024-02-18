@@ -45,8 +45,15 @@
 						<span class="p-0">{{ hashCode }}</span>
 					</v-row>
 				</v-col>
-				<v-col class="m-0 p-0 d-flex justify-content-center align-items-center">
-					<span>{{item.taskName}}</span>
+				<v-col class="m-0 p-0 d-flex justify-content-center align-items-center task-name-wrapper">
+					<span v-if="!isTaskNameLong" class="task-name">{{ item.taskName }}</span>
+					<span 
+					v-else
+					class="task-name"
+					@mouseenter="maxTaskNameLen = 255"
+					>
+						{{taskNameFormated}}
+					</span>
 				</v-col>
 				<v-col 
 				class="m-0 p-0 d-flex justify-content-end align-items-center"
@@ -299,6 +306,7 @@
 					jobMarkInputValue: String(this.item.mark),
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
+					maxTaskNameLen: 50,
 				}
 			},
 		components : {
@@ -353,7 +361,21 @@
 
 				
 			},
-		},
+
+			taskNameFormated() {
+				const {taskName} = this.item;
+
+				if (taskName.length > this.maxTaskNameLen) {
+					return taskName.slice(0, this.maxTaskNameLen) + '...';
+				}
+
+				return taskName;
+			},
+
+			isTaskNameLong() {
+				return this.item.taskName.length > this.maxTaskNameLen;
+			}
+		}, 
 		methods :
 		{
 			closeHashCodeDialog() {
@@ -669,7 +691,14 @@
 		background-color : #A10000;
 		color : white
 	}
-	
+
+	.task-name-wrapper {
+		padding: 0 10px !important;
+	}
+
+	.task-name {
+		line-height: 1.5rem;
+	}
 	.v-card-done {
 		background-color: #ededed;
 	}

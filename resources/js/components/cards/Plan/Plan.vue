@@ -87,7 +87,7 @@
                <v-col md="3">
                   <v-text-field
                      :placeholder=" placeholders[0] "
-                     :counter="25"
+                     :counter="50"
                      required
                      v-model="defaultSelected.taskName"
                      @input="inputChangeHandler"
