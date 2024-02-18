@@ -49,9 +49,9 @@
 					<span v-if="!isTaskNameLong" class="task-name">{{ item.taskName }}</span>
 					<span 
 					v-else
-					class="task-name"
-					@mouseenter="test = 255"
-					@mouseleave="test = maxTaskNameLen"
+					class="task-name task-name-truncated"
+					@mouseenter="maxTaskNameLen.forRender = 255"
+					@mouseleave="maxTaskNameLen.forRender = maxTaskNameLen.default"
 					>
 						{{truncatedTaskName}}
 					</span>
@@ -307,8 +307,10 @@
 					jobMarkInputValue: String(this.item.mark),
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
-					maxTaskNameLen: 50,
-					test: 50,
+					maxTaskNameLen: {
+						default: 50,
+						forRender: 50,
+					},
 				}
 			},
 		components : {
@@ -367,15 +369,15 @@
 			truncatedTaskName() {
 				const {taskName} = this.item;
 
-				if (taskName.length > this.test) {
-					return taskName.slice(0, this.test) + '...';
+				if (taskName.length > this.maxTaskNameLen.forRender) {
+					return taskName.slice(0, this.maxTaskNameLen.forRender) + '...';
 				}
 
 				return taskName;
 			},
 
 			isTaskNameLong() {
-				return this.item.taskName.length > this.maxTaskNameLen;
+				return this.item.taskName.length > this.maxTaskNameLen.default;
 			}
 		}, 
 		methods :
