@@ -1,5 +1,5 @@
 <template>
-    <div class="add-hashCode-button">
+    <div class="add-hashCode-button p-0">
         <v-tooltip v-bind="tooltipPosition">
             <template v-slot:activator="{ on: tooltip  }">
                 <v-btn 

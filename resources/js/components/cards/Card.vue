@@ -24,7 +24,7 @@
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<v-row class="m-0 p-0">
 				<v-col 
-				class="m-0 p-0 d-flex justify-content-start align-items-center"
+				class="m-0 p-0 d-flex justify-content-start align-items-start"
 				cols="auto"
 				style="min-width: 88px;"
 				>
@@ -42,14 +42,14 @@
 					class="m-0 p-0"
 					v-else
 					>
-						<span class="p-0">{{ hashCode }}</span>
+						<span style="line-height: 1.5rem;" class="p-0">{{ hashCode }}</span>
 					</v-row>
 				</v-col>
-				<v-col class="m-0 p-0 d-flex justify-content-center align-items-center task-name-wrapper">
+				<v-col class="m-0 p-0 d-flex justify-content-center align-items-start task-name-wrapper">
 					<span v-if="!isTaskNameLong" class="task-name">{{ item.taskName }}</span>
 					<span 
 					v-else
-					:class="maxTaskNameLen.forRender === 255 ? 'task-name task-name-full' : 'task-name pointer'"
+					:class="maxTaskNameLen.forRender === 255 ? 'task-name trancated-task-name-full' : 'task-name pointer'"
 					@click="maxTaskNameLen.forRender = 255"
 					@mouseleave="maxTaskNameLen.forRender = maxTaskNameLen.default"
 					>
@@ -57,7 +57,7 @@
 					</span>
 				</v-col>
 				<v-col 
-				class="m-0 p-0 d-flex justify-content-end align-items-center"
+				class="m-0 p-0 d-flex justify-content-end align-items-start"
 				cols="auto"
 				style="min-width: 22px;"
 				>
@@ -698,6 +698,7 @@
 
 	.task-name-wrapper {
 		padding: 0 10px !important;
+		min-height: 48px;
 	}
 
 	.task-name {
@@ -707,18 +708,11 @@
 		cursor: pointer;
 	}
 
-	.task-name-full {
+	.trancated-task-name-full {
 		animation: taskNameAppearance  0.3s ease-in-out;
 	}
 
-	@keyframes taskNameAppearance {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
+	
 	.v-card-done {
 		background-color: #ededed;
 	}
@@ -754,15 +748,6 @@
 		animation: .3s leave ease;
 	}
 
-	@keyframes show {
-		from { opacity: 0; top: -10px;}
-		to { opacity: 1; top: 0;}
-	}
-
-	@keyframes leave {
-		from { opacity: 1; top: 0;}
-		to { opacity: 0; top: 10px;}
-	}
 	/* стили для вдавливания карточки */
 	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper {
 		transition:  all .3s ease;
@@ -803,4 +788,18 @@
 		width: 0;
 	} */
 	/* ============================================ */
+	@keyframes show {
+		from { opacity: 0; top: -10px;}
+		to { opacity: 1; top: 0;}
+	}
+
+	@keyframes leave {
+		from { opacity: 1; top: 0;}
+		to { opacity: 0; top: 10px;}
+	}
+
+	@keyframes taskNameAppearance {
+		from {opacity: 0;}
+		to {opacity: 1;}
+	}
 </style>
