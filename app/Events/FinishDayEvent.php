@@ -21,9 +21,9 @@ class FinishDayEvent
      *
      * @return void
      */
-    public function __construct(ChallengeModel $challengeModel)
+    public function __construct(array $data)
     {
-        $this->challengeModel = $challengeModel;
+        $this->challengeModel = $data;
     }
 
     /**

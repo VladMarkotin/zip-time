@@ -13,10 +13,6 @@ class ChallengeController extends Controller
 {
     public function getUsersChallenges(Request $request)
     {
-        $challenges = json_encode(['completness' => 72] );
-        $challenges2 = UsersChallenges::where([['user_id', Auth::id()]])
-        ->get()
-        ->toArray();
         $challenges = DB::select("SELECT c.title, c.terms, u_c.completeness, u_c.is_active FROM `challenges` c 
                                     JOIN user_challenges u_c ON c.id = u_c.challenge_id 
                                         WHERE u_c.user_id = ".Auth::id()); //

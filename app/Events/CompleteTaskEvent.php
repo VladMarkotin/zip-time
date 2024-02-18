@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\ChallengeModel;
 
 
-class CompleteTaskEvent implements ShouldBroadcast
+class CompleteTaskEvent //implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
  
@@ -22,9 +22,9 @@ class CompleteTaskEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(ChallengeModel $challengeModel)
+    public function __construct(array $data)
     {
-        $this->challengeModel = $challengeModel;
+        $this->challengeModel = $data;
     }
 
     /**
@@ -32,18 +32,18 @@ class CompleteTaskEvent implements ShouldBroadcast
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
-    }
+    // public function broadcastOn()
+    // {
+    //     return new PrivateChannel('channel-name');
+    // }
 
-    public function broadcastAs()
-    {
-        return 'updateTask';
-    }
+    // public function broadcastAs()
+    // {
+    //     return 'updateTask';
+    // }
 
-    public function broadcastWith($data)
-    {
-        die(var_dump($data));
-    }
+    // public function broadcastWith()
+    // {
+       
+    // }
 }

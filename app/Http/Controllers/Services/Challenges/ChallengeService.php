@@ -6,6 +6,7 @@ use Auth;
 use DB;
 use App\Models\ChallengeModel;
 use App\Models\UsersChallenges;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Services\Challenges\CompleteNTasks;
 
 class ChallengeService
@@ -19,14 +20,32 @@ class ChallengeService
     /**
      * Wrapper for counting all indexes for challenge
      * $data = [
-     *   'query' - сформированный sql запрос. Должен вернуть одно значение!
-     *   'terms' 
-     *   'fails'
-     *   'goals' - число, с которым можно будет савнить результат
-     * ]
+     *   'user_id' - сформированный sql запрос. Должен вернуть одно значение!
+     *   'challenge_index' 
      */
     public function doChallenge(array $data)
     {
+        /**
+         * Have to get condithions of challenge
+         */
+        $terms = ChallengeModel::select('terms')->where('index', $data['index'])->get()->toArray();
+        //Log::info(($terms[0]['terms']   ) );
+        $terms2 = json_decode($terms[0]['terms']);
+        $result = DB::select($terms2->rules->query);
+        if ($result[0]->result < $terms2->rules->goal) {
+            $completness = $result[0]->result / $terms2->rules->goal * 100;
+            UsersChallenges::where([
+                ['user_id', Auth::id()],
+                ['challenge_id', 1] //temprorary
+            ])->update([
+                'completeness' => $completness,
+            ]);
+        }
+        //die(var_dump($result[0]->result));
+
+
+        /*
+        ----------------------------------------------
         $index = $this->countIndex($data);
         $goal = $this->getParam($data, 'goal');
         $completnes = $this->completnesPercent($index, $goal);
@@ -45,6 +64,7 @@ class ChallengeService
         }
 
         return ($completnes);
+        */
     }
 
     private function completnesPercent($index, $goal)

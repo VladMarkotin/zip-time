@@ -111,7 +111,7 @@ class EstimateTaskRepository
 
             //test. Delete this line
             $ch = ChallengeModel::find(1);
-            FinishDayEvent::dispatch($ch);
+            //FinishDayEvent::dispatch($ch);
             //end test
         }
 
