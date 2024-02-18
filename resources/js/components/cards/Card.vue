@@ -49,8 +49,8 @@
 					<span v-if="!isTaskNameLong" class="task-name">{{ item.taskName }}</span>
 					<span 
 					v-else
-					class="task-name task-name-truncated"
-					@mouseenter="maxTaskNameLen.forRender = 255"
+					:class="maxTaskNameLen.forRender === 255 ? 'task-name task-name-full' : 'task-name pointer'"
+					@click="maxTaskNameLen.forRender = 255"
 					@mouseleave="maxTaskNameLen.forRender = maxTaskNameLen.default"
 					>
 						{{truncatedTaskName}}
@@ -702,6 +702,22 @@
 
 	.task-name {
 		line-height: 1.5rem;
+	}
+	.pointer {
+		cursor: pointer;
+	}
+
+	.task-name-full {
+		animation: taskNameAppearance  0.3s ease-in-out;
+	}
+
+	@keyframes taskNameAppearance {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 	.v-card-done {
 		background-color: #ededed;
