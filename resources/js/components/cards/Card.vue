@@ -307,7 +307,8 @@
 					jobMarkInputValue: String(this.item.mark),
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
-					maxTaskNameLen: {
+					//Тут менять от скольки символов название таски обрезается,з начения полей объекта должны совпадать.
+					maxTaskNameLen: { 
 						default: 50,
 						forRender: 50,
 					},
