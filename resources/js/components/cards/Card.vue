@@ -50,9 +50,10 @@
 					<span 
 					v-else
 					class="task-name"
-					@mouseenter="maxTaskNameLen = 255"
+					@mouseenter="test = 255"
+					@mouseleave="test = maxTaskNameLen"
 					>
-						{{taskNameFormated}}
+						{{truncatedTaskName}}
 					</span>
 				</v-col>
 				<v-col 
@@ -307,6 +308,7 @@
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
 					maxTaskNameLen: 50,
+					test: 50,
 				}
 			},
 		components : {
@@ -362,11 +364,11 @@
 				
 			},
 
-			taskNameFormated() {
+			truncatedTaskName() {
 				const {taskName} = this.item;
 
-				if (taskName.length > this.maxTaskNameLen) {
-					return taskName.slice(0, this.maxTaskNameLen) + '...';
+				if (taskName.length > this.test) {
+					return taskName.slice(0, this.test) + '...';
 				}
 
 				return taskName;
