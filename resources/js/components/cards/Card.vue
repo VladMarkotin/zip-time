@@ -24,7 +24,7 @@
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<v-row class="m-0 p-0">
 				<v-col 
-				class="m-0 p-0 d-flex justify-content-start align-items-center"
+				class="m-0 p-0 d-flex justify-content-start align-items-start"
 				cols="auto"
 				style="min-width: 88px;"
 				>
@@ -42,14 +42,22 @@
 					class="m-0 p-0"
 					v-else
 					>
-						<span class="p-0">{{ hashCode }}</span>
+						<span style="line-height: 1.5rem;" class="p-0">{{ hashCode }}</span>
 					</v-row>
 				</v-col>
-				<v-col class="m-0 p-0 d-flex justify-content-center align-items-center">
-					<span>{{item.taskName}}</span>
+				<v-col class="m-0 p-0 d-flex justify-content-center align-items-start task-name-wrapper">
+					<span v-if="!isTaskNameLong" class="task-name">{{ item.taskName }}</span>
+					<span 
+					v-else
+					:class="maxTaskNameLen.forRender === 255 ? 'task-name trancated-task-name-full' : 'task-name pointer'"
+					@click="maxTaskNameLen.forRender = 255"
+					@mouseleave="maxTaskNameLen.forRender = maxTaskNameLen.default"
+					>
+						{{truncatedTaskName}}
+					</span>
 				</v-col>
 				<v-col 
-				class="m-0 p-0 d-flex justify-content-end align-items-center"
+				class="m-0 p-0 d-flex justify-content-end align-items-start"
 				cols="auto"
 				style="min-width: 22px;"
 				>
@@ -299,6 +307,11 @@
 					jobMarkInputValue: String(this.item.mark),
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
+					//Тут менять от скольки символов название таски обрезается,з начения полей объекта должны совпадать.
+					maxTaskNameLen: { 
+						default: 50,
+						forRender: 50,
+					},
 				}
 			},
 		components : {
@@ -353,7 +366,21 @@
 
 				
 			},
-		},
+
+			truncatedTaskName() {
+				const {taskName} = this.item;
+
+				if (taskName.length > this.maxTaskNameLen.forRender) {
+					return taskName.slice(0, this.maxTaskNameLen.forRender) + '...';
+				}
+
+				return taskName;
+			},
+
+			isTaskNameLong() {
+				return this.item.taskName.length > this.maxTaskNameLen.default;
+			}
+		}, 
 		methods :
 		{
 			closeHashCodeDialog() {
@@ -669,6 +696,23 @@
 		background-color : #A10000;
 		color : white
 	}
+
+	.task-name-wrapper {
+		padding: 0 10px !important;
+		min-height: 48px;
+	}
+
+	.task-name {
+		line-height: 1.5rem;
+	}
+	.pointer {
+		cursor: pointer;
+	}
+
+	.trancated-task-name-full {
+		animation: taskNameAppearance  0.3s ease-in-out;
+	}
+
 	
 	.v-card-done {
 		background-color: #ededed;
@@ -705,15 +749,6 @@
 		animation: .3s leave ease;
 	}
 
-	@keyframes show {
-		from { opacity: 0; top: -10px;}
-		to { opacity: 1; top: 0;}
-	}
-
-	@keyframes leave {
-		from { opacity: 1; top: 0;}
-		to { opacity: 0; top: 10px;}
-	}
 	/* стили для вдавливания карточки */
 	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper {
 		transition:  all .3s ease;
@@ -754,4 +789,18 @@
 		width: 0;
 	} */
 	/* ============================================ */
+	@keyframes show {
+		from { opacity: 0; top: -10px;}
+		to { opacity: 1; top: 0;}
+	}
+
+	@keyframes leave {
+		from { opacity: 1; top: 0;}
+		to { opacity: 0; top: 10px;}
+	}
+
+	@keyframes taskNameAppearance {
+		from {opacity: 0;}
+		to {opacity: 1;}
+	}
 </style>

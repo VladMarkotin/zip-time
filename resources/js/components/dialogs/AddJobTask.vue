@@ -42,7 +42,7 @@
 							class="p-0 m-0"></v-col>
 							<v-col class="p-0 m-0">
 								<v-text-field 
-								counter="25" 
+								counter="50" 
 								label="Name" 
 								required 
 								v-model="task.name"
