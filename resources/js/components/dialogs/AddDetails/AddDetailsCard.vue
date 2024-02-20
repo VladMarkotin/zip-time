@@ -94,7 +94,9 @@
                                                     cols="9" 
                                                     class="p-0 m-0 d-flex justify-content-center align-items-center subtask-title-wrapper"
                                                     >
-                                                        <p class="text-md-center">{{ v.title }} </p>
+                                                        <div class="text-wrapper">
+                                                            <p class="text-md-center">{{ v.title }} </p>
+                                                        </div>
                                                     </v-col>
                                                     <v-col
                                                     cols="3" 
@@ -154,7 +156,9 @@
                                                     class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
                                                     cols="9"
                                                     >
-                                                        <p> {{ v.text }}</p>
+                                                        <div class="text-wrapper">
+                                                            <p> {{ v.text }}</p>
+                                                        </div>
                                                     </v-col>
                                                     <v-col 
                                                     class="p-0 m-0"
@@ -197,16 +201,18 @@
                                                     class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
                                                     cols="9"
                                                     >
-                                                        <p> {{ v.text }}</p>
+                                                        <div class="text-wrapper">
+                                                            <p> {{ v.text }}</p>
+                                                        </div>
                                                     </v-col>
                                                     <v-col 
                                                     cols="3"
                                                     >
                                                         <v-row class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper">
-                                                            <p class="completeon-date-text">Completeon date:</p>
+                                                            <p class="completeon-date-text m-0">Completeon date:</p>
                                                         </v-row>
                                                         <v-row class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper">
-                                                            <p class="completeon-date-text">{{ getSubtaskComptimeText(v.done_at_user_time) }}</p>
+                                                            <p class="completeon-date-text m-0">{{ getSubtaskComptimeText(v.done_at_user_time) }}</p>
                                                         </v-row>
                                                     </v-col>
                                                 </v-row>
@@ -684,12 +690,20 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
     .subtask-title-wrapper,
     .subtask-detail-wrapper {
         overflow: hidden;
+        flex-grow: 1;
     }
 
-    .subtask-title-wrapper > p,
-    .subtask-detail-wrapper > p {
-        word-wrap: break-word;
+    .subtask-title-wrapper > .text-wrapper {
+        max-width: 300px;
+    }
+    .subtask-detail-wrapper > .text-wrapper {
+        max-width: 400px;
+    }
+
+    .text-wrapper > p {
         margin-bottom: 0;
+        word-wrap: break-word; 
+        line-height: 1.2rem;
     }
 
     .isReady-checkbox-wrapper > .v-input--checkbox {
