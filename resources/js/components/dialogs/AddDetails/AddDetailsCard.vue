@@ -33,8 +33,7 @@
                                 :counter="subtaskRules.subtaskTitle.maxLength" 
                                 label="Subtask title"
                                 :rules="subtaskTitleRules"
-                                success
-                                @input="checkInputsValue"
+                                :success="dataOnValidofInputs.isTitleInpuValValid"
                                 ref="subtaskTitleInput"
                                 required></v-text-field>
                             </v-col>
@@ -48,8 +47,7 @@
                                 :counter="subtaskRules.subtaskText.maxLength"
                                 label="Subtask details" 
                                 :rules="subtaskTextRules"
-                                success
-                                @input="checkInputsValue"
+                                :success="dataOnValidofInputs.isTextInputValValid"
                                 ref="subtaskTextInput"
                                 required></v-text-field>
                             </v-col>
@@ -71,7 +69,7 @@
                                     class="d-flex flex-column align-items-start justify-content-start"
                                     >
                                     <template
-                                    v-if="isSubTasksInputValValid"
+                                    v-if="dataOnValidofInputs.areAllInputsValValid"
                                     >
                                         <AddSubtaskButton 
                                         :buttonSize="40"
@@ -396,7 +394,11 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                         return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
                     }
                 ],
-                isSubTasksInputValValid: false,
+                dataOnValidofInputs: {
+                    areAllInputsValValid: false,
+                    isTitleInpuValValid:  false,
+                    isTextInputValValid:  true,
+                },
                 isShowEditDetailsDialog: false,
                 isSavedTask: this.item.hash !== '#',
                 modifiedDetailTemplate: {id: null, title: '', text: ''},
@@ -422,6 +424,20 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         watch: {
             detailsSortBy(sortCritVal) {
                 this.updateDetailsSortingCrit(sortCritVal);
+            },
+            'newDetail.title'() {
+                this.setDataOnValidOfInputs(
+                    'isTitleInpuValValid', 
+                    this.subtaskTitleRules, 
+                    this.newDetail.title
+                );
+            },
+            'newDetail.text'() {
+                this.setDataOnValidOfInputs(
+                    'isTextInputValValid', 
+                    this.subtaskTextRules, 
+                    this.newDetail.text
+                );
             }
         },
         methods: {
@@ -457,7 +473,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             addDetail(){
                 if (this.isLoading) return;
 
-                if (this.isSubTasksInputValValid) {
+                if (this.dataOnValidofInputs.areAllInputsValValid) {
 
                     const dateNow = new Date;
                     const dataOpt = {year: 'numeric', month: 'numeric', day: 'numeric'};
@@ -475,7 +491,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 						is_ready: false,
                         created_at_date: '',
 					};
-                    this.checkInputsValue();
                 } else {
 					this.$emit('updateAlertData', {type: 'error', text: 'Invalid data'});
                     this.isShowAlertInDetails = true;
@@ -506,11 +521,19 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 				  })
 			},
 
-            checkInputsValue() {
-                this.isSubTasksInputValValid = new Array(
-                    ...this.subtaskTitleRules.map(check => check(this.newDetail.title)),
-                    ...this.subtaskTextRules.map(check => check(this.newDetail.text)),
-                ).every(checkResult => checkResult === true);
+            setDataOnValidOfInputs(key, rules, inputVal) {
+                this.dataOnValidofInputs[key] = 
+                rules.map(check => check(inputVal))
+                .every(checkResult => checkResult === true);
+
+                this.checAllkInputsValue();
+            },
+
+            checAllkInputsValue() {
+                const data = this.dataOnValidofInputs;
+
+                data.areAllInputsValValid = [ data.isTitleInpuValValid, data.isTextInputValValid,]
+                .every(checkResult => checkResult === true);
             },
 
             deleteSubTask(item){
@@ -618,12 +641,13 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         },
 
         mounted() {
-           const subtasksInputs = [this.$refs.subtaskTitleInput, this.$refs.subtaskTextInput]
+        // раскомментить, если хочу, что бы инпуты валидировались сразу после монтирования компоненты
+        //    const subtasksInputs = [this.$refs.subtaskTitleInput, this.$refs.subtaskTextInput]
            
-           if (subtasksInputs.every(item => item)) {
-                subtasksInputs.forEach(item => item.validate(true));
-                this.checkInputsValue();
-           }
+        //    if (subtasksInputs.every(item => item)) {
+        //         subtasksInputs.forEach(item => item.validate(true));
+        //         this.checAllkInputsValue();
+        //    }
         }
     }
 </script>
