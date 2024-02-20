@@ -231,8 +231,10 @@
                     </template>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions v-if="details.length > 1">
-                <v-row class="p-0 m-0 d-flex justify-content-center">
+            <v-card-actions style="min-height: 58px;">
+                <v-row 
+                v-if="details.length > 1"
+                class="p-0 m-0 d-flex justify-content-center">
                     <v-col 
                     class="p-0 m-0 subtasks-radiobuttons-wrapper"
                     cols="auto"
