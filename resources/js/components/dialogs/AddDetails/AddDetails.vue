@@ -21,6 +21,7 @@
             :alert              = "alert"
             :isLoading          = "isLoading"
             :detailsSortingCrit = "detailsSortingCrit"
+            :generateUniqKey    = "generateUniqKey"
             @updateDetails            = "updateDetails"
             @updateAlertData          = "setAlertData"
             @updateCompletedPercent   = "updateCompletedPercent"
@@ -37,6 +38,7 @@
 <script>
 import AddDetailsCard from './AddDetailsCard.vue';
 import {mdiChartGantt,}  from '@mdi/js'  
+import { uuid } from 'vue-uuid';
 export default {
     props: {
         num: {},
@@ -150,6 +152,7 @@ export default {
                             is_old_compleated: element.is_old_compleated,
                             done_at_user_time: element.done_at_user_time,
                             is_ready: element.is_ready,
+                            uniqKey: this.generateUniqKey(),
                             created_at_date: element.created_at_user_time.slice(//получаю дату без времени
                                 0, element.created_at_user_time.trim().indexOf(' ')
                             ),
@@ -163,6 +166,10 @@ export default {
                 });
 				})
 		},
+
+        generateUniqKey() {
+             return uuid.v1();
+        }
     },
 }
 </script>
