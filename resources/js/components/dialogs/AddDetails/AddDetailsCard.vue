@@ -19,7 +19,7 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="height: 300px; position: relative;" >
+            <v-card-text class="details-cards-wrapper">
                 <!-- возможно удалить этот блок -->
                     <template>
                         <v-row>
@@ -231,7 +231,7 @@
                     </template>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions style="min-height: 58px;">
+            <v-card-actions style="min-height: 74px;">
                 <v-row 
                 v-if="details.length > 1"
                 class="p-0 m-0 d-flex justify-content-center">
@@ -629,6 +629,30 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 </script>
 
 <style scoped>
+    .details-cards-wrapper {
+        height: 300px; 
+        position: relative;
+    }
+
+    .details-cards-wrapper::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .details-cards-wrapper::-webkit-scrollbar-track {
+        background: #e6e6e6;
+        border-left: 1px solid #dadada;
+    }
+
+    .details-cards-wrapper::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .details-cards-wrapper::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
+    }
+
     .isReqSubtask-checkbox-wrapper .v-input--checkbox {
         margin-top: 0;
     }
