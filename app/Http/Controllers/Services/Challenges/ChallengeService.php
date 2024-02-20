@@ -8,6 +8,7 @@ use App\Models\ChallengeModel;
 use App\Models\UsersChallenges;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Services\Challenges\CompleteNTasks;
+use App\Http\Controllers\Services\Challenges\Contracts\ReplacementsClass;
 
 class ChallengeService
 {
@@ -28,15 +29,27 @@ class ChallengeService
         /**
          * Have to get condithions of challenge
          */
-        $terms = ChallengeModel::select('terms')->where('index', $data['index'])->get()->toArray();
-        //Log::info(($terms[0]['terms']   ) );
+        $terms = ChallengeModel::select('id','terms')->where('index', $data['index'])->get()->toArray();
         $terms2 = json_decode($terms[0]['terms']);
-        $result = DB::select($terms2->rules->query);
+        $chId = json_decode($terms[0]['id']);
+        /*Log::info($chId);
+        exit;*/ 
+        $unPreparedQuery = $terms2->rules->query;
+        //get replacement`s array. It is nessary for creating valid SQL Query. Here we change all {param} on real values
+        $replacements = ReplacementsClass::getReplacements();
+        foreach ($replacements as $k => $v) {
+
+            $unPreparedQuery = str_replace($k, $v(), $unPreparedQuery);
+        }
+        /*Log::info(($unPreparedQuery) );
+        exit;*/
+        //For now in $unPreparedQuery placed preparedQuery!
+        $result = DB::select($unPreparedQuery);
         if ($result[0]->result < $terms2->rules->goal) {
             $completness = $result[0]->result / $terms2->rules->goal * 100;
             UsersChallenges::where([
                 ['user_id', Auth::id()],
-                ['challenge_id', 1] //temprorary
+                ['challenge_id', $chId] 
             ])->update([
                 'completeness' => $completness,
             ]);
