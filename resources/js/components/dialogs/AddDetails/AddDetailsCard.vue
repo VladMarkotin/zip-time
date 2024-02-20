@@ -21,7 +21,6 @@
             <v-divider></v-divider>
             <v-card-text style="height: 300px; position: relative;" >
                 <!-- возможно удалить этот блок -->
-                <div class="subtasks-inner-block"> 
                     <template>
                         <v-row>
                             <v-col
@@ -228,15 +227,6 @@
                             </template>
                         </v-row>
                     </template>
-                    <v-alert 
-                    v-if="isShowAlertInDetails"
-                    text class="elevation-1" 
-                    v-bind:type="alert.type"
-                    :class="'add-details-alert'"
-                    >
-                        {{ alert.text }}
-                    </v-alert>
-                </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions v-if="details.length > 1">
@@ -267,7 +257,7 @@
             <v-card-actions>
                 <v-row class="d-flex align-items-center justify-content-between p-0 m-0">
                     <v-col
-                    cols="auto"
+                    cols="4"
                     >
                         <v-btn 
                         v-if="isSavedTask"
@@ -278,8 +268,24 @@
                             {{ displayedDetails[displayedDetails.currentMode].showSubtasksButtonText}}
                         </v-btn>
                     </v-col>
+                    <v-col class="details-alert-wrapper">
+                        <transition
+                        enter-active-class="details-alert_appearance"
+                        leave-active-class="details-alert_leave"
+                        >
+                            <v-alert 
+                            v-if="isShowAlertInDetails"
+                            text class="elevation-1" 
+                            v-bind:type="alert.type"
+                            :class="'details-alert'"
+                            >
+                                {{ alert.text }}
+                            </v-alert>
+                        </transition>
+                    </v-col>
                     <v-col
-                    cols="auto"
+                    cols="3"
+                    class="d-flex justify-content-end align-items-center"
                     >
                         <v-btn 
                         @click="$emit('closeAddDetailsDialog')"
@@ -636,22 +642,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         padding-top: 0;
     }
 
-    .subtasks-inner-block {
-        width: 95%;
-    }
-
-    .add-details-alert {
-        position: sticky; 
-        left: 0; 
-        bottom: 0; 
-        z-index: 9999; 
-        margin-bottom: 0;
-        background-color: #DCDCDC !important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
     .completeon-date-text {
         text-align: center;
         color: rgba(0,0,0,.6);
@@ -667,4 +657,39 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         margin-bottom: 0;
         margin-top: 0.5rem;
     }
+
+    .details-alert-wrapper {
+        min-height: 60px; 
+        padding: 0; 
+        display: flex; 
+        justify-content: center;
+        align-items: center;
+    }
+
+    .details-alert {
+        flex-grow: 1;
+        margin-bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+    }
+
+    .details-alert_appearance {
+      animation: .3s details_alert_appearance ease;
+   	}
+
+    .details-alert_leave {
+        animation: .3s details_alert_leave ease;
+    }
+
+    @keyframes details_alert_appearance {
+		from { opacity: 0; top: -10px;}
+		to { opacity: 1; top: 0;}
+	}
+
+	@keyframes details_alert_leave {
+		from { opacity: 1; top: 0;}
+		to { opacity: 0; top: 10px;}
+	}
 </style>
