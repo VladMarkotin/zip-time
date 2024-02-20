@@ -151,7 +151,12 @@
 		</v-list>
 		<v-divider class="m-2"></v-divider>
 		<div style="min-height: 60px;">
-			<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
+			<transition
+			enter-active-class="card-alert_appearance"
+            leave-active-class="card-alert_leave"
+			>
+				<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
+			</transition>
 		</div>
 		<v-card-title class="font-weight-bold pt-0">
 			<v-row class="p-0 m-0">
@@ -749,6 +754,14 @@
 		animation: .3s leave ease;
 	}
 
+	.card-alert_appearance {
+      animation: .3s card_alert_appearance ease;
+   	}
+
+   .card-alert_leave {
+      animation: .3s card_alert_leave ease;
+   }
+
 	/* стили для вдавливания карточки */
 	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper {
 		transition:  all .3s ease;
@@ -802,5 +815,15 @@
 	@keyframes taskNameAppearance {
 		from {opacity: 0;}
 		to {opacity: 1;}
+	}
+
+	@keyframes card_alert_appearance {
+		from { opacity: 0; left: -10px;}
+		to { opacity: 1; left: 0;}
+	}
+
+	@keyframes card_alert_leave {
+		from { opacity: 1; left: 0;}
+		to { opacity: 0; left: 10px;}
 	}
 </style>
