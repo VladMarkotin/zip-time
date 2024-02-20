@@ -88,7 +88,7 @@
                             <template>
                                 <!--Display subTask-->
                                 <v-expansion-panels v-if="!isLoading">
-                                    <transition-group name="fade" tag="div" style="width: 100%;">
+                                    <transition-group name="detailsList" tag="div" style="width: 100%;">
                                         <v-expansion-panel v-for="(v, i) in details" :key="v.uniqKey">
                                             <v-expansion-panel-header>
                                                 <v-row class="p-0 m-0">
@@ -688,25 +688,25 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         animation: .3s details_alert_leave ease;
     }
 
-    .fade-enter-active, .fade-leave-active {
+    .detailsList-enter-active, .detailsList-leave-active {
         transition: all 0.5s;
     }
-    .fade-enter, .fade-leave-to {
+    .detailsList-enter, .detailsList-leave-to {
         opacity: 0;
         transform: translateY(-20px);
     }
 
-    .fade-move {
+    .detailsList-move {
         transition: transform 0.3s;
     }
 
     @keyframes details_alert_appearance {
-		from { opacity: 0; top: -10px;}
-		to { opacity: 1; top: 0;}
+		from { opacity: 0; left: -10px;}
+		to { opacity: 1; left: 0;}
 	}
 
 	@keyframes details_alert_leave {
-		from { opacity: 1; top: 0;}
-		to { opacity: 0; top: 10px;}
+		from { opacity: 1; left: 0;}
+		to { opacity: 0; left: 10px;}
 	}
 </style>
