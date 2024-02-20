@@ -10047,7 +10047,7 @@ html {
     position: sticky;
     top: 0;
     left: 0;
-    z-index: 9998;
+    z-index: 100;
     animation: .4s stickyMenuAppearance ease;
     box-shadow: 0 1px 3px rgba(50, 50, 50, 0.4);
     background-color: rgba(34, 34, 34, 0.97) !important;
