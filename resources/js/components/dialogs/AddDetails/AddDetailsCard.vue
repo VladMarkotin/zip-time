@@ -272,6 +272,7 @@
                         @click="showSubtasks"
                         color="blue-darken-1" 
                         variant="text" 
+                        class="details-button"
                         >
                             {{ displayedDetails[displayedDetails.currentMode].showSubtasksButtonText}}
                         </v-btn>
@@ -299,6 +300,7 @@
                         @click="$emit('closeAddDetailsDialog')"
                         color="blue-darken-1" 
                         variant="text" 
+                        class="details-button"
                         >
                             Close
                         </v-btn>
@@ -762,6 +764,9 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
     .detailsList-move {
         transition: transform 0.3s;
+    }
+    .v-btn:not(.v-btn--round).details-button {
+        min-width: 150px;
     }
 
     @keyframes details_alert_appearance {
