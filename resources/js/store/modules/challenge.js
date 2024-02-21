@@ -32,6 +32,19 @@ export default {
     getters: {
          allChallenges(state) {
             return  state.challenges;
+        },
+
+        getChallengeDescripById(state){
+            return (id) => {
+                const currentChallenge = state.challenges.find(challenge => challenge.id === id);
+                if (currentChallenge) {
+                    const challDescriptData = JSON.parse(currentChallenge.terms).description;
+    
+                    return challDescriptData;
+                }
+
+                return '';
+            }
         }
     },
 }

@@ -18,6 +18,7 @@
           class=""
         >
             <div class="">
+                <h2>{{ challenge.title }}</h2>
                 <v-progress-circular
                 :rotate="360"
                 :size="100"
@@ -27,6 +28,7 @@
                 >
                   {{ challenge.completeness }}%
                 </v-progress-circular>
+                <p>{{ getChallengeDescripById(challenge.id, 'description')}}</p>
             </div>
         </div>
       </v-card>
@@ -52,7 +54,7 @@ export default {
       showChallenges: 1,
     }),
     store,
-    computed: mapGetters(['allChallenges']),
+    computed: mapGetters(['allChallenges', 'getChallengeDescripById']),
     beforeUnmount () {
       clearInterval(this.interval)
     },
