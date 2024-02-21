@@ -34,17 +34,22 @@ export default {
             return  state.challenges;
         },
 
-        getChallengeDescripById(state){
-            return (id) => {
+        getChallengeDataById(state){
+            return (id, field) => {
                 const currentChallenge = state.challenges.find(challenge => challenge.id === id);
                 if (currentChallenge) {
-                    const challDescriptData = JSON.parse(currentChallenge.terms).description;
-    
-                    return challDescriptData;
+                    const challengeData = JSON.parse(currentChallenge.terms);
+
+                    switch(field) {
+                        case 'description':
+                            return challengeData.description;
+                        case 'goal':
+                            return challengeData.rules.goal;
+                    }
                 }
 
                 return '';
             }
-        }
+        },
     },
 }

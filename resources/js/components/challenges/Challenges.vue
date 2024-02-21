@@ -11,26 +11,28 @@
     >
       <v-card
         elevation="2"
-        height="200"
-        class="d-flex align-center justify-center ma-2"
+        class="ma-2 p-3"
       >
-        <div
-          class=""
-        >
-            <div class="">
-                <h2>{{ challenge.title }}</h2>
-                <v-progress-circular
-                :rotate="360"
-                :size="100"
-                :width="15"
-                :value="challenge.completeness"
-                color="red"
-                >
-                  {{ challenge.completeness }}%
-                </v-progress-circular>
-                <p>{{ getChallengeDescripById(challenge.id, 'description')}}</p>
-            </div>
-        </div>
+        <v-card-title class="p-2 justify-content-center ">{{ challenge.title }}</v-card-title>
+        <v-row class="challenge-content-wrapper p-0 m-0">
+          <v-col class="p-0 m-0 d-flex flex-column align-items-center" cols="3">
+            <v-card-title class="p-0 mb-4 justify-content-center">
+              Goal: {{ getChallengeDataById(challenge.id, 'goal') }}
+            </v-card-title>
+            <v-progress-circular
+            :rotate="360"
+            :size="100"
+            :width="15"
+            :value="challenge.completeness"
+            color="red"
+            >
+              {{ challenge.completeness }}%
+            </v-progress-circular>
+          </v-col>
+          <v-col class="p-0 m-0" cols="3">
+            {{ getChallengeDataById(challenge.id, 'description')}}
+          </v-col>
+        </v-row>
       </v-card>
     </v-window-item>
     </v-window>
@@ -54,7 +56,10 @@ export default {
       showChallenges: 1,
     }),
     store,
-    computed: mapGetters(['allChallenges', 'getChallengeDescripById']),
+    computed: mapGetters([
+      'allChallenges', 
+      'getChallengeDataById', 
+    ]),
     beforeUnmount () {
       clearInterval(this.interval)
     },
@@ -79,3 +84,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+  .challenge-content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 25%;
+  }
+</style>
