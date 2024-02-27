@@ -13,7 +13,7 @@
 
             <div class="card-body ">
                 <div class="panel pt-3">
-                    @foreach ($backlogs as $backlog)
+                    @forelse ($backlogs as $backlog)
                         <details class="show_edit_delete" id={{ $backlog->id }}>
                             <summary>
                                 <ul>
@@ -57,7 +57,9 @@
                                 </p>
                             </div>
                         </details>
-                    @endforeach
+                        @empty
+                        <span>There are no notes here yet. Maybe it`s time to create the first one?</span>
+                        @endforelse
                 </div>
             </div>
         </div>
