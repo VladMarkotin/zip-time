@@ -81,9 +81,8 @@ $nextButtonColor: rgb(100, 149, 237);
 }
 
 .first-slide {
-    background: -webkit-linear-gradient(45deg, rgb(248, 248, 217) 46%, rgb(250, 247, 222) 5%);
-    background: -moz-linear-gradient(45deg, rgb(248, 248, 217) 46%, rgb(250, 247, 222) 5%);
-    background: linear-gradient(45deg, rgb(248, 248, 217) 46%, rgb(250, 247, 222) 5%);
+    // background: -webkit-linear-gradient(90deg, #cd5c5c,#e34234);/* Chrome 10-25, Safari 5.1-6 */                          
+    // background: linear-gradient(90deg, #cd5c5c,#e34234);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */                                                                                          
     min-width: 500px;
     border-radius: 1.2rem;
     padding: 15px;
@@ -108,7 +107,7 @@ $nextButtonColor: rgb(100, 149, 237);
                 a {
                     width: 1.1rem;
                     height: 1.1rem;
-                    background: #A5A5A5;
+                    background: #A8A8A8;
                 
                     &.active {
                         background: #696969;
@@ -122,6 +121,9 @@ $nextButtonColor: rgb(100, 149, 237);
     }
 
     .introjs-tooltipbuttons {
+        display: flex;
+        justify-content: space-around;
+
         .introjs-button {
             font-weight: 400;
             line-height: 20px;

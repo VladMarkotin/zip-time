@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div id="plan-tasks-table">
         <transition name="fade">
             <div class="table-max-height-wrapper" v-if="!isShowPreloader" >
                 <v-data-table 
                 :headers="headers" 
                 :items="items" 
                 class="elevation-1" 
-                id="plan-tasks-table">
+                >
                     <template v-slot:body="{ items }">
                         <tbody  v-if="!items || items.length === 0" >
                             <tr>

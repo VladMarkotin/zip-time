@@ -39,12 +39,17 @@
 
             </v-card-text>
             <v-card-actions style="min-height: 88px;">
-                <v-alert 
-                v-if="alert.isShowAlert"
-                text class="elevation-1" 
-                v-bind:type="alert.type"
-                :class="'edit-details-alert'"
-                >{{ alert.text }}</v-alert>
+                <transition
+                enter-active-class="edit-details-alert_appearance"
+                leave-active-class="edit-details-alert_leave"
+                >
+                    <v-alert 
+                    v-if="alert.isShowAlert"
+                    text class="elevation-1" 
+                    v-bind:type="alert.type"
+                    >{{ alert.text }}
+                    </v-alert>
+                </transition>
                 <v-spacer></v-spacer>
                 <v-btn color="green-darken-1" variant="text" @click="dialogEditSubTask = false">
                     Cancel
@@ -183,7 +188,21 @@ export default {
 </script>
 
 <style scoped>
-    .edit-details-alert {
-        background-color: #DCDCDC !important;
+    .edit-details-alert_appearance {
+        animation: .3s edit_details_alert_appearance ease;
     }
+
+    .edit-details-alert_leave {
+        animation: .3s edit_details_alert_leave ease;
+    }
+
+    @keyframes edit_details_alert_appearance {
+		from { opacity: 0; left: -10px;}
+		to { opacity: 1; left: 0;}
+	}
+
+	@keyframes edit_details_alert_leave {
+		from { opacity: 1; left: 0;}
+		to { opacity: 0; left: 10px;}
+	}
 </style>
