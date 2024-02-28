@@ -363,7 +363,6 @@
 					default:
 						return 'card-wrapper_unready';
 				}
-
 				
 			},
 
