@@ -23,7 +23,7 @@
                 v-on:toggleAlertDialog="toggleAlertDialog"
             />
         </template>
-
+        <Challenges />
         <v-data-iterator hide-default-footer v-bind:items="data">
             <Cards
                 title="Required tasks:"
@@ -81,11 +81,12 @@ import AddJobTask from "./dialogs/AddJobTask.vue";
 import CloseDay from "./dialogs/CloseDay.vue";
 import Cards from "./cards/Cards.vue";
 import EmergencyCall from "./dialogs/EmergencyCall.vue";
+import Challenges from "./challenges/Challenges.vue";
 import { mdiCarEmergency, mdiPlusBox, mdiSendClock } from "@mdi/js";
 import "intro.js/introjs.css";
 
 export default {
-    components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall },
+    components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall, Challenges },
     props: ["data"],
     data() {
         return {
