@@ -47,7 +47,7 @@
                   </v-expansion-panels>
                 </div>
                 <v-card-title class="p-0 mb-2 justify-content-center">
-                   Goal: {{ getChallengeDataById(challenge.id, 'goal') }}
+                   Goal: {{ getChallengeDataById(challenge.id, 'goalText') }}
                 </v-card-title>
                 <v-progress-circular
                 :rotate="360"

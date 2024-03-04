@@ -43,8 +43,8 @@ export default {
                     switch(field) {
                         case 'description':
                             return challengeData.description;
-                        case 'goal':
-                            return challengeData.rules.goal;
+                        case 'goalText':
+                            return challengeData.rules.goalText;
                     }
                 }
 
