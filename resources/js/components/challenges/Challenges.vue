@@ -1,63 +1,70 @@
 <template>
-<div v-if="showChallenges">
-    <h1 class="text-center">Challenge!</h1>
-    <v-window
-        v-model="onboarding"
-        :show-arrows=true
-        @change="closeDescriptionPanel"
-    >
-    <v-window-item
-      v-for="challenge in allChallenges"
-      :key="`card-${challenge.id}`"
-    >
-      <v-card
-        elevation="2"
-        class="ma-2 p-3"
-      >
-        <v-card-title class="pb-2 pt-0 mb-2 justify-content-center ">{{ challenge.title }}</v-card-title>
-        <v-row class="challenge-content-wrapper p-0 m-0">
-          <v-col class="p-0 m-0 d-flex flex-column align-items-center " cols="5">
-            <div style="width: 100%;" class="mb-2">
-              <v-expansion-panels 
-              style="width: 100%;"
-              v-model="descriptionPanel"
-              multiple
-              >
-                <v-expansion-panel 
+<div>
+  <div class="p-2 d-flex justify-content-center align-items-center">
+      <ChallengeToggleButton 
+      @toggleDispChallenges = "showCh"
+      />
+  </div>
+  <transition name="challenges-fade">
+    <div v-if="showChallenges" class="mt-4">
+        <h1 class="text-center">Challenge!</h1>
+        <v-window
+            v-model="onboarding"
+            :show-arrows=true
+            @change="closeDescriptionPanel"
+        >
+        <v-window-item
+          v-for="challenge in allChallenges"
+          :key="`card-${challenge.id}`"
+        >
+          <v-card
+            elevation="2"
+            class="ma-2 p-3"
+          >
+            <v-card-title class="pb-2 pt-0 mb-2 justify-content-center ">{{ challenge.title }}</v-card-title>
+            <v-row class="challenge-content-wrapper p-0 m-0">
+              <v-col class="p-0 m-0 d-flex flex-column align-items-center " cols="5">
+                <div style="width: 100%;" class="mb-2">
+                  <v-expansion-panels 
+                  style="width: 100%;"
+                  v-model="descriptionPanel"
+                  multiple
+                  >
+                    <v-expansion-panel 
+                    >
+                      <v-expansion-panel-header>Challenge description</v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <p class="challenge-description mb-2">
+                          {{ getChallengeDataById(challenge.id, 'description')}}
+                        </p>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                </div>
+                <v-card-title class="p-0 mb-2 justify-content-center">
+                  Goal: {{ getChallengeDataById(challenge.id, 'goal') }}
+                </v-card-title>
+                <v-progress-circular
+                :rotate="360"
+                :size="130"
+                :width="17"
+                :value="challenge.completeness"
+                color="red"
                 >
-                  <v-expansion-panel-header>Challenge description</v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <p class="challenge-description mb-2">
-                      {{ getChallengeDataById(challenge.id, 'description')}}
-                    </p>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </div>
-            <v-card-title class="p-0 mb-2 justify-content-center">
-              Goal: {{ getChallengeDataById(challenge.id, 'goal') }}
-            </v-card-title>
-            <v-progress-circular
-            :rotate="360"
-            :size="130"
-            :width="17"
-            :value="challenge.completeness"
-            color="red"
-            >
-              {{ challenge.completeness }}%
-            </v-progress-circular>
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-window-item>
-    </v-window>
-</div>
-<div v-else>
-    <button @click="showCh()">Show my Challenges</button>
+                  {{ challenge.completeness }}%
+                </v-progress-circular>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-window-item>
+        </v-window>
+    </div>
+  </transition>
 </div>
 </template>
 <script>
 import store from '../../store'
+import ChallengeToggleButton from '../UI/ChallengeToggleButton.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -69,7 +76,7 @@ export default {
       onboarding: 0,
       value: 100,
       interval: {},
-      showChallenges: 1,
+      showChallenges: false,
     }),
     store,
     computed: mapGetters([
@@ -90,6 +97,7 @@ export default {
       //this.value = this.allChallenges[0]
       
     },
+    components: {ChallengeToggleButton},
     methods: {
         ...mapActions(['fetchChallenges']),
 
@@ -115,5 +123,18 @@ export default {
     margin-bottom: 0;
     text-align: justify;
     text-indent: 2rem;
+  }
+
+  .challenges-fade-enter-active, .challenges-fade-leave-active {
+    transition: all 0.3s;
+  }
+  .challenges-fade-enter{
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+
+  .challenges-fade-leave-to  {
+    opacity: 0;
+    transform: translateX(5%);
   }
 </style>
