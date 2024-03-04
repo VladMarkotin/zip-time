@@ -6,6 +6,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Events\FinishDayEvent;
+use App\Events\CompleteTaskEvent;
+use App\Listeners\CompleteTaskListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +21,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        FinishDayEvent::class => [
+            \App\Listeners\FinishDayListener::class,
+        ],
+        CompleteTaskEvent::class => [
+            CompleteTaskListener::class
+        ],
     ];
 
     /**
@@ -26,7 +36,5 @@ class EventServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-        //
-    }
+    {}
 }
