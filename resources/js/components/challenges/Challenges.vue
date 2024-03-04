@@ -33,7 +33,11 @@
                   >
                     <v-expansion-panel 
                     >
-                      <v-expansion-panel-header>Challenge description</v-expansion-panel-header>
+                      <v-expansion-panel-header>
+                        <span style=" color: rgba(0,0,0,.6); font-size: 1rem;">
+                          Challenge description:
+                        </span>
+                      </v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <p class="challenge-description mb-2">
                           {{ getChallengeDataById(challenge.id, 'description')}}
@@ -43,7 +47,7 @@
                   </v-expansion-panels>
                 </div>
                 <v-card-title class="p-0 mb-2 justify-content-center">
-                  Goal: {{ getChallengeDataById(challenge.id, 'goal') }}
+                   Goal: {{ getChallengeDataById(challenge.id, 'goal') }}
                 </v-card-title>
                 <v-progress-circular
                 :rotate="360"
@@ -52,7 +56,9 @@
                 :value="challenge.completeness"
                 color="red"
                 >
-                  {{ challenge.completeness }}%
+                  <div class="challenge-completeness">
+                    {{ challenge.completeness }}%
+                  </div>
                 </v-progress-circular>
               </v-col>
             </v-row>
@@ -118,6 +124,10 @@ export default {
   .challenge-content-wrapper {
     display: flex;
     justify-content: center;
+  }
+
+  .challenge-completeness {
+    font-size: 1.5rem;
   }
 
   .challenge-description {
