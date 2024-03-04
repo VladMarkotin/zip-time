@@ -4,6 +4,7 @@
     <v-window
         v-model="onboarding"
         :show-arrows=true
+        @change="closeDescriptionPanel"
     >
     <v-window-item
       v-for="challenge in allChallenges"
@@ -13,24 +14,38 @@
         elevation="2"
         class="ma-2 p-3"
       >
-        <v-card-title class="p-2 justify-content-center ">{{ challenge.title }}</v-card-title>
+        <v-card-title class="pb-2 pt-0 mb-2 justify-content-center ">{{ challenge.title }}</v-card-title>
         <v-row class="challenge-content-wrapper p-0 m-0">
-          <v-col class="p-0 m-0 d-flex flex-column align-items-center" cols="3">
-            <v-card-title class="p-0 mb-4 justify-content-center">
+          <v-col class="p-0 m-0 d-flex flex-column align-items-center " cols="5">
+            <div style="width: 100%;" class="mb-2">
+              <v-expansion-panels 
+              style="width: 100%;"
+              v-model="descriptionPanel"
+              multiple
+              >
+                <v-expansion-panel 
+                >
+                  <v-expansion-panel-header>Challenge description</v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p class="challenge-description mb-2">
+                      {{ getChallengeDataById(challenge.id, 'description')}}
+                    </p>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </div>
+            <v-card-title class="p-0 mb-2 justify-content-center">
               Goal: {{ getChallengeDataById(challenge.id, 'goal') }}
             </v-card-title>
             <v-progress-circular
             :rotate="360"
-            :size="100"
-            :width="15"
+            :size="130"
+            :width="17"
             :value="challenge.completeness"
             color="red"
             >
               {{ challenge.completeness }}%
             </v-progress-circular>
-          </v-col>
-          <v-col class="p-0 m-0" cols="3">
-            {{ getChallengeDataById(challenge.id, 'description')}}
           </v-col>
         </v-row>
       </v-card>
@@ -49,6 +64,7 @@ export default {
     name: 'Challenges',
 
     data: () => ({
+      descriptionPanel: [],
       length: 3,
       onboarding: 0,
       value: 100,
@@ -80,6 +96,10 @@ export default {
         showCh() {
             
             this.showChallenges = !(this.showChallenges)
+        },
+
+        closeDescriptionPanel() {
+          this.descriptionPanel = []
         }
     }
 }
@@ -89,7 +109,11 @@ export default {
   .challenge-content-wrapper {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    gap: 25%;
+  }
+
+  .challenge-description {
+    margin-bottom: 0;
+    text-align: justify;
+    text-indent: 2rem;
   }
 </style>
