@@ -7,7 +7,7 @@
       />
   </div>
   <transition name="challenges-fade">
-    <div v-if="showChallenges" class="mt-4">
+    <div v-if="showChallenges" class="mt-4 mb-4">
         <h1 class="text-center">Challenge!</h1>
         <v-window
             v-model="onboarding"
@@ -65,6 +65,11 @@
           </v-card>
         </v-window-item>
         </v-window>
+        <v-row class="p-0 m-0 d-flex justify-content-end">
+          <v-col class="p-0 m-0 d-flex justify-content-center" cols="1">
+            <span>{{ getSliderCounter }}</span>
+          </v-col>
+        </v-row>
     </div>
   </transition>
 </div>
@@ -86,10 +91,16 @@ export default {
       showChallenges: false,
     }),
     store,
-    computed: mapGetters([
-      'allChallenges', 
-      'getChallengeDataById', 
-    ]),
+    computed: {
+        ... mapGetters([
+        'allChallenges', 
+        'getChallengeDataById', 
+      ]),
+
+      getSliderCounter() {
+        return `${this.onboarding + 1 } / ${this.allChallenges.length}`
+      }
+    },
     beforeUnmount () {
       clearInterval(this.interval)
     },
