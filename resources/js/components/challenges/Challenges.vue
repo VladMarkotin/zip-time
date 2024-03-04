@@ -3,6 +3,7 @@
   <div class="p-2 d-flex justify-content-center align-items-center">
       <ChallengeToggleButton 
       @toggleDispChallenges = "showCh"
+      :showChallenges = "showChallenges"
       />
   </div>
   <transition name="challenges-fade">
