@@ -75,6 +75,7 @@
     th, td {
         text-align: center;
         word-break: break-all;
+        vertical-align: middle !important;
     }
 
     .saved-tasks-table-head {
@@ -84,5 +85,12 @@
         th {
         //    border: none;
         }
+    }
+
+    .buttons-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        align-items: center;
     }
 }

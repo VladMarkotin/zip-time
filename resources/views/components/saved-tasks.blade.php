@@ -17,26 +17,30 @@
             <td class="col-1">{{ $sT->priority }}</td>
             <td class="col-1">{{ $sT->time }}</td>
             <td class="col-4" >
-                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#infoModal"
-                    wire:click="getInfo({{ $sT['id'] }})">
-                    Info
-                </button>
-
-                <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;" data-toggle="modal"
-                    data-target="#noteModal" wire:click="getNote({{ $sT['id'] }})">
-                    Notes
-                </button>
-
-                <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;" data-toggle="modal"
-                    data-target="#updateModal" wire:click="edit({{ $sT['id'] }})">
-                    Edit
-                </button>
-
-                @if (!$sT->status)
-                    <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button>
-                @else
-                    <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger">Disable</button>
-                @endif
+                <div class="buttons-wrapper">
+                    <div>
+                        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#infoModal"
+                            wire:click="getInfo({{ $sT['id'] }})">
+                            Info
+                        </button>
+        
+                        <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;" data-toggle="modal"
+                            data-target="#noteModal" wire:click="getNote({{ $sT['id'] }})">
+                            Notes
+                        </button>
+        
+                        <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;" data-toggle="modal"
+                            data-target="#updateModal" wire:click="edit({{ $sT['id'] }})">
+                            Edit
+                        </button>
+                    </div>
+    
+                    @if (!$sT->status)
+                        <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button>
+                    @else
+                        <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger">Disable</button>
+                    @endif
+                </div>
             </td>
         </tr>
     @endforeach

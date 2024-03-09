@@ -64,8 +64,15 @@
 .saved-tasks-table th, .saved-tasks-table td {
   text-align: center;
   word-break: break-all;
+  vertical-align: middle !important;
 }
 .saved-tasks-table .saved-tasks-table-head {
   font-size: 1rem;
   text-shadow: 1px 1px 1px black;
+}
+.saved-tasks-table .buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
 }
