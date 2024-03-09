@@ -9,10 +9,6 @@
                 aria-controls="v-pills-home" aria-selected="true" wire:ignore>
                 Saved tasks
             </a>
-            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-                aria-controls="v-pills-profile" aria-selected="false"wire:ignore>
-                Statistic
-            </a>
             <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
                 aria-controls="v-pills-messages" aria-selected="false" wire:ignore>
                 Personal settings
@@ -28,12 +24,6 @@
                 {{ $savedTasks->links('livewire.pagination') }}
             </div>
             <!--  Saved tasks end  -->
-
-            <!--  static   start-->
-            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"
-                wire:ignore.self>10</div>
-
-            <!--  static end -->
 
             <!--  Personal Settings   -->
             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab"

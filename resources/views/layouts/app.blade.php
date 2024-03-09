@@ -56,6 +56,9 @@
             <link href="{{ asset('css/loginPage/loginPageMedia.css') }}" rel="stylesheet">
         @endif
     @endguest
+    @if(Route::currentRouteName() == 'settings')
+        <link href="{{ asset('css/settingsPage/settingsPage.css') }}" rel="stylesheet">
+    @endif
     @livewireStyles
 
 
