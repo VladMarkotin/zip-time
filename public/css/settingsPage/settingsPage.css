@@ -76,3 +76,18 @@
   gap: 15px;
   align-items: center;
 }
+.saved-tasks-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.saved-tasks-table tbody tr {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.saved-tasks-table tbody tr:hover {
+  background-color: #d9d9d9 !important;
+}
+.saved-tasks-table tbody .btn:focus,
+.saved-tasks-table tbody .btn:active {
+  outline: none;
+  box-shadow: none;
+}

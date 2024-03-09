@@ -24,21 +24,21 @@
                             Info
                         </button>
         
-                        <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;" data-toggle="modal"
+                        <button class="btn btn-outline-primary" data-toggle="modal"
                             data-target="#noteModal" wire:click="getNote({{ $sT['id'] }})">
                             Notes
                         </button>
         
-                        <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;" data-toggle="modal"
+                        <button class="btn btn-outline-primary" data-toggle="modal"
                             data-target="#updateModal" wire:click="edit({{ $sT['id'] }})">
                             Edit
                         </button>
                     </div>
     
                     @if (!$sT->status)
-                        <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button>
+                        <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary" style="min-width: 75px">Enable</button>
                     @else
-                        <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger">Disable</button>
+                        <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger" style="min-width: 75px">Disable</button>
                     @endif
                 </div>
             </td>
