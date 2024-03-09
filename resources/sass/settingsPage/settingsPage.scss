@@ -68,3 +68,21 @@
         box-shadow: none;
     }
 }
+
+.saved-tasks-table {
+    box-shadow: 0 5px 12px rgba(0, 0, 0, .2);
+
+    th, td {
+        text-align: center;
+        word-break: break-all;
+    }
+
+    .saved-tasks-table-head {
+        font-size: 1rem;
+        text-shadow: 1px 1px 1px black;
+
+        th {
+        //    border: none;
+        }
+    }
+}

@@ -1,51 +1,43 @@
-<table class="table">
-    <thead class="thead" style="background-color: #CD0000;color:#ffffff">
-        <tr>
+<table class="table table-bordered border-primary saved-tasks-table">
+    <thead class="thead" style="background-color: #A10000;color:#ffffff">
+        <tr class="saved-tasks-table-head">
             <th scope="col">#</th>
             <th scope="col">Task name</th>
             <th scope="col">Type</th>
             <th scope="col">Priority</th>
-            <th scope="col">Details</th>
             <th scope="col">Time</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col" style="text-align: center">Actions</th>
         </tr>
     </thead>
     @foreach ($savedTasks as $sT)
-        <tr>
-            <td>{{ $sT->hash_code }}</td>
-            <td>{{ $sT->task_name }}</td>
-            <td>{{ $sT->type }}</td>
-            <td>{{ $sT->priority }}</td>
-            <td>{{ $sT->details }}</td>
-            <td>{{ $sT->time }}</td>
-            <td>
+        <tr >
+            <td class="col-1">{{ $sT->hash_code }}</td>
+            <td class="col-4">{{ $sT->task_name }}</td>
+            <td class="col-1">{{ $sT->type }}</td>
+            <td class="col-1">{{ $sT->priority }}</td>
+            <td class="col-1">{{ $sT->time }}</td>
+            <td class="col-4" >
                 <button class="btn btn-outline-primary" data-toggle="modal" data-target="#infoModal"
                     wire:click="getInfo({{ $sT['id'] }})">
                     Info
                 </button>
-            </td>
-            <td>
+
                 <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;" data-toggle="modal"
                     data-target="#noteModal" wire:click="getNote({{ $sT['id'] }})">
                     Notes
                 </button>
-            </td>
-            <td>
+
                 <button class="btn btn-outline-secondary" style="background-color: #f5f4f2;" data-toggle="modal"
                     data-target="#updateModal" wire:click="edit({{ $sT['id'] }})">
                     Edit
                 </button>
-            </td>
 
-            @if (!$sT->status)
-                <td><button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button>
-                </td>
-            @else
-                <td><button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger">Disable</button></td>
-            @endif
+                @if (!$sT->status)
+                    <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary">Enable</button>
+                @else
+                    <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger">Disable</button>
+                @endif
+            </td>
         </tr>
     @endforeach
 </table>
