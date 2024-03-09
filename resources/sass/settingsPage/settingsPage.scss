@@ -27,3 +27,44 @@
     height: 100vh;
     width: 100vw;
 }
+
+.personal-settings-wrapper {
+
+    .card {
+        box-shadow: 1px 1px 4px #C0C0C0;
+    }
+
+    .personal-settings-title {
+        text-align: center;
+    }
+    .personal-settings-card-body {
+        width: 80%;
+        margin: 0 auto;
+
+        .form-row {
+            justify-content: center;
+        }
+    }
+}
+
+.personal-settings-label-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .personal-settings-label {
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+}
+
+.personal-settings-select {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.03);
+
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+}

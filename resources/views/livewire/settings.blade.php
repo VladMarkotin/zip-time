@@ -30,7 +30,7 @@
                 <!--  Personal Settings   -->
                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab"
                     wire:ignore.self>
-                    <div class=" ">
+                    <div class="personal-settings-wrapper">
                         <x-timezone :timezones="$timezones" :currentTz="$currentTz" />
     
                         <x-week-ends :personal="$config['personalConfigs']" :default="$config['defaultConfigs']" :isWeekendTaken="$config['isWeekendTaken']"/>

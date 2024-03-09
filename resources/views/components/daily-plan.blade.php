@@ -1,6 +1,6 @@
-<div class="card mb-3">
-    <h5 class="card-header">Daily Plan Settings </h5>
-    <div class="card-body">
+<div class="card mb-3 ">
+    <h5 class="card-header personal-settings-title">Daily Plan Settings </h5>
+    <div class="card-body personal-settings-card-body">
         <div class="form-row">
             {{-- <div class="form-group col-md-8">
                 <label for="inputState">Set day`s plan minimal mark <br> Min mark can not be less than
@@ -21,24 +21,18 @@
             </div> --}}
 
             <div class="form-group col-md-8">
-                <label for="inputState">Set day`s plan minimal required jobs amount</label>
+                <div class="personal-settings-label-wrapper">
+                    <label class="personal-settings-label" for="minJobAmountState">Set day`s plan minimal required jobs amount</label>
+                </div>
                 <form wire:submit.prevent="minmark">
-                    <div class=" d-flex">
-                        <div class="col-auto">
-                            <label for="inputPassword6" class="col-form-label">Amount:</label>
-                        </div>
-
-                        <div class="col-auto ">
-                            <select id="inputState" class="form-control" wire:model="minJobAmount">
-                                <option value="">Default *( {{ $default['minRequiredTaskQuantity'] }} tasks a week)
-                                </option>
-                                <option value="3">3 tasks a week</option>
-                                <option value="4">4 tasks a week</option>
-                                <option value="5">5 tasks a week</option>
-                                <option value="6">6 tasks a week</option>
-                            </select>
-                        </div>
-                    </div>
+                    <select id="minJobAmountState" class="form-select personal-settings-select" wire:model="minJobAmount">
+                        <option value="">Default *( {{ $default['minRequiredTaskQuantity'] }} tasks a week)
+                        </option>
+                        <option value="3">3 tasks a week</option>
+                        <option value="4">4 tasks a week</option>
+                        <option value="5">5 tasks a week</option>
+                        <option value="6">6 tasks a week</option>
+                    </select>
                 </form>
             </div>
         </div>
