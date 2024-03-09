@@ -1,3 +1,14 @@
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
 .settings-table-wrapper {
     width: 100%;
     display: grid;
