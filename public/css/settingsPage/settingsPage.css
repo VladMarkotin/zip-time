@@ -132,3 +132,33 @@ select {
   justify-content: space-between;
   align-items: center;
 }
+
+.custom-control-input {
+  display: none;
+}
+
+.custom-control-label {
+  padding-left: 25px;
+}
+
+.custom-control-input + .custom-control-label::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(50% - 9px);
+  left: -1px;
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  border: 2px solid #B0C4DE;
+  border-radius: 0.25rem;
+}
+
+.custom-control-input:checked + .custom-control-label::before {
+  background-color: #fff !important;
+  border: 2px solid #B0C4DE !important;
+  background-image: url("/images/custom_checkbox_check_icon.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

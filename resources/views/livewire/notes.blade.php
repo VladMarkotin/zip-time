@@ -13,8 +13,8 @@
             <div class="modal-body">
                 <div class="card text-white bg-danger mb-15 notes-wrapper" style="max-width: 22rem;">
                     <div class="card-header"> 
-                        <input type="checkbox" id="allNotes"  wire:model="selectAll" > 
-                        <label class="mb-0 label" for="allNotes">Notes</label>
+                        <input type="checkbox" class="custom-control-input" id="allNotes"  wire:model="selectAll" > 
+                        <label class="mb-0 label custom-control-label" for="allNotes">Notes</label>
                     </div>
                     <div wire:loading wire:target="getNote" wire:key="getNote"><i class="fa fa-spinner fa-spin mt-2 ml-2"></i> loading...</div>
                     
@@ -27,8 +27,8 @@
                                 <span class="note-counter mr-2">
                                     @php echo $Sn++; @endphp. 
                                 </span>
-                                <input id="note-{{$savedNotes->id}}" class="mr-1" type="checkbox" wire:model="selectedNotes" value="{{$savedNotes->id}}" >
-                                <label for="note-{{$savedNotes->id}}" class="mb-0 label"> {{$savedNotes->note }}</label>
+                                <input id="note-{{$savedNotes->id}}" class="mr-1 custom-control-input" type="checkbox" wire:model="selectedNotes" value="{{$savedNotes->id}}" >
+                                <label for="note-{{$savedNotes->id}}" class="mb-0 label custom-control-label"> {{$savedNotes->note }}</label>
                                 <hr>
                             </div>
                             @endforeach
