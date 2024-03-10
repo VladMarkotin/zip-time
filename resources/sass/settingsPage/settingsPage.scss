@@ -127,3 +127,41 @@ select {
        
     }
 }
+
+.notes-update-card {
+    .modal-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        input[type="checkbox"],
+        .label {
+            cursor: pointer;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+        }
+        
+        .notes-wrapper {
+            width: 100%;
+            overflow: hidden;
+
+            .note-wrapper {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                word-wrap: break-word;
+            }
+        }
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

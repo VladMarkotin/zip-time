@@ -102,3 +102,33 @@ select {
   outline: none;
   box-shadow: none;
 }
+
+.notes-update-card .modal-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.notes-update-card .modal-body input[type=checkbox],
+.notes-update-card .modal-body .label {
+  cursor: pointer;
+}
+.notes-update-card .modal-body .card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.notes-update-card .modal-body .notes-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+.notes-update-card .modal-body .notes-wrapper .note-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  word-wrap: break-word;
+}
+.notes-update-card .modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
