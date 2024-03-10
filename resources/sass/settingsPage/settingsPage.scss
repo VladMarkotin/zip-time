@@ -89,14 +89,20 @@ select {
         vertical-align: middle !important;
     }
 
-    .saved-tasks-table-head {
-        font-size: 1rem;
-        text-shadow: 1px 1px 1px black;
+    .thead {
+        border: 2px solid rgb(161, 0, 0);
 
-        th {
-        //    border: none;
+        .saved-tasks-table-head {
+            font-size: 1rem;
+            text-shadow: 1px 1px 1px black;
+    
+            th {
+                border: none;
+                outline: none;
+            }
         }
     }
+
 
     .buttons-wrapper {
         display: flex;
@@ -222,5 +228,15 @@ select {
                 font-weight: bold;
             }
         }
+    }
+}
+
+.disabled-saved-task {
+    .saved-task-code,
+    .saved-task-name,
+    .saved-task-type,
+    .saved-task-priority,
+    .saved-task-time {
+        opacity: .4;
     }
 }

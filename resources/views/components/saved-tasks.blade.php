@@ -10,12 +10,12 @@
         </tr>
     </thead>
     @foreach ($savedTasks as $sT)
-        <tr >
-            <td class="col-1">{{ $sT->hash_code }}</td>
-            <td class="col-4">{{ $sT->task_name }}</td>
-            <td class="col-1">{{ $sT->type }}</td>
-            <td class="col-1">{{ $sT->priority }}</td>
-            <td class="col-1">{{ $sT->time }}</td>
+        <tr @if($sT->status == 0) class="disabled-saved-task" @endif>
+            <td class="col-1 saved-task-code">{{ $sT->hash_code }}</td>
+            <td class="col-4 saved-task-name">{{ $sT->task_name }}</td>
+            <td class="col-1 saved-task-type">{{ $sT->type }}</td>
+            <td class="col-1 saved-task-priority">{{ $sT->priority }}</td>
+            <td class="col-1 saved-task-time">{{ $sT->time }}</td>
             <td class="col-4" >
                 <div class="buttons-wrapper">
                     <div>

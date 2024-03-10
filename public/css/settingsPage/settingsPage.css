@@ -77,9 +77,16 @@ select {
   word-break: break-all;
   vertical-align: middle !important;
 }
-.saved-tasks-table .saved-tasks-table-head {
+.saved-tasks-table .thead {
+  border: 2px solid #a10000;
+}
+.saved-tasks-table .thead .saved-tasks-table-head {
   font-size: 1rem;
   text-shadow: 1px 1px 1px black;
+}
+.saved-tasks-table .thead .saved-tasks-table-head th {
+  border: none;
+  outline: none;
 }
 .saved-tasks-table .buttons-wrapper {
   display: flex;
@@ -183,4 +190,12 @@ select {
 }
 .statistic-wrapper .statistic-content-wrapper .statistic-content .statisic-item-value {
   font-weight: bold;
+}
+
+.disabled-saved-task .saved-task-code,
+.disabled-saved-task .saved-task-name,
+.disabled-saved-task .saved-task-type,
+.disabled-saved-task .saved-task-priority,
+.disabled-saved-task .saved-task-time {
+  opacity: 0.4;
 }
