@@ -687,6 +687,7 @@
 			}
 		},
 		
+		
 		created() {
 			this.editHashCodeData();
 			this.getConfigs(); 
