@@ -98,9 +98,9 @@ class TaskStatService
         
         $modifiedData = array_combine(
             $keys,
-            array_map(function ($value, $key) {
+            array_map(function ($value, $key) use ($data) {
 
-                $transformData = function($data)
+                $transformDate = function($data)
                 {   
                     if (!isset($data)) {
                         $data = "00:00:00";
@@ -118,19 +118,26 @@ class TaskStatService
                     return "$transformHours $transformMinutes $transformSeconds";
                 };
 
+                $transformMark = function($data)
+                {
+                    return $data["totalUse"] > 0 ? "0.00%" : "-"; 
+                    //если сохраненная задача никогда не добавлялась в план, то выведу "-", а если добавлялась, то "0"
+                };
+
                 switch ($key) {
                     case 'avgMark':
                     case 'medianMark':
-                        if (isset($value)) return "$value%";
-                        break;
+                        if (isset($value) && (int)$value !== 0) return "$value%";
+                        return $transformMark($data);
+                    break;
                     case 'totalTime':
-                        return $transformData($value);
-                        break;
+                        return $transformDate($value);
+                    break;
                     case 'totalUse':
                     case 'completed':
                     case 'undone':
                         return $value . ($value !== 1 ? " times" : " time");
-                        break;
+                    break;
                     default:
                         return $value;
                 }
