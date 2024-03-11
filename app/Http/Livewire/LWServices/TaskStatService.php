@@ -26,8 +26,10 @@ class TaskStatService
         $data["totalUse"]   = self::getTotalUse($requestData);
         $data["completed"]  = self::getCompletedFailedValue($requestData, 1);
         $data["undone"]     = self::getCompletedFailedValue($requestData, 0);
-        //dd($data);
-        return $data;
+        
+        $modifiedData = self::transformData($data);
+
+        return $modifiedData;
     }
 
     private static function getTotalUse($data)
@@ -88,6 +90,54 @@ class TaskStatService
         $result = DB::select($query);
 
         return $result[0]->cV;
+    }
+
+    private static function transformData($data)
+    {
+        $keys = array_keys($data);
+        
+        $modifiedData = array_combine(
+            $keys,
+            array_map(function ($value, $key) {
+
+                $transformData = function($data)
+                {   
+                    if (!isset($data)) {
+                        $data = "00:00:00";
+                    }
+                    $dataArr = explode(':', $data);
+
+                    $hours   = $dataArr[0];
+                    $minutes = $dataArr[1];
+                    $seconds = $dataArr[2];
+
+                    $transformHours   = $hours . ((int) $hours !== 1 ? " hours" : " hour");
+                    $transformMinutes = $minutes . ((int) $minutes !== 1 ? " minutes" : " minute");
+                    $transformSeconds = $seconds . ((int) $seconds !== 1 ? " seconds" : " second");
+                    
+                    return "$transformHours $transformMinutes $transformSeconds";
+                };
+
+                switch ($key) {
+                    case 'avgMark':
+                    case 'medianMark':
+                        if (isset($value)) return "$value%";
+                        break;
+                    case 'totalTime':
+                        return $transformData($value);
+                        break;
+                    case 'totalUse':
+                    case 'completed':
+                    case 'undone':
+                        return $value . ($value !== 1 ? " times" : " time");
+                        break;
+                    default:
+                        return $value;
+                }
+            }, $data, $keys)
+        );
+        
+        return $modifiedData;
     }
 
     
