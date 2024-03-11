@@ -1,0 +1,205 @@
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+.saved-task-container {
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+.saved-task-container .saved-task-table-wrapper {
+  flex: 1;
+}
+
+.settings-table-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 25px;
+}
+.settings-table-wrapper .settings-table-tabs-wrapper {
+  min-width: 150px;
+}
+.settings-table-wrapper .settings-table-tabs-wrapper #v-pills-tab {
+  gap: 5px;
+}
+.settings-table-wrapper .settings-table-tabs-wrapper #v-pills-tab a[role=tab] {
+  text-align: center;
+}
+
+#infoModal .modal-dialog,
+#noteModal .modal-dialog,
+#updateModal .modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.personal-settings-wrapper .card {
+  box-shadow: 1px 1px 4px #C0C0C0;
+}
+.personal-settings-wrapper .personal-settings-title {
+  text-align: center;
+}
+.personal-settings-wrapper .personal-settings-card-body {
+  width: 80%;
+  margin: 0 auto;
+}
+.personal-settings-wrapper .personal-settings-card-body .form-row {
+  justify-content: center;
+}
+
+.personal-settings-label-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.personal-settings-label-wrapper .personal-settings-label {
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.personal-settings-select {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.personal-settings-select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.saved-tasks-table {
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+}
+.saved-tasks-table th, .saved-tasks-table td {
+  text-align: center;
+  word-break: break-all;
+  vertical-align: middle !important;
+}
+.saved-tasks-table .thead {
+  border: 2px solid #a10000;
+}
+.saved-tasks-table .thead .saved-tasks-table-head {
+  font-size: 1rem;
+  text-shadow: 1px 1px 1px black;
+}
+.saved-tasks-table .thead .saved-tasks-table-head th {
+  border: none;
+  outline: none;
+}
+.saved-tasks-table .buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+}
+.saved-tasks-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.saved-tasks-table tbody tr {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.saved-tasks-table tbody tr:hover {
+  background-color: #d9d9d9 !important;
+}
+.saved-tasks-table tbody .btn:focus,
+.saved-tasks-table tbody .btn:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.notes-update-card .modal-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.notes-update-card .modal-body input[type=checkbox],
+.notes-update-card .modal-body .label {
+  cursor: pointer;
+}
+.notes-update-card .modal-body .card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.notes-update-card .modal-body .notes-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+.notes-update-card .modal-body .notes-wrapper .note-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  word-wrap: break-word;
+}
+.notes-update-card .modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-control-input {
+  display: none;
+}
+
+.custom-control-label {
+  padding-left: 25px;
+}
+
+.custom-control-input + .custom-control-label::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(50% - 9px);
+  left: -1px;
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  border: 2px solid #B0C4DE;
+  border-radius: 0.25rem;
+}
+
+.custom-control-input:checked + .custom-control-label::before {
+  background-color: #fff !important;
+  border: 2px solid #B0C4DE !important;
+  background-image: url("/images/custom_checkbox_check_icon.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.statistic-wrapper .statistic-title {
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.statistic-wrapper .statistic-content {
+  font-size: 16px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  grid-column-gap: 10px;
+}
+.statistic-wrapper .statistic-content .statisic-item-value {
+  font-weight: bold;
+}
+
+.disabled-saved-task .saved-task-code,
+.disabled-saved-task .saved-task-name,
+.disabled-saved-task .saved-task-type,
+.disabled-saved-task .saved-task-priority,
+.disabled-saved-task .saved-task-time {
+  opacity: 0.4;
+}

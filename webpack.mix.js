@@ -26,5 +26,6 @@ mix
     .sass('resources/sass/privacyPolicyPage/privacyPolicyMedia.scss', 'public/css/privacyPolicyPage')
     .sass('resources/sass/termsOfUsePage/termsOfUsePage.scss', 'public/css/termsOfUsePage')
     .sass('resources/sass/termsOfUsePage/termsOfUseMedia.scss', 'public/css/termsOfUsePage')
+    .sass('resources/sass/settingsPage/settingsPage.scss', 'public/css/settingsPage')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');

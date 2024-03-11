@@ -1,12 +1,14 @@
-   <div class="card mb-3">
-       <h5 class="card-header">Timezone settings </h5>
-       <div class="card-body">
-           <h5 class="card-title">Choose your timezone for application`s correct work </h5>
-           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-           <div class="form-row">
+   <div class="card mb-3 ">
+       <h5 class="card-header personal-settings-title">Timezone settings </h5>
+       <div class="card-body personal-settings-card-body">
+           <h5 class="card-title" style="text-align: center">Choose your timezone for application`s correct work </h5>
+           <p class="card-text" style="text-align: center">With supporting text below as a natural lead-in to additional content.</p>
+           <div class="form-row" style="margin-top: 15px">
                <div class="form-group col-md-8">
-                   <label for="inputState">Timezone</label>
-                   <select id="inputState" class="form-control" wire:model="timezone">
+                <div class="personal-settings-label-wrapper">
+                    <label class="personal-settings-label" for="timezoneState">Timezone</label>
+                </div>
+                   <select id="timezoneState" class="form-select personal-settings-select" wire:model="timezone">
                        @foreach ($timezones as $t)
                            @if ($t == $currentTz)
                                <option selected>{{ $t }}</option>

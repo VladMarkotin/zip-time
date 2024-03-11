@@ -9,23 +9,24 @@
                     <span aria-hidden="true" style="color:white;">×</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body d-flex justify-content-center align-items-center statistic-wrapper">
 
-                <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-                <div class="card-header">Statistics</div>
+                <div class="card text-white bg-danger mb-3" style="width: 90%">
+                <div class="card-header text-center statistic-title">Statistics</div>
                     <div wire:loading>Loading info..</div>
-                    <div class="card-body">
+                    <div class="card-body p-1">
                    {{-- <!--<h5 class="card-title">Danger card title</h5>--> --}}
-                        <div class="center">
+                        <div class="statistic-content">
                             @foreach($info as $key => $v)
-                            <div>{{$key}}: {{$info[$key]}}</div>
+                            <div class="statisic-item-key">{{$key}}:</div>
+                            <div class="statisic-item-value">{{$info[$key]}}</div>
                             @endforeach
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-start align-items-center">
                 <button type="button" style="background: #FCFCFB;color:#747474;" class="btn btn-secondary" 
                         data-dismiss="modal">Close</button>
             </div>

@@ -220,4 +220,7 @@ class Settings extends Component
         $this->minJobAmount = $this->config['personalConfigs']['rules']['minRequiredTaskQuantity'];
         //   dd(  $this->config);
     }
+
+    public function cancel()
+    {}
 }
