@@ -11,18 +11,16 @@
             </div>
             <div class="modal-body d-flex justify-content-center align-items-center statistic-wrapper">
 
-                <div class="card text-white bg-danger mb-3" style="width: 18rem;">
+                <div class="card text-white bg-danger mb-3" style="width: 90%">
                 <div class="card-header text-center statistic-title">Statistics</div>
                     <div wire:loading>Loading info..</div>
-                    <div class="card-body">
+                    <div class="card-body p-1">
                    {{-- <!--<h5 class="card-title">Danger card title</h5>--> --}}
-                        <div class="center statistic-content-wrapper">
-                            <div class="statistic-content">
-                                @foreach($info as $key => $v)
-                                <div class="statisic-item-key">{{$key}}:</div>
-                                <div class="statisic-item-value">{{$info[$key]}}</div>
-                                @endforeach
-                            </div>
+                        <div class="statistic-content">
+                            @foreach($info as $key => $v)
+                            <div class="statisic-item-key">{{$key}}:</div>
+                            <div class="statisic-item-value">{{$info[$key]}}</div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

@@ -223,22 +223,16 @@ select {
         letter-spacing: 1px;
     }
 
-    .statistic-content-wrapper {
-        font-size: 18px;
-        display: flex;
+    .statistic-content {
+        font-size: 16px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto auto;
         justify-content: center;
-        align-items: center;
-    
-        .statistic-content {
-            width: 80%;
-            display: grid;
-            grid-template-columns: auto 1fr;
-            justify-content: center;
-            grid-column-gap: 10px;
-    
-            .statisic-item-value {
-                font-weight: bold;
-            }
+        grid-column-gap: 10px;
+
+        .statisic-item-value {
+            font-weight: bold;
         }
     }
 }

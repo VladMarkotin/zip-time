@@ -184,20 +184,15 @@ select {
   font-weight: bold;
   letter-spacing: 1px;
 }
-.statistic-wrapper .statistic-content-wrapper {
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.statistic-wrapper .statistic-content-wrapper .statistic-content {
-  width: 80%;
+.statistic-wrapper .statistic-content {
+  font-size: 16px;
+  width: 100%;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto auto;
   justify-content: center;
   grid-column-gap: 10px;
 }
-.statistic-wrapper .statistic-content-wrapper .statistic-content .statisic-item-value {
+.statistic-wrapper .statistic-content .statisic-item-value {
   font-weight: bold;
 }
 
