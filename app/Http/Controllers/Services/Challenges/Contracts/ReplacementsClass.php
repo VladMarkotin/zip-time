@@ -18,6 +18,12 @@ class ReplacementsClass
             '{minMark}' => (function ($index = 'minMark') {
                 return DefaultConfigs::getOptionViaIndex($index);
             }),
+            '{test_id}' => (function () {
+                return 2929;
+            }),
+            '{test_id2}' => (function () {
+                return 2930;
+            }),
         ];
     }
 

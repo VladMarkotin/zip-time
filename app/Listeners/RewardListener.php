@@ -2,14 +2,15 @@
 
 namespace App\Listeners;
 
+use App\Events\RewardEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use App\Events\CompleteTaskEvent;
-use App\Events\RewardEvent;
 use Auth;
+use App\Models\ChallengeModel;
+use App\Models\User;
 use App\Http\Controllers\Services\Challenges\ChallengeService;
 
-class CompleteTaskListener
+class RewardListener
 {
     private $challengeService = null;
     /**
@@ -25,11 +26,12 @@ class CompleteTaskListener
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param  \App\Events\RewardEvent  $event
      * @return void
      */
-    public function handle(CompleteTaskEvent $event)
+    public function handle(RewardEvent $event)
     {
-        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => 'estimate_task']);
+        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => 'test_reward']);
+        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => 'test_reward2']);
     }
 }

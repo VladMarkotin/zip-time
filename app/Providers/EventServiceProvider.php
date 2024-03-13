@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Event;
 use App\Events\FinishDayEvent;
 use App\Events\CompleteTaskEvent;
 use App\Listeners\CompleteTaskListener;
+use App\Events\RewardEvent;
+use App\Listeners\RewardListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CompleteTaskEvent::class => [
             CompleteTaskListener::class
+        ],
+        RewardEvent::class => [
+            RewardListener::class
         ],
     ];
 
