@@ -33,13 +33,7 @@ class RewardListener
      */
     public function handle(RewardEvent $event)
     {
-        $chIndexes = DB::select("SELECT challenges.index FROM `challenges` WHERE challenges.id IN 
-            (SELECT u_c.challenge_id FROM user_challenges u_c WHERE u_c.user_id = ". Auth::id() .")"
-        );
-        //->get()
-        //->toArray();
-        Log::info(var_export($chIndexes));
-        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => 'test_reward']);
-        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => 'test_reward2']);
+        $chIndex = $event->getEventPrefix();
+        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => $chIndex]);
     }
 }

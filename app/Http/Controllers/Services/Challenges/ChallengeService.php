@@ -32,50 +32,54 @@ class ChallengeService
          * Have to get condithions of challenge
          */
         $terms = ChallengeModel::select('id','terms')->where('index', $data['index'])->get()->toArray();
-        $chId = json_decode($terms[0]['id']);
-        $isActive = UsersChallenges::select('is_active')->where([
-            ['user_id', Auth::id()],
-            ['challenge_id', $chId],
-            ])
-            ->get();
-            //->toArray();//[0]['is_active'];
+        foreach ($terms as $val) {
+            
+            $chId = json_decode($val['id']);
+            //$chIds = json_decode($terms);
+            $isActive = UsersChallenges::select('is_active')->where([
+                ['user_id', Auth::id()],
+                ['challenge_id', $chId],
+                ])
+                ->get();
+                //->toArray();//[0]['is_active'];
+                /*exit;*/
             Log::info($isActive);
-            /*exit;*/
-        if ($isActive) {
-                
-            $terms2 = json_decode($terms[0]['terms']);
-            $unPreparedQuery = $terms2->rules->query;
-            //get replacement`s array. It is nessary for creating valid SQL Query. Here we change all {param} on real values
-            $replacements = ReplacementsClass::getReplacements();
-            foreach ($replacements as $k => $v) {
-                
-                $unPreparedQuery = str_replace($k, $v(), $unPreparedQuery);
+            if ($isActive[0]->is_active) {
+                    
+                $terms2 = json_decode($val['terms']);
+                $unPreparedQuery = $terms2->rules->query;
+                //get replacement`s array. It is nessary for creating valid SQL Query. Here we change all {param} with real values
+                $replacements = ReplacementsClass::getReplacements();
+                foreach ($replacements as $k => $v) {
+                    
+                    $unPreparedQuery = str_replace($k, $v(), $unPreparedQuery);
+                }
+               
+                //For now in $unPreparedQuery placed preparedQuery!
+                $result = DB::select($unPreparedQuery);
+                $completness = $result[0]->result / $terms2->rules->goal * 100;
+                $completness = ($completness >= 100) ? 100 : $completness; 
+                if ($data['index'] == 'test_reward') {
+                     Log::info(($completness) );
+                }
+                if ($result[0]->result < $terms2->rules->goal) {
+                    UsersChallenges::where([
+                        ['user_id', Auth::id()],
+                        ['challenge_id', $chId] 
+                    ])->update([
+                        'completeness' => $completness,
+                    ]);
+                }
+                $reward = $terms2->rules->reward;
+                RewardService::reward(
+                    [
+                        'completness' => $completness,
+                        'reward'      => $reward,
+                        'chId'        => $chId,
+                        'isActive'   => $isActive,
+                    ]
+                );
             }
-           
-            //For now in $unPreparedQuery placed preparedQuery!
-            $result = DB::select($unPreparedQuery);
-            $completness = $result[0]->result / $terms2->rules->goal * 100;
-            $completness = ($completness >= 100) ? 100 : $completness; 
-            if ($data['index'] == 'test_reward') {
-                 Log::info(($completness) );
-            }
-            if ($result[0]->result < $terms2->rules->goal) {
-                UsersChallenges::where([
-                    ['user_id', Auth::id()],
-                    ['challenge_id', $chId] 
-                ])->update([
-                    'completeness' => $completness,
-                ]);
-            }
-            $reward = $terms2->rules->reward;
-            RewardService::reward(
-                [
-                    'completness' => $completness,
-                    'reward'      => $reward,
-                    'chId'        => $chId,
-                    'isActive'   => $isActive,
-                ]
-            );
         }
     }
 

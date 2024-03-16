@@ -19,10 +19,13 @@ class ReplacementsClass
                 return DefaultConfigs::getOptionViaIndex($index);
             }),
             '{test_id}' => (function () {
-                return 2929;
+                return 1851;
             }),
             '{test_id2}' => (function () {
-                return 2930;
+                return 1853;
+            }),
+            '{minTestMark}' => (function ($index = 'minTestMark') {
+                return 89;
             }),
         ];
     }

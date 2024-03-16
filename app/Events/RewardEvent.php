@@ -14,14 +14,15 @@ class RewardEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    private $chIndex = ''; 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(array $data)
     {
-        //
+        $this->chIndex = $data['event_prefix'];
     }
 
     /**
@@ -32,5 +33,10 @@ class RewardEvent
     public function broadcastOn()
     {
         return new PrivateChannel('channel-name');
+    }
+
+    public function getEventPrefix()
+    {
+        return $this->chIndex;
     }
 }

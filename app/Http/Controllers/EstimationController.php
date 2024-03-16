@@ -48,10 +48,7 @@ class EstimationController extends Controller
             : 'estimateTaskWithoutUncomReqSubtask';
         $response = json_encode($this->$currentMethod($request), JSON_UNESCAPED_UNICODE);
         $challengeModel = new ChallengeModel();    
-        //CompleteTaskEvent::dispatch(['info' => 'test']);
-        if ($task_id == 2929 || ($task_id == 2937)) {
-            RewardEvent::dispatch();
-        }
+        RewardEvent::dispatch(['event_prefix' => 'estimate_task']);
 
         return  $response;
     }
