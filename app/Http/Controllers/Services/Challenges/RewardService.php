@@ -15,7 +15,7 @@ class RewardService
 {
     public static function reward(array $data)
     {
-        if ($data['completness'] == 100) { //challenge has been complete NOT FULL VERSION. 
+        if ($data['completness'] == 100 && ($data['isActive'])) { //challenge has been complete NOT FULL VERSION. 
             
             $currentRating = User::select('rating')->where('id','=', Auth::id())
               ->get()->toArray()[0]['rating'];

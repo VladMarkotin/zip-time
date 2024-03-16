@@ -120,7 +120,7 @@ export default {
         ...mapActions(['fetchChallenges']),
 
         showCh() {
-            
+            this.fetchChallenges();
             this.showChallenges = !(this.showChallenges)
         },
 

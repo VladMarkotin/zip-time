@@ -9,6 +9,8 @@ use Auth;
 use App\Models\ChallengeModel;
 use App\Models\User;
 use App\Http\Controllers\Services\Challenges\ChallengeService;
+use DB;
+use Illuminate\Support\Facades\Log;
 
 class RewardListener
 {
@@ -31,6 +33,12 @@ class RewardListener
      */
     public function handle(RewardEvent $event)
     {
+        $chIndexes = DB::select("SELECT challenges.index FROM `challenges` WHERE challenges.id IN 
+            (SELECT u_c.challenge_id FROM user_challenges u_c WHERE u_c.user_id = ". Auth::id() .")"
+        );
+        //->get()
+        //->toArray();
+        Log::info(var_export($chIndexes));
         $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => 'test_reward']);
         $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => 'test_reward2']);
     }
