@@ -191,6 +191,10 @@
             @yield('content')
         </main>
 
+        <div class="aside-buttons-activator-wrapper">
+            <span class="aside-buttons-activator"></span>
+        </div>
+
         <footer class="footer">
             <div class="footer-info">
                 <p class="footer-text">
