@@ -29,3 +29,8 @@
     grid-template-columns: 1fr;
   }
 }
+@media screen and (max-width: 450px) {
+  .container {
+    max-width: 100%;
+  }
+}
