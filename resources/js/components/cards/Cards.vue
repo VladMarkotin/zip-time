@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>{{title}}</div>
-        <v-row>
+        <v-row class="cards_cards-wrapper">
             <v-col cols="6" v-for="item, i of items" v-bind:key="item.taskId">
                 <Card 
                 v-bind:item="item" 
@@ -19,3 +19,7 @@
     components : {Card,},
     }
 </script>
+
+<style>
+    @import url('/css/Cards/CardsMedia.css');
+</style>

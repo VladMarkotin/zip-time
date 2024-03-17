@@ -1,4 +1,14 @@
-* {
-  margin: 0;
-  padding: 0;
+@media screen and (max-width: 1225px) {
+  .container {
+    max-width: 90%;
+  }
+
+  .cards_cards-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 500px);
+    justify-content: center;
+  }
+  .cards_cards-wrapper div {
+    max-width: 100%;
+  }
 }
