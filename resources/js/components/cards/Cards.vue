@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>{{title}}</div>
+        <div class="cards_title-wrapper">{{title}}</div>
         <v-row class="cards_cards-wrapper">
             <v-col cols="6" v-for="item, i of items" v-bind:key="item.taskId">
                 <Card 
