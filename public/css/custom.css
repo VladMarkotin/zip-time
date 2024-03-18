@@ -158,7 +158,7 @@ summary::after {
     -o-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
     transform-origin: bottom right;
-    z-index: 9000;
+    z-index: 2;
 }
 
 .feedback-button {
@@ -174,7 +174,7 @@ summary::after {
     -o-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
     transform-origin: bottom right;
-    z-index: 9000;
+    z-index: 2;
 }
 
 .backlog-add-button:hover {
@@ -444,6 +444,14 @@ body {
 @media screen and (max-width: 450px) {
     .backlog-add-button,
     .feedback-button {
-       display: none;
+       right: -50px;
+       opacity: 0;
+       transition: all .3s ease;
+    }
+
+    .backlog-add-button.aside-button-visible,
+    .feedback-button.aside-button-visible {
+        right: 0;
+        opacity: 1;
     }
 }

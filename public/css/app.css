@@ -10212,6 +10212,17 @@ body {
     .aside-buttons-activator-wrapper {
         display: block;
     }
+
+    .aside-buttons-activator-wrapper.active::after   {
+        display: none;
+    }
+
+    .aside-buttons-activator-wrapper.active {
+        background-image: url('/images/asideActivator_close_icon.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 60%;
+    }
 }
 
 /* ==========активатр для боковых кнопок ========== */
