@@ -3,6 +3,7 @@
     "/js/IndexPageController.js": "/js/IndexPageController.js",
     "/js/NavMenu.js": "/js/NavMenu.js",
     "/js/PageSmoothAppear.js": "/js/PageSmoothAppear.js",
+    "/js/AsideButtonsController.js": "/js/AsideButtonsController.js",
     "/css/customTooltip.css": "/css/customTooltip.css",
     "/css/app.css": "/css/app.css",
     "/css/loginPage/loginPageMedia.css": "/css/loginPage/loginPageMedia.css",

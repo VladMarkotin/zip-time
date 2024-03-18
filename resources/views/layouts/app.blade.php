@@ -21,6 +21,7 @@
         @endif
     @endguest
     <script src="js/NavMenu.js" defer></script>
+    <script src="js/AsideButtonsController"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
