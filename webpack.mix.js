@@ -30,5 +30,6 @@ mix
     .sass('resources/sass/settingsPage/settingsPage.scss', 'public/css/settingsPage')
     .sass('resources/sass/Cards/CardsMedia.scss', 'public/css/Cards')
     .sass('resources/sass/Card/CardMedia.scss', 'public/css/Card')
+    .sass('resources/sass/Challenges/ChallengesMedia.scss', 'public/css/Challenges')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');
