@@ -6,6 +6,7 @@
                 <Card 
                 v-bind:item="item" 
                 v-bind:num="i" 
+                v-bind:screenWidth = "screenWidth"
                 />
             </v-col>
         </v-row>
@@ -15,7 +16,7 @@
     import Card from './Card.vue'
 
     export default {
-    props : ['title','items'],
+    props : ['title','items', 'screenWidth'],
     components : {Card,},
     }
 </script>

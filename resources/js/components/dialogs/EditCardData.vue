@@ -26,6 +26,7 @@
                            :width             = "200"
 						   :tooltipData       = "tooltipPrioritiesData"
 						   :isShowDescription = "false"
+                           :screenWidth       = "screenWidth"
                            />
                         </template>
                 </v-select>
@@ -86,6 +87,10 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
             currentTaskTime: {
                 type: String,
                 required: true
+            },
+
+            screenWidth: {
+                type: Number,
             }
         },
         data() {
@@ -100,14 +105,15 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         components: {EditButton, VSelectTooptip},
         computed: {
             tooltipPrioritiesData() {
-					return {
-						titles: {
-							'1' : 'usual',
-							'2' : 'important',
-							'3' : 'extremly imortant',
-						}
+				return {
+					titles: {
+						'1' : 'usual',
+						'2' : 'important',
+						'3' : 'extremly imortant',
 					}
-        		}
+				}
+        	}
+            
         },
         watch: {
             isShowEditCardDataDialog(isDialogOpen) {

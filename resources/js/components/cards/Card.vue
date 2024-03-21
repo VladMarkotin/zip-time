@@ -1,5 +1,4 @@
 <template>  
-
 	<v-card :id="!num ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
 		<div class="card-demo">
 			<template v-if="isShowAddHashCodeDialog">
@@ -85,6 +84,7 @@
 				<EditCardData 
 				:currentTaskPriority = "item.priority"
 				:currentTaskTime     = "item.time"
+				:screenWidth         = "screenWidth"
 				@saveChanges = "changeTime"
 				/>
 			</v-list-item>
@@ -263,7 +263,7 @@
 	import EditCardData from '../dialogs/EditCardData.vue';
 	export default
 	{
-		props : ['item', 'num'],
+		props : ['item', 'num', 'screenWidth'],
 		data()
 		{
 			return {

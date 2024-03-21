@@ -29,12 +29,14 @@
                 title="Required tasks:"
                 v-if="isExistsRequiredTasks(data)"
                 v-bind:items="getRequiredTasks(data)"
+                :screenWidth = "screenWidth"
             />
             <v-divider></v-divider>
             <Cards
                 title="Non required tasks:"
                 v-if="isExistsNonRequiredTasks(data)"
                 v-bind:items="getNonRequiredTasks(data)"
+                :screenWidth = "screenWidth"
             />
         </v-data-iterator>
         <div class="d-flex justify-space-between mt-3">
@@ -98,7 +100,13 @@ export default {
             isShowAlertDialog: false,
 
             alert: { type: "", text: "" },
+            screenWidth: window.innerWidth,
         };
+    },
+    computed: {
+        isMobile() {
+            return this.screenWidth < 768;
+        }
     },
     methods: {
         getRequiredTasks(data) {
@@ -133,11 +141,15 @@ export default {
         toggleAlertDialog() {
             this.isShowAlertDialog = !this.isShowAlertDialog;
         },
+
+        updateScreenWidth() {
+            this.screenWidth = window.innerWidth;
+        }
     },
 
-    created() {},
-
     async mounted() {
+        window.addEventListener('resize', this.updateScreenWidth);
+
         try {
             const response = await axios.post("/getEduStep", {});
             let currentEduStep = response.data.edu_step;
@@ -226,6 +238,10 @@ export default {
         } catch (error) {
             console.error(error);
         }
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('resize', this.updateScreenWidth);
     },
 };
 </script>

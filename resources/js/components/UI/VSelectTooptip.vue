@@ -1,7 +1,8 @@
 <template>
     <v-menu
-    :nudge-right="55"
-    :nudge-top="8"
+    :nudge-top="nudgeTop"
+    :nudge-left="nudgeLeft"
+    :nudge-right="nudgeRight"
     v-model="isMenuOpen"
     >
         <template v-slot:activator="{ on }">
@@ -62,12 +63,32 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
             isShowDescription: {
                 type: Boolean,
                 default: true,
+            },
+            screenWidth: {
+                type: Number,
             }
         },
         data() {
             return {
                 icon: { mdiHelpCircleOutline },
                 isMenuOpen: false
+            }
+        },
+        computed: {
+            isMobile() {
+                return this.screenWidth < 768;
+            },
+
+            nudgeTop() {
+                return this.isMobile ? 0 : 8
+            },
+
+            nudgeLeft() {
+                return this.isMobile ? 215 : null
+            },
+
+            nudgeRight() {
+                return this.isMobile ? null : 55
             }
         },
         methods: {
@@ -84,7 +105,7 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
                 
                     return this.tooltipData[mainKey][keyFormated] || '';
                 }
-        }
+        },
     }
 </script>
 
