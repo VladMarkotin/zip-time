@@ -5,19 +5,29 @@
 		width="auto"
 		>
 		<template v-slot:activator="{ props }">
-			<div class="d-flex justify-space-between align-center">
-				<v-btn
-				icon
-				v-bind="props"
-				@click="showAddNotesDialog"
-				:id="!num ? 'card-notes' : false"
-				>
-				<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
-				</v-btn>
-				<span>
-					{{ notesTodayAmount }}
-				</span>
-			</div>
+            <v-row class="p-0 m-0">
+                <v-col 
+                class="p-0 m-0 d-flex justify-content-end align-center"
+                :cols="9"
+                >
+                    <v-btn
+                    icon
+                    v-bind="props"
+                    @click="showAddNotesDialog"
+                    :id="!num ? 'card-notes' : false"
+                    >
+                    <v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
+                    </v-btn>
+                </v-col>
+                <v-col
+                class="p-0 m-0 d-flex justify-content-end align-center"
+                :cols=3
+                >
+                    <span>
+                        {{ notesTodayAmount }}
+                    </span>
+                </v-col>
+            </v-row>
 		</template>
 		<template v-if="isShowNotesDialog">
             <AddNotesCard 

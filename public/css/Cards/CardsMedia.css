@@ -15,7 +15,7 @@
     grid-template-columns: repeat(auto-fill, 500px);
     justify-content: center;
   }
-  .cards_cards-wrapper div.col {
+  .cards_cards-wrapper > div.col {
     max-width: 100%;
   }
 }
