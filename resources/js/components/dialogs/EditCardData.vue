@@ -8,7 +8,7 @@
                 <EditButton @click="isShowEditCardDataDialog = true" />
             </template>
         </template>
-        <v-card class="pt-3 pb-3">
+        <v-card class="pt-3 pb-3 editCardData_editCard-wrapper">
             <v-card-text class="pb-2">
                 <v-row class="p-0 m-0">
                     <h4 class="p-0" style="font-size: 1rem;">Edit task`s priority:</h4>
@@ -149,3 +149,7 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
 
     };
 </script>
+
+<style>
+     @import url('/css/EditCardData/EditCardDataMedia.css');
+</style>

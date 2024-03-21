@@ -1,1 +1,17 @@
-
+@media screen and (max-width: 1225px) {
+  .editCardData_editCard-wrapper .v-picker__title {
+    padding: 8px;
+  }
+  .editCardData_editCard-wrapper .v-picker__title .v-time-picker-title__time .v-picker__title__btn {
+    font-size: 60px;
+  }
+  .editCardData_editCard-wrapper .v-picker__title .v-time-picker-title__time span {
+    height: 60px;
+  }
+  .editCardData_editCard-wrapper .v-picker__body {
+    width: 270px !important;
+  }
+  .editCardData_editCard-wrapper .v-picker__body .v-time-picker-clock__container {
+    flex-basis: 270px;
+  }
+}
