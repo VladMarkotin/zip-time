@@ -23,6 +23,7 @@
             :isLoading          = "isLoading"
             :detailsSortingCrit = "detailsSortingCrit"
             :generateUniqKey    = "generateUniqKey"
+            :screenWidth        = "screenWidth"
             @updateDetails            = "updateDetails"
             @updateAlertData          = "setAlertData"
             @updateCompletedPercent   = "updateCompletedPercent"

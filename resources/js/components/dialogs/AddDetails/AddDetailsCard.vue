@@ -22,7 +22,32 @@
             <v-card-text class="details-cards-wrapper">
                 <!-- возможно удалить этот блок -->
                     <template>
-                        <v-row class="addDetailsCard_addNewDetail-inputs-wrapper">
+                        <v-row 
+                        class="m-0 p-0"
+                        v-if="isMobile"
+                        >
+                            <v-btn
+                            @click="isShowAddNewDetailMobileDialog = true"
+                            >
+                                Add New Subtask
+                            </v-btn>
+                            <AddNewDetailMobile 
+                            v-if="isShowAddNewDetailMobileDialog"
+                            :isShowAddNewDetailMobileDialog = "isShowAddNewDetailMobileDialog"
+                            :newDetail                      = "newDetail"
+                            :subtaskRules                   = "subtaskRules"
+                            :subtaskTitleRules              = "subtaskTitleRules"
+                            :subtaskTextRules               = "subtaskTextRules"
+                            :dataOnValidofInputs            = "dataOnValidofInputs"
+                            @closeAddNewDetailMobileDialog  = "isShowAddNewDetailMobileDialog = false"
+                            @setNewDetail                   = "setNewDetail"
+                            @addSubtask                     = "addDetail"
+                            />
+                        </v-row>
+                        <v-row 
+                        v-else
+                        class="addDetailsCard_addNewDetail-inputs-wrapper" 
+                        >
                             <v-col
                             class="pb-0"
                             >
@@ -329,6 +354,7 @@ import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import EditButton from '../../UI/EditButton.vue';
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
+import AddNewDetailMobile from './AddNewDetailMobile.vue';
 import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
@@ -357,6 +383,9 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             generateUniqKey: {
                 type: Function,
+            },
+            screenWidth: {
+                type: Number,
             }
         },
         data() {
@@ -426,10 +455,11 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     {value: 'created-at-desc', label: 'New first',},
                     {value: 'is_ready-asc', label: 'Ready first',},
                     {value: 'unready-asc', label: 'Unready first',},
-                ]
+                ],
+                isShowAddNewDetailMobileDialog: false,
             }
         },
-        components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader},
+        components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader, AddNewDetailMobile},
         watch: {
             detailsSortBy(sortCritVal) {
                 this.updateDetailsSortingCrit(sortCritVal);
@@ -448,6 +478,11 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     this.newDetail.text
                 );
             }
+        },
+        computed: {
+            isMobile() {
+                return this.screenWidth < 768; 
+            }  
         },
         methods: {
             updateDetails(details) {
@@ -643,6 +678,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     this.$emit(resetDayMarkToDefVal);
                 }
             },
+
+            setNewDetail(newDetail) {
+                Object.assign(this.newDetail, newDetail);
+            }
         },
 
         created() {
