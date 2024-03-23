@@ -1,4 +1,14 @@
-* {
-  margin: 0;
-  padding: 0;
+@media screen and (max-width: 850px) {
+  #addDetailsCard_card-footer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+  }
+  #addDetailsCard_card-footer > div {
+    max-width: 100%;
+    padding: 4px;
+  }
+  #addDetailsCard_card-footer .addDetailsCard_viewAll-button-wrapper,
+#addDetailsCard_card-footer .addDetailsCard_close-button-wrapper {
+    grid-row: 2/3;
+  }
 }

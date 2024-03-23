@@ -1,6 +1,7 @@
 <template>
     <v-dialog 
-    v-model="isShowDialogDetails" 
+    :fullscreen = "isMobile" 
+    v-model     = "isShowDialogDetails" 
     scrollable 
     width="auto">
         <template v-slot:activator="{ props }">
@@ -58,6 +59,9 @@ export default {
             type: String,
             required: true,
         },
+        screenWidth: {
+            type: Number,
+        }
     },
     data() {
         return {
@@ -74,6 +78,11 @@ export default {
         isShowDialogDetails(isShowDialog) {
             if (!isShowDialog) this.$emit('resetSortingToDefVal');
         },
+    },
+    computed: {
+      isMobile() {
+            return this.screenWidth < 768; 
+      }  
     },
     methods: {
         showAddDetailsDialog() {

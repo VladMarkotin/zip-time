@@ -154,6 +154,7 @@
 									:details            = "details"
 									:completedPercent   = "completedPercent"
 									:detailsSortingCrit = "detailsSortingCrit"
+									:screenWidth        = "screenWidth"
 									@updateDetails            = "updateDetails"
 									@updateCompletedPercent   = "updateCompletedPercent"
 									@updateDetailsSortingCrit = "updateDetailsSortingCrit"

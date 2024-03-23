@@ -22,7 +22,7 @@
             <v-card-text class="details-cards-wrapper">
                 <!-- возможно удалить этот блок -->
                     <template>
-                        <v-row>
+                        <v-row class="addDetailsCard_addNewDetail-inputs-wrapper">
                             <v-col
                             class="pb-0"
                             >
@@ -263,9 +263,10 @@
                 </v-row>
             </v-card-actions>
             <v-card-actions>
-                <v-row class="d-flex align-items-center justify-content-between p-0 m-0">
+                <v-row class="d-flex align-items-center justify-content-between p-0 m-0" id="addDetailsCard_card-footer">
                     <v-col
                     cols="4"
+                    class="addDetailsCard_viewAll-button-wrapper"
                     >
                         <v-btn 
                         v-if="isSavedTask"
@@ -294,7 +295,7 @@
                     </v-col>
                     <v-col
                     cols="3"
-                    class="d-flex justify-content-end align-items-center"
+                    class="d-flex justify-content-end align-items-center addDetailsCard_close-button-wrapper"
                     >
                         <v-btn 
                         @click="$emit('closeAddDetailsDialog')"
@@ -778,4 +779,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 		from { opacity: 1; left: 0;}
 		to { opacity: 0; left: 10px;}
 	}
+
+    @import url('/css/AddDetailsCard/AddDetailsCardMedia.css');
 </style>
