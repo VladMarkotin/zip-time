@@ -23,10 +23,11 @@
                 <!-- возможно удалить этот блок -->
                     <template>
                         <v-row 
-                        class="m-0 p-0"
+                        class="m-0 p-0 addDetailsCard_addNewSubtaskBtn-wrapper d-flex justify-content-center align-items-center"
                         v-if="isMobile"
                         >
                             <v-btn
+                            class="addDetailsCard_addNewSubtaskBtn-mobile"
                             @click="isShowAddNewDetailMobileDialog = true"
                             >
                                 Add New Subtask
@@ -263,7 +264,7 @@
             <v-card-actions style="min-height: 74px;">
                 <v-row 
                 v-if="details.length > 1"
-                class="p-0 m-0 d-flex justify-content-center">
+                class="p-0 m-0 d-flex justify-content-center addDetailsCard_subtasks-radiobutoons-wrapper">
                     <v-col 
                     class="p-0 m-0 subtasks-radiobuttons-wrapper"
                     cols="auto"

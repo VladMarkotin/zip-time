@@ -12,3 +12,29 @@
     grid-row: 2/3;
   }
 }
+@media screen and (max-width: 768px) {
+  .addDetailsCard_addNewSubtaskBtn-wrapper .addDetailsCard_addNewSubtaskBtn-mobile {
+    max-width: 40%;
+  }
+
+  #addDetailsCard_card-footer .details-alert-wrapper {
+    grid-column: 1/3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #addDetailsCard_card-footer .details-alert-wrapper .details-alert {
+    max-width: 80%;
+  }
+}
+@media screen and (max-width: 550px) {
+  .addDetailsCard_addNewSubtaskBtn-wrapper .addDetailsCard_addNewSubtaskBtn-mobile {
+    max-width: 60%;
+  }
+
+  .addDetailsCard_subtasks-radiobutoons-wrapper div[role=radiogroup] {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

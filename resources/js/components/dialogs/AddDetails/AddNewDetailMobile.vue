@@ -45,6 +45,13 @@
                     </v-col>
                 </v-row>
             </v-card-text>
+            <v-card-actions class="d-flex justify-content-end align-items-center">
+                <v-btn
+                @click="closeCurrentDialog"
+                >
+                    Close
+                </v-btn>
+            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
@@ -107,8 +114,12 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
         methods: {
             addSubtask() {
                 this.$emit('addSubtask');
-                this.addNewDetailMobileDialog = false;
+                this.closeCurrentDialog();
             },
+
+            closeCurrentDialog() {
+                this.addNewDetailMobileDialog = false;
+            }
         },
         created() {
             this.addNewDetailMobileDialog = this.isShowAddNewDetailMobileDialog;
