@@ -27,7 +27,7 @@
                         v-if="isMobile"
                         >
                             <v-btn
-                            class="addDetailsCard_addNewSubtaskBtn-mobile"
+                            class="addDetailsCard_addNewSubtaskBtn-mobile addDetailsCard_btn"
                             @click="isShowAddNewDetailMobileDialog = true"
                             >
                                 Add New Subtask
@@ -115,10 +115,10 @@
                                     <transition-group name="detailsList" tag="div" style="width: 100%;">
                                         <v-expansion-panel v-for="(v, i) in details" :key="v.uniqKey">
                                             <v-expansion-panel-header>
-                                                <v-row class="p-0 m-0">
+                                                <v-row class="p-0 m-0 addDetailsCard_accordion-header-wrapper">
                                                     <v-col
                                                     cols="9" 
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-title-wrapper"
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-title-wrapper addDetailsCard_accordion-title-wrapper"
                                                     >
                                                         <div class="text-wrapper">
                                                             <p class="text-md-center">{{ v.title }} </p>
@@ -126,7 +126,7 @@
                                                     </v-col>
                                                     <v-col
                                                     cols="3" 
-                                                    class="p-0 m-0"
+                                                    class="p-0 m-0 addDetailsCard_accordion-icons-wrapper"
                                                     >
                                                         <v-row
                                                         class="m-0 pl-2 pr-4"
@@ -177,9 +177,9 @@
                                             v-bind:class="{ done: v.is_ready }"
                                             >
                                                 <v-divider></v-divider>
-                                                <v-row class="p-0 m-0">
+                                                <v-row class="p-0 m-0 addDetailsCard_accordion-body-wrapper">
                                                     <v-col 
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper addDetailsCard_accordion-text-wrapper"
                                                     cols="9"
                                                     >
                                                         <div class="text-wrapper">
@@ -187,7 +187,7 @@
                                                         </div>
                                                     </v-col>
                                                     <v-col 
-                                                    class="p-0 m-0"
+                                                    class="p-0 m-0 addDetailsCard_accordion-body-buttons-wrapper"
                                                     cols="3"
                                                     >
                                                         <v-row class="m-0 pl-2">
@@ -195,7 +195,7 @@
                                                                 <v-checkbox 
                                                                 class="isReady-checkbox"
                                                                 v-model="v.is_ready" 
-                                                                label="Is Ready?" 
+                                                                :label="screenWidth > 550 ? 'Is Ready?' : ''" 
                                                                 color="red"
                                                                 @change="completed(v)" 
                                                                 hide-details></v-checkbox>
@@ -222,9 +222,9 @@
                                             v-bind:class="{ done: v.is_ready }"
                                             >
                                                 <v-divider></v-divider>
-                                                <v-row class="p-0 m-0">
+                                                <v-row class="p-0 m-0 addDetailsCard_accordion-body-wrapper">
                                                     <v-col 
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper addDetailsCard_accordion-text-wrapper"
                                                     cols="9"
                                                     >
                                                         <div class="text-wrapper">
@@ -232,6 +232,7 @@
                                                         </div>
                                                     </v-col>
                                                     <v-col 
+                                                    class="addDetailsCard_accordion-body-buttons-wrapper addDetailsCard_accordion-body-readySubtask"
                                                     cols="3"
                                                     >
                                                         <v-row class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper">
@@ -299,7 +300,7 @@
                         @click="showSubtasks"
                         color="blue-darken-1" 
                         variant="text" 
-                        class="details-button"
+                        class="details-button addDetailsCard_btn"
                         >
                             {{ displayedDetails[displayedDetails.currentMode].showSubtasksButtonText}}
                         </v-btn>
@@ -327,7 +328,7 @@
                         @click="$emit('closeAddDetailsDialog')"
                         color="blue-darken-1" 
                         variant="text" 
-                        class="details-button"
+                        class="details-button addDetailsCard_btn"
                         >
                             Close
                         </v-btn>

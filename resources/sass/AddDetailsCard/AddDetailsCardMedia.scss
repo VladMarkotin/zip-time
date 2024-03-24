@@ -34,6 +34,16 @@
             }
         }
     }
+
+    .addDetailsCard_accordion-body-wrapper {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+
+        .addDetailsCard_accordion-body-buttons-wrapper,
+        .addDetailsCard_accordion-text-wrapper {
+            max-width: 100%;
+        }
+    }
 }
 
 @media screen and (max-width: 550px) {
@@ -49,5 +59,39 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
         }
+    }
+
+    .addDetailsCard_accordion-header-wrapper {
+        display: grid;
+        grid-template-columns: 3fr 1.5fr;
+
+        .addDetailsCard_accordion-title-wrapper {
+            max-width: 100% !important;
+        }
+
+        .addDetailsCard_accordion-icons-wrapper {
+            max-width: 100%;
+
+            >div {
+                padding: 0 !important;
+            }
+        }
+    }
+
+    .addDetailsCard_accordion-body-wrapper {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+    }
+
+    .addDetailsCard_accordion-body-readySubtask {
+        padding: 0px ;
+    }
+}
+
+@media screen and (max-width: 435px) {
+    .addDetailsCard_btn {
+        padding: 15px !important;
+        min-width: 0px !important;
+
     }
 }
