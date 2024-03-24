@@ -1,5 +1,21 @@
+@media screen and (max-width: 500px) {
+  .addNotesCard-alert {
+    padding: 8px !important;
+  }
+  .addNotesCard-alert .v-icon {
+    margin-right: 4px;
+  }
+  .addNotesCard-alert .v-alert__content {
+    font-size: 14px;
+  }
+}
 @media screen and (max-width: 430px) {
   .addNotesCard-notes-wrapper {
     padding: 0 !important;
+  }
+}
+@media screen and (max-width: 415px) {
+  .addNotesCard-alert .v-alert__content {
+    font-size: 12px;
   }
 }

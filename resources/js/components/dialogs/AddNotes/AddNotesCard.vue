@@ -104,7 +104,7 @@
                 >
                     <v-alert 
                     v-if="isShowAlert"
-                    class="custom-alert"
+                    class="custom-alert addNotesCard-alert"
                     :type="alertData.type"
                     >
                         {{ alertData.text }}
