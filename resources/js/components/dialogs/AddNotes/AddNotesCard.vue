@@ -347,4 +347,6 @@ import EditNotesDialog from './EditNotesDialog.vue';
 		from { opacity: 1; left: 0;}
 		to { opacity: 0; left: 10px;}
 	}
+
+    @import url('/css/AddNotesCard/AddNotesCardMedia.css');
 </style>
