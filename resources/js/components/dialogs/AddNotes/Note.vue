@@ -1,7 +1,7 @@
 <template>
     <v-card
     style="width: 100%;"
-    class="p-3"
+    class="p-3 note_note-card-wrapper"
     >
         <v-row class="p-0 m-0">
             <v-col 
@@ -9,7 +9,7 @@
             style="width: 100%;"
             :id="getVMenuWrapperId(item.id)"
             >
-                <v-card-title class="p-0 m-0">
+                <v-card-title class="p-0 m-0 note_note-card-title">
                     Note from {{ item.created_at }}
                 </v-card-title>
                 <SettingsMenu 
@@ -67,3 +67,7 @@ import SettingsMenu from '../../UI/SettingsMenu.vue';
         },
     }
 </script>
+
+<style>
+@import url('/css/Note/NoteMedia.css');
+</style>

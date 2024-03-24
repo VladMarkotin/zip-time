@@ -59,7 +59,7 @@
         </v-row>
 		<v-divider class="mt-2 mb-2"></v-divider>
         <v-card-text 
-        class="pb-0"
+        class="pb-0 addNotesCard-notes-wrapper"
         style="height: 450px; position: relative; overflow-x: hidden"
         >
             <v-list 
