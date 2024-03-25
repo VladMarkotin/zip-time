@@ -113,6 +113,7 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
 
             closeAddNotesDialog() {
                 this.isShowNotesDialog = false;
+                this.getTodayNoteAmount()
             }
         },
 
