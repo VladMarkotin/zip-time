@@ -19,7 +19,7 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text class="details-cards-wrapper" style="max-height: 300px;">
+            <v-card-text class="details-cards-wrapper" :style="{ height: isMobile ? '450px' : '400px' }">
                 <!-- возможно удалить этот блок -->
                     <template>
                         <v-row 
