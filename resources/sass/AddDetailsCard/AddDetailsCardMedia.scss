@@ -1,4 +1,13 @@
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 900px) {
+
+    .addDetailsCard-subtasks-radiobuttons-container {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+
+        .v-messages {
+            min-height: 0;
+        }
+    }
 
     #addDetailsCard_card-footer {
         display: grid !important;
@@ -7,6 +16,10 @@
         >div {
             max-width: 100%;
             padding: 4px;
+        }
+
+        .details-alert-wrapper {
+            display: none !important;
         }
         
         .addDetailsCard_viewAll-button-wrapper,

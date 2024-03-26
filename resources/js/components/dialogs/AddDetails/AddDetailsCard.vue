@@ -19,7 +19,7 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text class="details-cards-wrapper">
+            <v-card-text class="details-cards-wrapper" style="max-height: 300px;">
                 <!-- возможно удалить этот блок -->
                     <template>
                         <v-row 
@@ -262,7 +262,7 @@
                     </template>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions style="min-height: 74px;">
+            <v-card-actions style="min-height: 74px;" class="addDetailsCard-subtasks-radiobuttons-container">
                 <v-row 
                 v-if="details.length > 1"
                 class="p-0 m-0 d-flex justify-content-center addDetailsCard_subtasks-radiobutoons-wrapper">
@@ -704,7 +704,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
 <style scoped>
     .details-cards-wrapper {
-        height: 300px; 
         position: relative;
     }
 

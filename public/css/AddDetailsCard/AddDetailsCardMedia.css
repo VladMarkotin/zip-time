@@ -1,4 +1,12 @@
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 900px) {
+  .addDetailsCard-subtasks-radiobuttons-container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .addDetailsCard-subtasks-radiobuttons-container .v-messages {
+    min-height: 0;
+  }
+
   #addDetailsCard_card-footer {
     display: grid !important;
     grid-template-columns: 1fr 1fr;
@@ -6,6 +14,9 @@
   #addDetailsCard_card-footer > div {
     max-width: 100%;
     padding: 4px;
+  }
+  #addDetailsCard_card-footer .details-alert-wrapper {
+    display: none !important;
   }
   #addDetailsCard_card-footer .addDetailsCard_viewAll-button-wrapper,
 #addDetailsCard_card-footer .addDetailsCard_close-button-wrapper {
