@@ -290,13 +290,13 @@
 						<div
 						v-if="isShowUpdateCardNotification"
 						style="width: inherit;"
-						class="d-flex justify-content-center"
+						class="d-flex justify-content-center card_update-card-notification-wrapper"
 						key="updante-card-not"
 						>
 							<span 
-							class="update-card-notification" 
+							class="update-card-notification card_update-card-notification" 
 							>
-								Don't forget to save your mark!
+								Don't forget<br class="update-card-notifiactiob-br"> to save your mark!
 							</span>
 						</div>
 						<span 
@@ -866,6 +866,11 @@
 		width: 0;
 	} */
 	/* ============================================ */
+
+	.update-card-notifiactiob-br {
+		display: none;
+	}
+
 	@keyframes show {
 		from { opacity: 0; top: -10px;}
 		to { opacity: 1; top: 0;}

@@ -1,1 +1,23 @@
-// пока необходимости нету, но на будущее добавил
+@media screen and (max-width: 550px) {
+    .card_update-card-notification-wrapper {
+        justify-content: flex-start !important;
+
+        .card_update-card-notification {
+            font-size: 12px !important;
+            text-transform: none !important;
+            line-height: 18px;
+            padding-left: 8px;
+        }
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .card_update-card-notification-wrapper {
+        .card_update-card-notification {
+            padding-left: 25px;
+            .update-card-notifiactiob-br {
+                display: initial !important;
+            }
+        }
+    }
+}
