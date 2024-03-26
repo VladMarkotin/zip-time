@@ -1,7 +1,8 @@
 <template>
     <v-menu
     bottom
-    right
+    :right = "isDispOptionRight"
+    :left  = "!isDispOptionRight"
     :attach="attachTo ? `#${attachTo}` : false"
     >
         <template v-slot:activator="{ on,}">
@@ -43,11 +44,19 @@ import { mdiCog } from '@mdi/js';
             },
             attachTo: {
                 type: String,
+            },
+            screenWidth: {
+                type: Number,
             }
         },
         data() {
             return {
                 icon : {mdiCog},
+            }
+        },
+        computed: {
+            isDispOptionRight() {
+               return this.screenWidth > 430;
             }
         },
         methods: {

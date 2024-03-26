@@ -13,8 +13,9 @@
                     Note from {{ item.created_at }}
                 </v-card-title>
                 <SettingsMenu 
-                :item     =  "item"
-                :options  =  "options"
+                :item        =  "item"
+                :options     =  "options"
+                :screenWidth = "screenWidth"
                 :attachTo = "getVMenuWrapperId(item.id)"
                 @deleteNote         = "deleteNote"
                 @showEditNotesDialog = "showEditNotesDialog"
@@ -37,6 +38,9 @@ import SettingsMenu from '../../UI/SettingsMenu.vue';
                 type: Object,
                 required: true,
             },
+            screenWidth: {
+                type: Number,
+            }
         },
 
         data() {

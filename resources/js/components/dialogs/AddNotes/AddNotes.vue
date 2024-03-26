@@ -31,9 +31,10 @@
 		</template>
 		<template v-if="isShowNotesDialog">
             <AddNotesCard 
-            :isLoading = "isLoading"
-            :notesList = "notesList"
-            :item       = "item"
+            :isLoading   = "isLoading"
+            :notesList   = "notesList"
+            :item        = "item"
+            :screenWidth = "screenWidth"
             @updateNotesInfo     = "updateNotesInfo"
             @closeAddNotesDialog = "closeAddNotesDialog"
             />
@@ -58,6 +59,9 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
                 type: Object,
                 required: true,
             },
+            screenWidth: {
+                type: Number,
+            }
         },
         data() {
             return {

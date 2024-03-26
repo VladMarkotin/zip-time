@@ -15,9 +15,6 @@
     max-width: 100%;
     padding: 4px;
   }
-  #addDetailsCard_card-footer .details-alert-wrapper {
-    display: none !important;
-  }
   #addDetailsCard_card-footer .addDetailsCard_viewAll-button-wrapper,
 #addDetailsCard_card-footer .addDetailsCard_close-button-wrapper {
     grid-row: 2/3;

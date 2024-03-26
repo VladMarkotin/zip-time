@@ -205,6 +205,7 @@
 							:item             = "item"
 							:notesTodayAmount = "noteInfo.todayAmount"
 							:notesList        = "noteInfo.notesList"  
+							:screenWidth      = "screenWidth"
 							@updateNotesInfo  = "setNotesInfo"
 							/>
 						</template>

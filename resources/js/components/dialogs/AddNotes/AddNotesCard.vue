@@ -68,7 +68,8 @@
             <transition-group name="list" tag="div" class="notes-wrapper">
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
-                    :item = "item"
+                    :item        = "item"
+                    :screenWidth = "screenWidth"
                     @deleteNote         = "deleteNote"
                     @showEditNotesDialog = "showEditNotesDialog"
                     />
@@ -158,6 +159,9 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 type: Object,
                 required: true,
             },
+            screenWidth: {
+                type: Number,
+            }
         },
         data() {
             return {
