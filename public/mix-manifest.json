@@ -10,8 +10,10 @@
     "/css/loginPage/loginPage.css": "/css/loginPage/loginPage.css",
     "/css/indexPage/indexPageMedia.css": "/css/indexPage/indexPageMedia.css",
     "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css",
+    "/css/AddJobTask/AddJobTaskMedia.css": "/css/AddJobTask/AddJobTaskMedia.css",
     "/css/Note/NoteMedia.css": "/css/Note/NoteMedia.css",
     "/css/AddNotesCard/AddNotesCardMedia.css": "/css/AddNotesCard/AddNotesCardMedia.css",
+    "/css/AddNotes/AddNotesMedia.css": "/css/AddNotes/AddNotesMedia.css",
     "/css/AddDetailsCard/AddDetailsCardMedia.css": "/css/AddDetailsCard/AddDetailsCardMedia.css",
     "/css/EditCardData/EditCardDataMedia.css": "/css/EditCardData/EditCardDataMedia.css",
     "/css/Challenges/ChallengesMedia.css": "/css/Challenges/ChallengesMedia.css",
@@ -21,6 +23,5 @@
     "/css/termsOfUsePage/termsOfUseMedia.css": "/css/termsOfUsePage/termsOfUseMedia.css",
     "/css/termsOfUsePage/termsOfUsePage.css": "/css/termsOfUsePage/termsOfUsePage.css",
     "/css/privacyPolicyPage/privacyPolicyMedia.css": "/css/privacyPolicyPage/privacyPolicyMedia.css",
-    "/css/privacyPolicyPage/privacyPolicyPage.css": "/css/privacyPolicyPage/privacyPolicyPage.css",
-    "/css/AddJobTask/AddJobTaskMedia.css": "/css/AddJobTask/AddJobTaskMedia.css"
+    "/css/privacyPolicyPage/privacyPolicyPage.css": "/css/privacyPolicyPage/privacyPolicyPage.css"
 }

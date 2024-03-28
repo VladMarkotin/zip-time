@@ -23,3 +23,9 @@ $timePickerSize: 270px;
     }
 
 }
+
+@media screen and (max-width: 424px) {
+    .editJobTask-editJobTask-dialog {
+        margin: 0 !important;
+    }
+}

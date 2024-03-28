@@ -2,6 +2,7 @@
     <v-dialog 
     v-model="isShowEditCardDataDialog" 
     persistent 
+    content-class="editJobTask-editJobTask-dialog"
     width="500">
         <template v-slot:activator="{ props }">
             <template>

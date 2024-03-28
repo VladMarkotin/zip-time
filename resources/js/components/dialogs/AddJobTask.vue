@@ -16,7 +16,12 @@
 			@addHashCode    = "addHashCode"
 			/>
 		</template>
-		<v-dialog max-width="650px" persistent v-model="isShow">
+		<v-dialog 
+		max-width="650px" 
+		persistent 
+		v-model="isShow"
+		content-class="addJobTask-addJobTask-dialog"
+		>
 			<v-card class="addJobTask_card">
 				<v-card-title class="font-weight-bold v-card-title">Add job/task</v-card-title>
 				<v-card-text>

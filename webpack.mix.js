@@ -33,6 +33,7 @@ mix
     .sass('resources/sass/Challenges/ChallengesMedia.scss', 'public/css/Challenges')
     .sass('resources/sass/EditCardData/EditCardDataMedia.scss', 'public/css/EditCardData')
     .sass('resources/sass/AddDetailsCard/AddDetailsCardMedia.scss', 'public/css/AddDetailsCard')
+    .sass('resources/sass/AddNotes/AddNotesMedia.scss', 'public/css/AddNotes')
     .sass('resources/sass/AddNotesCard/AddNotesCardMedia.scss', 'public/css/AddNotesCard')
     .sass('resources/sass/Note/NoteMedia.scss', 'public/css/Note')
     .sass('resources/sass/AddJobTask/AddJobTaskMedia.scss', 'public/css/AddJobTask')

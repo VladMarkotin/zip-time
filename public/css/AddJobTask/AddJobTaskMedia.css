@@ -24,3 +24,8 @@
     justify-content: flex-start !important;
   }
 }
+@media screen and (max-width: 424px) {
+  .addJobTask-addJobTask-dialog {
+    margin: 0 !important;
+  }
+}

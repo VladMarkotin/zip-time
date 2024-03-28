@@ -2,6 +2,7 @@
     <v-dialog
 		v-model="isShowNotesDialog"
 		scrollable
+        content-class="addNotes-addNotes-dialog"
 		width="auto"
 		>
 		<template v-slot:activator="{ props }">
@@ -135,3 +136,7 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
         },
     }
 </script>
+
+<style>
+    @import url('/css/AddNotes/AddNotesMedia.css');
+</style>
