@@ -35,5 +35,6 @@ mix
     .sass('resources/sass/AddDetailsCard/AddDetailsCardMedia.scss', 'public/css/AddDetailsCard')
     .sass('resources/sass/AddNotesCard/AddNotesCardMedia.scss', 'public/css/AddNotesCard')
     .sass('resources/sass/Note/NoteMedia.scss', 'public/css/Note')
+    .sass('resources/sass/AddJobTask/AddJobTaskMedia.scss', 'public/css/AddJobTask')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');

@@ -1,0 +1,43 @@
+@media screen and (max-width: 650px) {
+    .addJobTask_container {
+        max-width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 510px) {
+    .addJobTask_card {
+        .v-card__text {
+            padding: 12px 6px !important;
+        }
+        .addJobTask_container {
+            .addJobTask-add-hashCode-wrapper {
+                .v-text-field__details {
+                    display: none !important;
+                }
+            }
+            .row {
+                .col:first-child,
+                .col:last-child {
+                    padding: 0 !important;
+                }
+                
+            }
+
+            .addJobTask-add-hashCode-wrapper {
+                .col:first-child {
+                    .v-btn__content {
+                        justify-content: flex-end !important;
+                    }
+                }
+                .col:last-child {
+                    min-height: 37px;
+
+                    .v-btn__content {
+                        justify-content: flex-start !important;
+                    }
+                }
+            }
+        }
+    }
+
+}

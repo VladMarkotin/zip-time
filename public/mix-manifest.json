@@ -21,5 +21,6 @@
     "/css/termsOfUsePage/termsOfUseMedia.css": "/css/termsOfUsePage/termsOfUseMedia.css",
     "/css/termsOfUsePage/termsOfUsePage.css": "/css/termsOfUsePage/termsOfUsePage.css",
     "/css/privacyPolicyPage/privacyPolicyMedia.css": "/css/privacyPolicyPage/privacyPolicyMedia.css",
-    "/css/privacyPolicyPage/privacyPolicyPage.css": "/css/privacyPolicyPage/privacyPolicyPage.css"
+    "/css/privacyPolicyPage/privacyPolicyPage.css": "/css/privacyPolicyPage/privacyPolicyPage.css",
+    "/css/AddJobTask/AddJobTaskMedia.css": "/css/AddJobTask/AddJobTaskMedia.css"
 }
