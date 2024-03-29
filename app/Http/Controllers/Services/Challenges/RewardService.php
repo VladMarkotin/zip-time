@@ -26,12 +26,46 @@ class RewardService
                 'is_active' => 0,
                 'completeness' => 100,
             ]);
-            //die(var_dump($reward->rating));
             User::where([
                 ['id', Auth::id()]
             ])->update([
-                'rating' => ($currentRating + $data['reward']->rating),
+                    'rating' => ($currentRating + $data['reward']->rating),
             ]);
+            self::assignNewChToUser(['chId' => $data['chId']]);
+                //die(var_dump($reward->rating));
+        }
+    }
+
+    /**
+     * array $data
+     * args: ch_id
+     */
+    private static function assignNewChToUser(array $data)
+    {
+        //1. get next challenge`s index
+        //Log::info("Next ch index:".var_export($data) );
+
+        if (isset($data['chId'])) {
+
+            $nextChIndex =  ChallengeModel::select('next_ch_index')->where([
+                ['id', $data['chId'] ] 
+            ])->get()->toArray()[0]['next_ch_index'];
+            //if next ch exists, assign it to user
+            if ($nextChIndex) {
+                $nextChId = ChallengeModel::select('id')->where([
+                    ['index', $nextChIndex ] 
+                ])->get()->toArray()[0]['id'];
+                
+                $dataForNewChallenge = [
+                    "user_id"      => Auth::id(),
+                    "challenge_id" => $nextChId,
+                    'is_active'    => 1,
+                    "created_at"   => DB::raw('CURRENT_TIMESTAMP(0)'),
+                    "updated_at"   => DB::raw('CURRENT_TIMESTAMP(0)')
+                ];
+                UsersChallenges::insert($dataForNewChallenge);
+            }
+
         }
     }
 }

@@ -42,6 +42,7 @@ use App\Http\Controllers\NoteController;
 use App\Models\User;
 use App\Models\DefaultSavedTasks;
 use Illuminate\Support\Facades\Log;
+use App\Events\RewardEvent;
 
 class MainController
 {
@@ -352,6 +353,8 @@ class MainController
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
        // $this->userRatings->getUserRatings(2);
+       RewardEvent::dispatch(['event_prefix' => 'f_vic']);
+
         return response()->json($response); //comment
     }
 
@@ -462,6 +465,9 @@ class MainController
             
         if ($newEduStep != $currentEduStep) {
             $currentUser->update(["edu_step" => $newEduStep]);
+        }
+        if ($newEduStep == 4) {
+            RewardEvent::dispatch(['event_prefix' => 'get_to_know']);
         }
     }
 

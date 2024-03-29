@@ -32,6 +32,7 @@ class ChallengeService
          * Have to get condithions of challenge
          */
         $terms = ChallengeModel::select('id','terms')->where('index', $data['index'])->get()->toArray();
+        Log::info("get to know Quipl");
         foreach ($terms as $val) {
             
             $chId = json_decode($val['id']);
@@ -43,7 +44,6 @@ class ChallengeService
                 ->get();
                 //->toArray();//[0]['is_active'];
                 /*exit;*/
-            Log::info($isActive);
             if ($isActive[0]->is_active) {
                     
                 $terms2 = json_decode($val['terms']);
@@ -59,9 +59,6 @@ class ChallengeService
                 $result = DB::select($unPreparedQuery);
                 $completness = $result[0]->result / $terms2->rules->goal * 100;
                 $completness = ($completness >= 100) ? 100 : $completness; 
-                if ($data['index'] == 'test_reward') {
-                     Log::info(($completness) );
-                }
                 if ($result[0]->result < $terms2->rules->goal) {
                     UsersChallenges::where([
                         ['user_id', Auth::id()],
