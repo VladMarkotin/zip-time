@@ -1,3 +1,9 @@
+@media screen and (max-width: 700px) {
+  .closeDay-ownMark-input-wrapper {
+    max-width: 140px !important;
+    flex: 0 0 100%;
+  }
+}
 @media screen and (max-width: 424px) {
   .closeDay-closeDay-dialog {
     margin: 0 !important;

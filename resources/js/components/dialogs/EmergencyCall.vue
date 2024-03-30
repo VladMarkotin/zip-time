@@ -1,7 +1,7 @@
 <template>
 	<v-dialog 
 	max-width="650px" 
-	content-class="emergencyCall-emergencyCall-dialog"
+	content-class="emergencyCall_emergencyCall-dialog"
 	persistent v-model="isShow"
 	>
 		<v-card>
@@ -24,7 +24,7 @@
 				</v-container>
 			</v-card-text>
 			<v-divider></v-divider>
-			<v-card-actions class="justify-space-between v-card-actions">
+			<v-card-actions class="justify-space-between v-card-actions emergencyCall_emergencyCall-footer">
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
 						<v-btn icon v-on="on" v-on:click="callEmergency">

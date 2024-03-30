@@ -9,7 +9,7 @@
 			<v-card-text>
 				<v-container>
 					<v-row class="justify-center">
-						<v-col cols="3">
+						<v-col cols="3" class="closeDay-ownMark-input-wrapper">
 							<div id="close-day__mark">
 								<v-text-field label="Own Mark" required v-model="ownMark" >
 									<v-icon slot="append">mdi-percent</v-icon>
