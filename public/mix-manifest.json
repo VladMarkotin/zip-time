@@ -10,6 +10,7 @@
     "/css/loginPage/loginPage.css": "/css/loginPage/loginPage.css",
     "/css/indexPage/indexPageMedia.css": "/css/indexPage/indexPageMedia.css",
     "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css",
+    "/css/CloseDay/CloseDayMedia.css": "/css/CloseDay/CloseDayMedia.css",
     "/css/EmergencyCall/EmergencyCallMedia.css": "/css/EmergencyCall/EmergencyCallMedia.css",
     "/css/AddJobTask/AddJobTaskMedia.css": "/css/AddJobTask/AddJobTaskMedia.css",
     "/css/Note/NoteMedia.css": "/css/Note/NoteMedia.css",

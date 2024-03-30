@@ -1,5 +1,9 @@
 <template>
-	<v-dialog max-width="650px" persistent v-model="isShow">
+	<v-dialog 
+	max-width="650px" 
+	content-class="closeDay-closeDay-dialog"
+	persistent v-model="isShow"
+	>
 		<v-card id="close-day__wrapper">
 			<v-card-title class="font-weight-bold v-card-title">Close day</v-card-title>
 			<v-card-text>
@@ -331,4 +335,6 @@
 		width: 50px;
 		margin: auto;
 	}
+
+	@import url('/css/CloseDay/CloseDayMedia.css');
 </style>
