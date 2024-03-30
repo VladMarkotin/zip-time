@@ -1,5 +1,9 @@
 <template>
-	<v-dialog max-width="650px" persistent v-model="isShow">
+	<v-dialog 
+	max-width="650px" 
+	content-class="emergencyCall-emergencyCall-dialog"
+	persistent v-model="isShow"
+	>
 		<v-card>
 			<v-card-title class="font-weight-bold v-card-title">Emergency call</v-card-title>
 			<v-card-text>
@@ -71,3 +75,7 @@
 			}
 		}
 </script>
+
+<style>
+	@import url('/css/EmergencyCall/EmergencyCallMedia.css');
+</style>
