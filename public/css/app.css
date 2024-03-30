@@ -10226,3 +10226,58 @@ body {
 }
 
 /* ==========активатр для боковых кнопок ========== */
+
+
+/* ==========addLog-модалка ========== */
+#AddbacklogModal .modal-dialog {
+    max-width: 500px;
+    position: absolute ;
+    top: calc(50% - 265px) ;
+    left: calc(50% - 250px);
+    margin: 0;
+}
+
+@media screen and (max-width: 531px) {
+    #AddbacklogModal .modal-dialog {
+        max-width: 450px;
+        left: calc(50% - 225px);
+    }
+}
+
+@media screen and (max-width: 460px) {
+    #AddbacklogModal .modal-dialog {
+        max-width: 400px;
+        left: calc(50% - 200px);
+    }
+}
+
+@media screen and (max-width: 424px) {
+    #AddbacklogModal .modal-dialog {
+        max-width: 100%;
+        left: 0;
+    }
+}
+
+/* ==========sendFeedback-модалка ========== */
+
+@media screen and (max-width: 700px) {
+    .main-wrapper  {
+        top: calc(50% - 264px);
+        left: calc(50% - 192px);
+        bottom: auto !important;
+        border-radius: 17px;
+        overflow: hidden;
+        box-shadow: 2px 1px 11px black;
+    }
+}
+
+@media screen and (max-width: 424px) {
+    .main-wrapper  {
+        left: 0;
+        width: 100% !important;
+        border-radius: 0;
+    }
+}
+
+/* ==========sendFeedback-модалка ========== */
+

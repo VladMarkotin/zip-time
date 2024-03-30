@@ -6,7 +6,7 @@
 		width="auto"
 		>
 		<template v-slot:activator="{ props }">
-            <v-row class="p-0 m-0">
+            <v-row class="p-0 m-0 mt-2">
                 <v-col 
                 class="p-0 m-0 d-flex justify-content-end align-center"
                 :cols="9"
