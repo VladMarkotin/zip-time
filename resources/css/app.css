@@ -215,7 +215,7 @@ body {
 .aside-buttons-activator-wrapper {
     height: 50px;
     width: 50px;
-    background-color: rgba(100, 149, 237, 0.7);
+    background-color: rgba(34, 34, 34, 0.97);
     z-index: 19;
     position: fixed;
     right: 0;
@@ -230,7 +230,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -67%);
-    font-size: 2rem;
+    font-size: 2.5rem;
+    color: #fff;
 }
 
 @media screen and (max-width: 450px) {

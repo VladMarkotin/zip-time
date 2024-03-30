@@ -2,4 +2,9 @@
   .emergencyCall_emergencyCall-dialog {
     margin: 0 !important;
   }
+
+  .emergencyCall_emergencyCall-footer {
+    padding-top: 35px !important;
+    padding-bottom: 35px !important;
+  }
 }
