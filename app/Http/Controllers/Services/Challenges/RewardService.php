@@ -40,7 +40,7 @@ class RewardService
      * array $data
      * args: ch_id
      */
-    private static function assignNewChToUser(array $data)
+    public static function assignNewChToUser(array $data)
     {
         //1. get next challenge`s index
         //Log::info("Next ch index:".var_export($data) );
@@ -55,7 +55,7 @@ class RewardService
                 $nextChId = ChallengeModel::select('id')->where([
                     ['index', $nextChIndex ] 
                 ])->get()->toArray()[0]['id'];
-                
+
                 $dataForNewChallenge = [
                     "user_id"      => Auth::id(),
                     "challenge_id" => $nextChId,
@@ -66,6 +66,18 @@ class RewardService
                 UsersChallenges::insert($dataForNewChallenge);
             }
 
+        } elseif( isset($data['first_ch']) ) {
+            $firstChId = ChallengeModel::select('id')->where([
+                ['index', 'get_to_know' ] 
+            ])->get()->toArray()[0]['id'];
+            $dataForNewChallenge = [
+                "user_id"      => Auth::id(),
+                "challenge_id" => $firstChId,
+                'is_active'    => 1,
+                "created_at"   => DB::raw('CURRENT_TIMESTAMP(0)'),
+                "updated_at"   => DB::raw('CURRENT_TIMESTAMP(0)')
+            ];
+            UsersChallenges::insert($dataForNewChallenge);
         }
     }
 }
