@@ -174,7 +174,7 @@ summary::after {
     -o-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
     transform-origin: bottom right;
-    z-index: 9000;
+    z-index: 2;
 }
 
 .backlog-add-button:hover {
@@ -358,7 +358,7 @@ body {
 .feedback-main {
     /* display: none; */
     border: none;
-    border-radius: 17px;
+    /* border-radius: 17px; */
     height: 33rem;
 
     box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
@@ -413,10 +413,10 @@ body {
 }
 
 @media only screen and (max-width: 600px) {
-    .main-wrapper {
+    /* .main-wrapper {
         width: 100%;
         height: 100%;
-    }
+    } */
     .image img {
         width: 100%;
         height: 100%;
@@ -439,4 +439,19 @@ body {
 .personal-results-toggle:hover .personal-results {
     display: block;
     z-index: 1;
+}
+
+@media screen and (max-width: 450px) {
+    .backlog-add-button,
+    .feedback-button {
+       right: -50px;
+       opacity: 0;
+       transition: all .3s ease;
+    }
+
+    .backlog-add-button.aside-button-visible,
+    .feedback-button.aside-button-visible {
+        right: 0;
+        opacity: 1;
+    }
 }

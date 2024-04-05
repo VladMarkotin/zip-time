@@ -21,7 +21,8 @@
         @endif
     @endguest
     <script src="js/NavMenu.js" defer></script>
-
+    <script src="js/AsideButtonsController.js" defer></script>
+ 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -92,7 +93,7 @@
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="{{ __('Toggle navigation') }}">
+                    aria-label="{{ __('Toggle navigation') }}" style="color: #fff;">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -190,6 +191,10 @@
 
             @yield('content')
         </main>
+
+        <div class="aside-buttons-activator-wrapper">
+            <span class="aside-buttons-activator"></span>
+        </div>
 
         <footer class="footer">
             <div class="footer-info">

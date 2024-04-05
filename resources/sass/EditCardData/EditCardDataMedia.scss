@@ -1,0 +1,31 @@
+$timePickerSize: 270px;
+
+@media screen and (max-width: 768px)  {
+    .editCardData_editCard-wrapper {
+        .v-picker__title {
+            padding: 8px;
+            .v-time-picker-title__time {
+                .v-picker__title__btn {
+                    font-size: 60px;
+                }
+                span {
+                    height: 60px;
+                }
+            }
+        }
+
+        .v-picker__body {
+            width: $timePickerSize !important;
+            .v-time-picker-clock__container {
+                flex-basis: $timePickerSize;
+            }
+        }
+    }
+
+}
+
+@media screen and (max-width: 424px) {
+    .editJobTask-editJobTask-dialog {
+        margin: 0 !important;
+    }
+}

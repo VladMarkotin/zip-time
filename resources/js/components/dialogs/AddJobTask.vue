@@ -16,12 +16,17 @@
 			@addHashCode    = "addHashCode"
 			/>
 		</template>
-		<v-dialog max-width="650px" persistent v-model="isShow">
-			<v-card>
+		<v-dialog 
+		max-width="650px" 
+		persistent 
+		v-model="isShow"
+		content-class="addJobTask-addJobTask-dialog"
+		>
+			<v-card class="addJobTask_card">
 				<v-card-title class="font-weight-bold v-card-title">Add job/task</v-card-title>
 				<v-card-text>
-					<v-container>
-						<v-row align="center">
+					<v-container class="addJobTask_container">
+						<v-row align="center" class="addJobTask-add-hashCode-wrapper">
 							<v-col cols="1">
 								<template v-if="(task.name.length >= 4 && (task.hashCode == '#' || isChangedHashCodeTemplate)) ">
 									<AddHashCodeButton @addHashCodeButtonClick="isShowAddHashCodeDialog = true"/>
@@ -362,4 +367,6 @@
 		width: 60%;
 		margin: 0 auto;
 	}
+
+	@import url('/css/AddJobTask/AddJobTaskMedia.css');
 </style>

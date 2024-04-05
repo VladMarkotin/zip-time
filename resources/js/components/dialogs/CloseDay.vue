@@ -1,11 +1,15 @@
 <template>
-	<v-dialog max-width="650px" persistent v-model="isShow">
+	<v-dialog 
+	max-width="650px" 
+	content-class="closeDay-closeDay-dialog"
+	persistent v-model="isShow"
+	>
 		<v-card id="close-day__wrapper">
 			<v-card-title class="font-weight-bold v-card-title">Close day</v-card-title>
 			<v-card-text>
 				<v-container>
 					<v-row class="justify-center">
-						<v-col cols="3">
+						<v-col cols="3" class="closeDay-ownMark-input-wrapper">
 							<div id="close-day__mark">
 								<v-text-field label="Own Mark" required v-model="ownMark" >
 									<v-icon slot="append">mdi-percent</v-icon>
@@ -331,4 +335,6 @@
 		width: 50px;
 		margin: auto;
 	}
+
+	@import url('/css/CloseDay/CloseDayMedia.css');
 </style>

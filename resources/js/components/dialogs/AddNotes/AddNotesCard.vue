@@ -59,7 +59,7 @@
         </v-row>
 		<v-divider class="mt-2 mb-2"></v-divider>
         <v-card-text 
-        class="pb-0"
+        class="pb-0 addNotesCard-notes-wrapper"
         style="height: 450px; position: relative; overflow-x: hidden"
         >
             <v-list 
@@ -68,7 +68,8 @@
             <transition-group name="list" tag="div" class="notes-wrapper">
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
-                    :item = "item"
+                    :item        = "item"
+                    :screenWidth = "screenWidth"
                     @deleteNote         = "deleteNote"
                     @showEditNotesDialog = "showEditNotesDialog"
                     />
@@ -104,7 +105,7 @@
                 >
                     <v-alert 
                     v-if="isShowAlert"
-                    class="custom-alert"
+                    class="custom-alert addNotesCard-alert"
                     :type="alertData.type"
                     >
                         {{ alertData.text }}
@@ -158,6 +159,9 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 type: Object,
                 required: true,
             },
+            screenWidth: {
+                type: Number,
+            }
         },
         data() {
             return {
@@ -347,4 +351,6 @@ import EditNotesDialog from './EditNotesDialog.vue';
 		from { opacity: 1; left: 0;}
 		to { opacity: 0; left: 10px;}
 	}
+
+    @import url('/css/AddNotesCard/AddNotesCardMedia.css');
 </style>

@@ -19,10 +19,36 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text class="details-cards-wrapper">
+            <v-card-text class="details-cards-wrapper" :style="{ height: isMobile ? '450px' : '400px' }">
                 <!-- возможно удалить этот блок -->
                     <template>
-                        <v-row>
+                        <v-row 
+                        class="m-0 p-0 addDetailsCard_addNewSubtaskBtn-wrapper d-flex justify-content-center align-items-center"
+                        v-if="isMobile"
+                        >
+                            <v-btn
+                            class="addDetailsCard_addNewSubtaskBtn-mobile addDetailsCard_btn"
+                            @click="isShowAddNewDetailMobileDialog = true"
+                            >
+                                Add New Subtask
+                            </v-btn>
+                            <AddNewDetailMobile 
+                            v-if="isShowAddNewDetailMobileDialog"
+                            :isShowAddNewDetailMobileDialog = "isShowAddNewDetailMobileDialog"
+                            :newDetail                      = "newDetail"
+                            :subtaskRules                   = "subtaskRules"
+                            :subtaskTitleRules              = "subtaskTitleRules"
+                            :subtaskTextRules               = "subtaskTextRules"
+                            :dataOnValidofInputs            = "dataOnValidofInputs"
+                            @closeAddNewDetailMobileDialog  = "isShowAddNewDetailMobileDialog = false"
+                            @setNewDetail                   = "setNewDetail"
+                            @addSubtask                     = "addDetail"
+                            />
+                        </v-row>
+                        <v-row 
+                        v-else
+                        class="addDetailsCard_addNewDetail-inputs-wrapper" 
+                        >
                             <v-col
                             class="pb-0"
                             >
@@ -89,10 +115,10 @@
                                     <transition-group name="detailsList" tag="div" style="width: 100%;">
                                         <v-expansion-panel v-for="(v, i) in details" :key="v.uniqKey">
                                             <v-expansion-panel-header>
-                                                <v-row class="p-0 m-0">
+                                                <v-row class="p-0 m-0 addDetailsCard_accordion-header-wrapper">
                                                     <v-col
                                                     cols="9" 
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-title-wrapper"
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-title-wrapper addDetailsCard_accordion-title-wrapper"
                                                     >
                                                         <div class="text-wrapper">
                                                             <p class="text-md-center">{{ v.title }} </p>
@@ -100,7 +126,7 @@
                                                     </v-col>
                                                     <v-col
                                                     cols="3" 
-                                                    class="p-0 m-0"
+                                                    class="p-0 m-0 addDetailsCard_accordion-icons-wrapper"
                                                     >
                                                         <v-row
                                                         class="m-0 pl-2 pr-4"
@@ -151,9 +177,9 @@
                                             v-bind:class="{ done: v.is_ready }"
                                             >
                                                 <v-divider></v-divider>
-                                                <v-row class="p-0 m-0">
+                                                <v-row class="p-0 m-0 addDetailsCard_accordion-body-wrapper">
                                                     <v-col 
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper addDetailsCard_accordion-text-wrapper"
                                                     cols="9"
                                                     >
                                                         <div class="text-wrapper">
@@ -161,7 +187,7 @@
                                                         </div>
                                                     </v-col>
                                                     <v-col 
-                                                    class="p-0 m-0"
+                                                    class="p-0 m-0 addDetailsCard_accordion-body-buttons-wrapper"
                                                     cols="3"
                                                     >
                                                         <v-row class="m-0 pl-2">
@@ -169,7 +195,7 @@
                                                                 <v-checkbox 
                                                                 class="isReady-checkbox"
                                                                 v-model="v.is_ready" 
-                                                                label="Is Ready?" 
+                                                                :label="screenWidth > 550 ? 'Is Ready?' : ''" 
                                                                 color="red"
                                                                 @change="completed(v)" 
                                                                 hide-details></v-checkbox>
@@ -196,9 +222,9 @@
                                             v-bind:class="{ done: v.is_ready }"
                                             >
                                                 <v-divider></v-divider>
-                                                <v-row class="p-0 m-0">
+                                                <v-row class="p-0 m-0 addDetailsCard_accordion-body-wrapper">
                                                     <v-col 
-                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper"
+                                                    class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper addDetailsCard_accordion-text-wrapper"
                                                     cols="9"
                                                     >
                                                         <div class="text-wrapper">
@@ -206,6 +232,7 @@
                                                         </div>
                                                     </v-col>
                                                     <v-col 
+                                                    class="addDetailsCard_accordion-body-buttons-wrapper addDetailsCard_accordion-body-readySubtask"
                                                     cols="3"
                                                     >
                                                         <v-row class="p-0 m-0 d-flex justify-content-center align-items-center subtask-detail-wrapper">
@@ -235,10 +262,10 @@
                     </template>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions style="min-height: 74px;">
+            <v-card-actions style="min-height: 74px;" class="addDetailsCard-subtasks-radiobuttons-container">
                 <v-row 
                 v-if="details.length > 1"
-                class="p-0 m-0 d-flex justify-content-center">
+                class="p-0 m-0 d-flex justify-content-center addDetailsCard_subtasks-radiobutoons-wrapper">
                     <v-col 
                     class="p-0 m-0 subtasks-radiobuttons-wrapper"
                     cols="auto"
@@ -263,16 +290,17 @@
                 </v-row>
             </v-card-actions>
             <v-card-actions>
-                <v-row class="d-flex align-items-center justify-content-between p-0 m-0">
+                <v-row class="d-flex align-items-center justify-content-between p-0 m-0" id="addDetailsCard_card-footer">
                     <v-col
                     cols="4"
+                    class="addDetailsCard_viewAll-button-wrapper"
                     >
                         <v-btn 
                         v-if="isSavedTask"
                         @click="showSubtasks"
                         color="blue-darken-1" 
                         variant="text" 
-                        class="details-button"
+                        class="details-button addDetailsCard_btn"
                         >
                             {{ displayedDetails[displayedDetails.currentMode].showSubtasksButtonText}}
                         </v-btn>
@@ -294,13 +322,13 @@
                     </v-col>
                     <v-col
                     cols="3"
-                    class="d-flex justify-content-end align-items-center"
+                    class="d-flex justify-content-end align-items-center addDetailsCard_close-button-wrapper"
                     >
                         <v-btn 
                         @click="$emit('closeAddDetailsDialog')"
                         color="blue-darken-1" 
                         variant="text" 
-                        class="details-button"
+                        class="details-button addDetailsCard_btn"
                         >
                             Close
                         </v-btn>
@@ -328,6 +356,7 @@ import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import EditButton from '../../UI/EditButton.vue';
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
+import AddNewDetailMobile from './AddNewDetailMobile.vue';
 import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
@@ -356,6 +385,9 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             generateUniqKey: {
                 type: Function,
+            },
+            screenWidth: {
+                type: Number,
             }
         },
         data() {
@@ -425,10 +457,11 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     {value: 'created-at-desc', label: 'New first',},
                     {value: 'is_ready-asc', label: 'Ready first',},
                     {value: 'unready-asc', label: 'Unready first',},
-                ]
+                ],
+                isShowAddNewDetailMobileDialog: false,
             }
         },
-        components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader},
+        components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader, AddNewDetailMobile},
         watch: {
             detailsSortBy(sortCritVal) {
                 this.updateDetailsSortingCrit(sortCritVal);
@@ -447,6 +480,11 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     this.newDetail.text
                 );
             }
+        },
+        computed: {
+            isMobile() {
+                return this.screenWidth < 768; 
+            }  
         },
         methods: {
             updateDetails(details) {
@@ -642,6 +680,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     this.$emit(resetDayMarkToDefVal);
                 }
             },
+
+            setNewDetail(newDetail) {
+                Object.assign(this.newDetail, newDetail);
+            }
         },
 
         created() {
@@ -662,7 +704,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
 <style scoped>
     .details-cards-wrapper {
-        height: 300px; 
         position: relative;
     }
 
@@ -778,4 +819,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 		from { opacity: 1; left: 0;}
 		to { opacity: 0; left: 10px;}
 	}
+
+    @import url('/css/AddDetailsCard/AddDetailsCardMedia.css');
 </style>

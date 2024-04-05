@@ -1,5 +1,4 @@
 <template>  
-
 	<v-card :id="!num ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
 		<div class="card-demo">
 			<template v-if="isShowAddHashCodeDialog">
@@ -72,68 +71,132 @@
 		
 		<v-list>
 			<v-list-item>
-				<v-list-item-content>Time:</v-list-item-content>
-				<v-list-item-content class="align-end" v-if="item.time.includes('00:')">{{item.time}}
-					 minutes
-				</v-list-item-content>
-                <v-list-item-content class="align-end" v-else-if="item.time.includes('01:00')">{{item.time}}
-					 hour
-				</v-list-item-content>
-				<v-list-item-content class="align-end" v-else>{{item.time}}
-					 hours
-				</v-list-item-content>
-				<EditCardData 
-				:currentTaskPriority = "item.priority"
-				:currentTaskTime     = "item.time"
-				@saveChanges = "changeTime"
-				/>
-			</v-list-item>
-
-			<v-list-item>
-				<v-list-item-content>Details:</v-list-item-content>
-				<v-list-item-content class="align-end">
-					<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
-				</v-list-item-content>
-				<template>
-					<AddDetails 
-					:num                = "num"
-					:item               = "item"
-					:details            = "details"
-					:completedPercent   = "completedPercent"
-					:detailsSortingCrit = "detailsSortingCrit"
-					@updateDetails            = "updateDetails"
-					@updateCompletedPercent   = "updateCompletedPercent"
-					@updateDetailsSortingCrit = "updateDetailsSortingCrit"
-					@resetSortingToDefVal     = "resetSortingToDefVal"
-					@resetDayMarkToDefVal     = "resetDayMarkToDefVal"
-					/>
-				</template>
-				<template>
-					<CreateSubplanGPT 
-					:requestData="{
-						label: 'Request: create subplan for',
-						taskName: item.taskName,
-						taskHash: item.hash,
-						taskId: item.taskId,
-					}"
-					/>
-				</template>
-			</v-list-item>
-			<v-list-item>
 				<v-row class="p-0 m-0">
-					<v-col class="p-0">
-						<v-row class="p-0 m-0">
-							<v-col class="p-0 d-flex">
-								<v-list-item-content>Note:</v-list-item-content>
-							</v-col>
-							<v-col class="p-0">
-								<v-list-item-content class="align-end">
-									<v-textarea counter="256" rows="2" outlined shaped v-model="item.notes"></v-textarea>
-								</v-list-item-content>	
+					<v-col 
+					class="p-0 m-0"
+					:cols="4"
+					>
+						<v-list-item-content>Time:</v-list-item-content>
+					</v-col>
+					<v-col 
+					class="p-0 m-0"
+					:cols="6"
+					>
+						<v-list-item-content class="justify-content-center" v-if="item.time.includes('00:')">{{item.time}}
+							 minutes
+						</v-list-item-content>
+						<v-list-item-content class="justify-content-center" v-else-if="item.time.includes('01:00')">{{item.time}}
+							 hour
+						</v-list-item-content>
+						<v-list-item-content class="justify-content-center" v-else>{{item.time}}
+							 hours
+						</v-list-item-content>
+					</v-col>
+					<v-col 
+					class="p-0 m-0 "
+					:cols="2"
+					>
+						<v-row 
+						class="p-0 m-0"
+						style="height: 100%"
+						>
+							<v-col 
+							style="height: 100%"
+							class="p-0 m-0 d-flex justify-content-end align-items-center"
+							:cols="9"
+							>
+								<EditCardData 
+								:currentTaskPriority = "item.priority"
+								:currentTaskTime     = "item.time"
+								:screenWidth         = "screenWidth"
+								@saveChanges = "changeTime"
+								/>
 							</v-col>
 						</v-row>
 					</v-col>
-					<v-col class="p-0 d-flex flex-column justify-center" cols="auto" style="min-width: 53px;">
+
+					
+				</v-row>
+			</v-list-item>
+
+			<v-list-item>
+				<v-row class="p-0 m-0">
+					<v-col 
+					class="p-0 m-0" 
+					:cols="4">
+						<v-list-item-content>Details:</v-list-item-content>
+					</v-col>
+					<v-col 
+					class="p-0 m-0"
+					:cols="6"
+					>
+						<v-list-item-content class="align-end">
+							<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
+						</v-list-item-content>
+					</v-col>
+					<v-col 
+					class="p-0 m-0 "
+					:cols="2"
+					>
+						<v-row 
+						class="p-0 m-0"
+						style="height: 100%"
+						>
+							<v-col 
+							style="height: 100%; gap: 5px"
+							class="p-0 m-0 d-flex flex-column justify-content-start align-items-end"
+							:cols="9"
+							>
+								<template>
+									<AddDetails 
+									:num                = "num"
+									:item               = "item"
+									:details            = "details"
+									:completedPercent   = "completedPercent"
+									:detailsSortingCrit = "detailsSortingCrit"
+									:screenWidth        = "screenWidth"
+									@updateDetails            = "updateDetails"
+									@updateCompletedPercent   = "updateCompletedPercent"
+									@updateDetailsSortingCrit = "updateDetailsSortingCrit"
+									@resetSortingToDefVal     = "resetSortingToDefVal"
+									@resetDayMarkToDefVal     = "resetDayMarkToDefVal"
+									/>
+								</template>
+								<template>
+									<CreateSubplanGPT 
+									:requestData="{
+										label: 'Request: create subplan for',
+										taskName: item.taskName,
+										taskHash: item.hash,
+										taskId: item.taskId,
+									}"
+									/>
+								</template>
+							</v-col>
+						</v-row>
+					</v-col>
+				</v-row>
+			</v-list-item>
+			<v-list-item>
+				<v-row class="p-0 m-0">
+					<v-col 
+					class="p-0 m-0"
+					:cols="4"
+					>
+						<v-list-item-content>Note:</v-list-item-content>
+					</v-col>
+					<v-col 
+					class="p-0 m-0"
+					:cols="6"
+					>
+						<v-list-item-content class="align-end ">
+							<v-textarea counter="256" rows="2" outlined shaped v-model="item.notes"></v-textarea>
+						</v-list-item-content>	
+					</v-col>
+					<v-col 
+					class="p-0 m-0"
+					:cols="2"
+					>
 						<template
 						v-if="item.hash !== '#'"
 						>
@@ -142,6 +205,7 @@
 							:item             = "item"
 							:notesTodayAmount = "noteInfo.todayAmount"
 							:notesList        = "noteInfo.notesList"  
+							:screenWidth      = "screenWidth"
 							@updateNotesInfo  = "setNotesInfo"
 							/>
 						</template>
@@ -226,13 +290,13 @@
 						<div
 						v-if="isShowUpdateCardNotification"
 						style="width: inherit;"
-						class="d-flex justify-content-center"
+						class="d-flex justify-content-center card_update-card-notification-wrapper"
 						key="updante-card-not"
 						>
 							<span 
-							class="update-card-notification" 
+							class="update-card-notification card_update-card-notification" 
 							>
-								Don't forget to save your mark!
+								Don't forget<br class="update-card-notifiactiob-br"> to save your mark!
 							</span>
 						</div>
 						<span 
@@ -263,7 +327,7 @@
 	import EditCardData from '../dialogs/EditCardData.vue';
 	export default
 	{
-		props : ['item', 'num'],
+		props : ['item', 'num', 'screenWidth'],
 		data()
 		{
 			return {
@@ -802,6 +866,11 @@
 		width: 0;
 	} */
 	/* ============================================ */
+
+	.update-card-notifiactiob-br {
+		display: none;
+	}
+
 	@keyframes show {
 		from { opacity: 0; top: -10px;}
 		to { opacity: 1; top: 0;}
@@ -826,4 +895,6 @@
 		from { opacity: 1; left: 0;}
 		to { opacity: 0; left: 10px;}
 	}
+
+	@import url('/css/Card/CardMedia.css');
 </style>

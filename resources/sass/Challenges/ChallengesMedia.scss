@@ -1,0 +1,50 @@
+@media screen and (max-width: 1100px) {
+    .challenges {
+        .challenges_description-wrapper {
+            flex: 0 1 auto;
+            max-width: 60%;
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .challenges {      
+        .challenges_description-wrapper {
+            max-width: 80%;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .challenges {      
+        .challenges_description-wrapper {
+            gap: 10px;
+            .challenge_accordion-body {
+                .v-expansion-panel-content__wrap {
+                 padding: 5px 8px;
+    
+                 p.challenge-description {
+                    margin-bottom: 0 !important;
+                    text-indent: 1rem;
+                    text-align: left;
+                    overflow-wrap: break-word;
+                 }
+                }
+            }
+        }
+
+        .challenges_card {
+            margin: 0 !important;
+            padding: 4px !important;
+        }
+
+        .v-window__next {
+            margin: 0 3px 0 0;
+        }
+
+        .v-window__prev {
+            margin: 0 0 0 3px;
+        }
+    }
+
+}

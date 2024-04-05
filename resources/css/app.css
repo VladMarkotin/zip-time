@@ -66,6 +66,24 @@ html {
     z-index: 10000;
  }
 
+ /* бургер меню */
+
+    .navbar-light .navbar-toggler {
+        border-color: #fff;
+    }
+
+    /* изменен цвет самого бургера на белый */
+    .navbar-toggler .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    }
+    /* изменен цвет самого бургера на белый */
+
+    #navbarSupportedContent {
+        margin-top: 12px;
+    }
+
+ /* бургер меню */
+
 .main {
     overflow: hidden;
     max-width: 100%;
@@ -191,3 +209,100 @@ body {
 }
 
 /* ====================== */
+
+/* ==========активатр для боковых кнопок ========== */
+
+.aside-buttons-activator-wrapper {
+    height: 50px;
+    width: 50px;
+    background-color: rgba(34, 34, 34, 0.97);
+    z-index: 19;
+    position: fixed;
+    right: 0;
+    bottom: 3%;
+    border-radius: 50%;
+    display: none;
+}
+
+.aside-buttons-activator-wrapper::after {
+    content: "...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -67%);
+    font-size: 2.5rem;
+    color: #fff;
+}
+
+@media screen and (max-width: 450px) {
+    .aside-buttons-activator-wrapper {
+        display: block;
+    }
+
+    .aside-buttons-activator-wrapper.active::after   {
+        display: none;
+    }
+
+    .aside-buttons-activator-wrapper.active {
+        background-image: url('/images/asideActivator_close_icon.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 60%;
+    }
+}
+
+/* ==========активатр для боковых кнопок ========== */
+
+
+/* ==========addLog-модалка ========== */
+#AddbacklogModal .modal-dialog {
+    max-width: 500px;
+    position: absolute ;
+    top: calc(50% - 265px) ;
+    left: calc(50% - 250px);
+    margin: 0;
+}
+
+@media screen and (max-width: 531px) {
+    #AddbacklogModal .modal-dialog {
+        max-width: 450px;
+        left: calc(50% - 225px);
+    }
+}
+
+@media screen and (max-width: 460px) {
+    #AddbacklogModal .modal-dialog {
+        max-width: 400px;
+        left: calc(50% - 200px);
+    }
+}
+
+@media screen and (max-width: 424px) {
+    #AddbacklogModal .modal-dialog {
+        max-width: 100%;
+        left: 0;
+    }
+}
+
+/* ==========sendFeedback-модалка ========== */
+
+@media screen and (max-width: 700px) {
+    .main-wrapper  {
+        top: calc(50% - 264px);
+        left: calc(50% - 192px);
+        bottom: auto !important;
+        border-radius: 17px;
+        overflow: hidden;
+        box-shadow: 2px 1px 11px black;
+    }
+}
+
+@media screen and (max-width: 424px) {
+    .main-wrapper  {
+        left: 0;
+        width: 100% !important;
+        border-radius: 0;
+    }
+}
+
+/* ==========sendFeedback-модалка ========== */

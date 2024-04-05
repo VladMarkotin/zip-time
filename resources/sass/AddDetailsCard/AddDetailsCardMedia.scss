@@ -1,0 +1,107 @@
+@media screen and (max-width: 900px) {
+
+    .addDetailsCard-subtasks-radiobuttons-container {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+
+        .v-messages {
+            min-height: 0;
+        }
+    }
+
+    #addDetailsCard_card-footer {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+
+        >div {
+            max-width: 100%;
+            padding: 4px;
+        }
+        
+        .addDetailsCard_viewAll-button-wrapper,
+        .addDetailsCard_close-button-wrapper {
+            grid-row: 2/3;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .addDetailsCard_addNewSubtaskBtn-wrapper {
+        .addDetailsCard_addNewSubtaskBtn-mobile {
+            max-width: 40%;
+        }
+    }
+
+    #addDetailsCard_card-footer {
+        .details-alert-wrapper {
+            grid-column: 1/3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .details-alert {
+                max-width: 80%;
+            }
+        }
+    }
+
+    .addDetailsCard_accordion-body-wrapper {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+
+        .addDetailsCard_accordion-body-buttons-wrapper,
+        .addDetailsCard_accordion-text-wrapper {
+            max-width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 550px) {
+
+    .addDetailsCard_addNewSubtaskBtn-wrapper {
+        .addDetailsCard_addNewSubtaskBtn-mobile {
+            max-width: 60%;
+        }
+    }
+
+    .addDetailsCard_subtasks-radiobutoons-wrapper {
+        div[role="radiogroup"] {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .addDetailsCard_accordion-header-wrapper {
+        display: grid;
+        grid-template-columns: 3fr 1.5fr;
+
+        .addDetailsCard_accordion-title-wrapper {
+            max-width: 100% !important;
+        }
+
+        .addDetailsCard_accordion-icons-wrapper {
+            max-width: 100%;
+
+            >div {
+                padding: 0 !important;
+            }
+        }
+    }
+
+    .addDetailsCard_accordion-body-wrapper {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+    }
+
+    .addDetailsCard_accordion-body-readySubtask {
+        padding: 0px ;
+    }
+}
+
+@media screen and (max-width: 435px) {
+    .addDetailsCard_btn {
+        padding: 15px !important;
+        min-width: 0px !important;
+
+    }
+}

@@ -20,7 +20,6 @@ var PageSmoothAppear = /*#__PURE__*/function () {
       window.addEventListener('load', function () {
         mainPreloader.remove();
         document.getElementById('app').style.opacity = 1;
-        console.log('страница загрузилась');
       });
     }
   }]);

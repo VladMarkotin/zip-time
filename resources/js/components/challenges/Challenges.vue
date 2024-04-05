@@ -20,11 +20,11 @@
         >
           <v-card
             elevation="2"
-            class="ma-2 p-3"
+            class="m-2 p-3 challenges_card"
           >
             <v-card-title class="pb-2 pt-0 mb-2 justify-content-center ">{{ challenge.title }}</v-card-title>
             <v-row class="challenge-content-wrapper p-0 m-0">
-              <v-col class="p-0 m-0 d-flex flex-column align-items-center " cols="5">
+              <v-col class="p-0 m-0 d-flex flex-column align-items-center challenges_description-wrapper" cols="5">
                 <div style="width: 100%;" class="mb-2">
                   <v-expansion-panels 
                   style="width: 100%;"
@@ -38,7 +38,7 @@
                           Challenge description:
                         </span>
                       </v-expansion-panel-header>
-                      <v-expansion-panel-content>
+                      <v-expansion-panel-content class="challenge_accordion-body">
                         <p class="challenge-description mb-2">
                           {{ getChallengeDataById(challenge.id, 'description')}}
                         </p>
@@ -159,4 +159,6 @@ export default {
     opacity: 0;
     transform: translateX(5%);
   }
+
+  @import url('/css/Challenges/ChallengesMedia.css');
 </style>

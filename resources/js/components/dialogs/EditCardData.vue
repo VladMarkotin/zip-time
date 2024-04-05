@@ -2,13 +2,14 @@
     <v-dialog 
     v-model="isShowEditCardDataDialog" 
     persistent 
+    content-class="editJobTask-editJobTask-dialog"
     width="500">
         <template v-slot:activator="{ props }">
             <template>
                 <EditButton @click="isShowEditCardDataDialog = true" />
             </template>
         </template>
-        <v-card class="pt-3 pb-3">
+        <v-card class="pt-3 pb-3 editCardData_editCard-wrapper">
             <v-card-text class="pb-2">
                 <v-row class="p-0 m-0">
                     <h4 class="p-0" style="font-size: 1rem;">Edit task`s priority:</h4>
@@ -26,6 +27,7 @@
                            :width             = "200"
 						   :tooltipData       = "tooltipPrioritiesData"
 						   :isShowDescription = "false"
+                           :screenWidth       = "screenWidth"
                            />
                         </template>
                 </v-select>
@@ -86,6 +88,10 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
             currentTaskTime: {
                 type: String,
                 required: true
+            },
+
+            screenWidth: {
+                type: Number,
             }
         },
         data() {
@@ -100,14 +106,15 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         components: {EditButton, VSelectTooptip},
         computed: {
             tooltipPrioritiesData() {
-					return {
-						titles: {
-							'1' : 'usual',
-							'2' : 'important',
-							'3' : 'extremly imortant',
-						}
+				return {
+					titles: {
+						'1' : 'usual',
+						'2' : 'important',
+						'3' : 'extremly imortant',
 					}
-        		}
+				}
+        	}
+            
         },
         watch: {
             isShowEditCardDataDialog(isDialogOpen) {
@@ -149,3 +156,7 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
 
     };
 </script>
+
+<style>
+     @import url('/css/EditCardData/EditCardDataMedia.css');
+</style>

@@ -1,0 +1,31 @@
+@media screen and (max-width: 650px) {
+  .addJobTask_container {
+    max-width: 100% !important;
+  }
+}
+@media screen and (max-width: 510px) {
+  .addJobTask_card .v-card__text {
+    padding: 12px 6px !important;
+  }
+  .addJobTask_card .addJobTask_container .addJobTask-add-hashCode-wrapper .v-text-field__details {
+    display: none !important;
+  }
+  .addJobTask_card .addJobTask_container .row .col:first-child,
+.addJobTask_card .addJobTask_container .row .col:last-child {
+    padding: 0 !important;
+  }
+  .addJobTask_card .addJobTask_container .addJobTask-add-hashCode-wrapper .col:first-child .v-btn__content {
+    justify-content: flex-end !important;
+  }
+  .addJobTask_card .addJobTask_container .addJobTask-add-hashCode-wrapper .col:last-child {
+    min-height: 37px;
+  }
+  .addJobTask_card .addJobTask_container .addJobTask-add-hashCode-wrapper .col:last-child .v-btn__content {
+    justify-content: flex-start !important;
+  }
+}
+@media screen and (max-width: 424px) {
+  .addJobTask-addJobTask-dialog {
+    margin: 0 !important;
+  }
+}

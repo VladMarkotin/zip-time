@@ -2,28 +2,40 @@
     <v-dialog
 		v-model="isShowNotesDialog"
 		scrollable
+        content-class="addNotes-addNotes-dialog"
 		width="auto"
 		>
 		<template v-slot:activator="{ props }">
-			<div class="d-flex justify-space-between align-center">
-				<v-btn
-				icon
-				v-bind="props"
-				@click="showAddNotesDialog"
-				:id="!num ? 'card-notes' : false"
-				>
-				<v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
-				</v-btn>
-				<span>
-					{{ notesTodayAmount }}
-				</span>
-			</div>
+            <v-row class="p-0 m-0 mt-2">
+                <v-col 
+                class="p-0 m-0 d-flex justify-content-end align-center"
+                :cols="9"
+                >
+                    <v-btn
+                    icon
+                    v-bind="props"
+                    @click="showAddNotesDialog"
+                    :id="!num ? 'card-notes' : false"
+                    >
+                    <v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
+                    </v-btn>
+                </v-col>
+                <v-col
+                class="p-0 m-0 d-flex justify-content-end align-center"
+                :cols=3
+                >
+                    <span>
+                        {{ notesTodayAmount }}
+                    </span>
+                </v-col>
+            </v-row>
 		</template>
 		<template v-if="isShowNotesDialog">
             <AddNotesCard 
-            :isLoading = "isLoading"
-            :notesList = "notesList"
-            :item       = "item"
+            :isLoading   = "isLoading"
+            :notesList   = "notesList"
+            :item        = "item"
+            :screenWidth = "screenWidth"
             @updateNotesInfo     = "updateNotesInfo"
             @closeAddNotesDialog = "closeAddNotesDialog"
             />
@@ -48,6 +60,9 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
                 type: Object,
                 required: true,
             },
+            screenWidth: {
+                type: Number,
+            }
         },
         data() {
             return {
@@ -121,3 +136,7 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
         },
     }
 </script>
+
+<style>
+    @import url('/css/AddNotes/AddNotesMedia.css');
+</style>
