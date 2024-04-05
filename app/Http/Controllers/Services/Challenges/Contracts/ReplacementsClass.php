@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Services\Challenges\Contracts;
 
 use Auth;
 use App\Http\Controllers\Services\Configs\DefaultConfigs;
+use Carbon\Carbon;
 
 class ReplacementsClass
 {
@@ -26,6 +27,9 @@ class ReplacementsClass
             }),
             '{minTestMark}' => (function ($index = 'minTestMark') {
                 return 89;
+            }),
+            '{today}' => (function () {
+                return Carbon::today()->toDateString();
             }),
         ];
     }

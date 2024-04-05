@@ -34,6 +34,8 @@ class RewardListener
     public function handle(RewardEvent $event)
     {
         $chIndex = $event->getEventPrefix();
-        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => $chIndex]);
+        foreach ($chIndex as $v) {
+            $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => $v]);
+        }
     }
 }

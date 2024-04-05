@@ -48,7 +48,7 @@ class EstimationController extends Controller
             : 'estimateTaskWithoutUncomReqSubtask';
         $response = json_encode($this->$currentMethod($request), JSON_UNESCAPED_UNICODE);
         $challengeModel = new ChallengeModel();    
-        RewardEvent::dispatch(['event_prefix' => 'estimate_task']);
+        RewardEvent::dispatch(['event_prefix' => ['estimate_task'] ]);
 
         return  $response;
     }

@@ -353,7 +353,7 @@ class MainController
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
        // $this->userRatings->getUserRatings(2);
-       RewardEvent::dispatch(['event_prefix' => 'f_vic']);
+        RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin'] ]);
 
         return response()->json($response); //comment
     }
@@ -467,7 +467,7 @@ class MainController
             $currentUser->update(["edu_step" => $newEduStep]);
         }
         if ($newEduStep == 4) {
-            RewardEvent::dispatch(['event_prefix' => 'get_to_know']);
+            RewardEvent::dispatch(['event_prefix' => ['get_to_know'] ]);
         }
     }
 
