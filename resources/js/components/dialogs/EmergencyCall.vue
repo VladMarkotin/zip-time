@@ -110,7 +110,7 @@ import { watch } from 'vue';
 				},
 				isDateSet() {
 					const dates = this.dates;
-					return dates.length == 2 && dates.every(date => !!date);
+					return dates.every(date => !!date);
 				}
 			},
 			watch: {
