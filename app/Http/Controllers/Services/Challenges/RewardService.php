@@ -50,20 +50,24 @@ class RewardService
             $nextChIndex =  ChallengeModel::select('next_ch_index')->where([
                 ['id', $data['chId'] ] 
             ])->get()->toArray()[0]['next_ch_index'];
+            // Log::info("Next ch index:" );
+            $nextChIndexArray = explode(';', $nextChIndex);
             //if next ch exists, assign it to user
-            if ($nextChIndex) {
-                $nextChId = ChallengeModel::select('id')->where([
-                    ['index', $nextChIndex ] 
-                ])->get()->toArray()[0]['id'];
-
-                $dataForNewChallenge = [
-                    "user_id"      => Auth::id(),
-                    "challenge_id" => $nextChId,
-                    'is_active'    => 1,
-                    "created_at"   => DB::raw('CURRENT_TIMESTAMP(0)'),
-                    "updated_at"   => DB::raw('CURRENT_TIMESTAMP(0)')
-                ];
-                UsersChallenges::insert($dataForNewChallenge);
+            if (count($nextChIndexArray) ) {
+                foreach ($nextChIndexArray as $v) {
+                    $nextChId = ChallengeModel::select('id')->where([
+                        ['index', $v ] 
+                    ])->get()->toArray()[0]['id'];
+    
+                    $dataForNewChallenge = [
+                        "user_id"      => Auth::id(),
+                        "challenge_id" => $nextChId,
+                        'is_active'    => 1,
+                        "created_at"   => DB::raw('CURRENT_TIMESTAMP(0)'),
+                        "updated_at"   => DB::raw('CURRENT_TIMESTAMP(0)')
+                    ];
+                    UsersChallenges::insert($dataForNewChallenge);
+                }
             }
 
         } elseif( isset($data['first_ch']) ) {
