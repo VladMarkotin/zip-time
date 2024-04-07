@@ -1025,4 +1025,6 @@ export default {
    .tasks-counter-enter-active, .tasks-counter-leave-active {
       transition: all 0.5s;
    }
+
+   @import url('/css/Plan/PlanMedia.css');
 </style>
