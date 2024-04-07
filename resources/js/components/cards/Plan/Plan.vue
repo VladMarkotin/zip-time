@@ -40,14 +40,15 @@
          </div>
          <v-divider></v-divider>
          <div>
-            <v-row align="center" class="d-flex justify-content-between" >
+            <v-row align="center" class="d-flex justify-content-between plan_inputs-wrapper">
                <v-col
                   md="3"
+                  class="plan_code-input-wrapper"
                   >
                   <v-row class="p-0 m-0 d-flex justify-content-between"> 
                      <v-col
                      md="3" 
-                     class="p-0 m-0 d-flex justify-content-center align-items-center"
+                     class="p-0 m-0 d-flex justify-content-center align-items-center plan_code-createCodeButton-wrapper"
                      >
                      <transition 
                      enter-active-class="button_appearance"
@@ -84,7 +85,10 @@
                      </v-col>
                   </v-row>
                </v-col>
-               <v-col md="3">
+               <v-col 
+               md="3"
+               class="plan_taskName-input-wrapper"
+               >
                   <v-text-field
                      :placeholder=" placeholders[0] "
                      :counter="50"
@@ -94,7 +98,9 @@
                      @keypress.enter = "addTask"
                      ></v-text-field>
                </v-col>
-               <v-col md="2">
+               <v-col md="2"
+               class="plan_taskType-input-wrapper"
+               >
                   <v-select
                      :label="placeholders[1]"
                      required
@@ -111,7 +117,10 @@
                      </template>
                   </v-select>
                </v-col>
-               <v-col md="1">
+               <v-col 
+               md="1"
+               class="plan_taskPriority-input-wrapper"
+               >
                   <v-select
                      :label="placeholders[2]"
                      required
@@ -132,6 +141,7 @@
                </v-col>
                <v-col
                id="plan-time" 
+               class="plan_time-input-wrapper"
                cols="1" 
                md="1">
                   <CustomTimepicker 
@@ -140,7 +150,7 @@
                   />
                </v-col>
             
-               <v-col md="1">
+               <v-col md="1" class="plan_addTask-button-wrapper">
                   <v-tooltip bottom>
                      <template v-slot:activator="{ on }">
                         <div v-on="on">
