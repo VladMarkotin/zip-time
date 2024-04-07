@@ -75,7 +75,7 @@
                            required>
                         </v-select>
                      </v-col>    
-                     <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center">
+                     <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center plan_code-cleanCodeButton-wrapper">
                         <CleanHashCodeButton 
                         v-if="defaultSelected.hash.length > 1"
                         :tooltipPosition = "{bottom: true}"
@@ -166,6 +166,19 @@
                   </v-tooltip>
                </v-col>
             </v-row>
+            <v-row 
+            class="plan_addTask-button-wrapper_mobile p-2 m-0"
+            >
+               <v-btn
+               class="plan_addTask-button_mobile"
+               color="rgb(161, 0, 0)"
+               dark
+               @click="addTask"
+               style="font-size: 18px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);" 
+               >
+                  Add new task
+               </v-btn>
+            </v-row>
          </div>
          <v-divider></v-divider>
          <PreplanTasksTable 
@@ -205,11 +218,11 @@
                         color="#D71700" 
                         style="text-color:#ffffff" 
                         icon 
+                        large
                         >
                            <v-icon 
                            md="1"
                            color="#D71700"
-                           large
                            >
                               {{icons.mdiClockStart}}
                            </v-icon>
@@ -1034,6 +1047,10 @@ export default {
    }
    .tasks-counter-enter-active, .tasks-counter-leave-active {
       transition: all 0.5s;
+   }
+
+   .plan_addTask-button-wrapper_mobile {
+      display: none;
    }
 
    @import url('/css/Plan/PlanMedia.css');
