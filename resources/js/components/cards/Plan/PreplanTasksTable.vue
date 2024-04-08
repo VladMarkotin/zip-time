@@ -7,6 +7,8 @@
                 :items="items" 
                 class="elevation-1" 
                 >
+                <!-- dense  
+                hide-default-footer -->
                     <template v-slot:body="{ items }">
                         <tbody  v-if="!items || items.length === 0" >
                             <tr>

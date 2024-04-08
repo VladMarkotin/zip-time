@@ -146,6 +146,7 @@
                md="1">
                   <CustomTimepicker 
                   :time = "defaultSelected.time"
+                  :isIconInner = "true"
                   @updateTime = "setTime"
                   />
                </v-col>

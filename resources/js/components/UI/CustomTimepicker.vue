@@ -8,7 +8,6 @@
         <template v-slot:activator="{on}">
             <v-text-field 
             label="Time" 
-            :prepend-icon="isIconInner ? '' : 'mdi-clock-time-four-outline'"
             :prepend-inner-icon="isIconInner ? 'mdi-clock-time-four-outline' : ''"
             readonly 
             v-model="selectedTime" 
