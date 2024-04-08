@@ -20,6 +20,7 @@
                                 <tr 
                                 v-for="(item) in items" 
                                 :key="item.uniqKey" 
+                                class="preplanTasksTable_table-row"
                                 align="center" 
                                 ref="refWord" 
                                 @dblclick="deleteItem(item)">
@@ -149,7 +150,7 @@ export default {
     }),
     computed: {
         isMobile() {
-            return this.screenWidth < 450;
+            return this.screenWidth < 500;
         }
     },
     components: { DefaultPreloader},

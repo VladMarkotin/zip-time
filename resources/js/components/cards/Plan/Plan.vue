@@ -189,7 +189,7 @@
          @deleteItem  = "deleteItem"
          />
          <v-row 
-         class="d-flex justify-content-between align-items-center"
+         class="d-flex justify-content-between align-items-center plan_footer"
          style="height: 80px;"
          >
          <v-col 

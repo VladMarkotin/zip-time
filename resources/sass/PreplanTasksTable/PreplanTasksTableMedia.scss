@@ -2,5 +2,34 @@
     .preplanTasksTable_table-responsive {
         overflow-x: auto;
         white-space: nowrap; 
+
+        .preplanTasksTable_table-row {
+            font-size: 16px; 
+            td {
+                font-size: inherit !important;
+            }
+        }
+
+        .v-data-table__wrapper::-webkit-scrollbar {
+            height: 16px;
+            border-left: 1px solid #e6e6e6;
+          }
+    
+          .v-data-table__wrapper::-webkit-scrollbar-thumb {
+            background: #b0b0b0;
+            border: solid 3px #e6e6e6;
+            border-radius: 7px;
+          }
+    
+          .v-data-table__wrapper::-webkit-scrollbar-thumb:hover {
+            background: rgb(161, 0, 0);;
+          }
+    }
+     
+}
+
+@media screen and (max-width: 500px) {
+    .plan_footer {
+        margin-top: 20px;
     }
 }
