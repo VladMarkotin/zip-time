@@ -3,12 +3,12 @@
         <transition name="fade">
             <div class="table-max-height-wrapper" v-if="!isShowPreloader" >
                 <v-data-table 
-                :headers="headers" 
-                :items="items" 
-                class="elevation-1" 
+                :headers             = "headers" 
+                :items               = "items" 
+                class                = "elevation-1" 
+                :dense               = "isMobile"  
+                :hide-default-footer = "isMobile" 
                 >
-                <!-- dense  
-                hide-default-footer -->
                     <template v-slot:body="{ items }">
                         <tbody  v-if="!items || items.length === 0" >
                             <tr>
@@ -79,7 +79,11 @@ export default {
         isShowPreloader: {
             type: Boolean,
             default: false,
-        }
+        },
+        screenWidth: {
+            type: Number,
+            required: true,
+        },
     },
     data: () => ({
         icons: { mdiDelete,},
@@ -141,6 +145,11 @@ export default {
             },
         ],
     }),
+    computed: {
+        isMobile() {
+            return this.screenWidth < 450;
+        }
+    },
     components: { DefaultPreloader},
     methods: {
         deleteItem(item) {

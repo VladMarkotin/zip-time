@@ -183,6 +183,7 @@
          </div>
          <v-divider></v-divider>
          <PreplanTasksTable 
+         :screenWidth     = "screenWidth"
          :items           = "items"
          :isShowPreloader = "showPreloaderInsteadTable"
          @deleteItem  = "deleteItem"
@@ -382,6 +383,7 @@ export default {
         interval: {},
         closeAlertTime: 0,
         showPreloaderInsteadTable: false,
+        screenWidth: window.innerWidth,
     }),
     computed : {
         taskTypes() {
@@ -655,6 +657,10 @@ export default {
 
       generateUniqKey() {
          return uuid.v1();
+      },
+
+      updateScreenWidth() {
+         this.screenWidth = window.innerWidth;
       }
     },
     created() {
@@ -732,6 +738,8 @@ export default {
     },
 
     async mounted() {
+      window.addEventListener('resize', this.updateScreenWidth); //для адаптива
+
       try {
          const response = await  axios.post('/getEduStep', {
 			})
@@ -980,6 +988,10 @@ export default {
          console.error(error)
       }
     },
+
+   beforeDestroy() {
+      window.removeEventListener('resize', this.updateScreenWidth);
+   },
 }
 </script>
 <style scoped>
