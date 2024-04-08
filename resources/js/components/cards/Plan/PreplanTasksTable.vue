@@ -223,4 +223,6 @@ export default {
   opacity: 0;
    transform: translateY(-5%); 
 }
+
+@import url('/css/PreplanTasksTable/PreplanTasksTableMedia.css');
 </style>
