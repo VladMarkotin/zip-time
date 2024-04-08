@@ -210,7 +210,7 @@
                class=" d-flex justify-space-between" 
                v-if="items.length > 0"
                >
-                  <v-tooltip right>
+               <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
                         id="plan-creating" 
@@ -220,18 +220,18 @@
                         color="#D71700" 
                         style="text-color:#ffffff" 
                         icon 
-                        large
                         >
                            <v-icon 
                            md="1"
                            color="#D71700"
+                           large
                            >
                               {{icons.mdiClockStart}}
                            </v-icon>
                         </v-btn>
                      </template>
                      <span>Create plan</span>
-                  </v-tooltip>        
+                  </v-tooltip>          
                </div>
             </transition>
             </div>
