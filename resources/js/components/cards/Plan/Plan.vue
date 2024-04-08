@@ -250,6 +250,7 @@
             </div>
          </v-col>
          <v-col 
+         class="plan_alert-wrapper"
          cols="9"
          style="height: 100%;"
          >     
@@ -269,7 +270,7 @@
             </transition>
          </v-col>
          <v-col 
-         class="d-flex justify-content-end align-items-center"
+         class="d-flex justify-content-end align-items-center plan_emergency-mode-icon-wrapper"
          cols="1"
          style="height: 100%;"
          >

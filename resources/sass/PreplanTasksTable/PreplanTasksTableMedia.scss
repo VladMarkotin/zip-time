@@ -29,7 +29,31 @@
 }
 
 @media screen and (max-width: 500px) {
-    .plan_footer {
-        margin-top: 20px;
+    .container {
+        .plan_footer {
+            margin-top: 10px;
+            display: grid !important;
+            grid-template-rows: auto auto;
+            grid-template-columns: 1fr 5fr 1fr;
+            height: auto !important;
+
+            >div {
+                max-width: 100%;
+            }
+
+            .plan_alert-wrapper {
+                grid-column: 1/4;
+                grid-row: 1/2;
+                min-height: 85px;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .plan_emergency-mode-icon-wrapper {
+                grid-column: 3/4;
+            }
+        }
     }
 }

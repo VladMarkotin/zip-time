@@ -23,7 +23,26 @@
   }
 }
 @media screen and (max-width: 500px) {
-  .plan_footer {
-    margin-top: 20px;
+  .container .plan_footer {
+    margin-top: 10px;
+    display: grid !important;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 5fr 1fr;
+    height: auto !important;
+  }
+  .container .plan_footer > div {
+    max-width: 100%;
+  }
+  .container .plan_footer .plan_alert-wrapper {
+    grid-column: 1/4;
+    grid-row: 1/2;
+    min-height: 85px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container .plan_footer .plan_emergency-mode-icon-wrapper {
+    grid-column: 3/4;
   }
 }
