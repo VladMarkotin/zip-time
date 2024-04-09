@@ -30,7 +30,7 @@
                                     <td>{{ item.priority }}</td>
                                     <td>{{ item.time }}</td>
                                     <td class="preplan_table-notes">{{ item.notes }}</td>
-                                    <td>
+                                    <td class="preplan_table-deleteButton">
                                         <v-tooltip right>
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-btn 

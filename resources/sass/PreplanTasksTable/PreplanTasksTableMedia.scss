@@ -46,15 +46,17 @@
 
         td {
             height: auto !important;
+            display: flex;
+            align-items: center;
         }
 
         .preplanTasksTable_table-row {
             padding: 5px;
-            width: 700px;
+            width: 900px;
             display: grid !important;
-            grid-template-columns: 2fr 1fr 1fr 4.5fr 1fr; //менять пропорции ячеек в таблице
+            grid-template-columns: 2fr .9fr .9fr .9fr 6fr; //менять пропорции ячеек в таблице
             grid-template-rows: auto auto;
-            grid-row-gap: 10px;
+            grid-row-gap: 3px;
 
             td:nth-child(1),
             td:nth-child(2) {
@@ -76,6 +78,11 @@
                 white-space: normal !important;
                 word-wrap: break-word;
                 max-width: 100%;
+            }
+
+            .preplan_table-deleteButton {
+                grid-column: 4/5;
+                grid-row: 2/3;
             }
 
             >div {

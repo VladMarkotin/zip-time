@@ -36,14 +36,16 @@
 
   .preplanTasksTable_table-responsive td {
     height: auto !important;
+    display: flex;
+    align-items: center;
   }
   .preplanTasksTable_table-responsive .preplanTasksTable_table-row {
     padding: 5px;
-    width: 700px;
+    width: 900px;
     display: grid !important;
-    grid-template-columns: 2fr 1fr 1fr 4.5fr 1fr;
+    grid-template-columns: 2fr 0.9fr 0.9fr 0.9fr 6fr;
     grid-template-rows: auto auto;
-    grid-row-gap: 10px;
+    grid-row-gap: 3px;
   }
   .preplanTasksTable_table-responsive .preplanTasksTable_table-row td:nth-child(1),
 .preplanTasksTable_table-responsive .preplanTasksTable_table-row td:nth-child(2) {
@@ -62,6 +64,10 @@
     white-space: normal !important;
     word-wrap: break-word;
     max-width: 100%;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row .preplan_table-deleteButton {
+    grid-column: 4/5;
+    grid-row: 2/3;
   }
   .preplanTasksTable_table-responsive .preplanTasksTable_table-row > div {
     max-width: 100% !important;
