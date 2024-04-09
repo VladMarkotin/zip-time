@@ -43,7 +43,7 @@
     padding: 5px;
     width: 1200px;
     display: grid !important;
-    grid-template-columns: 2fr 0.9fr 0.9fr 0.9fr 10fr;
+    grid-template-columns: 2fr 0.45fr 0.9fr 0.9fr 10fr;
     grid-template-rows: auto auto;
     grid-row-gap: 3px;
   }
