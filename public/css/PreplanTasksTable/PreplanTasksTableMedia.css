@@ -35,14 +35,14 @@
 
   .preplanTasksTable_table-responsive td {
     height: auto !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
   .preplanTasksTable_table-responsive .preplanTasksTable_table-row {
     width: 800px;
     display: grid !important;
-    grid-template-columns: 1fr 2fr 1fr 1fr 0.4fr 0.4fr 0.4fr 0.4fr;
+    grid-template-columns: 1.5fr 2fr 2fr 1fr 0.4fr 0.4fr 0.4fr 0.4fr;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row > div {
+    max-width: 100% !important;
   }
   .preplanTasksTable_table-responsive .v-data-table-header .v-select__selections .v-chip {
     background-color: #a10000;

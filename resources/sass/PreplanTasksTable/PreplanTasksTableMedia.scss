@@ -45,15 +45,16 @@
 
         td {
             height: auto !important;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .preplanTasksTable_table-row {
             width: 800px;
             display: grid !important;
-            grid-template-columns: 1fr 2fr 1fr 1fr .4fr .4fr .4fr .4fr;
+            grid-template-columns: 1.5fr 2fr 2fr 1fr .4fr .4fr .4fr .4fr; //менять пропорции ячеек в таблице
+
+            >div {
+                max-width: 100% !important;
+            }
         }
         
         .v-data-table-header {
