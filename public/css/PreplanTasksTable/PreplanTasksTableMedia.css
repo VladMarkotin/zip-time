@@ -3,6 +3,10 @@
     overflow-x: auto;
     white-space: nowrap;
   }
+  .preplanTasksTable_table-responsive .preplan-table-taskName {
+    overflow-x: initial !important;
+    white-space: normal !important;
+  }
   .preplanTasksTable_table-responsive .preplanTasksTable_table-row {
     font-size: 16px;
   }
@@ -23,6 +27,20 @@
   }
 }
 @media screen and (max-width: 600px) {
+  #plan-tasks-table .preplan-table-taskName {
+    max-width: none !important;
+    width: auto !important;
+    max-height: none !important;
+  }
+
+  .preplanTasksTable_table-responsive td {
+    height: auto !important;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row {
+    width: 800px;
+    display: grid !important;
+    grid-template-columns: 1fr 2fr 1fr 1fr 0.4fr 0.4fr 0.4fr 0.4fr;
+  }
   .preplanTasksTable_table-responsive .v-data-table-header .v-select__selections .v-chip {
     background-color: #a10000;
     color: #fff;
@@ -54,9 +72,5 @@
   }
   .container .plan_footer .plan_emergency-mode-icon-wrapper {
     grid-column: 3/4;
-  }
-  .container #plan-tasks-table .preplan-table-taskName {
-    width: 750px;
-    max-width: 750px;
   }
 }

@@ -3,6 +3,11 @@
         overflow-x: auto;
         white-space: nowrap; 
 
+        .preplan-table-taskName {
+            overflow-x: initial !important;
+            white-space: normal !important;
+        }
+
         .preplanTasksTable_table-row {
             font-size: 16px; 
             td {
@@ -28,7 +33,26 @@
 }
 
 @media screen and (max-width: 600px) {
+    #plan-tasks-table {
+        .preplan-table-taskName {
+            max-width: none !important;
+            width: auto !important;
+            max-height: none !important;
+        }
+    } 
+
     .preplanTasksTable_table-responsive {
+
+        td {
+            height: auto !important;
+        }
+
+        .preplanTasksTable_table-row {
+            width: 800px;
+            display: grid !important;
+            grid-template-columns: 1fr 2fr 1fr 1fr .4fr .4fr .4fr .4fr;
+        }
+        
         .v-data-table-header {
             .v-select__selections {
                 .v-chip {
@@ -71,13 +95,6 @@
                 grid-column: 3/4;
             }
         }
-
-        #plan-tasks-table {
-            .preplan-table-taskName {
-                width: 750px;
-                max-width: 750px;
-            }
-        } 
     }
 
 }
