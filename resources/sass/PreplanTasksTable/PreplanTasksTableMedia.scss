@@ -52,9 +52,9 @@
 
         .preplanTasksTable_table-row {
             padding: 5px;
-            width: 900px;
+            width: 1200px;
             display: grid !important;
-            grid-template-columns: 2fr .9fr .9fr .9fr 6fr; //менять пропорции ячеек в таблице
+            grid-template-columns: 2fr .9fr .9fr .9fr 10fr; //менять пропорции ячеек в таблице
             grid-template-rows: auto auto;
             grid-row-gap: 3px;
 

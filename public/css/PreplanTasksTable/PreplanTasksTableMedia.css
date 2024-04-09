@@ -41,9 +41,9 @@
   }
   .preplanTasksTable_table-responsive .preplanTasksTable_table-row {
     padding: 5px;
-    width: 900px;
+    width: 1200px;
     display: grid !important;
-    grid-template-columns: 2fr 0.9fr 0.9fr 0.9fr 6fr;
+    grid-template-columns: 2fr 0.9fr 0.9fr 0.9fr 10fr;
     grid-template-rows: auto auto;
     grid-row-gap: 3px;
   }
