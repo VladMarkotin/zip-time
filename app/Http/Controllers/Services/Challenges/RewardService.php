@@ -49,24 +49,32 @@ class RewardService
 
             $nextChIndex =  ChallengeModel::select('next_ch_index')->where([
                 ['id', $data['chId'] ] 
-            ])->get()->toArray()[0]['next_ch_index'];
-            // Log::info("Next ch index:" );
-            $nextChIndexArray = explode(';', $nextChIndex);
-            //if next ch exists, assign it to user
-            if (count($nextChIndexArray) ) {
-                foreach ($nextChIndexArray as $v) {
-                    $nextChId = ChallengeModel::select('id')->where([
-                        ['index', $v ] 
-                    ])->get()->toArray()[0]['id'];
-    
-                    $dataForNewChallenge = [
-                        "user_id"      => Auth::id(),
-                        "challenge_id" => $nextChId,
-                        'is_active'    => 1,
-                        "created_at"   => DB::raw('CURRENT_TIMESTAMP(0)'),
-                        "updated_at"   => DB::raw('CURRENT_TIMESTAMP(0)')
-                    ];
-                    UsersChallenges::insert($dataForNewChallenge);
+            ])->get()->toArray();
+
+            //Assign new challenges 
+            if (isset($nextChIndex[0]['next_ch_index'])) {
+
+                $nextChIndexArray = explode(';', $nextChIndex[0]['next_ch_index']);
+                // Log::info("Next ch index:".json_encode($nextChIndexArray) );
+                //if next ch exists, assign it to user
+                if (count($nextChIndexArray) ) {
+                    foreach ($nextChIndexArray as $v) {
+                        $nextChId = ChallengeModel::select('id')->where([
+                            ['index', $v ] 
+                        ])->get()->toArray();
+
+                        if (isset($nextChId[0]['id'] ) ) {
+
+                            $dataForNewChallenge = [
+                                "user_id"      => Auth::id(),
+                                "challenge_id" => $nextChId[0]['id'],
+                                'is_active'    => 1,
+                                "created_at"   => DB::raw('CURRENT_TIMESTAMP(0)'),
+                                "updated_at"   => DB::raw('CURRENT_TIMESTAMP(0)')
+                            ];
+                            UsersChallenges::insert($dataForNewChallenge);
+                        }
+                    }
                 }
             }
 

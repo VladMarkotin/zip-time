@@ -159,6 +159,8 @@ class MainController
 
                 return response()->json($createResponce('error has occurred', 'error'));
             } finally {
+                RewardEvent::dispatch(['event_prefix' => ['saved_tasks'] ]);
+
                 return response()->json($createResponce('Hash code added successfully', 'success'));
             }
             
