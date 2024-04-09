@@ -22,6 +22,16 @@
     background: #a10000;
   }
 }
+@media screen and (max-width: 600px) {
+  .preplanTasksTable_table-responsive .v-data-table-header .v-select__selections .v-chip {
+    background-color: #a10000;
+    color: #fff;
+    text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 2px;
+  }
+  .preplanTasksTable_table-responsive .v-data-table-header .v-select__selections .v-chip .v-icon {
+    color: #fff;
+  }
+}
 @media screen and (max-width: 500px) {
   .container .plan_footer {
     margin-top: 10px;
@@ -44,5 +54,9 @@
   }
   .container .plan_footer .plan_emergency-mode-icon-wrapper {
     grid-column: 3/4;
+  }
+  .container #plan-tasks-table .preplan-table-taskName {
+    width: 750px;
+    max-width: 750px;
   }
 }

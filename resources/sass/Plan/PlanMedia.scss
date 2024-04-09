@@ -161,3 +161,14 @@
         }
     }
 }
+
+@media screen and (max-width: 350px) {
+    #plan-wrapper {
+        .plan_addTask-button-wrapper_mobile {
+
+            .plan_addTask-button_mobile {
+                max-width: 70%;
+            }
+        }
+    }
+}
