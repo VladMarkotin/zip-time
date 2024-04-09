@@ -154,6 +154,16 @@
     }
 }
 
+
+@media screen and (max-width: 600px) {
+    #plan-wrapper {
+        .container {
+            padding: 24px 16px;
+        }
+    }
+}
+
+
 @media screen and (max-width: 520px) {
     #plan-wrapper {
         .container {
