@@ -262,7 +262,7 @@
                   v-if="showAlert"
                   color="#404040"
                   text
-                  class="elevation-1 create-day-alert mb-0 d-flex justify-content-center align-items-center" 
+                  class="elevation-1 create-day-alert mb-0 d-flex justify-content-center align-items-center plan_alert" 
                   :type="alertType"
                   >
                      {{serverMessage}}

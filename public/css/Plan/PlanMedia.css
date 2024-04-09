@@ -67,6 +67,17 @@
   #plan-wrapper .plan_addTask-button-wrapper_mobile .plan_addTask-button_mobile {
     max-width: 60%;
   }
+
+  .plan_alert {
+    padding: 8px;
+  }
+  .plan_alert .v-alert__wrapper .v-icon {
+    font-size: 26px;
+  }
+  .plan_alert .v-alert__wrapper .v-alert__content {
+    text-align: center !important;
+    font-size: 17px !important;
+  }
 }
 @media screen and (max-width: 650px) {
   #plan-wrapper .container .plan_inputs-wrapper {

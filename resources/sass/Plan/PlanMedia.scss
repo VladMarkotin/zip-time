@@ -101,6 +101,18 @@
         }
     }
 
+    .plan_alert {
+        padding: 8px;
+        .v-alert__wrapper {
+            .v-icon {
+                font-size: 26px;
+            }
+            .v-alert__content {
+               text-align: center !important;
+               font-size: 17px !important;
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 650px) {
