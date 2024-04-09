@@ -24,12 +24,12 @@
                                 align="center" 
                                 ref="refWord" 
                                 @dblclick="deleteItem(item)">
-                                    <td>{{ item.hash }}</td>
+                                    <td class="preplan_table-code">{{ item.hash }}</td>
                                     <td class="preplan-table-taskName">{{ item.taskName }}</td>
                                     <td>{{ item.type }}</td>
                                     <td>{{ item.priority }}</td>
                                     <td>{{ item.time }}</td>
-                                    <td>{{ item.notes }}</td>
+                                    <td class="preplan_table-notes">{{ item.notes }}</td>
                                     <td>
                                         <v-tooltip right>
                                             <template v-slot:activator="{ on, attrs }">

@@ -35,9 +35,10 @@
 @media screen and (max-width: 600px) {
     #plan-tasks-table {
         .preplan-table-taskName {
-            max-width: none !important;
+            max-width: 100% !important;
             width: auto !important;
             max-height: none !important;
+            text-align: left;
         }
     } 
 
@@ -48,9 +49,34 @@
         }
 
         .preplanTasksTable_table-row {
-            width: 800px;
+            padding: 5px;
+            width: 700px;
             display: grid !important;
-            grid-template-columns: 1.5fr 2fr 2fr 1fr .4fr .4fr .4fr .4fr; //менять пропорции ячеек в таблице
+            grid-template-columns: 2fr 1fr 1fr 4.5fr 1fr; //менять пропорции ячеек в таблице
+            grid-template-rows: auto auto;
+            grid-row-gap: 10px;
+
+            td:nth-child(1),
+            td:nth-child(2) {
+                border-bottom: none !important;
+            }
+
+            .preplan-table-taskName {
+                grid-column: 2/6;
+                max-width: 100%;
+            }
+
+            .preplan-table-taskName,
+            .preplan_table-code {
+                font-weight: bold;
+            }
+
+            .preplan_table-notes {
+                overflow-x: initial !important;
+                white-space: normal !important;
+                word-wrap: break-word;
+                max-width: 100%;
+            }
 
             >div {
                 max-width: 100% !important;
