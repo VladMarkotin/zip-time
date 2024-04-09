@@ -35,6 +35,9 @@
 
   .preplanTasksTable_table-responsive td {
     height: auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .preplanTasksTable_table-responsive .preplanTasksTable_table-row {
     width: 800px;

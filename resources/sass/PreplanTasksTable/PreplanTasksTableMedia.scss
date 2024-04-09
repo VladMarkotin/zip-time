@@ -45,6 +45,9 @@
 
         td {
             height: auto !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .preplanTasksTable_table-row {
