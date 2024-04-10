@@ -16,3 +16,13 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('notification', function ($user, $id) {
     return true;
 });
+
+
+Broadcast::channel('ziptime-public', function ($user, $id) {
+    return true;
+});
+
+
+Broadcast::channel('test.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
+});

@@ -103,6 +103,7 @@ class Dropdown extends Component
             'broadcast_type' => 'public',
             'read_at' => 0
         ]);
+        $this->emit('refresh');
     }
 
 

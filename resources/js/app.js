@@ -1,5 +1,56 @@
 require('./bootstrap');
 
+
+Echo.private(`test.${window.userID}`)
+	.listen('DailyReminder', (e) => {
+
+		Swal.fire({
+			title: "<strong>Today's <u>PLAN</u></strong>",
+			icon: 'warning',
+			confirmButtonText: 'Close',
+			text: e.message,
+		})
+
+	});
+
+
+
+
+
+
+Echo.channel('ziptime-public')
+	.listen('NotificationEvent', (e) => {
+
+		Swal.fire({
+			title: "<strong>BroadCast</strong>",
+			icon: 'info',
+			confirmButtonText: 'Close',
+			text: 'New Message !',
+		})
+		Livewire.emit('saveBroadcastedNotification', e.type, e.data, e.date);
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import HighchartsVue from 'highcharts-vue';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
@@ -43,40 +94,33 @@ const app =
 						}
 					}
 				}),
-				components: {app},
-				data: {alertDelay: 5e3, currComponent: {name: '', props: {}}},
+				components: { app },
+				data: { alertDelay: 5e3, currComponent: { name: '', props: {} } },
 				computed:
 				{
-					currComponentName()
-					{
+					currComponentName() {
 						return this.currComponent.name;
 					},
-					currComponentProps()
-					{
+					currComponentProps() {
 						return this.currComponent.props;
 					}
 				},
-				async created()
-				{
-					if (window.user != '')
-					{
+				async created() {
+					if (window.user != '') {
 						const data = (await axios.post('/ifexists')).data;
-						if (data.dayStatus == 3 || (data.dayOwnMark > 0) || (data.dayStatus == 0) || (data.dayStatus == -1)) /*day is closed || (|| (data[0].day_status === 0) data[0].day_status === 0)*/
-						{
+						if (data.dayStatus == 3 || (data.dayOwnMark > 0) || (data.dayStatus == 0) || (data.dayStatus == -1)) /*day is closed || (|| (data[0].day_status === 0) data[0].day_status === 0)*/ {
 							this.currComponent.props = data;
 							this.currComponent.name = 'ClosedReadyDayPlan';
 						}
-						else if (data.dayStatus == 2 || data.dayStatus == 1/*day is opened*/)
-						{
+						else if (data.dayStatus == 2 || data.dayStatus == 1/*day is opened*/) {
 							this.currComponent.props = data.plan;
 							this.currComponent.name = 'ReadyDayPlan';
 						}
-						else/*no plan*/
-						{
+						else/*no plan*/ {
 							this.currComponent.name = 'Plan';
 						}
 					}
 				}
 			}
-	);
+		);
 app.$mount();

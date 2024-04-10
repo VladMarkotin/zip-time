@@ -36,16 +36,8 @@ return [
             'secret' => env('PUSHER_APP_SECRET'),
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                'host' => env('PUSHER_HOST'),
-                'port' => 6001,
-                'useTLS' => true,
-                'encrypted' => true,
-               'scheme' => 'https',
-               'curl_options' => [
-                   'CURLOPT_SSL_VERIFYHOST' => 0,
-                   'CURLOPT_SSL_VERIFYPEER' => 0
-               ]
+                'cluster' => 'eu',
+                'useTLS' => true
             ],
         ],
 

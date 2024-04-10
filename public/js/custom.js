@@ -1,6 +1,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $(document).ready(function () {
 
  
@@ -22,7 +38,7 @@ $(document).ready(function () {
   /**
    * NOTIFICATIONS
    */
-
+ 
 
   $('#bell').click(function (event) {
     event.stopPropagation();
@@ -36,24 +52,33 @@ $(document).ready(function () {
   });
 
 
-  // Enable pusher logging - don't include this in production
-  Pusher.logToConsole = true;
-
-  var pusher = new Pusher('957e0c47c6b91b024fe3', {
-    cluster: 'eu'
-  });
-
-  var channel = pusher.subscribe('ziptime');
-  channel.bind('notice', function (data) {
-
-    let type = data.type;
-    let notification_data = data.data;
-    let notification_date = data.date;
+//   // Enable pusher logging - don't include this in production
+//   Pusher.logToConsole = true;
+//   let backendBaseUrl = "https://zip-time.local";
+//   var pusher = new Pusher('957e0c47c6b91b024fe3', {
+//     cluster: 'eu',
+//     userAuthentication: {
+//       endpoint: "/pusher.php",
+//       headers: {
+//         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//       },
+//     },
+//   });
   
-    Livewire.emit('saveBroadcastedNotification', type, notification_data, notification_date);
-    alertify.notify('New Brodcast');
+
+
+
+//   var channel = pusher.subscribe('private-test-1');
+//   channel.bind('my-event', function (data) {
+// alert(32425)
+//     // let type = data.type;
+//     // let notification_data = data.data;
+//     // let notification_date = data.date;
+  
+//     // Livewire.emit('saveBroadcastedNotification', type, notification_data, notification_date);
+//     alertify.notify('New Brodcast');
     
-  });
+//   });
 
 
 

@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use App\Models\SavedTask;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Events\DailyReminder;
 use App\Events\Notifications;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\EstimationRepository;
 use App\Http\Controllers\Services\RatingService;
 use App\Http\Controllers\Services\GetDayPlanService;
+use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 use App\Http\Controllers\Services\IndexStatServices\IndexStatService;
 
 
@@ -18,9 +20,11 @@ class HomeController extends Controller
 {
     private $indexStatService = null;
 
+
     public function __construct(IndexStatService $indexStatService)
     {
         $this->indexStatService = $indexStatService;
+      
     }
     /**
      * Show the application dashboard.
@@ -29,6 +33,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        
         $statData = $this->indexStatService->countStatIndex();
 
         return view('home')->with(['statData' => $statData]);

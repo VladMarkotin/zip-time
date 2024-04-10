@@ -12,11 +12,11 @@ use Illuminate\Queue\SerializesModels;
 
 class NotificationEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+  use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $type;
-    public $data;
-    public $date;
+  public $type;
+  public $data;
+  public $date;
 
   public function __construct($type, $data, $date)
   {
@@ -27,11 +27,15 @@ class NotificationEvent implements ShouldBroadcast
 
   public function broadcastOn()
   {
-      return ['ziptime'];
+    return new Channel('ziptime-public');
   }
 
-  public function broadcastAs()
+  public function broadcastWith()
   {
-      return 'notice';
+    return [
+      'type' =>  $this->type,
+      'date' => $this->data,
+      'data' =>  $this->date,
+    ];
   }
 }

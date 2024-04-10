@@ -264,6 +264,8 @@ class MainController
 
     public function addPlan(Request $request)
     {
+
+    
         $data = $request->json()->all();
         $response = $this->planService->checkPlan($data); //проблема здесь
         $responseArray = json_decode($response->content());

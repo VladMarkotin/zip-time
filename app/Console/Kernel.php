@@ -35,10 +35,10 @@ class Kernel extends ConsoleKernel
         //     ->appendOutputTo(storage_path('logs/inspire.log'));
 
 
-            $schedule->command('estimate:day') 
+            $schedule->command('daily:plan') 
             ->timezone('Europe/Minsk')
             //->dailyAt("14:46")
-            ->everyMinute()
+             ->twiceDaily(10,22)
             ->appendOutputTo(storage_path('logs/inspire.log'));;
     }
 

@@ -7,6 +7,7 @@ use App\Repositories\EstimationRepository;
 
 class EstimateDayCommand extends Command
 {
+    private $estimateDayRepository;
     /**
      * The name and signature of the console command.
      *

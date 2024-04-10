@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Events\DailyReminder;
+use App\Models\DefaultConfigs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Models\DefaultConfigs;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +22,8 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
+
+
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -120,14 +123,17 @@ Route::post('/get-default-configs', function (){
     exit(DefaultConfigs::getConfigs());
 });
 
-Route::get('/event', function (){
-    event(new \App\Events\MessageNotification('test broadcast'));
-});
+// Route::get('/event', function (){
+//     event(new \App\Events\MessageNotification('test broadcast'));
+// });
 
-Route::get('/listen', function (){
-    return view('listen');
-});
+// Route::get('/listen', function (){
+//     return view('listen');
+// });
  
+
+ 
+
 
 
 
