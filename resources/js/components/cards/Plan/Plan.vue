@@ -1022,6 +1022,7 @@ export default {
       opacity: 0;
       transform: translateX(-10%); /* Начальное положение при появлении и исчезновении */
    }
+   
    .tasks-counter-enter-active, .tasks-counter-leave-active {
       transition: all 0.5s;
    }
