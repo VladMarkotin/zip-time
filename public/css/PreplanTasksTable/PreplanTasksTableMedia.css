@@ -1,0 +1,107 @@
+@media screen and (max-width: 950px) {
+  .preplanTasksTable_table-responsive {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .preplanTasksTable_table-responsive .preplan-table-taskName {
+    overflow-x: initial !important;
+    white-space: normal !important;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row {
+    font-size: 16px;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row td {
+    font-size: inherit !important;
+  }
+  .preplanTasksTable_table-responsive .v-data-table__wrapper::-webkit-scrollbar {
+    height: 16px;
+    border-left: 1px solid #e6e6e6;
+  }
+  .preplanTasksTable_table-responsive .v-data-table__wrapper::-webkit-scrollbar-thumb {
+    background: #b0b0b0;
+    border: solid 3px #e6e6e6;
+    border-radius: 7px;
+  }
+  .preplanTasksTable_table-responsive .v-data-table__wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a10000;
+  }
+}
+@media screen and (max-width: 600px) {
+  #plan-tasks-table .preplan-table-taskName {
+    max-width: 100% !important;
+    width: auto !important;
+    max-height: none !important;
+    text-align: left;
+  }
+
+  .preplanTasksTable_table-responsive td {
+    height: auto !important;
+    display: flex;
+    align-items: center;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row {
+    padding: 5px;
+    width: 1200px;
+    display: grid !important;
+    grid-template-columns: 2fr 0.45fr 0.9fr 0.9fr 10fr;
+    grid-template-rows: auto auto;
+    grid-row-gap: 3px;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row td:nth-child(1),
+.preplanTasksTable_table-responsive .preplanTasksTable_table-row td:nth-child(2) {
+    border-bottom: none !important;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row .preplan-table-taskName {
+    grid-column: 2/6;
+    max-width: 100%;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row .preplan-table-taskName,
+.preplanTasksTable_table-responsive .preplanTasksTable_table-row .preplan_table-code {
+    font-weight: bold;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row .preplan_table-notes {
+    overflow-x: initial !important;
+    white-space: normal !important;
+    word-wrap: break-word;
+    max-width: 100%;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row .preplan_table-deleteButton {
+    grid-column: 4/5;
+    grid-row: 2/3;
+  }
+  .preplanTasksTable_table-responsive .preplanTasksTable_table-row > div {
+    max-width: 100% !important;
+  }
+  .preplanTasksTable_table-responsive .v-data-table-header .v-select__selections .v-chip {
+    background-color: #a10000;
+    color: #fff;
+    text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 2px;
+  }
+  .preplanTasksTable_table-responsive .v-data-table-header .v-select__selections .v-chip .v-icon {
+    color: #fff;
+  }
+}
+@media screen and (max-width: 500px) {
+  .container .plan_footer {
+    margin-top: 10px;
+    display: grid !important;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 5fr 1fr;
+    height: auto !important;
+  }
+  .container .plan_footer > div {
+    max-width: 100%;
+  }
+  .container .plan_footer .plan_alert-wrapper {
+    grid-column: 1/4;
+    grid-row: 1/2;
+    min-height: 85px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container .plan_footer .plan_emergency-mode-icon-wrapper {
+    grid-column: 3/4;
+  }
+}

@@ -2,53 +2,58 @@
     <div id="plan-tasks-table">
         <transition name="fade">
             <div class="table-max-height-wrapper" v-if="!isShowPreloader" >
-                <v-data-table 
-                :headers="headers" 
-                :items="items" 
-                class="elevation-1" 
-                >
-                    <template v-slot:body="{ items }">
-                        <tbody  v-if="!items || items.length === 0" >
-                            <tr>
-                                <td :colspan="headers.length" class="text-center body-1">Your day plan is still empty</td>
-                            </tr>
-                        </tbody>
-                        <transition-group name="preplanTr" tag="tbody" v-else >
-                            <tr 
-                            v-for="(item) in items" 
-                            :key="item.uniqKey" 
-                            align="center" 
-                            ref="refWord" 
-                            @dblclick="deleteItem(item)">
-                                <td>{{ item.hash }}</td>
-                                <td class="preplan-table-taskName">{{ item.taskName }}</td>
-                                <td>{{ item.type }}</td>
-                                <td>{{ item.priority }}</td>
-                                <td>{{ item.time }}</td>
-                                <td>{{ item.notes }}</td>
-                                <td>
-                                    <v-tooltip right>
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <v-btn 
-                                            v-bind="attrs" v-on="on"
-                                            v-on:click="deleteItem(item)"
-                                            color="#D71700" 
-                                            style="text-color:#ffffff" 
-                                            icon 
-                                            >
-                                                <v-icon md="1" color="#D71700">
-                                                    {{ icons.mdiDelete }}
-                                                </v-icon>
-                                            </v-btn>
-                                        </template>
-                                        <span>Delete task</span>
-                                    </v-tooltip>
-                                </td>
-                            </tr>
-                            
-                        </transition-group>
-                    </template>
-                </v-data-table>
+                <div class="preplanTasksTable_table-responsive"> 
+                    <v-data-table 
+                    :headers             = "headers" 
+                    :items               = "items" 
+                    class                = "elevation-1" 
+                    :dense               = "isMobile"  
+                    :hide-default-footer = "isMobile" 
+                    >
+                        <template v-slot:body="{ items }">
+                            <tbody  v-if="!items || items.length === 0" >
+                                <tr>
+                                    <td :colspan="headers.length" class="text-center body-1">Your day plan is still empty</td>
+                                </tr>
+                            </tbody>
+                            <transition-group name="preplanTr" tag="tbody" v-else >
+                                <tr 
+                                v-for="(item) in items" 
+                                :key="item.uniqKey" 
+                                class="preplanTasksTable_table-row"
+                                align="center" 
+                                ref="refWord" 
+                                @dblclick="deleteItem(item)">
+                                    <td class="preplan_table-code">{{ item.hash }}</td>
+                                    <td class="preplan-table-taskName">{{ item.taskName }}</td>
+                                    <td>{{ item.type }}</td>
+                                    <td>{{ item.priority }}</td>
+                                    <td>{{ item.time }}</td>
+                                    <td class="preplan_table-notes">{{ item.notes }}</td>
+                                    <td class="preplan_table-deleteButton">
+                                        <v-tooltip right>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn 
+                                                v-bind="attrs" v-on="on"
+                                                v-on:click="deleteItem(item)"
+                                                color="#D71700" 
+                                                style="text-color:#ffffff" 
+                                                icon 
+                                                >
+                                                    <v-icon md="1" color="#D71700">
+                                                        {{ icons.mdiDelete }}
+                                                    </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>Delete task</span>
+                                        </v-tooltip>
+                                    </td>
+                                </tr>
+                                
+                            </transition-group>
+                        </template>
+                    </v-data-table>
+                </div>
             </div>
         </transition>
         <transition name="fade">
@@ -77,7 +82,11 @@ export default {
         isShowPreloader: {
             type: Boolean,
             default: false,
-        }
+        },
+        screenWidth: {
+            type: Number,
+            required: true,
+        },
     },
     data: () => ({
         icons: { mdiDelete,},
@@ -139,6 +148,11 @@ export default {
             },
         ],
     }),
+    computed: {
+        isMobile() {
+            return this.screenWidth < 500;
+        }
+    },
     components: { DefaultPreloader},
     methods: {
         deleteItem(item) {
@@ -212,4 +226,6 @@ export default {
   opacity: 0;
    transform: translateY(-5%); 
 }
+
+@import url('/css/PreplanTasksTable/PreplanTasksTableMedia.css');
 </style>
