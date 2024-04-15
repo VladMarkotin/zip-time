@@ -1,8 +1,12 @@
 .backlog_wrapper {
     .backlog_item-header {
+        &::after {
+            font-size: 44px;
+            top: 0 !important;
+        }
         >ul {
             display: grid;
-            grid-template-columns: 1fr 5fr 2fr;
+            grid-template-columns: 1fr 5fr 100px;
             padding: 15px 30px 0 30px;
             justify-content: center;
             align-items: center;
@@ -41,6 +45,10 @@
 
     .backlog_item-body {
         padding: 0 30px 15px 30px;
+        display: grid;
+        grid-template-columns: 1fr auto 100px;
+        justify-content: center;
+        align-items: center;
     }
 }
 
