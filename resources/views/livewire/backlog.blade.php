@@ -1,9 +1,9 @@
 <div>
     @include('livewire.modals')
 
-    <div class="col-md-7 mx-auto rounded">
+    <div class="col-md-8 mx-auto rounded backlog_wrapper">
 
-        <div class="card rounded-5 ">
+        <div class="card rounded-5">
             <div class="card-header ">
                 <h3 class="text-danger fw-semibold">
                     Backlog
@@ -13,20 +13,20 @@
             <div class="card-body ">
                 <div class="panel pt-3">
                     @forelse ($backlogs as $backlog)
-                        <details class="show_edit_delete" id={{ $backlog->id }}>
-                            <summary>
+                        <details class="show_edit_delete" id={{ $backlog->id }} >
+                            <summary class="backlog_item-header">
                                 <ul>
-                                    <li class="date">
+                                    <li class="date backlog_date">
                                         {{ $backlog->created_at->format('d.m.Y') }}
                                     </li>
-                                    <li class="title">
+                                    <li class="title backlog_title">
                                         @if ($backlog->saved_task_id !== null)
-                                            <span class="text-sm fst-italic">
-                                                <small>#</small> {{ $backlog->savedTasks->task_name }}<small>-></small>
-                                            </span>
-                                            <span style=" font-weight: 900;">{{ $backlog->title }}</span>
+                                            <p class="backlog_code-wrapper">
+                                                <small>#</small>{{ $backlog->savedTasks->task_name }}
+                                            </p>
+                                            <p class="backlog_title-text" style=" font-weight: 900;">{{ $backlog->title }}</p>
                                         @else
-                                            <span style=" font-weight: 900;">{{ $backlog->title }}</span>
+                                            <p class="backlog_title-text" style=" font-weight: 900;">{{ $backlog->title }}</p>
                                         @endif
                                     </li>
                                     <li>
@@ -50,7 +50,7 @@
                                     </li>
                                 </ul>
                             </summary>
-                            <div class="content">
+                            <div class="content backlog_item-header">
                                 <p style="text-align: justify;">
                                     {{ $backlog->content }}
                                 </p>

@@ -1,0 +1,46 @@
+.backlog_wrapper {
+    .backlog_item-header {
+        >ul {
+            display: grid;
+            grid-template-columns: 1fr 5fr 2fr;
+            padding: 15px 30px 0 30px;
+            justify-content: center;
+            align-items: center;
+            >li {
+                margin: 0;
+            }
+            .backlog_date {
+                font-size: 18px;
+                font-weight: bold;
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            }
+            .backlog_title {
+                width: auto;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                justify-content: center;
+                align-items: center;
+                grid-column-gap: 15px;
+
+                .backlog_code-wrapper {
+                    font-size: 18px;
+                    font-weight: bold;
+                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                }
+
+                .backlog_title-text {
+                    font-size: 16px;
+                    font-weight: bold;
+                    line-height: 19px;
+                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                    color: #282828;
+                }
+            }
+        }
+    }
+
+    .backlog_item-body {
+        padding: 0 30px 15px 30px;
+    }
+}
+
