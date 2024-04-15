@@ -61,9 +61,17 @@
             <link href="{{ asset('css/loginPage/loginPage.css') }}" rel="stylesheet">
             <link href="{{ asset('css/loginPage/loginPageMedia.css') }}" rel="stylesheet">
         @endif
+        @if(Route::currentRouteName() == 'backlog')
+            <link href="{{ asset('css/backlogPage/backlogPage.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/backlogPage/backlogMedia.css') }}" rel="stylesheet">
+        @endif
     @endguest
     @if(Route::currentRouteName() == 'settings')
         <link href="{{ asset('css/settingsPage/settingsPage.css') }}" rel="stylesheet">
+    @endif
+    @if(Route::currentRouteName() == 'backlog')
+        <link href="{{ asset('css/backlogPage/backlogPage.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/backlogPage/backlogMedia.css') }}" rel="stylesheet">
     @endif
     @livewireStyles
 

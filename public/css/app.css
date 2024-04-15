@@ -10209,7 +10209,7 @@ body {
     height: 50px;
     width: 50px;
     background-color: rgba(34, 34, 34, 0.97);
-    z-index: 7;
+    z-index: 19;
     position: fixed;
     right: 0;
     bottom: 3%;
