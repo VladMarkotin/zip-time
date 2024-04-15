@@ -50,22 +50,20 @@
                                 </ul>
                             </summary>
                             <div class="content backlog_item-body">
-                                <p style="text-align: justify;">
+                                <p style="text-align: justify;" class="backlog_item-body-text">
                                     {{ $backlog->content }}
                                 </p>
-                                <div class="action-content action{{ $backlog->id }} "
-                                    style="display: none; margin-right:5em">
-                                    <a class="btn btn-outline-secondary  p-0" href="#"
+                                <div class="action-content action{{ $backlog->id }} backlog_item-body-buttonsWrapper"
+                                    style="display: none;">
+                                    <a class="backlog_customBtn backlog_edit-button" href="#"
                                         wire:click="editBacklogInfo({{ $backlog->id }})" data-bs-toggle="modal"
                                         data-bs-target="#editBacklogModal">
-
-                                        <i class="fa fa-pencil p-1 "> Edit</i>
+                                        <span>Edit</span>
                                     </a>
-                                    <a class="btn btn-outline-secondary  p-0" href="#"
+                                    <a class="backlog_customBtn backlog_delete-button" href="#"
                                         wire:click="deleteBacklogInfo({{ $backlog->id }})"
                                         data-bs-toggle="modal" data-bs-target="#deleteBacklogModal">
-                                        <i class="fa fa-trash p-1 "> <span class="text-danger "> delete</span>
-                                        </i>
+                                        <span>Delete</span>
                                     </a>
                                 </div>
                             </div>
