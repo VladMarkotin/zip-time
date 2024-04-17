@@ -1,1 +1,79 @@
-// тут будут стили
+@media screen and (max-width: 1200px) {
+    .backlog_wrapper {
+        max-width: 85% !important;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .backlog_wrapper {
+        .backlog_item-header {
+            >ul {
+                grid-template-columns: 1fr 5fr 30px
+            }
+        }
+        .backlog_item-body {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto;
+            grid-row-gap: 10px;
+            .backlog_item-body-buttonsWrapper {
+                justify-content: flex-end;
+            }
+        } 
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .backlog_wrapper {
+        .backlog_item-header {
+            &::after {
+                top: calc(50% - 31px) !important;
+            }
+            >ul {
+                padding: 10px 20px 0 20px;
+                margin-bottom: 10px;
+                .backlog_date {
+                    font-size: 16px;
+                }
+                .backlog_title {
+                    .backlog_code-wrapper {
+                        font-size: 16px;
+                    }
+                    .backlog_title-text {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+
+        .backlog_item-body {
+            padding: 0 30px 10px 30px;
+            .backlog_item-body-text {
+                margin: 10px 0;
+                font-size: 14px;
+                line-height: 17px;
+            }
+        }
+    }
+
+    .backlog_customBtn {
+        width: 100px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        >span {
+            font-size: 16px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .backlog_wrapper {
+        max-width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 650px) {
+
+}

@@ -26,27 +26,10 @@
                                             </p>
                                             <p class="backlog_title-text" style=" font-weight: 900;">{{ $backlog->title }}</p>
                                         @else
+                                            <p class="backlog_code-wrapper"></p>
                                             <p class="backlog_title-text" style=" font-weight: 900;">{{ $backlog->title }}</p>
                                         @endif
                                     </li>
-                                    {{-- <li>
-                                        <div class="action-content action{{ $backlog->id }} "
-                                            style="display: none; margin-right:5em">
-                                            <a class="btn btn-outline-secondary  p-0" href="#"
-                                                wire:click="editBacklogInfo({{ $backlog->id }})" data-bs-toggle="modal"
-                                                data-bs-target="#editBacklogModal">
-
-                                                <i class="fa fa-pencil p-1 "> Edit</i>
-                                            </a>
-                                            <a class="btn btn-outline-secondary  p-0" href="#"
-                                                wire:click="deleteBacklogInfo({{ $backlog->id }})"
-                                                data-bs-toggle="modal" data-bs-target="#deleteBacklogModal">
-                                                <i class="fa fa-trash p-1 "> <span class="text-danger "> delete</span>
-                                                </i>
-
-                                            </a>
-                                        </div>
-                                    </li> --}}
                                 </ul>
                             </summary>
                             <div class="content backlog_item-body">

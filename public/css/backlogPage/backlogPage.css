@@ -26,6 +26,7 @@
   grid-column-gap: 15px;
 }
 .backlog_wrapper .backlog_item-header > ul .backlog_title .backlog_code-wrapper {
+  min-width: 80px;
   font-size: 18px;
   font-weight: bold;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -90,7 +91,7 @@
   transition: all 0.35s;
 }
 .backlog_customBtn.backlog_edit-button:after {
-  background: #005eff;
+  background: #6495ED;
 }
 .backlog_customBtn.backlog_delete-button:after {
   background: #FF0000;

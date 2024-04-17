@@ -27,6 +27,7 @@
                 grid-column-gap: 15px;
 
                 .backlog_code-wrapper {
+                    min-width: 80px;
                     font-size: 18px;
                     font-weight: bold;
                     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -103,7 +104,7 @@
 
     &.backlog_edit-button {
         &:after{
-            background: #005eff;
+            background: #6495ED;
         }
     }
 
