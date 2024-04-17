@@ -1,4 +1,5 @@
 .backlog_wrapper {
+    font-family: "Roboto", sans-serif;
     .backlog_item-header {
         &::after {
             font-size: 44px;
@@ -34,7 +35,7 @@
                 }
 
                 .backlog_title-text {
-                    font-size: 16px;
+                    font-size: 18px;
                     font-weight: bold;
                     line-height: 19px;
                     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -74,7 +75,7 @@
     height: 40px;
     line-height: 40px;
     font-size: 18px;
-    font-family: sans-serif;
+    font-family: "Roboto", sans-serif;
     text-decoration: none;
     color: #282828;
     border: 2px solid #333;
