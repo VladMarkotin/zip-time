@@ -1,3 +1,7 @@
+$backlogEditButtonColor: #6495ED;
+// $backlogDeleteButtonColor: #FF0000;
+$backlogDeleteButtonColor: #d40000;
+
 .backlog_wrapper {
     font-family: "Roboto", sans-serif;
     .backlog_item-header {
@@ -38,7 +42,7 @@
                     font-size: 18px;
                     font-weight: bold;
                     line-height: 19px;
-                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                    // text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
                     color: #282828;
                 }
             }
@@ -105,19 +109,22 @@
 
     &.backlog_edit-button {
         &:after{
-            background: #6495ED;
+            background: $backlogEditButtonColor;
         }
     }
 
     &.backlog_delete-button {
         &:after{
-            background: #FF0000;
+            background: $backlogDeleteButtonColor;
         }
     }    
 
     &:hover {
         color: #fff;
         text-decoration: none;
+        >span {
+            color: #fff;
+        }
     }
 
     &:hover:after{

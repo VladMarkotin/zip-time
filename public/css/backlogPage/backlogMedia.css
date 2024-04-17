@@ -74,7 +74,7 @@
     margin-bottom: 10px;
     grid-column-gap: 5px;
     grid-template-rows: auto auto;
-    grid-row-gap: 10px;
+    grid-row-gap: 5px;
     grid-template-columns: 1fr 30px;
   }
   .backlog_wrapper .backlog_item-header > ul .backlog_title {
@@ -87,8 +87,8 @@
     text-shadow: none;
   }
   .backlog_wrapper .backlog_item-header > ul .backlog_title .backlog_code-wrapper {
-    font-size: 22px;
-    text-align: center;
+    font-size: 16px;
+    text-align: left;
     grid-column: 2/3;
   }
   .backlog_wrapper .backlog_item-header > ul .backlog_date {
@@ -96,5 +96,25 @@
   }
   .backlog_wrapper .backlog_item-body {
     padding: 0 15px 10px 15px;
+  }
+  .backlog_wrapper .backlog_item-body .backlog_item-body-text {
+    color: #3B3C36;
+  }
+}
+@media screen and (max-width: 468px) {
+  .backlog_wrapper .backlog_item-header::after {
+    top: 0 !important;
+  }
+  .backlog_wrapper .backlog_item-header > ul {
+    grid-template-columns: 1fr;
+    grid-column-gap: 0;
+  }
+  .backlog_wrapper .backlog_item-header > ul .backlog_title {
+    grid-row-gap: 20px;
+  }
+}
+@media screen and (max-width: 450px) {
+  .backlog_wrapper .card-body {
+    padding: 5px !important;
   }
 }
