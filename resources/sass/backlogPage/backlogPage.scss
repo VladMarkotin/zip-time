@@ -15,13 +15,16 @@ $backlogDeleteButtonColor: #d40000;
             padding: 15px 30px 0 30px;
             justify-content: center;
             align-items: center;
+            grid-template-columns: 1fr 30px;
+            grid-row-gap: 18px;
             >li {
                 margin: 0;
             }
             .backlog_date {
                 font-size: 18px;
                 font-weight: bold;
-                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                // text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                grid-column: 1/4;
             }
             .backlog_title {
                 width: auto;
@@ -29,21 +32,21 @@ $backlogDeleteButtonColor: #d40000;
                 grid-template-columns: auto 1fr;
                 justify-content: center;
                 align-items: center;
-                grid-column-gap: 15px;
+                grid-row-gap: 8px;
 
                 .backlog_code-wrapper {
                     min-width: 80px;
                     font-size: 18px;
                     font-weight: bold;
-                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                    grid-column: 2/3;
                 }
 
                 .backlog_title-text {
                     font-size: 18px;
                     font-weight: bold;
                     line-height: 19px;
-                    // text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
                     color: #282828;
+                    grid-column: 1/3;
                 }
             }
         }
