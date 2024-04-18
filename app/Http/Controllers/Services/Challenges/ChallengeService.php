@@ -46,15 +46,29 @@ class ChallengeService
                         
                     $terms2 = json_decode($val['terms']);
                     $unPreparedQuery = $terms2->rules->query;
+                    $unPreparedFailQuery = (isset($terms2->rules->terms->fail_query) ) 
+                        ? $terms2->rules->terms->fail_query  : ''; 
+                    //Log::info($unPreparedFailQuery);
                     //get replacement`s array. It is nessary for creating valid SQL Query. Here we change all {param} with real values
                     $replacements = ReplacementsClass::getReplacements();
                     foreach ($replacements as $k => $v) {
-                        
+                        if ($unPreparedFailQuery) {
+                            $unPreparedFailQuery = str_replace($k, $v(), $unPreparedFailQuery);
+                        }
                         $unPreparedQuery = str_replace($k, $v(), $unPreparedQuery);
                     }
-                   
+                    if ($unPreparedFailQuery) {
+                        if (!ChallengeRules::checkChallengeRules([
+                                'preparedFailQuery' => $unPreparedFailQuery,
+                                'fine' => $terms2->rules->terms->fine,
+                                'fail_goal' => $terms2->rules->terms->fail_goal,
+                                'chId' => $chId,
+                            ])
+                        )
+                           exit;
+                    }
                     //For now in $unPreparedQuery placed preparedQuery!
-                    // Log::info("$unPreparedQuery");
+                    //Log::info("$unPreparedQuery");
                     $result = DB::select($unPreparedQuery);
                     $completness = $result[0]->result / $terms2->rules->goal * 100;
                     $completness = ($completness >= 100) ? 100 : $completness; 

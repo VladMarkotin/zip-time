@@ -355,7 +355,7 @@ class MainController
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
        // $this->userRatings->getUserRatings(2);
-        RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin'] ]);
+        RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin', 'keep_going'] ]);
 
         return response()->json($response); //comment
     }
