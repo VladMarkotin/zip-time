@@ -1,5 +1,6 @@
 <template>
 	<v-card>
+		<Challenges />
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>Date: {{date.toEnStr()}}</span>
 			<span>Finished</span>
@@ -51,9 +52,12 @@
 </template>
 <script>
 	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight} from '@mdi/js'
+	import Challenges from "./../challenges/Challenges.vue";
+
 	export default
 	{
 		props : ['data'],
+		components: { Challenges },
 		data()
 		{
 			return {date : new Date(),icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight},disabled : {prevButton : false,nextButton : true}}

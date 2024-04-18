@@ -16,6 +16,7 @@ class UsersChallenges extends Model
         'user_id',
         'challenge_id',
         'completeness',
+        'is_active',
         'created_at',
         'updated_at',
     ];

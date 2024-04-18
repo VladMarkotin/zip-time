@@ -9,6 +9,9 @@ use App\Models\DefaultConfigs;
 use App\Models\PersonalConfigs;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite as Socialite;
+//for assigning first challenge to new user
+use App\Http\Controllers\Services\Challenges\RewardService;
+
 
 class SocialController extends Controller
 {
@@ -30,10 +33,9 @@ class SocialController extends Controller
     public function Callback($provider)
     {
         $userSocial =   Socialite::driver($provider)->stateless()->user();
-        $users       =   User::where(['email' => $userSocial->getEmail()])->first();
+        $users       =   User::where(['provider_id' => $userSocial->getId()])->first();
         if ($users) {
             Auth::login($users);
-            //dd($users);
             return redirect('/'); //->with('user', $users);
         } else {
             $user = User::create([
@@ -44,6 +46,9 @@ class SocialController extends Controller
                 'provider'      => $provider,
             ]);
             $this->createConfigs( $user );
+            $currentUser       =   User::where(['provider_id' => $userSocial->getId()])->first();
+            Auth::login($currentUser);
+
             return redirect('/');
         }
     }

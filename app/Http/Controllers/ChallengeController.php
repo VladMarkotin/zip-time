@@ -15,7 +15,7 @@ class ChallengeController extends Controller
     {
         $challenges = DB::select("SELECT c.id, c.title, c.terms, u_c.completeness, u_c.is_active FROM `challenges` c 
                                     JOIN user_challenges u_c ON c.id = u_c.challenge_id 
-                                        WHERE u_c.user_id = ".Auth::id()); //
+                                        WHERE u_c.user_id = ".Auth::id() ." ORDER BY u_c.created_at DESC"); //
         //Log::info('User registered', ['name' => $challenges]);
         $challenges3 = ['challenges' => $challenges]; //
         

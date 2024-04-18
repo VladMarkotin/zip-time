@@ -30,17 +30,19 @@ class FinishDayListener
      */
     public function handle($event)
     {
-        $query = "SELECT COUNT(tasks.id) q FROM `tasks` JOIN timetables ON tasks.timetable_id = timetables.id 
-            JOIN users ON timetables.user_id = ".Auth::id()." 
-               WHERE tasks.mark <> -1";
-        $terms = ChallengeModel::select('terms')->where('index', 'estimate_task')->get()->toArray()[0]['terms'];
-        $chId = ChallengeModel::select('id')->where('index', 'estimate_task')->get()->toArray()[0]['id'];
-        $result = $this->challengeService->doChallenge([
-            'index' => 'estimate_task',
-            'query' => $query,
-            'terms' => json_decode($terms),
-            'ch_id' => $chId,
-        ]);
-        //die(var_dump($result)); //OK
+        $chIndex = $event->getEventPrefix();
+        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => $chIndex]);
+        // $query = "SELECT COUNT(tasks.id) q FROM `tasks` JOIN timetables ON tasks.timetable_id = timetables.id 
+        //     JOIN users ON timetables.user_id = ".Auth::id()." 
+        //        WHERE tasks.mark <> -1";
+        // $terms = ChallengeModel::select('terms')->where('index', 'estimate_task')->get()->toArray()[0]['terms'];
+        // $chId = ChallengeModel::select('id')->where('index', 'estimate_task')->get()->toArray()[0]['id'];
+        // $result = $this->challengeService->doChallenge([
+        //     'index' => 'estimate_task',
+        //     'query' => $query,
+        //     'terms' => json_decode($terms),
+        //     'ch_id' => $chId,
+        // ]);
+        // //die(var_dump($result)); //OK
     }
 }

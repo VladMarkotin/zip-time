@@ -42,6 +42,7 @@ use App\Http\Controllers\NoteController;
 use App\Models\User;
 use App\Models\DefaultSavedTasks;
 use Illuminate\Support\Facades\Log;
+use App\Events\RewardEvent;
 
 class MainController
 {
@@ -159,6 +160,8 @@ class MainController
 
                 return response()->json($createResponce('error has occurred', 'error'));
             } finally {
+                RewardEvent::dispatch(['event_prefix' => ['saved_tasks'] ]);
+
                 return response()->json($createResponce('Hash code added successfully', 'success'));
             }
             
@@ -353,6 +356,8 @@ class MainController
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
        // $this->userRatings->getUserRatings(2);
+        RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin', 'keep_going'] ]);
+
         return response()->json($response); //comment
     }
 
@@ -463,6 +468,9 @@ class MainController
             
         if ($newEduStep != $currentEduStep) {
             $currentUser->update(["edu_step" => $newEduStep]);
+        }
+        if ($newEduStep == 4) {
+            RewardEvent::dispatch(['event_prefix' => ['get_to_know'] ]);
         }
     }
 

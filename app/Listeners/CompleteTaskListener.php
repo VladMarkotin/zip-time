@@ -5,6 +5,7 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\CompleteTaskEvent;
+use App\Events\RewardEvent;
 use Auth;
 use App\Http\Controllers\Services\Challenges\ChallengeService;
 

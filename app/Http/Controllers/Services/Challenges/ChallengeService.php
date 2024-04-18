@@ -8,7 +8,9 @@ use App\Models\ChallengeModel;
 use App\Models\UsersChallenges;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Services\Challenges\CompleteNTasks;
+use App\Http\Controllers\Services\Challenges\RewardService;
 use App\Http\Controllers\Services\Challenges\Contracts\ReplacementsClass;
+use App\Models\User;
 
 class ChallengeService
 {
@@ -30,54 +32,66 @@ class ChallengeService
          * Have to get condithions of challenge
          */
         $terms = ChallengeModel::select('id','terms')->where('index', $data['index'])->get()->toArray();
-        $terms2 = json_decode($terms[0]['terms']);
-        $chId = json_decode($terms[0]['id']);
-        /*Log::info($chId);
-        exit;*/ 
-        $unPreparedQuery = $terms2->rules->query;
-        //get replacement`s array. It is nessary for creating valid SQL Query. Here we change all {param} on real values
-        $replacements = ReplacementsClass::getReplacements();
-        foreach ($replacements as $k => $v) {
-
-            $unPreparedQuery = str_replace($k, $v(), $unPreparedQuery);
-        }
-        /*Log::info(($unPreparedQuery) );
-        exit;*/
-        //For now in $unPreparedQuery placed preparedQuery!
-        $result = DB::select($unPreparedQuery);
-        if ($result[0]->result < $terms2->rules->goal) {
-            $completness = $result[0]->result / $terms2->rules->goal * 100;
-            UsersChallenges::where([
-                ['user_id', Auth::id()],
-                ['challenge_id', $chId] 
-            ])->update([
-                'completeness' => $completness,
-            ]);
-        }
-        //die(var_dump($result[0]->result));
-
-
-        /*
-        ----------------------------------------------
-        $index = $this->countIndex($data);
-        $goal = $this->getParam($data, 'goal');
-        $completnes = $this->completnesPercent($index, $goal);
-        $chId = $this->getChallengeId($data);
-        $result = [
+        foreach ($terms as $val) {
             
-            'completeness' => $completnes,
-            'updated_at' => DB::raw('CURRENT_TIMESTAMP(0)'),
-        ];
-        if ($completnes) {
-            UsersChallenges::where('challenge_id', $chId)
-            ->where(
-                    'user_id' ,Auth::id()
-            )
-            ->update($result);
-        }
+            $chId = json_decode($val['id']);
+            $isActive = UsersChallenges::select('is_active')->where([
+                ['user_id', Auth::id()],
+                ['challenge_id', $chId],
+                ])
+                ->get();
+            if (isset($isActive[0])) {
 
-        return ($completnes);
-        */
+                if ($isActive[0]->is_active) {
+                        
+                    $terms2 = json_decode($val['terms']);
+                    $unPreparedQuery = $terms2->rules->query;
+                    $unPreparedFailQuery = (isset($terms2->rules->terms->fail_query) ) 
+                        ? $terms2->rules->terms->fail_query  : ''; 
+                    //Log::info($unPreparedFailQuery);
+                    //get replacement`s array. It is nessary for creating valid SQL Query. Here we change all {param} with real values
+                    $replacements = ReplacementsClass::getReplacements();
+                    foreach ($replacements as $k => $v) {
+                        if ($unPreparedFailQuery) {
+                            $unPreparedFailQuery = str_replace($k, $v(), $unPreparedFailQuery);
+                        }
+                        $unPreparedQuery = str_replace($k, $v(), $unPreparedQuery);
+                    }
+                    if ($unPreparedFailQuery) {
+                        if (!ChallengeRules::checkChallengeRules([
+                                'preparedFailQuery' => $unPreparedFailQuery,
+                                'fine' => $terms2->rules->terms->fine,
+                                'fail_goal' => $terms2->rules->terms->fail_goal,
+                                'chId' => $chId,
+                            ])
+                        )
+                           exit;
+                    }
+                    //For now in $unPreparedQuery placed preparedQuery!
+                    //Log::info("$unPreparedQuery");
+                    $result = DB::select($unPreparedQuery);
+                    $completness = $result[0]->result / $terms2->rules->goal * 100;
+                    $completness = ($completness >= 100) ? 100 : $completness; 
+                    if ($result[0]->result < $terms2->rules->goal) {
+                        UsersChallenges::where([
+                            ['user_id', Auth::id()],
+                            ['challenge_id', $chId] 
+                        ])->update([
+                            'completeness' => $completness,
+                        ]);
+                    }
+                    $reward = $terms2->rules->reward;
+                    RewardService::reward(
+                        [
+                            'completness' => $completness,
+                            'reward'      => $reward,
+                            'chId'        => $chId,
+                            'isActive'   => $isActive,
+                        ]
+                    );
+                }
+            }    
+        }
     }
 
     private function completnesPercent($index, $goal)

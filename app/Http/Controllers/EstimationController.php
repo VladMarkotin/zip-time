@@ -15,6 +15,7 @@ use App\Events\FinishDayEvent;
 use App\Events\CompleteTaskEvent;
 use App\Listeners\FinishDayListener;
 use App\Listeners\CompleteTaskListener;
+use App\Events\RewardEvent;
 use App\Models\ChallengeModel;
 
 class EstimationController extends Controller
@@ -45,10 +46,9 @@ class EstimationController extends Controller
         $currentMethod = $doesUserHaveUncomplReqSubtask
             ? 'estimateTaskWithUncomReqSubtask'
             : 'estimateTaskWithoutUncomReqSubtask';
-        $challengeModel = new ChallengeModel();    
-        CompleteTaskEvent::dispatch(['info' => 'test']);
-        //FinishDayListener::dispatch();
         $response = json_encode($this->$currentMethod($request), JSON_UNESCAPED_UNICODE);
+        $challengeModel = new ChallengeModel();    
+        RewardEvent::dispatch(['event_prefix' => ['estimate_task'] ]);
 
         return  $response;
     }
