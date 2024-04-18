@@ -93,10 +93,9 @@
                 margin-bottom: 10px;
                 grid-column-gap: 5px;
                 grid-template-rows: auto auto;
-                grid-row-gap: 10px;
+                grid-row-gap: 12px;
                 .backlog_title {
                     grid-column-gap: 0;
-                    grid-row-gap: 10px;
                     .backlog_title-text {
                         font-weight: 700 !important;
                         text-shadow: none;
@@ -128,7 +127,6 @@
                 grid-template-columns: 1fr;
                 grid-column-gap: 0px;
                 .backlog_title {
-                    grid-row-gap: 20px;
                     .backlog_code-wrapper {
                         padding-right: 25px;
                     }

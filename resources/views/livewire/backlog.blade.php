@@ -26,7 +26,6 @@
                                             </p>
                                             <p class="backlog_title-text" style=" font-weight: 900;">{{ $backlog->title }}</p>
                                         @else
-                                            <p class="backlog_code-wrapper"></p>
                                             <p class="backlog_title-text" style=" font-weight: 900;">{{ $backlog->title }}</p>
                                         @endif
                                     </li>
