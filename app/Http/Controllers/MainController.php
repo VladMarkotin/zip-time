@@ -68,7 +68,8 @@ class MainController
     private $defaultSavedTasks         = null;
     private $subPlanService            = null;
 
-    public function __construct(SavedTask2Repository $taskRepository, HashCodeService $codeService,
+    public function __construct(SavedTask2Repository $taskRepository,
+                                HashCodeService $codeService,
                                 AddPlanService $addPlanService,
                                 CreateDayPlanRepository $createDayPlanRepository,
                                 NotesService $notesService,
