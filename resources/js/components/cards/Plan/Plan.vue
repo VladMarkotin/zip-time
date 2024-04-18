@@ -40,14 +40,15 @@
          </div>
          <v-divider></v-divider>
          <div>
-            <v-row align="center" class="d-flex justify-content-between" >
+            <v-row align="center" class="d-flex justify-content-between plan_inputs-wrapper">
                <v-col
                   md="3"
+                  class="plan_code-input-wrapper"
                   >
                   <v-row class="p-0 m-0 d-flex justify-content-between"> 
                      <v-col
                      md="3" 
-                     class="p-0 m-0 d-flex justify-content-center align-items-center"
+                     class="p-0 m-0 d-flex justify-content-center align-items-center plan_code-createCodeButton-wrapper"
                      >
                      <transition 
                      enter-active-class="button_appearance"
@@ -74,7 +75,7 @@
                            required>
                         </v-select>
                      </v-col>    
-                     <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center">
+                     <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center plan_code-cleanCodeButton-wrapper">
                         <CleanHashCodeButton 
                         v-if="defaultSelected.hash.length > 1"
                         :tooltipPosition = "{bottom: true}"
@@ -84,7 +85,10 @@
                      </v-col>
                   </v-row>
                </v-col>
-               <v-col md="3">
+               <v-col 
+               md="3"
+               class="plan_taskName-input-wrapper"
+               >
                   <v-text-field
                      :placeholder=" placeholders[0] "
                      :counter="50"
@@ -94,7 +98,9 @@
                      @keypress.enter = "addTask"
                      ></v-text-field>
                </v-col>
-               <v-col md="2">
+               <v-col md="2"
+               class="plan_taskType-input-wrapper"
+               >
                   <v-select
                      :label="placeholders[1]"
                      required
@@ -111,7 +117,10 @@
                      </template>
                   </v-select>
                </v-col>
-               <v-col md="1">
+               <v-col 
+               md="1"
+               class="plan_taskPriority-input-wrapper"
+               >
                   <v-select
                      :label="placeholders[2]"
                      required
@@ -132,15 +141,17 @@
                </v-col>
                <v-col
                id="plan-time" 
+               class="plan_time-input-wrapper"
                cols="1" 
                md="1">
                   <CustomTimepicker 
                   :time = "defaultSelected.time"
+                  :isIconInner = "true"
                   @updateTime = "setTime"
                   />
                </v-col>
             
-               <v-col md="1">
+               <v-col md="1" class="plan_addTask-button-wrapper">
                   <v-tooltip bottom>
                      <template v-slot:activator="{ on }">
                         <div v-on="on">
@@ -156,15 +167,29 @@
                   </v-tooltip>
                </v-col>
             </v-row>
+            <v-row 
+            class="plan_addTask-button-wrapper_mobile p-2 m-0"
+            >
+               <v-btn
+               class="plan_addTask-button_mobile"
+               color="rgb(161, 0, 0)"
+               dark
+               @click="addTask"
+               style="font-size: 18px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);" 
+               >
+                  Add new task
+               </v-btn>
+            </v-row>
          </div>
          <v-divider></v-divider>
          <PreplanTasksTable 
+         :screenWidth     = "screenWidth"
          :items           = "items"
          :isShowPreloader = "showPreloaderInsteadTable"
          @deleteItem  = "deleteItem"
          />
          <v-row 
-         class="d-flex justify-content-between align-items-center"
+         class="d-flex justify-content-between align-items-center plan_footer"
          style="height: 80px;"
          >
          <v-col 
@@ -185,7 +210,7 @@
                class=" d-flex justify-space-between" 
                v-if="items.length > 0"
                >
-                  <v-tooltip right>
+               <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
                         id="plan-creating" 
@@ -206,7 +231,7 @@
                         </v-btn>
                      </template>
                      <span>Create plan</span>
-                  </v-tooltip>        
+                  </v-tooltip>          
                </div>
             </transition>
             </div>
@@ -225,6 +250,7 @@
             </div>
          </v-col>
          <v-col 
+         class="plan_alert-wrapper"
          cols="9"
          style="height: 100%;"
          >     
@@ -236,7 +262,7 @@
                   v-if="showAlert"
                   color="#404040"
                   text
-                  class="elevation-1 create-day-alert mb-0 d-flex justify-content-center align-items-center" 
+                  class="elevation-1 create-day-alert mb-0 d-flex justify-content-center align-items-center plan_alert" 
                   :type="alertType"
                   >
                      {{serverMessage}}
@@ -244,7 +270,7 @@
             </transition>
          </v-col>
          <v-col 
-         class="d-flex justify-content-end align-items-center"
+         class="d-flex justify-content-end align-items-center plan_emergency-mode-icon-wrapper"
          cols="1"
          style="height: 100%;"
          >
@@ -358,6 +384,7 @@ export default {
         interval: {},
         closeAlertTime: 0,
         showPreloaderInsteadTable: false,
+        screenWidth: window.innerWidth,
     }),
     computed : {
         taskTypes() {
@@ -631,6 +658,10 @@ export default {
 
       generateUniqKey() {
          return uuid.v1();
+      },
+
+      updateScreenWidth() {
+         this.screenWidth = window.innerWidth;
       }
     },
     created() {
@@ -708,6 +739,8 @@ export default {
     },
 
     async mounted() {
+      window.addEventListener('resize', this.updateScreenWidth); //для адаптива
+
       try {
          const response = await  axios.post('/getEduStep', {
 			})
@@ -956,6 +989,10 @@ export default {
          console.error(error)
       }
     },
+
+   beforeDestroy() {
+      window.removeEventListener('resize', this.updateScreenWidth);
+   },
 }
 </script>
 <style scoped>
@@ -1022,7 +1059,14 @@ export default {
       opacity: 0;
       transform: translateX(-10%); /* Начальное положение при появлении и исчезновении */
    }
+   
    .tasks-counter-enter-active, .tasks-counter-leave-active {
       transition: all 0.5s;
    }
+
+   .plan_addTask-button-wrapper_mobile {
+      display: none;
+   }
+
+   @import url('/css/Plan/PlanMedia.css');
 </style>

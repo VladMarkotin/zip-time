@@ -1,0 +1,137 @@
+@media screen and (max-width: 950px) {
+    .preplanTasksTable_table-responsive {
+        overflow-x: auto;
+        white-space: nowrap; 
+
+        .preplan-table-taskName {
+            overflow-x: initial !important;
+            white-space: normal !important;
+        }
+
+        .preplanTasksTable_table-row {
+            font-size: 16px; 
+            td {
+                font-size: inherit !important;
+            }
+        }
+
+        .v-data-table__wrapper::-webkit-scrollbar {
+            height: 16px;
+            border-left: 1px solid #e6e6e6;
+          }
+    
+          .v-data-table__wrapper::-webkit-scrollbar-thumb {
+            background: #b0b0b0;
+            border: solid 3px #e6e6e6;
+            border-radius: 7px;
+          }
+    
+          .v-data-table__wrapper::-webkit-scrollbar-thumb:hover {
+            background: rgb(161, 0, 0);;
+          }
+    } 
+}
+
+@media screen and (max-width: 600px) {
+    #plan-tasks-table {
+        .preplan-table-taskName {
+            max-width: 100% !important;
+            width: auto !important;
+            max-height: none !important;
+            text-align: left;
+        }
+    } 
+
+    .preplanTasksTable_table-responsive {
+
+        td {
+            height: auto !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .preplanTasksTable_table-row {
+            padding: 5px;
+            width: 1200px;
+            display: grid !important;
+            grid-template-columns: 2fr .45fr .9fr .9fr 10fr; //менять пропорции ячеек в таблице
+            grid-template-rows: auto auto;
+            grid-row-gap: 3px;
+
+            td:nth-child(1),
+            td:nth-child(2) {
+                border-bottom: none !important;
+            }
+
+            .preplan-table-taskName {
+                grid-column: 2/6;
+                max-width: 100%;
+            }
+
+            .preplan-table-taskName,
+            .preplan_table-code {
+                font-weight: bold;
+            }
+
+            .preplan_table-notes {
+                overflow-x: initial !important;
+                white-space: normal !important;
+                word-wrap: break-word;
+                max-width: 100%;
+            }
+
+            .preplan_table-deleteButton {
+                grid-column: 4/5;
+                grid-row: 2/3;
+            }
+
+            >div {
+                max-width: 100% !important;
+            }
+        }
+        
+        .v-data-table-header {
+            .v-select__selections {
+                .v-chip {
+                    background-color: rgb(161, 0, 0);
+                    color: #fff;
+                    text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 2px;
+                    .v-icon {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .container {
+        .plan_footer {
+            margin-top: 10px;
+            display: grid !important;
+            grid-template-rows: auto auto;
+            grid-template-columns: 1fr 5fr 1fr;
+            height: auto !important;
+
+            >div {
+                max-width: 100%;
+            }
+
+            .plan_alert-wrapper {
+                grid-column: 1/4;
+                grid-row: 1/2;
+                min-height: 85px;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .plan_emergency-mode-icon-wrapper {
+                grid-column: 3/4;
+            }
+        }
+    }
+
+}
