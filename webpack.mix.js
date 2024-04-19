@@ -41,5 +41,7 @@ mix
     .sass('resources/sass/CloseDay/CloseDayMedia.scss', 'public/css/CloseDay')
     .sass('resources/sass/Plan/PlanMedia.scss', 'public/css/Plan')
     .sass('resources/sass/PreplanTasksTable/PreplanTasksTableMedia.scss', 'public/css/PreplanTasksTable')
+    .sass('resources/sass/backlogPage/backlogPage.scss', 'public/css/backlogPage')
+    .sass('resources/sass/backlogPage/backlogMedia.scss', 'public/css/backlogPage')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');

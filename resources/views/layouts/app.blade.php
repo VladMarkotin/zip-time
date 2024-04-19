@@ -49,6 +49,11 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     @endif
+    @if(Route::currentRouteName() == 'backlog')
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    @endif
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
@@ -61,9 +66,17 @@
             <link href="{{ asset('css/loginPage/loginPage.css') }}" rel="stylesheet">
             <link href="{{ asset('css/loginPage/loginPageMedia.css') }}" rel="stylesheet">
         @endif
+        @if(Route::currentRouteName() == 'backlog')
+            <link href="{{ asset('css/backlogPage/backlogPage.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/backlogPage/backlogMedia.css') }}" rel="stylesheet">
+        @endif
     @endguest
     @if(Route::currentRouteName() == 'settings')
         <link href="{{ asset('css/settingsPage/settingsPage.css') }}" rel="stylesheet">
+    @endif
+    @if(Route::currentRouteName() == 'backlog')
+        <link href="{{ asset('css/backlogPage/backlogPage.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/backlogPage/backlogMedia.css') }}" rel="stylesheet">
     @endif
     @livewireStyles
 
