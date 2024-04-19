@@ -8,6 +8,7 @@ use App\Http\Controllers\Services\GPTService\GPTService;
 use App\Http\Controllers\Services\GPTService\traits\transformGptResponseTrait;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class SubPlanGPTController extends Controller
 {
@@ -43,11 +44,15 @@ class SubPlanGPTController extends Controller
         // }
         // exit(json_encode($result));
          //end test
-         $response = $this ->GPTService->chatGPT($request);
-         $response = $response['choices'][0]['message']['content'];
-         $response =  $this->transformData($response);
-         echo json_encode($response);
-       
+         $response = $this->GPTService->chatGPT($request);
+         Log::info(($response) );
+         if (isset($response['choices'][0])) {
+
+             $response = $response['choices'][0]['message']['content'];
+             $response =  $this->transformData($response);
+             echo json_encode($response);
+         }
+        //echo json_encode("{content: 'ChatGpr error!'}");
     }
 
     public function createSubPlanViaGPT(Request $request)

@@ -150,9 +150,11 @@
                             },3000)
                             console.log(response.data)
                             this.subtasksFromChatGPT = []
-                            response.data.map( (el, key) => {
-                                this.subtasksFromChatGPT.push(el)    
-                            })
+                            if (response.data.length > 0) {
+                                response.data.map( (el, key) => {
+                                    this.subtasksFromChatGPT.push(el)    
+                                })
+                            }
                             /*this.subtasksFromChatGPT.push('task1')
                             this.subtasksFromChatGPT.push('task2')*/
                         }
