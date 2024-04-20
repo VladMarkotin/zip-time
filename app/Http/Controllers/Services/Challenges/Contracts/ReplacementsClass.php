@@ -36,7 +36,7 @@ class ReplacementsClass
             }),
             '{keep_going_start}' => (function () {
                 $chId = ChallengeModel::select('id')->where(['index' => 'keep_going'])->get();
-                // Log::info($chId[0]->id);
+                // Log::info($chId[0]->id) ;
                 // die;
                 $r = UsersChallenges::select('created_at')->where([ ['user_id', Auth::id() ],
                 ['challenge_id', $chId[0]->id] ]) //challenge_id of 'keep_going' challenge
