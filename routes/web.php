@@ -115,6 +115,10 @@ Route::middleware(['auth'])->group(function () {
     
     //Get challenges
     Route::post('get-challenges', [App\Http\Controllers\ChallengeController::class, 'getUsersChallenges']);
+
+    //Update comment
+    Route::post('edit-comment', [App\Http\Controllers\EstimationController::class, 'saveComment']);
+
 });
 Route::post('/get-default-configs', function (){
     exit(DefaultConfigs::getConfigs());

@@ -17,6 +17,9 @@ use App\Listeners\FinishDayListener;
 use App\Listeners\CompleteTaskListener;
 use App\Events\RewardEvent;
 use App\Models\ChallengeModel;
+use Illuminate\Support\Facades\Validator;
+use App\Models\TimetableModel;
+
 
 class EstimationController extends Controller
 {
@@ -51,6 +54,22 @@ class EstimationController extends Controller
         RewardEvent::dispatch(['event_prefix' => ['estimate_task'] ]);
 
         return  $response;
+    }
+
+    public function saveComment(Request $request)
+    {
+        $rules = [
+            'comment' => 'string|max:65535', // 65535 - максимальная длина типа TEXT в MySQL
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if (!$validator->fails()) {
+            $carbonDate = Carbon::parse($request->input('date'));
+            // Форматирование даты в формат "Y-m-d"
+            $formattedDate = $carbonDate->format('Y-m-d');
+            $temp = TimetableModel::where([['date',$formattedDate], ['user_id', Auth::id()] ])
+              ->update(['comment' => $request->input('comment')]);
+        }
     }
 
     /**

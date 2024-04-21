@@ -24,6 +24,7 @@
 				</v-list-item-content>
 				<v-list-item-content class="align-end" v-else>
 					<v-textarea
+					    solo
 						clear-icon="mdi-close-circle"
 						label="Describe your day"
 						v-model="newComment"
@@ -33,15 +34,20 @@
 				<v-list-item-content class="align-right"> 
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="editComment">
+							<v-btn icon v-on="on" v-on:click="editComment" v-if="!saveCommentFlag">
 								<v-icon color="#D71700"> {{icons.mdiPencil}} </v-icon>
-							</v-btn>
-							<v-btn icon v-on="on" v-on:click="editComment">
-								<v-icon color="#D71700"> {{icons.mdiContentSaveMoveOutline }} </v-icon>
 							</v-btn>
 							
 						</template>
-						<span>Prev day</span>
+						<span>Edit comment</span>
+					</v-tooltip>
+					<v-tooltip right>
+						<template v-slot:activator="{on}">
+							<v-btn icon v-on="on" v-on:click="saveComment">
+								<v-icon color="#D71700"> {{icons.mdiContentSaveMoveOutline }} </v-icon>
+							</v-btn>
+						</template>
+						<span>Save comment</span>
 					</v-tooltip>
 				</v-list-item-content>
 			</v-list-item>
@@ -88,6 +94,7 @@
 				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiPencil, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},
 				   editCommentFlag: false,
+				   saveCommentFlag: false,
 				   newComment: '',
 		   }
 		},
@@ -117,9 +124,17 @@
 				},
 				editComment () {
 					this.editCommentFlag = !this.editCommentFlag
-					console.log(this.newComment)
 					this.data.comment = this.newComment
 
+				},
+				saveComment() {
+					axios.post('/edit-comment',{	
+						comment    : this.newComment,
+						date       : this.date
+					})
+					.then((response) => {
+						this.editCommentFlag = !this.editCommentFlag
+					})
 				}
 			}
 	}
