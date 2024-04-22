@@ -17,10 +17,30 @@
                 <v-list-item-content class="align-end" v-if="data.dayOwnMark > 0 ">{{data.dayOwnMark}} %</v-list-item-content>
 				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
 			</v-list-item>
-			<v-list-item>
-				<v-list-item-content class="key">Comment:</v-list-item-content>
+			<v-list-item class="comment-wrapper">
+				<v-list-item-content class="key d-flex comment-key-wrapper">
+					<span>Comment:</span>
+					<div class="d-flex justify-content-center comment-buttons-wrapper">
+						<v-tooltip left>
+							<template v-slot:activator="{on}">
+								<v-btn icon v-on="on" v-on:click="editComment" v-if="!saveCommentFlag">
+									<v-icon color="#D71700" large> {{icons.mdiPencil}} </v-icon>
+								</v-btn>
+							</template>
+							<span>Edit comment</span>
+						</v-tooltip>
+						<v-tooltip right>
+							<template v-slot:activator="{on}">
+								<v-btn icon v-on="on" v-on:click="saveComment">
+									<v-icon color="#D71700" large> {{icons.mdiContentSaveMoveOutline }} </v-icon>
+								</v-btn>
+							</template>
+							<span>Save comment</span>
+						</v-tooltip>
+					</div>
+				</v-list-item-content>
 				<v-list-item-content class="align-end" v-if="!editCommentFlag">
-					{{data.comment}}
+					{{commentText}}
 				</v-list-item-content>
 				<v-list-item-content class="align-end" v-else>
 					<v-textarea
@@ -29,26 +49,8 @@
 						label="Describe your day"
 						v-model="newComment"
 						clearable
+						@keydown.enter="saveComment"
 					></v-textarea>
-				</v-list-item-content>
-				<v-list-item-content class="align-right"> 
-					<v-tooltip right>
-						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="editComment" v-if="!saveCommentFlag">
-								<v-icon color="#D71700"> {{icons.mdiPencil}} </v-icon>
-							</v-btn>
-							
-						</template>
-						<span>Edit comment</span>
-					</v-tooltip>
-					<v-tooltip right>
-						<template v-slot:activator="{on}">
-							<v-btn icon v-on="on" v-on:click="saveComment">
-								<v-icon color="#D71700"> {{icons.mdiContentSaveMoveOutline }} </v-icon>
-							</v-btn>
-						</template>
-						<span>Save comment</span>
-					</v-tooltip>
 				</v-list-item-content>
 			</v-list-item>
 		</v-list>
@@ -83,6 +85,7 @@
 <script>
 	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiPencil, mdiContentSaveMoveOutline } from '@mdi/js'
 	import Challenges from "./../challenges/Challenges.vue";
+import { data } from 'jquery';
 
 	export default
 	{
@@ -90,11 +93,14 @@
 		components: { Challenges },
 		data()
 		{
+			const commentText = this.data.comment;
+
 			return {date : new Date(),
 				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiPencil, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},
 				   editCommentFlag: false,
 				   saveCommentFlag: false,
+				   commentText,
 				   newComment: '',
 		   }
 		},
@@ -110,7 +116,6 @@
 					this.data.comment = data.plans[strDate].comment
 					this.disabled.prevButton = data.histLength == 0 
 					this.disabled.nextButton = date.toEnStr() == new Date().toEnStr()
-					this.newComment = this.data.comment
 				},
 				getDayStatusName(statusCode)
 				{
@@ -123,9 +128,8 @@
 						}[statusCode]
 				},
 				editComment () {
-					this.editCommentFlag = !this.editCommentFlag
-					this.data.comment = this.newComment
-
+					this.editCommentFlag = !this.editCommentFlag;
+					this.newComment = this.commentText;
 				},
 				saveComment() {
 					axios.post('/edit-comment',{	
@@ -134,6 +138,7 @@
 					})
 					.then((response) => {
 						this.editCommentFlag = !this.editCommentFlag
+						this.commentText     = this.newComment;
 					})
 				}
 			}
@@ -143,5 +148,23 @@
 	.key
 	{
 		font-weight : bold
+	}
+
+	.comment-wrapper {
+		align-items: flex-start;
+	}
+
+	.comment-wrapper > .v-list-item__content {
+		align-self: auto;
+	}
+
+	
+	.comment-key-wrapper {
+		display: grid !important;
+		grid-template-columns: auto 1fr;
+	}
+
+	.comment-buttons-wrapper {
+		gap: 15px;
 	}
 </style>
