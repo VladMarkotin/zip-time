@@ -23,7 +23,12 @@
 					<div class="d-flex justify-content-center comment-buttons-wrapper">
 						<v-tooltip left>
 							<template v-slot:activator="{on}">
-								<v-btn icon v-on="on" v-on:click="editComment" v-if="!saveCommentFlag">
+								<v-btn 
+								icon 
+								v-on="on" 
+								v-on:click="editComment"
+								:disabled="isCommentEdited"
+								>
 									<v-icon color="#D71700" large> {{icons.mdiPencil}} </v-icon>
 								</v-btn>
 							</template>
@@ -31,7 +36,12 @@
 						</v-tooltip>
 						<v-tooltip right>
 							<template v-slot:activator="{on}">
-								<v-btn icon v-on="on" v-on:click="saveComment">
+								<v-btn 
+								icon 
+								v-on="on" 
+								v-on:click="saveComment"
+								:disabled="!isCommentEdited"
+								>
 									<v-icon color="#D71700" large> {{icons.mdiContentSaveMoveOutline }} </v-icon>
 								</v-btn>
 							</template>
@@ -39,7 +49,7 @@
 						</v-tooltip>
 					</div>
 				</v-list-item-content>
-				<v-list-item-content class="align-end" v-if="!editCommentFlag">
+				<v-list-item-content class="align-end" v-if="!isCommentEdited">
 					{{commentText}}
 				</v-list-item-content>
 				<v-list-item-content class="align-end" v-else>
@@ -98,10 +108,9 @@ import { data } from 'jquery';
 			return {date : new Date(),
 				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiPencil, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},
-				   editCommentFlag: false,
-				   saveCommentFlag: false,
 				   commentText,
 				   newComment: '',
+				   isCommentEdited: false,
 		   }
 		},
 		methods :
@@ -128,7 +137,7 @@ import { data } from 'jquery';
 						}[statusCode]
 				},
 				editComment () {
-					this.editCommentFlag = !this.editCommentFlag;
+					this.isCommentEdited = true;
 					this.newComment = this.commentText;
 				},
 				saveComment() {
@@ -137,8 +146,8 @@ import { data } from 'jquery';
 						date       : this.date
 					})
 					.then((response) => {
-						this.editCommentFlag = !this.editCommentFlag
 						this.commentText     = this.newComment;
+						this.isCommentEdited = false;
 					})
 				}
 			}
