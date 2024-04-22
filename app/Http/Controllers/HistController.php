@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Services\HistService;
-
+use Illuminate\Support\Facades\Auth;
 
 class HistController extends Controller
 {
@@ -37,5 +37,19 @@ class HistController extends Controller
         $response = $this->histService->getHist($data);
 
         return $response;
+    }
+
+    public function getHistforClosedDay(Request $request) {
+        $user_id = Auth::id();
+        $date    = $request->date;
+        $pattern = "/^(\d{4}-\d{2}-\d{2})/";
+
+        if (preg_match($pattern, $date, $matches)) {
+            $formatedDate = $matches[0];   
+            $response = $this->histService->getHistforClosedDay($formatedDate, $user_id);
+            return response()->json($response);
+        }
+
+        return response()->json(['isDayMissed' => true]);
     }
 }

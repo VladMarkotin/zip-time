@@ -55,7 +55,9 @@ class ChallengeService
                         if ($unPreparedFailQuery) {
                             $unPreparedFailQuery = str_replace($k, $v(), $unPreparedFailQuery);
                         }
-                        $unPreparedQuery = str_replace($k, $v(), $unPreparedQuery);
+                        if (str_contains($unPreparedQuery, $k)) {
+                            $unPreparedQuery = str_replace($k, $v(), $unPreparedQuery);
+                        }
                     }
                     if ($unPreparedFailQuery) {
                         if (!ChallengeRules::checkChallengeRules([
