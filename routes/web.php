@@ -65,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [App\Http\Controllers\HistController::class, 'displayHist'])->name('hist');
         Route::get('/{date}', [App\Http\Controllers\HistController::class, 'histOnDate']);
         Route::post('/', [App\Http\Controllers\HistController::class, 'index']);
+        Route::post('/forClosedDay', [App\Http\Controllers\HistController::class, 'getHistforClosedDay']);
     });
     //end History routes
 
