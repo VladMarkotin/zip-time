@@ -2,7 +2,7 @@
 	<v-card>
 		<Challenges />
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
-			<span>Date: {{currentDate.toEnStr()}}</span>
+			<span>Date: {{shownDate}}</span>
 			<span>Finished</span>
 			<span>Status: {{dayStatus}}</span>
 		</v-card-title>
@@ -72,7 +72,7 @@
 		<v-card-actions class="d-flex justify-space-between">
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('prev')">
+					<v-btn icon v-on="on" v-on:click="setDate('prev')" :disabled="!isShowButton.prev">
 						<v-icon color="#D71700" large>{{icons.mdiArrowLeft}}</v-icon>
 					</v-btn>
 				</template>
@@ -88,7 +88,7 @@
 			</v-tooltip>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('next')">
+					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next">
 						<v-icon color="#D71700" large>{{icons.mdiArrowRight}}</v-icon>
 					</v-btn>
 				</template>
@@ -117,8 +117,11 @@ import { data } from 'jquery';
 			daystatusCodeInfo.set(2, 'Failed');
 			daystatusCodeInfo.set(3, 'Success');
 
+			const currentDate = new Date;
+
 			return {
-				   currentDate: new Date(),
+				   currentDate,
+				   shownDate: currentDate.toEnStr(),
 				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiPencil, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},
 				   commentText,
@@ -126,6 +129,11 @@ import { data } from 'jquery';
 				   newComment: '',
 				   isCommentEdited: false,
 				   wasADailyPlanCreated: true,
+				   isLoading: false,
+				   isShowButton: {
+					prev: true,
+					next: false,
+				   }
 		   }
 		},
 		computed : {
@@ -138,6 +146,8 @@ import { data } from 'jquery';
 		methods :
 			{	
 				setDate(flag) {
+					if (this.isLoading) return;
+					
 					const currentDay = this.currentDate;
 
 					switch (flag) {
@@ -153,11 +163,14 @@ import { data } from 'jquery';
 					}
 
 					this.setData(currentDay);
+					this.shownDate = this.currentDate.toEnStr();
 				},
 				async setData(date)
 				{
 					try {
+						this.isLoading = true;
 						const {data} = (await axios.post(`/hist/forClosedDay`,{date}))
+						this.isShowButton = {prev: data.isShowPrevButton, next: data.isShowNextButton};
 
 						if (!data.isDayMissed) {
 							const {currentDayData} = data;
@@ -173,9 +186,9 @@ import { data } from 'jquery';
 
 					} catch (error) {
 						console.error(error);
+					} finally {
+						this.isLoading = false;
 					}
-					// this.disabled.prevButton = data.histLength == 0 
-					// this.disabled.nextButton = date.toEnStr() == new Date().toEnStr()
 				},
 				editComment () {
 					this.isCommentEdited = true;
