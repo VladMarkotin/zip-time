@@ -3,8 +3,8 @@
 		<Challenges />
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>Date: {{shownDate}}</span>
-			<span>Finished</span>
-			<span>Status: {{dayStatus}}</span>
+			<span v-if="wasADailyPlanCreated">Finished</span>
+			<span>Status: {{wasADailyPlanCreated ? dayStatus : ''}}</span>
 		</v-card-title>
 		<v-list v-if="wasADailyPlanCreated">
 			<v-list-item>
@@ -147,7 +147,7 @@ import { data } from 'jquery';
 			{	
 				setDate(flag) {
 					if (this.isLoading) return;
-					
+
 					const currentDay = this.currentDate;
 
 					switch (flag) {

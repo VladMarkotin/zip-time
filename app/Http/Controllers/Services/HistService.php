@@ -58,8 +58,8 @@ class HistService
         ->get()
         ->toArray();
 
-        $isShowPrevButton = $this->timeTable::where('date', '<', $date)->exists();
-        $isShowNextButton = $this->timeTable::where('date', '>', $date)->exists();
+        $isShowPrevButton = $this->timeTable::where('date', '<', $date)->where('user_id', $user_id)->exists();
+        $isShowNextButton = $this->timeTable::where('date', '>', $date)->where('user_id', $user_id)->exists();
 
         $isDayMissed = !count($currentDayData);
         $responseData['isDayMissed']      = $isDayMissed;
