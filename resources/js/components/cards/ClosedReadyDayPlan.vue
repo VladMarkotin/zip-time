@@ -1,7 +1,7 @@
 <template>
 	<v-card>
 		<Challenges />
-		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header">
+		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header" style="margin-top: 50px">
 			<div class="closedReadyDayPlan_day-info-header-date">
 				<p class="closedReadyDayPlan_header-text">
 					<span>Date: </span> <span>{{shownDate}}</span>
@@ -28,7 +28,7 @@
 				</p>
 			</div>
 		</v-card-title>
-		<v-list v-if="wasADailyPlanCreated" class="day-info-list">
+		<v-list v-if="wasADailyPlanCreated" class="day-info-list closedReadyDayPlan_dayInfoList-existing-day">
 			<v-list-item>
 				<v-list-item-content class="key">Final mark:</v-list-item-content>
 				<v-list-item-content class="align-end" v-if="data.dayFinalMark > 0 ">{{data.dayFinalMark}} %</v-list-item-content>
@@ -57,10 +57,10 @@
 						/>
 					</div>
 				</v-list-item-content>
-				<v-list-item-content class="align-end" v-if="!isCommentEdited">
+				<v-list-item-content class="align-end closeReadyDayPlan_comment-text closeReadyDayPlan_comment-text-wrapper" v-if="!isCommentEdited">
 					{{commentText}}
 				</v-list-item-content>
-				<v-list-item-content class="align-end" v-else>
+				<v-list-item-content class="align-end closeReadyDayPlan_comment-text-wrapper" v-else>
 					<v-textarea 
 						class="newComment-input"
 						solo
@@ -76,7 +76,7 @@
 		<v-list v-else class="day-info-list d-flex justify-content-center">
 			<v-list-item>
 				<v-list-item-content class="key d-flex justify-content-center missed-day-text">
-					In this day, a daily plan was not created.	
+					In this day,<br class="br" /> a daily plan was not created.	
 				</v-list-item-content>
 			</v-list-item>
 		</v-list>
@@ -89,14 +89,28 @@
 				</template>
 				<span>Prev day</span>
 			</v-tooltip>
-			<v-tooltip right>
-				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('today')" :disabled="isCommentEdited">
-						<v-icon color="#D71700" large>{{icons.mdiCalendarToday}}</v-icon>
-					</v-btn>
-				</template>
-				<span>Today</span>
-			</v-tooltip>
+			<div>
+				<EditCommentButton 
+				v-if             = "isMobile && wasADailyPlanCreated"
+				:isCommentEdited = "isCommentEdited"
+				:iconSize        = "32"
+				@click="editComment"
+				/>
+				<SaveCommentButton 
+				v-if             = "isMobile && wasADailyPlanCreated"
+				:isCommentEdited = "isCommentEdited"
+				:iconSize        = "32"
+				@click="saveComment"
+				/>
+				<v-tooltip right>
+					<template v-slot:activator="{on}">
+						<v-btn icon v-on="on" v-on:click="setDate('today')" :disabled="isCommentEdited">
+							<v-icon color="#D71700" large>{{icons.mdiCalendarToday}}</v-icon>
+						</v-btn>
+					</template>
+					<span>Today</span>
+				</v-tooltip>
+			</div>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
 					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next || isCommentEdited">
@@ -272,6 +286,10 @@ import { data } from 'jquery';
 	.missed-day-text {
 		font-size: 1.5rem;
 		color: #212121;
+	}
+
+	.missed-day-text .br {
+		display: none;
 	}
 
 	.comment-wrapper {

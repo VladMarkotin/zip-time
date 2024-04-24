@@ -25,21 +25,62 @@
 @media screen and (max-width: 625px) {
     .closedReadyDayPlan_day-info-header {
         padding: 12px;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
 
         >div {
-            min-height: 20.8px;
+            min-height: 22.4px;
         }
 
         .closedReadyDayPlan_header-text {
             display: grid;
-            grid-template-columns: 80px 1fr;
+            grid-template-columns: 100px 1fr;
         }
 
         .closedReadyDayPlan_day-info-header-status {
             grid-column: 1/3;
             grid-row: 2/3;
             text-align: left !important;
+        }
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .day-info-list {
+        min-height: 331.5px !important;
+    }
+
+    .missed-day-text {
+        font-size: 1.8rem !important;
+        text-align: center;
+        .br {
+            display: initial !important;
+        }
+    }
+
+    .closedReadyDayPlan_dayInfoList-existing-day {
+        font-size: 1.2rem;
+        .comment-wrapper {
+            align-items: center !important;
+        }
+        .v-list-item {
+            &::after {
+                display: none;
+            }
+            display: grid;
+            grid-template-columns: 120px 1fr;
+        }
+        .closeReadyDayPlan_comment-text {
+            font-style: italic;
+            font-size: 1rem;
+        }
+
+        .closeReadyDayPlan_comment-text-wrapper {
+            min-height: 210px;
+            align-items: flex-start !important;
+        }
+
+        .comment-wrapper {
+            align-items: flex-start !important;
         }
     }
 }
