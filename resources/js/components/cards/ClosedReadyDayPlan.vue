@@ -170,16 +170,16 @@ import { data } from 'jquery';
 					try {
 						this.isLoading = true;
 						const {data} = (await axios.post(`/hist/forClosedDay`,{date}))
-						this.isShowButton = {prev: data.isShowPrevButton, next: data.isShowNextButton};
+						this.isShowButton = {prev: data.doesTheDayExistBefore, next: data.doesTheDayExistAfter};
 
 						if (!data.isDayMissed) {
 							const {currentDayData} = data;
 
 							this.wasADailyPlanCreated = true;
-							this.data.dayFinalMark    = currentDayData.final_estimation;
-							this.data.dayOwnMark      = currentDayData.own_estimation;
-							this.data.dayStatus       = currentDayData.day_status;
-							this.commentText          = currentDayData.comment; 
+							this.data.dayFinalMark    = currentDayData.dayFinalMark;
+							this.data.dayOwnMark      = currentDayData.dayOwnMark;
+							this.data.dayStatus       = currentDayData.dayStatus;
+							this.commentText          = currentDayData.commentText; 
 						} else {
 							this.wasADailyPlanCreated = false;
 						}

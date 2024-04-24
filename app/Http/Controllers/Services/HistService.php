@@ -58,16 +58,33 @@ class HistService
         ->get()
         ->toArray();
 
-        $isShowPrevButton = $this->timeTable::where('date', '<', $date)->where('user_id', $user_id)->exists();
-        $isShowNextButton = $this->timeTable::where('date', '>', $date)->where('user_id', $user_id)->exists();
+        $doesTheDayExistBefore = $this->timeTable::where('date', '<', $date)->where('user_id', $user_id)->exists();
+        $doesTheDayExistAfter  = $this->timeTable::where('date', '>', $date)->where('user_id', $user_id)->exists();
 
         $isDayMissed = !count($currentDayData);
         $responseData['isDayMissed']      = $isDayMissed;
-        $responseData['isShowPrevButton'] = $isShowPrevButton;
-        $responseData['isShowNextButton'] = $isShowNextButton;
+        $responseData['doesTheDayExistBefore'] = $doesTheDayExistBefore;
+        $responseData['doesTheDayExistAfter']  = $doesTheDayExistAfter;
 
+        
         if (!$isDayMissed) {
-            $responseData['currentDayData'] = $currentDayData[0];
+            $transformedKeys = array_map(function($key) {
+                switch ($key) {
+                    case 'day_status':
+                        return 'dayStatus';
+                    case 'final_estimation':
+                        return 'dayFinalMark';
+                    case 'own_estimation':
+                        return 'dayOwnMark';
+                    case 'comment':
+                        return 'commentText';
+                    default:
+                        return $key;
+                }
+            }, array_keys($currentDayData[0]));
+            $currentDayData = array_combine($transformedKeys, $currentDayData[0]);
+
+            $responseData['currentDayData'] = $currentDayData;
         }
 
         return $responseData;
