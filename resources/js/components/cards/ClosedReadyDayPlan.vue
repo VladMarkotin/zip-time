@@ -7,7 +7,7 @@
 					<span>Date: </span> <span>{{shownDate}}</span>
 				</p>
 			</div>
-			<div>
+			<div class="closedReadyDayPlan_header-finished">
 				<p 
 				v-if="wasADailyPlanCreated"
 				class="closedReadyDayPlan_header-text"
@@ -236,6 +236,21 @@ import { data } from 'jquery';
 	}
 </script>
 <style scoped>
+	.closedReadyDayPlan_day-info-header {
+		display: grid ;
+		grid-template-columns: 200px 1fr 250px;
+	}
+
+	.closedReadyDayPlan_day-info-header .closedReadyDayPlan_day-info-header-date {
+		text-align: left;
+	}
+	.closedReadyDayPlan_day-info-header .closedReadyDayPlan_header-finished {
+		text-align: center;
+	}
+	.closedReadyDayPlan_day-info-header .closedReadyDayPlan_day-info-header-status {
+		text-align: right;
+	}
+
 	.closedReadyDayPlan_header-text {
 		margin-bottom: 0;
 	}

@@ -1,12 +1,14 @@
 @media screen and (max-width: 680px) {
   .closedReadyDayPlan_day-info-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr !important;
     grid-row-gap: 5px;
     line-height: normal;
   }
   .closedReadyDayPlan_day-info-header > div {
     min-height: 23.2px;
+  }
+  .closedReadyDayPlan_day-info-header .closedReadyDayPlan_header-finished {
+    text-align: left !important;
   }
   .closedReadyDayPlan_day-info-header .closedReadyDayPlan_day-info-header-date {
     grid-column: 1/3;
@@ -30,6 +32,6 @@
   .closedReadyDayPlan_day-info-header .closedReadyDayPlan_day-info-header-status {
     grid-column: 1/3;
     grid-row: 2/3;
-    text-align: left;
+    text-align: left !important;
   }
 }
