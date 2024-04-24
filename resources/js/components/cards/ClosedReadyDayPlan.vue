@@ -1,10 +1,32 @@
 <template>
 	<v-card>
 		<Challenges />
-		<v-card-title class="font-weight-bold justify-space-between v-card-title">
-			<span>Date: {{shownDate}}</span>
-			<span v-if="wasADailyPlanCreated">Finished</span>
-			<span v-if="wasADailyPlanCreated">Status: {{ dayStatus }}</span>
+		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header">
+			<div class="closedReadyDayPlan_day-info-header-date">
+				<p class="closedReadyDayPlan_header-text">
+					<span>Date: </span> <span>{{shownDate}}</span>
+				</p>
+			</div>
+			<div>
+				<p 
+				v-if="wasADailyPlanCreated"
+				class="closedReadyDayPlan_header-text"
+				>
+					<span>
+						Finished
+					</span>
+				</p>
+			</div>
+			<div 
+			class="closedReadyDayPlan_day-info-header-status"
+			>
+				<p 
+				v-if="wasADailyPlanCreated"
+				class="closedReadyDayPlan_header-text"
+				>
+					<span>Status: </span><span>{{ dayStatus }}</span>
+				</p>
+			</div>
 		</v-card-title>
 		<v-list v-if="wasADailyPlanCreated" class="day-info-list">
 			<v-list-item>
@@ -214,6 +236,10 @@ import { data } from 'jquery';
 	}
 </script>
 <style scoped>
+	.closedReadyDayPlan_header-text {
+		margin-bottom: 0;
+	}
+
 	.key
 	{
 		font-weight : bold
