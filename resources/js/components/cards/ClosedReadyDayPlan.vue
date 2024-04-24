@@ -43,32 +43,18 @@
 				<v-list-item-content class="key d-flex comment-key-wrapper">
 					<span>Comment:</span>
 					<div class="d-flex justify-content-center comment-buttons-wrapper">
-						<v-tooltip left>
-							<template v-slot:activator="{on}">
-								<v-btn 
-								icon 
-								v-on="on" 
-								v-on:click="editComment"
-								:disabled="isCommentEdited"
-								>
-									<v-icon color="#D71700" size="29"> {{icons.mdiPencil}} </v-icon>
-								</v-btn>
-							</template>
-							<span>Edit comment</span>
-						</v-tooltip>
-						<v-tooltip right>
-							<template v-slot:activator="{on}">
-								<v-btn 
-								icon 
-								v-on="on" 
-								v-on:click="saveComment"
-								:disabled="!isCommentEdited"
-								>
-									<v-icon color="#D71700" size="29"> {{icons.mdiContentSaveMoveOutline }} </v-icon>
-								</v-btn>
-							</template>
-							<span>Save comment</span>
-						</v-tooltip>
+						<EditCommentButton 
+						v-if="!isMobile"
+						:isCommentEdited = "isCommentEdited"
+						:iconSize        = "29"
+						@click="editComment"
+						/>
+						<SaveCommentButton 
+						v-if="!isMobile"
+						:isCommentEdited = "isCommentEdited"
+						:iconSize        = "29"
+						@click="saveComment"
+						/>
 					</div>
 				</v-list-item-content>
 				<v-list-item-content class="align-end" v-if="!isCommentEdited">
@@ -123,14 +109,16 @@
 	</v-card>
 </template>
 <script>
-	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiPencil, mdiContentSaveMoveOutline } from '@mdi/js'
+	import EditCommentButton from '../UI/EditCommentButton.vue';
+	import SaveCommentButton from '../UI/SaveCommentButton.vue';
+	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline } from '@mdi/js'
 	import Challenges from "./../challenges/Challenges.vue";
 import { data } from 'jquery';
 
 	export default
 	{
 		props : ['data'],
-		components: { Challenges },
+		components: { Challenges, EditCommentButton, SaveCommentButton },
 		data()
 		{
 			const commentText = this.data.comment;
@@ -147,7 +135,7 @@ import { data } from 'jquery';
 			return {
 				   currentDate,
 				   shownDate: currentDate.toEnStr(),
-				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiPencil, mdiContentSaveMoveOutline },
+				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},
 				   commentText,
 				   daystatusCodeInfo,
@@ -158,7 +146,8 @@ import { data } from 'jquery';
 				   isShowButton: {
 					prev: true,
 					next: false,
-				   }
+				   },
+				   screenWidth: window.innerWidth,
 		   }
 		},
 		computed : {
@@ -167,6 +156,10 @@ import { data } from 'jquery';
 				
 				return this.daystatusCodeInfo.get(statusCode);
 			},
+
+			isMobile() {
+				return this.screenWidth < 550;
+			}
 		},
 		methods :
 			{	
@@ -232,7 +225,19 @@ import { data } from 'jquery';
 						this.isCommentEdited = false;
 					})
 				},
-			}
+
+				updateScreenWidth() {
+            		this.screenWidth = window.innerWidth;
+        		}
+			},
+		
+		mounted() {
+			window.addEventListener('resize', this.updateScreenWidth);
+		},
+
+		beforeDestroy() {
+			window.removeEventListener('resize', this.updateScreenWidth);
+		}
 	}
 </script>
 <style scoped>
