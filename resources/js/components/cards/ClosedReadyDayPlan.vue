@@ -155,7 +155,10 @@ import { data } from 'jquery';
 							currentDay.setDate(currentDay.getDate() - 1);
 						break;
 						case 'today':
-							currentDay.setDate(new Date().getDate());
+							const today = new Date;
+
+							currentDay.setDate(today.getDate());
+							currentDay.setMonth(today.getMonth());
 						break;
 						case 'next':
 							currentDay.setDate(currentDay.getDate() + 1);
