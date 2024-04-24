@@ -4,9 +4,9 @@
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<span>Date: {{shownDate}}</span>
 			<span v-if="wasADailyPlanCreated">Finished</span>
-			<span>Status: {{wasADailyPlanCreated ? dayStatus : ''}}</span>
+			<span v-if="wasADailyPlanCreated">Status: {{ dayStatus }}</span>
 		</v-card-title>
-		<v-list v-if="wasADailyPlanCreated">
+		<v-list v-if="wasADailyPlanCreated" class="day-info-list">
 			<v-list-item>
 				<v-list-item-content class="key">Final mark:</v-list-item-content>
 				<v-list-item-content class="align-end" v-if="data.dayFinalMark > 0 ">{{data.dayFinalMark}} %</v-list-item-content>
@@ -29,7 +29,7 @@
 								v-on:click="editComment"
 								:disabled="isCommentEdited"
 								>
-									<v-icon color="#D71700" large> {{icons.mdiPencil}} </v-icon>
+									<v-icon color="#D71700" size="29"> {{icons.mdiPencil}} </v-icon>
 								</v-btn>
 							</template>
 							<span>Edit comment</span>
@@ -42,7 +42,7 @@
 								v-on:click="saveComment"
 								:disabled="!isCommentEdited"
 								>
-									<v-icon color="#D71700" large> {{icons.mdiContentSaveMoveOutline }} </v-icon>
+									<v-icon color="#D71700" size="29"> {{icons.mdiContentSaveMoveOutline }} </v-icon>
 								</v-btn>
 							</template>
 							<span>Save comment</span>
@@ -53,8 +53,9 @@
 					{{commentText}}
 				</v-list-item-content>
 				<v-list-item-content class="align-end" v-else>
-					<v-textarea
-					    solo
+					<v-textarea 
+						class="newComment-input"
+						solo
 						clear-icon="mdi-close-circle"
 						label="Describe your day"
 						v-model="newComment"
@@ -64,15 +65,17 @@
 				</v-list-item-content>
 			</v-list-item>
 		</v-list>
-		<v-list v-else>
+		<v-list v-else class="day-info-list d-flex justify-content-center">
 			<v-list-item>
-				In this day, a daily plan was not created	
+				<v-list-item-content class="key d-flex justify-content-center missed-day-text">
+					In this day, a daily plan was not created.	
+				</v-list-item-content>
 			</v-list-item>
 		</v-list>
 		<v-card-actions class="d-flex justify-space-between">
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('prev')" :disabled="!isShowButton.prev">
+					<v-btn icon v-on="on" v-on:click="setDate('prev')" :disabled="!isShowButton.prev || isCommentEdited">
 						<v-icon color="#D71700" large>{{icons.mdiArrowLeft}}</v-icon>
 					</v-btn>
 				</template>
@@ -80,7 +83,7 @@
 			</v-tooltip>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('today')">
+					<v-btn icon v-on="on" v-on:click="setDate('today')" :disabled="isCommentEdited">
 						<v-icon color="#D71700" large>{{icons.mdiCalendarToday}}</v-icon>
 					</v-btn>
 				</template>
@@ -88,7 +91,7 @@
 			</v-tooltip>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next">
+					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next || isCommentEdited">
 						<v-icon color="#D71700" large>{{icons.mdiArrowRight}}</v-icon>
 					</v-btn>
 				</template>
@@ -216,6 +219,15 @@ import { data } from 'jquery';
 		font-weight : bold
 	}
 
+	.day-info-list {
+		min-height: 172px;
+	}
+
+	.missed-day-text {
+		font-size: 1.5rem;
+		color: #212121;
+	}
+
 	.comment-wrapper {
 		align-items: flex-start;
 	}
@@ -223,7 +235,6 @@ import { data } from 'jquery';
 	.comment-wrapper > .v-list-item__content {
 		align-self: auto;
 	}
-
 	
 	.comment-key-wrapper {
 		display: grid !important;
@@ -231,6 +242,8 @@ import { data } from 'jquery';
 	}
 
 	.comment-buttons-wrapper {
-		gap: 15px;
+		gap: 5px;
 	}
+
+	@import url('/css/ClosedReadyDayPlan/ClosedReadyDayPlanMedia.css');
 </style>
