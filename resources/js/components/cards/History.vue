@@ -27,7 +27,7 @@
 					:event-color="getEventColor" :type="type" @click:event="showEvent" @change="updateRange">
 				</v-calendar>
 				<v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
-					<v-card color="grey lighten-4" min-width="350px" flat>
+					<v-card color="grey lighten-4" width="400px" flat>
 						<v-toolbar :color="selectedEvent.color" dark>
 							<v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
 							<v-spacer></v-spacer>
