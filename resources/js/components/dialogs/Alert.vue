@@ -42,4 +42,5 @@
 				setTimeout(this.toggle,this.$root.alertDelay)
 			}
 		}
+		
 </script>
