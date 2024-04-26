@@ -82,5 +82,9 @@
         .comment-wrapper {
             align-items: flex-start !important;
         }
+
+        .newComment-input textarea {
+            padding-right: 0 !important;
+        }
     }
 }

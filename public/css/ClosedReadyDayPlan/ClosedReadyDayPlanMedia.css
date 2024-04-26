@@ -72,4 +72,7 @@
   .closedReadyDayPlan_dayInfoList-existing-day .comment-wrapper {
     align-items: flex-start !important;
   }
+  .closedReadyDayPlan_dayInfoList-existing-day .newComment-input textarea {
+    padding-right: 0 !important;
+  }
 }

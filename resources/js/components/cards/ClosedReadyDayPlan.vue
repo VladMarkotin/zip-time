@@ -85,7 +85,7 @@
 						clear-icon="mdi-close-circle"
 						label="Describe your day"
 						v-model="newComment"
-						clearable
+						:clearable = "!isMobile"
 						@keydown.enter="saveComment"
 					></v-textarea>
 				</v-list-item-content>
@@ -313,6 +313,10 @@ import { data } from 'jquery';
 
 	.comment-buttons-wrapper {
 		gap: 5px;
+	}
+
+	.closeReadyDayPlan_comment-text-wrapper {
+		word-break: break-word;
 	}
 
 	@import url('/css/ClosedReadyDayPlan/ClosedReadyDayPlanMedia.css');
