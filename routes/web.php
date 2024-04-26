@@ -65,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [App\Http\Controllers\HistController::class, 'displayHist'])->name('hist');
         Route::get('/{date}', [App\Http\Controllers\HistController::class, 'histOnDate']);
         Route::post('/', [App\Http\Controllers\HistController::class, 'index']);
+        Route::post('/forClosedDay', [App\Http\Controllers\HistController::class, 'getHistforClosedDay']);
     });
     //end History routes
 
@@ -115,6 +116,10 @@ Route::middleware(['auth'])->group(function () {
     
     //Get challenges
     Route::post('get-challenges', [App\Http\Controllers\ChallengeController::class, 'getUsersChallenges']);
+
+    //Update comment
+    Route::post('edit-comment', [App\Http\Controllers\EstimationController::class, 'saveComment']);
+
 });
 Route::post('/get-default-configs', function (){
     exit(DefaultConfigs::getConfigs());

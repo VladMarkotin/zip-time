@@ -1,12 +1,34 @@
 <template>
 	<v-card>
 		<Challenges />
-		<v-card-title class="font-weight-bold justify-space-between v-card-title">
-			<span>Date: {{date.toEnStr()}}</span>
-			<span>Finished</span>
-			<span>Status: {{getDayStatusName(data.dayStatus)}}</span>
+		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header" style="margin-top: 50px">
+			<div class="closedReadyDayPlan_day-info-header-date">
+				<p class="closedReadyDayPlan_header-text">
+					<span>Date: </span> <span>{{shownDate}}</span>
+				</p>
+			</div>
+			<div class="closedReadyDayPlan_header-finished">
+				<p 
+				v-if="wasADailyPlanCreated"
+				class="closedReadyDayPlan_header-text"
+				>
+					<span>
+						Finished
+					</span>
+				</p>
+			</div>
+			<div 
+			class="closedReadyDayPlan_day-info-header-status"
+			>
+				<p 
+				v-if="wasADailyPlanCreated"
+				class="closedReadyDayPlan_header-text"
+				>
+					<span>Status: </span><span>{{ dayStatus }}</span>
+				</p>
+			</div>
 		</v-card-title>
-		<v-list>
+		<v-list v-if="wasADailyPlanCreated" class="day-info-list closedReadyDayPlan_dayInfoList-existing-day">
 			<v-list-item>
 				<v-list-item-content class="key">Final mark:</v-list-item-content>
 				<v-list-item-content class="align-end" v-if="data.dayFinalMark > 0 ">{{data.dayFinalMark}} %</v-list-item-content>
@@ -17,31 +39,87 @@
                 <v-list-item-content class="align-end" v-if="data.dayOwnMark > 0 ">{{data.dayOwnMark}} %</v-list-item-content>
 				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
 			</v-list-item>
+			<v-list-item class="comment-wrapper">
+				<v-list-item-content class="key d-flex comment-key-wrapper">
+					<div>
+						<div>
+							<div>
+								Comment:
+							</div>
+							<EditCommentButton 
+							v-if             = "isMobile && wasADailyPlanCreated"
+							:isCommentEdited = "isCommentEdited"
+							:iconSize        = "29"
+							@click="editComment"
+							/>
+							<SaveCommentButton 
+							v-if             = "isMobile && wasADailyPlanCreated"
+							:isCommentEdited = "isCommentEdited"
+							:iconSize        = "29"
+							@click="saveComment"
+							/>
+						</div>
+					</div>
+					<div class="d-flex justify-content-center comment-buttons-wrapper">
+						<EditCommentButton 
+						v-if="!isMobile"
+						:isCommentEdited = "isCommentEdited"
+						:iconSize        = "26"
+						@click="editComment"
+						/>
+						<SaveCommentButton 
+						v-if="!isMobile"
+						:isCommentEdited = "isCommentEdited"
+						:iconSize        = "26"
+						@click="saveComment"
+						/>
+					</div>
+				</v-list-item-content>
+				<v-list-item-content class="align-end closeReadyDayPlan_comment-text closeReadyDayPlan_comment-text-wrapper" v-if="!isCommentEdited">
+					{{commentText}}
+				</v-list-item-content>
+				<v-list-item-content class="align-end closeReadyDayPlan_comment-text-wrapper" v-else>
+					<v-textarea 
+						class="newComment-input"
+						solo
+						clear-icon="mdi-close-circle"
+						label="Describe your day"
+						v-model="newComment"
+						:clearable = "!isMobile"
+						@keydown.enter="saveComment"
+					></v-textarea>
+				</v-list-item-content>
+			</v-list-item>
+		</v-list>
+		<v-list v-else class="day-info-list d-flex justify-content-center">
 			<v-list-item>
-				<v-list-item-content class="key">Comment:</v-list-item-content>
-				<v-list-item-content class="align-end">{{data.comment}}</v-list-item-content>
+				<v-list-item-content class="key d-flex justify-content-center missed-day-text">
+					In this day,<br class="br" /> a daily plan was not created.	
+				</v-list-item-content>
 			</v-list-item>
 		</v-list>
 		<v-card-actions class="d-flex justify-space-between">
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setData(date = date.subtractDays(1),-1)" v-bind:disabled="disabled.prevButton">
+					<v-btn icon v-on="on" v-on:click="setDate('prev')" :disabled="!isShowButton.prev || isCommentEdited">
 						<v-icon color="#D71700" large>{{icons.mdiArrowLeft}}</v-icon>
 					</v-btn>
 				</template>
 				<span>Prev day</span>
 			</v-tooltip>
+			<div>
+				<v-tooltip right>
+					<template v-slot:activator="{on}">
+						<v-btn icon v-on="on" v-on:click="setDate('today')" :disabled="isCommentEdited">
+							<v-icon color="#D71700" large>{{icons.mdiCalendarToday}}</v-icon>
+						</v-btn>
+					</template>
+					<span>Today</span>
+				</v-tooltip>
+			</div>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setData(date = new Date(),0)">
-						<v-icon color="#D71700" large>{{icons.mdiCalendarToday}}</v-icon>
-					</v-btn>
-				</template>
-				<span>Today</span>
-			</v-tooltip>
-			<v-tooltip right>
-				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setData(date = date.addDays(1),1)" v-bind:disabled="disabled.nextButton">
+					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next || isCommentEdited">
 						<v-icon color="#D71700" large>{{icons.mdiArrowRight}}</v-icon>
 					</v-btn>
 				</template>
@@ -51,46 +129,195 @@
 	</v-card>
 </template>
 <script>
-	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight} from '@mdi/js'
+	import EditCommentButton from '../UI/EditCommentButton.vue';
+	import SaveCommentButton from '../UI/SaveCommentButton.vue';
+	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline } from '@mdi/js'
 	import Challenges from "./../challenges/Challenges.vue";
+import { data } from 'jquery';
 
 	export default
 	{
 		props : ['data'],
-		components: { Challenges },
+		components: { Challenges, EditCommentButton, SaveCommentButton },
 		data()
 		{
-			return {date : new Date(),icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight},disabled : {prevButton : false,nextButton : true}}
+			const commentText = this.data.comment;
+			const daystatusCodeInfo = new Map;
+
+			daystatusCodeInfo.set(-1, 'Fine (Day was not completed)');
+			daystatusCodeInfo.set(0, 'Emergency mode');
+			daystatusCodeInfo.set(1, 'Weekend mode');
+			daystatusCodeInfo.set(2, 'Failed');
+			daystatusCodeInfo.set(3, 'Success');
+
+			const currentDate = new Date;
+
+			return {
+				   currentDate,
+				   shownDate: currentDate.toEnStr(),
+				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline },
+			       disabled : {prevButton : false,nextButton : true},
+				   commentText,
+				   daystatusCodeInfo,
+				   newComment: '',
+				   isCommentEdited: false,
+				   wasADailyPlanCreated: true,
+				   isLoading: false,
+				   isShowButton: {
+					prev: true,
+					next: false,
+				   },
+				   screenWidth: window.innerWidth,
+		   }
+		},
+		computed : {
+			dayStatus() {
+				const statusCode = this.data.dayStatus;
+				
+				return this.daystatusCodeInfo.get(statusCode);
+			},
+
+			isMobile() {
+				return this.screenWidth < 550;
+			}
 		},
 		methods :
-			{
-				async setData(date,direction)
-				{
-					const strDate = date.toEnStr()
-					const data = (await axios.get(`/hist/${strDate}`,{params : {direction}})).data
-					this.data.dayStatus = data.plans[strDate].dayStatus
-					this.data.dayFinalMark = data.plans[strDate].dayFinalMark
-					this.data.dayOwnMark = data.plans[strDate].dayOwnMark
-					this.data.comment = data.plans[strDate].comment
-					this.disabled.prevButton = data.histLength == 0 
-					this.disabled.nextButton = date.toEnStr() == new Date().toEnStr()
+			{	
+				setDate(flag) {
+					if (this.isLoading) return;
+
+					const currentDay = this.currentDate;
+
+					switch (flag) {
+						case 'prev':
+							currentDay.setDate(currentDay.getDate() - 1);
+						break;
+						case 'today':
+							const today = new Date;
+
+							currentDay.setDate(today.getDate());
+							currentDay.setMonth(today.getMonth());
+						break;
+						case 'next':
+							currentDay.setDate(currentDay.getDate() + 1);
+						break;
+					}
+
+					this.setData(currentDay);
+					this.shownDate = this.currentDate.toEnStr();
 				},
-				getDayStatusName(statusCode)
+				async setData(date)
 				{
-					return {
-							'-1' : 'Fine (Day was not completed)',
-							'0' : 'Emergency mode',
-							'1' : 'Weekend mode',
-							'2' : 'In progress',
-							'3' : 'Success'
-						}[statusCode]
-				}
-			}
+					try {
+						this.isLoading = true;
+						const {data} = (await axios.post(`/hist/forClosedDay`,{date}))
+						this.isShowButton = {prev: data.doesTheDayExistBefore, next: data.doesTheDayExistAfter};
+
+						if (!data.isDayMissed) {
+							const {currentDayData} = data;
+
+							this.wasADailyPlanCreated = true;
+							this.data.dayFinalMark    = currentDayData.dayFinalMark;
+							this.data.dayOwnMark      = currentDayData.dayOwnMark;
+							this.data.dayStatus       = currentDayData.dayStatus;
+							this.commentText          = currentDayData.commentText; 
+						} else {
+							this.wasADailyPlanCreated = false;
+						}
+
+					} catch (error) {
+						console.error(error);
+					} finally {
+						this.isLoading = false;
+					}
+				},
+				editComment () {
+					this.isCommentEdited = true;
+					this.newComment = this.commentText;
+				},
+				saveComment() {
+					axios.post('/edit-comment',{	
+						comment    : this.newComment,
+						date       : this.currentDate
+					})
+					.then((response) => {
+						this.commentText     = this.newComment;
+						this.isCommentEdited = false;
+					})
+				},
+
+				updateScreenWidth() {
+            		this.screenWidth = window.innerWidth;
+        		}
+			},
+		
+		mounted() {
+			window.addEventListener('resize', this.updateScreenWidth);
+		},
+
+		beforeDestroy() {
+			window.removeEventListener('resize', this.updateScreenWidth);
+		}
 	}
 </script>
 <style scoped>
+	.closedReadyDayPlan_day-info-header {
+		display: grid ;
+		grid-template-columns: 200px 1fr 250px;
+	}
+
+	.closedReadyDayPlan_day-info-header .closedReadyDayPlan_day-info-header-date {
+		text-align: left;
+	}
+	.closedReadyDayPlan_day-info-header .closedReadyDayPlan_header-finished {
+		text-align: center;
+	}
+	.closedReadyDayPlan_day-info-header .closedReadyDayPlan_day-info-header-status {
+		text-align: right;
+	}
+
+	.closedReadyDayPlan_header-text {
+		margin-bottom: 0;
+	}
+
 	.key
 	{
 		font-weight : bold
 	}
+
+	.day-info-list {
+		min-height: 172px;
+	}
+
+	.missed-day-text {
+		font-size: 1.5rem;
+		color: #212121;
+	}
+
+	.missed-day-text .br {
+		display: none;
+	}
+
+	.comment-wrapper {
+		align-items: flex-start;
+	}
+
+	.comment-wrapper > .v-list-item__content {
+		align-self: auto;
+	}
+	
+	.comment-key-wrapper {
+		display: grid !important;
+		grid-template-columns: auto 1fr;
+	}
+
+	.comment-buttons-wrapper {
+		gap: 5px;
+	}
+
+	.closeReadyDayPlan_comment-text-wrapper {
+		word-break: break-word;
+	}
+
+	@import url('/css/ClosedReadyDayPlan/ClosedReadyDayPlanMedia.css');
 </style>
