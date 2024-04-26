@@ -56,7 +56,7 @@
   }
   .closedReadyDayPlan_dayInfoList-existing-day .v-list-item {
     display: grid;
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: 110px 1fr;
   }
   .closedReadyDayPlan_dayInfoList-existing-day .v-list-item::after {
     display: none;

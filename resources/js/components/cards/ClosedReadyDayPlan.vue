@@ -41,18 +41,36 @@
 			</v-list-item>
 			<v-list-item class="comment-wrapper">
 				<v-list-item-content class="key d-flex comment-key-wrapper">
-					<span>Comment:</span>
+					<div>
+						<div>
+							<div>
+								Comment:
+							</div>
+							<EditCommentButton 
+							v-if             = "isMobile && wasADailyPlanCreated"
+							:isCommentEdited = "isCommentEdited"
+							:iconSize        = "29"
+							@click="editComment"
+							/>
+							<SaveCommentButton 
+							v-if             = "isMobile && wasADailyPlanCreated"
+							:isCommentEdited = "isCommentEdited"
+							:iconSize        = "29"
+							@click="saveComment"
+							/>
+						</div>
+					</div>
 					<div class="d-flex justify-content-center comment-buttons-wrapper">
 						<EditCommentButton 
 						v-if="!isMobile"
 						:isCommentEdited = "isCommentEdited"
-						:iconSize        = "29"
+						:iconSize        = "26"
 						@click="editComment"
 						/>
 						<SaveCommentButton 
 						v-if="!isMobile"
 						:isCommentEdited = "isCommentEdited"
-						:iconSize        = "29"
+						:iconSize        = "26"
 						@click="saveComment"
 						/>
 					</div>
@@ -90,18 +108,6 @@
 				<span>Prev day</span>
 			</v-tooltip>
 			<div>
-				<EditCommentButton 
-				v-if             = "isMobile && wasADailyPlanCreated"
-				:isCommentEdited = "isCommentEdited"
-				:iconSize        = "32"
-				@click="editComment"
-				/>
-				<SaveCommentButton 
-				v-if             = "isMobile && wasADailyPlanCreated"
-				:isCommentEdited = "isCommentEdited"
-				:iconSize        = "32"
-				@click="saveComment"
-				/>
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
 						<v-btn icon v-on="on" v-on:click="setDate('today')" :disabled="isCommentEdited">
