@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Services\RatingService;
 use App\Models\DefaultConfigs;//minFinalMark
+use Illuminate\Support\Facades\Log;
 
 class EstimationRepository
 {
@@ -367,28 +368,36 @@ class EstimationRepository
         };
         $r = $response();
         if ($r) {
+            $id = Auth::id();
             $query =
-                "SELECT SUM(mark) S   FROM tasks JOIN timetables T ON timetable_id = $timetableId WHERE T.date = " .
-                " '$today' " .
-                ' AND type = 4 GROUP BY(tasks.id) WITH ROLLUP';
+                "SELECT SUM(mark) S, COUNT(tasks.id) Q   FROM tasks JOIN timetables T ON tasks.timetable_id = T.id
+                 WHERE T.date = " . " '$today' " .
+                    " AND type = 4
+                      AND T.user_id = $id
+                    "; //GROUP BY(tasks.timetable_id) WITH ROLLUP
             $query2 =
-                "SELECT SUM(mark) S2  FROM tasks  JOIN timetables T ON timetable_id = $timetableId WHERE T.date = " .
+                "SELECT SUM(mark) S2, COUNT(tasks.id) Q2  FROM tasks  JOIN timetables T ON timetable_id = T.id
+                 WHERE T.date = " .
                 " '$today' " .
-                ' AND type = 3 AND mark <> -1.00 GROUP BY(tasks.id) WITH ROLLUP';
-            $avgMark = DB::select($query);
-            $avgMark2 = DB::select($query2);
-            $avgMarkCount = count($avgMark) - 1;
-            $avgMark = $avgMark[array_key_last($avgMark)]->S / $avgMarkCount;
-            if ($avgMark2) {
-                $avgMarkCount2 = count($avgMark2) - 1; //It has to be 2 or more unrequired tasks to use them
-                if ($avgMarkCount2 > 1) {
-                    $avgMark2 =
-                        $avgMark2[array_key_last($avgMark2)]->S2 /
-                        $avgMarkCount2;
+                " AND type = 3 AND mark <> -1.00 AND T.user_id = $id ";
+                //GROUP BY(tasks.timetable_id) WITH ROLLUP
+                $avgMark = DB::select($query);
+                $avgMark2 = DB::select($query2);
+                $avgMarkCount = count($avgMark) - 1;
+                if ($avgMark[array_key_last($avgMark)]->Q) {
+
+                    $avgMark = $avgMark[array_key_last($avgMark)]->S / $avgMark[array_key_last($avgMark)]->Q;
+                }
+                if ($avgMark2[array_key_last($avgMark2)]->Q2) { //add constraint 2 unrequired tasks later
+                    $avgMarkCount2 = count($avgMark2) - 1; //It has to be 2 or more unrequired tasks to use them
+                    // if ($avgMarkCount2 > 1) {
+                    $avgMark2 = $avgMark2[array_key_last($avgMark2)]->S2 / $avgMark2[array_key_last($avgMark2)]->Q2;
                     $avgMark += $avgMark2;
                     $avgMark /= 2;
+                    //}
                 }
-            }
+                // Log::info(json_encode($avgMark));
+                // die;
 
             return $avgMark;
         }
