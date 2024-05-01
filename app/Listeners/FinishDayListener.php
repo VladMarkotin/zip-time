@@ -8,18 +8,26 @@ use Auth;
 use App\Models\ChallengeModel;
 use App\Http\Controllers\Services\Challenges\ChallengeService;
 use App\Http\Controllers\Services\Challenges\CompleteNTasks;
+use App\Repositories\EstimationRepository;
+use App\Events\RewardEvent;
 
-class FinishDayListener
+class FinishDayListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     private $challengeService = null;
+    private $estimationRepository = null;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(CompleteNTasks $challengeService)
+    public function __construct(CompleteNTasks $challengeService,
+                                EstimationRepository $eR
+                                )
     {
         $this->challengeService = $challengeService;
+        $this->estimationRepository = $eR;
     }
 
     /**
@@ -30,19 +38,19 @@ class FinishDayListener
      */
     public function handle($event)
     {
-        $chIndex = $event->getEventPrefix();
-        $this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => $chIndex]);
-        // $query = "SELECT COUNT(tasks.id) q FROM `tasks` JOIN timetables ON tasks.timetable_id = timetables.id 
-        //     JOIN users ON timetables.user_id = ".Auth::id()." 
-        //        WHERE tasks.mark <> -1";
-        // $terms = ChallengeModel::select('terms')->where('index', 'estimate_task')->get()->toArray()[0]['terms'];
-        // $chId = ChallengeModel::select('id')->where('index', 'estimate_task')->get()->toArray()[0]['id'];
-        // $result = $this->challengeService->doChallenge([
-        //     'index' => 'estimate_task',
-        //     'query' => $query,
-        //     'terms' => json_decode($terms),
-        //     'ch_id' => $chId,
-        // ]);
-        // //die(var_dump($result)); //OK
+        $way = $event->getFinishWay();
+        switch ($way) {
+            case 1:
+                $response = 'response';//$this->estimationRepository
+                dispatch(function () use ($response) {
+                    // Ваши действия с полученным ответом
+                });
+                break;
+            default: return 0;
+        }
+        var_dump($way);
+        die();
+        RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin', 'keep_going'] ]);
+        //$this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => $chIndex]);
     }
 }

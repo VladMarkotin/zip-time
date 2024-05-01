@@ -43,6 +43,7 @@ use App\Models\User;
 use App\Models\DefaultSavedTasks;
 use Illuminate\Support\Facades\Log;
 use App\Events\RewardEvent;
+use  App\Events\FinishDayEvent;
 
 class MainController
 {
@@ -355,9 +356,12 @@ class MainController
             "action"   => '2', //it means that user try to finish day plan
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
+        //FinishDayEvent::dispatch(['finish_way' => 1, 'data' => $data]);
+        //TODO Убрать в обработччик события
        // $this->userRatings->getUserRatings(2);
+        //TODO Убрать в обработччик события
         RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin', 'keep_going'] ]);
-
+        // Log::info(json_encode($response));
         return response()->json($response); //comment
     }
 
