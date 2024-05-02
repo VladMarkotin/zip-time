@@ -45,5 +45,6 @@ mix
     .sass('resources/sass/backlogPage/backlogMedia.scss', 'public/css/backlogPage')
     .sass('resources/sass/ClosedReadyDayPlan/ClosedReadyDayPlanMedia.scss', 'public/css/ClosedReadyDayPlan')
     .sass('resources/sass/History/HistoryMedia.scss', 'public/css/History')
+    .sass('resources/sass/Stat/StatMedia.scss', 'public/css/Stat')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/customTooltip/customTooltip.scss', 'public/css');
