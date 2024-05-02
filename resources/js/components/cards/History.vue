@@ -52,8 +52,35 @@
 								<v-list-item-content>{{ selectedEvent.dayOwnMark }}</v-list-item-content>
 							</v-list-item>
 							<v-list-item class="history_final-data-li history_comment-wrapper">
-								<v-list-item-content class="key">Comment:</v-list-item-content>
-								<v-list-item-content class="history_comment-value" style="word-break: break-word">{{ selectedEvent.comment }}</v-list-item-content>
+								<v-list-item-content> 
+									<span class="key">Comment:</span>
+									<div>
+										<EditCommentButton 
+										:isCommentEdited = "isCommentEdited"
+										:iconSize        = "29"
+										@click = "editComment"
+										/>
+										<SaveCommentButton 
+										:isCommentEdited = "isCommentEdited"
+										:iconSize        = "29"
+										@click         = "saveComment"
+										@keydown.enter ="saveComment"
+										/>
+									</div>
+								</v-list-item-content>
+								<v-list-item-content v-if="!isCommentEdited"
+								class="history_comment-value" 
+								style="word-break: break-word">
+									{{ selectedEvent.comment }}
+								</v-list-item-content>
+								<v-list-item-content v-else>
+									<v-textarea 
+										solo
+										clear-icon="mdi-close-circle"
+										label="Describe your day"
+										v-model="newComment"
+									></v-textarea>
+								</v-list-item-content>
 							</v-list-item>
 						</v-list>
 						<v-card-actions>
@@ -70,6 +97,10 @@
 	</v-row>
 </template>
 <script>
+
+import EditCommentButton from '../UI/EditCommentButton.vue';
+import SaveCommentButton from '../UI/SaveCommentButton.vue';
+
 export default
 	{
 		data() {
@@ -86,6 +117,16 @@ export default
 					{ text: 'Mark', value: 'mark' }
 				],
 				events: [],
+				isCommentEdited: false,
+				newComment: '',
+			}
+		},
+		components: {EditCommentButton, SaveCommentButton},
+		watch: {
+			selectedOpen(value) {
+				if (value === false) {
+					this.isCommentEdited = false;
+				}
 			}
 		},
 		methods:
@@ -170,6 +211,26 @@ export default
 						comment: history.data.plans[date].comment,
 						tasks: history.data.plans[date].tasks
 					})
+				}
+			},
+
+			editComment () {
+				this.isCommentEdited = true;
+				this.newComment      = this.selectedEvent.comment;
+			},
+
+			async saveComment() {
+				const date = this.selectedEvent.end;
+
+				try {
+					const response = await axios.post('/edit-comment', {comment : this.newComment, date})
+					if (response.status === 200) {
+						this.selectedEvent.comment = this.newComment;
+					}
+				} catch (error) {
+					console.error(error);
+				} finally {
+					this.isCommentEdited = false;
 				}
 			},
 		},
