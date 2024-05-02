@@ -185,5 +185,16 @@ export default
 		align-self: flex-start;
     }
 
+	.history_final-data-list .history_final-data-li {
+		align-items: flex-start;
+        display: grid;
+        grid-column-gap: 20px;
+        grid-template-columns: 80px 1fr;
+	}
+
+	.history_final-data-list .history_final-data-li::after {
+		display: none;
+	}
+
 	@import url('/css/History/HistoryMedia.css');
 </style>
