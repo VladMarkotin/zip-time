@@ -63,8 +63,7 @@
 										<SaveCommentButton 
 										:isCommentEdited = "isCommentEdited"
 										:iconSize        = "29"
-										@click         = "saveComment"
-										@keydown.enter ="saveComment"
+										@click  = "saveComment"
 										/>
 									</div>
 								</v-list-item-content>
@@ -79,6 +78,7 @@
 										clear-icon="mdi-close-circle"
 										label="Describe your day"
 										v-model="newComment"
+										@keydown.enter.prevent ="saveComment"
 									></v-textarea>
 								</v-list-item-content>
 							</v-list-item>
@@ -113,7 +113,7 @@ export default
 				headers: [
 					{ text: ' hash', value: 'hashCode' },
 					{ text: 'Task name', value: 'taskName' },
-					{ text: 'Details', value: 'details' },
+					// { text: 'Details', value: 'details' },
 					{ text: 'Mark', value: 'mark' }
 				],
 				events: [],
