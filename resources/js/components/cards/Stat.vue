@@ -75,7 +75,11 @@
 			</v-list>
 		</v-card-text>
 		<v-card-text>
-			<Chart ref="chart" v-bind:marks="marks"/>
+			<Chart 
+			ref="chart" 
+			v-bind:marks="marks"
+			:screenWidth = "screenWidth"
+			/>
 		</v-card-text>
 	</v-card>
 </template>
@@ -87,7 +91,13 @@
 			data()
 			{
 				const currDate = new Date().toEnStr();
-				return {dates: {from: {modal: false, val: currDate}, to: {modal: false, val: currDate}}, mainStat: {}, marks: []};
+				return {
+					dates: {from: {modal: false, val: currDate}, 
+					to: {modal: false, val: currDate}}, 
+					mainStat: {}, 
+					marks: [],
+					screenWidth: window.innerWidth,
+				};
 			},
 			methods:
 				{
@@ -103,11 +113,24 @@
 						this.mainStat = data.mainStat;
 						this.marks = {...{final: data.marks.finalMarks, own: data.marks.ownMarks}};
 						this.$refs.chart.redraw(this.marks);
-					}
+					},
+
+					updateScreenWidth() {
+            			this.screenWidth = window.innerWidth;
+        			}	
 				},
+			
 			beforeMount()
 			{
 				this.loadMarks();
+			},
+
+			mounted() {
+				window.addEventListener('resize', this.updateScreenWidth);
+			},
+
+			beforeDestroy() {
+				window.removeEventListener('resize', this.updateScreenWidth);
 			}
 		};
 </script>
