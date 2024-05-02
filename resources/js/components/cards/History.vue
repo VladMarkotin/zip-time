@@ -27,7 +27,11 @@
 					:event-color="getEventColor" :type="type" @click:event="showEvent" @change="updateRange">
 				</v-calendar>
 				<v-menu max-width="100%" style="z-index: 20;" v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
-					<v-card color="grey lighten-4" width="400px" flat>
+					<v-card 
+					color="grey lighten-4" 
+					width="400px" 
+					flat
+					>
 						<v-toolbar :color="selectedEvent.color" dark>
 							<v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
 							<v-spacer></v-spacer>
@@ -38,18 +42,18 @@
 							</v-data-table>
 						</v-card-text>
 						<v-divider></v-divider>
-						<v-list>
-							<v-list-item>
-								<v-list-item-content>Final mark:</v-list-item-content>
+						<v-list class="history_final-data-list">
+							<v-list-item class="history_final-data-li">
+								<v-list-item-content class="key">Final mark:</v-list-item-content>
 								<v-list-item-content>{{ selectedEvent.dayFinalMark }}</v-list-item-content>
 							</v-list-item>
-							<v-list-item>
-								<v-list-item-content>Own mark:</v-list-item-content>
+							<v-list-item class="history_final-data-li">
+								<v-list-item-content class="key">Own mark:</v-list-item-content>
 								<v-list-item-content>{{ selectedEvent.dayOwnMark }}</v-list-item-content>
 							</v-list-item>
-							<v-list-item>
-								<v-list-item-content>Comment:</v-list-item-content>
-								<v-list-item-content style="word-break: break-word">{{ selectedEvent.comment }}</v-list-item-content>
+							<v-list-item class="history_final-data-li history_comment-wrapper">
+								<v-list-item-content class="key">Comment:</v-list-item-content>
+								<v-list-item-content class="history_comment-value" style="word-break: break-word">{{ selectedEvent.comment }}</v-list-item-content>
 							</v-list-item>
 						</v-list>
 						<v-card-actions>
@@ -173,5 +177,13 @@ export default
 </script>
 
 <style scoped>
+	.key {
+		font-weight : bold
+	}
+
+	.history_final-data-list .history_comment-wrapper .v-list-item__content {
+		align-self: flex-start;
+    }
+
 	@import url('/css/History/HistoryMedia.css');
 </style>
