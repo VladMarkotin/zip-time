@@ -53,9 +53,11 @@
 							</v-list-item>
 						</v-list>
 						<v-card-actions>
-							<v-btn text color="secondary" @click="selectedOpen = false">
-								Cancel
-							</v-btn>
+							<v-row class="pt-3 pb-3">
+								<v-btn text color="secondary" @click="selectedOpen = false">
+									Cancel
+								</v-btn>
+							</v-row>
 						</v-card-actions>
 					</v-card>
 				</v-menu>
@@ -169,3 +171,7 @@ export default
 		},
 	}
 </script>
+
+<style scoped>
+	@import url('/css/History/HistoryMedia.css');
+</style>

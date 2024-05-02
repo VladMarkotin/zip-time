@@ -1,0 +1,5 @@
+@media screen and (max-width: 600px) {
+  .v-data-table > .v-data-table__wrapper .v-data-table__mobile-row {
+    min-height: 36px !important;
+  }
+}
