@@ -79,7 +79,56 @@ html {
     /* изменен цвет самого бургера на белый */
 
     #navbarSupportedContent {
+        transition: all ease .3s;
+    }
+    #navbarSupportedContent.show {
         margin-top: 12px;
+    }
+    /*фикс бага с переполнение контента при очень длинном юзер нейме*/
+    #navbarDropdown {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #navbarDropdown .navbar-user-name {
+        max-width: 300px;
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        white-space: nowrap;
+    }
+
+    @media screen and (max-width: 950px) {
+        #navbarDropdown .navbar-user-name {
+            font-size: 12px;
+            max-width: 250px;
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+        #navbarDropdown .navbar-user-name {
+            max-width: 150px;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        #navbarDropdown .navbar-user-name {
+            font-size: 15px;
+            max-width: 450px;
+        }
+    }
+
+    @media screen and (max-width: 650px) {
+        #navbarDropdown .navbar-user-name {
+            max-width: 300px;
+        }
+    }
+
+    @media screen and (max-width: 450px) {
+        #navbarDropdown .navbar-user-name {
+            font-size: 12px;
+            max-width: 200px;
+        }
     }
 
  /* бургер меню */

@@ -142,7 +142,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto align-items-center">
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -169,7 +169,9 @@
                             <li class="nav-item dropdown personal-results-toggle">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    <div class="navbar-user-name">
+                                        {{ Auth::user()->name }}
+                                    </div>
                                     <span id="total-results">
                                             {{ Auth::user()->rating  }}                                    
                                     </span>
