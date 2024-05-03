@@ -86,7 +86,7 @@
 						label="Describe your day"
 						v-model="newComment"
 						:clearable = "!isMobile"
-						@keydown.enter="saveComment"
+						@keydown.enter.prevent = "saveComment"
 					></v-textarea>
 				</v-list-item-content>
 			</v-list-item>
