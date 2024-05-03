@@ -26,8 +26,12 @@
 				<v-calendar ref="calendar" v-model="focus" color="primary" v-bind:events="events"
 					:event-color="getEventColor" :type="type" @click:event="showEvent" @change="updateRange">
 				</v-calendar>
-				<v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
-					<v-card color="grey lighten-4" min-width="350px" flat>
+				<v-menu max-width="100%" style="z-index: 20;" v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
+					<v-card 
+					color="grey lighten-4" 
+					width="400px" 
+					flat
+					>
 						<v-toolbar :color="selectedEvent.color" dark>
 							<v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
 							<v-spacer></v-spacer>
@@ -38,24 +42,53 @@
 							</v-data-table>
 						</v-card-text>
 						<v-divider></v-divider>
-						<v-list>
-							<v-list-item>
-								<v-list-item-content>Final mark:</v-list-item-content>
+						<v-list class="history_final-data-list">
+							<v-list-item class="history_final-data-li">
+								<v-list-item-content class="key">Final mark:</v-list-item-content>
 								<v-list-item-content>{{ selectedEvent.dayFinalMark }}</v-list-item-content>
 							</v-list-item>
-							<v-list-item>
-								<v-list-item-content>Own mark:</v-list-item-content>
+							<v-list-item class="history_final-data-li">
+								<v-list-item-content class="key">Own mark:</v-list-item-content>
 								<v-list-item-content>{{ selectedEvent.dayOwnMark }}</v-list-item-content>
 							</v-list-item>
-							<v-list-item>
-								<v-list-item-content>Comment:</v-list-item-content>
-								<v-list-item-content>{{ selectedEvent.comment }}</v-list-item-content>
+							<v-list-item class="history_final-data-li history_comment-wrapper">
+								<v-list-item-content> 
+									<span class="key">Comment:</span>
+									<div>
+										<EditCommentButton 
+										:isCommentEdited = "isCommentEdited"
+										:iconSize        = "29"
+										@click = "editComment"
+										/>
+										<SaveCommentButton 
+										:isCommentEdited = "isCommentEdited"
+										:iconSize        = "29"
+										@click  = "saveComment"
+										/>
+									</div>
+								</v-list-item-content>
+								<v-list-item-content v-if="!isCommentEdited"
+								class="history_comment-value" 
+								style="word-break: break-word">
+									{{ selectedEvent.comment }}
+								</v-list-item-content>
+								<v-list-item-content v-else>
+									<v-textarea 
+										solo
+										clear-icon="mdi-close-circle"
+										label="Describe your day"
+										v-model="newComment"
+										@keydown.enter.prevent ="saveComment"
+									></v-textarea>
+								</v-list-item-content>
 							</v-list-item>
 						</v-list>
 						<v-card-actions>
-							<v-btn text color="secondary" @click="selectedOpen = false">
-								Cancel
-							</v-btn>
+							<v-row class="pt-3 pb-3">
+								<v-btn text color="secondary" @click="selectedOpen = false">
+									Cancel
+								</v-btn>
+							</v-row>
 						</v-card-actions>
 					</v-card>
 				</v-menu>
@@ -64,6 +97,10 @@
 	</v-row>
 </template>
 <script>
+
+import EditCommentButton from '../UI/EditCommentButton.vue';
+import SaveCommentButton from '../UI/SaveCommentButton.vue';
+
 export default
 	{
 		data() {
@@ -76,10 +113,20 @@ export default
 				headers: [
 					{ text: ' hash', value: 'hashCode' },
 					{ text: 'Task name', value: 'taskName' },
-					{ text: 'Details', value: 'details' },
+					// { text: 'Details', value: 'details' },
 					{ text: 'Mark', value: 'mark' }
 				],
-				events: []
+				events: [],
+				isCommentEdited: false,
+				newComment: '',
+			}
+		},
+		components: {EditCommentButton, SaveCommentButton},
+		watch: {
+			selectedOpen(value) {
+				if (value === false) {
+					this.isCommentEdited = false;
+				}
 			}
 		},
 		methods:
@@ -165,7 +212,50 @@ export default
 						tasks: history.data.plans[date].tasks
 					})
 				}
-			}
-		}
+			},
+
+			editComment () {
+				this.isCommentEdited = true;
+				this.newComment      = this.selectedEvent.comment;
+			},
+
+			async saveComment() {
+				const date = this.selectedEvent.end;
+
+				try {
+					const response = await axios.post('/edit-comment', {comment : this.newComment, date})
+					if (response.status === 200) {
+						this.selectedEvent.comment = this.newComment;
+					}
+				} catch (error) {
+					console.error(error);
+				} finally {
+					this.isCommentEdited = false;
+				}
+			},
+		},
 	}
 </script>
+
+<style scoped>
+	.key {
+		font-weight : bold
+	}
+
+	.history_final-data-list .history_comment-wrapper .v-list-item__content {
+		align-self: flex-start;
+    }
+
+	.history_final-data-list .history_final-data-li {
+		align-items: flex-start;
+        display: grid;
+        grid-column-gap: 20px;
+        grid-template-columns: 80px 1fr;
+	}
+
+	.history_final-data-list .history_final-data-li::after {
+		display: none;
+	}
+
+	@import url('/css/History/HistoryMedia.css');
+</style>
