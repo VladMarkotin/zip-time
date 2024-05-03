@@ -45,5 +45,10 @@ class GeneralHelper
         return Carbon::today()->toDateString();
     }
 
+    public static function getNow()
+    {
+        return Carbon::now();
+    }
+
 
 }

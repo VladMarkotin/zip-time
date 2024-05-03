@@ -2,49 +2,26 @@
 namespace App\Http\Helpers\EstimationDayHelpers;  
 
 
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
+use App\Models\TimetableModel;
+use Illuminate\Support\Facades\Log;
 
 class AutomaticEstimationHelper
 {
-    /*Get id of users who has created plan on today*/
-    public static function getIds()
+    /*Get estimate users who hasт`t created plan on today*/
+    public static function estimateLazyGuys()
     {
-        $today = Carbon::today()->toDateString();
-        $query =
-            "SELECT users.id FROM users JOIN timetables ON users.id = timetables.user_id WHERE
-                        timetables.day_status = 2 AND
-                        timetables.date = '" .
-            $today .
-            "'";
-        $idsArr = DB::select($query); //Array of all user`s id
-        $ids = [];
-        foreach ($idsArr as $v) {
-            $ids[] = $v->id;
-        }
+        $date  = GeneralHelper::getTodayDate();
+        $now   = GeneralHelper::getNow();
+        $query = "INSERT INTO timetables (user_id, date, day_status, time_of_day_plan, final_estimation, own_estimation, comment, necessary, for_tomorrow)
+                    SELECT u.id, '$date', -1, '00:00', 0, 0, 'It looks like the day was wasted :(', '', ''
+                        FROM users u
+                            LEFT JOIN timetables t ON u.id = t.user_id AND t.date = '$date'
+                                WHERE t.user_id IS NULL;";
+        
 
-        return $ids;
-    }
-
-    /*Get id of users who has`t created plan on today*/
-    public static function getBadIds()
-    {
-        $today = Carbon::today()->toDateString();
-        $query =
-            "SELECT users.id FROM users WHERE
-                        users.id NOT IN (select b.user_id
-                            from timetables b
-                               where b.date = '" .
-            $today .
-            "');
-                        ";
-        //dd($query);
-        $idsArr = DB::select($query); //Array of all user`s id
-        $badIds = [];
-        foreach ($idsArr as $v) {
-            $badIds[] = $v->id;
-        }
-
-        return $badIds;
+       DB::insert($query);
     }
 
     public static function getWeekendIds()

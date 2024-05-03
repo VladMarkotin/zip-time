@@ -27,77 +27,9 @@ class EstimationRepository
     /*This method will be executing automaticly for all users with unclosed plan in the end of the day (23:59) */
     public function estimate()
     {
-        $ids = $this->getIds(); //Получаю id всех пользователей  с составленным на сегодня планом
         //Here I get all weekend guys
-        $weekendIds = AutomaticEstimationHelper::getWeekendIds();
-        //Here I get ids of bad guys
-        $badIds = AutomaticEstimationHelper::getBadIds(); //получаю id тех юзеров, кто вообще не составил на сегодня план
-        //end
-        $date = GeneralHelper::getTodayDate();
-       
-            /*Count final mark for every user with plan*/
-            foreach ($ids as $id) {
-                $timetableId = GeneralHelper::getCurrentTimetableId(['id' => $id]);
-                $finalMark = $this->sumMarks($timetableId); //считаю оценку каждого юзера
-                $data = [
-                    'timetable_id' => $timetableId,
-                    'user_id' => $id,
-                    'final_time' =>
-                        $finalMark >= 50
-                            ? $this->sumTime($timetableId)
-                            : '00:00',
-                    'final_estimation' => $finalMark >= 50 ? $finalMark : 0,
-                    'own_estimation' => $finalMark,
-                    'comment' => 'Closed automatically',
-                    'date' => Carbon::today()->toDateString(),
-                    'day_status' => $finalMark >= 50 ? 3 : -1,
-                    'updated_at' => Carbon::now(),
-                ];
+        AutomaticEstimationHelper::estimateLazyGuys();
 
-                $finalMark >= 50
-                    ? $this->userRatings->estimateActiveDayrating(2)
-                    : $this->userRatings->estimateActiveDayrating(0);
-
-                $this->fillTimetablesTable($data, $ids);
-            }
-        
-            /*Estimate lazy guys*/
-            foreach ($badIds as $id) {
-                $data = [
-                    // 'user_id' => $id,
-                    // 'final_time' => '00:00',
-                    // 'final_estimation' => -1,
-                    // 'own_estimation' => -1,
-                    // 'date' => Carbon::today()->toDateString(),
-                    // 'comment' => 'It looks like the day was wasted :(',
-                    // 'day_status' => -1,
-                    // 'updated_at' => Carbon::now(),
-                ];
-
-                $this->userRatings->estimateLazyDayrating(0);
-                $this->fillTimetablesTable($data, $badIds, 1);
-            }
-
-            foreach ($weekendIds as $id) {
-                /*Here I have to check either guy */
-                $timetableId = GeneralHelper::getCurrentTimetableId(['id' => $id]);
-                $data = [
-                    'timetable_id' => $timetableId,
-                    'user_id' => $id,
-                    'final_time' => $this->sumTime($timetableId),
-                    'final_estimation' => 0,
-                    'own_estimation' => 50,
-                    'date' => GeneralHelper::getTodayDate(),
-                    'day_status' => 1,
-                    'comment' =>
-                        'Closed automatically at ' .
-                        Carbon::now()->toDateTimeString(),
-                    'updated_at' => Carbon::now(),
-                ];
-                $this->userRatings->estimateActiveDayrating(1);
-                $this->fillTimetablesTable($data, $weekendIds, 0);
-            }
-        
     }
 
     /*This method will be executing for concrete user on demand*/
