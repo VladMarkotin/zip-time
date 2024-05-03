@@ -6,18 +6,18 @@
 	export default
 	{
 		components: {highcharts: Chart},
-		props: ['marks'],
-		data()
-		{
-			return {
-				options:
-					{
-						series: [{name: 'Final marks', data: this.marks.final}, {name: 'Own marks', data: this.marks.own}],
-						title: {text: null},
-						xAxis: {title: {text: 'Day'}, type: 'datetime'},
-						yAxis: {title: {text: 'Mark'}}
-					}
-			};
+		props: ['marks', 'screenWidth'],
+		computed: {
+			options() {
+				const yAxisTitle = this.screenWidth > 500 ? 'Mark' : '';
+
+				return {
+					series: [{name: 'Final marks', data: this.marks.final}, {name: 'Own marks', data: this.marks.own}],
+					title: {text: null},
+					xAxis: {title: {text: 'Day'}, type: 'datetime'},
+					yAxis: {title: {text: yAxisTitle}}
+				}
+			}
 		},
 		methods:
 			{

@@ -34,48 +34,70 @@
 			</table>
 			<v-btn v-on:click="loadMarksFromPeriod(dates.from.val, dates.to.val)">Apply</v-btn>
 		</v-card-title>
-		<v-card-text>
-			<v-list>
-				<v-list-item>
-					<v-list-item-content>Completed days:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.completedDays}} days</v-list-item-content>
+		<v-card-text class="stat_main-data-wrapper">
+			<v-list class="stat-main-data-list">
+				<v-list-item class="stat-main-data-li">
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Completed days: </span>
+						<span>{{mainStat.completedDays}} days</span>
+					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>Failed days:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.failedDays}} days</v-list-item-content>
+				<v-list-item class="stat-main-data-li">
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Failed days:</span>
+						<span>{{mainStat.failedDays}} days</span>
+					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>Emergency mode:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.emergencyModes}} times</v-list-item-content>
+				<v-list-item class="stat-main-data-li">
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Emergency mode:</span>
+						<span>{{mainStat.emergencyModes}} times</span>
+					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>Weekends:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.weekends}}</v-list-item-content>
+				<v-list-item class="stat-main-data-li">
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Weekends:</span>
+						<span>{{mainStat.weekends}} days</span>
+					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>Total time:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.totalTime}} hours</v-list-item-content>
+				<v-list-item class="stat-main-data-li">
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Total time:</span>
+						<span>{{mainStat.totalTime}} hours</span>
+					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>Average mark:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.avgMark}}%</v-list-item-content>
+				<v-list-item class="stat-main-data-li">
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Average mark:</span>
+						<span>{{mainStat.avgMark}}%</span>
+					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>Average own mark:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.ownAvgMark}}%</v-list-item-content>
+				<v-list-item class="stat-main-data-li"> 
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Average own mark:</span>
+						<span>{{mainStat.ownAvgMark}}%</span>
+					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>Max mark:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.maxMark}}%</v-list-item-content>
+				<v-list-item class="stat-main-data-li">
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Max mark:</span>
+						<span>{{mainStat.maxMark}}%</span>
+					</v-list-item-content>
 				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>Min mark:</v-list-item-content>
-					<v-list-item-content class="align-end">{{mainStat.minMark}}%</v-list-item-content>
+				<v-list-item class="stat-main-data-li">
+					<v-list-item-content class="stat-main-data-li-item">
+						<span>Min mark:</span>
+						<span>{{mainStat.minMark}}%</span>
+					</v-list-item-content>
 				</v-list-item>
 			</v-list>
 		</v-card-text>
-		<v-card-text>
-			<Chart ref="chart" v-bind:marks="marks"/>
+		<v-card-text class="stat_chart-wrapper">
+			<Chart 
+			ref="chart" 
+			v-bind:marks="marks"
+			:screenWidth = "screenWidth"
+			/>
 		</v-card-text>
 	</v-card>
 </template>
@@ -87,7 +109,13 @@
 			data()
 			{
 				const currDate = new Date().toEnStr();
-				return {dates: {from: {modal: false, val: currDate}, to: {modal: false, val: currDate}}, mainStat: {}, marks: []};
+				return {
+					dates: {from: {modal: false, val: currDate}, 
+					to: {modal: false, val: currDate}}, 
+					mainStat: {}, 
+					marks: [],
+					screenWidth: window.innerWidth,
+				};
 			},
 			methods:
 				{
@@ -103,11 +131,24 @@
 						this.mainStat = data.mainStat;
 						this.marks = {...{final: data.marks.finalMarks, own: data.marks.ownMarks}};
 						this.$refs.chart.redraw(this.marks);
-					}
+					},
+
+					updateScreenWidth() {
+            			this.screenWidth = window.innerWidth;
+        			}	
 				},
+			
 			beforeMount()
 			{
 				this.loadMarks();
+			},
+
+			mounted() {
+				window.addEventListener('resize', this.updateScreenWidth);
+			},
+
+			beforeDestroy() {
+				window.removeEventListener('resize', this.updateScreenWidth);
 			}
 		};
 </script>
@@ -117,12 +158,27 @@
 		background-color: #A10000;
 		color: white;
 	}
+
 	.v-label
 	{
 		color: white !important;
 	}
+
 	td
 	{
 		font-weight: bold;
 	}
+
+	.stat-main-data-list .stat-main-data-li .stat-main-data-li-item {
+		display: grid;
+		grid-template-columns: 180px 120px;
+		grid-column-gap: 15px;
+		justify-content: center;
+	}
+
+	.stat-main-data-list .stat-main-data-li span {
+		margin-bottom: 0;
+	}
+
+	@import url('/css/Stat/StatMedia.css');
 </style>
