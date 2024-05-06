@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class AutomaticEstimationHelper
 {
     /*Get estimate users who hasт`t created plan on today*/
-    public static function estimateLazyGuys()
+    public static function estimateLazyGuys($timezone = 'Europe/Minsk')
     {
         $date  = GeneralHelper::getTodayDate();
         $now   = GeneralHelper::getNow();
@@ -18,12 +18,18 @@ class AutomaticEstimationHelper
                     SELECT u.id, '$date', -1, '00:00', 0, 0, 'It looks like the day was wasted :(', '', ''
                         FROM users u
                             LEFT JOIN timetables t ON u.id = t.user_id AND t.date = '$date'
-                                WHERE t.user_id IS NULL;";
+                                WHERE t.user_id IS NULL AND u.timezone = '$timezone'";
         
 
        DB::insert($query);
     }
 
+    public static function estimateWeekendUsers($timezone = 'Europe/Minsk')
+    {
+        
+    }
+
+    //do not need it
     public static function getWeekendIds()
     {
         $today = Carbon::today()->toDateString();
@@ -67,5 +73,18 @@ class AutomaticEstimationHelper
         }
 
         return $preparedData;
+    }
+
+    public static function getTimezoneFromTime($time)
+    {
+        $givenTime = strtotime($time);
+        $abbr = date('T', $givenTime);
+        Log::info($abbr);
+        $timezone = new \DateTimeZone($abbr);
+        $now = new \DateTime('now', $timezone);
+        $offsetInSeconds = $timezone->getOffset($now);
+        $timezoneName = timezone_name_from_abbr("", $offsetInSeconds, 0);
+        //Log::info($timezoneName);
+        return $timezoneName;
     }
 }

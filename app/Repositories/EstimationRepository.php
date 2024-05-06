@@ -27,8 +27,11 @@ class EstimationRepository
     /*This method will be executing automaticly for all users with unclosed plan in the end of the day (23:59) */
     public function estimate()
     {
+        $dateTime = date("Y-m-d"). " 23:59:30";
+        //get current timezone for estimation
+        $timezone = AutomaticEstimationHelper::getTimezoneFromTime($dateTime);
         //Here I get all weekend guys
-        AutomaticEstimationHelper::estimateLazyGuys();
+        //AutomaticEstimationHelper::estimateLazyGuys();
 
     }
 
