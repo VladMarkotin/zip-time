@@ -212,7 +212,7 @@
         </div>
 
         <footer class="footer">
-            <div class="footer-container">
+            <div class="container footer-container">
                 <div class="footer-top">
                     <div class="footer-top_brand">
                         <a href="{{ url('/') }}" class="footer-link">
@@ -223,7 +223,7 @@
                 </div>
             </div>
             <div class="footer-border"></div>
-            <div class="footer-container">
+            <div class="container footer-container">
                 <div class="footer-bottom">
                     <div class="footer-bottom_info"> 
                         <div class="footer-bottom_main-info">
