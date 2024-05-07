@@ -74,4 +74,101 @@
         </div>
     </div>
 </div>
+
+
+<div class="card">
+    <div class="card-header">
+        <button onclick="askForPermission()"  type="submit" class="btn btn-primary">Enable Notification</button>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+                <label for='title'>{{ __('title') }}</label>
+                <input type='text' class='form-control' id='title' name='title'>
+            </div>
+            <div class="col-md-3">
+                <label for='body'>{{ __('body') }}</label>
+                <input type='text' class='form-control' id='body' name='body'>
+            </div>
+            <div class="col-md-3">
+                <label for='idOfProduct'>{{ __('ID Of Product') }}</label>
+                <input type='text' class='form-control' id='idOfProduct' name='idOfProduct'>
+            </div>
+            <div class="col-md-3">
+                <input type="button" value="{{ 'Send Notification' }}" onclick="sendNotification()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('script')
+    <script>
+            navigator.serviceWorker.register("{{ URL::asset('service-worker.js') }}");
+
+function askForPermission() {
+ 
+    Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+
+
+            // get service worker
+            navigator.serviceWorker.ready.then((sw) => {
+                // subscribe
+               console.log((5334534543));
+                sw.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: "BGPbvN2N_ETuxiZZ90jMjXWardKtcrhDeFr93npJg5pInkDpDtJfUXRH0Het53h-zNUgRmS30N9iiCM-uN6Jsxk"
+                }).then((subscription) => {
+            
+                    console.log((subscription));
+                     saveSub(JSON.stringify(subscription));
+                });
+            });
+        }
+    });
+}
+
+function saveSub(sub) {
+            $.ajax({
+                type: 'post',
+                url: '{{ URL('save-push-notification-sub') }}',
+                data: {
+                    '_token': "{{ csrf_token() }}",
+                    'sub': sub
+                },
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function sendNotification() {
+            $.ajax({
+                type: 'post',
+                url: '{{ URL('send-push-notification') }}',
+                data: {
+                    '_token': "{{ csrf_token() }}",
+                    'title': $("#title").val(),
+                    'body': $("#body").val(),
+                    'idOfProduct': $("#idOfProduct").val(),
+                },
+                success: function(data) {
+                    alert('send Successfull');
+                    console.log(data);
+                }
+            });
+        }
+</script>
+@endpush
+
+
+{{-- Public Key:
+BGPbvN2N_ETuxiZZ90jMjXWardKtcrhDeFr93npJg5pInkDpDtJfUXRH0Het53h-zNUgRmS30N9iiCM-uN6Jsxk
+
+Private Key:
+0Rdr03_bupDraVkmhF6j7q73nlaPyVT-bDtMWW7NLPA --}}
+
+
+
+
 @endsection
