@@ -33,10 +33,10 @@ class AsideButtonsController {
         const isShowAsideButtons = !e.target.classList.contains('active');
 
         if (isShowAsideButtons) {
-            this.#asideButtonsActivator.classList.add('active');    
+            this.#asideButtonsActivator.classList.add('active');  
             
-           this.#asideButtons.forEach(button => {
-                button.classList.add('aside-button-visible');
+            this.#asideButtons.forEach(button => {
+                button && button.classList.add('aside-button-visible');
             })
 
         } else {
@@ -47,7 +47,7 @@ class AsideButtonsController {
 
     closeAsideButtons() {
         this.#asideButtons.forEach(button => {
-            button.classList.remove('aside-button-visible');
+           button && button.classList.remove('aside-button-visible');
         })
     }
 }
