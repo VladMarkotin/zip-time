@@ -70,7 +70,7 @@ var AsideButtonsController = /*#__PURE__*/function () {
       if (isShowAsideButtons) {
         _classPrivateFieldGet(this, _asideButtonsActivator).classList.add('active');
         _classPrivateFieldGet(this, _asideButtons).forEach(function (button) {
-          button.classList.add('aside-button-visible');
+          button && button.classList.add('aside-button-visible');
         });
       } else {
         _classPrivateFieldGet(this, _asideButtonsActivator).classList.remove('active');
@@ -81,7 +81,7 @@ var AsideButtonsController = /*#__PURE__*/function () {
     key: "closeAsideButtons",
     value: function closeAsideButtons() {
       _classPrivateFieldGet(this, _asideButtons).forEach(function (button) {
-        button.classList.remove('aside-button-visible');
+        button && button.classList.remove('aside-button-visible');
       });
     }
   }]);

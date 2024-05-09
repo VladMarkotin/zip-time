@@ -43,7 +43,7 @@ html {
 .navbar-light .navbar-brand:focus,
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link:focus {
-    color: #4fc1f0;;
+    color: #4fc1f0;
 }
 
 .navbar-nav.ml-auto {
@@ -145,26 +145,185 @@ html {
     min-height: calc(100vh - 85px);
 }
 
+/*---футер----*/
+
 .footer {
+    background-color: rgb(24, 24, 24);
     display: flex;
-    /* margin-bottom: 0px; */
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
-    justify-content: space-evenly;
-    /* height: 220px; */
-    background: linear-gradient(180deg, #5c1a1a 0%, #1a1411 45.31%);
+    color: #fff;
+    font-family: 'Lato', sans-serif;
 }
 
-.footer-info {
-    margin-top: 40px;
-    margin-left: 150px;
-    margin-right: 150px;
+.footer-container {
+    padding: 8px !important;
 }
 
-.footer-text {
-    color: #b6b6b6;
+.footer-link {
+    transition: all ease .3s;
+    text-decoration: none !important;
+    color: #fff;
+}
+
+.footer-link:hover,
+.footer-link:focus {
+    color: #4fc1f0;
+}
+
+.footer-top {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.footer-top .footer-top_brand {
+    font-size: 15px;
+    line-height: 29px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.footer-top .footer-top_slogan-list {
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    line-height: 25px;
+    font-weight: normal;
     font-size: 16px;
-    font-weight: 100;
+    text-transform: none;
+    text-align: center;
 }
+
+.footer-border {
+    width: 100%;
+    background-color: #fff;
+    height: 1px;
+}
+
+.footer-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    line-height: 29px;
+    font-weight: 700;
+}
+
+.footer-bottom .footer-bottom_main-info-year {
+    font-size: 14px;
+}
+
+.footer-bottom_info {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.footer-bottom-mail a {
+    /* color: #4fc1f0; */
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-bottom_list {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+@media screen and (max-width: 1100px) {
+
+    .footer-bottom {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        grid-row-gap: 10px;
+    }
+
+    .footer-bottom .footer-bottom_info, 
+    .footer-bottom .footer-bottom_list {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .footer-bottom {
+        font-size: 16px;
+        line-height: 25px;
+        font-weight: 700;
+    }
+
+    .footer-bottom_info {
+        font-size: 14px;
+    }
+
+    .footer-bottom .footer-bottom_main-info-year {
+        font-size: 13px;
+    }
+
+    .footer-bottom_list {
+        display: grid;
+        grid-row-gap: 0;
+        grid-column-gap: 5px;
+        grid-template-columns: 1fr 1fr 1fr;
+        justify-items: center;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .footer-top .footer-top_slogan-list {
+        flex-direction: column;
+        font-size: 14px;
+        line-height: 29px;
+        font-weight: 700;
+        text-transform: uppercase;
+        gap: 0;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .footer-bottom_list .footer-list-li:nth-child(1), 
+    .footer-bottom_list .footer-list-li:nth-child(4) {
+        justify-self: flex-start;
+    }
+    
+    .footer-bottom_list .footer-list-li:nth-child(2), 
+    .footer-bottom_list .footer-list-li:nth-child(5) {
+        justify-self: center;
+    }
+    
+    .footer-bottom_list .footer-list-li:nth-child(3), 
+    .footer-bottom_list .footer-list-li:nth-child(6) {
+        justify-self: flex-end;
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+
+    .footer {
+        padding: 10px;
+    }
+
+    .footer-top {
+        padding: 50px 0 10px;
+    }
+    .footer-bottom {
+        padding: 10px 0 50px;
+    }
+}
+
+/*---футер----*/
 
 /*----блок с результатми в хедере---*/
 #total-results {

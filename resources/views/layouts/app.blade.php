@@ -212,13 +212,58 @@
         </div>
 
         <footer class="footer">
-            <div class="footer-info">
-                <p class="footer-text">
-                    footer text Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet eget sit amet tellus cras
-                    adipiscing.
-                </p>
-                <p class="footer-text">© 2023</p>
+            <div class="container footer-container">
+                <div class="footer-top">
+                    <div class="footer-top_brand">
+                        <a href="{{ url('/') }}" class="footer-link">
+                            {{ config('app.name', 'Laravel') }}
+                        </a>
+                    </div>
+                    <ul class="footer-top_slogan-list">
+                        <li class="footer-top_slogan-li">Fast planning</li>
+                        <li class="footer-top_slogan-li">Full execution</li>
+                        <li class="footer-top_slogan-li">Enjoying results</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-border"></div>
+            <div class="container footer-container">
+                <div class="footer-bottom">
+                    <div class="footer-bottom_info"> 
+                        <div class="footer-bottom_main-info">
+                            <span>{{ config('app.name', 'Laravel')}}</span>  
+                            &copy
+                            <span class="footer-bottom_main-info-year">{{now()->year}}</span>
+                        </div>
+                        <div class="footer-bottom-mail">
+                            <a href="mailto:quiplapp@gmail.com">Contact us</a>
+                        </div>
+                    </div>
+                    <ul class="footer-bottom_list">
+                        @guest
+                            <li class="footer-list-li">
+                                <a class="footer-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                        @endguest
+                        @auth
+                            <li class="footer-list-li">
+                                <a class="footer-link" href="{{ route('stat') }}">Statistics</a>
+                            </li>
+                            <li class="footer-list-li">
+                                <a class="footer-link" href="{{ route('hist') }}">History</a>
+                            </li>
+                            <li class="footer-list-li">
+                                <a class="footer-link" href="{{ route('backlog') }}">Backlog</a>
+                            </li>
+                        @endauth
+                        <li class="footer-list-li">
+                            <a class="footer-link" href="{{ route('privacy.index') }}">Privacy Policy</a>
+                        </li>
+                        <li class="footer-list-li">
+                            <a class="footer-link" href="{{ route('termsofuse.index') }}">Terms of Use</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </footer>
     </div>
