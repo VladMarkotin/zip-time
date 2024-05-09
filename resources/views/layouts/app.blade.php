@@ -219,7 +219,11 @@
                             {{ config('app.name', 'Laravel') }}
                         </a>
                     </div>
-                    <p class="footer-top_slogan">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, corrupti laudantium voluptatem deleniti itaque animi possimus ratione<br class="br"> perspiciatis iure molestiae ipsam culpa aliquid modi eum omnis quaerat unde quasi! Unde iste inventore modi,<br class="br"> quia autem doloremque assumenda sit quam<br class="br"></p>
+                    <ul class="footer-top_slogan-list">
+                        <li class="footer-top_slogan-li">Fast planning</li>
+                        <li class="footer-top_slogan-li">Full execution</li>
+                        <li class="footer-top_slogan-li">Enjoying results</li>
+                    </ul>
                 </div>
             </div>
             <div class="footer-border"></div>
@@ -232,7 +236,7 @@
                             <span>{{now()->year}}</span>
                         </div>
                         <div class="footer-bottom-mail">
-                            Our email: <a href="mailto:quiplapp@gmail.com">quiplapp@gmail.com</a>
+                            <a href="mailto:quiplapp@gmail.com">Contact us</a>
                         </div>
                     </div>
                     <ul class="footer-bottom_list">
