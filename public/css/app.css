@@ -10190,7 +10190,7 @@ html {
     gap: 60px;
     line-height: 25px;
     font-weight: normal;
-    font-size: 18px;
+    font-size: 16px;
     text-transform: none;
     text-align: center;
 }
@@ -10209,6 +10209,10 @@ html {
     font-size: 16px;
     line-height: 29px;
     font-weight: 700;
+}
+
+.footer-bottom .footer-bottom_main-info-year {
+    font-size: 14px;
 }
 
 .footer-bottom_info {
@@ -10256,6 +10260,10 @@ html {
         font-size: 14px;
     }
 
+    .footer-bottom .footer-bottom_main-info-year {
+        font-size: 13px;
+    }
+
     .footer-bottom_list {
         display: grid;
         grid-row-gap: 0;
@@ -10268,7 +10276,7 @@ html {
 @media screen and (max-width: 550px) {
     .footer-top .footer-top_slogan-list {
         flex-direction: column;
-        font-size: 15px;
+        font-size: 14px;
         line-height: 29px;
         font-weight: 700;
         text-transform: uppercase;

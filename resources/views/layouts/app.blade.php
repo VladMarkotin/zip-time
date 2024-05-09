@@ -233,7 +233,7 @@
                         <div class="footer-bottom_main-info">
                             <span>{{ config('app.name', 'Laravel')}}</span>  
                             &copy
-                            <span>{{now()->year}}</span>
+                            <span class="footer-bottom_main-info-year">{{now()->year}}</span>
                         </div>
                         <div class="footer-bottom-mail">
                             <a href="mailto:quiplapp@gmail.com">Contact us</a>
