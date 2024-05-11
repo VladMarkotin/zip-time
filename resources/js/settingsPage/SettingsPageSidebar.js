@@ -1,8 +1,9 @@
 class SettingsPageSidebar {
-    #settingsTableTabs            = null;
-    #settingsSidebarBtn           = null;
-    #settingsTableTabsMobileClass = 'sidebar-mobile' 
-    #settingsSidebarBtnVisClass   = 'settings-sidebar-btn-visible'
+    #settingsTableTabs               = null;
+    #settingsSidebarBtn              = null;
+    #settingsTableTabsMobileClass    = 'sidebar-mobile' 
+    #settingsTableTabsMobileVisClass = 'sidebar-mobile-visible';
+    #settingsSidebarBtnVisClass      = 'settings-sidebar-btn-visible'
 
     init() {
         this.#settingsTableTabs  = document.body.querySelector('.settings-table-tabs-wrapper');
@@ -17,17 +18,27 @@ class SettingsPageSidebar {
             this.#settingsTableTabs  && this.#settingsTableTabs.classList.add(this.#settingsTableTabsMobileClass);
             if (this.#settingsSidebarBtn) {
                 this.#settingsSidebarBtn.classList.add(this.#settingsSidebarBtnVisClass);
+                this.#settingsSidebarBtn.onclick = this.sidebarBtnActivatorHandl.bind(this);
+                // document.body.addEventListener('click', this.closeSideBarHandl.bind(this));
             }
         } else {
-            this.#settingsTableTabs  && this.#settingsTableTabs.classList.remove(this.#settingsTableTabsMobileClass);
             this.#settingsSidebarBtn && this.#settingsSidebarBtn.classList.remove(this.#settingsSidebarBtnVisClass);
+            if (this.#settingsTableTabs) {
+                [this.#settingsTableTabsMobileClass, this.#settingsTableTabsMobileVisClass].forEach(remClass => {
+                    this.#settingsTableTabs.classList.remove(remClass);
+                })
+            }
         }
     }
 
-    sideBarMobileActivateHandl() {
-        
+    sidebarBtnActivatorHandl() {
+        this.#settingsTableTabs.classList.add(this.#settingsTableTabsMobileVisClass);
     }
-}
+
+    closeSideBarHandl() {
+        console.log('123');
+    }
+} 
 
 const settingsPageSidebar = new SettingsPageSidebar;
 settingsPageSidebar.init();

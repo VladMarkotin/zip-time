@@ -19,6 +19,7 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 var _settingsTableTabs = /*#__PURE__*/new WeakMap();
 var _settingsSidebarBtn = /*#__PURE__*/new WeakMap();
 var _settingsTableTabsMobileClass = /*#__PURE__*/new WeakMap();
+var _settingsTableTabsMobileVisClass = /*#__PURE__*/new WeakMap();
 var _settingsSidebarBtnVisClass = /*#__PURE__*/new WeakMap();
 var SettingsPageSidebar = /*#__PURE__*/function () {
   function SettingsPageSidebar() {
@@ -34,6 +35,10 @@ var SettingsPageSidebar = /*#__PURE__*/function () {
     _classPrivateFieldInitSpec(this, _settingsTableTabsMobileClass, {
       writable: true,
       value: 'sidebar-mobile'
+    });
+    _classPrivateFieldInitSpec(this, _settingsTableTabsMobileVisClass, {
+      writable: true,
+      value: 'sidebar-mobile-visible'
     });
     _classPrivateFieldInitSpec(this, _settingsSidebarBtnVisClass, {
       writable: true,
@@ -51,19 +56,33 @@ var SettingsPageSidebar = /*#__PURE__*/function () {
   }, {
     key: "checkWindowWidth",
     value: function checkWindowWidth() {
+      var _this = this;
       if (window.innerWidth <= 1265) {
         _classPrivateFieldGet(this, _settingsTableTabs) && _classPrivateFieldGet(this, _settingsTableTabs).classList.add(_classPrivateFieldGet(this, _settingsTableTabsMobileClass));
         if (_classPrivateFieldGet(this, _settingsSidebarBtn)) {
           _classPrivateFieldGet(this, _settingsSidebarBtn).classList.add(_classPrivateFieldGet(this, _settingsSidebarBtnVisClass));
+          _classPrivateFieldGet(this, _settingsSidebarBtn).onclick = this.sidebarBtnActivatorHandl.bind(this);
+          // document.body.addEventListener('click', this.closeSideBarHandl.bind(this));
         }
       } else {
-        _classPrivateFieldGet(this, _settingsTableTabs) && _classPrivateFieldGet(this, _settingsTableTabs).classList.remove(_classPrivateFieldGet(this, _settingsTableTabsMobileClass));
         _classPrivateFieldGet(this, _settingsSidebarBtn) && _classPrivateFieldGet(this, _settingsSidebarBtn).classList.remove(_classPrivateFieldGet(this, _settingsSidebarBtnVisClass));
+        if (_classPrivateFieldGet(this, _settingsTableTabs)) {
+          [_classPrivateFieldGet(this, _settingsTableTabsMobileClass), _classPrivateFieldGet(this, _settingsTableTabsMobileVisClass)].forEach(function (remClass) {
+            _classPrivateFieldGet(_this, _settingsTableTabs).classList.remove(remClass);
+          });
+        }
       }
     }
   }, {
-    key: "sideBarMobileActivateHandl",
-    value: function sideBarMobileActivateHandl() {}
+    key: "sidebarBtnActivatorHandl",
+    value: function sidebarBtnActivatorHandl() {
+      _classPrivateFieldGet(this, _settingsTableTabs).classList.add(_classPrivateFieldGet(this, _settingsTableTabsMobileVisClass));
+    }
+  }, {
+    key: "closeSideBarHandl",
+    value: function closeSideBarHandl() {
+      console.log('123');
+    }
   }]);
   return SettingsPageSidebar;
 }();
