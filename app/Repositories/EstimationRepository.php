@@ -29,10 +29,22 @@ class EstimationRepository
     {
         $dateTime = date("Y-m-d"). " 23:59:30";
         //get current timezone for estimation
-        $timezone = AutomaticEstimationHelper::getTimezoneFromTime($dateTime);
-        //Here I get all weekend guys
-        //AutomaticEstimationHelper::estimateLazyGuys();
+        $currentTimezoneForEstimation = AutomaticEstimationHelper::defineCurrentTimeZone($dateTime); 
+        $timezones = AutomaticEstimationHelper::getTimezonesForEstimation();
+        //Log::info(json_encode($currentTimezoneForEstimation));
+        Log::info('Timezones where estimation will happen next 23:59'.json_encode($timezones));
+        
+        //Here I estimate lazy guys
+        AutomaticEstimationHelper::estimateLazyGuysInTimezone(['Europe/Minsk']); //ok
+        
+        //Here I estimate guys who didn`t complete all required job/tasks
+        AutomaticEstimationHelper::estimateIrresponsibleGuysInTimezone(['Europe/Minsk']); //ok
 
+        //Here I estimate weekends guys
+        //AutomaticEstimationHelper::estimateWeekendUsersInTimezone();
+        
+        //And finally, estimation of responsible users
+        //AutomaticEstimationHelper::estimateUsersInTimezone();
     }
 
     /*This method will be executing for concrete user on demand*/

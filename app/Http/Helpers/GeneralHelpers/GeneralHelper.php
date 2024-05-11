@@ -45,9 +45,20 @@ class GeneralHelper
         return Carbon::today()->toDateString();
     }
 
-    public static function getNow()
+    public static function getNow($timezone = null)
     {
+        if ($timezone) {
+            return Carbon::now($timezone);
+        }
+
         return Carbon::now();
+    }
+
+    public static function prepareSqlIn(array $data)
+    {
+        $inClause = implode("', '", $data);
+        //$sql = "SELECT * FROM table_name WHERE column_name IN ('$inClause')";
+        return $inClause;
     }
 
 
