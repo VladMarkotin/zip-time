@@ -17,6 +17,7 @@ mix
     .js('resources/js/indexPage/NavMenu.js', 'public/js/NavMenu.js')
     .js('resources/js/PageSmoothAppear.js', 'public/js/PageSmoothAppear.js')
     .js('resources/js/AsideButtonsController.js', 'public/js/AsideButtonsController.js')
+    .js('resources/js/settingsPage/SettingsPageSidebar.js', 'public/js/SettingsPageSidebar.js')
     .vue()
     .css('resources/css/app.css', 'public/css/app.css')
     .sass('resources/sass/indexPage/indexPage.scss', 'public/css/indexPage')

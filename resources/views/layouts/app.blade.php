@@ -14,14 +14,17 @@
     <script src="{{ asset('js/custom.js') }}" defer></script>
     {{-- костыль, что бы замаскировать дергание страницы при загрузке --}}
     <script src="{{ asset('js/PageSmoothAppear.js') }}" defer></script>
-    {{--  --}}
+    @if(Route::currentRouteName() == 'settings')
+        <script src="js/SettingsPageSidebar.js" defer></script>
+    @endif
     @guest
         @if(Route::currentRouteName() == 'welcome')
-            <script src="js/IndexPageController.js" defer></script>
+        <script src="js/IndexPageController.js" defer></script>
         @endif
     @endguest
     <script src="js/NavMenu.js" defer></script>
     <script src="js/AsideButtonsController.js" defer></script>
+    {{--  --}}
  
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
