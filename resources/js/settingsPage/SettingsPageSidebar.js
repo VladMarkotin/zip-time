@@ -19,7 +19,6 @@ class SettingsPageSidebar {
             if (this.#settingsSidebarBtn) {
                 this.#settingsSidebarBtn.classList.add(this.#settingsSidebarBtnVisClass);
                 this.#settingsSidebarBtn.onclick = this.sidebarBtnActivatorHandl.bind(this);
-                // document.body.addEventListener('click', this.closeSideBarHandl.bind(this));
             }
         } else {
             this.#settingsSidebarBtn && this.#settingsSidebarBtn.classList.remove(this.#settingsSidebarBtnVisClass);
@@ -33,10 +32,23 @@ class SettingsPageSidebar {
 
     sidebarBtnActivatorHandl() {
         this.#settingsTableTabs.classList.add(this.#settingsTableTabsMobileVisClass);
+
+        document.body.onclick = this.closeSideBarHandl.bind(this);
     }
 
-    closeSideBarHandl() {
-        console.log('123');
+    closeSideBarHandl(e) {
+        let target = e.target;
+        if (target.classList.contains('settings-sidebar-btn')) return; //костыль, что бы избавиться от бага с открытием
+
+        while (target) {
+            if (target.classList && target.classList.contains('sidebar-mobile-visible')) {
+                return;
+            }
+            target = target.parentNode;
+        }
+    
+        this.#settingsTableTabs.classList.remove(this.#settingsTableTabsMobileVisClass);
+        document.body.onclick = null;
     }
 } 
 

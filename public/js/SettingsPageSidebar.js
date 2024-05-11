@@ -62,7 +62,6 @@ var SettingsPageSidebar = /*#__PURE__*/function () {
         if (_classPrivateFieldGet(this, _settingsSidebarBtn)) {
           _classPrivateFieldGet(this, _settingsSidebarBtn).classList.add(_classPrivateFieldGet(this, _settingsSidebarBtnVisClass));
           _classPrivateFieldGet(this, _settingsSidebarBtn).onclick = this.sidebarBtnActivatorHandl.bind(this);
-          // document.body.addEventListener('click', this.closeSideBarHandl.bind(this));
         }
       } else {
         _classPrivateFieldGet(this, _settingsSidebarBtn) && _classPrivateFieldGet(this, _settingsSidebarBtn).classList.remove(_classPrivateFieldGet(this, _settingsSidebarBtnVisClass));
@@ -77,11 +76,22 @@ var SettingsPageSidebar = /*#__PURE__*/function () {
     key: "sidebarBtnActivatorHandl",
     value: function sidebarBtnActivatorHandl() {
       _classPrivateFieldGet(this, _settingsTableTabs).classList.add(_classPrivateFieldGet(this, _settingsTableTabsMobileVisClass));
+      document.body.onclick = this.closeSideBarHandl.bind(this);
     }
   }, {
     key: "closeSideBarHandl",
-    value: function closeSideBarHandl() {
-      console.log('123');
+    value: function closeSideBarHandl(e) {
+      var target = e.target;
+      if (target.classList.contains('settings-sidebar-btn')) return; //костыль, что бы избавиться от бага с открытием
+
+      while (target) {
+        if (target.classList && target.classList.contains('sidebar-mobile-visible')) {
+          return;
+        }
+        target = target.parentNode;
+      }
+      _classPrivateFieldGet(this, _settingsTableTabs).classList.remove(_classPrivateFieldGet(this, _settingsTableTabsMobileVisClass));
+      document.body.onclick = null;
     }
   }]);
   return SettingsPageSidebar;
