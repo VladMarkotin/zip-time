@@ -1,0 +1,33 @@
+.settings-sidebar-btn {
+    background: orange;
+    background-size: 24px 24px;
+    border-bottom-right-radius: 5px;
+    background-color: #333333 !important;
+    display: block;
+    position: fixed;
+    padding: 2rem 0.4rem;
+    z-index: 1;
+    border: none;
+    left: 0;
+    top: calc(50% - 12px);
+    width: 1.6rem;
+}
+
+.settings-sidebar-btn-visible {
+    display: block !important;
+}
+
+.sidebar-mobile {
+    position: fixed;
+    height: 100%;
+    z-index: 2;
+    top: 0;
+    left: -30%;
+    background-color: orange;
+}
+
+@media screen and (max-width: 1265px) {
+    #v-pills-tabContent {
+        grid-column: 1/3;
+    }
+}

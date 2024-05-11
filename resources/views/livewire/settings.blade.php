@@ -1,9 +1,10 @@
 <div>
     {{-- {{dd( $config) }} --}}
-    <div class="container" style="width:100%">
+    <div class="container" style="width:100%; position: relative;">
         @include('livewire.update')
         @include('livewire.info')
         @include('livewire.notes')
+        <button class="settings-sidebar-btn" style="display: none"></button>
         <div class="settings-table-wrapper">
             <div class="settings-table-tabs-wrapper">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
