@@ -1,11 +1,13 @@
 .settings-sidebar-btn {
     background: orange;
     background-size: 24px 24px;
+    border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    background-color: #333333 !important;
+    background: transparent url(/images/settingsPageSidebarIcon.png) left center no-repeat;
+    background-color: #333333;
     display: block;
     position: fixed;
-    padding: 2rem 0.4rem;
+    padding: 2rem 1rem;
     z-index: 1;
     border: none;
     left: 0;
@@ -24,7 +26,7 @@
     top: 0;
     left: -600px;
     width: 240px;
-    padding: 20px;
+    padding: 115px 20px 20px;
     background-color: #efefe7;
     transition: all .3s ease;
     box-shadow: 2px 2px 4px #888888;
