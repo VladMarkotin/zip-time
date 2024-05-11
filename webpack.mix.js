@@ -28,6 +28,7 @@ mix
     .sass('resources/sass/termsOfUsePage/termsOfUsePage.scss', 'public/css/termsOfUsePage')
     .sass('resources/sass/termsOfUsePage/termsOfUseMedia.scss', 'public/css/termsOfUsePage')
     .sass('resources/sass/settingsPage/settingsPage.scss', 'public/css/settingsPage')
+    .sass('resources/sass/settingsPage/settingsPageMedia.scss', 'public/css/settingsPage')
     .sass('resources/sass/Cards/CardsMedia.scss', 'public/css/Cards')
     .sass('resources/sass/Card/CardMedia.scss', 'public/css/Card')
     .sass('resources/sass/Challenges/ChallengesMedia.scss', 'public/css/Challenges')
