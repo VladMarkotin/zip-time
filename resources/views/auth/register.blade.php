@@ -76,7 +76,7 @@
 </div>
 
 
-<div class="card">
+{{-- <div class="card">
     <div class="card-header">
         <button onclick="askForPermission()"  type="submit" class="btn btn-primary">Enable Notification</button>
     </div>
@@ -99,48 +99,47 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
-@push('script')
+{{-- @push('script')
     <script>
-            navigator.serviceWorker.register("{{ URL::asset('service-worker.js') }}");
+//             navigator.serviceWorker.register("{{ URL::asset('service-worker.js') }}");
 
-function askForPermission() {
+// function askForPermission() {
  
-    Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
+//     Notification.requestPermission().then((permission) => {
+//         if (permission === 'granted') {
 
 
-            // get service worker
-            navigator.serviceWorker.ready.then((sw) => {
-                // subscribe
-               console.log((5334534543));
-                sw.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: "BGPbvN2N_ETuxiZZ90jMjXWardKtcrhDeFr93npJg5pInkDpDtJfUXRH0Het53h-zNUgRmS30N9iiCM-uN6Jsxk"
-                }).then((subscription) => {
+//             // get service worker
+//             navigator.serviceWorker.ready.then((sw) => {
+//                 // subscribe
+//                 sw.pushManager.subscribe({
+//                     userVisibleOnly: true,
+//                     applicationServerKey: "BGPbvN2N_ETuxiZZ90jMjXWardKtcrhDeFr93npJg5pInkDpDtJfUXRH0Het53h-zNUgRmS30N9iiCM-uN6Jsxk"
+//                 }).then((subscription) => {
             
-                    console.log((subscription));
-                     saveSub(JSON.stringify(subscription));
-                });
-            });
-        }
-    });
-}
+//                     console.log((subscription));
+//                      saveSub(JSON.stringify(subscription));
+//                 });
+//             });
+//         }
+//     });
+// }
 
-function saveSub(sub) {
-            $.ajax({
-                type: 'post',
-                url: '{{ URL('save-push-notification-sub') }}',
-                data: {
-                    '_token': "{{ csrf_token() }}",
-                    'sub': sub
-                },
-                success: function(data) {
-                    console.log(data);
-                }
-            });
-        }
+// function saveSub(sub) {
+//             $.ajax({
+//                 type: 'post',
+//                 url: '{{ URL('save-push-notification-sub') }}',
+//                 data: {
+//                     '_token': "{{ csrf_token() }}",
+//                     'sub': sub
+//                 },
+//                 success: function(data) {
+//                     console.log(data);
+//                 }
+//             });
+//         }
 
         function sendNotification() {
             $.ajax({
@@ -159,7 +158,7 @@ function saveSub(sub) {
             });
         }
 </script>
-@endpush
+@endpush --}}
 
 
 {{-- Public Key:

@@ -15,3 +15,4 @@ Date.prototype.toEnStr =
 	{
 		return this.toISOString().substr(0, 10)
 	}
+

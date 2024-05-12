@@ -3,10 +3,12 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Repositories\EstimationRepository;
+use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
 
 class EstimateDayCommand extends Command
 {
+    private $estimateDayRepository;
+
     /**
      * The name and signature of the console command.
      *
@@ -26,7 +28,7 @@ class EstimateDayCommand extends Command
      *
      * @return void
      */
-    public function __construct(EstimationRepository  $estimationRepository)
+    public function __construct(CreateDayPlanRepository $estimationRepository)
     {
         parent::__construct();
         $this->estimateDayRepository  = $estimationRepository;
@@ -40,7 +42,7 @@ class EstimateDayCommand extends Command
     public function handle()
     {
         $this->info('start');
-        $this->estimateDayRepository->estimate();
+        $this->estimateDayRepository->reminder();
         $this->info('success');
         return 0;
     }
