@@ -224,47 +224,46 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     @auth
-    <script>
+        <script>
+          
+            askForPermission()
+            navigator.serviceWorker.register("{{ URL::asset('service-worker.js') }}");
 
-        var public_key = '{{ env('DEVICE_PUBLIC_KEY') }}'
-        askForPermission(public_key)
-        navigator.serviceWorker.register("{{ URL::asset('service-worker.js') }}");
+            function askForPermission() {
 
-        function askForPermission() {
-
-            Notification.requestPermission().then((permission) => {
-                if (permission === 'granted') {
-                    // get service worker
-                    navigator.serviceWorker.ready.then((sw) => {
-                        // subscribe
-                        sw.pushManager.subscribe({
-                            userVisibleOnly: true,
-                            applicationServerKey: "BGPbvN2N_ETuxiZZ90jMjXWardKtcrhDeFr93npJg5pInkDpDtJfUXRH0Het53h-zNUgRmS30N9iiCM-uN6Jsxk"
-                        }).then((subscription) => {
-                            console.log((subscription));
-                            saveSub(JSON.stringify(subscription));
+                Notification.requestPermission().then((permission) => {
+                    if (permission === 'granted') {
+                        // get service worker
+                        navigator.serviceWorker.ready.then((sw) => {
+                            // subscribe
+                            sw.pushManager.subscribe({
+                                userVisibleOnly: true,
+                                applicationServerKey: "BGPbvN2N_ETuxiZZ90jMjXWardKtcrhDeFr93npJg5pInkDpDtJfUXRH0Het53h-zNUgRmS30N9iiCM-uN6Jsxk"
+                            }).then((subscription) => {
+                                console.log((subscription));
+                                saveSub(JSON.stringify(subscription));
+                            });
                         });
-                    });
-                }
-            });
-        }
+                    }
+                });
+            }
 
-        function saveSub(sub) {
+            function saveSub(sub) {
 
-            $.ajax({
-                type: 'post',
-                url: '{{ URL('save-push-notification-sub') }}',
-                data: {
-                    '_token': "{{ csrf_token() }}",
-                    'sub': sub
-                },
-                success: function(data) {
-                    console.log(data);
-                }
-            });
-        }
-    </script>
-@endauth
+                $.ajax({
+                    type: 'post',
+                    url: '{{ URL('save-push-notification-sub') }}',
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        'sub': sub
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+        </script>
+    @endauth
 </body>
 
 </html>

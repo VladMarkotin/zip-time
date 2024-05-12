@@ -3,36 +3,34 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Repositories\EstimationRepository;
-use App\Repositories\DayPlanRepositories\CreateDayPlanRepository;
+use App\Http\Controllers\Services\NotificationService;
 
-class EstimateDayCommand extends Command
+class PushNotifications extends Command
 {
-    private $estimateDayRepository;
-
+    private $notificationService;
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'estimate:day';
+    protected $signature = 'push:notifications';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'close day automatically';
+    protected $description = 'Pushes notification to devices';
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(EstimationRepository $estimationRepository)
+    public function __construct(NotificationService $notificationService)
     {
         parent::__construct();
-        $this->estimateDayRepository  = $estimationRepository;
+        $this->notificationService  = $notificationService;
     }
 
     /**
@@ -43,8 +41,8 @@ class EstimateDayCommand extends Command
     public function handle()
     {
         $this->info('start');
-        $this->estimateDayRepository->estimate();
-        $this->info('success');
+        $this->notificationService->reminder();
+        $this->info('end');
         return 0;
     }
 }

@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\SavedTask;
-use App\Models\PushNotification;
 use Illuminate\Http\Request;
 use App\Events\Notifications;
+use App\Models\PushNotification;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\EstimationRepository;
 use App\Http\Controllers\Services\RatingService;
-use App\Http\Controllers\Services\GetDayPlanService;
 
+use App\Http\Controllers\Services\GetDayPlanService;
 use App\Http\Controllers\Services\IndexStatServices\IndexStatService;
 
 
@@ -30,6 +31,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+       
+
+
+
         $statData = $this->indexStatService->countStatIndex();
 
     
