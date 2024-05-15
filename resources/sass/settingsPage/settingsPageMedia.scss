@@ -46,9 +46,44 @@
     .table-container {
         width: 100%;
         overflow-x: auto;
+        padding-bottom: 20px;
+
+        &::-webkit-scrollbar {
+            height: 16px;
+            border-left: 1px solid #e6e6e6;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background: #b0b0b0;
+            border: solid 3px #e6e6e6;
+            border-radius: 7px;
+        }
     }
     
     .saved-task-table-wrapper {
         width: 966px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .modal-dialog {
+        margin: 0 !important;
+        max-width: none !important;
+
+        .modal-content {
+            width: 90%;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .modal-content {
+        .statistic-wrapper {
+            padding: 0;
+
+            .statistic-content {
+                grid-row-gap: 3px;
+            }
+        }
     }
 }

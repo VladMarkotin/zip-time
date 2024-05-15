@@ -18,17 +18,17 @@
         .v-data-table__wrapper::-webkit-scrollbar {
             height: 16px;
             border-left: 1px solid #e6e6e6;
-          }
+        }
     
-          .v-data-table__wrapper::-webkit-scrollbar-thumb {
+        .v-data-table__wrapper::-webkit-scrollbar-thumb {
             background: #b0b0b0;
             border: solid 3px #e6e6e6;
             border-radius: 7px;
-          }
+        }
     
-          .v-data-table__wrapper::-webkit-scrollbar-thumb:hover {
+        .v-data-table__wrapper::-webkit-scrollbar-thumb:hover {
             background: rgb(161, 0, 0);;
-          }
+        }
     } 
 }
 
