@@ -4,6 +4,7 @@ namespace App\Http\Helpers\EstimationDayHelpers;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Helpers\GeneralHelpers\GeneralHelper;
+use  App\Http\Helpers\EstimationDayHelpers\EstimationDayHelper;
 use App\Models\TimetableModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -78,18 +79,25 @@ class AutomaticEstimationHelper
         return true;
     }
 
-    public static function estimateUsersInTimezone($timezone = ['Europe/Minsk'])
+    /**
+     * method counts final mark for all users 
+     */
+    public static function estimateUsersInCurrentTimezone($timezone = ['Europe/Minsk'])
     {
         $timezones = AutomaticEstimationHelper::getTimezonesForEstimation();
-        $in    = GeneralHelper::prepareSqlIn($timezone);
+        $in    = GeneralHelper::prepareSqlIn($timezones);
         $date = GeneralHelper::getTodayDate();
-        $query = "SELECT U.id ID, SUM(mark)/COUNT(mark) S    FROM tasks JOIN timetables T ON tasks.timetable_id = T.id JOIN users U ON T.user_id = U.id WHERE T.date = '$date'
+        $query = "SELECT U.id ID, SUM(mark)/COUNT(mark) final_estimation    FROM tasks JOIN timetables T ON tasks.timetable_id = T.id JOIN users U ON T.user_id = U.id WHERE T.date = '$date'
                     AND T.day_status IN (1, 2)
                         AND tasks.mark > -1
                             AND type = 4
                                 AND U.timezone IN('$in')  GROUP BY tasks.timetable_id, U.id WITH ROLLUP";
+
         $result = DB::select($query);
-        Log::info(json_encode($result));
+       
+        //Log::info(json_encode($result));
+        //Close user`s plans in timezone
+        self::closeUsersPlans($result);
     }
 
     //do not need it
@@ -140,39 +148,46 @@ class AutomaticEstimationHelper
 
     public static function getTimezonesForEstimation()
     {
-        $currentDate = GeneralHelper::getNow();
-        $currentHour = $currentDate->format('H');
-
-        // Создаем объект Carbon для каждого часового пояса
-        $timezones = \DateTimeZone::listIdentifiers();
-        $result = [];
-
+        $currentTimezone = [];
+        $timezones = self::getUniqueTimezones();
         foreach ($timezones as $timezone) {
-            $date = GeneralHelper::getNow($timezone);
-            $hour = $date->format('H');
-
-            // Если текущий час равен 23 и следующий час равен 0, то добавляем часовой пояс в список
-            if ($currentHour == 23 && $hour == 0) {
-                $result[] = $timezone;
-            } elseif ($currentHour == ($hour - 1)) {
-                $result[] = $timezone;
+            $time = GeneralHelper::getNow($timezone);    
+            if ($time->hour === 22) { //23 ВЕРНУТЬ!
+                array_push($currentTimezone, $time->getTimezone());   // if hour in that timezone == 23:59(end of day) push user to array
             }
         }
-        //Log::info(json_encode($result));
-        return implode(',', $result);
+
+        return $currentTimezone;
     }
 
-    //don`t need?
-    public static function defineCurrentTimeZone($time)
+    public static function getUniqueTimezones()
     {
-        $givenTime = strtotime($time);
-        $abbr = date('T', $givenTime);
-        //Log::info($abbr);
-        $timezone = new \DateTimeZone($abbr);
-        $now = new \DateTime('now', $timezone);
-        $offsetInSeconds = $timezone->getOffset($now);
-        $timezoneName = timezone_name_from_abbr("", $offsetInSeconds, 0);
-        //Log::info($timezoneName);
-        return $timezoneName;
+        return  User::distinct('timezone')->pluck('timezone'); // the unique timezones in database
     }
+
+    //----------------
+    private static function closeUsersPlans(array $data)
+    {
+        Log::info('closeUsersPlans');
+        foreach ($data as $v) {
+            if ($v->ID) {
+                //1. get current timetable id for this user
+                $timetableId = GeneralHelper::getCurrentTimetableId(['id' => $v->ID]);
+                //2.count time for timetable`s of ID
+                $time = EstimationDayHelper::sumTime($timetableId);
+                //3.Updating day info for users. Apply queues later!
+                TimetableModel::where('id', $timetableId)->update([
+                    'time_of_day_plan' => $time,
+                    'day_status' => 3,
+                    'final_estimation' =>  $v->final_estimation,
+                    'own_estimation' =>  $v->final_estimation,
+                    'comment' => 'Closed automaticaly',
+                    'updated_at' => DB::raw('CURRENT_TIMESTAMP(0)'),
+                ]);
+            } else {
+                continue;
+            }
+        }
+    }
+
 }

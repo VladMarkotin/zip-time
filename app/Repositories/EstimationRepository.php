@@ -11,40 +11,40 @@ use App\Models\DefaultConfigs;//minFinalMark
 use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 use App\Http\Helpers\EstimationDayHelpers\EstimationDayHelper;
 use App\Http\Helpers\EstimationDayHelpers\AutomaticEstimationHelper;
+use App\Repositories\TimezoneRepository;
 use Illuminate\Support\Facades\Log;
 
 class EstimationRepository
 {
     private $userRatings = null;
     private $defaultConfigs = null;
+    private $timezoneRepository = null;
 
-    public function __construct(RatingService $userRatings, DefaultConfigs $defaultConfigs)
+    public function __construct(RatingService $userRatings,
+                                DefaultConfigs $defaultConfigs,
+                                TimezoneRepository $timezoneRepository)
     {
         $this->userRatings    = $userRatings;
         $this->defaultConfigs = $defaultConfigs;
+        $this->timezoneRepository = $timezoneRepository;
     }
 
     /*This method will be executing automaticly for all users with unclosed plan in the end of the day (23:59) */
     public function estimate()
     {
         $dateTime = date("Y-m-d"). " 23:59:30";
-        //get current timezone for estimation
-        $currentTimezoneForEstimation = AutomaticEstimationHelper::defineCurrentTimeZone($dateTime); 
-        $timezones = AutomaticEstimationHelper::getTimezonesForEstimation();
-        //Log::info(json_encode($currentTimezoneForEstimation));
-        Log::info('Timezones where estimation will happen next 23:59'.json_encode($timezones));
         
         //Here I estimate lazy guys
-        AutomaticEstimationHelper::estimateLazyGuysInTimezone(['Europe/Minsk']); //ok
+       // AutomaticEstimationHelper::estimateLazyGuysInTimezone(['Europe/Minsk']); //ok
         
         //Here I estimate guys who didn`t complete all required job/tasks
-        AutomaticEstimationHelper::estimateIrresponsibleGuysInTimezone(['Europe/Minsk']); //ok
+        //AutomaticEstimationHelper::estimateIrresponsibleGuysInTimezone(['Europe/Minsk']); //ok
 
         //Here I estimate weekends guys
         //AutomaticEstimationHelper::estimateWeekendUsersInTimezone();
         
         //And finally, estimation of responsible users
-        //AutomaticEstimationHelper::estimateUsersInTimezone();
+        AutomaticEstimationHelper::estimateUsersInCurrentTimezone();
     }
 
     /*This method will be executing for concrete user on demand*/
@@ -177,7 +177,7 @@ class EstimationRepository
                     ])
                     ->update([
                         'time_of_day_plan' => $data['final_time'], //time of plan info. Fix it later!!
-                        'final_estimation' => $data['final_estimation'], //-2 - признак того, что день под статусом Вых
+                        'final_estimation' => $data['final_estimation'], 
                         'own_estimation' => $data['own_estimation'],
                         'day_status' => $data['day_status'],
                         'comment' => $data['comment'],

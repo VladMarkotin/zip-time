@@ -61,10 +61,16 @@ class EstimationDayHelper
         return $preparedData;
     }
 
-    public static function sumTime()
+    public static function sumTime($timetableId = null)
     {
-        $query = "SELECT SEC_TO_TIME( SUM(TIME_TO_SEC (STR_TO_DATE(`time`, '%H:%i') ) ) ) AS Sum_Of_time FROM tasks WHERE `timetable_id` = ". GeneralHelper::getCurrentTimetableId();
-        $timeOfPlan = DB::select($query);
+        //this is for manual counting
+        if (!$timetableId) {
+            $query = "SELECT SEC_TO_TIME( SUM(TIME_TO_SEC (STR_TO_DATE(`time`, '%H:%i') ) ) ) AS Sum_Of_time FROM tasks WHERE `timetable_id` = ". GeneralHelper::getCurrentTimetableId();
+            $timeOfPlan = DB::select($query);
+        } else { //this is for automatic counting
+            $query = "SELECT SEC_TO_TIME( SUM(TIME_TO_SEC (STR_TO_DATE(`time`, '%H:%i') ) ) ) AS Sum_Of_time FROM tasks WHERE `timetable_id` = $timetableId";
+            $timeOfPlan = DB::select($query);
+        }
 
         return $timeOfPlan[0]->Sum_Of_time;
     }
