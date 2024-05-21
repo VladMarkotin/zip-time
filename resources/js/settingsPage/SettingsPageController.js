@@ -4,7 +4,7 @@ class SettingsPageController {
     #settingsPageSidebar = null;
     
     init(settingsPageSidebar) {
-        this.#settingsPageSidebar = new settingsPageSidebar;
+        this.#settingsPageSidebar = new settingsPageSidebar();
         this.#settingsPageSidebar.init();
 
         this.checkOpenModalWindow();

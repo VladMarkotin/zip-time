@@ -23,7 +23,7 @@ class SettingsPageSidebar {
         } else {
             this.#settingsSidebarBtn && this.#settingsSidebarBtn.classList.remove(this.#settingsSidebarBtnVisClass);
             if (this.#settingsTableTabs) {
-                [this.#settingsTableTabsMobileClass, this.#settingsTableTabsMobileVisClass].forEach(remClass => {
+                [this.#settingsTableTabsMobileVisClass].forEach(remClass => {
                     this.#settingsTableTabs.classList.remove(remClass);
                 })
             }
@@ -53,4 +53,3 @@ class SettingsPageSidebar {
 } 
 
 export default SettingsPageSidebar;
-

@@ -6,7 +6,7 @@
         @include('livewire.notes')
         <button class="settings-sidebar-btn" style="display: none"></button>
         <div class="settings-table-wrapper">
-            <div class="settings-table-tabs-wrapper">
+            <div class="settings-table-tabs-wrapper sidebar-mobile">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                         aria-controls="v-pills-home" aria-selected="true" wire:ignore>

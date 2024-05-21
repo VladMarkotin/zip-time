@@ -75,7 +75,7 @@ var SettingsPageSidebar = /*#__PURE__*/function () {
       } else {
         _classPrivateFieldGet(this, _settingsSidebarBtn) && _classPrivateFieldGet(this, _settingsSidebarBtn).classList.remove(_classPrivateFieldGet(this, _settingsSidebarBtnVisClass));
         if (_classPrivateFieldGet(this, _settingsTableTabs)) {
-          [_classPrivateFieldGet(this, _settingsTableTabsMobileClass), _classPrivateFieldGet(this, _settingsTableTabsMobileVisClass)].forEach(function (remClass) {
+          [_classPrivateFieldGet(this, _settingsTableTabsMobileVisClass)].forEach(function (remClass) {
             _classPrivateFieldGet(_this, _settingsTableTabs).classList.remove(remClass);
           });
         }
