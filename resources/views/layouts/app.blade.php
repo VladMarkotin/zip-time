@@ -15,7 +15,7 @@
     {{-- костыль, что бы замаскировать дергание страницы при загрузке --}}
     <script src="{{ asset('js/PageSmoothAppear.js') }}" defer></script>
     @if(Route::currentRouteName() == 'settings')
-        <script src="js/SettingsPageSidebar.js" defer></script>
+        <script src="js/SettingsPageController.js" defer></script>
     @endif
     @guest
         @if(Route::currentRouteName() == 'welcome')

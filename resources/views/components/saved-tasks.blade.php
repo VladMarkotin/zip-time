@@ -4,12 +4,12 @@
             <table class="table table-bordered border-primary saved-tasks-table">
                 <thead class="thead" style="background-color: #A10000;color:#ffffff">
                     <tr class="saved-tasks-table-head">
-                        <th scope="col">#</th>
-                        <th scope="col">Task name</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Priority</th>
-                        <th scope="col">Time</th>
-                        <th scope="col" style="text-align: center">Actions</th>
+                        <th scope="col" class="table-head-code">#</th>
+                        <th scope="col" class="table-head-name">Task name</th>
+                        <th scope="col" class="table-head-type">Type</th>
+                        <th scope="col" class="table-head-priority">Priority</th>
+                        <th scope="col" class="table-head-time">Time</th>
+                        <th scope="col" class="table-head-actions" style="text-align: center">Actions</th>
                     </tr>
                 </thead>
                 @foreach ($savedTasks as $sT)
@@ -19,7 +19,7 @@
                         <td class="col-1 saved-task-type">{{ $sT->type }}</td>
                         <td class="col-1 saved-task-priority">{{ $sT->priority }}</td>
                         <td class="col-1 saved-task-time">{{ $sT->time }}</td>
-                        <td class="col-4" >
+                        <td class="col-4 saved-task-actions" >
                             <div class="buttons-wrapper">
                                 <div>
                                     <button class="btn btn-outline-primary" data-toggle="modal" data-target="#infoModal"

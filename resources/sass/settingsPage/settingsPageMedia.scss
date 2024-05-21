@@ -43,26 +43,23 @@
 }
 
 @media screen and (max-width: 1100px) {
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-        padding-bottom: 20px;
+    // .saved-tasks-table {
+    //     .saved-tasks-table-head {
+    //         .table-head-type,
+    //         .table-head-priority,
+    //         .table-head-time,
+    //         .table-head-actions {
+    //             display: none;
+    //         }
+    //     }
 
-        &::-webkit-scrollbar {
-            height: 16px;
-            border-left: 1px solid #e6e6e6;
-        }
-    
-        &::-webkit-scrollbar-thumb {
-            background: #b0b0b0;
-            border: solid 3px #e6e6e6;
-            border-radius: 7px;
-        }
-    }
-    
-    .saved-task-table-wrapper {
-        width: 966px;
-    }
+    //     .saved-task-time,
+    //     .saved-task-priority,
+    //     .saved-task-type,
+    //     .saved-task-actions {
+    //         display: none;
+    //     }
+    // }
 }
 
 @media screen and (max-width: 600px) {

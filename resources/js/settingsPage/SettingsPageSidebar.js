@@ -52,5 +52,5 @@ class SettingsPageSidebar {
     }
 } 
 
-const settingsPageSidebar = new SettingsPageSidebar;
-settingsPageSidebar.init();
+export default SettingsPageSidebar;
+
