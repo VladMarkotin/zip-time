@@ -201,25 +201,10 @@ var SettingsPageController = /*#__PURE__*/function () {
     value: function init(settingsPageSidebar) {
       _classPrivateFieldSet(this, _settingsPageSidebar, new settingsPageSidebar());
       _classPrivateFieldGet(this, _settingsPageSidebar).init();
-      this.checkOpenModalWindow();
-    }
-  }, {
-    key: "checkOpenModalWindow",
-    value: function checkOpenModalWindow() {
-      //пытаюсь решить в этом методе проблему с поломкой скриптов после открытия модальных окон
-      var body = document.querySelector('body');
       var self = this;
-      var observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-          if (mutation.attributeName === 'class') {
-            _classPrivateFieldGet(self, _settingsPageSidebar).init();
-          }
-        });
+      window.livewire.on('rerender', function () {
+        _classPrivateFieldGet(self, _settingsPageSidebar).init();
       });
-      var config = {
-        attributes: true
-      };
-      observer.observe(body, config);
     }
   }]);
   return SettingsPageController;

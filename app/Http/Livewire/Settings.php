@@ -30,6 +30,10 @@ class Settings extends Component
     public $sT = null;
     public $taskName, $type, $priority, $time, $taskId, $timezone, $setWeekendDays, $minMark, $minFinalMark, $minJobAmount, $config; //for updates
 
+    public function __construct() {
+       $this->emitRerender();
+    }
+
     public function render(SavedTask $savedTask)
     {
 
@@ -55,6 +59,8 @@ class Settings extends Component
 
     public function destroy(SavedTask $savedTask)
     {
+        $this->emitRerender();
+
         if ($savedTask->status) {
             $savedTask->status = 0;
             $savedTask->save();
@@ -223,4 +229,10 @@ class Settings extends Component
 
     public function cancel()
     {}
+
+    private function emitRerender() 
+    {
+        //создаю событие, что бы перехватить его на фронте и заново проинитить нужные мне классы
+        $this->emit('rerender');
+    }
 }
