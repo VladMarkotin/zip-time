@@ -28,6 +28,7 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 var _accordionHeads = /*#__PURE__*/new WeakMap();
 var _accordionBodies = /*#__PURE__*/new WeakMap();
 var _accrodionHeadActiveClass = /*#__PURE__*/new WeakMap();
+var _localStorageKey = /*#__PURE__*/new WeakMap();
 var SettingsPageAccordion = /*#__PURE__*/function () {
   function SettingsPageAccordion() {
     _classCallCheck(this, SettingsPageAccordion);
@@ -43,20 +44,53 @@ var SettingsPageAccordion = /*#__PURE__*/function () {
       writable: true,
       value: 'accordion-head-active'
     });
+    _classPrivateFieldInitSpec(this, _localStorageKey, {
+      writable: true,
+      value: 'activeAccodrionId'
+    });
   }
   _createClass(SettingsPageAccordion, [{
     key: "init",
     value: function init() {
-      var _this = this;
       _classPrivateFieldSet(this, _accordionHeads, document.querySelectorAll('.saved-tasks-table-body .accordion-head'));
       _classPrivateFieldSet(this, _accordionBodies, document.querySelectorAll('.saved-tasks-table-body .accordion-body'));
+      var savedId = localStorage.getItem(_classPrivateFieldGet(this, _localStorageKey));
+      if (savedId) {
+        var id = JSON.parse(savedId);
+        var heads = _classPrivateFieldGet(this, _accordionHeads);
+        for (var i = 0; i < heads.length; i++) {
+          if (heads[i].dataset.id === id) {
+            heads[i].classList.add(_classPrivateFieldGet(this, _accrodionHeadActiveClass));
+            break;
+          }
+        }
+      }
+      this.addClickHandler();
+      function beforeUnloadHandler() {
+        localStorage.removeItem(_classPrivateFieldGet(this, _localStorageKey));
+      }
+      window.addEventListener('beforeunload', beforeUnloadHandler.bind(this));
+    }
+  }, {
+    key: "addClickHandler",
+    value: function addClickHandler() {
+      var _this = this;
       _classPrivateFieldGet(this, _accordionHeads).forEach(function (item) {
         item.onclick = function (e) {
           _classPrivateFieldGet(_this, _accordionHeads).forEach(function (item) {
-            if (item === e.target) item.classList.toggle(_classPrivateFieldGet(_this, _accrodionHeadActiveClass));else item.classList.remove(_classPrivateFieldGet(_this, _accrodionHeadActiveClass));
+            if (item === e.target) {
+              var id = e.target.dataset.id;
+              _this.saveId(id);
+              item.classList.toggle(_classPrivateFieldGet(_this, _accrodionHeadActiveClass));
+            } else item.classList.remove(_classPrivateFieldGet(_this, _accrodionHeadActiveClass));
           });
         };
       });
+    }
+  }, {
+    key: "saveId",
+    value: function saveId(id) {
+      localStorage.setItem(_classPrivateFieldGet(this, _localStorageKey), JSON.stringify(id));
     }
   }]);
   return SettingsPageAccordion;

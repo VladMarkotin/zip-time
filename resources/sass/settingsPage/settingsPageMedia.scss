@@ -84,13 +84,12 @@
     .accordion-wrapper {
         display: block;
         width: 80%;
-        margin: 25px auto 0;
+        margin: 15px auto 0;
 
         .accordion-head,
         .accordion-body {
             background-color: #fff;
             box-shadow: 2px 2px 11px rgba(0, 0, 0, 0.3);
-            padding: 10px;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -101,19 +100,36 @@
             text-transform: uppercase;
             margin-bottom: 8px;
             transition: all .3s ease;
+            padding: 8px;
 
             &:hover {
-                
+                background-color: #A10000;
+                color: #fff;
             }
         }
 
-        .accordion-body {
-            // display: none;
+        .accordion-head-active {
+            background-color: #A10000;
+            color: #fff;
         }
 
-        .accordion-head-active {
-            background-color: orange;
+        .accordion-head.accordion-head-active + .accordion-body {
+            max-height: 200px;
         }
+
+        .accordion-body {
+            padding: 0;
+            box-sizing: border-box;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+
+            .accordion-content {
+                padding: 8px;
+            }
+        }
+
+        
     }
 }
 
@@ -126,6 +142,10 @@
             width: 90%;
         }
     }
+
+    .accordion-wrapper {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -135,6 +155,24 @@
 
             .statistic-content {
                 grid-row-gap: 3px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .accordion-body {
+
+        .accordion-content {
+            display: grid;
+            grid-template-rows: auto auto;
+            grid-template-columns: .45fr .45fr;
+            grid-row-gap: 10px;
+            justify-content: space-between;
+
+            button {
+                text-transform: uppercase;
+                font-weight: 500;
             }
         }
     }

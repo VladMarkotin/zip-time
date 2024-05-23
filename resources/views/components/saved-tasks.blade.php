@@ -21,28 +21,35 @@
                                     {{ $sT->task_name }}
                                 </div>
                                 <div class="accordion-wrapper">
-                                    <div class="accordion-head">Actions</div>
+                                    <div 
+                                    class="accordion-head"
+                                    data-id="{{ $sT['id'] }}"
+                                    >
+                                        Actions
+                                    </div>
                                     <div class="accordion-body">
-                                        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#infoModal"
-                                            wire:click="getInfo({{ $sT['id'] }})">
-                                            Info
-                                        </button>
-                        
-                                        <button class="btn btn-outline-primary" data-toggle="modal"
-                                            data-target="#noteModal" wire:click="getNote({{ $sT['id'] }})">
-                                            Notes
-                                        </button>
-                        
-                                        <button class="btn btn-outline-primary" data-toggle="modal"
-                                            data-target="#updateModal" wire:click="edit({{ $sT['id'] }})">
-                                            Edit
-                                        </button>
-
-                                        @if (!$sT->status)
-                                            <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary" style="min-width: 75px">Enable</button>
-                                        @else
-                                            <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger" style="min-width: 75px">Disable</button>
-                                        @endif
+                                        <div class="accordion-content">
+                                            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#infoModal"
+                                                wire:click="getInfo({{ $sT['id'] }})">
+                                                Info
+                                            </button>
+                            
+                                            <button class="btn btn-outline-primary" data-toggle="modal"
+                                                data-target="#noteModal" wire:click="getNote({{ $sT['id'] }})">
+                                                Notes
+                                            </button>
+                            
+                                            <button class="btn btn-outline-primary" data-toggle="modal"
+                                                data-target="#updateModal" wire:click="edit({{ $sT['id'] }})">
+                                                Edit
+                                            </button>
+    
+                                            @if (!$sT->status)
+                                                <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-outline-secondary" style="min-width: 75px">Enable</button>
+                                            @else
+                                                <button wire:click="destroy({{ $sT['id'] }})" class="btn btn-danger" style="min-width: 75px">Disable</button>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </td>
