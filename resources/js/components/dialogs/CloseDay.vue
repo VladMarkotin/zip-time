@@ -326,7 +326,6 @@
 				console.error(error);
 			}
 
-
 		}
 		}
 </script>
