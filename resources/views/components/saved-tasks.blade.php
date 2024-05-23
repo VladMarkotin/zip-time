@@ -17,9 +17,9 @@
                         <tr class="saved-tasks-table-body @if($sT->status == 0) disabled-saved-task @endif">
                             <td class="col-1 saved-task-code">{{ $sT->hash_code }}</td>
                             <td class="col-4 saved-task-name">
-                                <div>
+                                <p class="task-name-value">
                                     {{ $sT->task_name }}
-                                </div>
+                                </p>
                                 <div class="accordion-wrapper">
                                     <div 
                                     class="accordion-head"
