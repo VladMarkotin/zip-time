@@ -31,20 +31,7 @@
   .sidebar-mobile {
     position: fixed;
     height: 100%;
-    z-index: 2;
-    top: 0;
-    left: -600px;
-    width: 240px;
-    padding: 115px 20px 20px;
-    background-color: #efefe7;
-    transition: all 0.3s ease;
-    box-shadow: 2px 2px 4px #888888;
-  }
-
-  .sidebar-mobile {
-    position: fixed;
-    height: 100%;
-    z-index: 2;
+    z-index: 101;
     top: 0;
     left: -600px;
     width: 240px;
