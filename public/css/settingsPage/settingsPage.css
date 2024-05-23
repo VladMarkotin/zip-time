@@ -44,6 +44,11 @@ select {
   width: 100vw;
 }
 
+.personal-settings-label {
+  max-width: 290px;
+  text-align: center;
+}
+
 .personal-settings-wrapper .card {
   box-shadow: 1px 1px 4px #C0C0C0;
 }
