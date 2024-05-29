@@ -647,7 +647,7 @@ export default {
 
                      currentObj.closeAlertTime = setTimeout(() => {
                         currentObj.showAlert = false;
-                     }, 3000);
+                     }, 6000);
 
                   }
 
