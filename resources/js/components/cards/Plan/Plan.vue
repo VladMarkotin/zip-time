@@ -89,14 +89,25 @@
                md="3"
                class="plan_taskName-input-wrapper"
                >
-                  <v-text-field
-                     :placeholder=" placeholders[0] "
-                     :counter="50"
-                     required
-                     v-model="defaultSelected.taskName"
-                     @input="inputChangeHandler"
-                     @keypress.enter = "addTask"
-                     ></v-text-field>
+               <v-menu v-model="isShowPressEntTooltip" offset-y>
+                  <template v-slot:activator="{ on }">
+                     <v-text-field
+                        v-on="on"
+                        :placeholder=" placeholders[0] "
+                        :counter="50"
+                        required
+                        v-model="defaultSelected.taskName"
+                        ref="taskNameInput"
+                        @input="inputChangeHandler"
+                        @keypress.enter = "addTask"
+                     >
+                     </v-text-field>
+                  </template>
+                     <v-list v-show="screenWidth >= 1024">
+                        <v-list-item style="justify-content: center; text-align: center;">Press Enter to add your task<br/> to your daily plan.</v-list-item>
+                     </v-list>
+               </v-menu>
+                 
                </v-col>
                <v-col md="2"
                class="plan_taskType-input-wrapper"
@@ -385,6 +396,7 @@ export default {
         closeAlertTime: 0,
         showPreloaderInsteadTable: false,
         screenWidth: window.innerWidth,
+        isShowPressEntTooltip: false,
     }),
     computed : {
         taskTypes() {
@@ -489,8 +501,14 @@ export default {
                   currentObj.defaultSelected.notes = response.data[6];
                 })
                 .catch(function(error) {
-                    currentObj.output = error;
-                });
+                  currentObj.output = error;
+                })
+                .finally(() => {
+                  if (this.screenWidth >= 1024) {
+                     this.isShowPressEntTooltip = true;
+                  }
+                  this.$refs.taskNameInput.focus();
+                })
         },
 
          onChangeForPresentation(event) {
@@ -554,7 +572,9 @@ export default {
 
         addTask() {
          
-         this.showAlert = false;
+         this.showAlert             = false;
+         this.isShowPressEntTooltip = false;
+
          const checkTaskResult = this.checkDefaultSelected();
          const {taskName}      = this.defaultSelected;
 
