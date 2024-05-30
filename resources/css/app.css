@@ -181,7 +181,7 @@ html {
 }
 
 .footer-top .footer-top_brand {
-    font-size: 15px;
+    font-size: 17px;
     line-height: 29px;
     font-weight: 700;
     text-align: center;
@@ -218,8 +218,12 @@ html {
     font-weight: 700;
 }
 
-.footer-bottom .footer-bottom_main-info-year {
-    font-size: 14px;
+.footer-bottom .footer-bottom_main-info,
+.footer-bottom .footer-bottom-mail {
+    font-size: 15px;
+    line-height: 29px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .footer-bottom_info {
@@ -267,9 +271,9 @@ html {
         font-size: 14px;
     }
 
-    .footer-bottom .footer-bottom_main-info-year {
+    /* .footer-bottom .footer-bottom_main-info-year {
         font-size: 13px;
-    }
+    } */
 
     .footer-bottom_list {
         display: grid;
@@ -285,7 +289,7 @@ html {
         flex-direction: column;
         font-size: 14px;
         line-height: 29px;
-        font-weight: 700;
+        /* font-weight: 700; */
         text-transform: uppercase;
         gap: 0;
     }

@@ -68,7 +68,7 @@ class AddPlanService
 
         return response()->json([
             'status' => 'error',
-            'message' => "Invalid day plan! Too few tasks! It has to be $this->minTaskQuantity or more required tasks."
+            'message' => "Invalid day plan! Too few tasks! It has to be $this->minTaskQuantity or more required jobs."
         ]);
     }
 
@@ -114,8 +114,12 @@ class AddPlanService
             $taskQuantity = count($data['plan']);
             switch ($data["day_status"]) {
                 case 2: //Work Day
-                    $this->minTaskQuantity =json_decode( PersonalConfigs::getConfigs()->config_data)
+                    $pesrConfigMinTaskQuant =json_decode( PersonalConfigs::getConfigs()->config_data)
                     ->rules[0]->minRequiredTaskQuantity;
+                    $defConfigMinTaskQuant = json_decode(DefaultConfigs::getConfigs()[1]->config_data)->rules[0]->minRequiredTaskQuantity;
+
+                    $this->minTaskQuantity = !empty($pesrConfigMinTaskQuant) ? $pesrConfigMinTaskQuant : $defConfigMinTaskQuant;
+                    
                     if($taskQuantity >=  $this->minTaskQuantity){ //
                         /* Check quantity of required tasks. In this case it has to be more than 1! */
                         $i = 0;
@@ -124,7 +128,7 @@ class AddPlanService
                                 $i += 1;
                             }
                         });
-                        if($i > 1){
+                        if($i >= $this->minTaskQuantity){
                             return true;
                         }
 
