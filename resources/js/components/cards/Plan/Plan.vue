@@ -104,7 +104,7 @@
                      </v-text-field>
                   </template>
                      <v-list v-show="screenWidth >= 1024">
-                        <v-list-item style="justify-content: center; text-align: center;">Press Enter to add your task<br/> to your daily plan.</v-list-item>
+                        <v-list-item style="justify-content: center; text-align: center;">Press Enter to add task<br/> to your daily plan.</v-list-item>
                      </v-list>
                </v-menu>
                  
