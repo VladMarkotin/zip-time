@@ -56,9 +56,12 @@ class GeneralHelper
 
     public static function prepareSqlIn(array $data)
     {
-        $inClause = implode("', '", $data);
-        //$sql = "SELECT * FROM table_name WHERE column_name IN ('$inClause')";
-        return $inClause;
+        
+        $result = array_map(function($item) {
+            return "'".$item."'";
+        }, $data);
+            
+        return implode(',', $result);
     }
 
 

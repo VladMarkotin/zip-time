@@ -84,17 +84,47 @@ class AutomaticEstimationHelper
      */
     public static function estimateUsersInCurrentTimezone($timezone = ['Europe/Minsk'])
     {
-        $timezones = AutomaticEstimationHelper::getTimezonesForEstimation();
+        $timezones = AutomaticEstimationHelper::getTimezonesForEstimation(1);
+        if (!count($timezones)) {
+            return ;
+        }
         $in    = GeneralHelper::prepareSqlIn($timezones);
         $date = GeneralHelper::getTodayDate();
-        $query = "SELECT U.id ID, SUM(mark)/COUNT(mark) final_estimation    FROM tasks JOIN timetables T ON tasks.timetable_id = T.id JOIN users U ON T.user_id = U.id WHERE T.date = '$date'
-                    AND T.day_status IN (1, 2)
-                        AND tasks.mark > -1
-                            AND type = 4
-                                AND U.timezone IN('$in')  GROUP BY tasks.timetable_id, U.id WITH ROLLUP";
+        $query = "SELECT id, MAX(required_final) AS required_task, MAX(non_required_final) AS non_required
+        FROM (
+            SELECT id, required_final, NULL AS non_required_final
+            FROM (
+                SELECT U.id, SUM(mark) / COUNT(mark) AS required_final
+                FROM tasks
+                JOIN timetables T ON tasks.timetable_id = T.id
+                JOIN users U ON T.user_id = U.id
+                WHERE T.date = '$date'
+                AND T.day_status IN (1, 2)
+                AND tasks.mark > -1
+                AND type = 4
+                AND U.timezone IN ($in)
+                GROUP BY tasks.timetable_id, U.id WITH ROLLUP
+            ) AS t1
+            WHERE required_final IS NOT NULL
+            UNION ALL
+            SELECT id, NULL AS required_final, non_required_final
+            FROM (
+                SELECT U.id, SUM(mark) / COUNT(mark) AS non_required_final
+                FROM tasks
+                JOIN timetables T ON tasks.timetable_id = T.id
+                JOIN users U ON T.user_id = U.id
+                WHERE T.date = '$date'
+                AND T.day_status IN (1, 2)
+                AND tasks.mark > -1
+                AND type = 3
+                AND U.timezone = 'Europe/Minsk'
+                GROUP BY tasks.timetable_id, U.id WITH ROLLUP
+            ) AS t2
+            WHERE non_required_final IS NOT NULL
+        ) AS subquery
+        GROUP BY id;";
 
         $result = DB::select($query);
-       
         //Log::info(json_encode($result));
         //Close user`s plans in timezone
         self::closeUsersPlans($result);
@@ -146,14 +176,14 @@ class AutomaticEstimationHelper
         return $preparedData;
     }
 
-    public static function getTimezonesForEstimation()
+    public static function getTimezonesForEstimation() //0-array, 1-string
     {
         $currentTimezone = [];
         $timezones = self::getUniqueTimezones();
         foreach ($timezones as $timezone) {
             $time = GeneralHelper::getNow($timezone);    
             if ($time->hour === 22) { //23 ВЕРНУТЬ!
-                array_push($currentTimezone, $time->getTimezone());   // if hour in that timezone == 23:59(end of day) push user to array
+                array_push($currentTimezone, $time->getTimezone()->getName());   // if hour in that timezone == 23:59(end of day) push user to array
             }
         }
 
@@ -166,28 +196,74 @@ class AutomaticEstimationHelper
     }
 
     //----------------
+    private function createTempResultsTable()
+    {
+        DB::statement('DROP TABLE IF EXISTS temp_results');
+
+        // Создаем новую временную таблицу
+        DB::statement('CREATE TEMPORARY TABLE temp_results (
+            ID INT,
+            required_final DECIMAL(10,2),
+            non_required_final DECIMAL(10,2)
+        )');
+
+        // Выполняем первый запрос и вставляем результаты во временную таблицу
+        DB::statement("INSERT INTO temp_results (ID, required_final)
+            SELECT U.id, SUM(mark) / COUNT(mark)
+            FROM tasks
+            JOIN timetables T ON tasks.timetable_id = T.id
+            JOIN users U ON T.user_id = U.id
+            WHERE T.date = '2024-05-18'
+            AND T.day_status IN (1, 2)
+            AND tasks.mark > -1
+            AND type = 4
+            AND U.timezone = 'Europe/Minsk'
+            GROUP BY tasks.timetable_id, U.id WITH ROLLUP");
+
+        // Выполняем второй запрос и вставляем результаты во временную таблицу
+        DB::statement("INSERT INTO temp_results (ID, non_required_final)
+            SELECT U.id, SUM(mark) / COUNT(mark)
+            FROM tasks
+            JOIN timetables T ON tasks.timetable_id = T.id
+            JOIN users U ON T.user_id = U.id
+            WHERE T.date = '2024-05-18'
+            AND T.day_status IN (1, 2)
+            AND tasks.mark > -1
+            AND type = 3
+            AND U.timezone = 'Europe/Minsk'
+            GROUP BY tasks.timetable_id, U.id WITH ROLLUP");
+
+        // Получаем результаты из временной таблицы
+        $results = DB::table('temp_results')->get();
+    }
+
     private static function closeUsersPlans(array $data)
     {
         Log::info('closeUsersPlans');
+        $userCounter = 0;
         foreach ($data as $v) {
-            if ($v->ID) {
+            // Log::info(json_encode($v));
+            // die;
+            if ( isset($v->id) ) {
                 //1. get current timetable id for this user
-                $timetableId = GeneralHelper::getCurrentTimetableId(['id' => $v->ID]);
+                $timetableId = GeneralHelper::getCurrentTimetableId(['id' => $v->id]);
                 //2.count time for timetable`s of ID
                 $time = EstimationDayHelper::sumTime($timetableId);
                 //3.Updating day info for users. Apply queues later!
                 TimetableModel::where('id', $timetableId)->update([
                     'time_of_day_plan' => $time,
                     'day_status' => 3,
-                    'final_estimation' =>  $v->final_estimation,
-                    'own_estimation' =>  $v->final_estimation,
+                    'final_estimation' =>  $v->required_task,
+                    'own_estimation' =>  $v->non_required,
                     'comment' => 'Closed automaticaly',
                     'updated_at' => DB::raw('CURRENT_TIMESTAMP(0)'),
                 ]);
+                $userCounter++;
             } else {
                 continue;
             }
         }
+        Log::info("Everyone in current timezone was estimated! User`s count: $userCounter");
     }
 
 }

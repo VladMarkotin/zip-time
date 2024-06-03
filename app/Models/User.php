@@ -26,6 +26,7 @@ class User extends Authenticatable
         'provider_id',
         'rating',
         'edu_step',
+        'timezone',
     ];
 
     /**
