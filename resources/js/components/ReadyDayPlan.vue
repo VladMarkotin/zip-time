@@ -39,7 +39,7 @@
                 :screenWidth = "screenWidth"
             />
         </v-data-iterator>
-        <div class="d-flex justify-space-between mt-3">
+        <div class="d-flex justify-space-between mt-6">
             <v-tooltip right>
                 <template v-slot:activator="{ on }">
                     <v-btn icon v-on="on" v-on:click="toggleAddJobTaskDialog">
