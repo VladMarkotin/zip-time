@@ -44,6 +44,7 @@
         margin-bottom: 15px;
         display: flex;
         justify-content: center;
+        min-height: 188px;
     } 
 
     @import url('/css/Cards/CardsMedia.css');
