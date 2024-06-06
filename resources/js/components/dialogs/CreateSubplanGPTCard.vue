@@ -1,17 +1,17 @@
 <template>
    <v-card width="450">
+    <div class="subplan-GPT-header">
+        <v-btn
+            id="subplan-GPT-button-modal"
+            color="#EFEFEF"
+            elevation
+            @click="toggleDialog"
+        >
+            <v-icon size="30">$vuetify.icons.chatGPTIcon</v-icon>
+        </v-btn>
+        <v-card-title class="subplan-GPT-title">Create subplan with ChatGPT</v-card-title>
+    </div>
             <v-list>
-                <v-list-item class="subplan-GPT-header">
-                    <v-btn
-                    id="subplan-GPT-button-modal"
-                    color="#EFEFEF"
-                    elevation
-                    @click="toggleDialog"
-                    >
-                        <v-icon size="30">$vuetify.icons.chatGPTIcon</v-icon>
-                    </v-btn>
-                    <v-card-title class="subplan-GPT-title">Create subplan with ChatGPT</v-card-title>
-                </v-list-item>
                 <v-list-item class="subplan-GPT-input-wrapper">
                     <v-list-item class="subplan-GPT-input-inner">
                         <v-card-text class="subpan-GPT-text"><label for="subplan-GPT-taskname-input">{{ requestData.label }}</label></v-card-text>

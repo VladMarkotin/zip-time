@@ -1,2 +1,22 @@
-@charset "UTF-8";
-/*тут будут стили */
+@media screen and (max-width: 500px) {
+  .subpan-GPT-modal .subplan-GPT-input-wrapper .subplan-GPT-input-inner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+  }
+  .subpan-GPT-modal .subplan-GPT-input-wrapper .subplan-GPT-input-inner .subpan-GPT-text {
+    padding-top: 14px;
+  }
+  .subpan-GPT-modal .subplan-GPT-input-wrapper .subplan-GPT-input-inner .subpan-GPT-text label {
+    margin-bottom: 0 !important;
+  }
+
+  .subpan-GPT-modal .subplan-GPT-input-wrapper .v-text-field {
+    max-width: 100% !important;
+  }
+}
+@media screen and (max-width: 424px) {
+  .subpan-GPT-modal {
+    margin: 0 !important;
+  }
+}

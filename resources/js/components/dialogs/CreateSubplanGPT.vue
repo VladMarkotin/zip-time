@@ -1,7 +1,6 @@
 <template>
     <v-dialog 
     v-model="showDialog"
-    overlay-color="transparent"
     content-class="subpan-GPT-modal"
     width="477"
     >
@@ -95,6 +94,9 @@
         background-color: #EFEFEF;
         gap: 53px;
         padding: 16px 24px;
+        display: flex;
+        gap: 30px;
+        align-items: center;
     }
 
     .subpan-GPT-modal .subplan-GPT-title {
@@ -126,7 +128,7 @@
     }
 
     .subpan-GPT-modal div[role="listitem"].subplan-gpt-subtasks-list-wrapper {
-        min-height: 350px;
+        height: 350px;
         padding: 16px 24px;
         align-items: flex-start;
         box-sizing: border-box;
