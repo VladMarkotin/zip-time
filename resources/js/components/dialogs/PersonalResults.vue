@@ -1,6 +1,8 @@
 <template>
-    <div class="personal-results" v-on:mouseup="showInfo">
-    <v-card class="mx-auto" width="500" prepend-icon="mdi-home">
+    <div 
+    class="personal-results personal-results-card-wrapper" 
+    >
+    <v-card class="mx-auto personal-results-card" width="500" prepend-icon="mdi-home">
       <template v-slot:title> Your current personal results:</template>
 
       <v-card-text>
@@ -26,9 +28,9 @@
           }),
           methods :
           {
-            showInfo() {
-                alert('test');
-            }
+            // showInfo() {
+            //     alert('test');
+            // }
           },
           async created() {
             //alert('PersonalResults')
@@ -36,7 +38,7 @@
               .then((response) => {
                   //this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
                   this.better_then = response.data.better
-                  this.more_pesponsible = response.data.more_pesponsible
+                  this.more_pesponsible = response.data.more_pesponsible.toFixed(2);
                   this.user_purposelness = response.data.user_purposelness
               })
           }

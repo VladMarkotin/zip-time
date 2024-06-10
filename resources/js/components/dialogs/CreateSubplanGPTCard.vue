@@ -1,17 +1,17 @@
 <template>
-   <v-card>
+   <v-card width="450">
+    <div class="subplan-GPT-header">
+        <v-btn
+            id="subplan-GPT-button-modal"
+            color="#EFEFEF"
+            elevation
+            @click="toggleDialog"
+        >
+            <v-icon size="30">$vuetify.icons.chatGPTIcon</v-icon>
+        </v-btn>
+        <v-card-title class="subplan-GPT-title">Create subplan with ChatGPT</v-card-title>
+    </div>
             <v-list>
-                <v-list-item class="subplan-GPT-header">
-                    <v-btn
-                    id="subplan-GPT-button-modal"
-                    color="#EFEFEF"
-                    elevation
-                    @click="toggleDialog"
-                    >
-                        <v-icon size="28">$vuetify.icons.chatGPTIcon</v-icon>
-                    </v-btn>
-                    <v-card-title class="subplan-GPT-title subpan-GPT-text">Create subplan with ChatGPT</v-card-title>
-                </v-list-item>
                 <v-list-item class="subplan-GPT-input-wrapper">
                     <v-list-item class="subplan-GPT-input-inner">
                         <v-card-text class="subpan-GPT-text"><label for="subplan-GPT-taskname-input">{{ requestData.label }}</label></v-card-text>
@@ -46,9 +46,15 @@
                 <v-divider></v-divider>
                 <v-list-item class="subplan-gpt-subtasks-list-wrapper">
                     <v-list-item-content v-if="isLoading">
-                        <DefaultPreloader />
+                        <DefaultPreloader 
+                        :size="96"
+                        :width="7"
+                        />
                     </v-list-item-content>
-                    <v-list-item-content v-else-if="subtasksFromChatGPT.length == 0 && isLoading == false">
+                    <v-list-item-content
+                     v-else-if="subtasksFromChatGPT.length == 0 && isLoading == false"
+                     class="justify-content-center"
+                     >
                         {{ subtasksFromChatGPTWelcome }}
                     </v-list-item-content>
                     <v-list v-else class="subplan-gpt-subtasks-list">
@@ -73,7 +79,7 @@
                                 id="subplan-GPT-button-playoutline"
                                 @click="createSubPlanViaGPT()"
                             >
-                            <v-icon size="30">{{ icons.mdiPlayOutline }}</v-icon>
+                            <v-icon size="38">{{ icons.mdiPlayOutline }}</v-icon>
                         </v-btn>
                         </template>
                         <span>Save and add subplan</span>
@@ -86,7 +92,7 @@
                         elevation
                         id="subplan-GPT-button-cogrefresh"
                         >
-                            <v-icon size="30">{{ icons.mdiCogRefresh }}</v-icon>
+                            <v-icon size="35">{{ icons.mdiCogRefresh }}</v-icon>
                         </v-btn>
                         </template>
                         <span>Regenerate GPT`s answer</span>
@@ -149,7 +155,7 @@
                                     this.isLoading = false
                             },3000)
                             console.log(response.data)
-                            this.subtasksFromChatGPT = []
+                            this.subtasksFromChatGPT = [];
                             if (response.data.length > 0) {
                                 response.data.map( (el, key) => {
                                     this.subtasksFromChatGPT.push(el)    

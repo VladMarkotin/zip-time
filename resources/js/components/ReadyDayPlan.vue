@@ -26,20 +26,20 @@
         <Challenges />
         <v-data-iterator hide-default-footer v-bind:items="data">
             <Cards
-                title="Required tasks:"
+                title="Required jobs and tasks:"
                 v-if="isExistsRequiredTasks(data)"
                 v-bind:items="getRequiredTasks(data)"
                 :screenWidth = "screenWidth"
             />
             <v-divider></v-divider>
             <Cards
-                title="Non required tasks:"
+                title="Non required jobs tasks:"
                 v-if="isExistsNonRequiredTasks(data)"
                 v-bind:items="getNonRequiredTasks(data)"
                 :screenWidth = "screenWidth"
             />
         </v-data-iterator>
-        <div class="d-flex justify-space-between mt-3">
+        <div class="d-flex justify-space-between mt-6">
             <v-tooltip right>
                 <template v-slot:activator="{ on }">
                     <v-btn icon v-on="on" v-on:click="toggleAddJobTaskDialog">

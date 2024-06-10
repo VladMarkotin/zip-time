@@ -1,6 +1,23 @@
 <template>
     <div>
-        <div class="cards_title-wrapper three"><h2>{{title}}</h2></div>
+        <div class="cards_type-img-wrapper">
+            <CardsTypeImage 
+                :title       = "title"
+                :screenWidth = "screenWidth"
+            />
+            <!-- <v-tooltip right>
+                <template v-slot:activator="{on}">     
+                    <v-img 
+                    v-on="on" 
+                    max-height="128"
+                    max-width="128"
+                    class="card_type_img"
+                    src="/images/cards_required_icon.png"
+                    />
+                </template>
+            <span>{{title}}</span>
+            </v-tooltip> -->
+        </div>
         <v-row class="cards_cards-wrapper">
             <v-col cols="6" v-for="item, i of items" v-bind:key="item.taskId">
                 <Card 
@@ -13,32 +30,23 @@
     </div>
 </template>
 <script>
-    import Card from './Card.vue'
+    import Card from './Card.vue';
+    import CardsTypeImage from '../UI/CardsTypeImage.vue';
 
     export default {
     props : ['title','items', 'screenWidth'],
-    components : {Card,},
+    components : {Card, CardsTypeImage,},
     }
 </script>
 
 <style>
-.cards_title-wrapper {
-  padding: 30px 20px;
-  text-align: center;
-} 
+    .cards_type-img-wrapper {
+        padding: 30px 20px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+        min-height: 188px;
+    } 
 
-.cards_title-wrapper h2 {
-  font-family: "Roboto", sans-serif;
-  color: #fff;
-  background: #A10000;
-  font-size: 2.2rem;
-  font-weight: normal;
-  padding: 10px 40px;
-  display: inline-block;
-  margin: 0;
-  line-height: 1;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
     @import url('/css/Cards/CardsMedia.css');
 </style>

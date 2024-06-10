@@ -1,7 +1,6 @@
 <template>
     <v-dialog 
     v-model="showDialog"
-    overlay-color="transparent"
     content-class="subpan-GPT-modal"
     width="477"
     >
@@ -65,12 +64,12 @@
 
     .subpan-GPT-modal {
         box-shadow: none !important;
-        font-family: 'Familjen Grotesk', sans-serif;
+        /* font-family: 'Familjen Grotesk', sans-serif; */
     }
 
     .subpan-GPT-text {
         font-weight: 500;
-        font-size: 16px;
+        font-size: 15px;
         line-height: 20px;
         vertical-align: middle;
     }
@@ -94,17 +93,21 @@
     .subpan-GPT-modal .v-card .subplan-GPT-header {
         background-color: #EFEFEF;
         gap: 53px;
-        padding: 7px 14px 5px;
+        padding: 16px 24px;
+        display: flex;
+        gap: 30px;
+        align-items: center;
     }
 
     .subpan-GPT-modal .subplan-GPT-title {
         color: #C80000;
         margin-bottom: 0;
         padding: 0;
+        font-size: 1.15rem;
     }
 
     .subpan-GPT-modal .subplan-GPT-input-wrapper {
-        padding: 0 15px;
+        padding: 0 24px;
         justify-content: space-between;
     }
 
@@ -125,9 +128,25 @@
     }
 
     .subpan-GPT-modal div[role="listitem"].subplan-gpt-subtasks-list-wrapper {
-        min-height: 135px;
-        padding: 9px 16px;
+        height: 350px;
+        padding: 16px 24px;
         align-items: flex-start;
+        box-sizing: border-box;
+        overflow: scroll;
+    }
+    
+    .subplan-gpt-subtasks-list-wrapper::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .subplan-gpt-subtasks-list-wrapper::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .subplan-gpt-subtasks-list-wrapper::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
     }
 
     .subpan-GPT-modal .subplan-gpt-subtasks-list {
@@ -146,7 +165,7 @@
     .subpan-GPT-modal div[role="listitem"].subplan-gpt-footer {
         min-height: 40px;
         background-color: #FAFAFA;
-        
+        padding: 16px 24px;
     }
 
     .subpan-GPT-modal .subplan-gpt-footer > .subplan-gpt-footer-inner {
@@ -164,6 +183,8 @@
         to {
             opacity: 1;
             max-height: 1200px;
-        }
-}
+        } 
+    }
+
+    @import url('/css/CreateSubplanGPT/CreateSubplanGPTMedia.css');
 </style>

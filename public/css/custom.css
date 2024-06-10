@@ -174,7 +174,7 @@ summary::after {
     -o-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
     transform-origin: bottom right;
-    z-index: 2;
+    z-index: 11;
 }
 
 .backlog-add-button:hover {
@@ -453,5 +453,23 @@ body {
     .feedback-button.aside-button-visible {
         right: 0;
         opacity: 1;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .personal-results-toggle {
+        position: static;
+    }
+
+    .personal-results-card-wrapper {
+        display: block;
+        width: 100%;
+        right: 0; left: 0;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .personal-results-card {
+        max-width: 90% !important;
     }
 }
