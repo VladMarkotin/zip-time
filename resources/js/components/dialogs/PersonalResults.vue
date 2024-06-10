@@ -38,7 +38,7 @@
               .then((response) => {
                   //this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
                   this.better_then = response.data.better
-                  this.more_pesponsible = response.data.more_pesponsible
+                  this.more_pesponsible = response.data.more_pesponsible.toFixed(2);
                   this.user_purposelness = response.data.user_purposelness
               })
           }
