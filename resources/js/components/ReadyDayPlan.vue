@@ -26,14 +26,14 @@
         <Challenges />
         <v-data-iterator hide-default-footer v-bind:items="data">
             <Cards
-                title="Required jobs and tasks:"
+                title="Required jobs and tasks"
                 v-if="isExistsRequiredTasks(data)"
                 v-bind:items="getRequiredTasks(data)"
                 :screenWidth = "screenWidth"
             />
             <v-divider></v-divider>
             <Cards
-                title="Non required jobs and tasks:"
+                title="Non required jobs and tasks"
                 v-if="isExistsNonRequiredTasks(data)"
                 v-bind:items="getNonRequiredTasks(data)"
                 :screenWidth = "screenWidth"
