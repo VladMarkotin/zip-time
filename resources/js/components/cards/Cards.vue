@@ -2,7 +2,8 @@
     <div>
         <div class="cards_type-img-wrapper">
             <CardsTypeImage 
-                :title="title"
+                :title       = "title"
+                :screenWidth = "screenWidth"
             />
             <!-- <v-tooltip right>
                 <template v-slot:activator="{on}">     
