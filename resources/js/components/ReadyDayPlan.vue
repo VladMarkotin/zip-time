@@ -253,4 +253,5 @@ export default {
     background-color: #a10000;
     color: white;
 }
+
 </style>
