@@ -33,7 +33,7 @@
             />
             <v-divider></v-divider>
             <Cards
-                title="Non required jobs tasks:"
+                title="Non required jobs and tasks:"
                 v-if="isExistsNonRequiredTasks(data)"
                 v-bind:items="getNonRequiredTasks(data)"
                 :screenWidth = "screenWidth"

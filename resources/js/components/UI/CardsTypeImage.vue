@@ -42,7 +42,7 @@
            const cardsTypeImageMap = new Map;
 
            cardsTypeImageMap.set('Required jobs and tasks:', '/images/cards_required_image.png')
-           cardsTypeImageMap.set('Non required jobs tasks:', '/images/cards_nonRequired_image.png')
+           cardsTypeImageMap.set('Non required jobs and tasks:', '/images/cards_nonRequired_image.png')
 
             return {
                 cardsTypeImageMap,
