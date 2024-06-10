@@ -21,7 +21,7 @@ class AutomaticEstimationHelper
                     SELECT u.id, '$date', -1, '00:00', 0, 0, 'It looks like the day was wasted :(', '', ''
                         FROM users u
                             LEFT JOIN timetables t ON u.id = t.user_id AND t.date = '$date'
-                                WHERE t.user_id IS NULL AND u.timezone IN( '$in')";
+                                WHERE t.user_id IS NULL AND u.timezone IN( $in)";
         
 
        DB::insert($query);
@@ -36,7 +36,7 @@ class AutomaticEstimationHelper
                     FROM timetables AS t
                         JOIN tasks t2 ON t.id = t2.timetable_id
                             JOIN users u ON t.user_id = u.id 
-                                WHERE t.day_status = 2 AND t2.mark = -1 AND t.date = '$date' AND t2.type IN (4, 2) AND u.timezone IN( '$in') ";
+                                WHERE t.day_status = 2 AND t2.mark = -1 AND t.date = '$date' AND t2.type IN (4, 2) AND u.timezone IN( $in) ";
         $userIds = DB::select($query);
         $userIdsAsArr = [];
         //Step 2: Update query for users with such id
@@ -62,7 +62,7 @@ class AutomaticEstimationHelper
                     FROM timetables AS t
                         JOIN tasks t2 ON t.id = t2.timetable_id
                             JOIN users u ON t.user_id = u.id 
-                                WHERE t.day_status = 1 AND u.timezone IN( '$in') AND t.date='$date' ";
+                                WHERE t.day_status = 1 AND u.timezone IN( $in) AND t.date='$date' ";
         $userIds = DB::select($query);
         $userIdsAsArr = [];
         //Step 2: Update query for users with such id
@@ -117,7 +117,7 @@ class AutomaticEstimationHelper
                 AND T.day_status IN (1, 2)
                 AND tasks.mark > -1
                 AND type = 3
-                AND U.timezone = 'Europe/Minsk'
+                AND U.timezone IN ($in)
                 GROUP BY tasks.timetable_id, U.id WITH ROLLUP
             ) AS t2
             WHERE non_required_final IS NOT NULL
@@ -182,7 +182,7 @@ class AutomaticEstimationHelper
         $timezones = self::getUniqueTimezones();
         foreach ($timezones as $timezone) {
             $time = GeneralHelper::getNow($timezone);    
-            if ($time->hour === 22) { //23 ВЕРНУТЬ!
+            if ($time->hour === 23) { //23 ВЕРНУТЬ!
                 array_push($currentTimezone, $time->getTimezone()->getName());   // if hour in that timezone == 23:59(end of day) push user to array
             }
         }
@@ -195,7 +195,7 @@ class AutomaticEstimationHelper
         return  User::distinct('timezone')->pluck('timezone'); // the unique timezones in database
     }
 
-    //----------------
+    //----------------DELETE----------
     private function createTempResultsTable()
     {
         DB::statement('DROP TABLE IF EXISTS temp_results');
