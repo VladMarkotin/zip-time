@@ -35,13 +35,13 @@ class EstimationRepository
         $dateTime = date("Y-m-d"). " 23:59:30";
         
         //Here I estimate lazy guys
-       // AutomaticEstimationHelper::estimateLazyGuysInTimezone(['Europe/Minsk']); //ok
+        AutomaticEstimationHelper::estimateLazyGuysInTimezone(['Europe/Minsk']); //ok
         
         //Here I estimate guys who didn`t complete all required job/tasks
-        //AutomaticEstimationHelper::estimateIrresponsibleGuysInTimezone(['Europe/Minsk']); //ok
+        AutomaticEstimationHelper::estimateIrresponsibleGuysInTimezone(['Europe/Minsk']); //ok
 
         //Here I estimate weekends guys
-        //AutomaticEstimationHelper::estimateWeekendUsersInTimezone();
+        AutomaticEstimationHelper::estimateWeekendUsersInTimezone();
         
         //And finally, estimation of responsible users
         AutomaticEstimationHelper::estimateUsersInCurrentTimezone();
