@@ -155,7 +155,7 @@
                                     this.isLoading = false
                             },3000)
                             console.log(response.data)
-                            this.subtasksFromChatGPT = []
+                            this.subtasksFromChatGPT = [];
                             if (response.data.length > 0) {
                                 response.data.map( (el, key) => {
                                     this.subtasksFromChatGPT.push(el)    
