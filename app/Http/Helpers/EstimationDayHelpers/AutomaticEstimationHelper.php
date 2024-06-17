@@ -15,22 +15,28 @@ class AutomaticEstimationHelper
     public static function estimateLazyGuysInTimezone($timezone = ['Europe/Minsk'])
     {
         $date  = GeneralHelper::getTodayDate();
-        $now   = GeneralHelper::getNow();
-        $in    = GeneralHelper::prepareSqlIn($timezone);
+        $timezones = AutomaticEstimationHelper::getTimezonesForEstimation(1);
+        if (!count($timezones)) {
+            return ;
+        }
+        $in    = GeneralHelper::prepareSqlIn($timezones);
         $query = "INSERT INTO timetables (user_id, date, day_status, time_of_day_plan, final_estimation, own_estimation, comment, necessary, for_tomorrow)
                     SELECT u.id, '$date', -1, '00:00', 0, 0, 'It looks like the day was wasted :(', '', ''
                         FROM users u
                             LEFT JOIN timetables t ON u.id = t.user_id AND t.date = '$date'
                                 WHERE t.user_id IS NULL AND u.timezone IN( $in)";
         
-
-       DB::insert($query);
+        DB::insert($query);
     }
 
     public static function estimateIrresponsibleGuysInTimezone($timezone = ['Europe/Minsk'])
     {
         $date = GeneralHelper::getTodayDate();
-        $in    = GeneralHelper::prepareSqlIn($timezone);
+        $timezones = AutomaticEstimationHelper::getTimezonesForEstimation(1);
+        if (!count($timezones)) {
+            return ;
+        }
+        $in    = GeneralHelper::prepareSqlIn($timezones);
         //1. Find such users
         $query = "SELECT DISTINCT t.user_id
                     FROM timetables AS t
@@ -56,7 +62,11 @@ class AutomaticEstimationHelper
     public static function estimateWeekendUsersInTimezone($timezone = ['Europe/Minsk'])
     {
         $date = GeneralHelper::getTodayDate();
-        $in   = GeneralHelper::prepareSqlIn($timezone);
+        $timezones = AutomaticEstimationHelper::getTimezonesForEstimation(1);
+        if (!count($timezones)) {
+            return ;
+        }
+        $in    = GeneralHelper::prepareSqlIn($timezones);
         //1. Find such users
         $query = "SELECT DISTINCT t.user_id
                     FROM timetables AS t
@@ -239,11 +249,8 @@ class AutomaticEstimationHelper
 
     private static function closeUsersPlans(array $data)
     {
-        Log::info('closeUsersPlans');
         $userCounter = 0;
         foreach ($data as $v) {
-            // Log::info(json_encode($v));
-            // die;
             if ( isset($v->id) ) {
                 //1. get current timetable id for this user
                 $timetableId = GeneralHelper::getCurrentTimetableId(['id' => $v->id]);
