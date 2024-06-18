@@ -71,7 +71,7 @@
                            :items="defaultSelected.hashCodes"
                            value="defaultSelected.hashCodes[0]"
                            v-model="defaultSelected.hash"
-                           @change="onChange"
+                           @change="onChange(defaultSelected.hash, true)"
                            required>
                         </v-select>
                      </v-col>    
@@ -407,7 +407,7 @@ export default {
          }
     },
     watch: {
-      day_status(status) {
+      day_status() {
       const { hash } = this.defaultSelected;
       this.onChange(hash); 
 
@@ -531,7 +531,7 @@ export default {
 
         },
 
-        onChange(code) {
+        onChange(code, isFocusedTaskNameInput = false) {
             let currentObj    = this;
             const isSavedTask = code !== '#';
 
@@ -563,10 +563,11 @@ export default {
                   currentObj.output = error;
                 })
                 .finally(() => {
-                  if (this.screenWidth >= 1024) {
+                  if (this.screenWidth >= 1024 && isFocusedTaskNameInput) {
                      this.isShowPressEntTooltip = true;
                   }
-                  this.$refs.taskNameInput.focus();
+                  
+                  if (isFocusedTaskNameInput) this.$refs.taskNameInput.focus();
                 })
         },
 
