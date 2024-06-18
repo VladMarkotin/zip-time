@@ -408,10 +408,40 @@ export default {
     },
     watch: {
       day_status(status) {
-         const {hash} = this.defaultSelected
-         this.onChange(hash);
-         console.log(this.items);
+      const { hash } = this.defaultSelected;
+      this.onChange(hash); 
+
+      this.items = this.items.map(async task => {
+         const { hash } = task;
+         const isSavedTask = hash !== '#';
+
+         if (!isSavedTask) {
+            const selectedTaskType = task.type;
+            const transformedTaskType = this.getWeekendTaskType(selectedTaskType);
+            
+            return { ...task, type: transformedTaskType};
+         }
+
+      try {
+         const response = await axios.post('/getSavedTask', { hash_code: hash });
+         const savedTaskType = response.data[2];
+         const transformedTaskType = this.day_status === 'Work Day'
+         ? savedTaskType
+         : this.getWeekendTaskType(savedTaskType);
+         
+         return { ...task, type: transformedTaskType};
+      } catch (error) {
+         console.error(error);
+         return task;
       }
+  });
+
+   Promise.all(this.items).then(updatedItems => {
+      this.items = updatedItems;
+   }).catch(error => {
+      console.error('Error processing tasks:', error); 
+   });
+}
     },
     computed : {
         taskTypes() {
@@ -519,7 +549,7 @@ export default {
                   currentObj.defaultSelected.type 
                      = currentObj.day_status === 'Work Day' 
                      ? type
-                     : currentObj.getWeekendTaskType(type, isSavedTask);
+                     : currentObj.getWeekendTaskType(type);
 
                   if (isSavedTask) {
                      currentObj.defaultSelected.taskName = getValue(1);
