@@ -13,6 +13,7 @@ class DataTransformationService
 {
     public function transformDataForWeekendRequest(array $data)
     {
+        
         $transformJobsToNonRequired  = function ($data){
              //working
             if($data['plan']){
@@ -20,8 +21,10 @@ class DataTransformationService
                     foreach ($val as $i => &$v){
                         if($i == 'type'){
                             //die(var_dump($val['type']));?? Why $val['type']
-                            ($val['type'] == 'required job')  ?: $v = 'non required job';
-                            ($val['type'] == 'required task') ?: $v = 'task';
+                            // ($v == 'required job')  ?: $v = 'non required job';
+                            // ($v == 'required task') ?: $v = 'task';
+                            $v == 'required job'  && $v = 'non required job';
+                            $v == 'required task' && $v = 'task';
                         }
                     }
                 }

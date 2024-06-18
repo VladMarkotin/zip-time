@@ -401,7 +401,7 @@ export default {
     computed : {
         taskTypes() {
             return this.
-               day_status == 'Weekend' ? ['non required job', 'task', 'reminder'] : ['required job', 'non required job', 'required task', 'task']
+               day_status == 'Weekend' ? ['non required job', 'task',] : ['required job', 'non required job', 'required task', 'task']
         },
 
         tooltipTypesData() {
