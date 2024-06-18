@@ -410,6 +410,7 @@ export default {
       day_status(status) {
          const {hash} = this.defaultSelected
          this.onChange(hash);
+         console.log(this.items);
       }
     },
     computed : {
@@ -501,25 +502,32 @@ export default {
         },
 
         onChange(code) {
-            let currentObj = this;
+            let currentObj    = this;
+            const isSavedTask = code !== '#';
 
             axios.post('/getSavedTask', {
                   hash_code: code
                })
                .then(function(response) {
-                  if (!response.data.length) return;
-                  currentObj.defaultSelected.taskName = response.data[1];
+                  
+                  const getValue = (idx) => response.data.length ? response.data[idx] : '';
 
-                  const type = response.data[2];
+                  const type = isSavedTask 
+                     ? getValue(2) 
+                     : currentObj.defaultSelected.type;
+                  
                   currentObj.defaultSelected.type 
                      = currentObj.day_status === 'Work Day' 
-                        ? type
-                        : currentObj.getWeekendTaskType(type);
-                  
-                  currentObj.defaultSelected.priority = `${response.data[3]}`;
-                  currentObj.defaultSelected.time = response.data[5];
-                  currentObj.defaultSelected.details = response.data[4];
-                  currentObj.defaultSelected.notes = response.data[6];
+                     ? type
+                     : currentObj.getWeekendTaskType(type, isSavedTask);
+
+                  if (isSavedTask) {
+                     currentObj.defaultSelected.taskName = getValue(1);
+                     currentObj.defaultSelected.priority = String(getValue(3));
+                     currentObj.defaultSelected.details = getValue(4);
+                     currentObj.defaultSelected.time = getValue(5);
+                     currentObj.defaultSelected.notes = getValue(6);
+                  }
                 })
                 .catch(function(error) {
                   currentObj.output = error;
