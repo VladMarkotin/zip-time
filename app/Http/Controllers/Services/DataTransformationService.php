@@ -23,8 +23,7 @@ class DataTransformationService
                             //die(var_dump($val['type']));?? Why $val['type']
                             // ($v == 'required job')  ?: $v = 'non required job';
                             // ($v == 'required task') ?: $v = 'task';
-                            $v == 'required job'  && $v = 'non required job';
-                            $v == 'required task' && $v = 'task';
+                            $v = 'task';
                         }
                     }
                 }

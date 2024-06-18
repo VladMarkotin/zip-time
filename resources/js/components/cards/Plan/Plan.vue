@@ -335,77 +335,70 @@ import { uuid } from 'vue-uuid';
 
 export default {
    components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip, CustomTimepicker},
-    data: () => {
-         const weekendTransformTypeMap = new Map;
-         weekendTransformTypeMap.set('required job', 'non required job');
-         weekendTransformTypeMap.set('non required job', 'non required job');
-         weekendTransformTypeMap.set('required task', 'task');
-         weekendTransformTypeMap.set('task', 'task');
-         return {
-            placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
-            showPlusIcon: 0,
-            readyTasks: [],
-            newHashCode: '#',
-            showIcon: 0,
-            day_status: 'Work Day',
-            menu: false/*for defaultSelected.time*/,
-            isShowEmergencyCallDialog : false,
-            defaultSelected: {
-                hash: '#',
-                hashCodes: [],
-                taskName: '',
-                time: '01:00',
-                type: 'required job',
-                priority: '1',
-                details: '',
-                notes: ''
-            },
-            preparedTask: {},
-            items: [],
-            icons: {
-                mdiAccount,
-                mdiPlex,
-                mdiPencil,
-                mdiStarThreePointsOutline,
-                mdiClockStart,
-                mdiAlarm,
-                mdiPlus,
-                mdiPlusBox,
-                mdiCancel,
-                mdiCarEmergency,
-            },
+    data: () => ({
+         placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
+         showPlusIcon: 0,
+         readyTasks: [],
+         newHashCode: '#',
+         showIcon: 0,
+         day_status: 'Work Day',
+         menu: false/*for defaultSelected.time*/,
+         isShowEmergencyCallDialog : false,
+         defaultSelected: {
+            hash: '#',
             hashCodes: [],
-            hashNames: '#',
-            taskPriority: ['1', '2', '3'],
-            dayStatuses: ['Work Day', 'Weekend'],
-            dayStatuses2: [
-             {
-                status: 'Work Day',
-                disable: false,
-             },
-              {
-                status: 'Weekend',
-                disable:false,
-              }
-             ],
-            time: '',
-            notes: '',
+            taskName: '',
+            time: '01:00',
+            type: 'required job',
+            priority: '1',
             details: '',
-            serverMessage: '',
-            showAlert: false,
-            alertType: 'success',
-            isShowAddHashCodeDialog: false,
-            dialogDelete: false,
-            isShowProgress: false,
-            value: 0,
-            interval: {},
-            closeAlertTime: 0,
-            showPreloaderInsteadTable: false,
-            screenWidth: window.innerWidth,
-            isShowPressEntTooltip: false,
-            weekendTransformTypeMap,
-         }
-    },
+            notes: ''
+         },
+         preparedTask: {},
+         items: [],
+         icons: {
+            mdiAccount,
+            mdiPlex,
+            mdiPencil,
+            mdiStarThreePointsOutline,
+            mdiClockStart,
+            mdiAlarm,
+            mdiPlus,
+            mdiPlusBox,
+            mdiCancel,
+            mdiCarEmergency,
+         },
+         hashCodes: [],
+         hashNames: '#',
+         taskPriority: ['1', '2', '3'],
+         dayStatuses: ['Work Day', 'Weekend'],
+         dayStatuses2: [
+            {
+               status: 'Work Day',
+               disable: false,
+            },
+            {
+            status: 'Weekend',
+            disable:false,
+            }
+         ],
+         time: '',
+         notes: '',
+         details: '',
+         serverMessage: '',
+         showAlert: false,
+         alertType: 'success',
+         isShowAddHashCodeDialog: false,
+         dialogDelete: false,
+         isShowProgress: false,
+         value: 0,
+         interval: {},
+         closeAlertTime: 0,
+         showPreloaderInsteadTable: false,
+         screenWidth: window.innerWidth,
+         isShowPressEntTooltip: false,
+         WEEKEND_TASK_TYPE: 'task',
+    }),
     watch: {
       day_status() {
       const { hash } = this.defaultSelected;
@@ -415,19 +408,16 @@ export default {
          const { hash } = task;
          const isSavedTask = hash !== '#';
 
-         if (!isSavedTask) {
-            const selectedTaskType = task.type;
-            const transformedTaskType = this.getWeekendTaskType(selectedTaskType);
-            
-            return { ...task, type: transformedTaskType};
+         if (!isSavedTask) {            
+            return { ...task, type: this.WEEKEND_TASK_TYPE};
          }
 
       try {
          const response = await axios.post('/getSavedTask', { hash_code: hash });
          const savedTaskType = response.data[2];
          const transformedTaskType = this.day_status === 'Work Day'
-         ? savedTaskType
-         : this.getWeekendTaskType(savedTaskType);
+            ? savedTaskType
+            : this.WEEKEND_TASK_TYPE;
          
          return { ...task, type: transformedTaskType};
       } catch (error) {
@@ -446,7 +436,7 @@ export default {
     computed : {
         taskTypes() {
             return this.
-               day_status == 'Weekend' ? ['non required job', 'task',] : ['required job', 'non required job', 'required task', 'task']
+               day_status == 'Weekend' ? ['task',] : ['required job', 'non required job', 'required task', 'task']
         },
 
         tooltipTypesData() {
@@ -531,66 +521,42 @@ export default {
 
         },
 
-        onChange(code, isFocusedTaskNameInput = false) {
-            let currentObj    = this;
-            const isSavedTask = code !== '#';
+        async onChange(code, isFocusedTaskNameInput = false) {
+         try {
+               const currentObj = this;
+               const isSavedTask = code !== '#';
 
-            axios.post('/getSavedTask', {
-                  hash_code: code
-               })
-               .then(function(response) {
-                  
-                  const getValue = (idx) => response.data.length ? response.data[idx] : '';
+               // Функция для получения значения из ответа
+               const getValue = (response, idx) => response.data.length ? response.data[idx] : '';
 
-                  const type = isSavedTask 
-                     ? getValue(2) 
-                     : currentObj.defaultSelected.type;
-                  
-                  currentObj.defaultSelected.type 
-                     = currentObj.day_status === 'Work Day' 
-                     ? type
-                     : currentObj.getWeekendTaskType(type);
+               const response = await axios.post('/getSavedTask', { hash_code: code });
+               //Значение по умолчанию в инпуте с типом таски в зависимости от статуса дня
+               const defaultTaskType = currentObj.day_status === 'Work Day' ? 'required job' : 'task';
+               //Если задача сохранена то инициализирую ее типом, а если нет, то типом по умолчанию
+               const type = isSavedTask ? getValue(response, 2) : defaultTaskType;
+               //В выходной день тип все будет 'task'
+               const selectedType = currentObj.day_status === 'Work Day' ? type : currentObj.WEEKEND_TASK_TYPE;
 
-                  if (isSavedTask) {
-                     currentObj.defaultSelected.taskName = getValue(1);
-                     currentObj.defaultSelected.priority = String(getValue(3));
-                     currentObj.defaultSelected.details = getValue(4);
-                     currentObj.defaultSelected.time = getValue(5);
-                     currentObj.defaultSelected.notes = getValue(6);
-                  }
-                })
-                .catch(function(error) {
-                  currentObj.output = error;
-                })
-                .finally(() => {
-                  if (this.screenWidth >= 1024 && isFocusedTaskNameInput) {
+               currentObj.defaultSelected.type = selectedType;
+
+               if (isSavedTask) {
+                     currentObj.defaultSelected.taskName = getValue(response, 1);
+                     currentObj.defaultSelected.priority = String(getValue(response, 3));
+                     currentObj.defaultSelected.details = getValue(response, 4);
+                     currentObj.defaultSelected.time = getValue(response, 5);
+                     currentObj.defaultSelected.notes = getValue(response, 6);
+               }
+
+               if (this.screenWidth >= 1024 && isFocusedTaskNameInput) {
                      this.isShowPressEntTooltip = true;
-                  }
-                  
-                  if (isFocusedTaskNameInput) this.$refs.taskNameInput.focus();
-                })
-        },
+               }
 
-         onChangeForPresentation(event) {
-            const currentObj = this;
-
-            return new Promise((resolve, reject) => {
-               axios.post('/getSavedTask', {
-                  hash_code: event
-               })
-               .then(function(response) {
-                  currentObj.defaultSelected.taskName = response.data[1];
-                  currentObj.defaultSelected.type = response.data[2];
-                  currentObj.defaultSelected.priority = `${response.data[3]}`;
-                  currentObj.defaultSelected.time = response.data[5];
-                  currentObj.defaultSelected.details = response.data[4];
-                  currentObj.defaultSelected.notes = response.data[6];
-                  resolve();
-                })
-                .catch(function(error) {
-                    currentObj.output = error;
-                });
-            });
+               if (isFocusedTaskNameInput) {
+                     this.$refs.taskNameInput.focus();
+               }
+            } catch (error) {
+               this.output = error;
+            }
         },
 
         checkDefaultSelected() {
@@ -743,10 +709,6 @@ export default {
       updateScreenWidth() {
          this.screenWidth = window.innerWidth;
       },
-
-      getWeekendTaskType(type) {
-         return this.weekendTransformTypeMap.get(type);
-      }
     },
     created() {
         let currentObj = this;
