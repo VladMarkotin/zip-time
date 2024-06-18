@@ -404,7 +404,7 @@ export default {
       const { hash } = this.defaultSelected;
       this.onChange(hash); 
 
-      this.items = this.items.map(async task => {
+      const tasksForTheDay = this.items.map(async task => {
          const { hash } = task;
          const isSavedTask = hash !== '#';
 
@@ -426,7 +426,7 @@ export default {
       }
   });
 
-   Promise.all(this.items).then(updatedItems => {
+   Promise.all(tasksForTheDay).then(updatedItems => {
       this.items = updatedItems;
    }).catch(error => {
       console.error('Error processing tasks:', error); 
