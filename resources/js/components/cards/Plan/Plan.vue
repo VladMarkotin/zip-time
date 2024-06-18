@@ -335,69 +335,83 @@ import { uuid } from 'vue-uuid';
 
 export default {
    components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip, CustomTimepicker},
-    data: () => ({
-        placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
-        showPlusIcon: 0,
-        readyTasks: [],
-        newHashCode: '#',
-        showIcon: 0,
-        day_status: 'Work Day',
-        menu: false/*for defaultSelected.time*/,
-        isShowEmergencyCallDialog : false,
-        defaultSelected: {
-            hash: '#',
+    data: () => {
+         const weekendTransformTypeMap = new Map;
+         weekendTransformTypeMap.set('required job', 'non required job');
+         weekendTransformTypeMap.set('non required job', 'non required job');
+         weekendTransformTypeMap.set('required task', 'task');
+         weekendTransformTypeMap.set('task', 'task');
+         return {
+            placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
+            showPlusIcon: 0,
+            readyTasks: [],
+            newHashCode: '#',
+            showIcon: 0,
+            day_status: 'Work Day',
+            menu: false/*for defaultSelected.time*/,
+            isShowEmergencyCallDialog : false,
+            defaultSelected: {
+                hash: '#',
+                hashCodes: [],
+                taskName: '',
+                time: '01:00',
+                type: 'required job',
+                priority: '1',
+                details: '',
+                notes: ''
+            },
+            preparedTask: {},
+            items: [],
+            icons: {
+                mdiAccount,
+                mdiPlex,
+                mdiPencil,
+                mdiStarThreePointsOutline,
+                mdiClockStart,
+                mdiAlarm,
+                mdiPlus,
+                mdiPlusBox,
+                mdiCancel,
+                mdiCarEmergency,
+            },
             hashCodes: [],
-            taskName: '',
-            time: '01:00',
-            type: 'required job',
-            priority: '1',
+            hashNames: '#',
+            taskPriority: ['1', '2', '3'],
+            dayStatuses: ['Work Day', 'Weekend'],
+            dayStatuses2: [
+             {
+                status: 'Work Day',
+                disable: false,
+             },
+              {
+                status: 'Weekend',
+                disable:false,
+              }
+             ],
+            time: '',
+            notes: '',
             details: '',
-            notes: ''
-        },
-        preparedTask: {},
-        items: [],
-        icons: {
-            mdiAccount,
-            mdiPlex,
-            mdiPencil,
-            mdiStarThreePointsOutline,
-            mdiClockStart,
-            mdiAlarm,
-            mdiPlus,
-            mdiPlusBox,
-            mdiCancel,
-            mdiCarEmergency,
-        },
-        hashCodes: [],
-        hashNames: '#',
-        taskPriority: ['1', '2', '3'],
-        dayStatuses: ['Work Day', 'Weekend'],
-        dayStatuses2: [
-         {
-            status: 'Work Day',
-            disable: false,
-         },
-          {
-            status: 'Weekend',
-            disable:false,
-          }
-         ],
-        time: '',
-        notes: '',
-        details: '',
-        serverMessage: '',
-        showAlert: false,
-        alertType: 'success',
-        isShowAddHashCodeDialog: false,
-        dialogDelete: false,
-        isShowProgress: false,
-        value: 0,
-        interval: {},
-        closeAlertTime: 0,
-        showPreloaderInsteadTable: false,
-        screenWidth: window.innerWidth,
-        isShowPressEntTooltip: false,
-    }),
+            serverMessage: '',
+            showAlert: false,
+            alertType: 'success',
+            isShowAddHashCodeDialog: false,
+            dialogDelete: false,
+            isShowProgress: false,
+            value: 0,
+            interval: {},
+            closeAlertTime: 0,
+            showPreloaderInsteadTable: false,
+            screenWidth: window.innerWidth,
+            isShowPressEntTooltip: false,
+            weekendTransformTypeMap,
+         }
+    },
+    watch: {
+      day_status(status) {
+         const {hash} = this.defaultSelected
+         this.onChange(hash);
+      }
+    },
     computed : {
         taskTypes() {
             return this.
@@ -486,15 +500,22 @@ export default {
 
         },
 
-        onChange(event) {
+        onChange(code) {
             let currentObj = this;
 
             axios.post('/getSavedTask', {
-                  hash_code: event
+                  hash_code: code
                })
                .then(function(response) {
+                  if (!response.data.length) return;
                   currentObj.defaultSelected.taskName = response.data[1];
-                  currentObj.defaultSelected.type = response.data[2];
+
+                  const type = response.data[2];
+                  currentObj.defaultSelected.type 
+                     = currentObj.day_status === 'Work Day' 
+                        ? type
+                        : currentObj.getWeekendTaskType(type);
+                  
                   currentObj.defaultSelected.priority = `${response.data[3]}`;
                   currentObj.defaultSelected.time = response.data[5];
                   currentObj.defaultSelected.details = response.data[4];
@@ -682,6 +703,10 @@ export default {
 
       updateScreenWidth() {
          this.screenWidth = window.innerWidth;
+      },
+
+      getWeekendTaskType(type) {
+         return this.weekendTransformTypeMap.get(type);
       }
     },
     created() {
