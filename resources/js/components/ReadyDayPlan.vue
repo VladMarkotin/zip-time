@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Firework />
         <template v-if="isShowAddJobTaskDialog">
             <AddJobTask
                 v-on:setAlertData="setAlertData"
@@ -84,11 +85,12 @@ import CloseDay from "./dialogs/CloseDay.vue";
 import Cards from "./cards/Cards.vue";
 import EmergencyCall from "./dialogs/EmergencyCall.vue";
 import Challenges from "./challenges/Challenges.vue";
+import Firework from "./UI/Firework.vue";
 import { mdiCarEmergency, mdiPlusBox, mdiSendClock } from "@mdi/js";
 import "intro.js/introjs.css";
 
 export default {
-    components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall, Challenges },
+    components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall, Challenges, Firework },
     props: ["data"],
     data() {
         return {
