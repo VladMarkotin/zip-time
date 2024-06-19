@@ -556,6 +556,7 @@ export default {
                      this.$refs.taskNameInput.focus();
                }
             } catch (error) {
+               console.log('+++');
                this.output = error;
             }
         },
