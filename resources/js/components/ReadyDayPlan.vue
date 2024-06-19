@@ -106,7 +106,7 @@ export default {
 
             alert: { type: "", text: "" },
             screenWidth: window.innerWidth,
-            isShowFirework: true,
+            isShowFirework: false,
         };
     },
     computed: {
