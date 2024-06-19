@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Firework />
         <template v-if="isShowAddJobTaskDialog">
             <AddJobTask
                 v-on:setAlertData="setAlertData"
@@ -10,7 +9,10 @@
         </template>
         <div class="card-demo"></div>
         <template v-if="isShowCloseDayDialog">
-            <CloseDay v-on:toggleCloseDayDialog="toggleCloseDayDialog" />
+            <CloseDay 
+                v-on:toggleCloseDayDialog = "toggleCloseDayDialog" 
+                @showFirework             = "isShowFirework = true"
+                />
         </template>
         <template v-if="isShowEmergencyCallDialog">
             <EmergencyCall
@@ -76,6 +78,7 @@
                 <span>Emergency mode</span>
             </v-tooltip>
         </div>
+        <Firework v-if="isShowFirework"/>
     </div>
 </template>
 <script>
@@ -103,6 +106,7 @@ export default {
 
             alert: { type: "", text: "" },
             screenWidth: window.innerWidth,
+            isShowFirework: true,
         };
     },
     computed: {
