@@ -413,7 +413,7 @@ export default {
          }
 
       try {
-         const response = await axios.post('/getSavedTaskByHashCode', { hash_code: hash });
+         const response = await axios.post('/getSavedTask', { hash_code: hash });
          const savedTaskType = response.data.type;
          const transformedTaskType = this.day_status === 'Work Day'
             ? savedTaskType
@@ -527,7 +527,7 @@ export default {
                const isSavedTask = code !== '#';
 
                const getData = (response) => (key) => response.data[key];
-               const response = await axios.post('/getSavedTaskByHashCode', { hash_code: code });
+               const response = await axios.post('/getSavedTask', { hash_code: code });
                // Функция для получения значения из ответа
                const getValue = getData(response);
 
@@ -763,19 +763,20 @@ export default {
          .then(function(response) {
             if(response){
                for(let i = 0; i < response.data.length; i++){
-                  for(let j = 0; j < response.data[i].length; j++){
-                     currentObj.preparedTask.hash = response.data[i][0].hash_code;
-                     currentObj.preparedTask.taskName = response.data[i][0].task_name;
-                     currentObj.preparedTask.type = response.data[i][0].type;//['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
-                     currentObj.preparedTask.priority = `${response.data[i][0].priority}`;
-                     currentObj.preparedTask.time = response.data[i][0].time;
-                     currentObj.preparedTask.details = response.data[i][0].details;
-                     currentObj.preparedTask.notes = response.data[i][0].note;
-                     currentObj.preparedTask.uniqKey = currentObj.generateUniqKey();
-                     
-                     currentObj.items.push(currentObj.preparedTask);
-                     currentObj.preparedTask = {};
-                  }
+                  const currentIterableTask = response.data[i];
+
+                  currentObj.preparedTask.hash = currentIterableTask.hash_code;
+                  currentObj.preparedTask.taskName = currentIterableTask.task_name;
+                  currentObj.preparedTask.type = currentIterableTask.type;//['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
+                  currentObj.preparedTask.priority = String(currentIterableTask.priority);
+                  currentObj.preparedTask.time = currentIterableTask.time;
+                  currentObj.preparedTask.details = currentIterableTask.details;
+                  currentObj.preparedTask.notes = currentIterableTask.note;
+                  currentObj.preparedTask.uniqKey = currentObj.generateUniqKey();
+                  
+                  
+                  currentObj.items.push(currentObj.preparedTask);
+                  currentObj.preparedTask = {};
                }
             }
          })

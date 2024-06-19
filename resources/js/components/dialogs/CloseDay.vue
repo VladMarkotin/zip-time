@@ -123,6 +123,7 @@
 						this.isShowAlert = true;
 						this.setAlertData(response.data.status, response.data.message)
 						if(response.data.status != "error"){
+							this.$emit('showFirework');
 							this.isShowProgress = true;
 							this.interval = setInterval(() => {
 							if (this.value === 100) {
@@ -135,7 +136,7 @@
 									this.isShowAlert    = false;
 									this.isShowProgress = false;
 									this.toggle()
-									//document.location.reload();
+									document.location.reload();
 							},5000)
 					    }else{
 							setTimeout( () => {
