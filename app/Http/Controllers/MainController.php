@@ -224,14 +224,9 @@ class MainController
             $params['id'] = Auth::id();
             $params['hash_code'] = $hash_code;
             $savedTask = $this->savedTaskRepository->getSavedTaskByHashCode($params);
-            foreach ($savedTask as $val){
-                foreach ($val as $i => $v){
-                    $finalResult[] = $val->$i;
-                }
-            }
         }
 
-        return response()->json($finalResult);//
+        return response()->json($savedTask);
     }
 
     private function getSavedTasksByHashCode(array $hashCodes)
