@@ -413,8 +413,8 @@ export default {
          }
 
       try {
-         const response = await axios.post('/getSavedTask', { hash_code: hash });
-         const savedTaskType = response.data[2];
+         const response = await axios.post('/getSavedTaskByHashCode', { hash_code: hash });
+         const savedTaskType = response.data.type;
          const transformedTaskType = this.day_status === 'Work Day'
             ? savedTaskType
             : this.WEEKEND_TASK_TYPE;
@@ -526,25 +526,26 @@ export default {
                const currentObj = this;
                const isSavedTask = code !== '#';
 
+               const getData = (response) => (key) => response.data[key];
+               const response = await axios.post('/getSavedTaskByHashCode', { hash_code: code });
                // Функция для получения значения из ответа
-               const getValue = (response, idx) => response.data.length ? response.data[idx] : '';
+               const getValue = getData(response);
 
-               const response = await axios.post('/getSavedTask', { hash_code: code });
                //Значение по умолчанию в инпуте с типом таски в зависимости от статуса дня
                const defaultTaskType = currentObj.day_status === 'Work Day' ? 'required job' : 'task';
                //Если задача сохранена то инициализирую ее типом, а если нет, то типом по умолчанию
-               const type = isSavedTask ? getValue(response, 2) : defaultTaskType;
+               const type = isSavedTask ? getValue('type') : defaultTaskType;
                //В выходной день тип все будет 'task'
                const selectedType = currentObj.day_status === 'Work Day' ? type : currentObj.WEEKEND_TASK_TYPE;
 
                currentObj.defaultSelected.type = selectedType;
 
                if (isSavedTask) {
-                     currentObj.defaultSelected.taskName = getValue(response, 1);
-                     currentObj.defaultSelected.priority = String(getValue(response, 3));
-                     currentObj.defaultSelected.details = getValue(response, 4);
-                     currentObj.defaultSelected.time = getValue(response, 5);
-                     currentObj.defaultSelected.notes = getValue(response, 6);
+                     currentObj.defaultSelected.taskName = getValue('task_name');
+                     currentObj.defaultSelected.priority = String(getValue('priority'));
+                     currentObj.defaultSelected.details = getValue('details');
+                     currentObj.defaultSelected.time = getValue('time');
+                     currentObj.defaultSelected.notes = getValue('note');
                }
 
                if (this.screenWidth >= 1024 && isFocusedTaskNameInput) {
