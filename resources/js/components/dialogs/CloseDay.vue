@@ -226,6 +226,7 @@
 									side: 'right',
 								},
 							},
+							
 							{
 								element: '#close-day_tomorrow-plan',
 								popover: {
