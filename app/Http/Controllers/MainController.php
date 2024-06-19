@@ -434,6 +434,11 @@ class MainController
                 $preparedPlan = explode(';', $preparedPlan);
                 $preparedTasks = $this->getSavedTasksByHashCode($preparedPlan);
                 
+                $preparedTasks = array_values(
+                    array_filter($preparedTasks, function($task) {
+                        return !empty((array) $task);
+                    })
+                );
                 return ($preparedTasks);
             }
 

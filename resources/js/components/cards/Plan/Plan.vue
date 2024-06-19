@@ -762,8 +762,10 @@ export default {
          axios.post('/getPreparedPlan')
          .then(function(response) {
             if(response){
+               console.log(response);
                for(let i = 0; i < response.data.length; i++){
                   const currentIterableTask = response.data[i];
+                  if (Object.keys(currentIterableTask).length === 0) continue;
 
                   currentObj.preparedTask.hash = currentIterableTask.hash_code;
                   currentObj.preparedTask.taskName = currentIterableTask.task_name;
