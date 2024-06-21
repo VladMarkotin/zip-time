@@ -326,10 +326,7 @@
 					if (response.status == 'success')
 					{
 						console.log(response);
-						this.
-						$root.
-						currComponentProps.
-						push
+						this.$root.currComponentProps.plan.push
 							(
 								{
 									hash : this.task.hashCode,
