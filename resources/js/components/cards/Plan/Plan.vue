@@ -397,7 +397,8 @@ export default {
          showPreloaderInsteadTable: false,
          screenWidth: window.innerWidth,
          isShowPressEntTooltip: false,
-         WEEKEND_TASK_TYPE: 'task',
+         WEEKEND_DEFAULT_TASK_TYPE: 'task',
+         WORKING_DAY_DEFAULT_TASK_TYPE: 'required job',
     }),
     watch: {
       day_status() {
@@ -409,7 +410,7 @@ export default {
          const isSavedTask = hash !== '#';
 
          if (!isSavedTask) {            
-            return { ...task, type: this.WEEKEND_TASK_TYPE};
+            return { ...task, type: this.WEEKEND_DEFAULT_TASK_TYPE};
          }
 
       try {
@@ -417,7 +418,7 @@ export default {
          const savedTaskType = response.data.type;
          const transformedTaskType = this.day_status === 'Work Day'
             ? savedTaskType
-            : this.WEEKEND_TASK_TYPE;
+            : this.WEEKEND_DEFAULT_TASK_TYPE;
          
          return { ...task, type: transformedTaskType};
       } catch (error) {
@@ -435,8 +436,9 @@ export default {
     },
     computed : {
         taskTypes() {
-            return this.
-               day_status == 'Weekend' ? ['task',] : ['required job', 'non required job', 'required task', 'task']
+            return this.isTodayAWeekend 
+               ? [this.WEEKEND_DEFAULT_TASK_TYPE] 
+               : ['required job', 'non required job', 'required task', 'task']
         },
 
         tooltipTypesData() {
@@ -454,9 +456,9 @@ export default {
                   task: `<span style="text-indent: -1em; padding-left: 1em;">Anything that\`s not so important and hard to evaluate but necessary personally for you ( e.g. “night out with friends” )</span>`,
                },
             }
-        },
+         },
 
-        tooltipPrioritiesData() {
+         tooltipPrioritiesData() {
             return {
                titles: {
                   '1' : 'usual',
@@ -464,22 +466,30 @@ export default {
                   '3' : 'extremly imortant',
                }
             }
-        },
+         },
 
-        taskCounter() {
+         taskCounter() {
             const tasksQuantity = this.items.length;
 
             return `There ${tasksQuantity > 1 ? 'are' : 'is'} ${tasksQuantity} ${tasksQuantity > 1 ? 'tasks' : 'task'} in your day plan`
-        }
+         },
+
+         isTodayAWeekend() {
+				return this.day_status == 'Weekend';
+		   },
+
+         currentDayDefaultTaskType() {
+            return this.isTodayAWeekend ? this.WEEKEND_DEFAULT_TASK_TYPE : this.WORKING_DAY_DEFAULT_TASK_TYPE;
+         },
     },
     methods: {
 
       clearCurrentHashCode(){
-					this.defaultSelected.hash = '#'
-					this.defaultSelected.taskName = ''
-					this.defaultSelected.type = 'required job'
-					this.defaultSelected.priority = '1'
-					this.defaultSelected.time = '01:00'
+			this.defaultSelected.hash = '#'
+			this.defaultSelected.taskName = ''
+			this.defaultSelected.type = this.currentDayDefaultTaskType;
+			this.defaultSelected.priority = '1'
+			this.defaultSelected.time = '01:00'
 		},
        
         getPostParams() {
@@ -532,11 +542,11 @@ export default {
                const getValue = getData(response);
 
                //Значение по умолчанию в инпуте с типом таски в зависимости от статуса дня
-               const defaultTaskType = currentObj.day_status === 'Work Day' ? 'required job' : 'task';
+               const defaultTaskType = this.currentDayDefaultTaskType;
                //Если задача сохранена то инициализирую ее типом, а если нет, то типом по умолчанию
                const type = isSavedTask ? getValue('type') : defaultTaskType;
                //В выходной день тип все будет 'task'
-               const selectedType = currentObj.day_status === 'Work Day' ? type : currentObj.WEEKEND_TASK_TYPE;
+               const selectedType = currentObj.day_status === 'Work Day' ? type : currentObj.WEEKEND_DEFAULT_TASK_TYPE;
 
                currentObj.defaultSelected.type = selectedType;
 
@@ -556,7 +566,6 @@ export default {
                      this.$refs.taskNameInput.focus();
                }
             } catch (error) {
-               console.log('+++');
                this.output = error;
             }
         },
@@ -614,12 +623,13 @@ export default {
 
          this.items.push({...this.defaultSelected, uniqKey: this.generateUniqKey()});
          this.showIcon = 0;
+         const self = this;
          this.defaultSelected = {
                 hashCodes: this.defaultSelected.hashCodes,
                 hash: '#',
                 taskName: '',
                 time: '01:00',
-                type: this.day_status == 'Weekend' ? 'non required job' : 'required job',
+                type: self.currentDayDefaultTaskType,
                 priority: '1',
                 details: '',
                 notes: ''
@@ -745,7 +755,7 @@ export default {
                     //hash_code: event
          })
          .then(function(response) {
-                  console.log(response)
+                  // console.log(response)
          })
          .catch(function(error) {
                     currentObj.output = error;
@@ -762,7 +772,6 @@ export default {
          axios.post('/getPreparedPlan')
          .then(function(response) {
             if(response){
-               console.log(response);
                for(let i = 0; i < response.data.length; i++){
                   const currentIterableTask = response.data[i];
                   if (Object.keys(currentIterableTask).length === 0) continue;

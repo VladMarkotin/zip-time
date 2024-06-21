@@ -162,6 +162,11 @@
 	export default
 		{
 			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, VSelectTooptip, CustomTimepicker},
+			props: {
+				dayStatus: {
+					type: Number,
+				},
+			},
 			data()
 			{
 				return {
@@ -182,7 +187,6 @@
 							time : '',
 						},
 						hashCodes : [],
-						types : ['required job','non required job','required task','task'],
 						priorities : [1,2,3],
 						menu : false/*for task.time*/,
 						icons : {mdiPlusBox,mdiClockTimeFourOutline},
@@ -190,6 +194,8 @@
 						isShow : true,
 						isShowAddHashCodeDialog : false,
 						isChangedHashCodeTemplate: false,
+						WEEKEND_DEFAULT_TASK_TYPE: 'task',
+						WORKING_DAY_DEFAULT_TASK_TYPE: 'required job',
 					}
 			},
 			computed: {
@@ -218,20 +224,32 @@
 							'3' : 'extremly imortant',
 						}
 					}
-        		}
+        		},
+
+				isTodayAWeekend() {
+					return this.dayStatus === 1;
+				},
+
+				types() {
+					return !this.isTodayAWeekend 
+						? ['required job','non required job','required task','task']
+						: [this.WEEKEND_DEFAULT_TASK_TYPE];
+				},
 			},
 			methods :
 			{
 				clearCurrentHashCode(){
+					const self = this;
+
 					this.task = {
-								hashCode : '#',
-								name : '',
-								type : 'required job',
-								priority : 1,
-								time : '01:00',
-								details: '',
-								notes: '',
-							};
+						hashCode : '#',
+						name : '',
+						type : self.isTodayAWeekend ? self.WEEKEND_DEFAULT_TASK_TYPE : self.WORKING_DAY_DEFAULT_TASK_TYPE,
+						priority : 1,
+						time : '01:00',
+						details: '',
+						notes: '',
+					};
 					
 					this.savedTaskTemplate = {
 						hashCode : '#',
@@ -252,7 +270,9 @@
 						
 						this.savedTaskTemplate.hashCode = hashCode;
 						this.savedTaskTemplate.name = this.task.name = getValue('task_name');
-						this.savedTaskTemplate.type = this.task.type = getValue('type');
+						this.savedTaskTemplate.type = this.task.type = this.isTodayAWeekend 
+																	 ? this.WEEKEND_DEFAULT_TASK_TYPE 
+																	 : getValue('type');
 						this.savedTaskTemplate.priority = this.task.priority = getValue('priority');
 						this.savedTaskTemplate.time = this.task.time = getValue('time');
 					} catch(error) {
@@ -305,6 +325,7 @@
 						).data
 					if (response.status == 'success')
 					{
+						console.log(response);
 						this.
 						$root.
 						currComponentProps.
@@ -365,7 +386,7 @@
 			async created()
 			{
 				this.loadHashCodes()
-			}
+			},
 		}
 </script>
 
