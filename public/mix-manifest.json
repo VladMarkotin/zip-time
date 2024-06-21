@@ -12,6 +12,7 @@
     "/css/indexPage/indexPageMedia.css": "/css/indexPage/indexPageMedia.css",
     "/css/indexPage/indexPage.css": "/css/indexPage/indexPage.css",
     "/css/Stat/StatMedia.css": "/css/Stat/StatMedia.css",
+    "/css/CreateSubplanGPT/CreateSubplanGPTMedia.css": "/css/CreateSubplanGPT/CreateSubplanGPTMedia.css",
     "/css/History/HistoryMedia.css": "/css/History/HistoryMedia.css",
     "/css/ClosedReadyDayPlan/ClosedReadyDayPlanMedia.css": "/css/ClosedReadyDayPlan/ClosedReadyDayPlanMedia.css",
     "/css/backlogPage/backlogMedia.css": "/css/backlogPage/backlogMedia.css",

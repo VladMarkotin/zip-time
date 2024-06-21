@@ -3,15 +3,28 @@ namespace App\Http\Controllers\Services\PersonalResultServices\traits;
 
 
 use App\Models\User;
+use DB;
+use Illuminate\Support\Facades\Log;
+use Auth;
 
 trait UserGroupTrait
 {
     public static function countUsersInGroupToday($data, $config)
     {
        $group = self::defineRateGroup($data, $config);
-       $result = User::whereBetween('rating', [$group->from, $group->to])->count();
+       if (isset($group->from) && isset($group->to)) {
+           $result = User::whereBetween('rating', [$group->from, $group->to])->count();
+       } else {
+         //find max rating
+         $result = User::where('rating', '>', 3200)
+            ->where('rating', '<=', DB::table('users')->max('rating'))
+            ->count();
+            //find amount of users between users rating and max rating
+            // Log::info(json_encode($group));
+            // die;
+       }
        
-       return ['quantityInGroup' => $result - 1, 'group' => $group];//except the user   
+       return ['quantityInGroup' => $result, 'group' => $group];//except the user   
     }
     
      static function defineRateGroup($data, $config) {
