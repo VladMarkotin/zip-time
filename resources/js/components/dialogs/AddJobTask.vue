@@ -244,13 +244,20 @@
 
 				async hashCodeChangeHandler(hashCode)
 				{	
-					const data = (await axios.post('/getSavedTask',{hash_code : hashCode})).data
-					this.savedTaskTemplate.hashCode = hashCode;
-					this.savedTaskTemplate.name = this.task.name = data[1];
-					const types = this.types.slice()
-					this.savedTaskTemplate.type = this.task.type = data[2]; //types.reverse()[data[2]]
-					this.savedTaskTemplate.priority = this.task.priority = data[3];
-					this.savedTaskTemplate.time = this.task.time = data[5];
+					try {
+						const getData = (response) => (key) => response.data[key];
+						
+						const response = (await axios.post('/getSavedTask',{hash_code : hashCode}));
+						const getValue = getData(response);
+						
+						this.savedTaskTemplate.hashCode = hashCode;
+						this.savedTaskTemplate.name = this.task.name = getValue('task_name');
+						this.savedTaskTemplate.type = this.task.type = getValue('type');
+						this.savedTaskTemplate.priority = this.task.priority = getValue('priority');
+						this.savedTaskTemplate.time = this.task.time = getValue('time');
+					} catch(error) {
+						console.error(error);
+					}
 
 					this.isChangedHashCodeTemplate = false;
 				},
