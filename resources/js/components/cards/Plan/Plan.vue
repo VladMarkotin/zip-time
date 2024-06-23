@@ -404,7 +404,8 @@ export default {
             isDefaultSAvedTaskSelected: false,
             defaultSavedTasks: [],
             selectedSavedTaskId: null,
-         }
+         },
+         addTaskToPlanWithoutConfirmation: false,
     }),
     watch: {
       day_status() {
@@ -439,7 +440,8 @@ export default {
             console.error('Error processing tasks:', error); 
          });
       },
-
+      //Каждый раз когда пользователь меняет выбранный хешкод на фронте вызывается функция, 
+      //которая проверяет не выбрана ли Дефолтная таска и если выбрана она, то подготавлияет параметра для запроса на бэкэнд (id дефолтной задачи)
       'defaultSelected.hash'(selectedHashCode) {
 
          const defaultSavedTaskData = this.defaultSavedTaskData;
@@ -636,9 +638,11 @@ export default {
         },
 
         addTask() {
-
+         // если пользователь пытается добавить в план дефолтную таску, то ему необходио сделать ее сохраненной
          if (this.isDefaultSavedTaskSelected) {
-            this.isShowAddHashCodeDialog = true;
+            this.isShowAddHashCodeDialog          = true;
+            //после успешного создание хешкода таска попадет сразу в план
+            this.addTaskToPlanWithoutConfirmation = true;
             return;
          }
          
@@ -741,6 +745,11 @@ export default {
          this.defaultSelected.hashCodes.unshift(this.newHashCode);
          this.defaultSelected.hash = this.newHashCode;
          this.isShowAddHashCodeDialog = false;
+
+         if (this.defaultSavedTaskData.isDefaultSAvedTaskSelected && this.addTaskToPlanWithoutConfirmation) {
+            this.addTask();
+         }
+         this.addTaskToPlanWithoutConfirmation = false;
       },
 
       setTime(newTime) {

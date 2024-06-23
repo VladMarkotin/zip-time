@@ -123,13 +123,15 @@ class MainController
     {
         $params = [];
         $taskName = $request->input('taskName');
-        $params['hash_code']    = $request->input('hash'); //hashCode
-        $params['user_id']      = Auth::id();
-        $params['task_name']    = ($taskName) ? $request->input('taskName') : $request->input('name');
-        $params['time']         = $request->input('time');
-        $params['type']         = $request->input('type');
-        $params['priority']     = $request->input('priority');
-        $params['details']      = $request->input('details');
+        $params['hash_code']                 = $request->input('hash'); //hashCode
+        $params['user_id']                   = Auth::id();
+        $params['task_name']                 = ($taskName) ? $request->input('taskName') : $request->input('name');
+        $params['time']                      = $request->input('time');
+        $params['type']                      = $request->input('type');
+        $params['priority']                  = $request->input('priority');
+        $params['details']                   = $request->input('details');
+        $params['default_saved_task_id']     = $request->input('default_saved_task_id', null);
+        
         $taskId = $request->input('task_id');
         if (isset($taskId)) {
             $params['note']     = Tasks::find($taskId)->note;
