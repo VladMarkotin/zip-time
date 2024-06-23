@@ -2,15 +2,16 @@
    <v-card id="plan-wrapper">
       <template v-if="isShowAddHashCodeDialog">    
          <AddHashCode
-         :width          = "450"
-         :hashCodeVal    = "newHashCode"
-         :isShowDialog   = "isShowAddHashCodeDialog"
-         :taskName       = "defaultSelected.taskName"
-         :time           = "defaultSelected.time"
-         :type           = "defaultSelected.type"
-         :priority       = "defaultSelected.priority"
-         :details        = "defaultSelected.details"
-         :notes          = "defaultSelected.notes"
+         :width                = "450"
+         :hashCodeVal          = "newHashCode"
+         :isShowDialog         = "isShowAddHashCodeDialog"
+         :taskName             = "defaultSelected.taskName"
+         :time                 = "defaultSelected.time"
+         :type                 = "defaultSelected.type"
+         :priority             = "defaultSelected.priority"
+         :details              = "defaultSelected.details"
+         :notes                = "defaultSelected.notes"
+         :defaultSavedTaskData = "defaultSavedTaskData"
          @close          = "closeHashCodeDialog"
          @changeHashCode = "changeHashCode"
          @addHashCode    = "addHashCode"
@@ -454,7 +455,6 @@ export default {
          }
 
          defaultSavedTaskData.selectedSavedTaskId = getSelectedSavedTaskId(defaultSavedTaskData);
-         console.log(defaultSavedTaskData);
       }
       },
     computed : {
