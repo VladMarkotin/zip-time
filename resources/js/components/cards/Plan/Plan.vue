@@ -334,8 +334,11 @@ import {
 } from '@mdi/js'
 import { uuid } from 'vue-uuid';
 
+import createWatcherForDefSavTaskMixin from '../../../mixins';
+
 export default {
    components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip, CustomTimepicker},
+   mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          showPlusIcon: 0,
@@ -440,24 +443,6 @@ export default {
             console.error('Error processing tasks:', error); 
          });
       },
-      //Каждый раз когда пользователь меняет выбранный хешкод на фронте вызывается функция, 
-      //которая проверяет не выбрана ли Дефолтная таска и если выбрана она, то подготавлияет параметра для запроса на бэкэнд (id дефолтной задачи)
-      'defaultSelected.hash'(selectedHashCode) {
-
-         const defaultSavedTaskData = this.defaultSavedTaskData;
-
-         defaultSavedTaskData.isDefaultSAvedTaskSelected = this.isDefaultSavedTaskSelected;
-
-         const getSelectedSavedTaskId = ({isDefaultSAvedTaskSelected, defaultSavedTasks}) => {
-            if (!isDefaultSAvedTaskSelected) return null;
-            
-            const selectedSavedTasData = defaultSavedTasks.find(({hash_code}) => selectedHashCode === hash_code)
-            
-            return selectedSavedTasData.id ?? null;
-         }
-
-         defaultSavedTaskData.selectedSavedTaskId = getSelectedSavedTaskId(defaultSavedTaskData);
-      }
       },
     computed : {
         taskTypes() {

@@ -160,6 +160,8 @@
 	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
 	import CustomTimepicker from '../UI/CustomTimepicker.vue';
 
+	import createWatcherForDefSavTaskMixin from '../../mixins';
+
 	export default
 		{
 			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, VSelectTooptip, CustomTimepicker},
@@ -168,6 +170,7 @@
 					type: Number,
 				},
 			},
+			mixins: [createWatcherForDefSavTaskMixin('task.hashCode')],
 			data()
 			{
 				return {
@@ -247,23 +250,6 @@
 				isDefaultSavedTaskSelected() {
             		return !!this.task.hashCode.match(/^#q-/);
          		}
-			},
-			watch: {
-				'task.hashCode'(selectedHashCode) {
-					const defaultSavedTaskData = this.defaultSavedTaskData;
-
-					defaultSavedTaskData.isDefaultSAvedTaskSelected = this.isDefaultSavedTaskSelected;
-
-					const getSelectedSavedTaskId = ({isDefaultSAvedTaskSelected, defaultSavedTasks}) => {
-						if (!isDefaultSAvedTaskSelected) return null;
-            
-						const selectedSavedTasData = defaultSavedTasks.find(({hash_code}) => selectedHashCode === hash_code)
-
-						return selectedSavedTasData.id ?? null;
-					}
-
-					defaultSavedTaskData.selectedSavedTaskId = getSelectedSavedTaskId(defaultSavedTaskData);
-				}
 			},
 			methods :
 			{
