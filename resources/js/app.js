@@ -63,6 +63,7 @@ const app =
 						const data = (await axios.post('/ifexists')).data;
 						if (data.dayStatus == 3 || (data.dayOwnMark > 0) || (data.dayStatus == 0) || (data.dayStatus == -1)) /*day is closed || (|| (data[0].day_status === 0) data[0].day_status === 0)*/
 						{
+							console.log('hate ')
 							this.currComponent.props = data;
 							this.currComponent.name = 'ClosedReadyDayPlan';
 						}

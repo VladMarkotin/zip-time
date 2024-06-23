@@ -12,6 +12,10 @@ namespace App\Http\Controllers\Services;
 use App\Repositories\EstimateTaskRepository;
 use App\Repositories\EstimationRepository;
 use App\Models\DefaultConfigs;
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
+use App\Http\Helpers\EstimationDayHelpers\EstimationDayHelper;
+
+use Illuminate\Support\Facades\Log;
 
 class EstimationService
 {
@@ -38,7 +42,6 @@ class EstimationService
     public function handleEstimationRequest(array $data)
     {
         $defaultConfigs = json_decode(DefaultConfigs::select('config_data')->where('config_block_id', 2)->get()->toArray()[0]['config_data']);
-        //\Log::channel('async-log')->info(var_export($defaultConfigs->cardRules[0]));//$defaultConfigs->cardRules[0]->maxMark
         $makeMarkValid    = function ($arg = null) use  ($data, $defaultConfigs) {
             if($data['mark'] == '') {
                $data['mark'] = -1;
@@ -119,9 +122,17 @@ class EstimationService
             case '2': //user wants to finish day plan
                 $data['mark'] = $makeMarkValid(2); //it means that user gives an own mark for checking
                 $data['comment'] = $makeCommentValid($data['comment']);
-                $response = $this->estimateDayRepository->closeDay($data);
+                $response = false;
+                $timetableId = GeneralHelper::getCurrentTimetableId();
+                if ( EstimationDayHelper::checkRequiredTasks($timetableId)
+                     && 
+                     EstimationDayHelper::checkRequiredJobs($timetableId)
+                ) {
+
+                    $response = $this->estimateDayRepository->closeDay($data);
+                }
                 if($response){
-                  $this->userRatings-> rateCompletedDay(2) ;  //  get rating as day completed
+                    $this->userRatings-> rateCompletedDay(2) ;  //  get rating as day completed
                     return [
                         "status" => "success",
                         "message" => "Your day plan has been completed :) Good work!"

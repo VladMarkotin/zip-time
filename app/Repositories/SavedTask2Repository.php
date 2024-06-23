@@ -90,8 +90,8 @@ class SavedTask2Repository
             $lastNote = $lastNoteArray[0]['note'];
             $savedTask[0]->note = htmlspecialchars_decode($lastNote);
         }
-
-        return $savedTask;
+        
+        return count($savedTask) ? $savedTask[0] : $savedTask;
     }
 
     public function saveNewHashCode(array $data)

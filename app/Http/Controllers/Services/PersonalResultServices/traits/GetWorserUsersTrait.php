@@ -68,6 +68,6 @@ trait GetWorserUsersTrait
                       AND timetables.day_status=-1 GROUP BY day_status;";
         $result = DB::select($query);
         
-        return (isset($result[0]) ? $result[0]->quantity : 0);
+        return (isset($result[0]) ? $result[0]->quantity_fail : 0);
     }
 }

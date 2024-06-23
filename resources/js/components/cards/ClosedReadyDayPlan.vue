@@ -144,7 +144,7 @@ import { data } from 'jquery';
 			const commentText = this.data.comment;
 			const daystatusCodeInfo = new Map;
 
-			daystatusCodeInfo.set(-1, 'Fine (Day was not completed)');
+			daystatusCodeInfo.set(-1, 'Plan failed :(');
 			daystatusCodeInfo.set(0, 'Emergency mode');
 			daystatusCodeInfo.set(1, 'Weekend mode');
 			daystatusCodeInfo.set(2, 'Failed');

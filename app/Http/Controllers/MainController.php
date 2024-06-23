@@ -43,6 +43,7 @@ use App\Models\User;
 use App\Models\DefaultSavedTasks;
 use Illuminate\Support\Facades\Log;
 use App\Events\RewardEvent;
+use  App\Events\FinishDayEvent;
 
 class MainController
 {
@@ -223,14 +224,9 @@ class MainController
             $params['id'] = Auth::id();
             $params['hash_code'] = $hash_code;
             $savedTask = $this->savedTaskRepository->getSavedTaskByHashCode($params);
-            foreach ($savedTask as $val){
-                foreach ($val as $i => $v){
-                    $finalResult[] = $val->$i;
-                }
-            }
         }
 
-        return response()->json($finalResult);//
+        return response()->json($savedTask);
     }
 
     private function getSavedTasksByHashCode(array $hashCodes)
@@ -355,9 +351,12 @@ class MainController
             "action"   => '2', //it means that user try to finish day plan
         ];
         $response = $this->estimationService->handleEstimationRequest($data);
+        //FinishDayEvent::dispatch(['finish_way' => 1, 'data' => $data]);
+        //TODO Убрать в обработччик события
        // $this->userRatings->getUserRatings(2);
+        //TODO Убрать в обработччик события
         RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin', 'keep_going'] ]);
-
+        // Log::info(json_encode($response));
         return response()->json($response); //comment
     }
 
@@ -435,6 +434,11 @@ class MainController
                 $preparedPlan = explode(';', $preparedPlan);
                 $preparedTasks = $this->getSavedTasksByHashCode($preparedPlan);
                 
+                $preparedTasks = array_values(
+                    array_filter($preparedTasks, function($task) {
+                        return !empty((array) $task);
+                    })
+                );
                 return ($preparedTasks);
             }
 

@@ -9,7 +9,10 @@
         </template>
         <div class="card-demo"></div>
         <template v-if="isShowCloseDayDialog">
-            <CloseDay v-on:toggleCloseDayDialog="toggleCloseDayDialog" />
+            <CloseDay 
+                v-on:toggleCloseDayDialog = "toggleCloseDayDialog" 
+                @showFirework             = "isShowFirework = true"
+                />
         </template>
         <template v-if="isShowEmergencyCallDialog">
             <EmergencyCall
@@ -75,6 +78,7 @@
                 <span>Emergency mode</span>
             </v-tooltip>
         </div>
+        <Firework v-if="isShowFirework"/>
     </div>
 </template>
 <script>
@@ -84,11 +88,12 @@ import CloseDay from "./dialogs/CloseDay.vue";
 import Cards from "./cards/Cards.vue";
 import EmergencyCall from "./dialogs/EmergencyCall.vue";
 import Challenges from "./challenges/Challenges.vue";
+import Firework from "./UI/Firework.vue";
 import { mdiCarEmergency, mdiPlusBox, mdiSendClock } from "@mdi/js";
 import "intro.js/introjs.css";
 
 export default {
-    components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall, Challenges },
+    components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall, Challenges, Firework },
     props: ["data"],
     data() {
         return {
@@ -101,6 +106,7 @@ export default {
 
             alert: { type: "", text: "" },
             screenWidth: window.innerWidth,
+            isShowFirework: false,
         };
     },
     computed: {
