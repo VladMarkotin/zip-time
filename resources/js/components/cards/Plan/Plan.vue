@@ -399,41 +399,64 @@ export default {
          isShowPressEntTooltip: false,
          WEEKEND_DEFAULT_TASK_TYPE: 'task',
          WORKING_DAY_DEFAULT_TASK_TYPE: 'required job',
+         defaultSavedTaskData: {
+            isDefaultSAvedTaskSelected: false,
+            defaultSavedTasks: [],
+            selectedSavedTaskId: null,
+         }
     }),
     watch: {
       day_status() {
-      const { hash } = this.defaultSelected;
-      this.onChange(hash); 
+         const { hash } = this.defaultSelected;
+         this.onChange(hash); 
 
-      const tasksForTheDay = this.items.map(async task => {
-         const { hash } = task;
-         const isSavedTask = hash !== '#';
+         const tasksForTheDay = this.items.map(async task => {
+            const { hash } = task;
+            const isSavedTask = hash !== '#';
 
-         if (!isSavedTask) {            
-            return { ...task, type: this.WEEKEND_DEFAULT_TASK_TYPE};
+            if (!isSavedTask) {            
+               return { ...task, type: this.WEEKEND_DEFAULT_TASK_TYPE};
+            }
+
+            try {
+               const response = await axios.post('/getSavedTask', { hash_code: hash });
+               const savedTaskType = response.data.type;
+               const transformedTaskType = this.day_status === 'Work Day'
+                  ? savedTaskType
+                  : this.WEEKEND_DEFAULT_TASK_TYPE;
+               
+               return { ...task, type: transformedTaskType};
+            } catch (error) {
+               console.error(error);
+               return task;
+            }
+         });
+
+         Promise.all(tasksForTheDay).then(updatedItems => {
+            this.items = updatedItems;
+         }).catch(error => {
+            console.error('Error processing tasks:', error); 
+         });
+      },
+
+      'defaultSelected.hash'(selectedHashCode) {
+
+         const defaultSavedTaskData = this.defaultSavedTaskData;
+
+         defaultSavedTaskData.isDefaultSAvedTaskSelected = this.isDefaultSavedTaskSelected;
+
+         const getSelectedSavedTaskId = ({isDefaultSAvedTaskSelected, defaultSavedTasks}) => {
+            if (!isDefaultSAvedTaskSelected) return null;
+            
+            const selectedSavedTasData = defaultSavedTasks.find(({hash_code, id}) => selectedHashCode === hash_code)
+            
+            return selectedSavedTasData.id ?? null;
          }
 
-      try {
-         const response = await axios.post('/getSavedTask', { hash_code: hash });
-         const savedTaskType = response.data.type;
-         const transformedTaskType = this.day_status === 'Work Day'
-            ? savedTaskType
-            : this.WEEKEND_DEFAULT_TASK_TYPE;
-         
-         return { ...task, type: transformedTaskType};
-      } catch (error) {
-         console.error(error);
-         return task;
+         defaultSavedTaskData.selectedSavedTaskId = getSelectedSavedTaskId(defaultSavedTaskData);
+         console.log(defaultSavedTaskData);
       }
-  });
-
-   Promise.all(tasksForTheDay).then(updatedItems => {
-      this.items = updatedItems;
-   }).catch(error => {
-      console.error('Error processing tasks:', error); 
-   });
-}
-    },
+      },
     computed : {
         taskTypes() {
             return this.isTodayAWeekend 
@@ -481,6 +504,10 @@ export default {
          currentDayDefaultTaskType() {
             return this.isTodayAWeekend ? this.WEEKEND_DEFAULT_TASK_TYPE : this.WORKING_DAY_DEFAULT_TASK_TYPE;
          },
+
+         isDefaultSavedTaskSelected() {
+            return !!this.defaultSelected.hash.match(/^#q-/);
+         }
     },
     methods: {
 
@@ -609,6 +636,11 @@ export default {
         },
 
         addTask() {
+
+         if (this.isDefaultSavedTaskSelected) {
+            this.isShowAddHashCodeDialog = true;
+            return;
+         }
          
          this.showAlert             = false;
          this.isShowPressEntTooltip = false;
@@ -737,6 +769,9 @@ export default {
                      axios.post('/getDefaultSavedTasks')
                      .then((response) => {
                         const {defaultSavedTasks} = response.data;
+                        
+                        currentObj.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks
+
                         if (defaultSavedTasks.length) {
                            defaultSavedTasks.forEach(defaultSavedTask => {
                               currentObj.defaultSelected.hashCodes = [...currentObj.defaultSelected.hashCodes, defaultSavedTask.hash_code];
