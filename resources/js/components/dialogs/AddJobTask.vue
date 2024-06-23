@@ -2,15 +2,16 @@
 	<div>
 		<template v-if="isShowAddHashCodeDialog">
 			<AddHashCode 
-			:width  		= "450"
-			:hashCodeVal    = "isChangedHashCodeTemplate ? '#' : task.hashCode"
-			:isShowDialog   = "isShowAddHashCodeDialog"
-			:taskName       = "task.name"
-			:time           = "task.time"
-			:type           = "task.type"
-			:priority       = "task.priority"
-			:details        = "isChangedHashCodeTemplate ? '' : task.details"
-			:notes          = "isChangedHashCodeTemplate ? '' : task.notes"
+			:width  		      = "450"
+			:hashCodeVal          = "isChangedHashCodeTemplate ? '#' : task.hashCode"
+			:isShowDialog         = "isShowAddHashCodeDialog"
+			:taskName             = "task.name"
+			:time                 = "task.time"
+			:type                 = "task.type"
+			:priority             = "task.priority"
+			:details              = "isChangedHashCodeTemplate ? '' : task.details"
+			:notes                = "isChangedHashCodeTemplate ? '' : task.notes"
+			:defaultSavedTaskData = "defaultSavedTaskData"
 			@close          = "closeHashCodeDialog"
 			@changeHashCode = "changeHashCode"
 			@addHashCode    = "addHashCode"
@@ -196,6 +197,12 @@
 						isChangedHashCodeTemplate: false,
 						WEEKEND_DEFAULT_TASK_TYPE: 'task',
 						WORKING_DAY_DEFAULT_TASK_TYPE: 'required job',
+						defaultSavedTaskData: {
+							isDefaultSAvedTaskSelected: false,
+							defaultSavedTasks: [],
+							selectedSavedTaskId: null,
+         				},
+						addTaskToPlanWithoutConfirmation: false,
 					}
 			},
 			computed: {
@@ -235,6 +242,27 @@
 						? ['required job','non required job','required task','task']
 						: [this.WEEKEND_DEFAULT_TASK_TYPE];
 				},
+
+				isDefaultSavedTaskSelected() {
+            		return !!this.task.hashCode.match(/^#q-/);
+         		}
+			},
+			watch: {
+				'task.hashCode'(selectedHashCode) {
+					const defaultSavedTaskData = this.defaultSavedTaskData;
+
+					defaultSavedTaskData.isDefaultSAvedTaskSelected = this.isDefaultSavedTaskSelected;
+
+					const getSelectedSavedTaskId = ({isDefaultSAvedTaskSelected, defaultSavedTasks}) => {
+						if (!isDefaultSAvedTaskSelected) return null;
+            
+						const selectedSavedTasData = defaultSavedTasks.find(({hash_code}) => selectedHashCode === hash_code)
+
+						return selectedSavedTasData.id ?? null;
+					}
+
+					defaultSavedTaskData.selectedSavedTaskId = getSelectedSavedTaskId(defaultSavedTaskData);
+				}
 			},
 			methods :
 			{
@@ -285,8 +313,13 @@
 				{
 					this.hashCodes = (await axios.post('/getSavedTasks')).data.hash_codes.map((item) => item.hash_code)
 					let {defaultSavedTasks} = (await axios.post('/getDefaultSavedTasks')).data;
+					
+					this.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks;
+					
 					defaultSavedTasks = defaultSavedTasks.map((item) => item.hash_code);
+
 					this.hashCodes = [...this.hashCodes, ...defaultSavedTasks];
+
 				},
 
 				changeHashCode(hashCodeVal) {
@@ -303,10 +336,22 @@
       			},
 				addHashCode() {
 					this.hashCodes.unshift(this.task.hashCode);
+					
+					if (this.defaultSavedTaskData.isDefaultSAvedTaskSelected && this.addTaskToPlanWithoutConfirmation) {
+						this.addTask();
+					}
+					this.addTaskToPlanWithoutConfirmation = false;
 				},
 
 				async addJob()
 				{
+					if (this.isDefaultSavedTaskSelected) {
+						this.isShowAddHashCodeDialog          = true;
+						//после успешного создание хешкода таска попадет сразу в план
+						this.addTaskToPlanWithoutConfirmation = true;
+						return;
+					}
+
 					const response =
 						(
 							await
@@ -325,7 +370,6 @@
 						).data
 					if (response.status == 'success')
 					{
-						console.log(response);
 						this.$root.currComponentProps.plan.push
 							(
 								{

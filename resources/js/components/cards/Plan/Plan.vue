@@ -451,7 +451,7 @@ export default {
          const getSelectedSavedTaskId = ({isDefaultSAvedTaskSelected, defaultSavedTasks}) => {
             if (!isDefaultSAvedTaskSelected) return null;
             
-            const selectedSavedTasData = defaultSavedTasks.find(({hash_code, id}) => selectedHashCode === hash_code)
+            const selectedSavedTasData = defaultSavedTasks.find(({hash_code}) => selectedHashCode === hash_code)
             
             return selectedSavedTasData.id ?? null;
          }
@@ -522,20 +522,20 @@ export default {
 		},
        
         getPostParams() {
-            // return {
-            //    date: new Date().toISOString().substr(0, 10),
-            //    day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
-            //    plan: this.items,
-            // };  //было так, но есть ошибка при добавлении в план на день хоть одной дефолтной таски
-
             return {
-                date: new Date().toISOString().substr(0, 10),
-                day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
-                plan: [...this.items.map(item => {
-                        if (item.hash.match(/^#q-/)) return {...item, hash: '#'};
-                        return item;
-                     })]
-            }; //тут костыль
+               date: new Date().toISOString().substr(0, 10),
+               day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
+               plan: this.items,
+            };  //было так, но есть ошибка при добавлении в план на день хоть одной дефолтной таски
+
+            // return {
+            //     date: new Date().toISOString().substr(0, 10),
+            //     day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
+            //     plan: [...this.items.map(item => {
+            //             if (item.hash.match(/^#q-/)) return {...item, hash: '#'};
+            //             return item;
+            //          })]
+            // }; //тут костыль
         },
         toggleEmergencyCallDialog(){
 				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
