@@ -3,7 +3,7 @@
 		<template v-if="isShowAddHashCodeDialog">
 			<AddHashCode 
 			:width  		      = "450"
-			:hashCodeVal          = "isChangedHashCodeTemplate ? '#' : task.hashCode"
+			:hashCodeVal          = "isChangedHashCodeTemplate ? '#' : newHashCode"
 			:isShowDialog         = "isShowAddHashCodeDialog"
 			:taskName             = "task.name"
 			:time                 = "task.time"
@@ -188,6 +188,7 @@
 							time : '',
 						},
 						hashCodes : [],
+						newHashCode: '#',
 						priorities : [1,2,3],
 						menu : false/*for task.time*/,
 						icons : {mdiPlusBox,mdiClockTimeFourOutline},
@@ -323,22 +324,20 @@
 				},
 
 				changeHashCode(hashCodeVal) {
-         			this.task.hashCode = hashCodeVal;
+         			this.newHashCode = hashCodeVal;
       			},
 
 				closeHashCodeDialog() {
-					if (this.isChangedHashCodeTemplate && !this.hashCodes.includes(this.task.hashCode)) {
-						this.task.hashCode = this.savedTaskTemplate.hashCode;
-					}
-
+					this.newHashCode = '#';
       	   			this.isShowAddHashCodeDialog = false;
 					this.isChangedHashCodeTemplate = false;
       			},
 				addHashCode() {
-					this.hashCodes.unshift(this.task.hashCode);
+					this.hashCodes.unshift(this.newHashCode);
+					this.task.hashCode = this.newHashCode;
 					
 					if (this.defaultSavedTaskData.isDefaultSAvedTaskSelected && this.addTaskToPlanWithoutConfirmation) {
-						this.addTask();
+						this.addJob();
 					}
 					this.addTaskToPlanWithoutConfirmation = false;
 				},
@@ -415,6 +414,7 @@
 						};
 
 						this.isChangedHashCodeTemplate = !(convertToJSON(currentTask) === convertToJSON(this.savedTaskTemplate));
+						console.log(this.isChangedHashCodeTemplate);
 					}
 
 				},
