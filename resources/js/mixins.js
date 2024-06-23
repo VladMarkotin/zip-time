@@ -15,7 +15,7 @@ export default function createWatcherForDefSavTaskMixin(watchPath) {
                 const getSelectedSavedTaskId = ({isDefaultSAvedTaskSelected, defaultSavedTasks}) => {
                     if (!isDefaultSAvedTaskSelected) return null;
                 
-                    const selectedSavedTasData = defaultSavedTasks.find(({hash_code}) => selectedHashCode === hash_code)
+                    const selectedSavedTasData = defaultSavedTasks.find(({hash_code}) => selectedHashCode.trim() === hash_code.trim())
                 
                     return selectedSavedTasData.id ?? null;
                 }

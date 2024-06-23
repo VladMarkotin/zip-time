@@ -128,6 +128,11 @@
 						(inputVal) => {
 							inputVal = inputVal.trim();
 							return inputVal.match(/^[A-Za-z0-9#_-]+$/) !== null || 'You can use Latin alphabet, numbers, symbols: # - _';
+						},
+
+						(inputVal) => {
+							inputVal = inputVal.trim();
+							return inputVal.match(/^#[Qq]-/) === null || 'You cannot use hash code starting with the characters "q-...". Such hash codes are reserved';
 						}
 					],
 					isHashCodeValid: false,

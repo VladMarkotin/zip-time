@@ -693,12 +693,13 @@ export default {
                          currentObj.showAlert = false
                          currentObj.isShowProgress = false
                          document.location.reload();
-                         if (response.data.status == 'success') {
-                            const data = JSON.parse(response.config.data)
-                            currentObj.$root.currComponentProps = data.plan
-                            currentObj.$root.currComponent = "ReadyDayPlan"
+                        //  Это видимо очень старый код, оставшися со времен SPA
+                        //  if (response.data.status == 'success') {
+                        //     const data = JSON.parse(response.config.data)
+                        //     currentObj.$root.currComponentProps = data.plan
+                        //     currentObj.$root.currComponent = "ReadyDayPlan"
                             
-                         }
+                        //  }
                      }, 5e3)
                   }  
                   
