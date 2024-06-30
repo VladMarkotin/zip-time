@@ -12,6 +12,7 @@ use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 use App\Http\Helpers\EstimationDayHelpers\EstimationDayHelper;
 use App\Http\Helpers\EstimationDayHelpers\AutomaticEstimationHelper;
 use App\Repositories\TimezoneRepository;
+use App\Models\PersonalConfigs;
 use Illuminate\Support\Facades\Log;
 
 class EstimationRepository
@@ -64,7 +65,10 @@ class EstimationRepository
         $finalMark = EstimationDayHelper::sumMarks(); //считаю оценку юзера
        
         $defaultConfigs = json_decode(DefaultConfigs::select('config_data')->where('config_block_id', 2)->get()->toArray()[0]['config_data']);
-        if ($finalMark >= $defaultConfigs->cardRules[0]->minFinalMark ) {
+        $personalConfigs = PersonalConfigs::getOptionViaIndex('minFinalMark');
+        //Final mark for comare - Either Default or Personal
+        $minFinalMark = EstimationDayHelper::getMinFinalMark();
+        if ($finalMark >= $minFinalMark ) {
             $data = EstimationDayHelper::prepareData(2, ['comment' => $data['comment'], 'for_tomorrow' => $tagsForTomorow, 'own_estimation' => $data['mark']]);
             //update user`s plan state
             TimetableModel::find($timetableId)->update($data);

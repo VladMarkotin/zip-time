@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Services\PersonalResultServices\traits;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Services\Configs\DefaultConfigs;
+use Illuminate\Support\Facades\Log;
 
 trait GetUserResponsibilityTrait
 {
@@ -28,7 +30,9 @@ trait GetUserResponsibilityTrait
 
     public function completedUserTasks($id, $configs) //configs on future
     {
-        return DB::select("SELECT COUNT(t1.id) completed_tasks FROM `tasks` t1 JOIN timetables t2 ON t1.timetable_id = t2.id WHERE t2.user_id = $id AND t1.mark >= 50")[0]
+        $minMark = DefaultConfigs::getOptionViaIndex('minMark');
+
+        return DB::select("SELECT COUNT(t1.id) completed_tasks FROM `tasks` t1 JOIN timetables t2 ON t1.timetable_id = t2.id WHERE t2.user_id = $id AND t1.mark >= $minMark")[0]
         ->completed_tasks;
     }
 }
