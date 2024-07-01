@@ -76,9 +76,11 @@ class HashCodeService
             return ['flag' => true];
         }
 
+        $transformedCode = strlen($hashCode) < 30 ? $hashCode :  substr($hashCode, 0, 29) . '...'; 
+
         return [
             'flag' => false, 
-            'message' => "The name of your code must contain between 2 and 6 characters, inclusive. Unable to use code: $hashCode"
+            'message' => "The name of your code must contain between 2 and 6 characters, inclusive. Unable to use code: $transformedCode"
         ];
     }
 }

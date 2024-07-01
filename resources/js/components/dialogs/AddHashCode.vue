@@ -38,7 +38,7 @@
 					</v-alert>
 				</v-row>
 			</v-card-text>
-			<v-card-text class="pb-0 text-center font-weight-bold text-dark" style="min-height: 66px;">
+			<v-card-text class="addHashCode-system-message">
 				{{ systemMessage }}
 			</v-card-text>
 			<v-divider></v-divider>
@@ -306,7 +306,11 @@
 
 			created() {
 				this.isShow = this.isShowDialog;
-				this.hashCode = this.hashCodeVal;				
+				this.hashCode = this.hashCodeVal;	
+				
+				if (this.defaultSavedTaskData !== undefined && this.defaultSavedTaskData.isDefaultSAvedTaskSelected === true) {
+					this.systemMessage = 'Default saved task is being used.';
+				};
 			},
 
 			async mounted() {
@@ -337,6 +341,16 @@
 
 	.addHashCode-card-wrapper .addHashCode-button-inactive {
 		opacity: .4;
+	}
+
+	.addHashCode-card-wrapper .addHashCode-system-message {
+		padding-bottom: 0 !important;
+		text-align: center;
+		font-weight: bold;
+		min-height: 66px;
+		font-size: 15px;
+		line-height: 21px;
+		color:  #49423D !important;
 	}
 
 	@keyframes codeAlertAppearance {

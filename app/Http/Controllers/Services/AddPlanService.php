@@ -171,9 +171,11 @@ class AddPlanService
             return ['flag' => true,];
         }
 
+        $transformedTask = strlen($task) < 30 ? $task :  substr($task, 0, 29) . '...'; 
+
         return [
             'flag' => false, 
-            'message' => "The name of your task must contain between 4 and 254 characters, inclusive. Unable to use task name: $task"
+            'message' => "The name of your task must contain between 4 and 254 characters, inclusive. Unable to use task name: $transformedTask"
         ];
     }
 
