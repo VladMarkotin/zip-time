@@ -36,8 +36,10 @@
 					>
 					failed to add #code
 					</v-alert>
-
 				</v-row>
+			</v-card-text>
+			<v-card-text class="pb-0 text-center font-weight-bold text-dark" style="min-height: 66px;">
+				{{ systemMessage }}
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions class="justify-space-between v-card-actions">
@@ -144,6 +146,7 @@
 					},
 					isShowPreloader: false,
 					loading: false, //тут храню статус загрузки, что бы нельзя было хаотично нажимать на Enter во время загрузки
+					systemMessage: '',
 				}
 			},
 			computed: {
@@ -239,7 +242,8 @@
 						requestData = checkIsTaskBasedOnDefaultSavedTask(requestData);
 
 						const responce = await axios.post('/addHashCode', requestData)
-
+						console.log(responce);
+						
 						if (responce.data.status === 'success') {
 							const loadingEnd = Date.now();
 							controllLoadingTime(loadingEnd - loadingStart, () => {
@@ -255,6 +259,8 @@
 
 						} else {
 							const loadingEnd = Date.now();
+							this.systemMessage = responce.data.message;
+
 							controllLoadingTime(loadingEnd - loadingStart, () => {
 								if (this.isShowPreloader) this.isShowPreloader = false;
 								if (this.loading) this.loading = false;
@@ -265,6 +271,8 @@
 
 					} catch (error) {
 						const loadingEnd = Date.now();
+						this.systemMessage = responce.data.message;
+
 						controllLoadingTime(loadingEnd - loadingStart, () => {
 							if (this.isShowPreloader) this.isShowPreloader = false;
 							if (this.loading) this.loading = false;

@@ -33,13 +33,19 @@ class HashCodeService
 
     public function checkNewHashCode($hashCode, $taskName)
     {   
-        if($this->isHashCodeCorrect($hashCode) && $this->addPlanService->checkName($taskName)){
-            if($this->isUniqueForUser($hashCode)){
-                return true;
+        $resOfChecks = [
+            $this->isHashCodeCorrect($hashCode),
+            $this->addPlanService->checkName($taskName),
+            $this->isUniqueForUser($hashCode)
+        ];
+
+        foreach($resOfChecks as $result) {
+            if ($result['flag'] === false) {
+                return $result;
             }
         }
 
-        return false;
+        return ["flag" => true, 'message' => 'Hash code added successfully',];
     }
 
     public function transformDataForDb($data)
@@ -56,20 +62,23 @@ class HashCodeService
 
         foreach($hashCodes as $i){
             if($i->hash_code == $hashCode){
-                return false;
+                return ['flag' => false, 'message' => 'Your code must be unique.'];
             }
         }
 
-        return true;
+        return ['flag' => true];
     }
 
     private function isHashCodeCorrect($hashCode)
     {
         $length = strlen($hashCode);
         if(($length < 7) && ($length > 1)){
-            return true;
+            return ['flag' => true];
         }
 
-        return false;
+        return [
+            'flag' => false, 
+            'message' => "The name of your code must contain between 2 and 6 characters, inclusive. Unable to use code: $hashCode"
+        ];
     }
 }
