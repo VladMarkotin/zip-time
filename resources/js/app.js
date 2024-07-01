@@ -81,3 +81,4 @@ const app =
 			}
 	);
 app.$mount();
+

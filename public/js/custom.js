@@ -1,7 +1,32 @@
 
 
 
+
+
+
 $(document).ready(function () {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
   alertify.set('notifier', 'position', 'bottom-right');

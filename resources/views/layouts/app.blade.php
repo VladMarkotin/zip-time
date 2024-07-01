@@ -18,14 +18,15 @@
         <script src="js/SettingsPageController.js" defer></script>
     @endif
     @guest
-        @if(Route::currentRouteName() == 'welcome')
-        <script src="js/IndexPageController.js" defer></script>
+        @if (Route::currentRouteName() == 'welcome')
+            <script src="js/IndexPageController.js" defer></script>
         @endif
     @endguest
     <script src="js/NavMenu.js" defer></script>
     <script src="js/AsideButtonsController.js" defer></script>
     {{--  --}}
  
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -35,22 +36,25 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" src='https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/introjs.min.css'>
-    <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600&display=swap"
+        rel="stylesheet">
     @guest
-        @if(Route::currentRouteName() == 'welcome')
+        @if (Route::currentRouteName() == 'welcome')
             <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
         @endif
-        @if(Route::currentRouteName() == 'login')
+        @if (Route::currentRouteName() == 'login')
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
         @endif
     @endguest
-    @if(Route::currentRouteName() == 'settings')
+    @if (Route::currentRouteName() == 'settings')
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+            rel="stylesheet">
     @endif
     @if(Route::currentRouteName() == 'backlog')
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,11 +65,11 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     @guest
-        @if(Route::currentRouteName() == 'welcome')
+        @if (Route::currentRouteName() == 'welcome')
             <link href="{{ asset('css/indexPage/indexPage.css') }}" rel="stylesheet">
             <link href="{{ asset('css/indexPage/indexPageMedia.css') }}" rel="stylesheet">
         @endif
-        @if(Route::currentRouteName() == 'login')
+        @if (Route::currentRouteName() == 'login')
             <link href="{{ asset('css/loginPage/loginPage.css') }}" rel="stylesheet">
             <link href="{{ asset('css/loginPage/loginPageMedia.css') }}" rel="stylesheet">
         @endif
@@ -74,7 +78,7 @@
             <link href="{{ asset('css/backlogPage/backlogMedia.css') }}" rel="stylesheet">
         @endif
     @endguest
-    @if(Route::currentRouteName() == 'settings')
+    @if (Route::currentRouteName() == 'settings')
         <link href="{{ asset('css/settingsPage/settingsPage.css') }}" rel="stylesheet">
         <link href="{{ asset('css/settingsPage/settingsPageMedia.css') }}" rel="stylesheet">
     @endif
@@ -177,7 +181,7 @@
                                         {{ Auth::user()->name }}
                                     </div>
                                     <span id="total-results">
-                                            {{ Auth::user()->rating  }}                                    
+                                        {{ Auth::user()->rating }}
                                     </span>
                                 </a>
 
@@ -189,7 +193,8 @@
                                         {{ __('Logout') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="d-none">
                                         @csrf
                                     </form>
                                 </div>
@@ -283,6 +288,47 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    @auth
+        <script>
+          
+            askForPermission()
+            navigator.serviceWorker.register("{{ URL::asset('service-worker.js') }}");
+
+            function askForPermission() {
+
+                Notification.requestPermission().then((permission) => {
+                    if (permission === 'granted') {
+                        // get service worker
+                        navigator.serviceWorker.ready.then((sw) => {
+                            // subscribe
+                            sw.pushManager.subscribe({
+                                userVisibleOnly: true,
+                                applicationServerKey: "BGPbvN2N_ETuxiZZ90jMjXWardKtcrhDeFr93npJg5pInkDpDtJfUXRH0Het53h-zNUgRmS30N9iiCM-uN6Jsxk"
+                            }).then((subscription) => {
+                                console.log((subscription));
+                                saveSub(JSON.stringify(subscription));
+                            });
+                        });
+                    }
+                });
+            }
+
+            function saveSub(sub) {
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ URL('save-push-notification-sub') }}',
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        'sub': sub
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+        </script>
+    @endauth
 </body>
 
 </html>

@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Models\DefaultConfigs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Models\DefaultConfigs;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +24,12 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('we
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+ Route::post('save-push-notification-sub', [App\Http\Controllers\NotificationController::class, 'saveSubscription']);
+// Route::post('send-push-notification', [App\Http\Controllers\HomeController::class, 'sendNotification']);
+
+
+
 Route::get('/policy', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 /*Socialite ex https://medium.com/@Alabuja/social-login-in-laravel-with-socialite-90dbf14ee0ab*/
 

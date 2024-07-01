@@ -42,4 +42,10 @@ return [
         'openai_tokens'       => env('GPT_OPENAI_TOKENS'),
         'openai_temperature'  => env('GPT_OPENAI_TEMPERATURE'),
     ],
+
+    // 'device_token' => [
+    //     'device_private_key'       => env('DEVICE_PRIVATE_KEY'),
+    //     'device_public_key'        => env('DEVICE_PUBLIC_KEY'),
+   
+    // ],
 ];

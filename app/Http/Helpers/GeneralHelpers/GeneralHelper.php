@@ -31,7 +31,7 @@ class GeneralHelper
         return $response[0];
     }
 
-    public function getDayStatus()
+    public static function getDayStatus()
     {
         $response = TimetableModel::where('id', self::getCurrentTimetableId())
                 ->pluck('day_status')

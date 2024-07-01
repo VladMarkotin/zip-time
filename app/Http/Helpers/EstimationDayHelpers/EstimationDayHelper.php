@@ -75,10 +75,10 @@ class EstimationDayHelper
         return $timeOfPlan[0]->Sum_Of_time;
     }
 
-    public static function getTagsForTomorow($tags)
+    public static function getTagsForTomorow(array $tags)
     {
         $tagsForTomorow = $tags
-            ? implode($tags, ';')
+            ? implode(';', $tags)
             : ''; //need to move it into service class
         $tagsForTomorow = rtrim($tagsForTomorow, ';');
 
