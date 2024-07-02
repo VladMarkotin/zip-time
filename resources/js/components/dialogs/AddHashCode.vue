@@ -147,6 +147,7 @@
 					isShowPreloader: false,
 					loading: false, //тут храню статус загрузки, что бы нельзя было хаотично нажимать на Enter во время загрузки
 					systemMessage: '',
+					USING_DEFAULT_TASKS_SYSTEM_MESSAGE: 'Please, change default hash code for further usage',
 				}
 			},
 			computed: {
@@ -309,7 +310,7 @@
 				this.hashCode = this.hashCodeVal;	
 				
 				if (this.defaultSavedTaskData !== undefined && this.defaultSavedTaskData.isDefaultSAvedTaskSelected === true) {
-					this.systemMessage = 'Default saved task is being used.';
+					this.systemMessage = this.USING_DEFAULT_TASKS_SYSTEM_MESSAGE;
 				};
 			},
 
