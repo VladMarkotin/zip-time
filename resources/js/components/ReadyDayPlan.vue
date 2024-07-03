@@ -27,7 +27,7 @@
                 v-on:toggleAlertDialog="toggleAlertDialog"
             />
         </template>
-        <Challenges />
+        
         <v-data-iterator hide-default-footer v-bind:items="data.plan">
             <Cards
                 title="Required jobs and tasks"

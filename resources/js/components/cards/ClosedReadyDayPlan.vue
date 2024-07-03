@@ -1,6 +1,6 @@
 <template>
 	<v-card>
-		<Challenges />
+		
 		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header" style="margin-top: 50px">
 			<div class="closedReadyDayPlan_day-info-header-date">
 				<p class="closedReadyDayPlan_header-text">

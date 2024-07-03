@@ -48,9 +48,8 @@ class FinishDayListener implements ShouldQueue
                 break;
             default: return 0;
         }
-        var_dump($way);
-        die();
-        RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin', 'keep_going'] ]);
+        
+        //RewardEvent::dispatch(['event_prefix' => ['f_vic', 'great_begin', 'keep_going'] ]);
         //$this->challengeService->doChallenge(['user_id' => Auth::id(), 'index' => $chIndex]);
     }
 }
