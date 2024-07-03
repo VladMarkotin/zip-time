@@ -1119,7 +1119,6 @@ export default {
    .plan_addTask-button-wrapper_mobile {
       display: none;
    }
-
    
    @import url('/css/Plan/PlanMedia.css');
 </style>
