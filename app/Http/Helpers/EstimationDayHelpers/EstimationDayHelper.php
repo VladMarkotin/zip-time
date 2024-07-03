@@ -78,7 +78,7 @@ class EstimationDayHelper
     public static function getTagsForTomorow($tags)
     {
         $tagsForTomorow = $tags
-            ? implode($tags, ';')
+            ? implode(';', $tags)
             : ''; //need to move it into service class
         $tagsForTomorow = rtrim($tagsForTomorow, ';');
 
