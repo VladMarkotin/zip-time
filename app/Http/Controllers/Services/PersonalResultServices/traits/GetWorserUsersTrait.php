@@ -12,6 +12,7 @@ trait GetWorserUsersTrait
     //Have to count % who didn`t create plan for today in user`s group
     function getData(array $data, array $ratingData)
     {
+        // dd($data, $ratingData);
         $results = [];
         if ($ratingData['group']) {
             Log::info(json_encode($ratingData));

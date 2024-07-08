@@ -25,7 +25,6 @@ trait UserGroupTrait
           //find amount of users between users rating and max rating
           //Log::info($result);
         }
-       
        return ['quantityInGroup' => $result, 'group' => $group];//except the user   
     }
     
@@ -34,6 +33,19 @@ trait UserGroupTrait
         $ratingGroup = []; 
         //have to define rating`s frames
         $isRatingBelongsToGroup = function (array $group, $rate) {
+
+            $minValRating = self::getBoundayValRating($group, 'min');
+            $maxValRating = self::getBoundayValRating($group, 'max');
+
+            if ($rate < $minValRating) {
+                $group = ['from' => -INF, 'to' => $minValRating];
+                return (object) $group;
+            }
+            if ($rate > $maxValRating) {
+                $group = ['from' => $maxValRating, 'to' => INF];
+                return (object) $group;
+            }
+            
             foreach ($group as $v) {
                 if ($rate >= $v->from && ($rate <= $v->to)) { 
                     return $v;
@@ -46,6 +58,28 @@ trait UserGroupTrait
             if ($g = $isRatingBelongsToGroup($group, $data['current_rate'])) {
                 return $g;
             }
+        }
+    }
+
+    static function getBoundayValRating($groups, $flag) {
+        $properties             = ['from', 'to'];
+        $allGroupBoundaryValues = [];
+
+        foreach($groups as $group) {
+            foreach ($properties as $property) {
+                if (is_numeric($group->$property)) {
+                    $allGroupBoundaryValues[] = $group->$property;
+                }
+            }
+        }
+
+        switch($flag) {
+            case 'min':
+                return min($allGroupBoundaryValues);
+            case 'max':
+                return max($allGroupBoundaryValues);
+            default:
+                return null;
         }
     }
 } 
