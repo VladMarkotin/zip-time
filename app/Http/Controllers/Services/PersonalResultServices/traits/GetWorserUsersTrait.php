@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 trait GetWorserUsersTrait
 {
     //Have to count % who didn`t create plan for today in user`s group
-    function getData(array $data, array $ratingData)
+    public static function getData(array $data, array $ratingData)
     {
         $results = [];
         if ($ratingData['group']) {
@@ -39,7 +39,7 @@ trait GetWorserUsersTrait
         return ($persentOfWorserUser);
     }
     
-    function getQuantityOfUsersWithNoPlan(array $data, array $ratingData)
+    public static function getQuantityOfUsersWithNoPlan(array $data, array $ratingData)
     {
         $date = Carbon::today()->toDateString();
         $query = "SELECT COUNT(u.id) quantity 
@@ -51,7 +51,7 @@ trait GetWorserUsersTrait
         return (isset($result[0]) ? $result[0]->quantity : 0);
     }
 
-    function getQuantityOfUsersWithPlan(array $data, array $ratingData)
+    public static function getQuantityOfUsersWithPlan(array $data, array $ratingData)
     {
         /**
          * All users in the group who failed plan today:
@@ -67,7 +67,7 @@ trait GetWorserUsersTrait
         return (isset($result[0]) ? $result[0]->quantity : 0);
     }
     
-    function getQuantityOfUsersFailed(array $data, array $ratingData)
+    public static function getQuantityOfUsersFailed(array $data, array $ratingData)
     {
         $date = Carbon::today()->toDateString();
         if ($ratingData) {

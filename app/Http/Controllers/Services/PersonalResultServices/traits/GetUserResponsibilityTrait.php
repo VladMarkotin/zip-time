@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 trait GetUserResponsibilityTrait
 {
-    public function getData(array $data, array $configs)
+    public static function getData(array $data, array $configs)
     {
         /**
          * Responsibility:
@@ -22,13 +22,13 @@ trait GetUserResponsibilityTrait
         return ($allUserTasks) ? round( $completedUserTasks / $allUserTasks, 2) * 100 : 0;
     }
 
-    public function getAllUserTasks($id, $configs) //configs on future
+    public static function getAllUserTasks($id, $configs) //configs on future
     {
         return DB::select('SELECT COUNT(t1.id) all_tasks FROM `tasks` t1 JOIN timetables t2 ON t1.timetable_id = t2.id WHERE t2.user_id = '.$id)[0]
         ->all_tasks;
     }
 
-    public function completedUserTasks($id, $configs) //configs on future
+    public static function completedUserTasks($id, $configs) //configs on future
     {
         $minMark = DefaultConfigs::getOptionViaIndex('minMark');
 

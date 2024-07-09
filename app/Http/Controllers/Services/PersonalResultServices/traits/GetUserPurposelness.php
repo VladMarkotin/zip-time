@@ -16,7 +16,7 @@ trait GetUserPurposelness
      * Purposelness = Quantity of work days / created plans (all statuses)
      * 
      */
-    public function getData(array $data, array $configs)
+    public static function getData(array $data, array $configs)
     {
         // Log::info(json_encode($configs));
         // die;
@@ -33,7 +33,7 @@ trait GetUserPurposelness
         return round( ($allDays) ? ( ($workDays - $failedDays)/ $allDays) * 100 : 0, 2);
     }
 
-    public function quantityOfWorkDays(array $data, array $configs)
+    public static function quantityOfWorkDays(array $data, array $configs)
     {
         if ($configs) {
             return DB::select("SELECT COUNT(t.id) plans FROM `timetables` t JOIN users u ON t.user_id = u.id WHERE u.rating BETWEEN ".$configs['group']->from." AND ".$configs['group']->to
@@ -43,7 +43,7 @@ trait GetUserPurposelness
         return DB::select("SELECT COUNT(t.id) plans FROM `timetables` t JOIN users u ON t.user_id = u.id WHERE  day_status IN(2,3)")[0]->plans;
     }
 
-    public function quantityOfAllDays(array $data, array $configs)
+    public static function quantityOfAllDays(array $data, array $configs)
     {
         // Log::info(json_encode($configs));
         // die;
