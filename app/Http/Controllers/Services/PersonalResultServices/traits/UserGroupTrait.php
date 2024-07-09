@@ -13,7 +13,6 @@ trait UserGroupTrait
     public static function countUsersInGroupToday($data, $config)
     {
         $group = self::defineRateGroup($data, $config);
-
         $isRatingLessThanMin = false;
         $quantityInGroup = null;
 
@@ -28,8 +27,8 @@ trait UserGroupTrait
         }
 
         return([
-            'quantityInGroup' => $quantityInGroup,
-            'group' => $group,
+            'quantityInGroup'        => $quantityInGroup,
+            'group'                  => $group,
             'isTheRatingLessThanMin' => $isRatingLessThanMin
         ]);
 
@@ -54,7 +53,7 @@ trait UserGroupTrait
                 $group = ['from' => -INF, 'to' => $minValRating];
                 return (object) $group;
             }
-            if ($rate > $maxValRating) {
+            if ($rate >= $maxValRating) {
                 $group = ['from' => $maxValRating, 'to' => INF];
                 return (object) $group;
             }

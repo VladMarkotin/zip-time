@@ -6,9 +6,12 @@
       <template v-slot:title> Your current personal results:</template>
 
       <v-card-text>
-        <p v-html="betterThen"></p>
-        For now you are responsible on {{more_pesponsible}}% <br />   <!--It has to be more_responsible than % of users in the group -->
-        For now Quipl estimate your purposefulness as {{user_purposelness}}% among users in your group<br/>
+        <ul style="padding: 0; min-height: 40px;">
+          <li v-html="betterThen"></li>
+          <li v-html="moreResponsible"></li>
+          <li v-html="userPurposelness"></li>
+        </ul>
+        
         <a href="#">How do we get that results?</a>
       </v-card-text>
     </v-card>
@@ -38,6 +41,16 @@
                 return 'Your rating is currently not high enough to compare with other users.'
               }
               return `For now you are better than <strong>${this.better_then}%</strong>  of users in your group<br />`
+            },
+            moreResponsible() {
+              return this.more_pesponsible !== 'n/a'
+                ? `For now you are responsible on ${this.more_pesponsible.toFixed(2)}%`
+                : ''
+            },
+            userPurposelness() {
+              return this.user_purposelness !== 'n/a'
+                ? `For now Quipl estimate your purposefulness as ${this.user_purposelness}% among users in your group`
+                : ''
             }
           },
           async created() {
@@ -46,7 +59,7 @@
               .then((response) => {
                   //this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
                   this.better_then = response.data.better
-                  this.more_pesponsible = response.data.more_pesponsible.toFixed(2);
+                  this.more_pesponsible = response.data.more_pesponsible;
                   this.user_purposelness = response.data.user_purposelness
               })
           }

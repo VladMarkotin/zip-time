@@ -15,10 +15,18 @@ trait UserAchievmentsTrait
         $usersQuantityInGroup = UserGroupTrait::countUsersInGroupToday($data, $configs);
         //have to count % user`s who are worser
         //die(var_dump($usersQuantityInGroup));
+
+        if ($usersQuantityInGroup['isTheRatingLessThanMin']) {
+            return [
+                'better'            => 'n/a',
+                'more_pesponsible'  => 'n/a',
+                'user_purposelness' => 'n/a',
+            ];
+        }
+
         $data['QuantityInGroup'] = $usersQuantityInGroup['quantityInGroup'];
-        $isRatingLessThanMin     = $usersQuantityInGroup['isTheRatingLessThanMin'];
         
-        $result['better'] = GetWorserUsersTrait::getData($data, $usersQuantityInGroup, $isRatingLessThanMin);
+        $result['better'] = GetWorserUsersTrait::getData($data, $usersQuantityInGroup);
         $result['more_pesponsible'] = GetUserResponsibilityTrait::getData($data, $usersQuantityInGroup);
         $result['user_purposelness'] = GetUserPurposelness::getData($data, $usersQuantityInGroup);
         //die(var_dump($result));

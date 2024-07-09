@@ -10,10 +10,8 @@ use Illuminate\Support\Facades\Log;
 trait GetWorserUsersTrait
 {
     //Have to count % who didn`t create plan for today in user`s group
-    function getData(array $data, array $ratingData, bool $isRatingLessThanMin)
+    function getData(array $data, array $ratingData)
     {
-        // dd($data, $ratingData);
-       
         $results = [];
         if ($ratingData['group']) {
             Log::info(json_encode($ratingData));
@@ -34,10 +32,6 @@ trait GetWorserUsersTrait
         }
         //Log::info(($results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'])  ); /// $results['QuantityInGroup']) * 100 
         Log::info( $data['QuantityInGroup']);
-
-        if ($isRatingLessThanMin) {
-            return 'n/a';
-        }
         
         $persentOfWorserUser = (($results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'])
                      / $results['QuantityInGroup']) * 100;
