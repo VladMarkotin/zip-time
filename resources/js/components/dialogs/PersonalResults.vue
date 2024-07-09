@@ -6,9 +6,9 @@
       <template v-slot:title> Your current personal results:</template>
 
       <v-card-text>
-        For now you are better than <strong>{{better_then}}%</strong>  of users in your group<br />
-       For now you are responsible on {{more_pesponsible}}% <br />   <!--It has to be more_responsible than % of users in the group -->
-         For now Quipl estimate your purposefulness as {{user_purposelness}}% among users in your group<br/>
+        <p v-html="betterThen"></p>
+        For now you are responsible on {{more_pesponsible}}% <br />   <!--It has to be more_responsible than % of users in the group -->
+        For now Quipl estimate your purposefulness as {{user_purposelness}}% among users in your group<br/>
         <a href="#">How do we get that results?</a>
       </v-card-text>
     </v-card>
@@ -32,11 +32,18 @@
             //     alert('test');
             // }
           },
+          computed: {
+            betterThen() {
+              if (this.better_then === 'n/a') {
+                return 'Your rating is currently not high enough to compare with other users.'
+              }
+              return `For now you are better than <strong>${this.better_then}%</strong>  of users in your group<br />`
+            }
+          },
           async created() {
             //alert('PersonalResults')
               await axios.post('/get-results')
               .then((response) => {
-                  console.log(response);
                   //this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
                   this.better_then = response.data.better
                   this.more_pesponsible = response.data.more_pesponsible.toFixed(2);
