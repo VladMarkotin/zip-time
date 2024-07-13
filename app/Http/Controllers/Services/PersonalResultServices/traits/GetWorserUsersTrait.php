@@ -14,31 +14,30 @@ trait GetWorserUsersTrait
     public static function getData(array $data, array $ratingData)
     {
         $results = [];
-        if ($ratingData['group']) {
-            Log::info(json_encode($ratingData));
+        $results['QuantityInGroup'] = $ratingData['quntityInGroupExcludingOneself'] ?? 0;
+        $isValidDailyPlan = self::getStatusOfTheDailyPlanIsValid();
+    
+        if (!empty($ratingData['group'])) {
             $results['QuantityOfUsersFailed'] = self::getQuantityOfUsersFailed($data, $ratingData);
-            // $results['QuantityOfUsersWithPlan'] = self::getQuantityOfUsersWithPlan($data, $ratingData);
             $results['QuantityOfUsersWithNoPlan'] = self::getQuantityOfUsersWithNoPlan($data, $ratingData);
-            $results['QuantityInGroup'] = $data['QuantityInGroup'];
-            
-            if ($results['QuantityInGroup']) {
-                $persentOfWorserUser = (($results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'])
-                     / $results['QuantityInGroup']) * 100;
-                return ($persentOfWorserUser);
-            }
         } else {
             $results['QuantityOfUsersFailed'] = self::getQuantityOfUsersFailed($data, []);
-            // $results['QuantityOfUsersWithPlan'] = self::getQuantityOfUsersWithPlan($data, []);
             $results['QuantityOfUsersWithNoPlan'] = self::getQuantityOfUsersWithNoPlan($data, []);
-            $results['QuantityInGroup'] = $data['QuantityInGroup'];
         }
-        //Log::info(($results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'])  ); /// $results['QuantityInGroup']) * 100 
-        Log::info( $data['QuantityInGroup']);
         
-        $persentOfWorserUser = (($results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'])
-                     / $results['QuantityInGroup']) * 100;
-                
-        return ($persentOfWorserUser);
+        $totalUsers = $results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'];
+        
+        if ($isValidDailyPlan && $results['QuantityInGroup'] > 0) {
+            $percentOfWorseUsers = ($totalUsers / $results['QuantityInGroup']) * 100;
+        } else {
+            $percentOfWorseUsers = 0;
+        }
+    
+        Log::info("Total Users: " . $totalUsers);
+        Log::info("Quantity In Group: " . $results['QuantityInGroup']);
+        Log::info("Percent of Worse Users: " . $percentOfWorseUsers);
+    
+        return $percentOfWorseUsers;
     }
     
     public static function getQuantityOfUsersWithNoPlan(array $data, array $ratingData)
@@ -87,7 +86,9 @@ trait GetWorserUsersTrait
     
     public static function getQuantityOfUsersFailed(array $data, array $ratingData)
     {
-        $date = Carbon::today()->toDateString();
+        $date   = Carbon::today()->toDateString();
+        $userId = Auth::id();
+
         if ($ratingData) {
 
             /**
@@ -97,9 +98,10 @@ trait GetWorserUsersTrait
              */
             $query = "SELECT COUNT(timetables.id) quantity_fail FROM `timetables` JOIN users 
                         ON timetables.user_id = users.id WHERE users.rating
-                         BETWEEN ".$ratingData['group']->from ." AND ". $ratingData['group']->to ." 
-                          AND timetables.date = '$date'
-                          AND timetables.day_status=-1 GROUP BY day_status;";
+                        BETWEEN ".$ratingData['group']->from ." AND ". $ratingData['group']->to ." 
+                        AND users.id != $userId
+                        AND timetables.date = '$date'
+                        AND timetables.day_status=-1 GROUP BY day_status;";
             $result = DB::select($query);
             
             return (isset($result[0]) ? $result[0]->quantity_fail : 0);
@@ -107,14 +109,27 @@ trait GetWorserUsersTrait
 
         $query = "SELECT COUNT(timetables.id) quantity_fail FROM `timetables` JOIN users 
                     ON timetables.user_id = users.id WHERE timetables.date = '$date'
-                      AND timetables.day_status=-1 GROUP BY day_status;";
+                    AND users.id != $userId
+                    AND timetables.day_status=-1 GROUP BY day_status;";
         $result = DB::select($query);
         
         return (isset($result[0]) ? $result[0]->quantity_fail : 0);
     }
 
-    private static function getPersentOfWorserUser()
+    private static function getStatusOfTheDailyPlanIsValid()
     {
+        $date   = Carbon::today()->toDateString();
+        $userId = Auth::id();
 
+        $query = "SELECT COUNT(u.id) quantity 
+                FROM `users` u 
+                LEFT JOIN timetables t ON u.id = t.user_id AND t.date = '$date' 
+                WHERE t.user_id = $userId
+                AND t.day_status !=-1
+                ";
+        $result = DB::select($query);
+        
+        $quantity = $result[0]->quantity;
+        return $quantity > 0;
     }
 }

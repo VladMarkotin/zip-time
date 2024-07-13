@@ -13,26 +13,31 @@ trait UserGroupTrait
     public static function countUsersInGroupToday($data, $config)
     {
         $group = self::defineRateGroup($data, $config);
-        $isRatingLessThanMin = false;
-        $quantityInGroup     = null;
+        $isRatingLessThanMin       = false;
+        $quantityInGroup           = null;
+        $quantityInGroupExcOneself = null;
         $userId              = Auth::id();
 
         if (isset($group->from) && $group->from === -INF) {
             $isRatingLessThanMin = true;
             $group = null;
         } elseif (isset($group->to) && $group->to === INF) {
-            $quantityInGroup = User::where('id', '!=', $userId)->count();
+            $quantityInGroup           = User::all()->count();
+            $quantityInGroupExcOneself = User::where('id', '!=', $userId)->count();
             $group = null;
         } else {
-            $quantityInGroup = User::whereBetween('rating', [$group->from, $group->to])
-                                    ->where('id', '!=', $userId)
-                                    ->count();
+            $quantityInGroup           = User::whereBetween('rating', [$group->from, $group->to])
+                                        ->count();
+            $quantityInGroupExcOneself = User::whereBetween('rating', [$group->from, $group->to])
+                                        ->where('id', '!=', $userId)
+                                        ->count();
         }
 
         return([
-            'quantityInGroup'        => $quantityInGroup,
-            'group'                  => $group,
-            'isTheRatingLessThanMin' => $isRatingLessThanMin
+            'quantityInGroup'                => $quantityInGroup,
+            'quntityInGroupExcludingOneself' => $quantityInGroupExcOneself,
+            'group'                          => $group,
+            'isTheRatingLessThanMin'         => $isRatingLessThanMin
         ]);
 
     //    if (isset($group->from) && isset($group->to)) {
