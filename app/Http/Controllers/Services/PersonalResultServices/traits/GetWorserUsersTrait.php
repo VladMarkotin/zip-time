@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Services\PersonalResultServices\traits;
 
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use UserGroupTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -16,9 +17,10 @@ trait GetWorserUsersTrait
         if ($ratingData['group']) {
             Log::info(json_encode($ratingData));
             $results['QuantityOfUsersFailed'] = self::getQuantityOfUsersFailed($data, $ratingData);
-            $results['QuantityOfUsersWithPlan'] = self::getQuantityOfUsersWithPlan($data, $ratingData);
+            // $results['QuantityOfUsersWithPlan'] = self::getQuantityOfUsersWithPlan($data, $ratingData);
             $results['QuantityOfUsersWithNoPlan'] = self::getQuantityOfUsersWithNoPlan($data, $ratingData);
             $results['QuantityInGroup'] = $data['QuantityInGroup'];
+            
             if ($results['QuantityInGroup']) {
                 $persentOfWorserUser = (($results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'])
                      / $results['QuantityInGroup']) * 100;
@@ -26,7 +28,7 @@ trait GetWorserUsersTrait
             }
         } else {
             $results['QuantityOfUsersFailed'] = self::getQuantityOfUsersFailed($data, []);
-            $results['QuantityOfUsersWithPlan'] = self::getQuantityOfUsersWithPlan($data, []);
+            // $results['QuantityOfUsersWithPlan'] = self::getQuantityOfUsersWithPlan($data, []);
             $results['QuantityOfUsersWithNoPlan'] = self::getQuantityOfUsersWithNoPlan($data, []);
             $results['QuantityInGroup'] = $data['QuantityInGroup'];
         }
@@ -41,11 +43,27 @@ trait GetWorserUsersTrait
     
     public static function getQuantityOfUsersWithNoPlan(array $data, array $ratingData)
     {
-        $date = Carbon::today()->toDateString();
+        $date   = Carbon::today()->toDateString();
+        $userId = Auth::id();
+        
+        if ($ratingData) {
+            $query = "SELECT COUNT(u.id) quantity 
+                FROM `users` u 
+                LEFT JOIN timetables t ON u.id = t.user_id AND t.date = '$date' 
+                WHERE t.user_id IS NULL
+                AND u.id != $userId
+                AND u.rating
+                BETWEEN ".$ratingData['group']->from ." AND ". $ratingData['group']->to;
+            $result = DB::select($query);
+
+            return (isset($result[0]) ? $result[0]->quantity : 0);
+        }
+
         $query = "SELECT COUNT(u.id) quantity 
             FROM `users` u 
             LEFT JOIN timetables t ON u.id = t.user_id AND t.date = '$date' 
-            WHERE t.user_id IS NULL";
+            WHERE t.user_id IS NULL
+            AND u.id !=" . $userId;
         $result = DB::select($query);
         
         return (isset($result[0]) ? $result[0]->quantity : 0);
@@ -93,5 +111,10 @@ trait GetWorserUsersTrait
         $result = DB::select($query);
         
         return (isset($result[0]) ? $result[0]->quantity_fail : 0);
+    }
+
+    private static function getPersentOfWorserUser()
+    {
+
     }
 }

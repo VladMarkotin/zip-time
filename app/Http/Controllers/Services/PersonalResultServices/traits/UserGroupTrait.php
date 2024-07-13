@@ -14,16 +14,19 @@ trait UserGroupTrait
     {
         $group = self::defineRateGroup($data, $config);
         $isRatingLessThanMin = false;
-        $quantityInGroup = null;
+        $quantityInGroup     = null;
+        $userId              = Auth::id();
 
         if (isset($group->from) && $group->from === -INF) {
             $isRatingLessThanMin = true;
             $group = null;
         } elseif (isset($group->to) && $group->to === INF) {
-            $quantityInGroup = User::all()->count();
+            $quantityInGroup = User::where('id', '!=', $userId)->count();
             $group = null;
         } else {
-            $quantityInGroup = User::whereBetween('rating', [$group->from, $group->to])->count();
+            $quantityInGroup = User::whereBetween('rating', [$group->from, $group->to])
+                                    ->where('id', '!=', $userId)
+                                    ->count();
         }
 
         return([
