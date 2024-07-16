@@ -143,7 +143,11 @@ trait GetWorserUsersTrait
     {
         $currentUserRating = $data['current_rate'];
         $date = Carbon::today()->toDateString();
-
+        $userId = Auth::id();
+        //Если пользователь создал план на день и он не провален, 
+        // то верну из этого метода колличество других юзеров с существуюшим планом и непроваленным днем 
+        // что бы несправившееся пользователи не задваивались
+        // так как в методе getData колличество неспрашившихся пользователей вернется из других методов
         if ($isValidDailyPlan) {
             $query = "SELECT COUNT(u.id) quantity FROM `users` u
                     JOIN timetables t ON u.id = t.user_id
@@ -153,20 +157,21 @@ trait GetWorserUsersTrait
             // $query = "SELECT COUNT(u.id) quantity FROM `users` u
             //         WHERE u.rating < $currentUserRating";
 
-            $query ="SELECT COUNT(u.id) AS quantity
+            $query = "SELECT COUNT(u.id) AS quantity
             FROM users u
-            WHERE EXISTS (
-                SELECT 1
-                FROM timetables t
-                WHERE u.id = t.user_id
-                AND t.date = '$date'
-                AND t.day_status = -1
-            ) OR NOT EXISTS (
-                SELECT 1
-                FROM timetables t2
-                WHERE u.id = t2.user_id
-                AND t2.date = '$date'
-            )
+            WHERE u.id != $userId
+            AND (EXISTS (
+                    SELECT 1
+                    FROM timetables t
+                    WHERE u.id = t.user_id
+                    AND t.date = '$date'
+                    AND t.day_status = -1
+                ) OR NOT EXISTS (
+                    SELECT 1
+                    FROM timetables t2
+                    WHERE u.id = t2.user_id
+                    AND t2.date = '$date'
+                ))
             AND u.rating < $currentUserRating";
         }
         
@@ -178,7 +183,6 @@ trait GetWorserUsersTrait
         }
 
         $result = DB::select($query);
-        dd($result);
 
         return (isset($result[0]) ? $result[0]->quantity : 0);
     }
