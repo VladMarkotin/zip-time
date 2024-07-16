@@ -18,14 +18,16 @@ trait GetWorserUsersTrait
         $isValidDailyPlan = self::getStatusOfTheDailyPlanIsValid();
     
         if (!empty($ratingData['group'])) {
-            $results['QuantityOfUsersFailed'] = self::getQuantityOfUsersFailed($data, $ratingData);
-            $results['QuantityOfUsersWithNoPlan'] = self::getQuantityOfUsersWithNoPlan($data, $ratingData);
+            $results['QuantityOfUsersFailed']          = self::getQuantityOfUsersFailed($data, $ratingData);
+            $results['QuantityOfUsersWithNoPlan']      = self::getQuantityOfUsersWithNoPlan($data, $ratingData);
+            $results['QuantityOfUsersWithLowerRating'] = self::getQuantityOfUsersWithLowerRating($data, $ratingData);
         } else {
-            $results['QuantityOfUsersFailed'] = self::getQuantityOfUsersFailed($data, []);
-            $results['QuantityOfUsersWithNoPlan'] = self::getQuantityOfUsersWithNoPlan($data, []);
+            $results['QuantityOfUsersFailed']          = self::getQuantityOfUsersFailed($data, []);
+            $results['QuantityOfUsersWithNoPlan']      = self::getQuantityOfUsersWithNoPlan($data, []);
+            $results['QuantityOfUsersWithLowerRating'] = self::getQuantityOfUsersWithLowerRating($data, $ratingData);
         }
         
-        $totalUsers = $results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'];
+        $totalUsers = $results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'] + $results['QuantityOfUsersWithLowerRating'];
         
         if ($isValidDailyPlan && $results['QuantityInGroup'] > 0) {
             $percentOfWorseUsers = ($totalUsers / $results['QuantityInGroup']) * 100;
@@ -131,5 +133,27 @@ trait GetWorserUsersTrait
         
         $quantity = $result[0]->quantity;
         return $quantity > 0;
+    }
+
+    public static function getQuantityOfUsersWithLowerRating(array $data, array $ratingData)
+    {
+        $currentUserRating = $data['current_rate'];
+        $date = Carbon::today()->toDateString();
+
+        $query = "SELECT COUNT(u.id) quantity FROM `users` u
+                JOIN timetables t ON u.id = t.user_id
+                WHERE t.day_status IN (0,1,2,3) AND t.date = '$date'
+                AND u.rating < $currentUserRating";
+        
+        if ($ratingData && $ratingData['group']) {
+            $minRating = $ratingData['group']->from;
+            $maxRating = $ratingData['group']->to;
+            
+            $query .= " AND u.rating BETWEEN $minRating AND $maxRating";
+        }
+
+        $result = DB::select($query);
+
+        return (isset($result[0]) ? $result[0]->quantity : 0);
     }
 }
