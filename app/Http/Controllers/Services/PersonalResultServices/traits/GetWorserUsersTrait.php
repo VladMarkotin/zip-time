@@ -20,18 +20,22 @@ trait GetWorserUsersTrait
         if (!empty($ratingData['group'])) {
             $results['QuantityOfUsersFailed']          = self::getQuantityOfUsersFailed($data, $ratingData);
             $results['QuantityOfUsersWithNoPlan']      = self::getQuantityOfUsersWithNoPlan($data, $ratingData);
-            $results['QuantityOfUsersWithLowerRating'] = self::getQuantityOfUsersWithLowerRating($data, $ratingData);
+            $results['QuantityOfUsersWithLowerRating'] = self::getQuantityOfUsersWithLowerRating($data, $isValidDailyPlan, $ratingData);
         } else {
             $results['QuantityOfUsersFailed']          = self::getQuantityOfUsersFailed($data, []);
             $results['QuantityOfUsersWithNoPlan']      = self::getQuantityOfUsersWithNoPlan($data, []);
-            $results['QuantityOfUsersWithLowerRating'] = self::getQuantityOfUsersWithLowerRating($data, $ratingData);
+            $results['QuantityOfUsersWithLowerRating'] = self::getQuantityOfUsersWithLowerRating($data, $isValidDailyPlan, []);
         }
         
-        $totalUsers = $results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'] + $results['QuantityOfUsersWithLowerRating'];
-        
-        if ($isValidDailyPlan && $results['QuantityInGroup'] > 0) {
+        if ($results['QuantityInGroup'] > 0) {
+            if ($isValidDailyPlan) {
+                $totalUsers = $results['QuantityOfUsersFailed'] + $results['QuantityOfUsersWithNoPlan'] + $results['QuantityOfUsersWithLowerRating'];
+            } else {
+                $totalUsers = $results['QuantityOfUsersWithLowerRating'];
+            }
             $percentOfWorseUsers = ($totalUsers / $results['QuantityInGroup']) * 100;
         } else {
+            $totalUsers = $results['QuantityOfUsersWithLowerRating'];
             $percentOfWorseUsers = 0;
         }
     
@@ -135,15 +139,36 @@ trait GetWorserUsersTrait
         return $quantity > 0;
     }
 
-    public static function getQuantityOfUsersWithLowerRating(array $data, array $ratingData)
+    public static function getQuantityOfUsersWithLowerRating(array $data, bool $isValidDailyPlan, array $ratingData)
     {
         $currentUserRating = $data['current_rate'];
         $date = Carbon::today()->toDateString();
 
-        $query = "SELECT COUNT(u.id) quantity FROM `users` u
-                JOIN timetables t ON u.id = t.user_id
-                WHERE t.day_status IN (0,1,2,3) AND t.date = '$date'
-                AND u.rating < $currentUserRating";
+        if ($isValidDailyPlan) {
+            $query = "SELECT COUNT(u.id) quantity FROM `users` u
+                    JOIN timetables t ON u.id = t.user_id
+                    WHERE u.rating < $currentUserRating
+                    AND t.day_status IN (0,1,2,3) AND t.date = '$date'";
+        } else {
+            // $query = "SELECT COUNT(u.id) quantity FROM `users` u
+            //         WHERE u.rating < $currentUserRating";
+
+            $query ="SELECT COUNT(u.id) AS quantity
+            FROM users u
+            WHERE EXISTS (
+                SELECT 1
+                FROM timetables t
+                WHERE u.id = t.user_id
+                AND t.date = '$date'
+                AND t.day_status = -1
+            ) OR NOT EXISTS (
+                SELECT 1
+                FROM timetables t2
+                WHERE u.id = t2.user_id
+                AND t2.date = '$date'
+            )
+            AND u.rating < $currentUserRating";
+        }
         
         if ($ratingData && $ratingData['group']) {
             $minRating = $ratingData['group']->from;
@@ -153,6 +178,7 @@ trait GetWorserUsersTrait
         }
 
         $result = DB::select($query);
+        dd($result);
 
         return (isset($result[0]) ? $result[0]->quantity : 0);
     }
