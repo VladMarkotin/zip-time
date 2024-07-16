@@ -154,8 +154,8 @@ trait GetWorserUsersTrait
                     WHERE u.rating < $currentUserRating
                     AND t.day_status IN (0,1,2,3) AND t.date = '$date'";
         } else {
-            // $query = "SELECT COUNT(u.id) quantity FROM `users` u
-            //         WHERE u.rating < $currentUserRating";
+            // Если пользователь не создал план на день или провалил его
+            // То возвращаю все пользователи из его группы, которые так же не создали план или провалили его
 
             $query = "SELECT COUNT(u.id) AS quantity
             FROM users u
