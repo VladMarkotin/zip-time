@@ -11,25 +11,22 @@ trait UserAchievmentsTrait
 
     public function getData(array $data, array $configs)
     {
+        $result = [
+            'better'            => null,
+            'more_pesponsible'  => null,
+            'user_purposelness' => null,
+            'ratingData'        => null,
+        ];
         //get user`s quantity in group according to user`s rate 
         $usersQuantityInGroup = UserGroupTrait::countUsersInGroupToday($data, $configs);
-        //have to count % user`s who are worser
-        //die(var_dump($usersQuantityInGroup));
-
-        if ($usersQuantityInGroup['isTheRatingLessThanMin']) {
-            return [
-                'better'            => 'n/a',
-                'more_pesponsible'  => 'n/a',
-                'user_purposelness' => 'n/a',
-            ];
-        }
+        $result['ratingData'] = $usersQuantityInGroup['ratingData'];
 
         $data['QuantityInGroup'] = $usersQuantityInGroup['quantityInGroup'];
-        
-        $result['better'] = GetWorserUsersTrait::getData($data, $usersQuantityInGroup);
-        $result['more_pesponsible'] = GetUserResponsibilityTrait::getData($data, $usersQuantityInGroup);
+
+        $result['better']            = GetWorserUsersTrait::getData($data, $usersQuantityInGroup);
+        $result['more_pesponsible']  = GetUserResponsibilityTrait::getData($data, $usersQuantityInGroup);
         $result['user_purposelness'] = GetUserPurposelness::getData($data, $usersQuantityInGroup);
-        //die(var_dump($result));
+        
         return ($result);
     }
 } 

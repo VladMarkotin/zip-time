@@ -13,6 +13,10 @@ trait GetWorserUsersTrait
     //Have to count % who didn`t create plan for today in user`s group
     public static function getData(array $data, array $ratingData)
     {
+        if($ratingData['isTheRatingLessThanMin']) {
+            return 'n/a';
+        }
+        
         $results = [];
         $results['QuantityInGroup'] = $ratingData['quntityInGroupExcludingOneself'] ?? 0;
         $isValidDailyPlan = self::getStatusOfTheDailyPlanIsValid();
