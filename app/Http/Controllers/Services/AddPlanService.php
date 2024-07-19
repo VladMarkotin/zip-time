@@ -100,7 +100,7 @@ class AddPlanService
     private function checkTask($task)
     {
         $task = $this->getNumValuesOfStrValues($task);
-        $flag["taskName"] = $this->checkName(isset($task['taskName'])  ? $task['taskName']  : '');
+        $flag["taskName"] = $this->checkName(isset($task['taskName'])  ? $task['taskName']  : '')['flag'];
         $flag["details"] = $this->checkDetails(isset($task['details']) ? $task['details']   : '');
         $flag["time"] = $this->checkTime(isset($task['time'])          ? $task['time']      : '');
         $flag["notes"] = $this->checkNote(isset($task['notes'])        ? $task['notes']     : '');
@@ -168,10 +168,15 @@ class AddPlanService
     public function checkName($task)
     {
         if( strlen($task) > 3 && (strlen($task) < 255) ){
-            return true;
+            return ['flag' => true,];
         }
 
-        return false;
+        $transformedTask = strlen($task) < 30 ? $task :  substr($task, 0, 29) . '...'; 
+
+        return [
+            'flag' => false, 
+            'message' => "The name of your task must contain between 4 and 254 characters, inclusive. Unable to use task name: $transformedTask"
+        ];
     }
 
     private function checkDetails($task)

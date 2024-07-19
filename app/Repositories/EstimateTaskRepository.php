@@ -110,7 +110,7 @@ class EstimateTaskRepository
             $this->complexUpdate($dataForTasks, $dataForNotes);
 
             //test. Delete this line
-            $ch = ChallengeModel::find(1);
+            //$ch = ChallengeModel::find(1);
             //FinishDayEvent::dispatch($ch);
             //end test
         }
