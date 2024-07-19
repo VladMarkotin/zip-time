@@ -10,6 +10,7 @@
           <li :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThen"></li>
           <li v-html="moreResponsible"></li>
           <li v-html="userPurposelness"></li>
+          <li v-html="betterThenPurposelness"></li>
         </ul>
         
         <a href="#">How do we get that results?</a>
@@ -27,6 +28,7 @@
               better_then: 0,
               more_pesponsible: 0,
               user_purposelness: 0,
+              better_then_purposelness: 0,
               ratingData: {},
           }),
           methods :
@@ -55,22 +57,28 @@
 
               }
             },
+
             moreResponsible() {
               return this.more_pesponsible !== 'n/a'
                 ? `For now you are responsible on <strong>${this.more_pesponsible}%</strong>`
                 : ''
             },
+
             userPurposelness() {
+              return `For now your purposefulness is <strong>${this.user_purposelness}%</strong>`;
+            },
+
+            betterThenPurposelness() {
               const {ratingStatus} = this.ratingData;
               switch (ratingStatus) {
                 case 'lessThatMin':
                   return '';
                 case 'normal':
-                  return `For now Quipl estimate your purposefulness as <strong>${this.user_purposelness}%</strong> among users in your group`
+                  return `For now Quipl estimate your purposefulness as <strong>${this.better_then_purposelness}%</strong> among users in your group`
                 case 'moreThenMax':
-                  return `For now Quipl estimate your purposefulness as <strong>${this.user_purposelness}%</strong> among <strong>all</strong> users`
+                  return `For now Quipl estimate your purposefulness as <strong>${this.better_then_purposelness}%</strong> among <strong>all</strong> users`
                 default:
-                  return `For now Quipl estimate your purposefulness as <strong>${this.user_purposelness}%</strong> among users in your group`
+                  return `For now Quipl estimate your purposefulness as <strong>${this.better_then_purposelness}%</strong> among users in your group`
               }
             }
           },
@@ -81,7 +89,8 @@
                   //this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
                   this.better_then = response.data.better
                   this.more_pesponsible = response.data.more_pesponsible;
-                  this.user_purposelness = response.data.user_purposelness
+                  this.user_purposelness = response.data.user_purposelness;
+                  this.better_then_purposelness = response.data.better_then_purposelness
 
                   this.setRatingData(response.data.ratingData);
               })

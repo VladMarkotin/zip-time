@@ -18,9 +18,9 @@ trait GetUserPurposelness
      */
     public static function getData(array $data, array $configs)
     {
-        if($configs['isTheRatingLessThanMin']) {
-            return 'n/a';
-        }
+        // if($configs['isTheRatingLessThanMin']) {
+        //     return 'n/a';
+        // }
 
         if ($configs['group']) {            
             $usersPurposelnessData = self::getQuantityOfAllDays($configs);
@@ -32,9 +32,9 @@ trait GetUserPurposelness
             $usersPurposelnessData = self::getQuantityOfFailedDays([], $usersPurposelnessData);
         }
         $usersPurposelnessData = self::getPurposelness($usersPurposelnessData);
-        $betterThen            = self::calculatePurposelnessRanking($usersPurposelnessData);
+        $usersPurposelResult   = self::calculatePurposelnessRanking($usersPurposelnessData, $configs);
         
-        return $betterThen;
+        return $usersPurposelResult;
     }
 
     public static function getQuantityOfWorkDays(array $configs, array $usersPurposelnessData)
@@ -117,26 +117,42 @@ trait GetUserPurposelness
         return $usersPurposelnessData;
     }
 
-    private static function calculatePurposelnessRanking(array $usersPurposelnessData)
+    private static function calculatePurposelnessRanking(array $usersPurposelnessData, array $configs)
     {
-        $getCurrentUserPurposelness = function(array $usersPurposelnessData) {
+        $getCurrentUserPurposelness = function($usersPurposelnessData) {
             $currentUserId           = Auth::id();
 
             foreach ($usersPurposelnessData as $userPurposelnessData) {
                 if ($userPurposelnessData['user_id'] === $currentUserId) return $userPurposelnessData['purposelness'];
             }
         };
+        
+        $getBetterThenPurposelness = function($usersPurposelnessData, $configs, $currentUserPurposelness) {
+            if ($configs['isTheRatingLessThanMin']) {
+                return 'n/a';
+            }
+            $countBetterUsers      = 0;
+            $totalUsers            = count($usersPurposelnessData) - 1;
+
+            if ($totalUsers === 0) {
+                return 0;
+            }
+    
+            foreach ($usersPurposelnessData as $userPurposelnessData) {
+                if ($userPurposelnessData['purposelness'] < $currentUserPurposelness) {
+                    $countBetterUsers++;
+                }
+            }
+            $percentage             = ($countBetterUsers / $totalUsers) * 100;
+            return round($percentage, 2);
+        };
 
         $currentUserPurposelness = $getCurrentUserPurposelness($usersPurposelnessData);
-        $countBetterUsers      = 0;
-        $totalUsers            = count($usersPurposelnessData);
-
-        foreach ($usersPurposelnessData as $userPurposelnessData) {
-            if ($userPurposelnessData['purposelness'] < $currentUserPurposelness) {
-                $countBetterUsers++;
-            }
-        }
-        $percentage = ($countBetterUsers / $totalUsers) * 100;
-        return round($percentage, 2);
+        $betterThenPurposelness  = $getBetterThenPurposelness($usersPurposelnessData, $configs, $currentUserPurposelness);
+        
+        return [
+            'user_purposelness'        => $currentUserPurposelness, 
+            'better_then_Purposelness' => $betterThenPurposelness
+        ];
     }   
 }

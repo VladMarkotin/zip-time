@@ -12,21 +12,30 @@ trait UserAchievmentsTrait
     public function getData(array $data, array $configs)
     {
         $result = [
-            'better'            => null,
-            'more_pesponsible'  => null,
-            'user_purposelness' => null,
-            'ratingData'        => null,
+            'better'                   => null,
+            'more_pesponsible'         => null,
+            'user_purposelness'        => null,
+            'better_then_purposelness' => null,
+            'ratingData'               => null,
         ];
         //get user`s quantity in group according to user`s rate 
         $usersQuantityInGroup = UserGroupTrait::countUsersInGroupToday($data, $configs);
-        $result['ratingData'] = $usersQuantityInGroup['ratingData'];
 
         $data['QuantityInGroup'] = $usersQuantityInGroup['quantityInGroup'];
 
-        $result['better']            = GetWorserUsersTrait::getData($data, $usersQuantityInGroup);
-        $result['more_pesponsible']  = GetUserResponsibilityTrait::getData($data, $usersQuantityInGroup);
-        $result['user_purposelness'] = GetUserPurposelness::getData($data, $usersQuantityInGroup);
+        $better                      = GetWorserUsersTrait::getData($data, $usersQuantityInGroup);
+        $more_pesponsible            = GetUserResponsibilityTrait::getData($data, $usersQuantityInGroup);
+        [
+            'user_purposelness'        => $user_purposelness, 
+            'better_then_Purposelness' => $better_then_Purposelness
+        ]                            = GetUserPurposelness::getData($data, $usersQuantityInGroup);
         
-        return ($result);
+        $result['better']                   = $better;
+        $result['more_pesponsible']         = $more_pesponsible;
+        $result['user_purposelness']        = $user_purposelness;
+        $result['better_then_purposelness'] = $better_then_Purposelness;
+        $result['ratingData']               = $usersQuantityInGroup['ratingData'];
+        
+        return $result;
     }
 } 
