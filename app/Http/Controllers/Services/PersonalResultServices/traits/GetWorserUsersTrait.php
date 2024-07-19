@@ -47,7 +47,7 @@ trait GetWorserUsersTrait
         Log::info("Quantity In Group: " . $results['QuantityInGroup']);
         Log::info("Percent of Worse Users: " . $percentOfWorseUsers);
     
-        return $percentOfWorseUsers;
+        return round($percentOfWorseUsers, 2);
     }
     
     public static function getQuantityOfUsersWithNoPlan(array $data, array $ratingData)

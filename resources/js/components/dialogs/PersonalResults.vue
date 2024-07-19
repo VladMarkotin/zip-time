@@ -57,13 +57,21 @@
             },
             moreResponsible() {
               return this.more_pesponsible !== 'n/a'
-                ? `For now you are responsible on <strong>${this.more_pesponsible.toFixed(2)}%</strong>`
+                ? `For now you are responsible on <strong>${this.more_pesponsible}%</strong>`
                 : ''
             },
             userPurposelness() {
-              return this.user_purposelness !== 'n/a'
-                ? `For now Quipl estimate your purposefulness as <strong>${this.user_purposelness}%</strong> among users in your group`
-                : ''
+              const {ratingStatus} = this.ratingData;
+              switch (ratingStatus) {
+                case 'lessThatMin':
+                  return '';
+                case 'normal':
+                  return `For now Quipl estimate your purposefulness as <strong>${this.user_purposelness}%</strong> among users in your group`
+                case 'moreThenMax':
+                  return `For now Quipl estimate your purposefulness as <strong>${this.user_purposelness}%</strong> among <strong>all</strong> users`
+                default:
+                  return `For now Quipl estimate your purposefulness as <strong>${this.user_purposelness}%</strong> among users in your group`
+              }
             }
           },
           async created() {

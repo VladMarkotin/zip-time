@@ -18,8 +18,9 @@ trait GetUserResponsibilityTrait
          */
         $allUserTasks = GetUserResponsibilityTrait::getAllUserTasks(Auth::id(), $configs);
         $completedUserTasks = GetUserResponsibilityTrait::completedUserTasks(Auth::id(), $configs);
+        $percentage = $completedUserTasks / $allUserTasks * 100;
         
-        return ($allUserTasks) ? round( $completedUserTasks / $allUserTasks, 2) * 100 : 0;
+        return ($allUserTasks) ?  round($percentage, 2) : 0;
     }
 
     public static function getAllUserTasks($id, $configs) //configs on future

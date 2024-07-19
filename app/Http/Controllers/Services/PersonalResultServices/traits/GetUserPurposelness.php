@@ -18,8 +18,10 @@ trait GetUserPurposelness
      */
     public static function getData(array $data, array $configs)
     {
-        // Log::info(json_encode($configs));
-        // die;
+        if($configs['isTheRatingLessThanMin']) {
+            return 'n/a';
+        }
+
         if ($configs['group']) {            
             $usersPurposelnessData = self::getQuantityOfAllDays($configs);
             $usersPurposelnessData = self::getQuantityOfWorkDays($configs, $usersPurposelnessData);
