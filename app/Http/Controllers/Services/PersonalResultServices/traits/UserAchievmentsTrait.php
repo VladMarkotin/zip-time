@@ -20,6 +20,7 @@ trait UserAchievmentsTrait
         $result['more_pesponsible'] = GetUserResponsibilityTrait::getData($data, $usersQuantityInGroup);
         $result['user_purposelness'] = GetUserPurposelness::getData($data, $usersQuantityInGroup);
         //die(var_dump($result));
+        
         return ($result);
     }
 } 
