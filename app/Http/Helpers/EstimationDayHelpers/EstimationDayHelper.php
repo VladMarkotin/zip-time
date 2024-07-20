@@ -30,7 +30,7 @@ class EstimationDayHelper
         //Log::info(json_encode($personalConfigs));
         // die;
         //Final mark for comare - Either Default or Personal
-        return ( ($personalConfigs) ?: $defaultConfigs->cardRules[0]->minFinalMark);
+        return $defaultConfigs->cardRules[0]->minFinalMark ?: $personalConfigs;
     }
 
     
