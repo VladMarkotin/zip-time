@@ -53,6 +53,7 @@ trait GetWorserUsersTrait
         return (isset($result[0]) ? $result[0]->quantity : 0);
     }
     
+    
     function getQuantityOfUsersFailed(array $data, array $ratingData)
     {
         /**
