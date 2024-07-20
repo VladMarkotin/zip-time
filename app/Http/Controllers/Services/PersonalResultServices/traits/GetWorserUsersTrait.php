@@ -42,11 +42,7 @@ trait GetWorserUsersTrait
             $totalUsers = $results['QuantityOfUsersWithLowerRating'];
             $percentOfWorseUsers = 0;
         }
-    
-        Log::info("Total Users: " . $totalUsers);
-        Log::info("Quantity In Group: " . $results['QuantityInGroup']);
-        Log::info("Percent of Worse Users: " . $percentOfWorseUsers);
-    
+
         return round($percentOfWorseUsers, 2);
     }
     
