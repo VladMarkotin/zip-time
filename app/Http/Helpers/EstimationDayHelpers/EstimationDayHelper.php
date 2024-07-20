@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Http\Helpers\GeneralHelpers\GeneralHelper;
+use App\Models\PersonalConfigs;
+use App\Models\DefaultConfigs;
 use Illuminate\Support\Facades\Log;
 
 class EstimationDayHelper
@@ -19,6 +21,16 @@ class EstimationDayHelper
             return ($result[0]->result < 99 && !is_null($result[0]->result)
                 ? false
                 : true);
+    }
+
+    public static function getMinFinalMark()
+    {
+        $defaultConfigs = json_decode(DefaultConfigs::select('config_data')->where('config_block_id', 2)->get()->toArray()[0]['config_data']);
+        $personalConfigs = PersonalConfigs::getOptionViaIndex('minFinalMark');
+        //Log::info(json_encode($personalConfigs));
+        // die;
+        //Final mark for comare - Either Default or Personal
+        return $defaultConfigs->cardRules[0]->minFinalMark ?: $personalConfigs;
     }
 
     

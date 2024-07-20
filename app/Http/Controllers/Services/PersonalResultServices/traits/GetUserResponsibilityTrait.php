@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Services\PersonalResultServices\traits;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Services\Configs\DefaultConfigs;
+use Illuminate\Support\Facades\Log;
 
 trait GetUserResponsibilityTrait
 {
-    public function getData(array $data, array $configs)
+    public static function getData(array $data, array $configs)
     {
         /**
          * Responsibility:
@@ -16,19 +18,22 @@ trait GetUserResponsibilityTrait
          */
         $allUserTasks = GetUserResponsibilityTrait::getAllUserTasks(Auth::id(), $configs);
         $completedUserTasks = GetUserResponsibilityTrait::completedUserTasks(Auth::id(), $configs);
+        $percentage = $completedUserTasks / $allUserTasks * 100;
         
-        return ($allUserTasks) ? round( $completedUserTasks / $allUserTasks, 2) * 100 : 0;
+        return ($allUserTasks) ?  round($percentage, 2) : 0;
     }
 
-    public function getAllUserTasks($id, $configs) //configs on future
+    public static function getAllUserTasks($id, $configs) //configs on future
     {
         return DB::select('SELECT COUNT(t1.id) all_tasks FROM `tasks` t1 JOIN timetables t2 ON t1.timetable_id = t2.id WHERE t2.user_id = '.$id)[0]
         ->all_tasks;
     }
 
-    public function completedUserTasks($id, $configs) //configs on future
+    public static function completedUserTasks($id, $configs) //configs on future
     {
-        return DB::select("SELECT COUNT(t1.id) completed_tasks FROM `tasks` t1 JOIN timetables t2 ON t1.timetable_id = t2.id WHERE t2.user_id = $id AND t1.mark >= 50")[0]
+        $minMark = DefaultConfigs::getOptionViaIndex('minMark');
+
+        return DB::select("SELECT COUNT(t1.id) completed_tasks FROM `tasks` t1 JOIN timetables t2 ON t1.timetable_id = t2.id WHERE t2.user_id = $id AND t1.mark >= $minMark")[0]
         ->completed_tasks;
     }
 }
