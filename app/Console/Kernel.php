@@ -33,9 +33,10 @@ class Kernel extends ConsoleKernel
             
         $schedule->command('push:notifications') 
             ->timezone('Europe/Minsk')
-            //->twiceDaily(9, 21)
-            ->everyMinute()
-            ->appendOutputTo(storage_path('logs/inspire.log'));;
+            ->hourly();
+            //->everyMinute()
+            
+            //->appendOutputTo(storage_path('logs/inspire.log'));;
     }
 
 

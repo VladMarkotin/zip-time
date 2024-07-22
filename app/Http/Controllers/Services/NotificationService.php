@@ -19,14 +19,23 @@ use Minishlink\WebPush\Subscription;
 use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 use App\Http\Helpers\TimeHelpers\TimeHelper;  
+use App\Http\Helpers\TimeHelpers\RemindTimeHelper;  
 
 class NotificationService
 {
     private $timezoneList = [];
+
     private $tzList = [
-        '09' => [],
-        '19' => [],
+        RemindTimeHelper::MORNING_TIME => [],
+        RemindTimeHelper::EVENING_TIME => [],
     ];
+
+    public function __construct()
+    {
+        $this->tzList[RemindTimeHelper::MORNING_TIME] = TimeHelper::getTimezonesWithTime(RemindTimeHelper::MORNING_TIME);
+        $this->tzList[RemindTimeHelper::EVENING_TIME] = TimeHelper::getTimezonesWithTime(RemindTimeHelper::EVENING_TIME);
+        Log::info(json_encode($this->tzList));
+    }
 
     public function saveSubscription(Request $request)
     {
@@ -71,29 +80,64 @@ class NotificationService
     
     public function reminder(): void
     {
-        $this->timezoneList = TimeHelper::getTimezonesWithTime('21');
+        $this->timezoneList = TimeHelper::getTimezonesWithTime('20');
         $now = Carbon::now();
-        $time = \Carbon\Carbon::now()->setTimeFromTimeString('21:00');
-        /**
-         * timezones with current time
-         * if there is no plan
-         */
-        switch ($now < $time) {
-            case true:
-                $this->sendNotification($this->users_with_no_day_Plan(),  $this->reminderMessages()[0]);
-                break;
-            case false:
-                $this->sendNotification($this->users_with_unfinished_day_Plan(),  $this->reminderMessages()[1]);
-                break;
+        $time = \Carbon\Carbon::now()->setTimeFromTimeString('20:00');
+        $flag = 0;
+        foreach ($this->tzList as $time => $zones) {
+            if ($time == RemindTimeHelper::EVENING_TIME) {
+                $flag = 1;
+            }
+            
+            $this->sendNotification(
+                $this->defineNotificationGroup($this->tzList[$time], $flag),
+                $this->reminderMessages()[$time]
+            );
         }
     }
 
-    public function users_with_no_day_Plan()
+    public function defineNotificationGroup(array $zones = [], $flag = 0) //0-morning 1-evening
+    {
+        if (count($zones) > 0) {
+            $timezones = GeneralHelper::prepareSqlIn($zones);
+            $today = Carbon::today()->toDateString();
+
+            if (!$flag) {
+                $query = "SELECT users.id FROM users WHERE users.device_token IS NOT NULL 
+                            AND users.timezone IN ($timezones)
+                            AND
+                                users.id NOT IN (select b.user_id
+                                    from timetables b
+                                    where b.date = '" .
+                                    $today .
+                                    "');
+                        ";
+            } else {
+                $query ="SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
+                            WHERE timetables.day_status = 2
+                                AND users.timezone IN ($timezones)
+                                AND timetables.date = '$today'";    
+            }
+    
+            $idsArr = DB::select($query);
+            $ids = [];
+            foreach ($idsArr as $v) {
+                    $ids[] = $v->id;
+            }
+    
+            return $ids;
+        }
+
+        return [];
+    }
+
+    public function users_with_no_day_Plan($zones = [])
     {
         /**
          * add logic with timezones
          */
-        $timezones = GeneralHelper::prepareSqlIn($this->timezoneList);
+        //$timezones = GeneralHelper::prepareSqlIn($this->timezoneList);
+        $timezones = GeneralHelper::prepareSqlIn($zones);
         if ($timezones) {
             $today = Carbon::today()->toDateString();
             $query =
@@ -119,9 +163,9 @@ class NotificationService
         return [];
     }
 
-    public function users_with_unfinished_day_Plan()
+    public function users_with_unfinished_day_Plan($zones = [])
     {
-        $timezones = GeneralHelper::prepareSqlIn($this->timezoneList);
+        $timezones = GeneralHelper::prepareSqlIn($zones);
         if ($timezones) {
             $today = Carbon::today()->toDateString();
             $query ="SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
@@ -135,6 +179,7 @@ class NotificationService
             foreach ($idsArr as $v) {
                 $ids[] = $v->id;
             }
+
             return $ids;
         }
 
@@ -144,8 +189,8 @@ class NotificationService
     private function reminderMessages()
     {
         return [
-            'Remember to create a plan for today :)',
-            'Remember to complete all today`s jobs and tasks :)',
+            RemindTimeHelper::MORNING_TIME => 'Remember to create a plan for today :)',
+            RemindTimeHelper::EVENING_TIME => 'Remember to complete all today`s jobs and tasks :)',
         ];
     }
 
