@@ -36,8 +36,10 @@
 					>
 					failed to add #code
 					</v-alert>
-
 				</v-row>
+			</v-card-text>
+			<v-card-text class="addHashCode-system-message">
+				{{ systemMessage }}
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions class="justify-space-between v-card-actions">
@@ -86,6 +88,10 @@
 					default: 400,
 				},
 
+				defaultSavedTaskData: {
+					type: Object,
+				},
+
 				taskName: {},
 				time: {},
 				type: {},
@@ -124,6 +130,11 @@
 						(inputVal) => {
 							inputVal = inputVal.trim();
 							return inputVal.match(/^[A-Za-z0-9#_-]+$/) !== null || 'You can use Latin alphabet, numbers, symbols: # - _';
+						},
+
+						(inputVal) => {
+							inputVal = inputVal.trim();
+							return inputVal.match(/^#[Qq]-/) === null || 'You cannot use hash code starting with the characters "q-...". Such hash codes are reserved';
 						}
 					],
 					isHashCodeValid: false,
@@ -135,6 +146,8 @@
 					},
 					isShowPreloader: false,
 					loading: false, //тут храню статус загрузки, что бы нельзя было хаотично нажимать на Enter во время загрузки
+					systemMessage: '',
+					USING_DEFAULT_TASKS_SYSTEM_MESSAGE: 'Please, change default hash code for further usage',
 				}
 			},
 			computed: {
@@ -194,6 +207,21 @@
 							if (time > minPreloaderDispTime) callback();
 							else setTimeout(callback, minPreloaderDispTime - time);
 						}
+
+						const checkIsTaskBasedOnDefaultSavedTask = (requestData) => {
+
+							const { defaultSavedTaskData } = this;
+
+							
+							if (!defaultSavedTaskData || !defaultSavedTaskData.isDefaultSAvedTaskSelected || !defaultSavedTaskData.selectedSavedTaskId) {
+								return requestData;
+							}
+
+							return {
+								...requestData, 
+								default_saved_task_id: defaultSavedTaskData.selectedSavedTaskId
+							};
+						}
 						
 						if (this.loading || !checkHashCodeLength()) return;
 						showAllert(false, false)
@@ -202,7 +230,7 @@
 						this.isShowPreloader = true;
 
 						try {
-						const responce = await axios.post('/addHashCode', {
+						let requestData = {
 							hash:     this.hashCode.trim(),
 							taskName: this.taskName,
 							time:     this.time,
@@ -210,8 +238,13 @@
 							priority: this.priority,
 							details:  this.details,
 							task_id:  this.taskId,
-						})
+						};
 
+						requestData = checkIsTaskBasedOnDefaultSavedTask(requestData);
+
+						const responce = await axios.post('/addHashCode', requestData)
+						console.log(responce);
+						
 						if (responce.data.status === 'success') {
 							const loadingEnd = Date.now();
 							controllLoadingTime(loadingEnd - loadingStart, () => {
@@ -227,6 +260,8 @@
 
 						} else {
 							const loadingEnd = Date.now();
+							this.systemMessage = responce.data.message;
+
 							controllLoadingTime(loadingEnd - loadingStart, () => {
 								if (this.isShowPreloader) this.isShowPreloader = false;
 								if (this.loading) this.loading = false;
@@ -237,6 +272,8 @@
 
 					} catch (error) {
 						const loadingEnd = Date.now();
+						this.systemMessage = responce.data.message;
+
 						controllLoadingTime(loadingEnd - loadingStart, () => {
 							if (this.isShowPreloader) this.isShowPreloader = false;
 							if (this.loading) this.loading = false;
@@ -270,7 +307,11 @@
 
 			created() {
 				this.isShow = this.isShowDialog;
-				this.hashCode = this.hashCodeVal;				
+				this.hashCode = this.hashCodeVal;	
+				
+				if (this.defaultSavedTaskData !== undefined && this.defaultSavedTaskData.isDefaultSAvedTaskSelected === true) {
+					this.systemMessage = this.USING_DEFAULT_TASKS_SYSTEM_MESSAGE;
+				};
 			},
 
 			async mounted() {
@@ -301,6 +342,16 @@
 
 	.addHashCode-card-wrapper .addHashCode-button-inactive {
 		opacity: .4;
+	}
+
+	.addHashCode-card-wrapper .addHashCode-system-message {
+		padding-bottom: 0 !important;
+		text-align: center;
+		font-weight: bold;
+		min-height: 66px;
+		font-size: 15px;
+		line-height: 21px;
+		color:  #49423D !important;
 	}
 
 	@keyframes codeAlertAppearance {

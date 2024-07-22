@@ -2,15 +2,16 @@
 	<div>
 		<template v-if="isShowAddHashCodeDialog">
 			<AddHashCode 
-			:width  		= "450"
-			:hashCodeVal    = "isChangedHashCodeTemplate ? '#' : task.hashCode"
-			:isShowDialog   = "isShowAddHashCodeDialog"
-			:taskName       = "task.name"
-			:time           = "task.time"
-			:type           = "task.type"
-			:priority       = "task.priority"
-			:details        = "isChangedHashCodeTemplate ? '' : task.details"
-			:notes          = "isChangedHashCodeTemplate ? '' : task.notes"
+			:width  		      = "450"
+			:hashCodeVal          = "isChangedHashCodeTemplate ? '#' : newHashCode"
+			:isShowDialog         = "isShowAddHashCodeDialog"
+			:taskName             = "task.name"
+			:time                 = "task.time"
+			:type                 = "task.type"
+			:priority             = "task.priority"
+			:details              = "isChangedHashCodeTemplate ? '' : task.details"
+			:notes                = "isChangedHashCodeTemplate ? '' : task.notes"
+			:defaultSavedTaskData = "defaultSavedTaskData"
 			@close          = "closeHashCodeDialog"
 			@changeHashCode = "changeHashCode"
 			@addHashCode    = "addHashCode"
@@ -159,9 +160,17 @@
 	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
 	import CustomTimepicker from '../UI/CustomTimepicker.vue';
 
+	import createWatcherForDefSavTaskMixin from '../../mixins';
+
 	export default
 		{
 			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, VSelectTooptip, CustomTimepicker},
+			props: {
+				dayStatus: {
+					type: Number,
+				},
+			},
+			mixins: [createWatcherForDefSavTaskMixin('task.hashCode')],
 			data()
 			{
 				return {
@@ -182,7 +191,7 @@
 							time : '',
 						},
 						hashCodes : [],
-						types : ['required job','non required job','required task','task'],
+						newHashCode: '#',
 						priorities : [1,2,3],
 						menu : false/*for task.time*/,
 						icons : {mdiPlusBox,mdiClockTimeFourOutline},
@@ -190,6 +199,14 @@
 						isShow : true,
 						isShowAddHashCodeDialog : false,
 						isChangedHashCodeTemplate: false,
+						WEEKEND_DEFAULT_TASK_TYPE: 'task',
+						WORKING_DAY_DEFAULT_TASK_TYPE: 'required job',
+						defaultSavedTaskData: {
+							isDefaultSAvedTaskSelected: false,
+							defaultSavedTasks: [],
+							selectedSavedTaskId: null,
+         				},
+						addTaskToPlanWithoutConfirmation: false,
 					}
 			},
 			computed: {
@@ -218,20 +235,36 @@
 							'3' : 'extremly imortant',
 						}
 					}
-        		}
+        		},
+
+				isTodayAWeekend() {
+					return this.dayStatus === 1;
+				},
+
+				types() {
+					return !this.isTodayAWeekend 
+						? ['required job','non required job','required task','task']
+						: [this.WEEKEND_DEFAULT_TASK_TYPE];
+				},
+
+				isDefaultSavedTaskSelected() {
+            		return !!this.task.hashCode.match(/^#q-/);
+         		}
 			},
 			methods :
 			{
 				clearCurrentHashCode(){
+					const self = this;
+
 					this.task = {
-								hashCode : '#',
-								name : '',
-								type : 'required job',
-								priority : 1,
-								time : '01:00',
-								details: '',
-								notes: '',
-							};
+						hashCode : '#',
+						name : '',
+						type : self.isTodayAWeekend ? self.WEEKEND_DEFAULT_TASK_TYPE : self.WORKING_DAY_DEFAULT_TASK_TYPE,
+						priority : 1,
+						time : '01:00',
+						details: '',
+						notes: '',
+					};
 					
 					this.savedTaskTemplate = {
 						hashCode : '#',
@@ -244,13 +277,22 @@
 
 				async hashCodeChangeHandler(hashCode)
 				{	
-					const data = (await axios.post('/getSavedTask',{hash_code : hashCode})).data
-					this.savedTaskTemplate.hashCode = hashCode;
-					this.savedTaskTemplate.name = this.task.name = data[1];
-					const types = this.types.slice()
-					this.savedTaskTemplate.type = this.task.type = data[2]; //types.reverse()[data[2]]
-					this.savedTaskTemplate.priority = this.task.priority = data[3];
-					this.savedTaskTemplate.time = this.task.time = data[5];
+					try {
+						const getData = (response) => (key) => response.data[key];
+						
+						const response = (await axios.post('/getSavedTask',{hash_code : hashCode}));
+						const getValue = getData(response);
+						
+						this.savedTaskTemplate.hashCode = hashCode;
+						this.savedTaskTemplate.name = this.task.name = getValue('task_name');
+						this.savedTaskTemplate.type = this.task.type = this.isTodayAWeekend 
+																	 ? this.WEEKEND_DEFAULT_TASK_TYPE 
+																	 : getValue('type');
+						this.savedTaskTemplate.priority = this.task.priority = getValue('priority');
+						this.savedTaskTemplate.time = this.task.time = getValue('time');
+					} catch(error) {
+						console.error(error);
+					}
 
 					this.isChangedHashCodeTemplate = false;
 				},
@@ -258,28 +300,43 @@
 				{
 					this.hashCodes = (await axios.post('/getSavedTasks')).data.hash_codes.map((item) => item.hash_code)
 					let {defaultSavedTasks} = (await axios.post('/getDefaultSavedTasks')).data;
+					
+					this.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks;
+					
 					defaultSavedTasks = defaultSavedTasks.map((item) => item.hash_code);
+
 					this.hashCodes = [...this.hashCodes, ...defaultSavedTasks];
+
 				},
 
 				changeHashCode(hashCodeVal) {
-         			this.task.hashCode = hashCodeVal;
+         			this.newHashCode = hashCodeVal;
       			},
 
 				closeHashCodeDialog() {
-					if (this.isChangedHashCodeTemplate && !this.hashCodes.includes(this.task.hashCode)) {
-						this.task.hashCode = this.savedTaskTemplate.hashCode;
-					}
-
+					this.newHashCode = '#';
       	   			this.isShowAddHashCodeDialog = false;
 					this.isChangedHashCodeTemplate = false;
       			},
 				addHashCode() {
-					this.hashCodes.unshift(this.task.hashCode);
+					this.hashCodes.unshift(this.newHashCode);
+					this.task.hashCode = this.newHashCode;
+					
+					if (this.defaultSavedTaskData.isDefaultSAvedTaskSelected && this.addTaskToPlanWithoutConfirmation) {
+						this.addJob();
+					}
+					this.addTaskToPlanWithoutConfirmation = false;
 				},
 
 				async addJob()
 				{
+					if (this.isDefaultSavedTaskSelected) {
+						this.isShowAddHashCodeDialog          = true;
+						//после успешного создание хешкода таска попадет сразу в план
+						this.addTaskToPlanWithoutConfirmation = true;
+						return;
+					}
+
 					const response =
 						(
 							await
@@ -298,10 +355,7 @@
 						).data
 					if (response.status == 'success')
 					{
-						this.
-						$root.
-						currComponentProps.
-						push
+						this.$root.currComponentProps.plan.push
 							(
 								{
 									hash : this.task.hashCode,
@@ -346,6 +400,7 @@
 						};
 
 						this.isChangedHashCodeTemplate = !(convertToJSON(currentTask) === convertToJSON(this.savedTaskTemplate));
+						console.log(this.isChangedHashCodeTemplate);
 					}
 
 				},
@@ -358,7 +413,7 @@
 			async created()
 			{
 				this.loadHashCodes()
-			}
+			},
 		}
 </script>
 

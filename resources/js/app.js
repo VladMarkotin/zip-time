@@ -69,7 +69,10 @@ const app =
 						}
 						else if (data.dayStatus == 2 || data.dayStatus == 1/*day is opened*/)
 						{
-							this.currComponent.props = data.plan;
+							this.currComponent.props = {
+								plan: data.plan,
+								dayStatus: data.dayStatus
+							};
 							this.currComponent.name = 'ReadyDayPlan';
 						}
 						else/*no plan*/

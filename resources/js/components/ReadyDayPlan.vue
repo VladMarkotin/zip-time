@@ -2,9 +2,10 @@
     <div>
         <template v-if="isShowAddJobTaskDialog">
             <AddJobTask
-                v-on:setAlertData="setAlertData"
-                v-on:toggleAddJobTaskDialog="toggleAddJobTaskDialog"
-                v-on:toggleAlertDialog="toggleAlertDialog"
+                v-bind:dayStatus = "data.dayStatus"
+                v-on:setAlertData           = "setAlertData"
+                v-on:toggleAddJobTaskDialog = "toggleAddJobTaskDialog"
+                v-on:toggleAlertDialog      = "toggleAlertDialog"
             />
         </template>
         <div class="card-demo"></div>
@@ -26,19 +27,19 @@
                 v-on:toggleAlertDialog="toggleAlertDialog"
             />
         </template>
-        <Challenges />
-        <v-data-iterator hide-default-footer v-bind:items="data">
+        
+        <v-data-iterator hide-default-footer v-bind:items="data.plan">
             <Cards
                 title="Required jobs and tasks"
-                v-if="isExistsRequiredTasks(data)"
-                v-bind:items="getRequiredTasks(data)"
+                v-if="isExistsRequiredTasks(data.plan)"
+                v-bind:items="getRequiredTasks(data.plan)"
                 :screenWidth = "screenWidth"
             />
             <v-divider></v-divider>
             <Cards
                 title="Non required jobs and tasks"
-                v-if="isExistsNonRequiredTasks(data)"
-                v-bind:items="getNonRequiredTasks(data)"
+                v-if="isExistsNonRequiredTasks(data.plan)"
+                v-bind:items="getNonRequiredTasks(data.plan)"
                 :screenWidth = "screenWidth"
             />
         </v-data-iterator>

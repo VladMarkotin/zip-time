@@ -123,13 +123,15 @@ class MainController
     {
         $params = [];
         $taskName = $request->input('taskName');
-        $params['hash_code']    = $request->input('hash'); //hashCode
-        $params['user_id']      = Auth::id();
-        $params['task_name']    = ($taskName) ? $request->input('taskName') : $request->input('name');
-        $params['time']         = $request->input('time');
-        $params['type']         = $request->input('type');
-        $params['priority']     = $request->input('priority');
-        $params['details']      = $request->input('details');
+        $params['hash_code']                 = $request->input('hash'); //hashCode
+        $params['user_id']                   = Auth::id();
+        $params['task_name']                 = ($taskName) ? $request->input('taskName') : $request->input('name');
+        $params['time']                      = $request->input('time');
+        $params['type']                      = $request->input('type');
+        $params['priority']                  = $request->input('priority');
+        $params['details']                   = $request->input('details');
+        $params['default_saved_task_id']     = $request->input('default_saved_task_id', null);
+        
         $taskId = $request->input('task_id');
         if (isset($taskId)) {
             $params['note']     = Tasks::find($taskId)->note;
@@ -138,7 +140,10 @@ class MainController
         //die(var_dump($params));
         $createResponce         = fn($message, $status) => ['message' => $message, 'status'  => $status,];
 
-        $flag = $this->savedTaskService->checkNewHashCode($params['hash_code'], $params['task_name']);
+        $verifiedHashcode = $this->savedTaskService->checkNewHashCode($params['hash_code'], $params['task_name']);
+        $flag    = $verifiedHashcode['flag'];
+        $message = $verifiedHashcode['message'] ?? '';
+
         if($flag){
             try {
                 DB::transaction(function () use ($params, $taskId) {     
@@ -156,19 +161,19 @@ class MainController
                         }
                     }
                 });
+
+                RewardEvent::dispatch(['event_prefix' => ['saved_tasks'] ]);
+
+                return response()->json($createResponce($message, 'success'));
+
             } catch(\Exception $e){
                 Log::error('Error has happened with save hash code: '. $e->getFile(). " ". $e->getLine(). " ".$e->getMessage());
 
                 return response()->json($createResponce('error has occurred', 'error'));
-            } finally {
-                RewardEvent::dispatch(['event_prefix' => ['saved_tasks'] ]);
-
-                return response()->json($createResponce('Hash code added successfully', 'success'));
-            }
-            
+            } 
         }
 
-        return response()->json($createResponce('Hash code already exists', 'error'));
+        return response()->json($createResponce($message, 'error'));
     }
 
     public function getSavedTasks(Request $request)

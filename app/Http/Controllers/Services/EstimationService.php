@@ -141,7 +141,7 @@ class EstimationService
                 }
 
                 return ["status" => "error", "message" => "You can`t close your day plan! Either some required jobs/tasks are incomplete
-                                                           or you final mark lower then minimum (". $defaultConfigs->cardRules[0]->minFinalMark ."%)"];
+                                                           or you final mark lower then minimum (". EstimationDayHelper::getMinFinalMark() ."%)"];
 
 
             case '1': //for estimation of job & task

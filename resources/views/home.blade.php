@@ -220,12 +220,14 @@
                                 </div>
                             </div>
                             <div class="our-advantages-title-wrapper">
-                                <h3 class="title-index-page our-advantages-title">Responsibility</h3>
+                                <h3 class="title-index-page our-advantages-title">Honesty</h3>
                             </div>
                             <div class="our-advantages-text">
-                                <p class="text-index-page ">No more “I will think about it tomorrow”. Start getting things done
-                                    right now! Yes, it may be very difficult to do something. You don't have to do everything
-                                    perfectly right away. But it's important just do And, gradually youwill achieve the ideal
+                                <p class="text-index-page ">
+                                By creating a daily plan in Quipl, you are essentially making an agreement with
+                                 yourself to complete all(!) required jobs and tasks listed in it by the end of the day.
+                                 At the same time, it's you who assesses yourself. No one but you will know the grade
+                                  you give yourself. Therefore, try to be honest with yourself!  
                                 </p>
                             </div>
                         </div>

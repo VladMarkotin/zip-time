@@ -36,6 +36,7 @@ class SocialController extends Controller
         $users       =   User::where(['provider_id' => $userSocial->getId()])->first();
         if ($users) {
             Auth::login($users);
+            
             return redirect('/'); //->with('user', $users);
         } else {
             $user = User::create([
@@ -48,7 +49,7 @@ class SocialController extends Controller
             $this->createConfigs( $user );
             $currentUser       =   User::where(['provider_id' => $userSocial->getId()])->first();
             Auth::login($currentUser);
-            RewardService::assignNewChToUser(['first_ch' => 1]);
+            //RewardService::assignNewChToUser(['first_ch' => 1]);
 
             return redirect('/');
         }
