@@ -56,12 +56,15 @@ class GeneralHelper
 
     public static function prepareSqlIn(array $data)
     {
-        
-        $result = array_map(function($item) {
-            return "'".$item."'";
-        }, $data);
-            
-        return implode(',', $result);
+        if (count($data)) {
+            $result = array_map(function($item) {
+                return "'".$item."'";
+            }, $data);
+                
+            return implode(',', $result);
+        }
+
+        return [];
     }
 
 

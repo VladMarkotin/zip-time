@@ -17,9 +17,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Minishlink\WebPush\Subscription;
 use Illuminate\Support\Facades\Log;
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
+use App\Http\Helpers\TimeHelpers\TimeHelper;  
 
 class NotificationService
 {
+    private $timezoneList = [];
+    private $tzList = [
+        '09' => [],
+        '19' => [],
+    ];
 
     public function saveSubscription(Request $request)
     {
@@ -64,59 +71,81 @@ class NotificationService
     
     public function reminder(): void
     {
-        
+        $this->timezoneList = TimeHelper::getTimezonesWithTime('21');
         $now = Carbon::now();
-        $time = \Carbon\Carbon::now()->setTimeFromTimeString('09:00 AM');
-        switch ($now) {
-            case $now < $time:
+        $time = \Carbon\Carbon::now()->setTimeFromTimeString('21:00');
+        /**
+         * timezones with current time
+         * if there is no plan
+         */
+        switch ($now < $time) {
+            case true:
                 $this->sendNotification($this->users_with_no_day_Plan(),  $this->reminderMessages()[0]);
                 break;
-            case $now > $time:
-                $this->sendNotification($this->users_with_no_day_Plan(),  $this->reminderMessages()[1]);
+            case false:
+                $this->sendNotification($this->users_with_unfinished_day_Plan(),  $this->reminderMessages()[1]);
                 break;
         }
     }
 
-
-
     public function users_with_no_day_Plan()
     {
-        $today = Carbon::today()->toDateString();
-        $query =
-            "SELECT users.id FROM users WHERE users.device_token IS NOT NULL AND
-                        users.id NOT IN (select b.user_id
-                            from timetables b
-                               where b.date = '" .
-            $today .
-            "');
-                        ";
-        //dd($query);
-        $idsArr = DB::select($query);
-        $ids = [];
-        foreach ($idsArr as $v) {
-            $ids[] = $v->id;
+        /**
+         * add logic with timezones
+         */
+        $timezones = GeneralHelper::prepareSqlIn($this->timezoneList);
+        if ($timezones) {
+            $today = Carbon::today()->toDateString();
+            $query =
+                "SELECT users.id FROM users WHERE users.device_token IS NOT NULL 
+                    AND users.timezone IN ($timezones)
+                    AND
+                            users.id NOT IN (select b.user_id
+                                from timetables b
+                                where b.date = '" .
+                $today .
+                "');
+                            ";
+            //dd($query);
+            $idsArr = DB::select($query);
+            $ids = [];
+            foreach ($idsArr as $v) {
+                $ids[] = $v->id;
+            }
+
+            return $ids;
         }
-        return $ids;
+
+        return [];
     }
 
     public function users_with_unfinished_day_Plan()
     {
-        $today = Carbon::today()->toDateString();
-        $query ="SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
-                                     WHERE timetables.day_status = 2 AND timetables.date = '$today'";
-        $idsArr = DB::select($query);
-        $ids = [];
-        foreach ($idsArr as $v) {
-            $ids[] = $v->id;
+        $timezones = GeneralHelper::prepareSqlIn($this->timezoneList);
+        if ($timezones) {
+            $today = Carbon::today()->toDateString();
+            $query ="SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
+                                         WHERE timetables.day_status = 2
+                                         AND users.timezone IN ($timezones)
+                                          AND timetables.date = '$today'";
+            // Log::info($query);
+            // die;
+            $idsArr = DB::select($query);
+            $ids = [];
+            foreach ($idsArr as $v) {
+                $ids[] = $v->id;
+            }
+            return $ids;
         }
-        return $ids;
+
+        return [];
     }
 
     private function reminderMessages()
     {
         return [
             'Remember to create a plan for today :)',
-            'Remember to complete all tasks created today :)',
+            'Remember to complete all today`s jobs and tasks :)',
         ];
     }
 
