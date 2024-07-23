@@ -34,7 +34,6 @@ class NotificationService
     {
         $this->tzList[RemindTimeHelper::MORNING_TIME] = TimeHelper::getTimezonesWithTime(RemindTimeHelper::MORNING_TIME);
         $this->tzList[RemindTimeHelper::EVENING_TIME] = TimeHelper::getTimezonesWithTime(RemindTimeHelper::EVENING_TIME);
-        Log::info(json_encode($this->tzList));
     }
 
     public function saveSubscription(Request $request)
@@ -80,9 +79,6 @@ class NotificationService
     
     public function reminder(): void
     {
-        $this->timezoneList = TimeHelper::getTimezonesWithTime('20');
-        $now = Carbon::now();
-        $time = \Carbon\Carbon::now()->setTimeFromTimeString('20:00');
         $flag = 0;
         foreach ($this->tzList as $time => $zones) {
             if ($time == RemindTimeHelper::EVENING_TIME) {
@@ -136,7 +132,6 @@ class NotificationService
         /**
          * add logic with timezones
          */
-        //$timezones = GeneralHelper::prepareSqlIn($this->timezoneList);
         $timezones = GeneralHelper::prepareSqlIn($zones);
         if ($timezones) {
             $today = Carbon::today()->toDateString();
@@ -147,10 +142,9 @@ class NotificationService
                             users.id NOT IN (select b.user_id
                                 from timetables b
                                 where b.date = '" .
-                $today .
-                "');
-                            ";
-            //dd($query);
+                    $today .
+                    "');
+                ";
             $idsArr = DB::select($query);
             $ids = [];
             foreach ($idsArr as $v) {
@@ -189,8 +183,8 @@ class NotificationService
     private function reminderMessages()
     {
         return [
-            RemindTimeHelper::MORNING_TIME => 'Remember to create a plan for today :)',
-            RemindTimeHelper::EVENING_TIME => 'Remember to complete all today`s jobs and tasks :)',
+            RemindTimeHelper::MORNING_TIME => "We hope you wouldn`t forget to create a plan for today :)",
+            RemindTimeHelper::EVENING_TIME => "We hope you wouldn`t forget to complete all today`s jobs and tasks :)",
         ];
     }
 
