@@ -12,7 +12,7 @@
 								<v-icon color="#D71700" large>{{icons.mdiStepBackward}}</v-icon>
 							</v-btn>
 						</template>
-						<span>Go back one step</span>
+						<span>Go back</span>
 					</v-tooltip>
                     <v-card-title class="emergency-confirmation-title"><p><span class="customRed">Attention!</span> You are about to activate <br/> <span class="customRed">«Emergency mode»</span> !</p></v-card-title>
                     <div style="display: flex; justify-content: center;">
@@ -28,7 +28,7 @@
                         v-model  = "confirmationInputValue"
                         ></v-text-field>
                     </div>
-                    <ul class="emergencyMode-warning-list customRed">
+                    <ul class="emergencyMode-warning-list">
                         <li class="emergencyMode-warning-li">Activating Emergency Mode is a last resort!</li>
                         <li class="emergencyMode-warning-li">You won't be able to cancel it afterwards, and during its activation, certain app functionalities will be unavailable!</li>
                     </ul>
@@ -121,7 +121,7 @@ import {mdiStepBackward} from '@mdi/js'
     }
 
     .emergency-confirmation-input-wrapper {
-        margin-top: 16px;
+        margin: 16px 0;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -145,6 +145,8 @@ import {mdiStepBackward} from '@mdi/js'
         flex-direction: column;
         text-align: center;
         gap: 12px;
+        /* color: #D53032; */
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* сдвиг 1px, размытие 3px, более светлая тень */
     }
 
     .emergencyMode-warning-list .emergencyMode-warning-li {
