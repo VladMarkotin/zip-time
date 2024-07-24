@@ -41,8 +41,10 @@
 				</v-card-text>
 				<EmergencyConfirmation 
 				v-else
-				:emergencyModeDates="dates"
-				@goBackOneStep="isShowEmergencyConfirmation = false"
+				:emergencyModeDates  = "dates"
+				:isTheCheckCompleted = "isTheCheckCompleted"
+				@goBackOneStep          = "goBackOneStep"
+				@setIsTheCheckCompleted = "setIsTheCheckCompleted"
 				/>
 				<v-divider></v-divider>
 				<v-card-actions class="justify-space-between v-card-actions emergencyCall_emergencyCall-footer">
@@ -52,7 +54,7 @@
 								icon 
 								v-on="on" 
 								v-on:click="callEmergency"
-								:disabled = "!isDateSet"
+								:disabled = "isEmergencyCallButtonDis"
 								>
 								<v-icon color="#D71700" large>{{icons.mdiCarEmergency}}</v-icon>
 							</v-btn>
@@ -92,6 +94,7 @@
 					daysAllowedinOrder: daysAllowedinOrder,
 					maxDate:  maxDate,
 					isShowEmergencyConfirmation: false,
+					isTheCheckCompleted: false,
 				}
 			},
 			components: {EmergencyConfirmation},
@@ -118,6 +121,12 @@
 				isDateSet() {
 					const dates = this.dates;
 					return dates.every(date => !!date);
+				},
+				isEmergencyCallButtonDis() {
+					if (!this.isShowEmergencyConfirmation) {
+						return !this.isDateSet;
+					}
+					return !this.isTheCheckCompleted;
 				}
 			},
 			watch: {
@@ -132,8 +141,11 @@
 			{
 				callEmergency()
 				{
-					this.isShowEmergencyConfirmation = true;
-					return;
+					if (this.isShowEmergencyConfirmation === false) {
+						this.isShowEmergencyConfirmation = true;
+						return;
+					}
+
 					const today = (new Date()).toEnStr();
 					axios.post('/emergency',{from : this.dates[0],to : this.dates[1],comment : this.comment})
 					.then(response => {
@@ -165,6 +177,13 @@
 				},
 				resetDates() {
 					this.dates = [null, null];
+				},
+				goBackOneStep() {
+					this.isShowEmergencyConfirmation = false
+					this.isTheCheckCompleted = false;
+				},
+				setIsTheCheckCompleted(checkResult) {
+					this.isTheCheckCompleted = checkResult;
 				}
 			},
 		}

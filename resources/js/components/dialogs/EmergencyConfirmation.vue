@@ -18,7 +18,20 @@
                     <div style="display: flex; justify-content: center;">
                         <v-card-text class="emergency-confirmation-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam aliquam assumenda hic quia labore odit quis ipsam quas ab iure accusantium architecto exercitationem magni eius commodi at, laudantium, totam velit alias voluptatibus recusandae unde odio ratione. Inventore, libero?</v-card-text>
                     </div>
-                    <p>{{ emergencyConfirmationTolltip }}</p>
+                    <div class="emergency-confirmation-input-wrapper">
+                        <p class="emergency-confirmation-tooltip" v-html="emergencyConfirmationTolltip"></p>
+                        <v-text-field 
+                        class="confirmation-input"
+                        label="Confirmation" 
+                        :success = "isTheCheckCompleted"
+                        :rules   = "confirmationInputRules"
+                        v-model  = "confirmationInputValue"
+                        ></v-text-field>
+                    </div>
+                    <ul class="emergencyMode-warning-list customRed">
+                        <li class="emergencyMode-warning-li">Activating Emergency Mode is a last resort!</li>
+                        <li class="emergencyMode-warning-li">You won't be able to cancel it afterwards, and during its activation, certain app functionalities will be unavailable!</li>
+                    </ul>
             </v-container>
         </v-card-text>
     </div>
@@ -31,10 +44,26 @@ import {mdiStepBackward} from '@mdi/js'
             emergencyModeDates: {
                 type: Array,
             },
+            isTheCheckCompleted: {
+                type: Boolean,
+            }
         },
         data() {
             return {
                 icons : {mdiStepBackward}, 
+                CONFIRMATION_TEXT: 'Agree',
+                confirmationInputRules: [(inputVal) => {
+                    return (inputVal && inputVal.trim().toLowerCase() === this.CONFIRMATION_TEXT.trim().toLowerCase()) || false;
+                }],
+                confirmationInputValue: '',
+            }
+        },
+        watch: {
+            confirmationInputValue() {
+                const checkResult = this.confirmationInputRules.map(check => check(this.confirmationInputValue))
+                                                  .every(checkResult => checkResult === true);
+
+                this.setIsTheCheckCompleted(checkResult);
             }
         },
         computed: {
@@ -43,16 +72,22 @@ import {mdiStepBackward} from '@mdi/js'
                     let parts = date.split('-'); 
                     return `${parts[2]}.${parts[1]}.${parts[0]}`;
                 });
-
-                let text = 'If you are sure that you want to activate Emergency Mode '
+                
+                let text = 'If you are sure that you want to activate "Emergency Mode"<br/>'
 
                 if (formatedDates.length === 1) {
-                    text += `on ${formatedDates[0]}`;
+                    text += `on ${formatedDates[0]}, `;
                 } else {
-                    text += `from the ${formatedDates[0]} to the ${formatedDates[1]}`;
+                    text += `from the ${formatedDates[0]} to the ${formatedDates[1]}, `;
                 }
-                console.log(text);
-                return ''
+
+                text += `enter "${this.CONFIRMATION_TEXT}"`;
+                return text;
+            }
+        },
+        methods: {
+            setIsTheCheckCompleted(checkResult) {
+                this.$emit('setIsTheCheckCompleted', checkResult);
             }
         }
     }
@@ -83,5 +118,37 @@ import {mdiStepBackward} from '@mdi/js'
         text-align: justify;
         font-size: 16px;
         padding: 0;
+    }
+
+    .emergency-confirmation-input-wrapper {
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .emergency-confirmation-tooltip {
+        margin-bottom: 0;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.1rem;
+        color: #6C6960;
+    }
+
+    .emergencyMode-warning-list {
+        margin: 0 auto;
+        max-width: 90%;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .emergencyMode-warning-list .emergencyMode-warning-li {
+        font-size: 18px;
+        font-weight: 600;
     }
 </style>
