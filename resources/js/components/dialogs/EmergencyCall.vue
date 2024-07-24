@@ -68,7 +68,8 @@
 </template>
 <script>
 	import {mdiCarEmergency,mdiCancel} from '@mdi/js'
-import { watch } from 'vue';
+	import EmergencyConfirmation from './EmergencyConfirmation.vue';
+	import { watch } from 'vue';
 	export default
 		{
 			data()
@@ -88,6 +89,7 @@ import { watch } from 'vue';
 					maxDate:  maxDate,
 				}
 			},
+			components: {EmergencyConfirmation},
 			computed :
 			{
 				dateRangeText()
