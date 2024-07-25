@@ -45,6 +45,7 @@
 				:isTheCheckCompleted = "isTheCheckCompleted"
 				@goBackOneStep          = "goBackOneStep"
 				@setIsTheCheckCompleted = "setIsTheCheckCompleted"
+				@callEmergency          = "callEmergency"
 				/>
 				<v-divider></v-divider>
 				<v-card-actions class="justify-space-between v-card-actions emergencyCall_emergencyCall-footer">

@@ -26,6 +26,7 @@
                         :success = "isTheCheckCompleted"
                         :rules   = "confirmationInputRules"
                         v-model  = "confirmationInputValue"
+                        @keypress.enter = "callEmergency"
                         ></v-text-field>
                     </div>
                     <ul class="emergencyMode-warning-list">
@@ -88,6 +89,12 @@ import {mdiStepBackward} from '@mdi/js'
         methods: {
             setIsTheCheckCompleted(checkResult) {
                 this.$emit('setIsTheCheckCompleted', checkResult);
+            },
+
+            callEmergency() {
+                if (this.isTheCheckCompleted) {
+                   this.$emit('callEmergency');
+                }
             }
         }
     }
