@@ -14,7 +14,7 @@
 						</template>
 						<span>Go back</span>
 					</v-tooltip>
-                    <v-card-title class="emergency-confirmation-title"><p><span class="customRed">Attention!</span> You are about to activate <br/> <span class="customRed">«Emergency mode»</span> !</p></v-card-title>
+                    <v-card-title class="emergency-confirmation-title"><p><span class="customRed">Attention!</span> You are about<br class="emergency-confirmation-title_mobile-br"> to activate <br class="emergency-confirmation-title_desktop-br"/> <span class="customRed">«Emergency mode»</span> !</p></v-card-title>
                     <div style="display: flex; justify-content: center;">
                         <v-card-text class="emergency-confirmation-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam aliquam assumenda hic quia labore odit quis ipsam quas ab iure accusantium architecto exercitationem magni eius commodi at, laudantium, totam velit alias voluptatibus recusandae unde odio ratione. Inventore, libero?</v-card-text>
                     </div>
@@ -105,11 +105,19 @@ import {mdiStepBackward} from '@mdi/js'
         min-height: 515px;
     }
 
+    .emergency-confirmation-container .container {
+        padding: 0;
+    }
+
     .emergency-confirmation-title {
         text-align: center;
         font-size: 26px;
         justify-content: center;
         font-weight: 600;
+    }
+
+    .emergency-confirmation-title_mobile-br {
+        display: none;
     }
 
     .emergency-confirmation-title p {
@@ -121,7 +129,7 @@ import {mdiStepBackward} from '@mdi/js'
     }
 
     .emergency-confirmation-text {
-        max-width: 80% !important;
+        max-width: 80%;
         text-align: justify;
         font-size: 16px;
         padding: 0;
