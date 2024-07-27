@@ -160,4 +160,6 @@ import {mdiStepBackward} from '@mdi/js'
         font-size: 18px;
         font-weight: 600;
     }
+
+    @import url('/css/EmergencyConfirmation/EmergencyConfirmationMedia.css');
 </style>
