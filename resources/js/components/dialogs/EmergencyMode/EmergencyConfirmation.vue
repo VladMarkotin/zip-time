@@ -14,9 +14,12 @@
 						</template>
 						<span>Go back</span>
 					</v-tooltip>
-                    <v-card-title class="emergency-confirmation-title"><p><span class="customRed">Attention!</span> You are about<br class="emergency-confirmation-title_mobile-br"> to activate <br class="emergency-confirmation-title_desktop-br"/> <span class="customRed">«Emergency mode»</span> !</p></v-card-title>
+                    <v-card-title class="emergency-confirmation-title"><p>
+                        You are about<br class="emergency-confirmation-title_mobile-br"> to activate <br class="emergency-confirmation-title_desktop-br"/> <span class="customRed">«Emergency mode»</span> !</p></v-card-title>
                     <div style="display: flex; justify-content: center;">
-                        <v-card-text class="emergency-confirmation-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam aliquam assumenda hic quia labore odit quis ipsam quas ab iure accusantium architecto exercitationem magni eius commodi at, laudantium, totam velit alias voluptatibus recusandae unde odio ratione. Inventore, libero?</v-card-text>
+                        <v-card-text class="emergency-confirmation-text">
+                            This action will reset your <b>day plan</b> and <b>all</b> your day progress. 
+                        </v-card-text>
                     </div>
                     <div class="emergency-confirmation-input-wrapper">
                         <p class="emergency-confirmation-tooltip" v-html="emergencyConfirmationTolltip"></p>
@@ -30,8 +33,11 @@
                         ></v-text-field>
                     </div>
                     <ul class="emergencyMode-warning-list">
-                        <li class="emergencyMode-warning-li">Activating Emergency Mode is a last resort!</li>
-                        <li class="emergencyMode-warning-li">You won't be able to cancel it afterwards, and during its activation, certain app functionalities will be unavailable!</li>
+                        <li class="emergencyMode-warning-li">Activating `Emergency Mode` like a last resort.</li>
+                        <li class="emergencyMode-warning-li">You won't be able to cancel it afterwards, and during
+                            its activation, day`s planing functionalities will be unavailable!
+                            Nevertheless, "Statistics", "History", "Backlog" and "Reminders" will remain available. 
+                        </li>
                     </ul>
             </v-container>
         </v-card-text>
