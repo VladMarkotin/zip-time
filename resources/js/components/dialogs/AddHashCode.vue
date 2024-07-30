@@ -344,6 +344,7 @@
 		opacity: .4;
 	}
 
+	
 	.addHashCode-card-wrapper .addHashCode-system-message {
 		padding-bottom: 0 !important;
 		text-align: center;
