@@ -58,7 +58,7 @@ import {mdiStepBackward} from '@mdi/js'
         data() {
             return {
                 icons : {mdiStepBackward}, 
-                CONFIRMATION_TEXT: 'Agree',
+                CONFIRMATION_TEXT: 'Ok',
                 confirmationInputRules: [(inputVal) => {
                     return (inputVal && inputVal.trim().toLowerCase() === this.CONFIRMATION_TEXT.trim().toLowerCase()) || false;
                 }],
@@ -160,7 +160,7 @@ import {mdiStepBackward} from '@mdi/js'
 
     .emergencyMode-warning-list {
         margin: 0 auto;
-        max-width: 90%;
+        max-width: 70%;
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -173,6 +173,7 @@ import {mdiStepBackward} from '@mdi/js'
     .emergencyMode-warning-list .emergencyMode-warning-li {
         font-size: 18px;
         font-weight: 600;
+        text-align: justify;
     }
 
     @import url('/css/EmergencyConfirmation/EmergencyConfirmationMedia.css');
