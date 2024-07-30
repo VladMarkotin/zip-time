@@ -1,0 +1,73 @@
+@media screen and (max-width: 620px) {
+    .emergency-confirmation-title {
+        padding: 0;
+        margin-bottom: 10px;
+        font-size: 21px !important;
+        line-height: 1.5rem !important;
+    }
+
+    .emergency-confirmation-text {
+        max-width: 90% !important;
+    }
+
+    .emergency-confirmation-input-wrapper {
+        margin: 10px !important;
+    }
+
+    .emergencyMode-warning-list {
+        max-width: 80% !important;
+    }
+
+    .emergencyMode-warning-list  {
+        .emergencyMode-warning-li {
+            font-size: 16px !important;
+            line-height: 1.375rem !important;
+        }
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .emergency-confirmation-tooltip {
+        br {
+            display: none !important;
+        }
+    }
+}
+
+@media screen and (max-width: 515px)  {
+    .emergency-confirmation-title {
+        margin-bottom: 15px;
+
+        .emergency-confirmation-title_desktop-br {
+            display: none;
+        }
+        
+        .emergency-confirmation-title_mobile-br {
+            display: initial !important;
+        }
+    }
+
+    .emergency-confirmation-text {
+        max-width: 100% !important;
+    }
+
+    .emergencyMode-warning-list  {
+        max-width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .emergency-confirmation-text {
+        max-width: 90% !important;
+    }
+
+    .emergencyMode-warning-list  {
+        max-width: 90% !important;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .emergency-confirmation-title {
+        font-size: 20px !important;
+    }
+}

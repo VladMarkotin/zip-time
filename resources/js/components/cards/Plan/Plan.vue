@@ -315,7 +315,7 @@ import AddHashCode from '../../dialogs/AddHashCode.vue';
 import AddHashCodeButton from '../../UI/AddHashCodeButton.vue';
 import CleanHashCodeButton from '../../UI/CleanHashCodeButton.vue';
 import Vuetify from 'vuetify/lib'
-import EmergencyCall from '../../dialogs/EmergencyCall.vue';
+import EmergencyCall from '../../dialogs/EmergencyMode/EmergencyCall.vue';
 import PreplanTasksTable from './PreplanTasksTable.vue';
 import VSelectTooptip from '../../UI/VSelectTooptip.vue';
 import CustomTimepicker from '../../UI/CustomTimepicker.vue';

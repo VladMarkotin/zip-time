@@ -87,7 +87,7 @@ import Alert from "./dialogs/Alert.vue";
 import AddJobTask from "./dialogs/AddJobTask.vue";
 import CloseDay from "./dialogs/CloseDay.vue";
 import Cards from "./cards/Cards.vue";
-import EmergencyCall from "./dialogs/EmergencyCall.vue";
+import EmergencyCall from "./dialogs/EmergencyMode/EmergencyCall.vue";
 import Challenges from "./challenges/Challenges.vue";
 import Firework from "./UI/Firework.vue";
 import { mdiCarEmergency, mdiPlusBox, mdiSendClock } from "@mdi/js";

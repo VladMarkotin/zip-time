@@ -40,6 +40,7 @@ mix
     .sass('resources/sass/Note/NoteMedia.scss', 'public/css/Note')
     .sass('resources/sass/AddJobTask/AddJobTaskMedia.scss', 'public/css/AddJobTask')
     .sass('resources/sass/EmergencyCall/EmergencyCallMedia.scss', 'public/css/EmergencyCall')
+    .sass('resources/sass/EmergencyConfirmation/EmergencyConfirmationMedia.scss', 'public/css/EmergencyConfirmation')
     .sass('resources/sass/CloseDay/CloseDayMedia.scss', 'public/css/CloseDay')
     .sass('resources/sass/Plan/PlanMedia.scss', 'public/css/Plan')
     .sass('resources/sass/PreplanTasksTable/PreplanTasksTableMedia.scss', 'public/css/PreplanTasksTable')
