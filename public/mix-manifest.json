@@ -20,6 +20,7 @@
     "/css/PreplanTasksTable/PreplanTasksTableMedia.css": "/css/PreplanTasksTable/PreplanTasksTableMedia.css",
     "/css/Plan/PlanMedia.css": "/css/Plan/PlanMedia.css",
     "/css/CloseDay/CloseDayMedia.css": "/css/CloseDay/CloseDayMedia.css",
+    "/css/EmergencyConfirmation/EmergencyConfirmationMedia.css": "/css/EmergencyConfirmation/EmergencyConfirmationMedia.css",
     "/css/EmergencyCall/EmergencyCallMedia.css": "/css/EmergencyCall/EmergencyCallMedia.css",
     "/css/AddJobTask/AddJobTaskMedia.css": "/css/AddJobTask/AddJobTaskMedia.css",
     "/css/Note/NoteMedia.css": "/css/Note/NoteMedia.css",

@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\Services\PersonalResultServices\traits;
 
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
+
 //Here final data would counted
 trait UserAchievmentsTrait
 {
@@ -12,12 +14,19 @@ trait UserAchievmentsTrait
     public function getData(array $data, array $configs)
     {
         $result = [
-            'better'                   => null,
-            'more_pesponsible'         => null,
-            'user_purposelness'        => null,
-            'better_then_purposelness' => null,
-            'ratingData'               => null,
+            'better'                      => null,
+            'more_pesponsible'            => null,
+            'user_purposelness'           => null,
+            'better_then_purposelness'    => null,
+            'ratingData'                  => null,
+            'is_emergency_mode_activated' => null,
         ];
+
+        $result['is_emergency_mode_activated'] = GeneralHelper::checkIfEmergModeIsActive();
+        if (!empty($result['is_emergency_mode_activated'])) {
+            return $result;
+        }
+
         //get user`s quantity in group according to user`s rate 
         $usersQuantityInGroup = UserGroupTrait::countUsersInGroupToday($data, $configs);
 

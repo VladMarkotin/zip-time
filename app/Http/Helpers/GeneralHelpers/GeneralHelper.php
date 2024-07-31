@@ -67,5 +67,20 @@ class GeneralHelper
         return [];
     }
 
+    public static function checkIfEmergModeIsActive()
+    {
+        $today_date = self::getTodayDate();
+
+        $day_status = TimetableModel::join('users', 'timetables.user_id', '=', 'users.id')
+                    ->where('users.id', Auth::id())
+                    ->where('timetables.date', $today_date)
+                    ->value('day_status');
+        
+        if ($day_status === null) {
+            return false;
+        }
+        
+        return $day_status === 0;
+    }
 
 }

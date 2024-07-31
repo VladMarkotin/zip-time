@@ -7,10 +7,13 @@
 
       <v-card-text>
         <ul style="padding: 0; min-height: 40px;">
-          <li :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThen"></li>
-          <li v-html="moreResponsible"></li>
-          <li v-html="userPurposelness"></li>
-          <li v-html="betterThenPurposelness"></li>
+          <template v-if="!is_emergency_mode_activated">
+            <li :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThen"></li>
+            <li v-html="moreResponsible"></li>
+            <li v-html="userPurposelness"></li>
+            <li v-html="betterThenPurposelness"></li>
+          </template>
+          <li v-else>Comparative information is unavailable during emergency mode</li>
         </ul>
         
         <a href="#">How do we get that results?</a>
@@ -25,6 +28,7 @@
   export default
       {
           data: () => ({
+              is_emergency_mode_activated: false,
               better_then: 0,
               more_pesponsible: 0,
               user_purposelness: 0,
@@ -83,16 +87,24 @@
             }
           },
           async created() {
-            //alert('PersonalResults')
               await axios.post('/get-results')
               .then((response) => {
-                  //this.tags = response.data.hash_codes.map((obj) => obj.hash_code)
-                  this.better_then = response.data.better
-                  this.more_pesponsible = response.data.more_pesponsible;
-                  this.user_purposelness = response.data.user_purposelness;
-                  this.better_then_purposelness = response.data.better_then_purposelness
+                  
+                const getData = (response) => (key) => response.data[key];
+                const getValue = getData(response);
 
-                  this.setRatingData(response.data.ratingData);
+                this.is_emergency_mode_activated = getValue('is_emergency_mode_activated');
+                console.log(this.is_emergency_mode_activated);
+                
+                if (!this.is_emergency_mode_activated) {
+                  this.better_then = getValue('better');
+                  this.more_pesponsible = getValue('more_pesponsible');
+                  this.user_purposelness = getValue('user_purposelness');
+                  this.better_then_purposelness = getValue('better_then_purposelness');
+  
+                  this.setRatingData(getValue('ratingData'));
+                }
+
               })
           }
       }
