@@ -332,7 +332,7 @@
 		{
 			return {
 					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil,
-						mdiCircle, mdiMusicAccidentalSharp  }, //mdiContentSaveCheckOutline
+						mdiCircle, mdiMusicAccidentalSharp  },
 			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
@@ -344,7 +344,6 @@
 					checked: true,
 					time       : this.item.time,
 					priority   : this.item.priority,
-					// priorities : [1,2,3], //['normal', 'important', 'super important']
 					id: this.item.id,
 					done: 'v-card-done',
 					completedPercent : 0,
@@ -709,11 +708,8 @@
 			getConfigs(data=null) {
 				axios.post('/get-default-configs')
 					.then((response) => {
-						
 						this.defaultConfigs = response.data
 						this.defaultConfigs = JSON.parse(this.defaultConfigs[0].config_data)
-						//console.log(this.defaultConfigs.cardRules[0].maxMark )
-						
 					  })
 			},
 
@@ -800,7 +796,6 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		font-family: Sans-serif;
-		/* color: #A10000; */
 	}
 
 	.button-attention{
@@ -842,30 +837,6 @@
 		top: 5px;
     	left: 3px;
 	}
-	/* ============================================ */
-	/* тут эффекты затемнения готовой карточки и иконка */
-	/* .v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready::before {
-		content: "";
-		display: block;
-		position: absolute;
-		top: 0;
-		left: 50%;
-  		transform: translateX(-50%);
-		height: 100%;
-		width: 100%;
-		background-color: rgba(0,0,0, 0.035);
-		z-index: 1;
-		transition: all .3s ease;
-		background-image: url('/images/task_ready_icon.svg');
-		background-position: top right;
-		background-repeat: no-repeat;
-		background-size: 150px 150px; 
-	}
-
-	.v-sheet.v-card:not(.v-sheet--outlined).card-wrapper_ready:hover::before {
-		width: 0;
-	} */
-	/* ============================================ */
 
 	.update-card-notifiactiob-br {
 		display: none;

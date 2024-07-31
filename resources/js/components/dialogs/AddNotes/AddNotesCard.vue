@@ -36,7 +36,6 @@
                             </template>
                         </v-expansion-panel-header>
                         <v-expansion-panel-content style="padding: 0 16px;">
-                            <!-- prepend-inner-icon="mdi-comment" -->
                             <div class="pt-2">
                                 <v-textarea 
                                 v-model="newNoteInpuVal"
@@ -230,7 +229,7 @@ import EditNotesDialog from './EditNotesDialog.vue';
             showAlert() {
                 this.isShowAlert = true;
                         
-                clearTimeout(this.closeAlertTime); //вот тут не уверен
+                clearTimeout(this.closeAlertTime);
 
                 this.closeAlertTime = setTimeout(() => {
                     this.removeAlert();

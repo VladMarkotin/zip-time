@@ -166,7 +166,6 @@ import {mdiStepBackward} from '@mdi/js'
         flex-direction: column;
         text-align: center;
         gap: 12px;
-        /* color: #D53032; */
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* сдвиг 1px, размытие 3px, более светлая тень */
     }
 

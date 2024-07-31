@@ -20,7 +20,6 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text class="details-cards-wrapper" :style="{ height: isMobile ? '450px' : '400px' }">
-                <!-- возможно удалить этот блок -->
                     <template>
                         <v-row 
                         class="m-0 p-0 addDetailsCard_addNewSubtaskBtn-wrapper d-flex justify-content-center align-items-center"
@@ -110,7 +109,6 @@
                         <v-divider></v-divider>
                         <v-row>
                             <template>
-                                <!--Display subTask-->
                                 <v-expansion-panels v-if="!isLoading">
                                     <transition-group name="detailsList" tag="div" style="width: 100%;">
                                         <v-expansion-panel v-for="(v, i) in details" :key="v.uniqKey">
@@ -556,14 +554,12 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 					this.$emit('updateAlertData', {type: response.status === 200 ? 'success' : 'error', text: respData.message});
 					const completedPercent = this.checkCompletedPercent(respData.completedPercent);
                     this.updateCompletedPercent(completedPercent);
-					item.taskId = respData.subtaskId // ?
+					item.taskId = respData.subtaskId
 					setTimeout( () => {
 						this.isShowAlertInDetails = false;
-						//debugger;
 					},this.alertDisplayTime)
 				  })
 				  .catch(function (error) {
-					console.log(error)
 				  })
 			},
 

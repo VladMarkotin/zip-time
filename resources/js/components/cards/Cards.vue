@@ -5,18 +5,6 @@
                 :title       = "title"
                 :screenWidth = "screenWidth"
             />
-            <!-- <v-tooltip right>
-                <template v-slot:activator="{on}">     
-                    <v-img 
-                    v-on="on" 
-                    max-height="128"
-                    max-width="128"
-                    class="card_type_img"
-                    src="/images/cards_required_icon.png"
-                    />
-                </template>
-            <span>{{title}}</span>
-            </v-tooltip> -->
         </div>
         <v-row class="cards_cards-wrapper">
             <v-col cols="6" v-for="item, i of items" v-bind:key="item.taskId">

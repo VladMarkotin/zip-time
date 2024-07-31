@@ -511,16 +511,7 @@ export default {
                date: new Date().toISOString().substr(0, 10),
                day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
                plan: this.items,
-            };  //было так, но есть ошибка при добавлении в план на день хоть одной дефолтной таски
-
-            // return {
-            //     date: new Date().toISOString().substr(0, 10),
-            //     day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
-            //     plan: [...this.items.map(item => {
-            //             if (item.hash.match(/^#q-/)) return {...item, hash: '#'};
-            //             return item;
-            //          })]
-            // }; //тут костыль
+            }; 
         },
         toggleEmergencyCallDialog(){
 				this.isShowEmergencyCallDialog = !this.isShowEmergencyCallDialog
@@ -533,9 +524,7 @@ export default {
         },
         isWeekendAvailable(item){
             let currentObj = this;
-            axios.post('/isWeekendAvailable', {
-                    //hash_code: event
-            })
+            axios.post('/isWeekendAvailable', {})
             .then(function(response) {
                   currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
              })
@@ -693,13 +682,6 @@ export default {
                          currentObj.showAlert = false
                          currentObj.isShowProgress = false
                          document.location.reload();
-                        //  Это видимо очень старый код, оставшися со времен SPA
-                        //  if (response.data.status == 'success') {
-                        //     const data = JSON.parse(response.config.data)
-                        //     currentObj.$root.currComponentProps = data.plan
-                        //     currentObj.$root.currComponent = "ReadyDayPlan"
-                            
-                        //  }
                      }, 5e3)
                   }  
                   
@@ -781,16 +763,6 @@ export default {
                 currentObj.output = error;
             });
 
-         axios.post('/getEduStep', {
-                    //hash_code: event
-         })
-         .then(function(response) {
-                  // console.log(response)
-         })
-         .catch(function(error) {
-                    currentObj.output = error;
-         });
-
          axios.post('/isWeekendAvailable')
          .then(function(response) {
             currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
@@ -808,7 +780,7 @@ export default {
 
                   currentObj.preparedTask.hash = currentIterableTask.hash_code;
                   currentObj.preparedTask.taskName = currentIterableTask.task_name;
-                  currentObj.preparedTask.type = currentIterableTask.type;//['required job', 'non required job', 'required task', 'task', 'reminder'].reverse()[response.data[0].type]
+                  currentObj.preparedTask.type = currentIterableTask.type;
                   currentObj.preparedTask.priority = String(currentIterableTask.priority);
                   currentObj.preparedTask.time = currentIterableTask.time;
                   currentObj.preparedTask.details = currentIterableTask.details;

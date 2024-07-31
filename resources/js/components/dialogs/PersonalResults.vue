@@ -94,7 +94,6 @@
                 const getValue = getData(response);
 
                 this.is_emergency_mode_activated = getValue('is_emergency_mode_activated');
-                console.log(this.is_emergency_mode_activated);
                 
                 if (!this.is_emergency_mode_activated) {
                   this.better_then = getValue('better');
@@ -113,7 +112,6 @@
   .personal-results{
       position:absolute;
       right: 5%;
-      /*display: none;*/
   }
 
   .less-rating {

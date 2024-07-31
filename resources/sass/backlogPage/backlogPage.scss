@@ -1,5 +1,4 @@
 $backlogEditButtonColor: #6495ED;
-// $backlogDeleteButtonColor: #FF0000;
 $backlogDeleteButtonColor: #d40000;
 
 .backlog_wrapper {
@@ -23,7 +22,6 @@ $backlogDeleteButtonColor: #d40000;
             .backlog_date {
                 font-size: 18px;
                 font-weight: bold;
-                // text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
                 grid-column: 1/4;
             }
             .backlog_title {
@@ -106,7 +104,6 @@ $backlogDeleteButtonColor: #d40000;
         left: 0;
         width: 0;
         height: 100%;
-        // background: #f44336;
         transition: all .35s;
     }
 

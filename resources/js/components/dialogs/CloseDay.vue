@@ -173,15 +173,10 @@
 				.then((response) => {
 					this.tags = response.data.hash_codes.map((obj) => obj.hash_code);
 					this.chosenChips = this.tags.map((_, index) => index + 1 <= this.minDefActiveChipsQuant && index); //minDefActiveChipsQuant хардкодом задал в дате равную 4м
-					/*for (let i = 0; i < this.tags.length/2; i++) {
-						this.chosenChips.push(this.tags[i])
-					}
-					console.log(this.chosenChips)*/
 				})
 			},
 			async selectFirstThreeChips() {
 				// Очистите массив selectedChips перед выбором новых элементов
-				//this.chosenChips = [];
 
 				// Выделите первые 3 чипа и добавьте их значения в массив selectedChips
 				for (let i = 0; i < 3; i++) {

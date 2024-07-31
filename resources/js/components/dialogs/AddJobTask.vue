@@ -400,7 +400,6 @@
 						};
 
 						this.isChangedHashCodeTemplate = !(convertToJSON(currentTask) === convertToJSON(this.savedTaskTemplate));
-						console.log(this.isChangedHashCodeTemplate);
 					}
 
 				},

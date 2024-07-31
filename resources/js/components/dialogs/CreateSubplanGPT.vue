@@ -64,7 +64,6 @@
 
     .subpan-GPT-modal {
         box-shadow: none !important;
-        /* font-family: 'Familjen Grotesk', sans-serif; */
     }
 
     .subpan-GPT-text {

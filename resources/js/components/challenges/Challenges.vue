@@ -105,15 +105,7 @@ export default {
       clearInterval(this.interval)
     },
     async mounted () {
-      /*this.interval = setInterval(() => {
-        if (this.value === 100) {
-          return (this.value = 0)
-        }
-        this.value += 10
-      }, 1000)*/
        this.fetchChallenges();
-      //this.value = this.allChallenges[0]
-      
     },
     components: {ChallengeToggleButton},
     methods: {

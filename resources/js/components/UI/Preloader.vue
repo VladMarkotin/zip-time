@@ -6,13 +6,6 @@
             style="background-color: rgb(0, 0, 0, 0.25);"
         >
             <v-layout justify-center align-center>
-                <!-- <v-progress-circular
-                    indeterminate
-                    color="#A10000"
-                    size="140"
-                    width="7"
-                    >
-                </v-progress-circular> -->
                 <div class="loader"></div>
             </v-layout>
         </v-container>

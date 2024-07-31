@@ -17,11 +17,7 @@ export default {
     mutations:{
         updateChallenges(state, ch) {
             const {challenges} = ch.data.challenges;
-            state.challenges = challenges;
-            
-            // const obj = ch.data.challenges
-            // state.challenges.push(obj)
-            //console.log(state.challenges)
+            state.challenges = challenges;   
         }
     },
 

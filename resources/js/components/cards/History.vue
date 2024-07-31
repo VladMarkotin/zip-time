@@ -113,7 +113,6 @@ export default
 				headers: [
 					{ text: ' hash', value: 'hashCode' },
 					{ text: 'Task name', value: 'taskName' },
-					// { text: 'Details', value: 'details' },
 					{ text: 'Mark', value: 'mark' }
 				],
 				events: [],
@@ -204,8 +203,8 @@ export default
 					this.events.push({
 						start: new Date(date),
 						end: new Date(date),
-						name: `Day status:\t${status}`,//history.data.plans[date].dayStatus
-						color: color,//'#A10000',
+						name: `Day status:\t${status}`,
+						color: color,
 						dayFinalMark: history.data.plans[date].dayFinalMark,
 						dayOwnMark: history.data.plans[date].dayOwnMark,
 						comment: history.data.plans[date].comment,

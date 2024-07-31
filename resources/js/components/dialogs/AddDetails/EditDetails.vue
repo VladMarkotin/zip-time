@@ -128,14 +128,12 @@ export default {
                 type: alertData.type,
                 text: alertData.text,
             }
-
-            console.log(this.alert);
         },
 
         saveChangesInSubtask(){	
             if (this.isSubTaskInputValValid) {
 				axios.post('/edit-subtask', 
-                {id: this.modifiedDetailTemplate.id, title: this.subtaskInputsValues.title, text: this.subtaskInputsValues.text}) // type : item.type
+                {id: this.modifiedDetailTemplate.id, title: this.subtaskInputsValues.title, text: this.subtaskInputsValues.text})
 					.then((response) => {
 						
 						if (response.data.status == 'success') {

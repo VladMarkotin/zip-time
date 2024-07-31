@@ -243,7 +243,6 @@
 						requestData = checkIsTaskBasedOnDefaultSavedTask(requestData);
 
 						const responce = await axios.post('/addHashCode', requestData)
-						console.log(responce);
 						
 						if (responce.data.status === 'success') {
 							const loadingEnd = Date.now();

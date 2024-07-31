@@ -252,13 +252,6 @@ $signUpButtonColor: #4169E1;
             .slide-one-li {
                 opacity: 0;
                 color: #fff;
-                // &:nth-child(odd) {
-                //     color: #BEBEBE;
-                // }
-
-                // &:nth-child(even) {
-                //     color: #F5F5F5;
-                // }
                 
                 &.slide-one-li-left {
                     animation: .5s slide_one_left_appearance ease;
@@ -373,7 +366,6 @@ $signUpButtonColor: #4169E1;
                     min-height: 366px;
                     
                     .slide-three-list {
-                        // padding-left: 0;
                         display: flex;
                         flex-direction: column;
                         gap: 15px;
