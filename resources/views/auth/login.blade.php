@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="login-info">
-                <h1 class="title-login-page main-title">Quipl.io</h1>
+                <h1 class="title-login-page main-title">Quipl.сo</h1>
                 <h2 class="subtitle-login-page">The empire of efficiency is nearby. Final step left</h2>
             </div>
             <div class="login-links-wrapper">
