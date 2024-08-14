@@ -38,9 +38,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex/dist/vuex.common.js';
 import AddDetailsCard from './AddDetailsCard.vue';
 import {mdiChartGantt,}  from '@mdi/js'  
 import { uuid } from 'vue-uuid';
+import store from '../../../store';
 export default {
     props: {
         num: {},
@@ -74,6 +76,7 @@ export default {
             minPreloaderDispTime: 500,
         }
     },
+    store,
     components: {AddDetailsCard},
     watch: {
         isShowDialogDetails(isShowDialog) {
@@ -86,6 +89,7 @@ export default {
       }  
     },
     methods: {
+        ...mapActions(['fetchDetails']),
         showAddDetailsDialog() {
             this.isShowDialogDetails = true;
         },
@@ -129,7 +133,7 @@ export default {
         },
 
         getAllDetailsForTask(item, mode=null) {
-
+            
             const controllLoadingTime = (time, callback) => {
 				if (time > this.minPreloaderDispTime) callback();
 				else setTimeout(callback, this.minPreloaderDispTime - time);
@@ -143,6 +147,8 @@ export default {
 
             this.isLoading = true;
             const loadingStart = Date.now();
+
+            this.fetchDetails({requestData: data, uniqKey: this.generateUniqKey()})
 
 			axios.post('/get-sub-tasks',data)
 			.then((response) => {
