@@ -17,17 +17,16 @@
         <template v-if="isShowDialogDetails">
             <AddDetailsCard 
             :item               = "item"
-			:details            = "details"
+			:taskId             = "item.taskId"
 			:completedPercent   = "completedPercent"
             :alert              = "alert"
             :isLoading          = "isLoading"
-            :detailsSortingCrit = "detailsSortingCrit"
             :generateUniqKey    = "generateUniqKey"
             :screenWidth        = "screenWidth"
             @updateDetails            = "updateDetails"
             @updateAlertData          = "setAlertData"
             @updateCompletedPercent   = "updateCompletedPercent"
-            @updateDetailsSortingCrit = "updateDetailsSortingCrit"
+
             @closeAddDetailsDialog    = "closeAddDetailsDialog"
             @showAllSubTasks          = "showAllSubTasks"
             @showActualSubTasks       = "getAllDetailsForTask"
@@ -38,11 +37,11 @@
 </template>
 
 <script>
+import store from '../../../store';
 import { mapActions } from 'vuex/dist/vuex.common.js';
 import AddDetailsCard from './AddDetailsCard.vue';
 import {mdiChartGantt,}  from '@mdi/js'  
 import { uuid } from 'vue-uuid';
-import store from '../../../store';
 export default {
     props: {
         num: {},
@@ -106,9 +105,9 @@ export default {
             this.$emit('updateDetails', details);
         },
 
-        updateDetailsSortingCrit(sortCritVal) {
-            this.$emit('updateDetailsSortingCrit', sortCritVal)
-        },
+        // updateDetailsSortingCrit(sortCritVal) {
+        //     this.$emit('updateDetailsSortingCrit', sortCritVal)
+        // },
 
         setAlertData({type, text}) {
             if (type) this.alert.type = type;
@@ -119,20 +118,20 @@ export default {
             this.$emit('updateCompletedPercent', compPercent);
         },
 
-        checkCompletedPercent(complPercentResp) {
-            return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
-                    ? complPercentResp
-                    : this.editCompletedPercet(complPercentResp);
-        },
+        // checkCompletedPercent(complPercentResp) {
+        //     return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
+        //             ? complPercentResp
+        //             : this.editCompletedPercet(complPercentResp);
+        // },
 
-        editCompletedPercet(compPercent) {
-            if (typeof compPercent === 'string') {
-                return +(compPercent.replace(/[^0-9.]/g,""));
-            }
-            return compPercent;
-        },
+        // editCompletedPercet(compPercent) {
+        //     if (typeof compPercent === 'string') {
+        //         return +(compPercent.replace(/[^0-9.]/g,""));
+        //     }
+        //     return compPercent;
+        // },
 
-        getAllDetailsForTask(item, mode=null) {
+        async getAllDetailsForTask(item, mode=null) {
             
             const controllLoadingTime = (time, callback) => {
 				if (time > this.minPreloaderDispTime) callback();
@@ -148,39 +147,48 @@ export default {
             this.isLoading = true;
             const loadingStart = Date.now();
 
-            this.fetchDetails({requestData: data, uniqKey: this.generateUniqKey()})
+            try {
+                await this.fetchDetails({requestData: data, uniqKey: this.generateUniqKey()})
 
-			axios.post('/get-sub-tasks',data)
-			.then((response) => {
                 const loadingEnd = Date.now();
 
                 controllLoadingTime(loadingEnd - loadingStart, () => {
                     this.isLoading = false;
-    
-                    const details = []
-                    response.data.data.forEach(element => {
-                        details.push({
-                            title: element.title,
-                            text:  element.text,
-                            taskId: element.id,
-                            is_ready: element.is_ready, 
-                            checkpoint: element.checkpoint,
-                            is_old_compleated: element.is_old_compleated,
-                            done_at_user_time: element.done_at_user_time,
-                            is_ready: element.is_ready,
-                            uniqKey: this.generateUniqKey(),
-                            created_at_date: element.created_at_user_time.slice(//получаю дату без времени
-                                0, element.created_at_user_time.trim().indexOf(' ')
-                            ),
-                        }) 
-                    });
-                    this.updateDetails(details);
-                    const completedPercent = this.checkCompletedPercent(response.data.completedPercent); 
-                        
-                    this.updateCompletedPercent(completedPercent);
-                    this.setAlertData({type: response.data.status, text: response.data.message});
                 });
-				})
+                
+            } catch (error) {
+                console.error(error);
+            }
+
+			// axios.post('/get-sub-tasks',data)
+			// .then((response) => {
+
+            //     controllLoadingTime(loadingEnd - loadingStart, () => {
+    
+            //         const details = []
+            //         response.data.data.forEach(element => {
+            //             details.push({
+            //                 title: element.title,
+            //                 text:  element.text,
+            //                 taskId: element.id,
+            //                 is_ready: element.is_ready, 
+            //                 checkpoint: element.checkpoint,
+            //                 is_old_compleated: element.is_old_compleated,
+            //                 done_at_user_time: element.done_at_user_time,
+            //                 is_ready: element.is_ready,
+            //                 uniqKey: this.generateUniqKey(),
+            //                 created_at_date: element.created_at_user_time.slice(//получаю дату без времени
+            //                     0, element.created_at_user_time.trim().indexOf(' ')
+            //                 ),
+            //             }) 
+            //         });
+            //         this.updateDetails(details);
+            //         const completedPercent = this.checkCompletedPercent(response.data.completedPercent); 
+                        
+            //         this.updateCompletedPercent(completedPercent);
+            //         this.setAlertData({type: response.data.status, text: response.data.message});
+            //     });
+			// 	})
 		},
 
         generateUniqKey() {

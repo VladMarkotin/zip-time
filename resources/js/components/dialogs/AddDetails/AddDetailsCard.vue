@@ -350,6 +350,8 @@
 </template>
 
 <script>
+import store from '../../../store';
+import { mapGetters, mapActions, mapMutations } from 'vuex/dist/vuex.common.js';
 import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import EditButton from '../../UI/EditButton.vue';
@@ -362,8 +364,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 type: Object,
                 required: true,
             },
-            details: {
-                type: Array,
+            taskId: {
+                type: Number,
                 required: true,
             },
             completedPercent: {
@@ -375,10 +377,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             isLoading: {
                 type: Boolean,
-                required: true,
-            },
-            detailsSortingCrit: {
-                type: String,
                 required: true,
             },
             generateUniqKey: {
@@ -449,7 +447,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                         showSubtasksButtonText: 'View all subtasks',
                     }
                 },
-                detailsSortBy: null,
                 radioButtons: [
                     {value: 'created-at-asc', label: 'Old first',},
                     {value: 'created-at-desc', label: 'New first',},
@@ -459,11 +456,9 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 isShowAddNewDetailMobileDialog: false,
             }
         },
+        store,
         components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader, AddNewDetailMobile},
         watch: {
-            detailsSortBy(sortCritVal) {
-                this.updateDetailsSortingCrit(sortCritVal);
-            },
             'newDetail.title'() {
                 this.setDataOnValidOfInputs(
                     'isTitleInpuValValid', 
@@ -480,11 +475,28 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         computed: {
+            ...mapGetters(['getDetails', 'getDetailsSortBy']),
+            detailsSortBy: {
+                get() {
+                    return this.getDetailsSortBy(this.taskId);
+                },
+                set(val) {
+                    this.updateDetailsSortingCrit({key: this.taskId, newDetailsSortingCrit: val});
+                }
+            },
+            details() {
+                return this.getDetails(this.taskId)
+            },
             isMobile() {
                 return this.screenWidth < 768; 
+            },
+            detailsSortingCrit() {
+                return this.getDetailsSortingCrit(this.taskId);
             }  
         },
         methods: {
+            ...mapActions(['addNewDetail']),
+            ...mapMutations(['updateDetailsSortingCrit']),
             updateDetails(details) {
                 this.$emit('updateDetails', details);
             },
@@ -497,9 +509,9 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 this.$emit('updateAlertData', alertData);
             },
 
-            updateDetailsSortingCrit(sortCritVal) {
-                this.$emit('updateDetailsSortingCrit', sortCritVal)
-            },
+            // updateDetailsSortingCrit(sortCritVal) {
+            //     this.$emit('updateDetailsSortingCrit', sortCritVal)
+            // },
 
             checkCompletedPercent(complPercentResp) {
                 return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
@@ -514,7 +526,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 return compPercent;
             },
 
-            addDetail(){
+            async addDetail(){
                 if (this.isLoading) return;
 
                 if (this.dataOnValidofInputs.areAllInputsValValid) {
@@ -524,17 +536,23 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     const date = dateNow.toLocaleString("en-CA", dataOpt);
 
                     this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: date, uniqKey: this.generateUniqKey(),};
-                    this.updateDetails([...this.details, this.newDetail]);
-                    this.createSubPlan(this.newDetail)
-                    this.newDetail = {
-						title: '',
-						text: '',
-						position:1,
-						weight: 100,
-						checkpoint: false,
-						is_ready: false,
-                        created_at_date: '',
-					};
+
+                    try {
+                        await this.addNewDetail({newDetail: this.newDetail});
+                    } catch(error) {
+                        console.error(error);
+                    }
+                    // this.updateDetails([...this.details, this.newDetail]);
+                    // this.createSubPlan(this.newDetail)
+                    // this.newDetail = {
+					// 	title: '',
+					// 	text: '',
+					// 	position:1,
+					// 	weight: 100,
+					// 	checkpoint: false,
+					// 	is_ready: false,
+                    //     created_at_date: '',
+					// };
                 } else {
 					this.$emit('updateAlertData', {type: 'error', text: 'Invalid data'});
                     this.isShowAlertInDetails = true;
@@ -612,8 +630,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     if (respData.status === 'success') {
                         this.checkResetDayMarkToDefVal(response.data);
                         this.updateCompletedPercent(this.editCompletedPercet(respData.completedPercent));
-                        //раскомментить если хочу, что бы массив сортировался при клике на чекбокс
-                        // this.updateDetailsSortingCrit(this.detailsSortBy); 
                     }
 				})
 			},
@@ -680,10 +696,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             setNewDetail(newDetail) {
                 Object.assign(this.newDetail, newDetail);
             }
-        },
-
-        created() {
-            this.detailsSortBy = this.detailsSortingCrit
         },
 
         mounted() {

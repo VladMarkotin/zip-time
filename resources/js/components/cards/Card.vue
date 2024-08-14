@@ -157,7 +157,6 @@
 									:screenWidth        = "screenWidth"
 									@updateDetails            = "updateDetails"
 									@updateCompletedPercent   = "updateCompletedPercent"
-									@updateDetailsSortingCrit = "updateDetailsSortingCrit"
 									@resetSortingToDefVal     = "resetSortingToDefVal"
 									@resetDayMarkToDefVal     = "resetDayMarkToDefVal"
 									/>
@@ -456,17 +455,17 @@
 				
 			updateDetails(details) {
 				this.details = details;
-				this.sortDetails();
+				// this.sortDetails();
 			},
 
 			updateCompletedPercent(compPercent) {
 				this.completedPercent = compPercent;
 			},
 
-			updateDetailsSortingCrit(sortCritVal) {
-				this.detailsSortingCrit = sortCritVal;
-				this.sortDetails();
-			},
+			// updateDetailsSortingCrit(sortCritVal) {
+			// 	this.detailsSortingCrit = sortCritVal;
+			// 	this.sortDetails();
+			// },
 
 			resetSortingToDefVal() {
 				this.detailsSortingCrit = this.detailsSortingDefaultVal;
@@ -484,69 +483,69 @@
 				}
 			},
 
-			sortDetails() {
-				if (this.details.length < 2) return;
+			// sortDetails() {
+			// 	if (this.details.length < 2) return;
 
-				const formatDate = (date) => Date.parse(date.created_at_date);
+			// 	const formatDate = (date) => Date.parse(date.created_at_date);
 
-				const sortByCreatedAt = (detailA, detailB, direction = 'asc') => {
-						const detailADate = formatDate(detailA);
-						const detailBDate = formatDate(detailB);
+			// 	const sortByCreatedAt = (detailA, detailB, direction = 'asc') => {
+			// 			const detailADate = formatDate(detailA);
+			// 			const detailBDate = formatDate(detailB);
 
-						switch (direction) {
-							case 'asc':
-								return detailADate - detailBDate 
-							case 'desc':
-								return detailBDate - detailADate;
-							default:
-								return detailADate - detailBDate 
-						}
-				}
+			// 			switch (direction) {
+			// 				case 'asc':
+			// 					return detailADate - detailBDate 
+			// 				case 'desc':
+			// 					return detailBDate - detailADate;
+			// 				default:
+			// 					return detailADate - detailBDate 
+			// 			}
+			// 	}
 
-				switch (this.detailsSortingCrit) {
-					case 'created-at-asc':
-						this.details.sort((detailA, detailB) => {
-							return sortByCreatedAt(detailA, detailB, 'asc');
-						});
-					break;
-					case 'created-at-desc':
-						this.details.sort((detailA, detailB) => {
-							return sortByCreatedAt(detailA, detailB, 'desc');
-						});
-					break;
-					case 'is_ready-asc':
-						this.details.sort((detailA, detailB) => {
+			// 	switch (this.detailsSortingCrit) {
+			// 		case 'created-at-asc':
+			// 			this.details.sort((detailA, detailB) => {
+			// 				return sortByCreatedAt(detailA, detailB, 'asc');
+			// 			});
+			// 		break;
+			// 		case 'created-at-desc':
+			// 			this.details.sort((detailA, detailB) => {
+			// 				return sortByCreatedAt(detailA, detailB, 'desc');
+			// 			});
+			// 		break;
+			// 		case 'is_ready-asc':
+			// 			this.details.sort((detailA, detailB) => {
 
-							if (detailA.is_ready || detailB.is_ready) {
-								if (detailA.is_ready && !detailB.is_ready) return -1;
-								if (!detailA.is_ready && detailB.is_ready) return 1;
+			// 				if (detailA.is_ready || detailB.is_ready) {
+			// 					if (detailA.is_ready && !detailB.is_ready) return -1;
+			// 					if (!detailA.is_ready && detailB.is_ready) return 1;
 
-								return sortByCreatedAt(detailA, detailB, 'asc');
-							} else {
-								return sortByCreatedAt(detailA, detailB, 'asc');
-							}
-						});
-					break;
-					case 'unready-asc':
-						this.details.sort((detailA, detailB) => {
+			// 					return sortByCreatedAt(detailA, detailB, 'asc');
+			// 				} else {
+			// 					return sortByCreatedAt(detailA, detailB, 'asc');
+			// 				}
+			// 			});
+			// 		break;
+			// 		case 'unready-asc':
+			// 			this.details.sort((detailA, detailB) => {
 
-						if (!detailA.is_ready || !detailB.is_ready) {
-							if (!detailA.is_ready && detailB.is_ready) return -1;
-							if (detailA.is_ready && !detailB.is_ready) return 1;
+			// 			if (!detailA.is_ready || !detailB.is_ready) {
+			// 				if (!detailA.is_ready && detailB.is_ready) return -1;
+			// 				if (detailA.is_ready && !detailB.is_ready) return 1;
 
-							return sortByCreatedAt(detailA, detailB, 'asc');
-						} else {
-							return sortByCreatedAt(detailA, detailB, 'asc');
-						}
-					});
-					break;
-					default:
-						this.details.sort((detailA, detailB) => {
-							return sortByCreatedAt(detailA, detailB, 'asc');
-						});
-					break;
-				}
-			},
+			// 				return sortByCreatedAt(detailA, detailB, 'asc');
+			// 			} else {
+			// 				return sortByCreatedAt(detailA, detailB, 'asc');
+			// 			}
+			// 		});
+			// 		break;
+			// 		default:
+			// 			this.details.sort((detailA, detailB) => {
+			// 				return sortByCreatedAt(detailA, detailB, 'asc');
+			// 			});
+			// 		break;
+			// 	}
+			// },
 
 			setNotesInfo(data) {
 				Object.assign(this.noteInfo, data);
