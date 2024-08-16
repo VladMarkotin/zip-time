@@ -10,7 +10,6 @@
                         :rotate="360" 
                         :size="100" 
                         :width="10" 
-                        :model-value="completedPercent"
                         color="red" 
                         :value="completedPercent">
                             {{ completedPercent }} %
@@ -368,10 +367,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 type: Number,
                 required: true,
             },
-            completedPercent: {
-                type: Number,
-                required: true,
-            },
             alert: {
                 type: Object,
             },
@@ -475,7 +470,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         computed: {
-            ...mapGetters(['getDetailsData', 'getDetailsSortBy']),
+            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent']),
             detailsSortBy: {
                 get() {
                     return this.getDetailsSortBy(this.taskId);
@@ -493,10 +488,13 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             detailsSortingCrit() {
                 return this.getDetailsSortingCrit(this.taskId);
+            },
+            completedPercent() {
+                return this.getCompletedPercent(this.taskId);
             }  
         },
         methods: {
-            ...mapActions(['addNewDetail', 'updateDetailsSortingCrit']),
+            ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus']),
             updateDetails(details) {
                 this.$emit('updateDetails', details);
             },
@@ -615,23 +613,39 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 				})
 			},
 
-            completed(subtask){
+            async completed(subtask){
                 const taskId = this.item.taskId;
-                const isSubtaskRequired = !!subtask.checkpoint;
-
-				axios.post('/complete-sub-task',{
-                    subtask_id : subtask.taskId, 
-                    is_subtask_ready: subtask.is_ready,
-                    is_subtask_required: isSubtaskRequired,
-                    task_id: taskId,
-                })
-				.then((response) => {
+                try {
+                    const response = await this.updateCompletedStatus({
+                        subtask_id:          subtask.taskId, 
+                        is_subtask_ready:    subtask.is_ready,
+                        is_subtask_required: !!subtask.checkpoint,
+                        task_id:             taskId,
+                    })
+                    
                     const respData = response.data;
                     if (respData.status === 'success') {
                         this.checkResetDayMarkToDefVal(response.data);
-                        this.updateCompletedPercent(this.editCompletedPercet(respData.completedPercent));
                     }
-				})
+                } catch(error) {
+                    console.error(error);
+                }
+                // const taskId = this.item.taskId;
+                // const isSubtaskRequired = !!subtask.checkpoint;
+
+				// axios.post('/complete-sub-task',{
+                //     subtask_id : subtask.taskId, 
+                //     is_subtask_ready: subtask.is_ready,
+                //     is_subtask_required: isSubtaskRequired,
+                //     task_id: taskId,
+                // })
+				// .then((response) => {
+                    // const respData = response.data;
+                    // if (respData.status === 'success') {
+                    //     this.checkResetDayMarkToDefVal(response.data);
+                    //     this.updateCompletedPercent(this.editCompletedPercet(respData.completedPercent));
+                    // }
+				// })
 			},
 
             createModifiedDetailTemplate(item) {

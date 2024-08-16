@@ -72,6 +72,10 @@ export default {
 					});
 				break;
 			}
+        },
+
+        updateCompletedPercentInCurrentTask(state, {key, completedPercent}) {
+            state.details[key].completedPercent = completedPercent;
         }
     },
     getters: {
@@ -88,6 +92,18 @@ export default {
                     return 'created-at-asc'; //по возможности убрать хардкод
                 }
                 return 'created-at-asc';
+            }
+        },
+
+        getCompletedPercent(state) {
+            return (id) => {
+                const detailsData = state.details[id];
+
+                if (detailsData === undefined) {
+                    return 0;
+                }
+
+                return detailsData.completedPercent;
             }
         }
     },
@@ -165,6 +181,31 @@ export default {
                 return +(compPercent.replace(/[^0-9.]/g,""));
             }
             return compPercent;
+        },
+
+        async updateCompletedStatus({commit, getters, dispatch}, payload) {
+            try {
+                const response = await axios.post('/complete-sub-task', payload);
+                const data = response.data;
+                
+                if (data.status = 'success') {
+                    const transformedCompletedPercent = await dispatch('checkCompletedPercent', {complPercentResp: data.completedPercent})
+                    
+                    const detailsData = getters.getDetailsData(payload.task_id);
+
+                    if (detailsData) {
+                        commit('updateCompletedPercentInCurrentTask', {
+                            key:              payload.task_id, 
+                            completedPercent: transformedCompletedPercent
+                        });
+                    }
+
+                }
+
+                return response;
+            } catch(error) {
+                console.error(error);
+            }
         },
     }
 }

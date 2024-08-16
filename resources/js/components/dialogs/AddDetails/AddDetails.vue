@@ -18,7 +18,7 @@
             <AddDetailsCard 
             :item               = "item"
 			:taskId             = "item.taskId"
-			:completedPercent   = "completedPercent"
+            
             :alert              = "alert"
             :isLoading          = "isLoading"
             :generateUniqKey    = "generateUniqKey"
