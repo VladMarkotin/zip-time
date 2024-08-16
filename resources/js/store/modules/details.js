@@ -76,7 +76,11 @@ export default {
 
         updateCompletedPercentInCurrentTask(state, {key, completedPercent}) {
             state.details[key].completedPercent = completedPercent;
-        }
+        },
+
+        addNewDetailInCurrentTask(state, {key, newDetail}) {
+            state.details[key].details.push(newDetail); //Проверить!
+        },
     },
     getters: {
         getDetailsData(state) {
@@ -156,15 +160,28 @@ export default {
             }
         },
 
-        async addNewDetail(context, {newDetail}) {
+        async addNewDetail({getters, commit, dispatch}, {newDetail}) {
             try {
-                console.log(newDetail);
                 const response = await axios.post('/add-sub-task',{task_id : newDetail.taskId, hash: newDetail.hash, sub_plan: newDetail})
                 const respData = response.data;
-                
-                if (response.status === 200) {
-                    
+
+                if (respData.status === 'success') {
+                    const key = newDetail.task_id
+                    newDetail.taskId = respData.subtaskId
+                    delete newDetail.task_id;
+
+                    const currentTaskData = getters.getDetailsData(key);
+
+                    if (currentTaskData) {
+                        const transformedCompletedPercent = await dispatch('checkCompletedPercent', {complPercentResp: respData.completedPercent})
+
+                        commit('addNewDetailInCurrentTask', {key, newDetail});
+                        commit('updateCompletedPercentInCurrentTask', {key, completedPercent: transformedCompletedPercent});
+                        commit('sortDetails', {key});
+                    }
                 } 
+
+                return response;
             } catch(error) {
                 console.error(error);
             }

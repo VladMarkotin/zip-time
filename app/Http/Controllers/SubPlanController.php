@@ -55,8 +55,9 @@ class SubPlanController extends Controller
         }
         if (in_array(false, $errors, true)) {
             return ( response()->json([
-                'message' => 'data for subtask is invalid',
+                'message'  => 'data for subtask is invalid',
                 'elements' => $subPlan, 
+                'status'   => 'error'
             ]) );
         }
         /**Have to get saved_task_id */
@@ -89,6 +90,7 @@ class SubPlanController extends Controller
                 'subtaskId'            => $subtask_id,
                 'completedPercent'     => $completedPercent,
                 'resetDayMarkToDefVal' => $resetDayMarkToDefVal,
+                'status'               => 'success',
             ];
         };
 

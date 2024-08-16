@@ -535,22 +535,26 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
                     this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: date, uniqKey: this.generateUniqKey(),};
 
-                    try {
-                        await this.addNewDetail({newDetail: this.newDetail});
-                    } catch(error) {
-                        console.error(error);
-                    }
-                    // this.updateDetails([...this.details, this.newDetail]);
-                    // this.createSubPlan(this.newDetail)
-                    // this.newDetail = {
-					// 	title: '',
-					// 	text: '',
-					// 	position:1,
-					// 	weight: 100,
-					// 	checkpoint: false,
-					// 	is_ready: false,
-                    //     created_at_date: '',
-					// };
+                    const response = await this.addNewDetail({newDetail: this.newDetail})
+                    const respData = response.data;
+                    
+					this.isShowAlertInDetails = true;
+                    this.checkResetDayMarkToDefVal(respData);
+					this.$emit('updateAlertData', {type: respData.status === 'success' ? 'success' : 'error', text: respData.message});
+
+                    this.newDetail = {
+						title: '',
+						text: '',
+						position:1,
+						weight: 100,
+						checkpoint: false,
+						is_ready: false,
+                        created_at_date: '',
+					};
+
+                    setTimeout( () => {
+						this.isShowAlertInDetails = false;
+					},this.alertDisplayTime);
                 } else {
 					this.$emit('updateAlertData', {type: 'error', text: 'Invalid data'});
                     this.isShowAlertInDetails = true;
@@ -560,24 +564,24 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 }
 			},
 
-			createSubPlan(item){
-				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
-				.then((response) => {
-                    const respData = response.data;
+			// createSubPlan(item){
+			// 	axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
+			// 	.then((response) => {
+            //         const respData = response.data;
 
-					this.isShowAlertInDetails = true;
-                    this.checkResetDayMarkToDefVal(respData);
-					this.$emit('updateAlertData', {type: response.status === 200 ? 'success' : 'error', text: respData.message});
-					const completedPercent = this.checkCompletedPercent(respData.completedPercent);
-                    this.updateCompletedPercent(completedPercent);
-					item.taskId = respData.subtaskId
-					setTimeout( () => {
-						this.isShowAlertInDetails = false;
-					},this.alertDisplayTime)
-				  })
-				  .catch(function (error) {
-				  })
-			},
+			// 		this.isShowAlertInDetails = true;
+            //         this.checkResetDayMarkToDefVal(respData);
+			// 		this.$emit('updateAlertData', {type: response.status === 200 ? 'success' : 'error', text: respData.message});
+			// 		const completedPercent = this.checkCompletedPercent(respData.completedPercent);
+            //         this.updateCompletedPercent(completedPercent);
+			// 		item.taskId = respData.subtaskId
+			// 		setTimeout( () => {
+			// 			this.isShowAlertInDetails = false;
+			// 		},this.alertDisplayTime)
+			// 	  })
+			// 	  .catch(function (error) {
+			// 	  })
+			// },
 
             setDataOnValidOfInputs(key, rules, inputVal) {
                 this.dataOnValidofInputs[key] = 
