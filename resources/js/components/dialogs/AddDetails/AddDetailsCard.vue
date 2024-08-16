@@ -350,7 +350,7 @@
 
 <script>
 import store from '../../../store';
-import { mapGetters, mapActions, mapMutations } from 'vuex/dist/vuex.common.js';
+import { mapGetters, mapActions, } from 'vuex/dist/vuex.common.js';
 import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import EditButton from '../../UI/EditButton.vue';
@@ -494,14 +494,14 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }  
         },
         methods: {
-            ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus']),
+            ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus', 'deleteDetail']),
             updateDetails(details) {
                 this.$emit('updateDetails', details);
             },
 
-            updateCompletedPercent(compPercent) {
-                this.$emit('updateCompletedPercent', compPercent);
-            },
+            // updateCompletedPercent(compPercent) {
+            //     this.$emit('updateCompletedPercent', compPercent);
+            // },
 
             updateAlertData(alertData) {
                 this.$emit('updateAlertData', alertData);
@@ -511,18 +511,18 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             //     this.$emit('updateDetailsSortingCrit', sortCritVal)
             // },
 
-            checkCompletedPercent(complPercentResp) {
-                return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
-                        ? complPercentResp
-                        : this.editCompletedPercet(complPercentResp);
-            },
+            // checkCompletedPercent(complPercentResp) {
+            //     return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
+            //             ? complPercentResp
+            //             : this.editCompletedPercet(complPercentResp);
+            // },
 
-            editCompletedPercet(compPercent) {
-                if (typeof compPercent === 'string') {
-                    return +(compPercent.replace(/[^0-9.]/g,""));
-                }
-                return compPercent;
-            },
+            // editCompletedPercet(compPercent) {
+            //     if (typeof compPercent === 'string') {
+            //         return +(compPercent.replace(/[^0-9.]/g,""));
+            //     }
+            //     return compPercent;
+            // },
 
             async addDetail(){
                 if (this.isLoading) return;
@@ -598,23 +598,34 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 .every(checkResult => checkResult === true);
             },
 
-            deleteSubTask(item){
-                const removedTaskId = item.taskId;
-                
-				axios.post('/del-sub-task',{task_id : removedTaskId})
-				.then((response) => {
-                    if (response.data.status === 'success') {
-                        this.isShowAlertInDetails = true;
-                        this.updateAlertData({type: response.data.status, text: 'subtask has been removed'});
-                        this.updateDetails(this.details.filter(item => item.taskId !== removedTaskId));
-                        this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
-                        console.log(response.data);
+            async deleteSubTask(item){
+                const detailId = item.taskId;
+                const taskId   = this.taskId;
+                const response = await this.deleteDetail({taskId, detailId});
+                const respData = response.data;
 
-                        setTimeout( () => {
-                            this.isShowAlertInDetails = false;
-					    },this.alertDisplayTime)
-                    }
-				})
+                if (respData.status === 'success') {
+                    this.isShowAlertInDetails = true;
+                    this.updateAlertData({type: respData.status, text: 'subtask has been removed'});
+
+                    setTimeout( () => {
+                        this.isShowAlertInDetails = false;
+					},this.alertDisplayTime)
+                }
+				// axios.post('/del-sub-task',{task_id : removedTaskId})
+				// .then((response) => {
+                //     if (response.data.status === 'success') {
+                //         this.isShowAlertInDetails = true;
+                //         this.updateAlertData({type: response.data.status, text: 'subtask has been removed'});
+                //         this.updateDetails(this.details.filter(item => item.taskId !== removedTaskId));
+                //         this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
+                //         console.log(response.data);
+
+                //         setTimeout( () => {
+                //             this.isShowAlertInDetails = false;
+				// 	    },this.alertDisplayTime)
+                //     }
+				// })
 			},
 
             async completed(subtask){

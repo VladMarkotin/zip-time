@@ -1,6 +1,5 @@
 import { uuid } from "vue-uuid";
 
-//Разделить логику мутаторов Сортировочного критерия!!!
 export default {
     state: {details: {}},
     mutations: {
@@ -81,17 +80,32 @@ export default {
         addNewDetailInCurrentTask(state, {key, newDetail}) {
             state.details[key].details.push(newDetail); //Проверить!
         },
+
+        deleteDetailInCurrentTask(state, {key, id}) {
+            const { details } = state.details[key];
+
+            state.details[key] = {
+            ...state.details[key],
+            details: details.filter(detail => detail.taskId !== id)
+            };
+        }
     },
     getters: {
         getDetailsData(state) {
-            return (id) => {
-                return state.details[id];
+            return (key) => {
+                return state.details[key];
+            }
+        },
+
+        getDetail(state) {
+            return (key, id) => {
+                return state.details[key].details.find(detail => detail.taskId === id);
             }
         },
 
         getDetailsSortBy(state) {
-            return(id) => {
-                const detailsSortingCrit = state.details[id].detailsSortBy;
+            return(key) => {
+                const detailsSortingCrit = state.details[key].detailsSortBy;
                 if (detailsSortingCrit === undefined) {
                     return 'created-at-asc'; //по возможности убрать хардкод
                 }
@@ -100,8 +114,8 @@ export default {
         },
 
         getCompletedPercent(state) {
-            return (id) => {
-                const detailsData = state.details[id];
+            return (key) => {
+                const detailsData = state.details[key];
 
                 if (detailsData === undefined) {
                     return 0;
@@ -181,6 +195,33 @@ export default {
                     }
                 } 
 
+                return response;
+            } catch(error) {
+                console.error(error);
+            }
+        },
+
+        async deleteDetail({getters, commit, dispatch}, {taskId, detailId}) {
+            try {
+                const response = await axios.post('/del-sub-task',{task_id : detailId});
+                const respData = response.data;
+
+                if (respData.status === 'success') {
+                    const currentTaskData = getters.getDetailsData(taskId);
+
+                    if (currentTaskData) {
+                        const currentDetail = getters.getDetail(taskId, detailId);
+
+                        if (currentDetail) {
+                            const transformedCompletedPercent = await dispatch('checkCompletedPercent', {complPercentResp: respData.completedPercent})
+
+                            commit('deleteDetailInCurrentTask', {key: taskId, id: detailId});
+                            commit('updateCompletedPercentInCurrentTask', {key: taskId, completedPercent: transformedCompletedPercent});
+                            commit('sortDetails', {key: taskId});
+                        }
+                    }
+                }
+                
                 return response;
             } catch(error) {
                 console.error(error);

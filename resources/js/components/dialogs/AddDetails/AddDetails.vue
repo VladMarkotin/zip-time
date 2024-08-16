@@ -18,14 +18,13 @@
             <AddDetailsCard 
             :item               = "item"
 			:taskId             = "item.taskId"
-            
+
             :alert              = "alert"
             :isLoading          = "isLoading"
             :generateUniqKey    = "generateUniqKey"
             :screenWidth        = "screenWidth"
             @updateDetails            = "updateDetails"
             @updateAlertData          = "setAlertData"
-            @updateCompletedPercent   = "updateCompletedPercent"
 
             @closeAddDetailsDialog    = "closeAddDetailsDialog"
             @showAllSubTasks          = "showAllSubTasks"
@@ -114,9 +113,9 @@ export default {
             if (text) this.alert.text = text;
 		},
 
-        updateCompletedPercent(compPercent) {
-            this.$emit('updateCompletedPercent', compPercent);
-        },
+        // updateCompletedPercent(compPercent) {
+        //     this.$emit('updateCompletedPercent', compPercent);
+        // },
 
         // checkCompletedPercent(complPercentResp) {
         //     return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
