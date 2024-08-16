@@ -8,83 +8,74 @@ export default {
             state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy}};
         },
         updateDetailsSortingCritInCurrentTask(state, {key, newDetailsSortingCrit}) {
-            const currentTaskData = state.details[key];
-            if (currentTaskData) {
-                currentTaskData.detailsSortBy = newDetailsSortingCrit;
-            }
+            state.details[key].detailsSortBy = newDetailsSortingCrit;
         },
 
         sortDetails(state, {key}) {
-            const currentTaskData = state.details[key];
-            if (currentTaskData) {
+            const currentTaskData    = state.details[key];
+            const currentTaskDetails = currentTaskData.details;
+            const formatDate = (date) => Date.parse(date.created_at_date);
 
-                const currentTaskDetails = currentTaskData.details;
+			const sortByCreatedAt = (detailA, detailB, direction = 'asc') => {
+					const detailADate = formatDate(detailA);
+					const detailBDate = formatDate(detailB);
+					switch (direction) {
+						case 'asc':
+							return detailADate - detailBDate 
+						case 'desc':
+							return detailBDate - detailADate;
+						default:
+							return detailADate - detailBDate 
+					}
+			}
                 
-                if (currentTaskDetails.length < 2) return;
+			switch (currentTaskData.detailsSortBy) {
+				case 'created-at-asc':
+					currentTaskDetails.sort((detailA, detailB) => {
+						return sortByCreatedAt(detailA, detailB, 'asc');
+					});
+				break;
+				case 'created-at-desc':
+					currentTaskDetails.sort((detailA, detailB) => {
+						return sortByCreatedAt(detailA, detailB, 'desc');
+					});
+				break;
+				case 'is_ready-asc':
+					currentTaskDetails.sort((detailA, detailB) => {
 
-				const formatDate = (date) => Date.parse(date.created_at_date);
-
-				const sortByCreatedAt = (detailA, detailB, direction = 'asc') => {
-						const detailADate = formatDate(detailA);
-						const detailBDate = formatDate(detailB);
-						switch (direction) {
-							case 'asc':
-								return detailADate - detailBDate 
-							case 'desc':
-								return detailBDate - detailADate;
-							default:
-								return detailADate - detailBDate 
-						}
-				}
-                
-				switch (currentTaskData.detailsSortBy) {
-					case 'created-at-asc':
-						currentTaskDetails.sort((detailA, detailB) => {
-							return sortByCreatedAt(detailA, detailB, 'asc');
-						});
-					break;
-					case 'created-at-desc':
-						currentTaskDetails.sort((detailA, detailB) => {
-							return sortByCreatedAt(detailA, detailB, 'desc');
-						});
-					break;
-					case 'is_ready-asc':
-						currentTaskDetails.sort((detailA, detailB) => {
-
-							if (detailA.is_ready || detailB.is_ready) {
-								if (detailA.is_ready && !detailB.is_ready) return -1;
-								if (!detailA.is_ready && detailB.is_ready) return 1;
-
-								return sortByCreatedAt(detailA, detailB, 'asc');
-							} else {
-								return sortByCreatedAt(detailA, detailB, 'asc');
-							}
-						});
-					break;
-					case 'unready-asc':
-						currentTaskDetails.sort((detailA, detailB) => {
-
-						if (!detailA.is_ready || !detailB.is_ready) {
-							if (!detailA.is_ready && detailB.is_ready) return -1;
-							if (detailA.is_ready && !detailB.is_ready) return 1;
+						if (detailA.is_ready || detailB.is_ready) {
+							if (detailA.is_ready && !detailB.is_ready) return -1;
+							if (!detailA.is_ready && detailB.is_ready) return 1;
 
 							return sortByCreatedAt(detailA, detailB, 'asc');
 						} else {
 							return sortByCreatedAt(detailA, detailB, 'asc');
 						}
 					});
-					break;
-					default:
-						currentTaskDetails.sort((detailA, detailB) => {
-							return sortByCreatedAt(detailA, detailB, 'asc');
-						});
-					break;
-				}
-            }
+				break;
+				case 'unready-asc':
+					currentTaskDetails.sort((detailA, detailB) => {
+
+					if (!detailA.is_ready || !detailB.is_ready) {
+						if (!detailA.is_ready && detailB.is_ready) return -1;
+						if (detailA.is_ready && !detailB.is_ready) return 1;
+
+						return sortByCreatedAt(detailA, detailB, 'asc');
+					} else {
+						return sortByCreatedAt(detailA, detailB, 'asc');
+					}
+				});
+				break;
+				default:
+					currentTaskDetails.sort((detailA, detailB) => {
+						return sortByCreatedAt(detailA, detailB, 'asc');
+					});
+				break;
+			}
         }
     },
     getters: {
-        getDetails(state) {
+        getDetailsData(state) {
             return (id) => {
                 return state.details[id];
             }
@@ -102,9 +93,14 @@ export default {
     },
     actions: {
         async updateDetailsSortingCrit({commit, getters}, payload) {
-            console.log(getters)
-            commit('updateDetailsSortingCritInCurrentTask', payload);
-            commit('sortDetails', payload);
+            const detailsData = getters.getDetailsData(payload.key);
+            if (detailsData) {
+                commit('updateDetailsSortingCritInCurrentTask', payload);
+                if (detailsData.details.length >= 2) {
+                    commit('sortDetails', payload);
+                }
+            }
+
         },
         async fetchDetails(context, payload) {
             try {

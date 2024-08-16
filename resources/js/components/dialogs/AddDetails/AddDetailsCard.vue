@@ -475,7 +475,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         computed: {
-            ...mapGetters(['getDetails', 'getDetailsSortBy']),
+            ...mapGetters(['getDetailsData', 'getDetailsSortBy']),
             detailsSortBy: {
                 get() {
                     return this.getDetailsSortBy(this.taskId);
@@ -485,7 +485,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 }
             },
             details() {
-                const currentTaskData = this.getDetails(this.taskId);
+                const currentTaskData = this.getDetailsData(this.taskId);
                 return currentTaskData ? currentTaskData.details : [];
             },
             isMobile() {
