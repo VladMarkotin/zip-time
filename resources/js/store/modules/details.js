@@ -1,15 +1,22 @@
 import { uuid } from "vue-uuid";
 
+//Разделить логику мутаторов Сортировочного критерия!!!
 export default {
     state: {details: {}},
     mutations: {
         initializeDetailsStore(state, {key, details, completedPercent, detailsSortBy}) {
             state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy}};
         },
-        updateDetailsSortingCrit(state, {key, newDetailsSortingCrit}) {
+        updateDetailsSortingCritInCurrentTask(state, {key, newDetailsSortingCrit}) {
             const currentTaskData = state.details[key];
             if (currentTaskData) {
                 currentTaskData.detailsSortBy = newDetailsSortingCrit;
+            }
+        },
+
+        sortDetails(state, {key}) {
+            const currentTaskData = state.details[key];
+            if (currentTaskData) {
 
                 const currentTaskDetails = currentTaskData.details;
                 
@@ -30,7 +37,7 @@ export default {
 						}
 				}
                 
-				switch (newDetailsSortingCrit) {
+				switch (currentTaskData.detailsSortBy) {
 					case 'created-at-asc':
 						currentTaskDetails.sort((detailA, detailB) => {
 							return sortByCreatedAt(detailA, detailB, 'asc');
@@ -79,11 +86,7 @@ export default {
     getters: {
         getDetails(state) {
             return (id) => {
-                const currentTaskData = state.details[id];
-                if (currentTaskData === undefined) {
-                    return [];
-                }
-                return currentTaskData.details;
+                return state.details[id];
             }
         },
 
@@ -98,6 +101,11 @@ export default {
         }
     },
     actions: {
+        async updateDetailsSortingCrit({commit, getters}, payload) {
+            console.log(getters)
+            commit('updateDetailsSortingCritInCurrentTask', payload);
+            commit('sortDetails', payload);
+        },
         async fetchDetails(context, payload) {
             try {
                 const {requestData} = payload;

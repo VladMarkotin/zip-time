@@ -485,7 +485,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 }
             },
             details() {
-                return this.getDetails(this.taskId)
+                const currentTaskData = this.getDetails(this.taskId);
+                return currentTaskData ? currentTaskData.details : [];
             },
             isMobile() {
                 return this.screenWidth < 768; 
@@ -495,8 +496,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }  
         },
         methods: {
-            ...mapActions(['addNewDetail']),
-            ...mapMutations(['updateDetailsSortingCrit']),
+            ...mapActions(['addNewDetail', 'updateDetailsSortingCrit']),
             updateDetails(details) {
                 this.$emit('updateDetails', details);
             },
