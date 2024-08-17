@@ -1,7 +1,9 @@
 import { uuid } from "vue-uuid";
 
 export default {
-    state: {details: {}},
+    state: {
+        details: {},
+    },
     mutations: {
         initializeDetailsStore(state, {key, details, completedPercent, detailsSortBy}) {
             state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy}};
@@ -141,6 +143,10 @@ export default {
 
                 return detailsData.completedPercent;
             }
+        },
+
+        getDetailsRules(state) {
+            return state.detailsChecks.detailsRules;
         }
     },
     actions: {

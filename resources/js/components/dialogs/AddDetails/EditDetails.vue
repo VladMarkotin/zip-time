@@ -16,7 +16,7 @@
                     class="ml-1 pt-0" 
                     :counter="subtaskRules.subtaskTitle.maxLength" 
                     v-model="subtaskInputsValues.title"
-                    :rules="subtaskTitleRules"
+                    :rules="detailTitleRules"
                     success
                     @input="checkInputsValue"
                     ref="subtaskTitleInput"
@@ -28,7 +28,7 @@
                     :counter="subtaskRules.subtaskText.maxLength"
                     class="ml-1 pt-0" 
                     v-model="subtaskInputsValues.text"
-                    :rules="subtaskTextRules"
+                    :rules="detailTextRules"
                     success
                     @input="checkInputsValue"
                     ref="subtaskTextInput"
@@ -87,11 +87,11 @@ export default {
             type: Object,
         },
 
-        subtaskTitleRules: {
+        detailTitleRules: {
             type: Array,
         },
 
-        subtaskTextRules: {
+        detailTextRules: {
             type: Array,
         },
 
@@ -160,8 +160,8 @@ export default {
 
         checkInputsValue() {
             this.isSubTaskInputValValid = new Array(
-                ...this.subtaskTitleRules.map(check => check(this.subtaskInputsValues.title)),
-                 ...this.subtaskTextRules.map(check => check(this.subtaskInputsValues.text)),
+                ...this.detailTitleRules.map(check => check(this.subtaskInputsValues.title)),
+                 ...this.detailTextRules.map(check => check(this.subtaskInputsValues.text)),
             ).every(checkResult => checkResult === true);
         },
     },

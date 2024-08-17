@@ -34,9 +34,9 @@
                             v-if="isShowAddNewDetailMobileDialog"
                             :isShowAddNewDetailMobileDialog = "isShowAddNewDetailMobileDialog"
                             :newDetail                      = "newDetail"
-                            :subtaskRules                   = "subtaskRules"
-                            :subtaskTitleRules              = "subtaskTitleRules"
-                            :subtaskTextRules               = "subtaskTextRules"
+                            :subtaskRules                   = "detailsRules"
+                            :detailTitleRules               = "detailTitleRules"
+                            :detailTextRules                = "detailTextRules"
                             :dataOnValidofInputs            = "dataOnValidofInputs"
                             @closeAddNewDetailMobileDialog  = "isShowAddNewDetailMobileDialog = false"
                             @setNewDetail                   = "setNewDetail"
@@ -54,9 +54,9 @@
                                 width="20px" 
                                 v-model="newDetail.title" 
                                 v-on:keyup.enter="addDetail" 
-                                :counter="subtaskRules.subtaskTitle.maxLength" 
+                                :counter="detailsRules.subtaskTitle.maxLength" 
                                 label="Subtask title"
-                                :rules="subtaskTitleRules"
+                                :rules="detailTitleRules"
                                 :success="dataOnValidofInputs.isTitleInpuValValid"
                                 ref="subtaskTitleInput"
                                 required></v-text-field>
@@ -68,9 +68,9 @@
                                 width="20px" 
                                 v-model="newDetail.text" 
                                 v-on:keyup.enter="addDetail" 
-                                :counter="subtaskRules.subtaskText.maxLength"
+                                :counter="detailsRules.subtaskText.maxLength"
                                 label="Subtask details" 
-                                :rules="subtaskTextRules"
+                                :rules="detailTextRules"
                                 :success="dataOnValidofInputs.isTextInputValValid"
                                 ref="subtaskTextInput"
                                 required></v-text-field>
@@ -97,7 +97,7 @@
                                     >
                                         <AddSubtaskButton 
                                         :buttonSize="40"
-                                        @addSubtask="addDetail(item)"
+                                        @addSubtask="addDetail"
                                         />
                                     </template>
                                     </v-col>
@@ -337,11 +337,11 @@
                 :isShowEditDetailsDialog = "isShowEditDetailsDialog"
                 :taskId                  = "taskId"
                 :editableDetailId        = "editableDetailId"
-                :subtaskRules            = "subtaskRules"
-                :subtaskTitleRules       = "subtaskTitleRules"
-                :subtaskTextRules        = "subtaskTextRules"
+                :subtaskRules            = "detailsRules"
+                :detailTitleRules        = "detailTitleRules"
+                :detailTextRules         = "detailTextRules"
                 :alertDisplayTime        = "alertDisplayTime"
-                @closeEditDetailsDialog = "closeEditDetailsDialog"
+                @closeEditDetailsDialog  = "closeEditDetailsDialog"
                 />
             </template>
         </v-card>
@@ -394,7 +394,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 					},
                 isShowAlertInDetails: false,
                 alertDisplayTime: 1500,
-                subtaskRules: {
+                detailsRules: {
                     subtaskTitle: {
                         minLength: 3,
                         maxLength: 255,
@@ -404,23 +404,23 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                         maxLength: 999,
                     }
                 },
-                subtaskTitleRules: [
+                detailTitleRules: [
                     (inputVal) => {
                         inputVal = inputVal ? inputVal.trim().length : 0;
-                        const {minLength} = this.subtaskRules.subtaskTitle;
+                        const {minLength} = this.detailsRules.subtaskTitle;
                         return inputVal >= minLength || `Minimum length is ${minLength} characters`;
                     },
 
                     (inputVal) => {
                         inputVal = inputVal ? inputVal.trim().length : 0;
-                        const {maxLength} = this.subtaskRules.subtaskTitle;
+                        const {maxLength} = this.detailsRules.subtaskTitle;
                         return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
                     }
                 ],
-                subtaskTextRules: [
+                detailTextRules: [
                     (inputVal) => {
                         inputVal = inputVal ? inputVal.trim().length : 0;
-                        const {maxLength} = this.subtaskRules.subtaskText;
+                        const {maxLength} = this.detailsRules.subtaskText;
                         return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
                     }
                 ],
@@ -457,20 +457,20 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             'newDetail.title'() {
                 this.setDataOnValidOfInputs(
                     'isTitleInpuValValid', 
-                    this.subtaskTitleRules, 
+                    this.detailTitleRules, 
                     this.newDetail.title
                 );
             },
             'newDetail.text'() {
                 this.setDataOnValidOfInputs(
                     'isTextInputValValid', 
-                    this.subtaskTextRules, 
+                    this.detailTextRules, 
                     this.newDetail.text
                 );
             }
         },
         computed: {
-            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent']),
+            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent',]),
             detailsSortBy: {
                 get() {
                     return this.getDetailsSortBy(this.taskId);
@@ -491,7 +491,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             completedPercent() {
                 return this.getCompletedPercent(this.taskId);
-            }  
+            },  
         },
         methods: {
             ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus', 'deleteDetail']),
@@ -510,7 +510,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     const date = dateNow.toLocaleString("en-CA", dataOpt);
 
                     this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: date, uniqKey: this.generateUniqKey(),};
-
+                    
                     const response = await this.addNewDetail({newDetail: this.newDetail})
                     const respData = response.data;
                     
@@ -527,6 +527,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 						is_ready: false,
                         created_at_date: '',
 					};
+
+                    this.isShowAddNewDetailMobileDialog = false;
 
                     setTimeout( () => {
 						this.isShowAlertInDetails = false;

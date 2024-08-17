@@ -12,7 +12,7 @@
                 v-model="newDetailMobile.title" 
                 :counter="subtaskRules.subtaskTitle.maxLength" 
                 label="Subtask title"
-                :rules="subtaskTitleRules"
+                :rules="detailTitleRules"
                 :success="dataOnValidofInputs.isTitleInpuValValid"
                 required></v-text-field>
 
@@ -21,7 +21,7 @@
                 v-model="newDetailMobile.text" 
                 :counter="subtaskRules.subtaskText.maxLength"
                 label="Subtask details" 
-                :rules="subtaskTextRules"
+                :rules="detailTextRules"
                 :success="dataOnValidofInputs.isTextInputValValid"
                 required></v-text-field>
 
@@ -72,11 +72,11 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
                 type: Object,
                 required: true,
             },
-            subtaskTitleRules: {
+            detailTitleRules: {
                 type: Array,
                 required: true,
             },
-            subtaskTextRules: {
+            detailTextRules: {
                 type: Array,
                 required: true,
             },
@@ -114,7 +114,6 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
         methods: {
             addSubtask() {
                 this.$emit('addSubtask');
-                this.closeCurrentDialog();
             },
 
             closeCurrentDialog() {
