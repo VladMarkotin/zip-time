@@ -151,14 +151,9 @@
 									<AddDetails 
 									:num                = "num"
 									:item               = "item"
-									:details            = "details"
-									:completedPercent   = "completedPercent"
-									:detailsSortingCrit = "detailsSortingCrit"
 									:screenWidth        = "screenWidth"
-									@updateDetails            = "updateDetails"
-									@updateCompletedPercent   = "updateCompletedPercent"
-									@resetSortingToDefVal     = "resetSortingToDefVal"
-									@resetDayMarkToDefVal     = "resetDayMarkToDefVal"
+									@resetDayMarkToDefVal  = "resetDayMarkToDefVal"
+									@getActualDetails      = "getActualDetails"
 									/>
 								</template>
 								<template>
@@ -314,6 +309,8 @@
 	</v-card>
 </template>
 <script>
+	import store from '../../store';
+	import { mapActions, mapGetters } from 'vuex/dist/vuex.common.js';
 	import {mdiUpdate, mdiPencil,
 		mdiMarkerCheck, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
@@ -345,13 +342,10 @@
 					priority   : this.item.priority,
 					id: this.item.id,
 					done: 'v-card-done',
-					completedPercent : 0,
 					completedProgressBar: 0,
 					focusedInput: false,
 					isShowUpdateCardNotification: false,
 					details: [],
-					detailsSortingDefaultVal: 'created-at-asc',
-					detailsSortingCrit: 'created-at-asc',
 					ex4: [],
 					noteInfo: {
 						todayAmount: 0,
@@ -381,6 +375,7 @@
 					},
 				}
 			},
+		store,
 		components : {
 			Alert, 
 			AddHashCode, 
@@ -392,6 +387,14 @@
 			EditCardData,
 		},
 		computed: {
+			...mapGetters(['getDetailsData']),
+			actualDetailsCounter() {
+				const detailsData = this.getDetailsData(this.item.taskId);
+				if (detailsData) {
+					return detailsData.details.length;
+				}
+				return 0;
+			},
 			isCurrentTaskReady() {
 				const {type} = this.item;
 
@@ -449,27 +452,10 @@
 		}, 
 		methods :
 		{
+			...mapActions(['fetchDetails']),
 			closeHashCodeDialog() {
       	   		this.isShowAddHashCodeDialog = false;
       		},
-				
-			updateDetails(details) {
-				this.details = details;
-				// this.sortDetails();
-			},
-
-			updateCompletedPercent(compPercent) {
-				this.completedPercent = compPercent;
-			},
-
-			// updateDetailsSortingCrit(sortCritVal) {
-			// 	this.detailsSortingCrit = sortCritVal;
-			// 	this.sortDetails();
-			// },
-
-			resetSortingToDefVal() {
-				this.detailsSortingCrit = this.detailsSortingDefaultVal;
-			},
 
 			resetDayMarkToDefVal() {
 				const currentTaskType = this.item.type;
@@ -482,70 +468,6 @@
 					this.jobMarkInputValue = '';
 				}
 			},
-
-			// sortDetails() {
-			// 	if (this.details.length < 2) return;
-
-			// 	const formatDate = (date) => Date.parse(date.created_at_date);
-
-			// 	const sortByCreatedAt = (detailA, detailB, direction = 'asc') => {
-			// 			const detailADate = formatDate(detailA);
-			// 			const detailBDate = formatDate(detailB);
-
-			// 			switch (direction) {
-			// 				case 'asc':
-			// 					return detailADate - detailBDate 
-			// 				case 'desc':
-			// 					return detailBDate - detailADate;
-			// 				default:
-			// 					return detailADate - detailBDate 
-			// 			}
-			// 	}
-
-			// 	switch (this.detailsSortingCrit) {
-			// 		case 'created-at-asc':
-			// 			this.details.sort((detailA, detailB) => {
-			// 				return sortByCreatedAt(detailA, detailB, 'asc');
-			// 			});
-			// 		break;
-			// 		case 'created-at-desc':
-			// 			this.details.sort((detailA, detailB) => {
-			// 				return sortByCreatedAt(detailA, detailB, 'desc');
-			// 			});
-			// 		break;
-			// 		case 'is_ready-asc':
-			// 			this.details.sort((detailA, detailB) => {
-
-			// 				if (detailA.is_ready || detailB.is_ready) {
-			// 					if (detailA.is_ready && !detailB.is_ready) return -1;
-			// 					if (!detailA.is_ready && detailB.is_ready) return 1;
-
-			// 					return sortByCreatedAt(detailA, detailB, 'asc');
-			// 				} else {
-			// 					return sortByCreatedAt(detailA, detailB, 'asc');
-			// 				}
-			// 			});
-			// 		break;
-			// 		case 'unready-asc':
-			// 			this.details.sort((detailA, detailB) => {
-
-			// 			if (!detailA.is_ready || !detailB.is_ready) {
-			// 				if (!detailA.is_ready && detailB.is_ready) return -1;
-			// 				if (detailA.is_ready && !detailB.is_ready) return 1;
-
-			// 				return sortByCreatedAt(detailA, detailB, 'asc');
-			// 			} else {
-			// 				return sortByCreatedAt(detailA, detailB, 'asc');
-			// 			}
-			// 		});
-			// 		break;
-			// 		default:
-			// 			this.details.sort((detailA, detailB) => {
-			// 				return sortByCreatedAt(detailA, detailB, 'asc');
-			// 			});
-			// 		break;
-			// 	}
-			// },
 
 			setNotesInfo(data) {
 				Object.assign(this.noteInfo, data);
@@ -743,6 +665,12 @@
 						);
 					}
 				})
+			},
+
+			getActualDetails() {
+				this.fetchDetails({
+					requestData: {task_id: this.item.taskId, mode: null }
+				});
 			}
 		},
 		
@@ -751,6 +679,10 @@
 			this.editHashCodeData();
 			this.getConfigs(); 
 		},
+
+		mounted() {
+			this.getActualDetails();
+		}
 	}
 	
 </script>

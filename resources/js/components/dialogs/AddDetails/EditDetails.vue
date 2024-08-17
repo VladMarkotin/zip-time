@@ -112,19 +112,12 @@ export default {
         }
     },
     store,
+    emits: ['closeEditDetailsDialog'],
     computed: {
         ...mapGetters(['getDetail']),
     },
     methods: {
         ...mapActions(['editDetail']),
-        // updateDetails() {
-        //     const updateDetails = this.details.map(item => {
-        //         if (item.taskId === this.modifiedDetailTemplate.id) return {...item, text: this.subtaskInputsValues.text, title: this.subtaskInputsValues.title};
-        //         return item;
-        //     })
-
-        //     this.$emit('updateDetails', updateDetails);
-        // },
 
         setAlertData(alertData) {
             this.alert = {
@@ -151,21 +144,6 @@ export default {
 					setTimeout( () => {
 						this.dialogEditSubTask = false;
 					},this.alertDisplayTime)
-				// axios.post('/edit-subtask', 
-                // {id: this.modifiedDetailTemplate.id, title: this.subtaskInputsValues.title, text: this.subtaskInputsValues.text})
-				// 	.then((response) => {
-						
-				// 		if (response.data.status == 'success') {
-				// 			this.updateDetails();
-				// 		}
-
-                //         this.setAlertData({type: response.data.status, text: response.data.message});
-                //         this.alert.isShowAlert = true;
-
-				// 		setTimeout( () => {
-				// 			this.dialogEditSubTask = false;
-				// 		},this.alertDisplayTime)
-				//   })
             } else {
                     this.setAlertData({type: 'error', text: 'Invalid data'})
                     this.alert.isShowAlert = true;
@@ -180,39 +158,12 @@ export default {
             
         },
 
-        // saveChangesInSubtask(){	
-        //     if (this.isSubTaskInputValValid) {
-		// 		axios.post('/edit-subtask', 
-        //         {id: this.modifiedDetailTemplate.id, title: this.subtaskInputsValues.title, text: this.subtaskInputsValues.text})
-		// 			.then((response) => {
-						
-		// 				if (response.data.status == 'success') {
-		// 					this.updateDetails();
-		// 				}
-
-        //                 this.setAlertData({type: response.data.status, text: response.data.message});
-        //                 this.alert.isShowAlert = true;
-
-		// 				setTimeout( () => {
-		// 					this.dialogEditSubTask = false;
-		// 				},this.alertDisplayTime)
-		// 		  })
-        //     } else {
-        //         this.setAlertData({type: 'error', text: 'Invalid data'})
-        //         this.alert.isShowAlert = true;
-
-        //         setTimeout(() => {
-        //             this.alert.isShowAlert = false;
-        //         }, this.alertDisplayTime)
-        //     }
-		// 	},
-
-            checkInputsValue() {
-                this.isSubTaskInputValValid = new Array(
-                    ...this.subtaskTitleRules.map(check => check(this.subtaskInputsValues.title)),
-                    ...this.subtaskTextRules.map(check => check(this.subtaskInputsValues.text)),
-                ).every(checkResult => checkResult === true);
-            },
+        checkInputsValue() {
+            this.isSubTaskInputValValid = new Array(
+                ...this.subtaskTitleRules.map(check => check(this.subtaskInputsValues.title)),
+                 ...this.subtaskTextRules.map(check => check(this.subtaskInputsValues.text)),
+            ).every(checkResult => checkResult === true);
+        },
     },
     watch: {
         dialogEditSubTask(dialogStatus) {

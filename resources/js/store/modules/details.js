@@ -163,7 +163,6 @@ export default {
 
                 const details = detailsData.data;
                 const transformedDetails = [];
-
                 details.forEach(element => {
                     transformedDetails.push({
                         title: element.title,

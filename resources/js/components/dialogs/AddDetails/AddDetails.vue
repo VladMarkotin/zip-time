@@ -18,15 +18,12 @@
             <AddDetailsCard 
             :item               = "item"
 			:taskId             = "item.taskId"
-
             :alert              = "alert"
             :isLoading          = "isLoading"
             :generateUniqKey    = "generateUniqKey"
             :screenWidth        = "screenWidth"
-            @updateDetails            = "updateDetails"
-            @updateAlertData          = "setAlertData"
-
             @closeAddDetailsDialog    = "closeAddDetailsDialog"
+            @updateAlertData          = "setAlertData"
             @showAllSubTasks          = "showAllSubTasks"
             @showActualSubTasks       = "getAllDetailsForTask"
             @resetDayMarkToDefVal     = "$emit('resetDayMarkToDefVal')"
@@ -48,18 +45,6 @@ export default {
             type: Object,
             required: true,
         },
-        details: {
-            type: Array,
-            required: true,
-        },
-        completedPercent: {
-            type: Number,
-            required: true,
-        },
-        detailsSortingCrit: {
-            type: String,
-            required: true,
-        },
         screenWidth: {
             type: Number,
         }
@@ -75,16 +60,19 @@ export default {
         }
     },
     store,
+    emits: ['resetDayMarkToDefVal', 'getActualDetails'],
     components: {AddDetailsCard},
-    watch: {
-        isShowDialogDetails(isShowDialog) {
-            if (!isShowDialog) this.$emit('resetSortingToDefVal');
-        },
-    },
     computed: {
-      isMobile() {
+        isMobile() {
             return this.screenWidth < 768; 
-      }  
+        }  
+    },
+    watch: {
+        isShowDialogDetails(value) {
+            if (!value) {
+                this.$emit('getActualDetails');
+            }
+        },
     },
     methods: {
         ...mapActions(['fetchDetails']),
@@ -100,35 +88,10 @@ export default {
            this.getAllDetailsForTask(item, 'all')
         }, 
 
-        updateDetails(details) {
-            this.$emit('updateDetails', details);
-        },
-
-        // updateDetailsSortingCrit(sortCritVal) {
-        //     this.$emit('updateDetailsSortingCrit', sortCritVal)
-        // },
-
         setAlertData({type, text}) {
             if (type) this.alert.type = type;
             if (text) this.alert.text = text;
 		},
-
-        // updateCompletedPercent(compPercent) {
-        //     this.$emit('updateCompletedPercent', compPercent);
-        // },
-
-        // checkCompletedPercent(complPercentResp) {
-        //     return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
-        //             ? complPercentResp
-        //             : this.editCompletedPercet(complPercentResp);
-        // },
-
-        // editCompletedPercet(compPercent) {
-        //     if (typeof compPercent === 'string') {
-        //         return +(compPercent.replace(/[^0-9.]/g,""));
-        //     }
-        //     return compPercent;
-        // },
 
         async getAllDetailsForTask(item, mode=null) {
             
@@ -147,7 +110,7 @@ export default {
             const loadingStart = Date.now();
 
             try {
-                await this.fetchDetails({requestData: data, uniqKey: this.generateUniqKey()})
+                await this.fetchDetails({requestData: data})
 
                 const loadingEnd = Date.now();
 
@@ -158,36 +121,6 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-
-			// axios.post('/get-sub-tasks',data)
-			// .then((response) => {
-
-            //     controllLoadingTime(loadingEnd - loadingStart, () => {
-    
-            //         const details = []
-            //         response.data.data.forEach(element => {
-            //             details.push({
-            //                 title: element.title,
-            //                 text:  element.text,
-            //                 taskId: element.id,
-            //                 is_ready: element.is_ready, 
-            //                 checkpoint: element.checkpoint,
-            //                 is_old_compleated: element.is_old_compleated,
-            //                 done_at_user_time: element.done_at_user_time,
-            //                 is_ready: element.is_ready,
-            //                 uniqKey: this.generateUniqKey(),
-            //                 created_at_date: element.created_at_user_time.slice(//получаю дату без времени
-            //                     0, element.created_at_user_time.trim().indexOf(' ')
-            //                 ),
-            //             }) 
-            //         });
-            //         this.updateDetails(details);
-            //         const completedPercent = this.checkCompletedPercent(response.data.completedPercent); 
-                        
-            //         this.updateCompletedPercent(completedPercent);
-            //         this.setAlertData({type: response.data.status, text: response.data.message});
-            //     });
-			// 	})
 		},
 
         generateUniqKey() {

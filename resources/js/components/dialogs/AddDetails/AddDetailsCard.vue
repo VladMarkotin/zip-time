@@ -342,7 +342,6 @@
                 :subtaskTextRules        = "subtaskTextRules"
                 :alertDisplayTime        = "alertDisplayTime"
                 @closeEditDetailsDialog = "closeEditDetailsDialog"
-                @updateDetails          = "updateDetails"
                 />
             </template>
         </v-card>
@@ -433,7 +432,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 editableDetailId: null,
                 isShowEditDetailsDialog: false,
                 isSavedTask: this.item.hash !== '#',
-                // modifiedDetailTemplate: {id: null, title: '', text: ''},
                 displayedDetails: {
                     currentMode: 'actual',
                     all: {
@@ -453,6 +451,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         store,
+        emits: ['closeAddDetailsDialog', 'updateAlertData', 'showAllSubTasks', 'showActualSubTasks', 'resetDayMarkToDefVal'],
         components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader, AddNewDetailMobile},
         watch: {
             'newDetail.title'() {
@@ -496,34 +495,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
         },
         methods: {
             ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus', 'deleteDetail']),
-            updateDetails(details) {
-                this.$emit('updateDetails', details);
-            },
-
-            // updateCompletedPercent(compPercent) {
-            //     this.$emit('updateCompletedPercent', compPercent);
-            // },
 
             updateAlertData(alertData) {
                 this.$emit('updateAlertData', alertData);
             },
-
-            // updateDetailsSortingCrit(sortCritVal) {
-            //     this.$emit('updateDetailsSortingCrit', sortCritVal)
-            // },
-
-            // checkCompletedPercent(complPercentResp) {
-            //     return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
-            //             ? complPercentResp
-            //             : this.editCompletedPercet(complPercentResp);
-            // },
-
-            // editCompletedPercet(compPercent) {
-            //     if (typeof compPercent === 'string') {
-            //         return +(compPercent.replace(/[^0-9.]/g,""));
-            //     }
-            //     return compPercent;
-            // },
 
             async addDetail(){
                 if (this.isLoading) return;
@@ -565,25 +540,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 }
 			},
 
-			// createSubPlan(item){
-			// 	axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
-			// 	.then((response) => {
-            //         const respData = response.data;
-
-			// 		this.isShowAlertInDetails = true;
-            //         this.checkResetDayMarkToDefVal(respData);
-			// 		this.$emit('updateAlertData', {type: response.status === 200 ? 'success' : 'error', text: respData.message});
-			// 		const completedPercent = this.checkCompletedPercent(respData.completedPercent);
-            //         this.updateCompletedPercent(completedPercent);
-			// 		item.taskId = respData.subtaskId
-			// 		setTimeout( () => {
-			// 			this.isShowAlertInDetails = false;
-			// 		},this.alertDisplayTime)
-			// 	  })
-			// 	  .catch(function (error) {
-			// 	  })
-			// },
-
             setDataOnValidOfInputs(key, rules, inputVal) {
                 this.dataOnValidofInputs[key] = 
                 rules.map(check => check(inputVal))
@@ -613,20 +569,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                         this.isShowAlertInDetails = false;
 					},this.alertDisplayTime)
                 }
-				// axios.post('/del-sub-task',{task_id : removedTaskId})
-				// .then((response) => {
-                //     if (response.data.status === 'success') {
-                //         this.isShowAlertInDetails = true;
-                //         this.updateAlertData({type: response.data.status, text: 'subtask has been removed'});
-                //         this.updateDetails(this.details.filter(item => item.taskId !== removedTaskId));
-                //         this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
-                //         console.log(response.data);
-
-                //         setTimeout( () => {
-                //             this.isShowAlertInDetails = false;
-				// 	    },this.alertDisplayTime)
-                //     }
-				// })
 			},
 
             async completed(subtask){
@@ -646,33 +588,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 } catch(error) {
                     console.error(error);
                 }
-                // const taskId = this.item.taskId;
-                // const isSubtaskRequired = !!subtask.checkpoint;
-
-				// axios.post('/complete-sub-task',{
-                //     subtask_id : subtask.taskId, 
-                //     is_subtask_ready: subtask.is_ready,
-                //     is_subtask_required: isSubtaskRequired,
-                //     task_id: taskId,
-                // })
-				// .then((response) => {
-                    // const respData = response.data;
-                    // if (respData.status === 'success') {
-                    //     this.checkResetDayMarkToDefVal(response.data);
-                    //     this.updateCompletedPercent(this.editCompletedPercet(respData.completedPercent));
-                    // }
-				// })
 			},
-
-            // createModifiedDetailTemplate(item) {
-            //     this.modifiedDetailTemplate = {
-            //         id: item.taskId,
-            //         title: item.title,
-            //         text: item.text,
-            //     }
-
-            //     this.showEditDetailsDialog();
-            // },
 
             showEditDetailsDialog(editableDetail) {
                 this.editableDetailId = editableDetail.taskId;
@@ -728,16 +644,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 Object.assign(this.newDetail, newDetail);
             }
         },
-
-        mounted() {
-        // раскомментить, если хочу, что бы инпуты валидировались сразу после монтирования компоненты
-        //    const subtasksInputs = [this.$refs.subtaskTitleInput, this.$refs.subtaskTextInput]
-           
-        //    if (subtasksInputs.every(item => item)) {
-        //         subtasksInputs.forEach(item => item.validate(true));
-        //         this.checAllkInputsValue();
-        //    }
-        }
     }
 </script>
 
