@@ -5,14 +5,15 @@ export default {
         details: {},
     },
     mutations: {
-        initializeDetailsStore(state, {key, details, completedPercent, detailsSortBy}) {
+        INITIALIZE_DETAILS_STORE(state, {key, details, completedPercent, detailsSortBy}) {
             state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy}};
         },
-        updateDetailsSortingCritInCurrentTask(state, {key, newDetailsSortingCrit}) {
+        
+        UPDATE_DETAILS_SORTING_CRIT(state, {key, newDetailsSortingCrit}) {
             state.details[key].detailsSortBy = newDetailsSortingCrit;
         },
 
-        sortDetails(state, {key}) {
+        SORT_DETAILS(state, {key}) {
             const currentTaskData    = state.details[key];
             const currentTaskDetails = currentTaskData.details;
             const formatDate = (date) => Date.parse(date.created_at_date);
@@ -75,15 +76,15 @@ export default {
 			}
         },
 
-        updateCompletedPercentInCurrentTask(state, {key, completedPercent}) {
+        UPDATE_COMPLETED_PERCENT(state, {key, completedPercent}) {
             state.details[key].completedPercent = completedPercent;
         },
-
-        addNewDetailInCurrentTask(state, {key, newDetail}) {
+        
+        ADD_NEW_DETAIL(state, {key, newDetail}) {
             state.details[key].details.push(newDetail); 
         },
-
-        deleteDetailInCurrentTask(state, {key, id}) {
+        
+        DELETE_DETAIL(state, {key, id}) {
             const { details } = state.details[key];
 
             state.details[key] = {
@@ -91,8 +92,8 @@ export default {
             details: details.filter(detail => detail.taskId !== id)
             };
         },
-
-        editDetailInCurrentTask(state, {key, id, title, text}) {
+        
+        EDITE_DETAIL(state, {key, id, title, text}) {
             const { details } = state.details[key];
 
             state.details[key] = {
@@ -153,9 +154,9 @@ export default {
         async updateDetailsSortingCrit({commit, getters}, payload) {
             const detailsData = getters.getDetailsData(payload.key);
             if (detailsData) {
-                commit('updateDetailsSortingCritInCurrentTask', payload);
+                commit('UPDATE_DETAILS_SORTING_CRIT', payload);
                 if (detailsData.details.length >= 2) {
-                    commit('sortDetails', payload);
+                    commit('SORT_DETAILS', payload);
                 }
             }
 
@@ -186,7 +187,7 @@ export default {
                     }) 
                 });
                 const transformedCompletedPercent = await context.dispatch('checkCompletedPercent', {complPercentResp: detailsData.completedPercent});
-                context.commit('initializeDetailsStore', {
+                context.commit('INITIALIZE_DETAILS_STORE', {
                     key:              requestData.task_id,
                     details:          transformedDetails,
                     completedPercent: transformedCompletedPercent,
@@ -212,9 +213,9 @@ export default {
                     if (currentTaskData) {
                         const transformedCompletedPercent = await dispatch('checkCompletedPercent', {complPercentResp: respData.completedPercent})
 
-                        commit('addNewDetailInCurrentTask', {key, newDetail});
-                        commit('updateCompletedPercentInCurrentTask', {key, completedPercent: transformedCompletedPercent});
-                        commit('sortDetails', {key});
+                        commit('ADD_NEW_DETAIL', {key, newDetail});
+                        commit('UPDATE_COMPLETED_PERCENT', {key, completedPercent: transformedCompletedPercent});
+                        commit('SORT_DETAILS', {key});
                     }
                 } 
 
@@ -238,9 +239,9 @@ export default {
                         if (currentDetail) {
                             const transformedCompletedPercent = await dispatch('checkCompletedPercent', {complPercentResp: respData.completedPercent})
 
-                            commit('deleteDetailInCurrentTask', {key: taskId, id: detailId});
-                            commit('updateCompletedPercentInCurrentTask', {key: taskId, completedPercent: transformedCompletedPercent});
-                            commit('sortDetails', {key: taskId});
+                            commit('DELETE_DETAIL', {key: taskId, id: detailId});
+                            commit('UPDATE_COMPLETED_PERCENT', {key: taskId, completedPercent: transformedCompletedPercent});
+                            commit('SORT_DETAILS', {key: taskId});
                         }
                     }
                 }
@@ -275,7 +276,7 @@ export default {
                     const detailsData = getters.getDetailsData(payload.task_id);
 
                     if (detailsData) {
-                        commit('updateCompletedPercentInCurrentTask', {
+                        commit('UPDATE_COMPLETED_PERCENT', {
                             key:              payload.task_id, 
                             completedPercent: transformedCompletedPercent
                         });
@@ -298,7 +299,7 @@ export default {
                     const currentDetail = getters.getDetail(taskId, detailId);
 
                     if (currentDetail) {
-                        commit('editDetailInCurrentTask', {
+                        commit('EDITE_DETAIL', {
                             key: taskId, 
                             id:  detailId,
                             title,
