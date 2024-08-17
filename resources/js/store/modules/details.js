@@ -78,7 +78,7 @@ export default {
         },
 
         addNewDetailInCurrentTask(state, {key, newDetail}) {
-            state.details[key].details.push(newDetail); //Проверить!
+            state.details[key].details.push(newDetail); 
         },
 
         deleteDetailInCurrentTask(state, {key, id}) {
@@ -87,6 +87,24 @@ export default {
             state.details[key] = {
             ...state.details[key],
             details: details.filter(detail => detail.taskId !== id)
+            };
+        },
+
+        editDetailInCurrentTask(state, {key, id, title, text}) {
+            const { details } = state.details[key];
+
+            state.details[key] = {
+            ...state.details[key],
+            details: details.map(detail => {
+                if (detail.taskId === id) {
+                    return {
+                        ...detail,
+                        title,
+                        text,
+                    }
+                }
+                return detail;
+            })
             };
         }
     },
@@ -258,6 +276,30 @@ export default {
                         });
                     }
 
+                }
+
+                return response;
+            } catch(error) {
+                console.error(error);
+            }
+        },
+
+        async editDetail({commit, getters}, {taskId, detailId, title, text}) {
+            try {
+                const response = await axios.post('/edit-subtask', {id: detailId, title, text,})
+                const respData = response.data;
+
+                if (respData.status === 'success') {
+                    const currentDetail = getters.getDetail(taskId, detailId);
+
+                    if (currentDetail) {
+                        commit('editDetailInCurrentTask', {
+                            key: taskId, 
+                            id:  detailId,
+                            title,
+                            text,       
+                        });
+                    }
                 }
 
                 return response;

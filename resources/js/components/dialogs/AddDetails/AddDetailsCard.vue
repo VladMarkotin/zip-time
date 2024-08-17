@@ -151,7 +151,7 @@
                                                             <template>
                                                                 <div v-show="!v.is_old_compleated">
                                                                     <EditButton 
-                                                                    @click="createModifiedDetailTemplate(v)"
+                                                                    @click="showEditDetailsDialog(v)"
                                                                     :tooltipValue="'Edit subtask'"
                                                                     />
                                                                 </div>
@@ -335,8 +335,8 @@
             <template v-if="isShowEditDetailsDialog">
                 <EditDetails 
                 :isShowEditDetailsDialog = "isShowEditDetailsDialog"
-                :modifiedDetailTemplate  = "modifiedDetailTemplate"
-                :details                 = "details"
+                :taskId                  = "taskId"
+                :editableDetailId        = "editableDetailId"
                 :subtaskRules            = "subtaskRules"
                 :subtaskTitleRules       = "subtaskTitleRules"
                 :subtaskTextRules        = "subtaskTextRules"
@@ -430,9 +430,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     isTitleInpuValValid:  false,
                     isTextInputValValid:  true,
                 },
+                editableDetailId: null,
                 isShowEditDetailsDialog: false,
                 isSavedTask: this.item.hash !== '#',
-                modifiedDetailTemplate: {id: null, title: '', text: ''},
+                // modifiedDetailTemplate: {id: null, title: '', text: ''},
                 displayedDetails: {
                     currentMode: 'actual',
                     all: {
@@ -663,17 +664,18 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 				// })
 			},
 
-            createModifiedDetailTemplate(item) {
-                this.modifiedDetailTemplate = {
-                    id: item.taskId,
-                    title: item.title,
-                    text: item.text,
-                }
+            // createModifiedDetailTemplate(item) {
+            //     this.modifiedDetailTemplate = {
+            //         id: item.taskId,
+            //         title: item.title,
+            //         text: item.text,
+            //     }
 
-                this.showEditDetailsDialog();
-            },
+            //     this.showEditDetailsDialog();
+            // },
 
-            showEditDetailsDialog() {
+            showEditDetailsDialog(editableDetail) {
+                this.editableDetailId = editableDetail.taskId;
                 this.isShowEditDetailsDialog = true;
             },
 
