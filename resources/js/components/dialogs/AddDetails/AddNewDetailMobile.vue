@@ -84,7 +84,6 @@ import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
                 type: Object,
                 required: true,
             },
-           
         },
         data() {
             return {
