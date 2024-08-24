@@ -15,15 +15,15 @@
     {{-- костыль, что бы замаскировать дергание страницы при загрузке --}}
     <script src="{{ asset('js/PageSmoothAppear.js') }}" defer></script>
     @if(Route::currentRouteName() == 'settings')
-        <script src="js/SettingsPageController.js" defer></script>
+        <script src="{{ asset('js/SettingsPageController.js')}}" defer></script>
     @endif
     @guest
         @if (Route::currentRouteName() == 'welcome')
-            <script src="js/IndexPageController.js" defer></script>
+            <script src="{{ asset('js/IndexPageController.js') }}" defer></script>
         @endif
     @endguest
-    <script src="js/NavMenu.js" defer></script>
-    <script src="js/AsideButtonsController.js" defer></script>
+    <script src="{{ asset('js/NavMenu.js') }}" defer></script>
+    <script src="{{ asset('js/AsideButtonsController.js') }}" defer></script>
     {{--  --}}
  
 
