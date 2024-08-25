@@ -195,8 +195,6 @@ class NoteController extends Controller
         $note    = $request->get('note');
         $task_id = $request->get('task_id');
 
-        $saved_task_id = $this->getSavedTaskId(['id' => $task_id]);
-        
         $noteAfterValidation = $this->getNoteAfterValidation($note);
 
         $response = $this->responseTemplate;
@@ -205,7 +203,7 @@ class NoteController extends Controller
             $current_note = $this->savedNotes::find($note_id);
             $current_note->update(['note' => $noteAfterValidation]);
 
-            $all_notes = $this->getNotes($saved_task_id);
+            $all_notes = $this->getNotes($task_id);
             $response['all_notes'] = $all_notes;
             
             $response['status'] = 'success';
