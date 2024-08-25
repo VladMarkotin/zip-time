@@ -26,7 +26,7 @@ class AddDeviceTokenToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('device_token');
         });
     }
 }
