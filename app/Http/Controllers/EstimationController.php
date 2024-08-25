@@ -46,11 +46,16 @@ class EstimationController extends Controller
         $task_id  =  $request->get('task_id');
         $doesUserHaveUncomplReqSubtask  = !$this->checkCheckpoints->checkCheckpoints(['task_id' => $task_id]);
 
-        $currentMethod = $doesUserHaveUncomplReqSubtask
-            ? 'estimateTaskWithUncomReqSubtask'
-            : 'estimateTaskWithoutUncomReqSubtask';
-        $response = json_encode($this->$currentMethod($request), JSON_UNESCAPED_UNICODE);
-        $challengeModel = new ChallengeModel();    
+        if ($doesUserHaveUncomplReqSubtask) {
+            $response = [
+                'status'  => 'error',
+                'message' => 'Error! Some required subtasks are still undone',
+            ];
+        } else {
+            $response = json_encode($this->estimateTaskWithoutUncomReqSubtask($request), JSON_UNESCAPED_UNICODE);
+        }
+        
+        // $challengeModel = new ChallengeModel();    
         //RewardEvent::dispatch(['event_prefix' => ['estimate_task'] ]);
 
         return  $response;
@@ -140,43 +145,10 @@ class EstimationController extends Controller
         }
         //если провалена проверка на валидность все равно надо добавить заметки
 
-        $responseTemplate = [
+        $response = [
             "status" => 'error', 
             "message" => 'Error during estimation.'
         ];
-        
-        //логика по добавлению заметок в этом методе
-        $response = $this->createResponseWithError($responseTemplate, $request, $data);
-
-        return $response;
-    }
-
-    private function estimateTaskWithUncomReqSubtask(Request $request)
-    {
-        $task_id = $request->get('task_id');
-        $note    = $request->get('note');
-        $data    = ['id' => $task_id, 'note' => $note];
-        
-        $responseTemplate = [
-            'status' => 'error',
-            'message' => 'Error! Some required subtasks are still undone',
-        ];
-
-        //логика по добавлению заметок в этом методе
-        $response = $this->createResponseWithError($responseTemplate, $request, $data);
-
-        return $response;
-    }
-
-    private function createResponseWithError(array $response, Request $request, $noteAmountData)
-    {
-        $addingNoteData = $this->noteController->addNote($request, false);
-
-        if (($addingNoteData['status'] === 'success') && isset($addingNoteData['saved_task_id'])) {
-            $noteAmount = $this->noteController->countTodayNoteAmount($noteAmountData);
-            $response['noteAmount']               = $noteAmount;
-            $response['noteWasAddedSuccessfully'] = true;
-        }
 
         return $response;
     }
