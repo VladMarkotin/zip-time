@@ -192,7 +192,6 @@
 					:cols="2"
 					>
 						<template
-						v-if="item.hash !== '#'"
 						>
 							<AddNotes 
 							:num              = "num"
