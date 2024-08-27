@@ -58,12 +58,10 @@ class NoteController extends Controller
                 'created_at'    => $this->carbon::now(),
                 'updated_at'    => $this->carbon::now(),
             ];
-            SavedNotes::create($noteData);
+            $new_note = SavedNotes::create($noteData);
 
             if ($isReturnResponse) {
-                $all_notes = $this->getNotes($task_id);
-
-                $response['all_notes'] = $all_notes;
+                $response['new_note'] = $new_note;
             }
 
             $response['status'] = 'success';

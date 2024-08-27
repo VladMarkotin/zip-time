@@ -25,7 +25,7 @@
                 :cols=3
                 >
                     <span>
-                        {{ notesTodayAmount }}
+                        {{notesTodayAmount}}
                     </span>
                 </v-col>
             </v-row>
@@ -44,20 +44,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex/dist/vuex.common.js';
+import { mapActions, mapGetters } from 'vuex/dist/vuex.common.js';
 import store from '../../../store';
 import AddNotesCard from './AddNotesCard.vue';
 import { mdiNotebookEditOutline }  from '@mdi/js'
     export default {
         props: {
             num:  {},
-            notesList: {
-                type: Array,
-                required: true,
-            },
-            notesTodayAmount: {
-                type: Number,
-            },
             item: {
                 type: Object,
                 required: true,
@@ -78,6 +71,17 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
         components: {
             AddNotesCard,
         },
+        computed: {
+            ...mapGetters(['getNotesData']),
+            notesTodayAmount() {
+                const notesData = this.getNotesData(this.item.taskId);
+                if (!notesData) {
+                    return 0;
+                }
+
+                return notesData.length;
+            }
+        },
         methods: {
             ...mapActions(['fetchNotes']),
             showAddNotesDialog() {
@@ -94,10 +98,11 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
                 this.isLoading = true
                 const loadingStart = Date.now();
                 try {
-                    await this.fetchNotes({
+                    const requestData = {
                         task_id : this.item.taskId, 
                         hash:     this.item.hash
-                    });
+                    };
+                    await this.fetchNotes({requestData});
 
                     const loadingEnd = Date.now();
 
@@ -126,18 +131,18 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
 				// })
 			},
 
-            getTodayNoteAmount(){
-				axios.post('/get-today-note-amount',{
-                    task_id : this.item.taskId,
-                    details : this.item.details,
-				    note :    this.item.notes,
-                    type :    this.item.type})
-				.then((response) => {
-                    const todayAmount = response.data.amount;
-					this.updateNotesInfo({todayAmount}); 
-				  })
+            // getTodayNoteAmount(){
+			// 	axios.post('/get-today-note-amount',{
+            //         task_id : this.item.taskId,
+            //         details : this.item.details,
+			// 	    note :    this.item.notes,
+            //         type :    this.item.type})
+			// 	.then((response) => {
+            //         const todayAmount = response.data.amount;
+			// 		this.updateNotesInfo({todayAmount}); 
+			// 	  })
 
-			},
+			// },
 
             updateNotesInfo(dataObj) {
                 this.$emit('updateNotesInfo', dataObj);
@@ -145,13 +150,13 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
 
             closeAddNotesDialog() {
                 this.isShowNotesDialog = false;
-                this.getTodayNoteAmount()
+                // this.getTodayNoteAmount()
             }
         },
 
-        created() {
-            this.getTodayNoteAmount();
-        },
+        // created() {
+        //     this.getTodayNoteAmount();
+        // },
     }
 </script>
 

@@ -196,7 +196,6 @@
 							<AddNotes 
 							:num              = "num"
 							:item             = "item"
-							:notesTodayAmount = "noteInfo.todayAmount"
 							:notesList        = "noteInfo.notesList"  
 							:screenWidth      = "screenWidth"
 							@updateNotesInfo  = "setNotesInfo"
@@ -386,7 +385,7 @@
 			EditCardData,
 		},
 		computed: {
-			...mapGetters(['getDetailsData']),
+			...mapGetters(['getDetailsData',]),
 			actualDetailsCounter() {
 				const detailsData = this.getDetailsData(this.item.taskId);
 				if (detailsData) {
@@ -451,7 +450,7 @@
 		}, 
 		methods :
 		{
-			...mapActions(['fetchDetails']),
+			...mapActions(['fetchDetails', 'fetchNotes']),
 			closeHashCodeDialog() {
       	   		this.isShowAddHashCodeDialog = false;
       		},
@@ -670,7 +669,13 @@
 				this.fetchDetails({
 					requestData: {task_id: this.item.taskId, mode: null }
 				});
-			}
+			},
+
+			getNotes() {
+				this.fetchNotes({
+					requestData: {task_id : this.item.taskId, hash: this.item.hash}
+				});
+			},
 		},
 		
 		
@@ -681,6 +686,7 @@
 
 		mounted() {
 			this.getActualDetails();
+			this.getNotes();
 		}
 	}
 	

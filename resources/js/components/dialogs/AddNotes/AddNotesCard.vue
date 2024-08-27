@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex/dist/vuex.common.js';
+import { mapGetters, mapActions } from 'vuex/dist/vuex.common.js';
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import Note from './Note.vue';
@@ -209,6 +209,7 @@ import EditNotesDialog from './EditNotesDialog.vue';
         },
 
         methods: {
+            ...mapActions(['addNote']),
             deleteNote(noteId) {
                 axios.post('/delete-note', {note_id: noteId})
                 .then(response => {
@@ -253,26 +254,41 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 .every(checkResult => checkResult === true);
             },
 
-            addNewNote() {
-                const task_id = this.item.taskId;
+            async addNewNote() {
+                const task_id = this.taskId;
                 const note    = this.newNoteInpuVal.trim();
-                axios.post('/add-note', {task_id, note})
-                .then(response => {
-                    const {data} = response;
+                
+                try {
+                    const response = await this.addNote({task_id, note});
+                    const respData = response.data;
 
-                    if (data.status === 'success') {
-                        const notesList   = data.all_notes;
-                        const todayAmount = notesList.length;
-                        this.$emit('updateNotesInfo', {notesList, todayAmount});
-                        
+                    if (respData.status === 'success') {
                         this.newNoteInpuVal = '';
                         this.isNewNoteInpuValValid = false;
-                        
                     }
 
-                    this.setAlertData({status: data.status, message: data.text});
+                    this.setAlertData({status: respData.status, message: respData.text});
                     this.showAlert();
-                })
+                } catch(error) {
+                    console.error(error);
+                }
+                // axios.post('/add-note', {task_id, note})
+                // .then(response => {
+                //     const {data} = response;
+
+                //     if (data.status === 'success') {
+                //         const notesList   = data.all_notes;
+                //         const todayAmount = notesList.length;
+                //         this.$emit('updateNotesInfo', {notesList, todayAmount});
+                        
+                //         this.newNoteInpuVal = '';
+                //         this.isNewNoteInpuValValid = false;
+                        
+                //     }
+
+                //     this.setAlertData({status: data.status, message: data.text});
+                //     this.showAlert();
+                // })
             },
 
             showEditNotesDialog(id) {
