@@ -245,7 +245,7 @@
                             <span class="footer-bottom_main-info-year">{{now()->year}}</span>
                         </div>
                         <div class="footer-bottom-mail">
-                            <a href="mailto:quiplapp@gmail.com">Contact us</a>
+                            <a href="mailto:support@quipl.co">Contact us</a>
                         </div>
                     </div>
                     <ul class="footer-bottom_list">

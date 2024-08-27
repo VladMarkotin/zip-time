@@ -41,7 +41,7 @@ class Feedback extends Component
         Mail::send('emails.feedback', $data, function ($e) {
             $e
                 ->from($this->email, Auth::check() ? Auth::user()->name : null)
-                ->to('quiplapp@gmail.com')
+                ->to('support@quipl.co')
                 ->subject($this->subject);
             foreach (
                 str_ireplace('public', 'storage', Storage::files(self::PATH))

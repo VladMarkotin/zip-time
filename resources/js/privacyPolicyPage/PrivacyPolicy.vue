@@ -241,7 +241,7 @@
                         class="privacy-policy-title privacy-policy-section-title">Contact Us</v-card-title>
                         <v-card-text class="pt-0 custom-card-text">If you have any questions about this Privacy Policy, You can contact us:</v-card-text>
                         <ul class="privacy-policy-list custom-card-text">
-                            <li class="privacy-policy-li">By email: quiplapp@gmail.com</li>
+                            <li class="privacy-policy-li">By email: support@quipl.co</li>
                             <li class="privacy-policy-li">By mail: Belarus</li>
                         </ul>
                     </section>
