@@ -16,6 +16,16 @@ export default {
                 ...state.notes,
                 [key]: state.notes[key].filter(note => note.id !== id),
             };
+        },
+
+        EDIT_NOTE(state, {key, id, editedNote}) {
+            state.notes = {
+                ...state.notes,
+                [key]: state.notes[key].map(note => {
+                    if (note.id === id) return editedNote;
+                    return note
+                }),
+            }
         }
     },
     getters: {
@@ -83,6 +93,36 @@ export default {
             }
 
             return response;
-        }
+        },
+
+        async editCurrentNote({getters, commit}, {taskId, updatedNote}) {
+            const noteId = updatedNote.id;
+            const note   = updatedNote.note;
+
+            try {
+                const response = await axios.post('/update-note', {
+                    task_id: taskId,
+                    note_id: noteId, 
+                    note, 
+                })
+                const respData = response.data;
+                
+                if (respData.status === 'success') {
+                    const currentNote = getters.getNote(taskId, noteId);
+                    
+                    if (currentNote) {
+                        commit('EDIT_NOTE', {
+                            key:        taskId, 
+                            id:         noteId, 
+                            editedNote: respData.edited_note,    
+                        });
+                    }
+                }
+
+                return response;
+            } catch(error) {
+                console.error(error);
+            }
+        },
     },
 }

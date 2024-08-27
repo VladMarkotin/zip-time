@@ -201,8 +201,7 @@ class NoteController extends Controller
             $current_note = $this->savedNotes::find($note_id);
             $current_note->update(['note' => $noteAfterValidation]);
 
-            $all_notes = $this->getNotes($task_id);
-            $response['all_notes'] = $all_notes;
+            $response['edited_note'] = $current_note;
             
             $response['status'] = 'success';
             $response['message'] = 'note has been updated';

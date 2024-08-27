@@ -209,7 +209,7 @@ import EditNotesDialog from './EditNotesDialog.vue';
         },
 
         methods: {
-            ...mapActions(['addNote', 'removeNote']),
+            ...mapActions(['addNote', 'removeNote', 'editCurrentNote']),
             async deleteNote(noteId) {
                 try {
                     const response = await this.removeNote({taskId: this.taskId, noteId});
@@ -319,22 +319,29 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 this.editableNoteData = {...currenNote};
             },
 
-            editNote(updatedNote) {
-                const task_id = this.item.taskId;
-                const note_id = updatedNote.id;
-                const note    = updatedNote.note;
-                axios.post('/update-note', {note_id, note, task_id})
-                .then(response => {
-                    const {data} = response;
-
-                    if (data.status === 'success') {
-                        const notesList   = data.all_notes;
-                        this.$emit('updateNotesInfo', {notesList,});
-                    }
-
-                    this.setAlertData({status: data.status, message: data.message});
+            async editNote(updatedNote) {
+                try {
+                    const response = await this.editCurrentNote({taskId: this.taskId, updatedNote});
+                    const respData = response.data;
+                    
+                    this.setAlertData({status: respData.status, message: respData.message});
                     this.showAlert();
-                })
+                } catch(error) {
+                    console.error(error);
+                }
+
+                // axios.post('/update-note', {note_id, note, task_id})
+                // .then(response => {
+                //     const {data} = response;
+
+                //     if (data.status === 'success') {
+                //         const notesList   = data.all_notes;
+                //         this.$emit('updateNotesInfo', {notesList,});
+                //     }
+
+                //     this.setAlertData({status: data.status, message: data.message});
+                //     this.showAlert();
+                // })
             }
         },
 
