@@ -33,7 +33,7 @@
 		<template v-if="isShowNotesDialog">
             <AddNotesCard 
             :isLoading   = "isLoading"
-            :notesList   = "notesList"
+            :taskId      = "item.taskId"
             :item        = "item"
             :screenWidth = "screenWidth"
             @updateNotesInfo     = "updateNotesInfo"
@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex/dist/vuex.common.js';
+import store from '../../../store';
 import AddNotesCard from './AddNotesCard.vue';
 import { mdiNotebookEditOutline }  from '@mdi/js'
     export default {
@@ -72,41 +74,56 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
                 minPreloaderDispTime: 500,
             }
         },
+        store,
         components: {
             AddNotesCard,
         },
         methods: {
-
+            ...mapActions(['fetchNotes']),
             showAddNotesDialog() {
                 this.isShowNotesDialog = true;
                 this.getAllNotesForTask();
             },
 
-            getAllNotesForTask() {
+            async getAllNotesForTask() {
                 const controllLoadingTime = (time, callback) => {
-				    if (time > this.minPreloaderDispTime) callback();
+                    if (time > this.minPreloaderDispTime) callback();
 				    else setTimeout(callback, this.minPreloaderDispTime - time);
 			    }
-
+                
                 this.isLoading = true
                 const loadingStart = Date.now();
+                try {
+                    await this.fetchNotes({
+                        task_id : this.item.taskId, 
+                        hash:     this.item.hash
+                    });
 
-				/**query for getting all notes */
-				axios.post('/get-saved-notes',{
-                    task_id : this.item.taskId, 
-                    hash:     this.item.hash
-                })
-				.then((response) => {
                     const loadingEnd = Date.now();
 
                     controllLoadingTime(loadingEnd - loadingStart, () => {
                         this.isLoading = false;
-
-                        const notesList = response.data;
-                        this.updateNotesInfo({notesList}); 
                     })
+                } catch(error) {
+                    console.error(error);
+                }
 
-				})
+				/**query for getting all notes */
+				// axios.post('/get-saved-notes',{
+                //     task_id : this.item.taskId, 
+                //     hash:     this.item.hash
+                // })
+				// .then((response) => {
+                //     const loadingEnd = Date.now();
+
+                //     controllLoadingTime(loadingEnd - loadingStart, () => {
+                //         this.isLoading = false;
+
+                //         const notesList = response.data;
+                //         this.updateNotesInfo({notesList}); 
+                //     })
+
+				// })
 			},
 
             getTodayNoteAmount(){

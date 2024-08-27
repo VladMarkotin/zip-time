@@ -141,16 +141,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex/dist/vuex.common.js';
 import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import Note from './Note.vue';
 import EditNotesDialog from './EditNotesDialog.vue';
     export default {
         props: {
-            notesList: {
-                type: Array,
-                required: true,
-            },
             isLoading: {
                 type: Boolean,
             },
@@ -160,6 +157,10 @@ import EditNotesDialog from './EditNotesDialog.vue';
             },
             screenWidth: {
                 type: Number,
+            },
+            taskId: {
+                type: Number,
+                required: true,
             }
         },
         data() {
@@ -194,7 +195,12 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 editableNoteData: {},
             };
         },
-
+        computed: {
+            ...mapGetters(['getNotesData']),
+            notesList() {
+                return this.getNotesData(this.taskId);
+            }
+        },
         components: {
             DefaultPreloader,
             AddSubtaskButton,

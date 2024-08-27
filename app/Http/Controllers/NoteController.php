@@ -97,7 +97,7 @@ class NoteController extends Controller
     {
         $saved_task_id = $this->getSavedTaskId(['id' => $task_id]);
 
-        $notes = SavedNotes::select('id', 'note', 'created_at', 'updated_at')
+        $notes = SavedNotes::select('id', 'task_id', 'note', 'created_at', 'updated_at')
             ->where(function ($query) use ($saved_task_id, $task_id) {
                 if (isset($saved_task_id)) {
                     $query->where('saved_task_id', $saved_task_id);
