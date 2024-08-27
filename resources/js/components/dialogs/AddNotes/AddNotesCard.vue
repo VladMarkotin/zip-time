@@ -209,21 +209,31 @@ import EditNotesDialog from './EditNotesDialog.vue';
         },
 
         methods: {
-            ...mapActions(['addNote']),
-            deleteNote(noteId) {
-                axios.post('/delete-note', {note_id: noteId})
-                .then(response => {
-                    const {data} = response;
-                    if (data.status === 'success') {
-                        const newNotesList = [...this.notesList].filter(note => note.id !== noteId);
-                        const todayAmount  = newNotesList.length;
+            ...mapActions(['addNote', 'removeNote']),
+            async deleteNote(noteId) {
+                try {
+                    const response = await this.removeNote({taskId: this.taskId, noteId});
+                    const respData = response.data;
 
-                        this.$emit('updateNotesInfo', {notesList: newNotesList, todayAmount});
-                    }
-                    
-                    this.setAlertData(data);
+                    this.setAlertData(respData);
                     this.showAlert();
-                })
+                } catch (error) {
+                    console.error(error);
+                }
+                
+                // axios.post('/delete-note', {note_id: noteId})
+                // .then(response => {
+                //     const {data} = response;
+                //     if (data.status === 'success') {
+                //         const newNotesList = [...this.notesList].filter(note => note.id !== noteId);
+                //         const todayAmount  = newNotesList.length;
+
+                //         this.$emit('updateNotesInfo', {notesList: newNotesList, todayAmount});
+                //     }
+                    
+                //     this.setAlertData(data);
+                //     this.showAlert();
+                // })
             },
 
             setAlertData({status, message}) {
@@ -255,11 +265,11 @@ import EditNotesDialog from './EditNotesDialog.vue';
             },
 
             async addNewNote() {
-                const task_id = this.taskId;
+                const taskId = this.taskId;
                 const note    = this.newNoteInpuVal.trim();
                 
                 try {
-                    const response = await this.addNote({task_id, note});
+                    const response = await this.addNote({taskId, note});
                     const respData = response.data;
 
                     if (respData.status === 'success') {
