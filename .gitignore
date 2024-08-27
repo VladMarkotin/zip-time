@@ -18,3 +18,10 @@ git_inf.txt
 cert_gen.cmd
 zip-time.local.crt
 zip-time.local.key
+.env.example
+.htaccess
+error_log
+git reset
+index.php
+lang/
+public/error_log
