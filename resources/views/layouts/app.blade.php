@@ -271,6 +271,9 @@
                         <li class="footer-list-li">
                             <a class="footer-link" href="{{ route('termsofuse.index') }}">Terms of Use</a>
                         </li>
+                        <li class="footer-list-li">
+                            <a class="footer-link" href="{{ route('dataDeletionPolicy.index') }}">Data Deletion Policy</a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -38,6 +38,7 @@ Route::get('login/{provider}/callback', [App\Http\Controllers\SocialController::
 
 Route::get('/privacy', [App\Http\Controllers\PrivacyPolicyController::class, 'index'])->name('privacy.index');
 Route::get('/terms-of-use', [App\Http\Controllers\TermsOfUseController::class, 'index'])->name('termsofuse.index');
+Route::get('/data-deletion-policy', [App\Http\Controllers\DataDeletionPolicyController::class, 'index'])->name('dataDeletionPolicy.index');
 
 Route::post('/ifexists', [App\Http\Controllers\MainController::class, 'getCreatedPlanIfExists']);//check whether timetable exists
 Route::middleware(['auth'])->group(function () {

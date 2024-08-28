@@ -28,6 +28,8 @@ mix
     .sass('resources/sass/privacyPolicyPage/privacyPolicyMedia.scss', 'public/css/privacyPolicyPage')
     .sass('resources/sass/termsOfUsePage/termsOfUsePage.scss', 'public/css/termsOfUsePage')
     .sass('resources/sass/termsOfUsePage/termsOfUseMedia.scss', 'public/css/termsOfUsePage')
+    .sass('resources/sass/dataDeletionPolicyPage/dataDeletionPolicyPage.scss', 'public/css/dataDeletionPolicyPage')
+    .sass('resources/sass/dataDeletionPolicyPage/dataDeletionPolicyMedia.scss', 'public/css/dataDeletionPolicyPage')
     .sass('resources/sass/settingsPage/settingsPage.scss', 'public/css/settingsPage')
     .sass('resources/sass/settingsPage/settingsPageMedia.scss', 'public/css/settingsPage')
     .sass('resources/sass/Cards/CardsMedia.scss', 'public/css/Cards')

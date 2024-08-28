@@ -1,2 +1,1308 @@
-/*! For license information please see IndexPageController.js.LICENSE.txt */
-(()=>{"use strict";function t(e){return t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},t(e)}function e(){e=function(){return n};var r,n={},i=Object.prototype,o=i.hasOwnProperty,a=Object.defineProperty||function(t,e,r){t[e]=r.value},l="function"==typeof Symbol?Symbol:{},u=l.iterator||"@@iterator",s=l.asyncIterator||"@@asyncIterator",c=l.toStringTag||"@@toStringTag";function f(t,e,r){return Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}),t[e]}try{f({},"")}catch(r){f=function(t,e,r){return t[e]=r}}function h(t,e,r,n){var i=e&&e.prototype instanceof b?e:b,o=Object.create(i.prototype),l=new O(n||[]);return a(o,"_invoke",{value:M(t,r,l)}),o}function y(t,e,r){try{return{type:"normal",arg:t.call(e,r)}}catch(t){return{type:"throw",arg:t}}}n.wrap=h;var v="suspendedStart",p="suspendedYield",d="executing",w="completed",m={};function b(){}function g(){}function S(){}var k={};f(k,u,(function(){return this}));var L=Object.getPrototypeOf,E=L&&L(L(C([])));E&&E!==i&&o.call(E,u)&&(k=E);var j=S.prototype=b.prototype=Object.create(k);function T(t){["next","throw","return"].forEach((function(e){f(t,e,(function(t){return this._invoke(e,t)}))}))}function x(e,r){function n(i,a,l,u){var s=y(e[i],e,a);if("throw"!==s.type){var c=s.arg,f=c.value;return f&&"object"==t(f)&&o.call(f,"__await")?r.resolve(f.__await).then((function(t){n("next",t,l,u)}),(function(t){n("throw",t,l,u)})):r.resolve(f).then((function(t){c.value=t,l(c)}),(function(t){return n("throw",t,l,u)}))}u(s.arg)}var i;a(this,"_invoke",{value:function(t,e){function o(){return new r((function(r,i){n(t,e,r,i)}))}return i=i?i.then(o,o):o()}})}function M(t,e,n){var i=v;return function(o,a){if(i===d)throw new Error("Generator is already running");if(i===w){if("throw"===o)throw a;return{value:r,done:!0}}for(n.method=o,n.arg=a;;){var l=n.delegate;if(l){var u=W(l,n);if(u){if(u===m)continue;return u}}if("next"===n.method)n.sent=n._sent=n.arg;else if("throw"===n.method){if(i===v)throw i=w,n.arg;n.dispatchException(n.arg)}else"return"===n.method&&n.abrupt("return",n.arg);i=d;var s=y(t,e,n);if("normal"===s.type){if(i=n.done?w:p,s.arg===m)continue;return{value:s.arg,done:n.done}}"throw"===s.type&&(i=w,n.method="throw",n.arg=s.arg)}}}function W(t,e){var n=e.method,i=t.iterator[n];if(i===r)return e.delegate=null,"throw"===n&&t.iterator.return&&(e.method="return",e.arg=r,W(t,e),"throw"===e.method)||"return"!==n&&(e.method="throw",e.arg=new TypeError("The iterator does not provide a '"+n+"' method")),m;var o=y(i,t.iterator,e.arg);if("throw"===o.type)return e.method="throw",e.arg=o.arg,e.delegate=null,m;var a=o.arg;return a?a.done?(e[t.resultName]=a.value,e.next=t.nextLoc,"return"!==e.method&&(e.method="next",e.arg=r),e.delegate=null,m):a:(e.method="throw",e.arg=new TypeError("iterator result is not an object"),e.delegate=null,m)}function P(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function A(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function O(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(P,this),this.reset(!0)}function C(e){if(e||""===e){var n=e[u];if(n)return n.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var i=-1,a=function t(){for(;++i<e.length;)if(o.call(e,i))return t.value=e[i],t.done=!1,t;return t.value=r,t.done=!0,t};return a.next=a}}throw new TypeError(t(e)+" is not iterable")}return g.prototype=S,a(j,"constructor",{value:S,configurable:!0}),a(S,"constructor",{value:g,configurable:!0}),g.displayName=f(S,c,"GeneratorFunction"),n.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===g||"GeneratorFunction"===(e.displayName||e.name))},n.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,S):(t.__proto__=S,f(t,c,"GeneratorFunction")),t.prototype=Object.create(j),t},n.awrap=function(t){return{__await:t}},T(x.prototype),f(x.prototype,s,(function(){return this})),n.AsyncIterator=x,n.async=function(t,e,r,i,o){void 0===o&&(o=Promise);var a=new x(h(t,e,r,i),o);return n.isGeneratorFunction(e)?a:a.next().then((function(t){return t.done?t.value:a.next()}))},T(j),f(j,c,"Generator"),f(j,u,(function(){return this})),f(j,"toString",(function(){return"[object Generator]"})),n.keys=function(t){var e=Object(t),r=[];for(var n in e)r.push(n);return r.reverse(),function t(){for(;r.length;){var n=r.pop();if(n in e)return t.value=n,t.done=!1,t}return t.done=!0,t}},n.values=C,O.prototype={constructor:O,reset:function(t){if(this.prev=0,this.next=0,this.sent=this._sent=r,this.done=!1,this.delegate=null,this.method="next",this.arg=r,this.tryEntries.forEach(A),!t)for(var e in this)"t"===e.charAt(0)&&o.call(this,e)&&!isNaN(+e.slice(1))&&(this[e]=r)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(t){if(this.done)throw t;var e=this;function n(n,i){return l.type="throw",l.arg=t,e.next=n,i&&(e.method="next",e.arg=r),!!i}for(var i=this.tryEntries.length-1;i>=0;--i){var a=this.tryEntries[i],l=a.completion;if("root"===a.tryLoc)return n("end");if(a.tryLoc<=this.prev){var u=o.call(a,"catchLoc"),s=o.call(a,"finallyLoc");if(u&&s){if(this.prev<a.catchLoc)return n(a.catchLoc,!0);if(this.prev<a.finallyLoc)return n(a.finallyLoc)}else if(u){if(this.prev<a.catchLoc)return n(a.catchLoc,!0)}else{if(!s)throw new Error("try statement without catch or finally");if(this.prev<a.finallyLoc)return n(a.finallyLoc)}}}},abrupt:function(t,e){for(var r=this.tryEntries.length-1;r>=0;--r){var n=this.tryEntries[r];if(n.tryLoc<=this.prev&&o.call(n,"finallyLoc")&&this.prev<n.finallyLoc){var i=n;break}}i&&("break"===t||"continue"===t)&&i.tryLoc<=e&&e<=i.finallyLoc&&(i=null);var a=i?i.completion:{};return a.type=t,a.arg=e,i?(this.method="next",this.next=i.finallyLoc,m):this.complete(a)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),m},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var r=this.tryEntries[e];if(r.finallyLoc===t)return this.complete(r.completion,r.afterLoc),A(r),m}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var r=this.tryEntries[e];if(r.tryLoc===t){var n=r.completion;if("throw"===n.type){var i=n.arg;A(r)}return i}}throw new Error("illegal catch attempt")},delegateYield:function(t,e,n){return this.delegate={iterator:C(t),resultName:e,nextLoc:n},"next"===this.method&&(this.arg=r),m}},n}function r(t,e){var r="undefined"!=typeof Symbol&&t[Symbol.iterator]||t["@@iterator"];if(!r){if(Array.isArray(t)||(r=function(t,e){if(!t)return;if("string"==typeof t)return n(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);"Object"===r&&t.constructor&&(r=t.constructor.name);if("Map"===r||"Set"===r)return Array.from(t);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return n(t,e)}(t))||e&&t&&"number"==typeof t.length){r&&(t=r);var i=0,o=function(){};return{s:o,n:function(){return i>=t.length?{done:!0}:{done:!1,value:t[i++]}},e:function(t){throw t},f:o}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var a,l=!0,u=!1;return{s:function(){r=r.call(t)},n:function(){var t=r.next();return l=t.done,t},e:function(t){u=!0,a=t},f:function(){try{l||null==r.return||r.return()}finally{if(u)throw a}}}}function n(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}function i(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,o(n.key),n)}}function o(e){var r=function(e,r){if("object"!=t(e)||!e)return e;var n=e[Symbol.toPrimitive];if(void 0!==n){var i=n.call(e,r||"default");if("object"!=t(i))return i;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===r?String:Number)(e)}(e,"string");return"symbol"==t(r)?r:String(r)}function a(t,e,r){!function(t,e){if(e.has(t))throw new TypeError("Cannot initialize the same private elements twice on an object")}(t,e),e.set(t,r)}function l(t,e){return function(t,e){if(e.get)return e.get.call(t);return e.value}(t,s(t,e,"get"))}function u(t,e,r){return function(t,e,r){if(e.set)e.set.call(t,r);else{if(!e.writable)throw new TypeError("attempted to set read only private field");e.value=r}}(t,s(t,e,"set"),r),r}function s(t,e,r){if(!e.has(t))throw new TypeError("attempted to "+r+" private field on non-instance");return e.get(t)}var c=new WeakMap,f=new WeakMap,h=new WeakMap,y=new WeakMap,v=new WeakMap,p=new WeakMap,d=new WeakMap,w=new WeakMap,m=new WeakMap,b=new WeakMap,g=new WeakMap,S=new WeakMap,k=function(){function t(e){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),a(this,c,{writable:!0,value:null}),a(this,f,{writable:!0,value:null}),a(this,h,{writable:!0,value:null}),a(this,y,{writable:!0,value:null}),a(this,v,{writable:!0,value:null}),a(this,p,{writable:!0,value:null}),a(this,d,{writable:!0,value:null}),a(this,w,{writable:!0,value:null}),a(this,m,{writable:!0,value:null}),a(this,b,{writable:!0,value:null}),a(this,g,{writable:!0,value:null}),a(this,S,{writable:!0,value:null}),u(this,p,e)}var n,o,s;return n=t,o=[{key:"init",value:function(){var t=this;u(this,c,document.querySelectorAll(".element-animation")),u(this,f,document.querySelectorAll(".our-advantages-item")),u(this,y,document.querySelectorAll(".statistics-item")),u(this,d,document.querySelectorAll(".about-us-item")),u(this,m,document.querySelectorAll(".quotes-item")),u(this,g,document.querySelectorAll(".philosofy-item")),l(this,f).length&&u(this,h,s(l(this,f),200)),l(this,y).length&&u(this,v,s(l(this,y),150)),l(this,d).length&&u(this,w,s(l(this,d),200)),l(this,m).length&&u(this,b,s(l(this,m),150)),l(this,g).length&&u(this,S,s(l(this,g),150));var n=new IntersectionObserver((function(e){e.forEach((function(e){var r=e.target;if(e.isIntersecting&&!r.classList.contains("element-show")){var n=r.classList.contains("our-advantages-item"),i=r.classList.contains("statistics-item"),o=r.classList.contains("about-us-item"),a=r.classList.contains("quotes-item"),u=r.classList.contains("philosofy-item");switch(!0){case o:t.showList(e,l(t,w));break;case n:t.showList(e,l(t,h));break;case i:t.showList(e,l(t,v));break;case u:t.showList(e,l(t,S));break;case a:t.showList(e,l(t,b));break;default:t.addElemShowClass(e)}}}))}),{threshold:[.25]});if(l(this,c).length){var i,o=r(l(this,c));try{for(o.s();!(i=o.n()).done;){var a=i.value;n.observe(a)}}catch(t){o.e(t)}finally{o.f()}}function s(t){var r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:300;return e().mark((function n(){var i;return e().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:i=1;case 1:if(!(i<=t.length)){e.next=7;break}return e.next=4,i*r;case 4:i++,e.next=1;break;case 7:case"end":return e.stop()}}),n)}))()}}},{key:"addElemShowClass",value:function(t){(t=t.target).classList.add("element-show"),t.classList.contains("statistics-item")&&this.createStatisticsCounter(t)}},{key:"showList",value:function(t,e){var r=this,n=null;try{n=e.next().value}catch(t){console.error(t)}setTimeout((function(){r.addElemShowClass(t)}),n||0)}},{key:"createStatisticsCounter",value:function(t){new(l(this,p))(t).init()}}],o&&i(n.prototype,o),s&&i(n,s),Object.defineProperty(n,"prototype",{writable:!1}),t}();const L=k;function E(t){return E="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},E(t)}function j(t,e){var r="undefined"!=typeof Symbol&&t[Symbol.iterator]||t["@@iterator"];if(!r){if(Array.isArray(t)||(r=function(t,e){if(!t)return;if("string"==typeof t)return T(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);"Object"===r&&t.constructor&&(r=t.constructor.name);if("Map"===r||"Set"===r)return Array.from(t);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return T(t,e)}(t))||e&&t&&"number"==typeof t.length){r&&(t=r);var n=0,i=function(){};return{s:i,n:function(){return n>=t.length?{done:!0}:{done:!1,value:t[n++]}},e:function(t){throw t},f:i}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var o,a=!0,l=!1;return{s:function(){r=r.call(t)},n:function(){var t=r.next();return a=t.done,t},e:function(t){l=!0,o=t},f:function(){try{a||null==r.return||r.return()}finally{if(l)throw o}}}}function T(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}function x(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,M(n.key),n)}}function M(t){var e=function(t,e){if("object"!=E(t)||!t)return t;var r=t[Symbol.toPrimitive];if(void 0!==r){var n=r.call(t,e||"default");if("object"!=E(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"==E(e)?e:String(e)}function W(t,e,r){!function(t,e){if(e.has(t))throw new TypeError("Cannot initialize the same private elements twice on an object")}(t,e),e.set(t,r)}function P(t,e){return function(t,e){if(e.get)return e.get.call(t);return e.value}(t,O(t,e,"get"))}function A(t,e,r){return function(t,e,r){if(e.set)e.set.call(t,r);else{if(!e.writable)throw new TypeError("attempted to set read only private field");e.value=r}}(t,O(t,e,"set"),r),r}function O(t,e,r){if(!e.has(t))throw new TypeError("attempted to "+r+" private field on non-instance");return e.get(t)}var C=new WeakMap,q=new WeakMap,N=function(){function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),W(this,C,{writable:!0,value:null}),W(this,q,{writable:!0,value:"our-advantages-item-focus"})}var e,r,n;return e=t,r=[{key:"init",value:function(){var t=this;A(this,C,document.body.querySelectorAll(".our-advantages-item"));var e,r=j(P(this,C));try{for(r.s();!(e=r.n()).done;){var n=e.value;n.addEventListener("mouseenter",(function(e){t.checkClass(e.target)||e.target.classList.add(P(t,q))})),n.addEventListener("mouseleave",(function(e){t.checkClass(e.target)&&e.target.classList.remove(P(t,q))}))}}catch(t){r.e(t)}finally{r.f()}}},{key:"checkClass",value:function(t){return t.classList.contains(P(this,q))}}],r&&x(e.prototype,r),n&&x(e,n),Object.defineProperty(e,"prototype",{writable:!1}),t}();const _=N;function I(t){return I="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},I(t)}function G(t,e){var r="undefined"!=typeof Symbol&&t[Symbol.iterator]||t["@@iterator"];if(!r){if(Array.isArray(t)||(r=function(t,e){if(!t)return;if("string"==typeof t)return F(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);"Object"===r&&t.constructor&&(r=t.constructor.name);if("Map"===r||"Set"===r)return Array.from(t);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return F(t,e)}(t))||e&&t&&"number"==typeof t.length){r&&(t=r);var n=0,i=function(){};return{s:i,n:function(){return n>=t.length?{done:!0}:{done:!1,value:t[n++]}},e:function(t){throw t},f:i}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var o,a=!0,l=!1;return{s:function(){r=r.call(t)},n:function(){var t=r.next();return a=t.done,t},e:function(t){l=!0,o=t},f:function(){try{a||null==r.return||r.return()}finally{if(l)throw o}}}}function F(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}function B(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,H(n.key),n)}}function H(t){var e=function(t,e){if("object"!=I(t)||!t)return t;var r=t[Symbol.toPrimitive];if(void 0!==r){var n=r.call(t,e||"default");if("object"!=I(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"==I(e)?e:String(e)}function z(t,e,r){!function(t,e){if(e.has(t))throw new TypeError("Cannot initialize the same private elements twice on an object")}(t,e),e.set(t,r)}function $(t,e){return function(t,e){if(e.get)return e.get.call(t);return e.value}(t,Y(t,e,"get"))}function U(t,e,r){return function(t,e,r){if(e.set)e.set.call(t,r);else{if(!e.writable)throw new TypeError("attempted to set read only private field");e.value=r}}(t,Y(t,e,"set"),r),r}function Y(t,e,r){if(!e.has(t))throw new TypeError("attempted to "+r+" private field on non-instance");return e.get(t)}var Z=new WeakMap,D=new WeakMap,J=new WeakMap,K=new WeakMap,Q=new WeakMap,R=new WeakMap,V=new WeakMap,X=new WeakMap,tt=function(){function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),z(this,Z,{writable:!0,value:null}),z(this,D,{writable:!0,value:null}),z(this,J,{writable:!0,value:null}),z(this,K,{writable:!0,value:null}),z(this,Q,{writable:!0,value:null}),z(this,R,{writable:!0,value:null}),z(this,V,{writable:!0,value:null}),z(this,X,{writable:!0,value:0})}var e,r,n;return e=t,r=[{key:"init",value:function(){var t=this;U(this,Z,document.querySelector(".philosofy-slider")),U(this,D,$(this,Z).querySelector(".philosofy-slider-line")),U(this,J,$(this,D).querySelectorAll(".philosofy-slide")),U(this,K,$(this,J).length),U(this,Q,getComputedStyle($(this,Z)).width),U(this,R,document.querySelector(".philosofy-slider-buttons")),U(this,V,"philosofy-slider-active-button"),this.move=this.move.bind(this),$(this,D).style.width=Number.parseInt($(this,Q))*$(this,K)+"px",this.cleanButtonWrapper(),$(this,J).forEach((function(e,r){e.style.width=$(t,Q),t.createButton(r)}))}},{key:"cleanButtonWrapper",value:function(){$(this,R).innerHTML=""}},{key:"createButton",value:function(t){var e=this;if($(this,K)){var r=document.createElement("button");r.classList.add("philosofy-slider-button"),t===$(this,X)&&r.classList.add($(this,V)),r.addEventListener("click",(function(r){e.move(t,r)})),$(this,R).append(r)}}},{key:"move",value:function(t,e){var r,n=$(this,R).querySelectorAll(".philosofy-slider-button"),i=G(n);try{for(i.s();!(r=i.n()).done;){var o=r.value;o.classList.contains($(this,V))&&o.classList.remove($(this,V))}}catch(t){i.e(t)}finally{i.f()}e?e.target.classList.add($(this,V)):n[t].classList.add($(this,V)),$(this,D).style.left="-".concat(Number.parseInt($(this,Q))*t,"px"),U(this,X,t)}},{key:"currentSlideIndex",get:function(){return $(this,X)}}],r&&B(e.prototype,r),n&&B(e,n),Object.defineProperty(e,"prototype",{writable:!1}),t}();const et=tt;function rt(t){return rt="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},rt(t)}function nt(t,e){var r="undefined"!=typeof Symbol&&t[Symbol.iterator]||t["@@iterator"];if(!r){if(Array.isArray(t)||(r=function(t,e){if(!t)return;if("string"==typeof t)return it(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);"Object"===r&&t.constructor&&(r=t.constructor.name);if("Map"===r||"Set"===r)return Array.from(t);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return it(t,e)}(t))||e&&t&&"number"==typeof t.length){r&&(t=r);var n=0,i=function(){};return{s:i,n:function(){return n>=t.length?{done:!0}:{done:!1,value:t[n++]}},e:function(t){throw t},f:i}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var o,a=!0,l=!1;return{s:function(){r=r.call(t)},n:function(){var t=r.next();return a=t.done,t},e:function(t){l=!0,o=t},f:function(){try{a||null==r.return||r.return()}finally{if(l)throw o}}}}function it(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}function ot(t,e,r){return(e=vt(e))in t?Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[e]=r,t}function at(t,e,r){!function(t,e){if(e.has(t))throw new TypeError("Cannot initialize the same private elements twice on an object")}(t,e),e.set(t,r)}function lt(t,e){return dt(t,st(t,e,"get"))}function ut(t,e,r){return function(t,e,r){if(e.set)e.set.call(t,r);else{if(!e.writable)throw new TypeError("attempted to set read only private field");e.value=r}}(t,st(t,e,"set"),r),r}function st(t,e,r){if(!e.has(t))throw new TypeError("attempted to "+r+" private field on non-instance");return e.get(t)}function ct(){ct=function(){return e};var t,e={},r=Object.prototype,n=r.hasOwnProperty,i=Object.defineProperty||function(t,e,r){t[e]=r.value},o="function"==typeof Symbol?Symbol:{},a=o.iterator||"@@iterator",l=o.asyncIterator||"@@asyncIterator",u=o.toStringTag||"@@toStringTag";function s(t,e,r){return Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}),t[e]}try{s({},"")}catch(t){s=function(t,e,r){return t[e]=r}}function c(t,e,r,n){var o=e&&e.prototype instanceof w?e:w,a=Object.create(o.prototype),l=new P(n||[]);return i(a,"_invoke",{value:T(t,r,l)}),a}function f(t,e,r){try{return{type:"normal",arg:t.call(e,r)}}catch(t){return{type:"throw",arg:t}}}e.wrap=c;var h="suspendedStart",y="suspendedYield",v="executing",p="completed",d={};function w(){}function m(){}function b(){}var g={};s(g,a,(function(){return this}));var S=Object.getPrototypeOf,k=S&&S(S(A([])));k&&k!==r&&n.call(k,a)&&(g=k);var L=b.prototype=w.prototype=Object.create(g);function E(t){["next","throw","return"].forEach((function(e){s(t,e,(function(t){return this._invoke(e,t)}))}))}function j(t,e){function r(i,o,a,l){var u=f(t[i],t,o);if("throw"!==u.type){var s=u.arg,c=s.value;return c&&"object"==rt(c)&&n.call(c,"__await")?e.resolve(c.__await).then((function(t){r("next",t,a,l)}),(function(t){r("throw",t,a,l)})):e.resolve(c).then((function(t){s.value=t,a(s)}),(function(t){return r("throw",t,a,l)}))}l(u.arg)}var o;i(this,"_invoke",{value:function(t,n){function i(){return new e((function(e,i){r(t,n,e,i)}))}return o=o?o.then(i,i):i()}})}function T(e,r,n){var i=h;return function(o,a){if(i===v)throw new Error("Generator is already running");if(i===p){if("throw"===o)throw a;return{value:t,done:!0}}for(n.method=o,n.arg=a;;){var l=n.delegate;if(l){var u=x(l,n);if(u){if(u===d)continue;return u}}if("next"===n.method)n.sent=n._sent=n.arg;else if("throw"===n.method){if(i===h)throw i=p,n.arg;n.dispatchException(n.arg)}else"return"===n.method&&n.abrupt("return",n.arg);i=v;var s=f(e,r,n);if("normal"===s.type){if(i=n.done?p:y,s.arg===d)continue;return{value:s.arg,done:n.done}}"throw"===s.type&&(i=p,n.method="throw",n.arg=s.arg)}}}function x(e,r){var n=r.method,i=e.iterator[n];if(i===t)return r.delegate=null,"throw"===n&&e.iterator.return&&(r.method="return",r.arg=t,x(e,r),"throw"===r.method)||"return"!==n&&(r.method="throw",r.arg=new TypeError("The iterator does not provide a '"+n+"' method")),d;var o=f(i,e.iterator,r.arg);if("throw"===o.type)return r.method="throw",r.arg=o.arg,r.delegate=null,d;var a=o.arg;return a?a.done?(r[e.resultName]=a.value,r.next=e.nextLoc,"return"!==r.method&&(r.method="next",r.arg=t),r.delegate=null,d):a:(r.method="throw",r.arg=new TypeError("iterator result is not an object"),r.delegate=null,d)}function M(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function W(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function P(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(M,this),this.reset(!0)}function A(e){if(e||""===e){var r=e[a];if(r)return r.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var i=-1,o=function r(){for(;++i<e.length;)if(n.call(e,i))return r.value=e[i],r.done=!1,r;return r.value=t,r.done=!0,r};return o.next=o}}throw new TypeError(rt(e)+" is not iterable")}return m.prototype=b,i(L,"constructor",{value:b,configurable:!0}),i(b,"constructor",{value:m,configurable:!0}),m.displayName=s(b,u,"GeneratorFunction"),e.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===m||"GeneratorFunction"===(e.displayName||e.name))},e.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,b):(t.__proto__=b,s(t,u,"GeneratorFunction")),t.prototype=Object.create(L),t},e.awrap=function(t){return{__await:t}},E(j.prototype),s(j.prototype,l,(function(){return this})),e.AsyncIterator=j,e.async=function(t,r,n,i,o){void 0===o&&(o=Promise);var a=new j(c(t,r,n,i),o);return e.isGeneratorFunction(r)?a:a.next().then((function(t){return t.done?t.value:a.next()}))},E(L),s(L,u,"Generator"),s(L,a,(function(){return this})),s(L,"toString",(function(){return"[object Generator]"})),e.keys=function(t){var e=Object(t),r=[];for(var n in e)r.push(n);return r.reverse(),function t(){for(;r.length;){var n=r.pop();if(n in e)return t.value=n,t.done=!1,t}return t.done=!0,t}},e.values=A,P.prototype={constructor:P,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=t,this.done=!1,this.delegate=null,this.method="next",this.arg=t,this.tryEntries.forEach(W),!e)for(var r in this)"t"===r.charAt(0)&&n.call(this,r)&&!isNaN(+r.slice(1))&&(this[r]=t)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(e){if(this.done)throw e;var r=this;function i(n,i){return l.type="throw",l.arg=e,r.next=n,i&&(r.method="next",r.arg=t),!!i}for(var o=this.tryEntries.length-1;o>=0;--o){var a=this.tryEntries[o],l=a.completion;if("root"===a.tryLoc)return i("end");if(a.tryLoc<=this.prev){var u=n.call(a,"catchLoc"),s=n.call(a,"finallyLoc");if(u&&s){if(this.prev<a.catchLoc)return i(a.catchLoc,!0);if(this.prev<a.finallyLoc)return i(a.finallyLoc)}else if(u){if(this.prev<a.catchLoc)return i(a.catchLoc,!0)}else{if(!s)throw new Error("try statement without catch or finally");if(this.prev<a.finallyLoc)return i(a.finallyLoc)}}}},abrupt:function(t,e){for(var r=this.tryEntries.length-1;r>=0;--r){var i=this.tryEntries[r];if(i.tryLoc<=this.prev&&n.call(i,"finallyLoc")&&this.prev<i.finallyLoc){var o=i;break}}o&&("break"===t||"continue"===t)&&o.tryLoc<=e&&e<=o.finallyLoc&&(o=null);var a=o?o.completion:{};return a.type=t,a.arg=e,o?(this.method="next",this.next=o.finallyLoc,d):this.complete(a)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),d},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var r=this.tryEntries[e];if(r.finallyLoc===t)return this.complete(r.completion,r.afterLoc),W(r),d}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var r=this.tryEntries[e];if(r.tryLoc===t){var n=r.completion;if("throw"===n.type){var i=n.arg;W(r)}return i}}throw new Error("illegal catch attempt")},delegateYield:function(e,r,n){return this.delegate={iterator:A(e),resultName:r,nextLoc:n},"next"===this.method&&(this.arg=t),d}},e}function ft(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function ht(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,vt(n.key),n)}}function yt(t,e,r){return e&&ht(t.prototype,e),r&&ht(t,r),Object.defineProperty(t,"prototype",{writable:!1}),t}function vt(t){var e=function(t,e){if("object"!=rt(t)||!t)return t;var r=t[Symbol.toPrimitive];if(void 0!==r){var n=r.call(t,e||"default");if("object"!=rt(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"==rt(e)?e:String(e)}function pt(t,e,r){return function(t,e){if(t!==e)throw new TypeError("Private static access of wrong provenance")}(t,e),function(t,e){if(void 0===t)throw new TypeError("attempted to "+e+" private static field before its declaration")}(r,"get"),dt(t,r)}function dt(t,e){return e.get?e.get.call(t):e.value}var wt=function(){function t(){ft(this,t)}return yt(t,null,[{key:"init",value:function(e){this[pt(this,t,mt).find((function(t){return t.number===e})).method]()}},{key:"initFirstSlide",value:function(){this.removeAddedClasses("slide-one-li-left","slide-one-li-right");for(var t=document.querySelectorAll(".slide-one-list .slide-one-li"),e=this.getTimerCreator()(t),r=function(){var r=t[n],i=n%2==0?"slide-one-li-left":"slide-one-li-right";setTimeout((function(){r.classList.add(i)}),e.next().value)},n=0;n<t.length;n++)r()}},{key:"initSecondSlide",value:function(){this.removeAddedClasses("slide-content-subtitle-isshown","slide-one-li-left");var e=document.querySelector(".slide-two"),r=e.querySelector(".slide-content-subtitle"),n=e.querySelectorAll(".slide-two-list .slide-two-li"),i=this.getTimerCreator(900,1400)(n);setTimeout((function(){r.classList.add("slide-content-subtitle-isshown");for(var t=function(t){setTimeout((function(){n[t].classList.add("slide-one-li-left")}),i.next().value)},e=0;e<n.length;e++)t(e)}),pt(this,t,bt)/2)}},{key:"initThirdSlide",value:function(){this.removeAddedClasses("slide-one-li-left","title-third-slide-isshown","subtitle-third-slide-isshown","just-try-it-wrapper-isLink");var t=document.querySelector(".slide-three"),e=t.querySelectorAll(".slide-three-list .slide-three-li"),r=this.getTimerCreator(900,1400)(e),n=t.querySelector(".title-third-slide"),i=t.querySelectorAll(".subtitle-third-slide"),o=this.getTimerCreator(1200,2600)(i),a=t.querySelector(".just-try-it-wrapper");new Promise((function(t){for(var n=function(n){setTimeout((function(){e[n].classList.add("slide-one-li-left"),n===e.length-1&&setTimeout((function(){return t()}),900)}),r.next().value)},i=0;i<e.length;i++)n(i)})).then((function(){return new Promise((function(t){n.classList.add("title-third-slide-isshown");for(var e=function(e){setTimeout((function(){i[e].classList.add("subtitle-third-slide-isshown"),e===i.length-1&&setTimeout((function(){return t()}),900)}),o.next().value)},r=0;r<i.length;r++)e(r)}))})).then((function(){a.classList.add("just-try-it-wrapper-isLink")}))}},{key:"getTimerCreator",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:200,r=(arguments.length>1?arguments[1]:void 0)||pt(this,t,bt);return function(t){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:r;return ct().mark((function r(){var i;return ct().wrap((function(r){for(;;)switch(r.prev=r.next){case 0:i=1;case 1:if(!(i<=t.length)){r.next=10;break}if(1!==i){r.next=5;break}return r.next=5,e;case 5:return r.next=7,i*n;case 7:i++,r.next=1;break;case 10:case"end":return r.stop()}}),r)}))()}}},{key:"removeAddedClasses",value:function(){for(var t=arguments.length,e=new Array(t),r=0;r<t;r++)e[r]=arguments[r];e.forEach((function(t){for(var e=document.querySelectorAll(".".concat(t)),r=0;r<e.length;r++)e[r].classList.remove(t)}))}}]),t}(),mt={writable:!0,value:[{number:"one",method:"initFirstSlide"},{number:"two",method:"initSecondSlide"},{number:"three",method:"initThirdSlide"}]},bt={writable:!0,value:900},gt=new WeakMap,St=new WeakMap,kt=new WeakMap,Lt=function(){function t(){ft(this,t),at(this,gt,{writable:!0,value:null}),at(this,St,{writable:!0,value:null}),at(this,kt,{writable:!0,value:"transparent"})}return yt(t,[{key:"init",value:function(){var t=this;ut(this,gt,document.querySelector(".slider-wrapper")),ut(this,St,document.querySelector(".slider-left-arrow-wrapper")),lt(this,gt).addEventListener("mouseenter",(function(){lt(t,St).classList.contains(lt(t,kt))&&lt(t,St).classList.remove(lt(t,kt))})),lt(this,gt).addEventListener("mouseleave",(function(){lt(t,St).classList.contains(lt(t,kt))||lt(t,St).classList.add(lt(t,kt))}))}}]),t}(),Et=yt((function t(e,r){ft(this,t),ot(this,"content",null),ot(this,"classes",null),this.classes=e,this.content=r})),jt=new WeakMap,Tt=new WeakMap,xt=new WeakMap,Mt=new WeakMap,Wt=new WeakMap,Pt=new WeakMap,At=new WeakMap,Ot=new WeakMap,Ct=function(){function t(){ft(this,t),at(this,jt,{writable:!0,value:null}),at(this,Tt,{writable:!0,value:null}),at(this,xt,{writable:!0,value:null}),at(this,Mt,{writable:!0,value:null}),at(this,Wt,{writable:!0,value:null}),at(this,Pt,{writable:!0,value:null}),at(this,At,{writable:!0,value:null}),at(this,Ot,{writable:!0,value:null})}return yt(t,[{key:"init",value:function(t,e,r){var n=document.body.querySelectorAll(".slide");ut(this,jt,new Array),ut(this,Tt,document.querySelector(".slider-wrapper")),ut(this,xt,window.innerWidth),ut(this,Pt,document.querySelector(".slider-left-arrow-wrapper")),ut(this,At,t),ut(this,Ot,r);var i,o=nt(n);try{for(o.s();!(i=o.n()).done;){var a=i.value;lt(this,jt).push(new(lt(this,At))(a.classList.value.split(" "),a.innerHTML)),a.remove()}}catch(t){o.e(t)}finally{o.f()}var l,u=nt(e);try{for(u.s();!(l=u.n()).done;){var s=l.value,c=s.classes[1];lt(this,jt).map((function(t){return t.classes[1]})).includes(c)||lt(this,jt).push(s)}}catch(t){u.e(t)}finally{u.f()}ut(this,Mt,0),ut(this,Wt,0),this.draw(),this.draw(),this.left=this.left.bind(this),lt(this,Pt).onclick=this.left,this.initZeroSlide()}},{key:"draw",value:function(){var t,e,r=document.createElement("div"),n=lt(this,jt)[lt(this,Mt)],i=nt(n.classes);try{for(i.s();!(t=i.n()).done;){var o=t.value;r.classList.add(o)}}catch(t){i.e(t)}finally{i.f()}(r.innerHTML=n.content,r.style.left=lt(this,Wt)*lt(this,xt)+"px",lt(this,Tt).appendChild(r),lt(this,Mt)+1===lt(this,jt).length)?ut(this,Mt,0):ut(this,Mt,(e=lt(this,Mt),e++,e));ut(this,Wt,1)}},{key:"left",value:function(){var t=this;lt(this,Pt).onclick=null;var e,r=document.querySelectorAll(".slide"),n=0,i=nt(r);try{for(i.s();!(e=i.n()).done;){e.value.style.left=n*lt(this,xt)-lt(this,xt)+"px",n++}}catch(t){i.e(t)}finally{i.f()}setTimeout((function(){r[0].remove(),t.draw(),lt(t,Pt).onclick=t.left,t.initZeroSlide()}),600)}},{key:"initZeroSlide",value:function(){var t=this,e=document.querySelector(".slider-wrapper > .slide"),r=/^slide-(\w+)$/,n=function(t){var e,n=t.classList,i=nt(n);try{for(i.s();!(e=i.n()).done;){var o=e.value.match(r);if(o)return o[1]}}catch(t){i.e(t)}finally{i.f()}}(e);lt(this,Ot).init(n);var i=document.querySelector(".yeap-button");i&&i.addEventListener("click",(function(){t.left()}))}}]),t}(),qt=new WeakMap,Nt=new WeakMap,_t=new WeakMap,It=function(){function t(e,r,n){ft(this,t),at(this,qt,{writable:!0,value:null}),ot(this,"slides",new Array),at(this,Nt,{writable:!0,value:null}),at(this,_t,{writable:!0,value:null}),ut(this,qt,e),ut(this,Nt,r),ut(this,_t,n);var i,o=nt(document.body.querySelectorAll(".slide"));try{for(o.s();!(i=o.n()).done;){var a=i.value;this.slides.push(new(lt(this,Nt))(a.classList.value.split(" "),a.innerHTML))}}catch(t){o.e(t)}finally{o.f()}}return yt(t,[{key:"init",value:function(){lt(this,qt).init(lt(this,Nt),this.slides,lt(this,_t))}}]),t}();const Gt={slideArrowController:Lt,SlideContentController:wt,slideItem:Et,slider:Ct,sliderFacade:It};function Ft(t){return Ft="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},Ft(t)}function Bt(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,Ht(n.key),n)}}function Ht(t){var e=function(t,e){if("object"!=Ft(t)||!t)return t;var r=t[Symbol.toPrimitive];if(void 0!==r){var n=r.call(t,e||"default");if("object"!=Ft(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"==Ft(e)?e:String(e)}function zt(t,e,r){!function(t,e){if(e.has(t))throw new TypeError("Cannot initialize the same private elements twice on an object")}(t,e),e.set(t,r)}function $t(t,e){return function(t,e){if(e.get)return e.get.call(t);return e.value}(t,Yt(t,e,"get"))}function Ut(t,e,r){return function(t,e,r){if(e.set)e.set.call(t,r);else{if(!e.writable)throw new TypeError("attempted to set read only private field");e.value=r}}(t,Yt(t,e,"set"),r),r}function Yt(t,e,r){if(!e.has(t))throw new TypeError("attempted to "+r+" private field on non-instance");return e.get(t)}var Zt=new WeakMap,Dt=new WeakMap,Jt=new WeakMap,Kt=new WeakMap,Qt=new WeakMap,Rt=new WeakMap,Vt=new WeakMap;const Xt=function(){function t(e){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),zt(this,Zt,{writable:!0,value:null}),zt(this,Dt,{writable:!0,value:1500}),zt(this,Jt,{writable:!0,value:null}),zt(this,Kt,{writable:!0,value:1}),zt(this,Qt,{writable:!0,value:null}),zt(this,Rt,{writable:!0,value:null}),zt(this,Vt,{writable:!0,value:null}),Ut(this,Zt,e)}var e,r,n;return e=t,(r=[{key:"init",value:function(){var t=this;Ut(this,Qt,$t(this,Zt).querySelector(".statistics-counter"));var e=+$t(this,Qt).innerHTML,r=+$t(this,Qt).dataset.counterval;Ut(this,Rt,this.isNaNCheck(e)),Ut(this,Vt,this.isNaNCheck(r)),Ut(this,Jt,this.getStep($t(this,Kt)));var n=$t(this,Rt),i=Math.round($t(this,Dt)/($t(this,Vt)/$t(this,Jt))),o=setInterval((function(){(n+=$t(t,Jt))>=$t(t,Vt)?(clearInterval(o),$t(t,Qt).innerHTML=$t(t,Vt)):$t(t,Qt).innerHTML=n}),i)}},{key:"isNaNCheck",value:function(t){return Number.isNaN(t)||"number"!=typeof t?0:t}},{key:"getStep",value:function(t){var e=Math.round($t(this,Dt)/($t(this,Vt)/t));return e<$t(this,Dt)/30?(t++,this.getStep(t)):e>$t(this,Dt)?(t--,this.getStep(t)):t}}])&&Bt(e.prototype,r),n&&Bt(e,n),Object.defineProperty(e,"prototype",{writable:!1}),t}();function te(t){return te="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},te(t)}function ee(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,re(n.key),n)}}function re(t){var e=function(t,e){if("object"!=te(t)||!t)return t;var r=t[Symbol.toPrimitive];if(void 0!==r){var n=r.call(t,e||"default");if("object"!=te(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"==te(e)?e:String(e)}function ne(t,e,r){!function(t,e){if(e.has(t))throw new TypeError("Cannot initialize the same private elements twice on an object")}(t,e),e.set(t,r)}function ie(t,e){return function(t,e){if(e.get)return e.get.call(t);return e.value}(t,ae(t,e,"get"))}function oe(t,e,r){return function(t,e,r){if(e.set)e.set.call(t,r);else{if(!e.writable)throw new TypeError("attempted to set read only private field");e.value=r}}(t,ae(t,e,"set"),r),r}function ae(t,e,r){if(!e.has(t))throw new TypeError("attempted to "+r+" private field on non-instance");return e.get(t)}var le=new WeakMap,ue=new WeakMap,se=new WeakMap,ce=new WeakMap,fe=new WeakMap;const he=function(){function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),ne(this,le,{writable:!0,value:null}),ne(this,ue,{writable:!0,value:3500}),ne(this,se,{writable:!0,value:null}),ne(this,ce,{writable:!0,value:null}),ne(this,fe,{writable:!0,value:null})}var e,r,n;return e=t,(r=[{key:"init",value:function(){oe(this,le,document.createElement("div")),ie(this,le).classList.add("progress-bar"),oe(this,fe,document.getElementById("app")),oe(this,se,!!this.findProgressBar()),this.calPercents=this.calPercents.bind(this),oe(this,ce,document.documentElement.scrollHeight-document.documentElement.clientHeight),!ie(this,se)&&ie(this,ce)>=ie(this,ue)&&ie(this,fe).prepend(ie(this,le)),ie(this,ce)>=ie(this,ue)&&(this.calPercents(),window.onscroll||(window.onscroll=this.calPercents)),ie(this,se)&&ie(this,ce)<ie(this,ue)&&(this.findProgressBar().remove(),window.onscroll=null)}},{key:"updateWidth",value:function(t){this.findProgressBar().style.width="".concat(t,"%")}},{key:"calPercents",value:function(t){var e=document.body.scrollTop/ie(this,ce)*100;this.updateWidth(e)}},{key:"findProgressBar",value:function(){return ie(this,fe).querySelector(".progress-bar")}}])&&ee(e.prototype,r),n&&ee(e,n),Object.defineProperty(e,"prototype",{writable:!1}),t}();function ye(t){return ye="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},ye(t)}function ve(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,pe(n.key),n)}}function pe(t){var e=function(t,e){if("object"!=ye(t)||!t)return t;var r=t[Symbol.toPrimitive];if(void 0!==r){var n=r.call(t,e||"default");if("object"!=ye(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"==ye(e)?e:String(e)}function de(t,e,r){!function(t,e){if(e.has(t))throw new TypeError("Cannot initialize the same private elements twice on an object")}(t,e),e.set(t,r)}function we(t,e){return function(t,e){if(e.get)return e.get.call(t);return e.value}(t,be(t,e,"get"))}function me(t,e,r){return function(t,e,r){if(e.set)e.set.call(t,r);else{if(!e.writable)throw new TypeError("attempted to set read only private field");e.value=r}}(t,be(t,e,"set"),r),r}function be(t,e,r){if(!e.has(t))throw new TypeError("attempted to "+r+" private field on non-instance");return e.get(t)}var ge=new WeakMap,Se=new WeakMap,ke=new WeakMap,Le=new WeakMap,Ee=new WeakMap,je=new WeakMap,Te=new WeakMap,xe=new WeakMap,Me=new WeakMap,We=new WeakMap,Pe=function(){function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),de(this,ge,{writable:!0,value:null}),de(this,Se,{writable:!0,value:null}),de(this,ke,{writable:!0,value:null}),de(this,Le,{writable:!0,value:null}),de(this,Ee,{writable:!0,value:null}),de(this,je,{writable:!0,value:null}),de(this,Te,{writable:!0,value:null}),de(this,xe,{writable:!0,value:null}),de(this,Me,{writable:!0,value:null}),de(this,We,{writable:!0,value:null})}var e,r,n;return e=t,r=[{key:"init",value:function(t,e,r,n,i,o,a,l,u,s){var c=this;me(this,Me,u),me(this,ge,new t(we(this,Me))),me(this,Se,new e),me(this,ke,new r),me(this,We,new s),me(this,Le,new n),me(this,Ee,i),me(this,je,o),me(this,xe,l),me(this,Te,new a(new(we(this,je)),we(this,Ee),we(this,xe))),we(this,ge).init(),we(this,Se).init(),we(this,ke).init(),we(this,Le).init(),we(this,Te).init(),we(this,We).init(),window.addEventListener("resize",(function(){we(c,ke).init(),we(c,ke).move(we(c,ke).currentSlideIndex),we(c,Te).init(),we(c,We).init()}))}}],r&&ve(e.prototype,r),n&&ve(e,n),Object.defineProperty(e,"prototype",{writable:!1}),t}(),Ae=new Pe,Oe=Gt.slideArrowController,Ce=Gt.slider,qe=Gt.slideItem,Ne=Gt.sliderFacade,_e=Gt.SlideContentController;Ae.init(L,_,et,Oe,qe,Ce,Ne,_e,Xt,he)})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./resources/js/indexPage/BlocksAppearanceController.js":
+/*!**************************************************************!*\
+  !*** ./resources/js/indexPage/BlocksAppearanceController.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _animatedElements = /*#__PURE__*/new WeakMap();
+var _ourAdvantagesItems = /*#__PURE__*/new WeakMap();
+var _ourAdvantagesTimer = /*#__PURE__*/new WeakMap();
+var _statisticsItems = /*#__PURE__*/new WeakMap();
+var _statisticsTimer = /*#__PURE__*/new WeakMap();
+var _statisticsCounter = /*#__PURE__*/new WeakMap();
+var _aboutUsItems = /*#__PURE__*/new WeakMap();
+var _aboutUsTimer = /*#__PURE__*/new WeakMap();
+var _quotesItems = /*#__PURE__*/new WeakMap();
+var _quotesTimer = /*#__PURE__*/new WeakMap();
+var _philosofyItems = /*#__PURE__*/new WeakMap();
+var _philosofyTimer = /*#__PURE__*/new WeakMap();
+var BlocksAppearanceController = /*#__PURE__*/function () {
+  function BlocksAppearanceController(statisticsCounter) {
+    _classCallCheck(this, BlocksAppearanceController);
+    _classPrivateFieldInitSpec(this, _animatedElements, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _ourAdvantagesItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _ourAdvantagesTimer, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _statisticsItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _statisticsTimer, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _statisticsCounter, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _aboutUsItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _aboutUsTimer, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _quotesItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _quotesTimer, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _philosofyItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _philosofyTimer, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldSet(this, _statisticsCounter, statisticsCounter);
+  }
+  _createClass(BlocksAppearanceController, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _animatedElements, document.querySelectorAll('.element-animation'));
+      _classPrivateFieldSet(this, _ourAdvantagesItems, document.querySelectorAll('.our-advantages-item'));
+      _classPrivateFieldSet(this, _statisticsItems, document.querySelectorAll('.statistics-item'));
+      _classPrivateFieldSet(this, _aboutUsItems, document.querySelectorAll('.about-us-item'));
+      _classPrivateFieldSet(this, _quotesItems, document.querySelectorAll('.quotes-item'));
+      _classPrivateFieldSet(this, _philosofyItems, document.querySelectorAll('.philosofy-item'));
+      if (_classPrivateFieldGet(this, _ourAdvantagesItems).length) _classPrivateFieldSet(this, _ourAdvantagesTimer, getTimer(_classPrivateFieldGet(this, _ourAdvantagesItems), 200));
+      if (_classPrivateFieldGet(this, _statisticsItems).length) _classPrivateFieldSet(this, _statisticsTimer, getTimer(_classPrivateFieldGet(this, _statisticsItems), 150));
+      if (_classPrivateFieldGet(this, _aboutUsItems).length) _classPrivateFieldSet(this, _aboutUsTimer, getTimer(_classPrivateFieldGet(this, _aboutUsItems), 200));
+      if (_classPrivateFieldGet(this, _quotesItems).length) _classPrivateFieldSet(this, _quotesTimer, getTimer(_classPrivateFieldGet(this, _quotesItems), 150));
+      if (_classPrivateFieldGet(this, _philosofyItems).length) _classPrivateFieldSet(this, _philosofyTimer, getTimer(_classPrivateFieldGet(this, _philosofyItems), 150));
+      var options = {
+        threshold: [0.25]
+      };
+      var observer = new IntersectionObserver(function (entry) {
+        entry.forEach(function (change) {
+          var curentElement = change.target;
+          if (change.isIntersecting && !curentElement.classList.contains('element-show')) {
+            var isOuAdvItem = curentElement.classList.contains('our-advantages-item');
+            var isStatisticItem = curentElement.classList.contains('statistics-item');
+            var isAboutUsItem = curentElement.classList.contains('about-us-item');
+            var isQuotesItem = curentElement.classList.contains('quotes-item');
+            var isPhilosofyItem = curentElement.classList.contains('philosofy-item');
+            switch (true) {
+              case isAboutUsItem:
+                _this.showList(change, _classPrivateFieldGet(_this, _aboutUsTimer));
+                break;
+              case isOuAdvItem:
+                _this.showList(change, _classPrivateFieldGet(_this, _ourAdvantagesTimer));
+                break;
+              case isStatisticItem:
+                _this.showList(change, _classPrivateFieldGet(_this, _statisticsTimer));
+                break;
+              case isPhilosofyItem:
+                _this.showList(change, _classPrivateFieldGet(_this, _philosofyTimer));
+                break;
+              case isQuotesItem:
+                _this.showList(change, _classPrivateFieldGet(_this, _quotesTimer));
+                break;
+              default:
+                _this.addElemShowClass(change);
+            }
+          }
+        });
+      }, options);
+      if (_classPrivateFieldGet(this, _animatedElements).length) {
+        var _iterator = _createForOfIteratorHelper(_classPrivateFieldGet(this, _animatedElements)),
+          _step;
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var item = _step.value;
+            observer.observe(item);
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
+        }
+      }
+      function getTimer(items) {
+        var interval = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
+        return /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+          var i;
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                i = 1;
+              case 1:
+                if (!(i <= items.length)) {
+                  _context.next = 7;
+                  break;
+                }
+                _context.next = 4;
+                return i * interval;
+              case 4:
+                i++;
+                _context.next = 1;
+                break;
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee);
+        })();
+      }
+    }
+  }, {
+    key: "addElemShowClass",
+    value: function addElemShowClass(elem) {
+      elem = elem.target;
+      elem.classList.add('element-show');
+      if (elem.classList.contains('statistics-item')) this.createStatisticsCounter(elem);
+    }
+  }, {
+    key: "showList",
+    value: function showList(change, generator) {
+      var _this2 = this;
+      var time = null;
+      try {
+        time = generator.next().value;
+      } catch (e) {
+        console.error(e);
+      }
+      setTimeout(function () {
+        _this2.addElemShowClass(change);
+      }, time ? time : 0);
+    }
+  }, {
+    key: "createStatisticsCounter",
+    value: function createStatisticsCounter(elem) {
+      var statisticsCounter = new (_classPrivateFieldGet(this, _statisticsCounter))(elem);
+      statisticsCounter.init();
+    }
+  }]);
+  return BlocksAppearanceController;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BlocksAppearanceController);
+
+/***/ }),
+
+/***/ "./resources/js/indexPage/OurAdvantages.js":
+/*!*************************************************!*\
+  !*** ./resources/js/indexPage/OurAdvantages.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _ourAdvantagesItems = /*#__PURE__*/new WeakMap();
+var _ourAdvantagesItemClass = /*#__PURE__*/new WeakMap();
+var OurAdvantagesController = /*#__PURE__*/function () {
+  function OurAdvantagesController() {
+    _classCallCheck(this, OurAdvantagesController);
+    _classPrivateFieldInitSpec(this, _ourAdvantagesItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _ourAdvantagesItemClass, {
+      writable: true,
+      value: 'our-advantages-item-focus'
+    });
+  }
+  _createClass(OurAdvantagesController, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _ourAdvantagesItems, document.body.querySelectorAll('.our-advantages-item'));
+      var _iterator = _createForOfIteratorHelper(_classPrivateFieldGet(this, _ourAdvantagesItems)),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var item = _step.value;
+          item.addEventListener('mouseenter', function (e) {
+            if (!_this.checkClass(e.target)) e.target.classList.add(_classPrivateFieldGet(_this, _ourAdvantagesItemClass));
+          });
+          item.addEventListener('mouseleave', function (e) {
+            if (_this.checkClass(e.target)) e.target.classList.remove(_classPrivateFieldGet(_this, _ourAdvantagesItemClass));
+          });
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }, {
+    key: "checkClass",
+    value: function checkClass(item) {
+      return item.classList.contains(_classPrivateFieldGet(this, _ourAdvantagesItemClass));
+    }
+  }]);
+  return OurAdvantagesController;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OurAdvantagesController);
+
+/***/ }),
+
+/***/ "./resources/js/indexPage/PhilosofySlider.js":
+/*!***************************************************!*\
+  !*** ./resources/js/indexPage/PhilosofySlider.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _slider = /*#__PURE__*/new WeakMap();
+var _sliderLine = /*#__PURE__*/new WeakMap();
+var _sliderItems = /*#__PURE__*/new WeakMap();
+var _sliderItemsCounter = /*#__PURE__*/new WeakMap();
+var _sliderWidth = /*#__PURE__*/new WeakMap();
+var _sliderButtonsWrapper = /*#__PURE__*/new WeakMap();
+var _activeClassVal = /*#__PURE__*/new WeakMap();
+var _currentSlideIndex = /*#__PURE__*/new WeakMap();
+var PhilosofySlider = /*#__PURE__*/function () {
+  function PhilosofySlider() {
+    _classCallCheck(this, PhilosofySlider);
+    _classPrivateFieldInitSpec(this, _slider, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderLine, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderItems, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderItemsCounter, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderWidth, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderButtonsWrapper, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _activeClassVal, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _currentSlideIndex, {
+      writable: true,
+      value: 0
+    });
+  }
+  _createClass(PhilosofySlider, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _slider, document.querySelector('.philosofy-slider'));
+      _classPrivateFieldSet(this, _sliderLine, _classPrivateFieldGet(this, _slider).querySelector('.philosofy-slider-line'));
+      _classPrivateFieldSet(this, _sliderItems, _classPrivateFieldGet(this, _sliderLine).querySelectorAll('.philosofy-slide'));
+      _classPrivateFieldSet(this, _sliderItemsCounter, _classPrivateFieldGet(this, _sliderItems).length);
+      _classPrivateFieldSet(this, _sliderWidth, getComputedStyle(_classPrivateFieldGet(this, _slider)).width);
+      _classPrivateFieldSet(this, _sliderButtonsWrapper, document.querySelector('.philosofy-slider-buttons'));
+      _classPrivateFieldSet(this, _activeClassVal, 'philosofy-slider-active-button');
+      this.move = this.move.bind(this);
+      _classPrivateFieldGet(this, _sliderLine).style.width = Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * _classPrivateFieldGet(this, _sliderItemsCounter) + 'px';
+      this.cleanButtonWrapper();
+      _classPrivateFieldGet(this, _sliderItems).forEach(function (item, index) {
+        item.style.width = _classPrivateFieldGet(_this, _sliderWidth);
+        _this.createButton(index);
+      });
+    }
+  }, {
+    key: "cleanButtonWrapper",
+    value: function cleanButtonWrapper() {
+      _classPrivateFieldGet(this, _sliderButtonsWrapper).innerHTML = '';
+    }
+  }, {
+    key: "createButton",
+    value: function createButton(index) {
+      var _this2 = this;
+      if (_classPrivateFieldGet(this, _sliderItemsCounter)) {
+        var sliderButton = document.createElement('button');
+        sliderButton.classList.add('philosofy-slider-button');
+        if (index === _classPrivateFieldGet(this, _currentSlideIndex)) sliderButton.classList.add(_classPrivateFieldGet(this, _activeClassVal));
+        sliderButton.addEventListener('click', function (e) {
+          _this2.move(index, e);
+        });
+        _classPrivateFieldGet(this, _sliderButtonsWrapper).append(sliderButton);
+      }
+    }
+  }, {
+    key: "move",
+    value: function move(index, e) {
+      var sliderButtons = _classPrivateFieldGet(this, _sliderButtonsWrapper).querySelectorAll('.philosofy-slider-button');
+      var _iterator = _createForOfIteratorHelper(sliderButtons),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var item = _step.value;
+          if (item.classList.contains(_classPrivateFieldGet(this, _activeClassVal))) item.classList.remove(_classPrivateFieldGet(this, _activeClassVal));
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      if (e) e.target.classList.add(_classPrivateFieldGet(this, _activeClassVal));else sliderButtons[index].classList.add(_classPrivateFieldGet(this, _activeClassVal));
+      _classPrivateFieldGet(this, _sliderLine).style.left = "-".concat(Number.parseInt(_classPrivateFieldGet(this, _sliderWidth)) * index, "px");
+      _classPrivateFieldSet(this, _currentSlideIndex, index);
+    }
+  }, {
+    key: "currentSlideIndex",
+    get: function get() {
+      return _classPrivateFieldGet(this, _currentSlideIndex);
+    }
+  }]);
+  return PhilosofySlider;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PhilosofySlider);
+
+/***/ }),
+
+/***/ "./resources/js/indexPage/ProgressBar.js":
+/*!***********************************************!*\
+  !*** ./resources/js/indexPage/ProgressBar.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _progressBar = /*#__PURE__*/new WeakMap();
+var _minHeigt = /*#__PURE__*/new WeakMap();
+var _isProgressBarExists = /*#__PURE__*/new WeakMap();
+var _windowHeight = /*#__PURE__*/new WeakMap();
+var _app = /*#__PURE__*/new WeakMap();
+var ProgressBar = /*#__PURE__*/function () {
+  function ProgressBar() {
+    _classCallCheck(this, ProgressBar);
+    _classPrivateFieldInitSpec(this, _progressBar, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _minHeigt, {
+      writable: true,
+      value: 3500
+    });
+    _classPrivateFieldInitSpec(this, _isProgressBarExists, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _windowHeight, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _app, {
+      writable: true,
+      value: null
+    });
+  }
+  _createClass(ProgressBar, [{
+    key: "init",
+    value: function init() {
+      _classPrivateFieldSet(this, _progressBar, document.createElement('div'));
+      _classPrivateFieldGet(this, _progressBar).classList.add('progress-bar');
+      _classPrivateFieldSet(this, _app, document.getElementById('app'));
+      _classPrivateFieldSet(this, _isProgressBarExists, !!this.findProgressBar());
+      this.calPercents = this.calPercents.bind(this);
+      _classPrivateFieldSet(this, _windowHeight, document.documentElement.scrollHeight - document.documentElement.clientHeight);
+      if (!_classPrivateFieldGet(this, _isProgressBarExists) && _classPrivateFieldGet(this, _windowHeight) >= _classPrivateFieldGet(this, _minHeigt)) _classPrivateFieldGet(this, _app).prepend(_classPrivateFieldGet(this, _progressBar));
+      if (_classPrivateFieldGet(this, _windowHeight) >= _classPrivateFieldGet(this, _minHeigt)) {
+        this.calPercents();
+        if (!window.onscroll) window.onscroll = this.calPercents;
+      }
+      if (_classPrivateFieldGet(this, _isProgressBarExists) && _classPrivateFieldGet(this, _windowHeight) < _classPrivateFieldGet(this, _minHeigt)) {
+        this.findProgressBar().remove();
+        window.onscroll = null;
+      }
+    }
+  }, {
+    key: "updateWidth",
+    value: function updateWidth(per) {
+      this.findProgressBar().style.width = "".concat(per, "%");
+    }
+  }, {
+    key: "calPercents",
+    value: function calPercents(e) {
+      var windowScroll = document.body.scrollTop;
+      var per = windowScroll / _classPrivateFieldGet(this, _windowHeight) * 100;
+      this.updateWidth(per);
+    }
+  }, {
+    key: "findProgressBar",
+    value: function findProgressBar() {
+      return _classPrivateFieldGet(this, _app).querySelector('.progress-bar');
+    }
+  }]);
+  return ProgressBar;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProgressBar);
+
+/***/ }),
+
+/***/ "./resources/js/indexPage/Slider.js":
+/*!******************************************!*\
+  !*** ./resources/js/indexPage/Slider.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classStaticPrivateFieldSpecGet(receiver, classConstructor, descriptor) { _classCheckPrivateStaticAccess(receiver, classConstructor); _classCheckPrivateStaticFieldDescriptor(descriptor, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classCheckPrivateStaticFieldDescriptor(descriptor, action) { if (descriptor === undefined) { throw new TypeError("attempted to " + action + " private static field before its declaration"); } }
+function _classCheckPrivateStaticAccess(receiver, classConstructor) { if (receiver !== classConstructor) { throw new TypeError("Private static access of wrong provenance"); } }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+var SlideContentController = /*#__PURE__*/function () {
+  function SlideContentController() {
+    _classCallCheck(this, SlideContentController);
+  }
+  _createClass(SlideContentController, null, [{
+    key: "init",
+    value: function init(slideNumber) {
+      var currentMethod = _classStaticPrivateFieldSpecGet(this, SlideContentController, _slideContentMap).find(function (item) {
+        return item.number === slideNumber;
+      }).method;
+      this[currentMethod]();
+    }
+  }, {
+    key: "initFirstSlide",
+    value: function initFirstSlide() {
+      this.removeAddedClasses('slide-one-li-left', 'slide-one-li-right');
+      var slideOneLiCollect = document.querySelectorAll('.slide-one-list .slide-one-li');
+      var getTimer = this.getTimerCreator();
+      var slideOneLiTimer = getTimer(slideOneLiCollect);
+      var _loop = function _loop() {
+        var currentLi = slideOneLiCollect[i];
+        var classAdded = i % 2 === 0 ? 'slide-one-li-left' : 'slide-one-li-right';
+        setTimeout(function () {
+          currentLi.classList.add(classAdded);
+        }, slideOneLiTimer.next().value);
+      };
+      for (var i = 0; i < slideOneLiCollect.length; i++) {
+        _loop();
+      }
+    }
+  }, {
+    key: "initSecondSlide",
+    value: function initSecondSlide() {
+      this.removeAddedClasses('slide-content-subtitle-isshown', 'slide-one-li-left');
+      var slideTwoWrapper = document.querySelector('.slide-two');
+      var slideTwoSubtitle = slideTwoWrapper.querySelector('.slide-content-subtitle');
+      var slideTwoLiCollect = slideTwoWrapper.querySelectorAll('.slide-two-list .slide-two-li');
+      var getTimer = this.getTimerCreator(900, 1400);
+      var slideTwoLiTimer = getTimer(slideTwoLiCollect);
+      setTimeout(function () {
+        slideTwoSubtitle.classList.add('slide-content-subtitle-isshown');
+        var _loop2 = function _loop2(i) {
+          setTimeout(function () {
+            slideTwoLiCollect[i].classList.add('slide-one-li-left');
+          }, slideTwoLiTimer.next().value);
+        };
+        for (var i = 0; i < slideTwoLiCollect.length; i++) {
+          _loop2(i);
+        }
+      }, _classStaticPrivateFieldSpecGet(this, SlideContentController, _defaultTimerValue) / 2);
+    }
+  }, {
+    key: "initThirdSlide",
+    value: function initThirdSlide() {
+      this.removeAddedClasses('slide-one-li-left', 'title-third-slide-isshown', 'subtitle-third-slide-isshown', 'just-try-it-wrapper-isLink');
+      var slideThreeWrapper = document.querySelector('.slide-three');
+      var slideThreeLiCollect = slideThreeWrapper.querySelectorAll('.slide-three-list .slide-three-li');
+      var getTimerLi = this.getTimerCreator(900, 1400);
+      var slideThreeLiTimer = getTimerLi(slideThreeLiCollect);
+      var slideContentTitle = slideThreeWrapper.querySelector('.title-third-slide');
+      var slideThreeSubtitleCollect = slideThreeWrapper.querySelectorAll('.subtitle-third-slide');
+      var getTimerSubtitle = this.getTimerCreator(1200, 2600);
+      var slideThreeSubtitleTimer = getTimerSubtitle(slideThreeSubtitleCollect);
+      var justTryIt = slideThreeWrapper.querySelector('.just-try-it-wrapper');
+      new Promise(function (resolve) {
+        var _loop3 = function _loop3(i) {
+          setTimeout(function () {
+            slideThreeLiCollect[i].classList.add('slide-one-li-left');
+            if (i === slideThreeLiCollect.length - 1) setTimeout(function () {
+              return resolve();
+            }, 900);
+          }, slideThreeLiTimer.next().value);
+        };
+        for (var i = 0; i < slideThreeLiCollect.length; i++) {
+          _loop3(i);
+        }
+      }).then(function () {
+        return new Promise(function (resolve) {
+          slideContentTitle.classList.add('title-third-slide-isshown');
+          var _loop4 = function _loop4(i) {
+            setTimeout(function () {
+              slideThreeSubtitleCollect[i].classList.add('subtitle-third-slide-isshown');
+              if (i === slideThreeSubtitleCollect.length - 1) setTimeout(function () {
+                return resolve();
+              }, 900);
+            }, slideThreeSubtitleTimer.next().value);
+          };
+          for (var i = 0; i < slideThreeSubtitleCollect.length; i++) {
+            _loop4(i);
+          }
+        });
+      }).then(function () {
+        justTryIt.classList.add('just-try-it-wrapper-isLink');
+      });
+    }
+  }, {
+    key: "getTimerCreator",
+    value: function getTimerCreator() {
+      var firstSlideTimerValue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 200;
+      var timerValue = arguments.length > 1 ? arguments[1] : undefined;
+      var defaultTimerValue = timerValue || _classStaticPrivateFieldSpecGet(this, SlideContentController, _defaultTimerValue);
+      return function (items) {
+        var interval = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultTimerValue;
+        return /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+          var i;
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                i = 1;
+              case 1:
+                if (!(i <= items.length)) {
+                  _context.next = 10;
+                  break;
+                }
+                if (!(i === 1)) {
+                  _context.next = 5;
+                  break;
+                }
+                _context.next = 5;
+                return firstSlideTimerValue;
+              case 5:
+                _context.next = 7;
+                return i * interval;
+              case 7:
+                i++;
+                _context.next = 1;
+                break;
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee);
+        })();
+      };
+    }
+  }, {
+    key: "removeAddedClasses",
+    value: function removeAddedClasses() {
+      for (var _len = arguments.length, classes = new Array(_len), _key = 0; _key < _len; _key++) {
+        classes[_key] = arguments[_key];
+      }
+      classes.forEach(function (addedClass) {
+        var existsCurrentClassColl = document.querySelectorAll(".".concat(addedClass));
+        for (var i = 0; i < existsCurrentClassColl.length; i++) existsCurrentClassColl[i].classList.remove(addedClass);
+      });
+    }
+  }]);
+  return SlideContentController;
+}();
+var _slideContentMap = {
+  writable: true,
+  value: [{
+    number: 'one',
+    method: 'initFirstSlide'
+  }, {
+    number: 'two',
+    method: 'initSecondSlide'
+  }, {
+    number: 'three',
+    method: 'initThirdSlide'
+  }]
+};
+var _defaultTimerValue = {
+  writable: true,
+  value: 900
+};
+var _sliderWrapper = /*#__PURE__*/new WeakMap();
+var _slideLeftArrow = /*#__PURE__*/new WeakMap();
+var _className = /*#__PURE__*/new WeakMap();
+var SlideArrowController = /*#__PURE__*/function () {
+  function SlideArrowController() {
+    _classCallCheck(this, SlideArrowController);
+    _classPrivateFieldInitSpec(this, _sliderWrapper, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slideLeftArrow, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _className, {
+      writable: true,
+      value: 'transparent'
+    });
+  }
+  _createClass(SlideArrowController, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _sliderWrapper, document.querySelector('.slider-wrapper'));
+      _classPrivateFieldSet(this, _slideLeftArrow, document.querySelector('.slider-left-arrow-wrapper'));
+      _classPrivateFieldGet(this, _sliderWrapper).addEventListener('mouseenter', function () {
+        if (_classPrivateFieldGet(_this, _slideLeftArrow).classList.contains(_classPrivateFieldGet(_this, _className))) {
+          _classPrivateFieldGet(_this, _slideLeftArrow).classList.remove(_classPrivateFieldGet(_this, _className));
+        }
+      });
+      _classPrivateFieldGet(this, _sliderWrapper).addEventListener('mouseleave', function () {
+        if (!_classPrivateFieldGet(_this, _slideLeftArrow).classList.contains(_classPrivateFieldGet(_this, _className))) {
+          _classPrivateFieldGet(_this, _slideLeftArrow).classList.add(_classPrivateFieldGet(_this, _className));
+        }
+      });
+    }
+  }]);
+  return SlideArrowController;
+}();
+var SlideItem = /*#__PURE__*/_createClass(function SlideItem(classes, content) {
+  _classCallCheck(this, SlideItem);
+  _defineProperty(this, "content", null);
+  _defineProperty(this, "classes", null);
+  this.classes = classes;
+  this.content = content;
+});
+var _slider = /*#__PURE__*/new WeakMap();
+var _sliderWrapper2 = /*#__PURE__*/new WeakMap();
+var _currentWidth = /*#__PURE__*/new WeakMap();
+var _step = /*#__PURE__*/new WeakMap();
+var _offset = /*#__PURE__*/new WeakMap();
+var _sliderLeftArrow = /*#__PURE__*/new WeakMap();
+var _slideItem = /*#__PURE__*/new WeakMap();
+var _slideContentController = /*#__PURE__*/new WeakMap();
+var Slider = /*#__PURE__*/function () {
+  function Slider() {
+    _classCallCheck(this, Slider);
+    _classPrivateFieldInitSpec(this, _slider, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderWrapper2, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _currentWidth, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _step, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _offset, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderLeftArrow, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slideItem, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slideContentController, {
+      writable: true,
+      value: null
+    });
+  }
+  _createClass(Slider, [{
+    key: "init",
+    value: function init(slideItem, allSlides, slideContentController) {
+      var slides = document.body.querySelectorAll('.slide');
+      _classPrivateFieldSet(this, _slider, new Array());
+      _classPrivateFieldSet(this, _sliderWrapper2, document.querySelector('.slider-wrapper'));
+      _classPrivateFieldSet(this, _currentWidth, window.innerWidth);
+      _classPrivateFieldSet(this, _sliderLeftArrow, document.querySelector('.slider-left-arrow-wrapper'));
+      _classPrivateFieldSet(this, _slideItem, slideItem);
+      _classPrivateFieldSet(this, _slideContentController, slideContentController);
+      var _iterator = _createForOfIteratorHelper(slides),
+        _step2;
+      try {
+        for (_iterator.s(); !(_step2 = _iterator.n()).done;) {
+          var item = _step2.value;
+          _classPrivateFieldGet(this, _slider).push(new (_classPrivateFieldGet(this, _slideItem))(item.classList.value.split(' '), item.innerHTML));
+          item.remove();
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      var _iterator2 = _createForOfIteratorHelper(allSlides),
+        _step3;
+      try {
+        for (_iterator2.s(); !(_step3 = _iterator2.n()).done;) {
+          var slide = _step3.value;
+          //вот тут лучше не трогать
+          var allSlidesClasses = slide.classes;
+          var allSlideMainClass = allSlidesClasses[1];
+          if (!_classPrivateFieldGet(this, _slider).map(function (item) {
+            return item.classes[1];
+          }).includes(allSlideMainClass)) {
+            _classPrivateFieldGet(this, _slider).push(slide);
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+      _classPrivateFieldSet(this, _step, 0);
+      _classPrivateFieldSet(this, _offset, 0);
+      this.draw();
+      this.draw();
+      this.left = this.left.bind(this);
+      _classPrivateFieldGet(this, _sliderLeftArrow).onclick = this.left;
+      this.initZeroSlide();
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      var slide = document.createElement('div');
+      var currentItem = _classPrivateFieldGet(this, _slider)[_classPrivateFieldGet(this, _step)];
+      var _iterator3 = _createForOfIteratorHelper(currentItem.classes),
+        _step4;
+      try {
+        for (_iterator3.s(); !(_step4 = _iterator3.n()).done;) {
+          var item = _step4.value;
+          slide.classList.add(item);
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+      slide.innerHTML = currentItem.content;
+      slide.style.left = _classPrivateFieldGet(this, _offset) * _classPrivateFieldGet(this, _currentWidth) + 'px';
+      _classPrivateFieldGet(this, _sliderWrapper2).appendChild(slide);
+      if (_classPrivateFieldGet(this, _step) + 1 === _classPrivateFieldGet(this, _slider).length) {
+        _classPrivateFieldSet(this, _step, 0);
+      } else {
+        var _this$step, _this$step2;
+        _classPrivateFieldSet(this, _step, (_this$step = _classPrivateFieldGet(this, _step), _this$step2 = _this$step++, _this$step)), _this$step2;
+      }
+      _classPrivateFieldSet(this, _offset, 1);
+    }
+  }, {
+    key: "left",
+    value: function left() {
+      var _this2 = this;
+      _classPrivateFieldGet(this, _sliderLeftArrow).onclick = null;
+      var slides = document.querySelectorAll('.slide');
+      var offset = 0;
+      var _iterator4 = _createForOfIteratorHelper(slides),
+        _step5;
+      try {
+        for (_iterator4.s(); !(_step5 = _iterator4.n()).done;) {
+          var item = _step5.value;
+          item.style.left = offset * _classPrivateFieldGet(this, _currentWidth) - _classPrivateFieldGet(this, _currentWidth) + 'px';
+          offset++;
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+      setTimeout(function () {
+        slides[0].remove();
+        _this2.draw();
+        _classPrivateFieldGet(_this2, _sliderLeftArrow).onclick = _this2.left;
+        _this2.initZeroSlide();
+      }, 600);
+    }
+  }, {
+    key: "initZeroSlide",
+    value: function initZeroSlide() {
+      var _this3 = this;
+      var zeroSlide = document.querySelector('.slider-wrapper > .slide');
+      var regExpPattern = /^slide-(\w+)$/;
+      var slideNumber = findSlideNumbe(zeroSlide);
+      _classPrivateFieldGet(this, _slideContentController).init(slideNumber);
+      var yeapButton = document.querySelector('.yeap-button');
+      if (yeapButton) {
+        yeapButton.addEventListener('click', function () {
+          _this3.left();
+        });
+      }
+      function findSlideNumbe(zeroSlide) {
+        var allClasses = zeroSlide.classList;
+        var _iterator5 = _createForOfIteratorHelper(allClasses),
+          _step6;
+        try {
+          for (_iterator5.s(); !(_step6 = _iterator5.n()).done;) {
+            var item = _step6.value;
+            var regExp = item.match(regExpPattern);
+            if (regExp) {
+              return regExp[1];
+              break;
+            }
+          }
+        } catch (err) {
+          _iterator5.e(err);
+        } finally {
+          _iterator5.f();
+        }
+      }
+    }
+  }]);
+  return Slider;
+}();
+var _slider2 = /*#__PURE__*/new WeakMap();
+var _slideItem2 = /*#__PURE__*/new WeakMap();
+var _slideContentController2 = /*#__PURE__*/new WeakMap();
+var SliderFacade = /*#__PURE__*/function () {
+  function SliderFacade(slider, slideItem, slideContentController) {
+    _classCallCheck(this, SliderFacade);
+    _classPrivateFieldInitSpec(this, _slider2, {
+      writable: true,
+      value: null
+    });
+    _defineProperty(this, "slides", new Array());
+    _classPrivateFieldInitSpec(this, _slideItem2, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slideContentController2, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldSet(this, _slider2, slider);
+    _classPrivateFieldSet(this, _slideItem2, slideItem);
+    _classPrivateFieldSet(this, _slideContentController2, slideContentController);
+    var slides = document.body.querySelectorAll('.slide');
+    var _iterator6 = _createForOfIteratorHelper(slides),
+      _step7;
+    try {
+      for (_iterator6.s(); !(_step7 = _iterator6.n()).done;) {
+        var item = _step7.value;
+        this.slides.push(new (_classPrivateFieldGet(this, _slideItem2))(item.classList.value.split(' '), item.innerHTML));
+      }
+    } catch (err) {
+      _iterator6.e(err);
+    } finally {
+      _iterator6.f();
+    }
+  }
+  _createClass(SliderFacade, [{
+    key: "init",
+    value: function init() {
+      _classPrivateFieldGet(this, _slider2).init(_classPrivateFieldGet(this, _slideItem2), this.slides, _classPrivateFieldGet(this, _slideContentController2));
+    }
+  }]);
+  return SliderFacade;
+}();
+var mainSliderClasses = {
+  slideArrowController: SlideArrowController,
+  SlideContentController: SlideContentController,
+  slideItem: SlideItem,
+  slider: Slider,
+  sliderFacade: SliderFacade
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (mainSliderClasses);
+
+/***/ }),
+
+/***/ "./resources/js/indexPage/StatisticsCounter.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/indexPage/StatisticsCounter.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _statisticsCounterBlock = /*#__PURE__*/new WeakMap();
+var _time = /*#__PURE__*/new WeakMap();
+var _step = /*#__PURE__*/new WeakMap();
+var _stepInitialVal = /*#__PURE__*/new WeakMap();
+var _statisticsCounter = /*#__PURE__*/new WeakMap();
+var _statisticsCounterMin = /*#__PURE__*/new WeakMap();
+var _statisticsCounterMax = /*#__PURE__*/new WeakMap();
+var StatisticsCounter = /*#__PURE__*/function () {
+  function StatisticsCounter(elem) {
+    _classCallCheck(this, StatisticsCounter);
+    _classPrivateFieldInitSpec(this, _statisticsCounterBlock, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _time, {
+      writable: true,
+      value: 1500
+    });
+    _classPrivateFieldInitSpec(this, _step, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _stepInitialVal, {
+      writable: true,
+      value: 1
+    });
+    _classPrivateFieldInitSpec(this, _statisticsCounter, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _statisticsCounterMin, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _statisticsCounterMax, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldSet(this, _statisticsCounterBlock, elem);
+  }
+  _createClass(StatisticsCounter, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _statisticsCounter, _classPrivateFieldGet(this, _statisticsCounterBlock).querySelector('.statistics-counter'));
+      var statCounterMinVal = +_classPrivateFieldGet(this, _statisticsCounter).innerHTML;
+      var statCounterMaxVal = +_classPrivateFieldGet(this, _statisticsCounter).dataset.counterval;
+      _classPrivateFieldSet(this, _statisticsCounterMin, this.isNaNCheck(statCounterMinVal));
+      _classPrivateFieldSet(this, _statisticsCounterMax, this.isNaNCheck(statCounterMaxVal));
+      _classPrivateFieldSet(this, _step, this.getStep(_classPrivateFieldGet(this, _stepInitialVal)));
+      var n = _classPrivateFieldGet(this, _statisticsCounterMin);
+      var t = Math.round(_classPrivateFieldGet(this, _time) / (_classPrivateFieldGet(this, _statisticsCounterMax) / _classPrivateFieldGet(this, _step)));
+      var interval = setInterval(function () {
+        n = n + _classPrivateFieldGet(_this, _step);
+        if (n >= _classPrivateFieldGet(_this, _statisticsCounterMax)) {
+          clearInterval(interval);
+          _classPrivateFieldGet(_this, _statisticsCounter).innerHTML = _classPrivateFieldGet(_this, _statisticsCounterMax);
+        } else {
+          _classPrivateFieldGet(_this, _statisticsCounter).innerHTML = n;
+        }
+      }, t);
+    }
+  }, {
+    key: "isNaNCheck",
+    value: function isNaNCheck(value) {
+      return !Number.isNaN(value) && typeof value === 'number' ? value : 0;
+    }
+  }, {
+    key: "getStep",
+    value: function getStep(val) {
+      var t = Math.round(_classPrivateFieldGet(this, _time) / (_classPrivateFieldGet(this, _statisticsCounterMax) / val));
+      if (t < _classPrivateFieldGet(this, _time) / 30) {
+        val++;
+        return this.getStep(val);
+      }
+      if (t > _classPrivateFieldGet(this, _time)) {
+        val--;
+        return this.getStep(val);
+      }
+      return val;
+    }
+  }]);
+  return StatisticsCounter;
+}();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (StatisticsCounter);
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+/*!*******************************************************!*\
+  !*** ./resources/js/indexPage/IndexPageController.js ***!
+  \*******************************************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BlocksAppearanceController */ "./resources/js/indexPage/BlocksAppearanceController.js");
+/* harmony import */ var _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OurAdvantages */ "./resources/js/indexPage/OurAdvantages.js");
+/* harmony import */ var _PhilosofySlider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PhilosofySlider */ "./resources/js/indexPage/PhilosofySlider.js");
+/* harmony import */ var _Slider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Slider */ "./resources/js/indexPage/Slider.js");
+/* harmony import */ var _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./StatisticsCounter */ "./resources/js/indexPage/StatisticsCounter.js");
+/* harmony import */ var _ProgressBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ProgressBar */ "./resources/js/indexPage/ProgressBar.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+
+
+
+
+
+
+var _blocksAppearanceController = /*#__PURE__*/new WeakMap();
+var _ourAdvantagesController = /*#__PURE__*/new WeakMap();
+var _philosofySlider = /*#__PURE__*/new WeakMap();
+var _slideArrowController = /*#__PURE__*/new WeakMap();
+var _slideItem = /*#__PURE__*/new WeakMap();
+var _slider = /*#__PURE__*/new WeakMap();
+var _sliderFacade = /*#__PURE__*/new WeakMap();
+var _slideContentController = /*#__PURE__*/new WeakMap();
+var _statisticsCounter = /*#__PURE__*/new WeakMap();
+var _progressBar = /*#__PURE__*/new WeakMap();
+var IndexPageController = /*#__PURE__*/function () {
+  function IndexPageController() {
+    _classCallCheck(this, IndexPageController);
+    _classPrivateFieldInitSpec(this, _blocksAppearanceController, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _ourAdvantagesController, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _philosofySlider, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slideArrowController, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slideItem, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slider, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _sliderFacade, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _slideContentController, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _statisticsCounter, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _progressBar, {
+      writable: true,
+      value: null
+    });
+  }
+  _createClass(IndexPageController, [{
+    key: "init",
+    value: function init(blocksAppearanceController, ourAdvantagesController, philosofySlider, slideArrowController, slideItem, slider, sliderFacade, slideContentController, statisticsCounter, progressBar) {
+      var _this = this;
+      _classPrivateFieldSet(this, _statisticsCounter, statisticsCounter);
+      _classPrivateFieldSet(this, _blocksAppearanceController, new blocksAppearanceController(_classPrivateFieldGet(this, _statisticsCounter)));
+      _classPrivateFieldSet(this, _ourAdvantagesController, new ourAdvantagesController());
+      _classPrivateFieldSet(this, _philosofySlider, new philosofySlider());
+      _classPrivateFieldSet(this, _progressBar, new progressBar());
+      _classPrivateFieldSet(this, _slideArrowController, new slideArrowController());
+      _classPrivateFieldSet(this, _slideItem, slideItem);
+      _classPrivateFieldSet(this, _slider, slider);
+      _classPrivateFieldSet(this, _slideContentController, slideContentController);
+      _classPrivateFieldSet(this, _sliderFacade, new sliderFacade(new (_classPrivateFieldGet(this, _slider))(), _classPrivateFieldGet(this, _slideItem), _classPrivateFieldGet(this, _slideContentController)));
+      _classPrivateFieldGet(this, _blocksAppearanceController).init();
+      _classPrivateFieldGet(this, _ourAdvantagesController).init();
+      _classPrivateFieldGet(this, _philosofySlider).init();
+      _classPrivateFieldGet(this, _slideArrowController).init();
+      _classPrivateFieldGet(this, _sliderFacade).init();
+      _classPrivateFieldGet(this, _progressBar).init();
+      window.addEventListener('resize', function () {
+        _classPrivateFieldGet(_this, _philosofySlider).init();
+        _classPrivateFieldGet(_this, _philosofySlider).move(_classPrivateFieldGet(_this, _philosofySlider).currentSlideIndex);
+        _classPrivateFieldGet(_this, _sliderFacade).init();
+        _classPrivateFieldGet(_this, _progressBar).init();
+      });
+    }
+  }]);
+  return IndexPageController;
+}();
+var indexPageController = new IndexPageController();
+var slideArrowController = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slideArrowController,
+  slider = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slider,
+  slideItem = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].slideItem,
+  sliderFacade = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].sliderFacade,
+  SlideContentController = _Slider__WEBPACK_IMPORTED_MODULE_3__["default"].SlideContentController;
+indexPageController.init(_BlocksAppearanceController__WEBPACK_IMPORTED_MODULE_0__["default"], _OurAdvantages__WEBPACK_IMPORTED_MODULE_1__["default"], _PhilosofySlider__WEBPACK_IMPORTED_MODULE_2__["default"], slideArrowController, slideItem, slider, sliderFacade, SlideContentController, _StatisticsCounter__WEBPACK_IMPORTED_MODULE_4__["default"], _ProgressBar__WEBPACK_IMPORTED_MODULE_5__["default"]);
+})();
+
+/******/ })()
+;

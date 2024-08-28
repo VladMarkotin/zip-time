@@ -21,6 +21,7 @@ Vue.component('Stat', require('./components/cards/Stat.vue').default);
 Vue.component('Facebook', require('./components/Facebook.vue').default);
 Vue.component('PrivacyPolicy', require('./privacyPolicyPage/PrivacyPolicy.vue').default);
 Vue.component('TermsOfUse', require('./termsOfUsePage/TermsOfUse.vue').default);
+Vue.component('DataDeletionPolicy', require('./dataDeletionPolicyPage/DataDeletionPolicy.vue').default);
 Vue.component('ReadyDayPlan', require('./components/ReadyDayPlan.vue').default);
 Vue.component('PersonalResults', require('./components/dialogs/PersonalResults.vue').default);
 

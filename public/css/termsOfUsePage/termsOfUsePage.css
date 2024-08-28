@@ -1,1 +1,69 @@
-body,h1,h2,h3,h4,li,ol[class],p,ul[class]{margin:0}body{line-height:1.5;min-height:100vh;scroll-behavior:smooth;text-rendering:optimizeSpeed}button,input,select,textarea{font:inherit}ol,ul{list-style:none}.v-application--wrap{background-color:#f8fafc}.inner-block{margin:0 auto;max-width:1170px;padding:90px 0}.br{display:none}.termsOfUse-section{padding-bottom:24px;padding-top:24px}.termsOfUse-title{font-weight:700}.termsOfUse-main-title{font-size:2rem}.termsOfUse-section-title{font-size:1.5rem}.termsOfUse-section-subtitle{font-size:1.2rem}.termsOfUse-li{padding-bottom:16px}
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+.v-application--wrap {
+  background-color: #f8fafc;
+}
+
+.inner-block {
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 90px 0;
+}
+
+.br {
+  display: none;
+}
+
+.termsOfUse-section {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.termsOfUse-title {
+  font-weight: bold;
+}
+
+.termsOfUse-main-title {
+  font-size: 2rem;
+}
+
+.termsOfUse-section-title {
+  font-size: 1.5rem;
+}
+
+.termsOfUse-section-subtitle {
+  font-size: 1.2rem;
+}
+
+.termsOfUse-li {
+  padding-bottom: 16px;
+}
