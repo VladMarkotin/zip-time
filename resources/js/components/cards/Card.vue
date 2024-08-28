@@ -119,8 +119,8 @@
 				</v-row>
 			</v-list-item>
 
-			<v-list-item>
-				<v-row class="p-0 m-0" style="min-height: 120px !important;">
+			<v-list-item  >
+				<v-row class="p-0 m-0">
 					<v-col 
 					class="p-0 m-0" 
 					:cols="4">
@@ -130,9 +130,51 @@
 					class="p-0 m-0"
 					:cols="6"
 					>
-						<!-- <v-list-item-content class="align-end">
-							<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
-						</v-list-item-content> -->
+					</v-col>
+					<v-col 
+					class="p-0 m-0 "
+					:cols="2"
+					>
+						<v-row 
+						class="p-0 m-0"
+						>
+							<v-col 
+							class="p-0 m-0 d-flex flex-column justify-content-start align-items-end"
+							:cols="9"
+							>
+								<template>
+									<AddDetails 
+									:num                = "num"
+									:item               = "item"
+									:screenWidth        = "screenWidth"
+									@resetDayMarkToDefVal  = "resetDayMarkToDefVal"
+									@getActualDetails      = "getActualDetails"
+									/>
+								</template>
+							</v-col>
+							<v-col
+							class="p-0 m-0 d-flex justify-content-end align-center"
+							:cols=3
+							>
+								<span>
+									{{ actualDetailsCounter }}
+								</span>
+							</v-col>
+						</v-row>
+					</v-col>
+				</v-row>
+			</v-list-item>
+
+			<v-list-item >
+				<v-row class="p-0 m-0">
+					<v-col 
+					class="p-0 m-0" 
+					:cols="4">
+					</v-col>
+					<v-col 
+					class="p-0 m-0"
+					:cols="6"
+					>
 					</v-col>
 					<v-col 
 					class="p-0 m-0 "
@@ -148,15 +190,6 @@
 							:cols="9"
 							>
 								<template>
-									<AddDetails 
-									:num                = "num"
-									:item               = "item"
-									:screenWidth        = "screenWidth"
-									@resetDayMarkToDefVal  = "resetDayMarkToDefVal"
-									@getActualDetails      = "getActualDetails"
-									/>
-								</template>
-								<template>
 									<CreateSubplanGPT 
 									:requestData="{
 										label: 'Request: create subplan for',
@@ -171,8 +204,9 @@
 					</v-col>
 				</v-row>
 			</v-list-item>
+
 			<v-list-item>
-				<v-row class="p-0 m-0" style="min-height: 120px !important;">
+				<v-row class="p-0 m-0" style="min-height: 140px">
 					<v-col 
 					class="p-0 m-0"
 					:cols="4"
@@ -652,9 +686,11 @@
 			this.getConfigs(); 
 		},
 
-		mounted() {
-			this.getActualDetails();
-			this.getNotes();
+		async mounted() {
+			await Promise.all([
+				this.getActualDetails(),
+				this.getNotes()
+			]);
 		}
 	}
 	
