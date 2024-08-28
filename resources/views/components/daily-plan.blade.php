@@ -26,12 +26,12 @@
                 </div>
                 <form wire:submit.prevent="minmark">
                     <select id="minJobAmountState" class="form-select personal-settings-select" wire:model="minJobAmount">
-                        <option value="">Default *( {{ $default['minRequiredTaskQuantity'] }} tasks per day)
+                        <option value="">Default *( {{ $default['minRequiredTaskQuantity'] }} required jobs per day)
                         </option>
-                        <option value="3">3 tasks per day</option>
-                        <option value="4">4 tasks per day</option>
-                        <option value="5">5 tasks per day</option>
-                        <option value="6">6 tasks per day</option>
+                        <option value="3">3 required jobs per day</option>
+                        <option value="4">4 required jobs per day</option>
+                        <option value="5">5 required jobs per day</option>
+                        <option value="6">6 required jobs per day</option>
                     </select>
                 </form>
             </div>
