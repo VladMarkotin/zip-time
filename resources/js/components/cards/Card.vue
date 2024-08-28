@@ -120,7 +120,7 @@
 			</v-list-item>
 
 			<v-list-item>
-				<v-row class="p-0 m-0">
+				<v-row class="p-0 m-0" style="min-height: 120px !important;">
 					<v-col 
 					class="p-0 m-0" 
 					:cols="4">
@@ -130,9 +130,9 @@
 					class="p-0 m-0"
 					:cols="6"
 					>
-						<v-list-item-content class="align-end">
+						<!-- <v-list-item-content class="align-end">
 							<v-textarea counter="256" rows="2" outlined shaped v-model="item.details"></v-textarea>
-						</v-list-item-content>
+						</v-list-item-content> -->
 					</v-col>
 					<v-col 
 					class="p-0 m-0 "
@@ -172,7 +172,7 @@
 				</v-row>
 			</v-list-item>
 			<v-list-item>
-				<v-row class="p-0 m-0">
+				<v-row class="p-0 m-0" style="min-height: 120px !important;">
 					<v-col 
 					class="p-0 m-0"
 					:cols="4"
@@ -183,9 +183,9 @@
 					class="p-0 m-0"
 					:cols="6"
 					>
-						<v-list-item-content class="align-end ">
+						<!-- <v-list-item-content class="align-end ">
 							<v-textarea counter="256" rows="2" outlined shaped v-model="item.notes"></v-textarea>
-						</v-list-item-content>	
+						</v-list-item-content>	 -->
 					</v-col>
 					<v-col 
 					class="p-0 m-0"
@@ -196,9 +196,7 @@
 							<AddNotes 
 							:num              = "num"
 							:item             = "item"
-							:notesList        = "noteInfo.notesList"  
 							:screenWidth      = "screenWidth"
-							@updateNotesInfo  = "setNotesInfo"
 							/>
 						</template>
 					</v-col>
@@ -345,10 +343,6 @@
 					isShowUpdateCardNotification: false,
 					details: [],
 					ex4: [],
-					noteInfo: {
-						todayAmount: 0,
-						notesList:   new Array,
-					},
 					isShow : true,
 					isShowAddHashCodeDialog : false,
 					newHashCodeData: {
@@ -466,16 +460,11 @@
 					this.jobMarkInputValue = '';
 				}
 			},
-
-			setNotesInfo(data) {
-				Object.assign(this.noteInfo, data);
-			},
 			
 			sendIsReadyState(item)
 			{
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
 				.then((response) => {
-					this.isItNessesaryToCleanNoteInput(response);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message);
 					setTimeout( () => {
@@ -499,7 +488,6 @@
 				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,
 					is_ready : getNewCheckboxVal(this.isTaskReady),type : item.type})
 				.then((response) => {
-					this.isItNessesaryToCleanNoteInput(response);
 					if (response.data.status === 'success') {
 						this.isTaskReady = getNewCheckboxVal(this.isTaskReady);
 					}
@@ -522,10 +510,8 @@
 					type    : item.type
 				})
 				.then((response) => {
-					this.isItNessesaryToCleanNoteInput(response);
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
-					this.noteInfo.todayAmount = response.data.noteAmount
 					this.checkIsSavedMark(item.taskId);
 
 					const {data} = response;
@@ -537,23 +523,6 @@
 						this.isShowAlert = false;
 					},3000)
 				  })
-			},
-
-			isItNessesaryToCleanNoteInput(response) {
-				//поле noteWasAddedSuccessfully прийдет с бэкенда только если была обязательная невыполненная задача
-				// и удалось успешно добавить заметку
-				if (this.item.hash !== '#' && this.item.notes) {
-					if (
-						response.data.status === 'success' 
-						|| (response.data.status === 'error' && response.data.noteWasAddedSuccessfully) 
-					) {
-						this.cleanNotesInput();
-					}
-				}
-			},
-
-			cleanNotesInput() {
-				this.item.notes = '';
 			},
 			
 			setAlertData(type, text)
@@ -616,7 +585,6 @@
 
 			createUnsavedTaskSaved(newHashCode) {
 				this.renameHashCode(newHashCode);
-				this.cleanNotesInput();
 			},
 
 			renameHashCode(newHashCode) {

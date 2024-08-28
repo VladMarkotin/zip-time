@@ -220,20 +220,6 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 } catch (error) {
                     console.error(error);
                 }
-                
-                // axios.post('/delete-note', {note_id: noteId})
-                // .then(response => {
-                //     const {data} = response;
-                //     if (data.status === 'success') {
-                //         const newNotesList = [...this.notesList].filter(note => note.id !== noteId);
-                //         const todayAmount  = newNotesList.length;
-
-                //         this.$emit('updateNotesInfo', {notesList: newNotesList, todayAmount});
-                //     }
-                    
-                //     this.setAlertData(data);
-                //     this.showAlert();
-                // })
             },
 
             setAlertData({status, message}) {
@@ -282,23 +268,6 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 } catch(error) {
                     console.error(error);
                 }
-                // axios.post('/add-note', {task_id, note})
-                // .then(response => {
-                //     const {data} = response;
-
-                //     if (data.status === 'success') {
-                //         const notesList   = data.all_notes;
-                //         const todayAmount = notesList.length;
-                //         this.$emit('updateNotesInfo', {notesList, todayAmount});
-                        
-                //         this.newNoteInpuVal = '';
-                //         this.isNewNoteInpuValValid = false;
-                        
-                //     }
-
-                //     this.setAlertData({status: data.status, message: data.text});
-                //     this.showAlert();
-                // })
             },
 
             showEditNotesDialog(id) {
@@ -329,19 +298,6 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 } catch(error) {
                     console.error(error);
                 }
-
-                // axios.post('/update-note', {note_id, note, task_id})
-                // .then(response => {
-                //     const {data} = response;
-
-                //     if (data.status === 'success') {
-                //         const notesList   = data.all_notes;
-                //         this.$emit('updateNotesInfo', {notesList,});
-                //     }
-
-                //     this.setAlertData({status: data.status, message: data.message});
-                //     this.showAlert();
-                // })
             }
         },
 

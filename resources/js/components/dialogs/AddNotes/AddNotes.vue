@@ -36,7 +36,6 @@
             :taskId      = "item.taskId"
             :item        = "item"
             :screenWidth = "screenWidth"
-            @updateNotesInfo     = "updateNotesInfo"
             @closeAddNotesDialog = "closeAddNotesDialog"
             />
         </template>
@@ -112,51 +111,13 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
                 } catch(error) {
                     console.error(error);
                 }
-
-				/**query for getting all notes */
-				// axios.post('/get-saved-notes',{
-                //     task_id : this.item.taskId, 
-                //     hash:     this.item.hash
-                // })
-				// .then((response) => {
-                //     const loadingEnd = Date.now();
-
-                //     controllLoadingTime(loadingEnd - loadingStart, () => {
-                //         this.isLoading = false;
-
-                //         const notesList = response.data;
-                //         this.updateNotesInfo({notesList}); 
-                //     })
-
-				// })
 			},
-
-            // getTodayNoteAmount(){
-			// 	axios.post('/get-today-note-amount',{
-            //         task_id : this.item.taskId,
-            //         details : this.item.details,
-			// 	    note :    this.item.notes,
-            //         type :    this.item.type})
-			// 	.then((response) => {
-            //         const todayAmount = response.data.amount;
-			// 		this.updateNotesInfo({todayAmount}); 
-			// 	  })
-
-			// },
-
-            updateNotesInfo(dataObj) {
-                this.$emit('updateNotesInfo', dataObj);
-            },
 
             closeAddNotesDialog() {
                 this.isShowNotesDialog = false;
                 // this.getTodayNoteAmount()
             }
         },
-
-        // created() {
-        //     this.getTodayNoteAmount();
-        // },
     }
 </script>
 

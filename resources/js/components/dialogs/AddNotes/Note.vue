@@ -16,7 +16,7 @@
                 :item        =  "item"
                 :options     =  "options"
                 :screenWidth = "screenWidth"
-                :attachTo = "getVMenuWrapperId(item.id)"
+                :attachTo    = "getVMenuWrapperId(item.id)"
                 @deleteNote         = "deleteNote"
                 @showEditNotesDialog = "showEditNotesDialog"
                 />
@@ -51,7 +51,7 @@ import SettingsMenu from '../../UI/SettingsMenu.vue';
                 ],
             }
         },
-
+        emits: ['deleteNote', 'showEditNotesDialog'],
         components: {
             SettingsMenu
         },
