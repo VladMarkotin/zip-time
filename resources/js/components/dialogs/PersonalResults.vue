@@ -15,8 +15,6 @@
           </template>
           <li v-else>Comparative information is unavailable during emergency mode</li>
         </ul>
-        
-        <a href="#">How do we get that results?</a>
       </v-card-text>
     </v-card>
     </div>

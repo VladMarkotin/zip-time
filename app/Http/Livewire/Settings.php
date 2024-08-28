@@ -164,7 +164,7 @@ class Settings extends Component
                 $personalConfigs->last_updates = json_encode($updated_at);
                 $personalConfigs->save();
                 $this->dispatchBrowserEvent('message', [
-                    'text' => 'Weekend days set for this week',
+                    'text' => 'Number of days off has been set.',
                 ]);
             } else {
                 $this->dispatchBrowserEvent('message', [
@@ -173,20 +173,6 @@ class Settings extends Component
             }
         }
     }
-
-
-    // public function minFinalMark()
-    // {
-
-    //     if ($this->minMark >=  $this->config['defaultConfigs']['minFinalMark'] &&  $this->config['isDayPlanCompleted'] == null ) 
-    //     {
-    //         $personalConfigs = PersonalConfigs::getConfigs();
-    //         $data = json_decode($personalConfigs->config_data);
-    //         $data->rules[0]->minFinalMark = $this->minMark;
-    //         $personalConfigs->config_data = json_encode($data);
-    //         $personalConfigs->save();
-    //     }
-    // }
 
     public function updatedMinJobAmount()
     {

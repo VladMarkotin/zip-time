@@ -7,12 +7,12 @@
                     <label class="personal-settings-label" for="weekendDaysState">Set weekend amount per week</label>
                 </div>
                  <select id="weekendDaysState" class="form-select personal-settings-select" wire:model="setWeekendDays">
-                     {{-- <option selected>Your current weekend days a week is {{ $personal['weekends'] }}</option> --}}
+                     {{-- <option selected>Your current days` off number per week is {{ $personal['weekends'] }}</option> --}}
                      <option {{ $isWeekendTaken ? 'disabled' : '' }} value="{{ $default['weekends'] }}">
-                        Default *({{ $default['weekends'] }} day a week)
+                        Default *({{ $default['weekends'] }} day off per week)
                     </option>
                      <option {{ $isWeekendTaken ? 'disabled' : '' }} value="2">
-                        2 Days a week
+                        2 days off per week
                     </option>
                  </select>
              </div>

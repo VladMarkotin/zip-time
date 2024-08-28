@@ -2,7 +2,7 @@
        <h5 class="card-header personal-settings-title">Timezone settings </h5>
        <div class="card-body personal-settings-card-body">
            <h5 class="card-title" style="text-align: center">Choose your timezone for application`s correct work </h5>
-           <p class="card-text" style="text-align: center">With supporting text below as a natural lead-in to additional content.</p>
+           <p class="card-text" style="text-align: center">If you haven't closed your plan by 11:59 p.m., Quipl will do so automatically.</p>
            <div class="form-row" style="margin-top: 15px">
                <div class="form-group col-md-8">
                 <div class="personal-settings-label-wrapper">
