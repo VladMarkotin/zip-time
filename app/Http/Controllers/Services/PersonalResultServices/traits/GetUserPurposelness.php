@@ -18,7 +18,9 @@ trait GetUserPurposelness
      */
     public static function getData(array $data, array $configs)
     {
-
+        // if($configs['isTheRatingLessThanMin']) {
+        //     return 'n/a';
+        // }
         if ($configs['group']) {            
             $usersPurposelnessData = self::getQuantityOfAllDays($configs);
             $usersPurposelnessData = self::getQuantityOfWorkDays($configs, $usersPurposelnessData);
@@ -36,15 +38,14 @@ trait GetUserPurposelness
 
     public static function getQuantityOfWorkDays(array $configs, array $usersPurposelnessData)
     {   
-        $query = "SELECT t.user_id, COUNT(t.id) workDays FROM `timetables` t
-                JOIN users u ON t.user_id = u.id
-                WHERE day_status IN(2,3)";
+        $query = "SELECT u.id AS user_id, COALESCE(COUNT(t.id), 0) AS workDays
+        FROM users u
+        LEFT JOIN timetables t ON u.id = t.user_id AND t.day_status IN (2, 3)";
 
         if ($configs) {
-            $query .= " AND u.rating BETWEEN ". $configs['group']->from." AND ".
-                    $configs['group']->to;
+            $query .= " WHERE u.rating BETWEEN " . $configs['group']->from . " AND " . $configs['group']->to;
         }
-        $query .= " GROUP BY t.user_id";
+        $query .= " GROUP BY u.id";
         $results = DB::select($query);
         foreach ($results as $result) {
             foreach($usersPurposelnessData as &$userPurposelnessData) {
@@ -59,32 +60,36 @@ trait GetUserPurposelness
 
     public static function getQuantityOfAllDays(array $configs)
     {
-        $query = "SELECT t.user_id, COUNT(t.id) allDays FROM `timetables` t
-                JOIN users u ON t.user_id = u.id";
+        $query = "SELECT u.id AS user_id, COALESCE(COUNT(t.id), 0) AS allDays 
+        FROM users u
+        LEFT JOIN timetables t ON u.id = t.user_id";
+
         if ($configs) {
-            $query .= " WHERE u.rating BETWEEN ". $configs['group']->from." AND ".
-                    $configs['group']->to;
+            $query .= " WHERE u.rating BETWEEN " . $configs['group']->from . " AND " . $configs['group']->to;
         }
-        $query .= " GROUP BY t.user_id";
+
+        $query .= " GROUP BY u.id";
+
         $results = DB::select($query);
 
         $usersPurposelnessData = [];
         foreach ($results as $result) {
             $usersPurposelnessData[] = (array) $result;
         }
+
         return $usersPurposelnessData;
     }
 
     public static function getQuantityOfFailedDays(array $configs, array $usersPurposelnessData) {
-        $query = "SELECT t.user_id, COUNT(t.id) failedDays FROM `timetables` t
-                JOIN users u ON t.user_id = u.id
-                WHERE day_status = -1";
+        $query = "SELECT u.id AS user_id, COALESCE(COUNT(t.id), 0) AS failedDays 
+        FROM users u
+        LEFT JOIN timetables t ON u.id = t.user_id AND t.day_status = -1";
 
         if ($configs) {
-            $query .= " AND u.rating BETWEEN ". $configs['group']->from." AND ".
-                    $configs['group']->to;
+            $query .= " WHERE u.rating BETWEEN " . $configs['group']->from . " AND " .
+            $configs['group']->to;
         }
-        $query .= " GROUP BY t.user_id";
+        $query .= " GROUP BY u.id";
 
         $results = DB::select($query);
         foreach ($results as $result) {
@@ -134,7 +139,6 @@ trait GetUserPurposelness
             if ($totalUsers === 0) {
                 return 0;
             }
-    
             foreach ($usersPurposelnessData as $userPurposelnessData) {
                 if ($userPurposelnessData['purposelness'] < $currentUserPurposelness) {
                     $countBetterUsers++;
