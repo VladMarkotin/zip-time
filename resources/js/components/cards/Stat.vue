@@ -108,10 +108,15 @@
 			components: {Chart},
 			data()
 			{
-				const currDate = new Date().toEnStr();
+				const currDate    = new Date();
+				const weekAgoDate = new Date(currDate);
+				weekAgoDate.setDate(currDate.getDate() - 6);
+
 				return {
-					dates: {from: {modal: false, val: currDate}, 
-					to: {modal: false, val: currDate}}, 
+					dates: {
+						from: {modal: false, val: weekAgoDate.toEnStr()}, 
+						to:   {modal: false, val: currDate.toEnStr()}
+					}, 
 					mainStat: {}, 
 					marks: [],
 					screenWidth: window.innerWidth,
@@ -121,7 +126,7 @@
 				{
 					async loadMarks()
 					{
-						const data = (await axios.get('get-stat-data')).data;
+						const data = (await axios.post('/get-stat-data', {from: this.dates.from.val, to: this.dates.to.val})).data;
 						this.mainStat = data.mainStat;
 						this.marks = {...{final: data.marks.finalMarks, own: data.marks.ownMarks}};
 					},

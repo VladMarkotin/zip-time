@@ -86,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/edit-card', [App\Http\Controllers\EditController::class, 'editCard'])->name('edit-card');
     //end edit card
 
-    Route::get('/get-stat-data', [App\Http\Controllers\StatController::class, 'getStatData'])->name('get-stat-data');
+    Route::post('/get-stat-data', [App\Http\Controllers\StatController::class, 'getStatData'])->name('get-stat-data');
     //end statistic
 
 //emergency
