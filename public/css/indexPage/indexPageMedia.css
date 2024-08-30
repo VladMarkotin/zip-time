@@ -326,12 +326,23 @@
   }
 }
 @media screen and (max-width: 480px) {
+  .mobile-inner-block {
+    max-width: 90% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .slider-wrapper {
+    min-height: 700px;
+  }
   .slider-wrapper .slide .slide-content {
-    padding: 0 60px;
+    padding: 0;
   }
   .slider-wrapper .slide .slide-content .slide-content_inner-block {
-    max-width: 270px;
     gap: 30px;
+    max-width: 90%;
+    padding-left: 12px;
+    padding-right: 12px;
   }
   .slider-wrapper .slide .slide-content .slide-content_inner-block .slide-content-text {
     font-size: 16px;
@@ -344,9 +355,12 @@
   .slider-wrapper .slide-three .slide-content .slide-content_inner-block .slide-three-content .slide-three-list {
     padding-left: 0;
   }
+  .slider-wrapper .slider-arrow.slider-left-arrow-wrapper {
+    right: 0px;
+  }
 
   .about-us-section .inner-block .about-us-wrapper {
-    max-width: 270px;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
   }
@@ -369,25 +383,32 @@
   }
   .our-advantages-section .inner-block .our-advantages-wrapper {
     padding: 0;
-    max-width: 270px;
+    max-width: 100%;
   }
   .our-advantages-section .inner-block .our-advantages-wrapper .our-advantages-content .our-advantages-item {
     max-width: 100%;
   }
 
+  .statistics-section {
+    padding: 0;
+  }
   .statistics-section .inner-block {
     display: flex;
     justify-content: center;
   }
   .statistics-section .inner-block .statistics-content {
-    max-width: 270px;
+    max-width: 100%;
   }
   .statistics-section .inner-block .statistics-content .statistics-item {
     max-width: 100%;
   }
 
+  .philosofy-inner-block {
+    padding: 40px 12px;
+  }
   .philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper {
-    max-width: 270px;
+    max-width: 100%;
+    width: 100%;
   }
   .philosofy-inner-block .philosofy-wrapper .philosofy-slider-wrapper .philosofy-slider .philosofy-slider-line .philosofy-slide .philosofy-slide-text {
     font-size: 16px;
@@ -395,17 +416,26 @@
     font-weight: 400;
   }
 
-  .quotes-section .quotes-wrapper {
+  .quotes-section .inner-block .quotes-wrapper {
     max-height: 800px;
   }
-  .quotes-section .quotes-wrapper .quotes-content {
-    max-width: 270px;
+  .quotes-section .inner-block .quotes-wrapper .quotes-content {
+    max-width: 100%;
   }
-  .quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li {
+  .quotes-section .inner-block .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li {
     font-size: 24px;
   }
-  .quotes-section .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li .quotes-text {
+  .quotes-section .inner-block .quotes-wrapper .quotes-content .quotes-list-wrapper .quotes-list .quotes-li .quotes-text {
     line-height: 33px;
+  }
+}
+@media screen and (max-width: 450px) {
+  .mobile-inner-block {
+    max-width: 100% !important;
+  }
+
+  .slider-wrapper .slide .slide-content .slide-content_inner-block {
+    max-width: 95%;
   }
 }
 @media screen and (max-width: 430px) {
@@ -424,6 +454,6 @@
 }
 @media screen and (max-width: 380px) {
   .slider-wrapper {
-    min-height: 1005px;
+    min-height: 720px;
   }
 }

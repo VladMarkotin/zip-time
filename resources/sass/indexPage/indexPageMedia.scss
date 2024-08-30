@@ -601,16 +601,22 @@ $maxContentWidth480: 270px;
 }
 
 @media screen and (max-width: 480px) {
-
+    .mobile-inner-block {
+        max-width: 90% !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
 
     .slider-wrapper {
+        min-height: 700px;
         .slide {
             .slide-content {
-                padding: 0 60px;
+                padding: 0;
                 .slide-content_inner-block {
-                    max-width: $maxContentWidth480;
                     gap: 30px;
-
+                    max-width: 90%;
+                    padding-left: 12px;
+                    padding-right: 12px;
                     .slide-content-text {
                         font-size: 16px;
                         font-weight: 400;
@@ -641,12 +647,16 @@ $maxContentWidth480: 270px;
                 }
             }
         }
+
+        .slider-arrow.slider-left-arrow-wrapper {
+            right: 0px;
+        }
     }
 
     .about-us-section {
         .inner-block {
             .about-us-wrapper {
-                max-width: $maxContentWidth480;
+                max-width: 100%;
                 display: flex;
                 flex-direction: column;
 
@@ -678,7 +688,7 @@ $maxContentWidth480: 270px;
             justify-content: center;
             .our-advantages-wrapper {
                 padding: 0;
-                max-width: $maxContentWidth480;
+                max-width: 100%;
                 .our-advantages-content {
                     .our-advantages-item {
                         max-width: 100%;
@@ -689,11 +699,12 @@ $maxContentWidth480: 270px;
     }
 
     .statistics-section {
+        padding: 0;
         .inner-block {
             display: flex;
             justify-content: center;
             .statistics-content {
-                max-width: $maxContentWidth480;
+                max-width: 100%;
                 
                 .statistics-item {
                     max-width: 100%;
@@ -703,9 +714,11 @@ $maxContentWidth480: 270px;
     }
 
     .philosofy-inner-block {
+        padding: 40px 12px;
         .philosofy-wrapper {
             .philosofy-slider-wrapper {
-                max-width: $maxContentWidth480;
+                max-width: 100%;
+                width: 100%;
                 .philosofy-slider {
                     .philosofy-slider-line {
                         .philosofy-slide {
@@ -722,19 +735,36 @@ $maxContentWidth480: 270px;
     }
 
     .quotes-section {
-        .quotes-wrapper {
-            max-height: 800px;
-            .quotes-content {
-                max-width: $maxContentWidth480;
-                .quotes-list-wrapper {
-                    .quotes-list {
-                        .quotes-li {
-                            font-size: 24px;
-                            .quotes-text {
-                                line-height: 33px;
+        .inner-block {
+            .quotes-wrapper {
+                max-height: 800px;
+                .quotes-content {
+                    max-width: 100%;
+                    .quotes-list-wrapper {
+                        .quotes-list {
+                            .quotes-li {
+                                font-size: 24px;
+                                .quotes-text {
+                                    line-height: 33px;
+                                }
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .mobile-inner-block {
+        max-width: 100% !important;
+    }
+    .slider-wrapper {
+        .slide {
+            .slide-content {
+                .slide-content_inner-block {
+                   max-width: 95%;
                 }
             }
         }
@@ -789,7 +819,6 @@ $maxContentWidth480: 270px;
 
 @media screen and (max-width: 380px) {
     .slider-wrapper {
-        min-height: 1005px;
-       
+        min-height: 720px;
     }
 }

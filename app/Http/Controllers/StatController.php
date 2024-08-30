@@ -25,13 +25,14 @@ class StatController extends Controller
 
     }
 
-    public function getStatData(Request $request = null)
+    public function getStatData(Request $request)
     {
-        if (!$request) {
+        $data['from'] = $request->get('from');
+        $data['to']   = $request->get('to');
+        
+        if ($data['from'] === null || $data['to'] === null) {
             $response = $this->statService->getStat();
         } else {
-            $data['from'] = $request->get('from');
-            $data['to'] = $request->get('to');
             $response = $this->statService->getStat($data);
         }
         $response['marks']['finalMarks'] = array_values(
