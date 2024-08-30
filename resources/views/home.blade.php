@@ -136,7 +136,7 @@
             </div>
         </section>
         <section class="about-us-section white-background">
-            <div class="inner-block">
+            <div class="inner-block mobile-inner-block">
                 <div class="about-us-wrapper ">
                     <div class="about-us-title-wrapper">
                         <h2 class="about-us-title title-index-page">Have you answered “Yeap” at <br class="br">least once?
@@ -180,7 +180,7 @@
             </div>
         </section>
         <section class="our-advantages-section">
-            <div class="inner-block">
+            <div class="inner-block mobile-inner-block">
                 <div class="our-advantages-wrapper element-animation">
                     <div class="our-advantages-title-wrapper">
                         <h2 class="our-advantages-title_main title-index-page">Why Quipl useful?</h2>
@@ -250,7 +250,7 @@
             </div>
         </section>
         <section class="statistics-section">
-            <div class="inner-block">
+            <div class="inner-block mobile-inner-block">
                 <div class="statistics-content">
                     <div class="statistics-item element-animation">
                         <div class="statistics-icon-wrapper">
@@ -313,7 +313,7 @@
             </div>
         </section>
         <section class="philosofy-section white-background">
-            <div class="philosofy-inner-block">
+            <div class="philosofy-inner-block mobile-inner-block">
                 <div class="philosofy-wrapper">
                     <div class="philosofy-title-wrapper">
                         <h2 class="philosofy-title title-index-page">Quipl's philosofy</h2>
@@ -379,7 +379,7 @@
             </div>
         </section>
         <section class="quotes-section">
-            <div class="inner-block">
+            <div class="inner-block mobile-inner-block">
                 <div class="quotes-wrapper">
                     <div class="quotes-content">
                         <div class="quotes-list-wrapper">
