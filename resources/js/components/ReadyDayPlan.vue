@@ -92,6 +92,8 @@ import Challenges from "./challenges/Challenges.vue";
 import Firework from "./UI/Firework.vue";
 import { mdiCarEmergency, mdiPlusBox, mdiSendClock } from "@mdi/js";
 import "intro.js/introjs.css";
+import store from "../store";
+import { mapMutations } from "vuex/dist/vuex.common.js";
 
 export default {
     components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall, Challenges, Firework },
@@ -110,12 +112,14 @@ export default {
             isShowFirework: false,
         };
     },
+    store,
     computed: {
         isMobile() {
             return this.screenWidth < 768;
         }
     },
     methods: {
+        ...mapMutations(['INITIALIZE_DETAILS_STORE']),
         getRequiredTasks(data) {
             return data.filter((item) => [4, 2].includes(item.type));
         },
@@ -151,6 +155,16 @@ export default {
         updateScreenWidth() {
             this.screenWidth = window.innerWidth;
         }
+    },
+
+    created() {
+        const detailsData = this.data.plan.map(taskData => ({
+            detailsData: taskData.detailsData,
+            detailsCompletedPercent: taskData.detailsCompletedPercent,
+            key: taskData.taskId,
+        }));
+        
+        this.INITIALIZE_DETAILS_STORE({detailsData});
     },
 
     async mounted() {

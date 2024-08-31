@@ -1,11 +1,52 @@
 import { uuid } from "vue-uuid";
 
+const transformDetails = (details) => {
+    return details.map(element => ({
+        title: element.title,
+        text:  element.text,
+        taskId: element.id,
+        is_ready: element.is_ready, 
+        checkpoint: element.checkpoint,
+        is_old_compleated: element.is_old_compleated,
+        done_at_user_time: element.done_at_user_time,
+        is_ready: element.is_ready,
+        uniqKey: uuid.v1(),
+        created_at_date: element.created_at_user_time.slice(//получаю дату без времени
+            0, element.created_at_user_time.trim().indexOf(' ')
+        ),
+    }));
+};
+
+const checkCompletedPercent =({complPercentResp}) => {
+    return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
+            ? complPercentResp
+            : editCompletedPercent({compPercent: complPercentResp});
+};
+
+const editCompletedPercent = ({compPercent}) => {
+    if (typeof compPercent === 'string') {
+        return +(compPercent.replace(/[^0-9.]/g,""));
+    }
+    return compPercent;
+};
+
 export default {
     state: {
         details: {},
     },
     mutations: {
-        INITIALIZE_DETAILS_STORE(state, {key, details, completedPercent, detailsSortBy}) {
+        INITIALIZE_DETAILS_STORE(state, {detailsData}) {
+            const detailsTransformedData = detailsData.map(data => ({
+                key: data.key,
+                completedPercent: checkCompletedPercent({complPercentResp: data.detailsCompletedPercent}),
+                details:  transformDetails(data.detailsData),
+                detailsSortBy:    'created-at-asc',
+            }));
+            detailsTransformedData.forEach(({key, details, completedPercent, detailsSortBy}) => {
+                state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy}};
+            })
+        },
+        SET_DETAILS(state, {key, details, completedPercent, detailsSortBy}) {
             state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy}};
         },
         
@@ -169,25 +210,9 @@ export default {
                 const detailsData = response.data;
 
                 const details = detailsData.data;
-                const transformedDetails = [];
-                details.forEach(element => {
-                    transformedDetails.push({
-                        title: element.title,
-                        text:  element.text,
-                        taskId: element.id,
-                        is_ready: element.is_ready, 
-                        checkpoint: element.checkpoint,
-                        is_old_compleated: element.is_old_compleated,
-                        done_at_user_time: element.done_at_user_time,
-                        is_ready: element.is_ready,
-                        uniqKey: uuid.v1(),
-                        created_at_date: element.created_at_user_time.slice(//получаю дату без времени
-                            0, element.created_at_user_time.trim().indexOf(' ')
-                        ),
-                    }) 
-                });
-                const transformedCompletedPercent = await context.dispatch('checkCompletedPercent', {complPercentResp: detailsData.completedPercent});
-                context.commit('INITIALIZE_DETAILS_STORE', {
+                const transformedDetails = transformDetails(details);
+                const transformedCompletedPercent = checkCompletedPercent({complPercentResp: detailsData.completedPercent});
+                context.commit('SET_DETAILS', {
                     key:              requestData.task_id,
                     details:          transformedDetails,
                     completedPercent: transformedCompletedPercent,
@@ -211,7 +236,7 @@ export default {
                     const currentTaskData = getters.getDetailsData(key);
 
                     if (currentTaskData) {
-                        const transformedCompletedPercent = await dispatch('checkCompletedPercent', {complPercentResp: respData.completedPercent})
+                        const transformedCompletedPercent = checkCompletedPercent({complPercentResp: respData.completedPercent});
 
                         commit('ADD_NEW_DETAIL', {key, newDetail});
                         commit('UPDATE_COMPLETED_PERCENT', {key, completedPercent: transformedCompletedPercent});
@@ -237,7 +262,7 @@ export default {
                         const currentDetail = getters.getDetail(taskId, detailId);
 
                         if (currentDetail) {
-                            const transformedCompletedPercent = await dispatch('checkCompletedPercent', {complPercentResp: respData.completedPercent})
+                            const transformedCompletedPercent = checkCompletedPercent({complPercentResp: respData.completedPercent})
 
                             commit('DELETE_DETAIL', {key: taskId, id: detailId});
                             commit('UPDATE_COMPLETED_PERCENT', {key: taskId, completedPercent: transformedCompletedPercent});
@@ -252,26 +277,13 @@ export default {
             }
         },
 
-        checkCompletedPercent(context, {complPercentResp}) {
-            return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
-                    ? complPercentResp
-                    : context.dispatch('editCompletedPercent', {compPercent: complPercentResp});
-        },
-
-        editCompletedPercent(_, {compPercent}) {
-            if (typeof compPercent === 'string') {
-                return +(compPercent.replace(/[^0-9.]/g,""));
-            }
-            return compPercent;
-        },
-
         async updateCompletedStatus({commit, getters, dispatch}, payload) {
             try {
                 const response = await axios.post('/complete-sub-task', payload);
                 const data = response.data;
                 
                 if (data.status = 'success') {
-                    const transformedCompletedPercent = await dispatch('checkCompletedPercent', {complPercentResp: data.completedPercent})
+                    const transformedCompletedPercent = checkCompletedPercent({complPercentResp: data.completedPercent});
                     
                     const detailsData = getters.getDetailsData(payload.task_id);
 

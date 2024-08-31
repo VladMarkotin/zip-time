@@ -688,7 +688,7 @@
 
 		async mounted() {
 			await Promise.all([
-				this.getActualDetails(),
+				// this.getActualDetails(),
 				this.getNotes()
 			]);
 		}

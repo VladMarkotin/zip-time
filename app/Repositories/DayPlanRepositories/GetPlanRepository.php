@@ -8,7 +8,7 @@
 
 namespace App\Repositories\DayPlanRepositories;
 
-
+use App\Http\Controllers\SubPlanController;
 use App\Models\DayPlanModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,12 +20,19 @@ class GetPlanRepository
     private $dayPlanModel                 = null;
     private $addNoteToSavedTaskRepository = null;
     private $timetableModel               = null;
+    private $subPlan                      = null;
 
-    public function __construct(DayPlanModel $dayPlanModel, AddNoteToSavedTask $addNoteToSavedTask, TimetableModel $timetableModel)
+    public function __construct(
+        DayPlanModel       $dayPlanModel, 
+        AddNoteToSavedTask $addNoteToSavedTask, 
+        TimetableModel     $timetableModel,
+        SubPlanController  $subPlan,
+        )
     {
         $this->dayPlanModel                 = $dayPlanModel;
         $this->addNoteToSavedTaskRepository = $addNoteToSavedTask;
         $this->timetableModel               = $timetableModel;
+        $this->subPlan                      = $subPlan;
     }
 
     public function getLastDayPlan(array $data)
@@ -34,6 +41,7 @@ class GetPlanRepository
         $timetableId = $this->getLastTimetableId($data);
         //потом сам план
         $plan = $this->getTasksForLastTimetable($timetableId);
+        $plan = $this->addDetailsDataToPlan($plan);
         //die(var_dump($plan));
         //Теперь надо получить статус текущего дня и если он = 3 -> добавить информацию об итоговой оценке и тд
         $planState = $this->getPlanState($timetableId);
@@ -101,5 +109,17 @@ class GetPlanRepository
             ->toArray();
 
         return $timetableInfo;
+    }
+
+    private function addDetailsDataToPlan(array $plan) {
+        if (!count($plan)) return $plan;
+
+        foreach($plan as &$task) {
+            $detailsData = $this->subPlan->fetchSubPlan($task->id, 'all');
+            $task->detailsCompletedPercent = $detailsData['completedPercent'];
+            $task->detailsData = $detailsData['data'];
+        }
+        
+        return $plan;
     }
 } 
