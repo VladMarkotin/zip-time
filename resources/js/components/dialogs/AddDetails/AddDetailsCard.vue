@@ -108,7 +108,7 @@
                         <v-divider></v-divider>
                         <v-row>
                             <template>
-                                <v-expansion-panels v-if="!isLoading">
+                                <v-expansion-panels>
                                     <transition-group name="detailsList" tag="div" style="width: 100%;">
                                         <v-expansion-panel v-for="(v, i) in details" :key="v.uniqKey">
                                             <v-expansion-panel-header>
@@ -245,15 +245,6 @@
                                         </v-expansion-panel>
                                     </transition-group>
                                 </v-expansion-panels>
-                                <v-row
-                                v-else 
-                                class="p-0 m-0 mt-6 d-flex justify-content-center align-items-center"
-                                >
-                                    <DefaultPreloader
-                                    :size="96"
-                                    :width="7"
-                                    />
-                                </v-row>
                             </template>
                         </v-row>
                     </template>
@@ -349,11 +340,10 @@
 
 <script>
 import store from '../../../store';
-import { mapGetters, mapActions, } from 'vuex/dist/vuex.common.js';
+import { mapGetters, mapActions, mapMutations, } from 'vuex/dist/vuex.common.js';
 import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import EditButton from '../../UI/EditButton.vue';
-import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import AddNewDetailMobile from './AddNewDetailMobile.vue';
 import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
@@ -368,10 +358,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             alert: {
                 type: Object,
-            },
-            isLoading: {
-                type: Boolean,
-                required: true,
             },
             generateUniqKey: {
                 type: Function,
@@ -432,15 +418,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 editableDetailId: null,
                 isShowEditDetailsDialog: false,
                 isSavedTask: this.item.hash !== '#',
-                displayedDetails: {
-                    currentMode: 'actual',
-                    all: {
-                        showSubtasksButtonText: 'View actual subtasks'
-                    },
-                    actual: {
-                        showSubtasksButtonText: 'View all subtasks',
-                    }
-                },
                 radioButtons: [
                     {value: 'created-at-asc', label: 'Old first',},
                     {value: 'created-at-desc', label: 'New first',},
@@ -451,8 +428,8 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         store,
-        emits: ['closeAddDetailsDialog', 'updateAlertData', 'showAllSubTasks', 'showActualSubTasks', 'resetDayMarkToDefVal'],
-        components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader, AddNewDetailMobile},
+        emits: ['closeAddDetailsDialog', 'updateAlertData', 'resetDayMarkToDefVal'],
+        components: {EditDetails, AddSubtaskButton, EditButton, AddNewDetailMobile},
         watch: {
             'newDetail.title'() {
                 this.setDataOnValidOfInputs(
@@ -470,7 +447,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         computed: {
-            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent',]),
+            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent', 'getMode']),
             detailsSortBy: {
                 get() {
                     return this.getDetailsSortBy(this.taskId);
@@ -481,7 +458,18 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
             details() {
                 const currentTaskData = this.getDetailsData(this.taskId);
-                return currentTaskData ? currentTaskData.details : [];
+
+                if (!currentTaskData) {
+                    return [];
+                }
+                const details = currentTaskData.details;
+                const mode = this.displayedDetails.currentMode;
+
+                if (mode === 'all') {
+                    return details;
+                }
+                
+                return details.filter(detail => !detail.is_old_compleated);
             },
             isMobile() {
                 return this.screenWidth < 768; 
@@ -492,17 +480,28 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             completedPercent() {
                 return this.getCompletedPercent(this.taskId);
             },  
+            displayedDetails() {
+                const currentMode = this.getMode(this.taskId);
+                return {
+                    currentMode,
+                    all: {
+                        showSubtasksButtonText: 'View actual subtasks'
+                    },
+                    actual: {
+                        showSubtasksButtonText: 'View all subtasks',
+                    }
+                };
+            }
         },
         methods: {
             ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus', 'deleteDetail']),
+            ...mapMutations(['SET_MODE']),
 
             updateAlertData(alertData) {
                 this.$emit('updateAlertData', alertData);
             },
 
             async addDetail(){
-                if (this.isLoading) return;
-
                 if (this.dataOnValidofInputs.areAllInputsValValid) {
 
                     const dateNow = new Date;
@@ -602,23 +601,22 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
 
             showSubtasks() {
-               if (this.isLoading) return;
-               const updateDispDataCurrentMode = (mode) => this.displayedDetails.currentMode = mode;
+               const currentMode = this.displayedDetails.currentMode;
 
-               switch(this.displayedDetails.currentMode) {
-                    case 'actual':
-                        updateDispDataCurrentMode('all');
-                        this.$emit('showAllSubTasks', this.item);
-                    break;
-                    case 'all':
-                        updateDispDataCurrentMode('actual');
-                        this.$emit('showActualSubTasks', this.item);
-                    break;
-                    default:
-                        updateDispDataCurrentMode('all');
-                        this.$emit('showAllSubTasks', this.item);
-               }
+               const getNewModeVal = (currentMode) => {
+                    switch(currentMode) {
+                        case 'actual':
+                            return 'all';
+                        case 'all':
+                            return 'actual';
+                        default:
+                            return 'all';
+                    }
+                };
 
+                const newMode = getNewModeVal(currentMode);
+
+                this.SET_MODE({key: this.taskId, newMode});
             },
 
             getSubtaskComptimeText(fullDate) {

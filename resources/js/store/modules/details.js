@@ -30,6 +30,8 @@ const editCompletedPercent = ({compPercent}) => {
     return compPercent;
 };
 
+const DEFAULT_DETAILS_SORT_BY = 'created-at-asc';
+
 export default {
     state: {
         details: {},
@@ -40,10 +42,11 @@ export default {
                 key: data.key,
                 completedPercent: checkCompletedPercent({complPercentResp: data.detailsCompletedPercent}),
                 details:  transformDetails(data.detailsData),
-                detailsSortBy:    'created-at-asc',
+                detailsSortBy:    DEFAULT_DETAILS_SORT_BY,
+                mode: 'all',
             }));
-            detailsTransformedData.forEach(({key, details, completedPercent, detailsSortBy}) => {
-                state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy}};
+            detailsTransformedData.forEach(({key, details, completedPercent, detailsSortBy, mode}) => {
+                state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy, mode}};
             })
         },
         SET_DETAILS(state, {key, details, completedPercent, detailsSortBy}) {
@@ -150,6 +153,14 @@ export default {
                 return detail;
             })
             };
+        },
+
+        SET_MODE(state, {key, newMode}) {
+            state.details[key] = {...state.details[key], mode: newMode};
+        },
+
+        RESET_FILTERS_TO_DEF_VAL(state, {key}) {
+            state.details[key] = {...state.details[key], detailsSortBy: DEFAULT_DETAILS_SORT_BY, mode: 'all'}
         }
     },
     getters: {
@@ -169,9 +180,9 @@ export default {
             return(key) => {
                 const detailsSortingCrit = state.details[key].detailsSortBy;
                 if (detailsSortingCrit === undefined) {
-                    return 'created-at-asc'; //по возможности убрать хардкод
+                    return DEFAULT_DETAILS_SORT_BY;
                 }
-                return 'created-at-asc';
+                return detailsSortingCrit;
             }
         },
 
@@ -187,8 +198,16 @@ export default {
             }
         },
 
-        getDetailsRules(state) {
-            return state.detailsChecks.detailsRules;
+        getMode(state) {
+            return (key) => {
+                const detailsData = state.details[key];
+
+                if (detailsData === undefined) {
+                    return 'all';
+                }
+
+                return detailsData.mode;
+            }
         }
     },
     actions: {
@@ -201,26 +220,6 @@ export default {
                 }
             }
 
-        },
-        async fetchDetails(context, payload) {
-            try {
-                const {requestData} = payload;
-
-                const response = await axios.post('/get-sub-tasks', requestData);
-                const detailsData = response.data;
-
-                const details = detailsData.data;
-                const transformedDetails = transformDetails(details);
-                const transformedCompletedPercent = checkCompletedPercent({complPercentResp: detailsData.completedPercent});
-                context.commit('SET_DETAILS', {
-                    key:              requestData.task_id,
-                    details:          transformedDetails,
-                    completedPercent: transformedCompletedPercent,
-                    detailsSortBy:    'created-at-asc',
-                });
-            } catch(error) {
-                console.error(error);
-            }
         },
 
         async addNewDetail({getters, commit, dispatch}, {newDetail}) {

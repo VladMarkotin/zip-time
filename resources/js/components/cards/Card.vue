@@ -148,7 +148,6 @@
 									:item               = "item"
 									:screenWidth        = "screenWidth"
 									@resetDayMarkToDefVal  = "resetDayMarkToDefVal"
-									@getActualDetails      = "getActualDetails"
 									/>
 								</template>
 							</v-col>
@@ -668,9 +667,9 @@
 			},
 
 			getActualDetails() {
-				this.fetchDetails({
-					requestData: {task_id: this.item.taskId, mode: null }
-				});
+				// this.fetchDetails({
+				// 	requestData: {task_id: this.item.taskId, mode: null }
+				// });
 			},
 
 			getNotes() {
