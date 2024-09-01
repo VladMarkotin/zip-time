@@ -61,9 +61,7 @@
         class="pb-0 addNotesCard-notes-wrapper"
         style="height: 450px; position: relative; overflow-x: hidden"
         >
-            <v-list 
-            v-if="!isLoading"
-            >
+            <v-list >
             <transition-group name="list" tag="div" class="notes-wrapper">
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
@@ -74,16 +72,6 @@
                     />
                 </v-list-item>
             </transition-group>
-            </v-list>
-            <v-list
-            style="height: 100%;"
-            v-else
-            class="d-flex justify-content-center align-items-center"
-            >
-                <DefaultPreloader 
-                :size="96"
-                :width="7"
-                />
             </v-list>
         </v-card-text>
         <v-divider class="m-0"></v-divider>
@@ -142,15 +130,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex/dist/vuex.common.js';
-import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import Note from './Note.vue';
 import EditNotesDialog from './EditNotesDialog.vue';
     export default {
         props: {
-            isLoading: {
-                type: Boolean,
-            },
             item: {
                 type: Object,
                 required: true,
@@ -195,6 +179,7 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 editableNoteData: {},
             };
         },
+        emits: ['closeAddNotesDialog'],
         computed: {
             ...mapGetters(['getNotesData']),
             notesList() {
@@ -202,7 +187,6 @@ import EditNotesDialog from './EditNotesDialog.vue';
             }
         },
         components: {
-            DefaultPreloader,
             AddSubtaskButton,
             Note,
             EditNotesDialog,

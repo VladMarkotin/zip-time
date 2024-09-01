@@ -3,8 +3,10 @@ export default {
         notes: {},
     },
     mutations: {
-        INITIALIZE_NOTES_STORE(state, {key, notes}) {
-            state.notes = {...state.notes, [key]: notes};
+        INITIALIZE_NOTES_STORE(state, {notesData}) {
+            notesData.forEach(({key, notesData}) => {
+                state.notes = {...state.notes, [key]: notesData};
+            })
         },
 
         ADD_NOTE(state, {key, newNote}) {
@@ -42,21 +44,6 @@ export default {
         },
     },
     actions: {
-        async fetchNotes(context, {requestData}) {
-            try {
-                const response = await axios.post('/get-saved-notes', requestData);
-
-                if (response.status === 200) {
-                    context.commit('INITIALIZE_NOTES_STORE', {
-                        key:   requestData.task_id,
-                        notes: response.data,
-                    });    
-                }
-            } catch(error) {
-                console.error(error);
-            }
-        },
-
         async addNote({getters, commit}, {taskId, note}) {
             try {
                 const response = await axios.post('/add-note', {task_id: taskId, note});

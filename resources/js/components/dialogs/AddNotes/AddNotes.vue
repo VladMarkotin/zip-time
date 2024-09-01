@@ -32,7 +32,6 @@
 		</template>
 		<template v-if="isShowNotesDialog">
             <AddNotesCard 
-            :isLoading   = "isLoading"
             :taskId      = "item.taskId"
             :item        = "item"
             :screenWidth = "screenWidth"
@@ -43,7 +42,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex/dist/vuex.common.js';
+import { mapGetters } from 'vuex/dist/vuex.common.js';
 import store from '../../../store';
 import AddNotesCard from './AddNotesCard.vue';
 import { mdiNotebookEditOutline }  from '@mdi/js'
@@ -62,7 +61,6 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
             return {
                 isShowNotesDialog: false,
                 icons: { mdiNotebookEditOutline},
-                isLoading: false,
                 minPreloaderDispTime: 500,
             }
         },
@@ -82,40 +80,12 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
             }
         },
         methods: {
-            ...mapActions(['fetchNotes']),
             showAddNotesDialog() {
                 this.isShowNotesDialog = true;
-                this.getAllNotesForTask();
             },
-
-            async getAllNotesForTask() {
-                const controllLoadingTime = (time, callback) => {
-                    if (time > this.minPreloaderDispTime) callback();
-				    else setTimeout(callback, this.minPreloaderDispTime - time);
-			    }
-                
-                this.isLoading = true
-                const loadingStart = Date.now();
-                try {
-                    const requestData = {
-                        task_id : this.item.taskId, 
-                        hash:     this.item.hash
-                    };
-                    await this.fetchNotes({requestData});
-
-                    const loadingEnd = Date.now();
-
-                    controllLoadingTime(loadingEnd - loadingStart, () => {
-                        this.isLoading = false;
-                    })
-                } catch(error) {
-                    console.error(error);
-                }
-			},
 
             closeAddNotesDialog() {
                 this.isShowNotesDialog = false;
-                // this.getTodayNoteAmount()
             }
         },
     }

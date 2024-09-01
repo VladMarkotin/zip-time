@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\DayPlanRepositories\AddNoteToSavedTask;
 use App\Models\TimetableModel;
+use App\Http\Controllers\NoteController;
 
 class GetPlanRepository
 {
@@ -21,18 +22,21 @@ class GetPlanRepository
     private $addNoteToSavedTaskRepository = null;
     private $timetableModel               = null;
     private $subPlan                      = null;
+    private $notes                        = null;
 
     public function __construct(
         DayPlanModel       $dayPlanModel, 
         AddNoteToSavedTask $addNoteToSavedTask, 
         TimetableModel     $timetableModel,
         SubPlanController  $subPlan,
+        NoteController     $notes,
         )
     {
         $this->dayPlanModel                 = $dayPlanModel;
         $this->addNoteToSavedTaskRepository = $addNoteToSavedTask;
         $this->timetableModel               = $timetableModel;
         $this->subPlan                      = $subPlan;
+        $this->notes                        = $notes;
     }
 
     public function getLastDayPlan(array $data)
@@ -42,6 +46,7 @@ class GetPlanRepository
         //потом сам план
         $plan = $this->getTasksForLastTimetable($timetableId);
         $plan = $this->addDetailsDataToPlan($plan);
+        $plan = $this->addNotesDataToPlan($plan);
         //die(var_dump($plan));
         //Теперь надо получить статус текущего дня и если он = 3 -> добавить информацию об итоговой оценке и тд
         $planState = $this->getPlanState($timetableId);
@@ -111,13 +116,23 @@ class GetPlanRepository
         return $timetableInfo;
     }
 
-    private function addDetailsDataToPlan(array $plan) {
-        if (!count($plan)) return $plan;
+    private function addDetailsDataToPlan(array $plan) 
+    {
 
         foreach($plan as &$task) {
             $detailsData = $this->subPlan->fetchSubPlan($task->id, 'all');
             $task->detailsCompletedPercent = $detailsData['completedPercent'];
             $task->detailsData = $detailsData['data'];
+        }
+        
+        return $plan;
+    }
+
+    private function addNotesDataToPlan(array $plan)
+    {
+        foreach($plan as &$task) {
+            $notesData = $this->notes->fetchNotes($task->id);
+            $task->notesData = $notesData;
         }
         
         return $plan;

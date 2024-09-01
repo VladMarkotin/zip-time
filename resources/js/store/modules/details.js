@@ -49,9 +49,6 @@ export default {
                 state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy, mode}};
             })
         },
-        SET_DETAILS(state, {key, details, completedPercent, detailsSortBy}) {
-            state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy}};
-        },
         
         UPDATE_DETAILS_SORTING_CRIT(state, {key, newDetailsSortingCrit}) {
             state.details[key].detailsSortBy = newDetailsSortingCrit;

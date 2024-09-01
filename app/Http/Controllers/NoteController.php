@@ -113,9 +113,14 @@ class NoteController extends Controller
     public function getSavedNotes(Request $request)
     {
         $task_id = $request->task_id;
-        $notes = $this->getNotes($task_id);
+        $notes = $this->fetchNotes($task_id);
         
         return json_encode( $notes, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function fetchNotes($task_id)
+    {
+        return $this->getNotes($task_id);
     }
 
     public function getTodayNoteAmount(Request $request)

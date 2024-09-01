@@ -665,18 +665,6 @@
 					}
 				})
 			},
-
-			getActualDetails() {
-				// this.fetchDetails({
-				// 	requestData: {task_id: this.item.taskId, mode: null }
-				// });
-			},
-
-			getNotes() {
-				this.fetchNotes({
-					requestData: {task_id : this.item.taskId, hash: this.item.hash}
-				});
-			},
 		},
 		
 		
@@ -684,13 +672,6 @@
 			this.editHashCodeData();
 			this.getConfigs(); 
 		},
-
-		async mounted() {
-			await Promise.all([
-				// this.getActualDetails(),
-				this.getNotes()
-			]);
-		}
 	}
 	
 </script>

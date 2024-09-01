@@ -119,7 +119,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['INITIALIZE_DETAILS_STORE']),
+        ...mapMutations(['INITIALIZE_DETAILS_STORE', 'INITIALIZE_NOTES_STORE']),
         getRequiredTasks(data) {
             return data.filter((item) => [4, 2].includes(item.type));
         },
@@ -163,8 +163,15 @@ export default {
             detailsCompletedPercent: taskData.detailsCompletedPercent,
             key: taskData.taskId,
         }));
+
+        const notesData = this.data.plan.map(taskData => ({
+            key: taskData.taskId,
+            notesData: taskData.notesData,
+        }));
+
         
         this.INITIALIZE_DETAILS_STORE({detailsData});
+        this.INITIALIZE_NOTES_STORE({notesData});
     },
 
     async mounted() {
