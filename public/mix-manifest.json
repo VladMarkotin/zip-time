@@ -33,6 +33,8 @@
     "/css/Cards/CardsMedia.css": "/css/Cards/CardsMedia.css",
     "/css/settingsPage/settingsPageMedia.css": "/css/settingsPage/settingsPageMedia.css",
     "/css/settingsPage/settingsPage.css": "/css/settingsPage/settingsPage.css",
+    "/css/dataDeletionPolicyPage/dataDeletionPolicyMedia.css": "/css/dataDeletionPolicyPage/dataDeletionPolicyMedia.css",
+    "/css/dataDeletionPolicyPage/dataDeletionPolicyPage.css": "/css/dataDeletionPolicyPage/dataDeletionPolicyPage.css",
     "/css/termsOfUsePage/termsOfUseMedia.css": "/css/termsOfUsePage/termsOfUseMedia.css",
     "/css/termsOfUsePage/termsOfUsePage.css": "/css/termsOfUsePage/termsOfUsePage.css",
     "/css/privacyPolicyPage/privacyPolicyMedia.css": "/css/privacyPolicyPage/privacyPolicyMedia.css",

@@ -36,6 +36,12 @@ return [
         'redirect'      => env('FACEBOOK_URL'),
     ],
 
+    'google' => [
+        'client_id'     => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect'      => env('FACEBOOK_URL'),
+    ],
+
     'gpt' => [
         'openai_secret'       => env('GPT_OPENAI_SECRET'),
         'openai_model'        => env('GPT_OPENAI_MODEL'),
