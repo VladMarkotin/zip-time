@@ -64,7 +64,24 @@
     max-width: 100% !important;
     padding: 40px 12px !important;
   }
-  .inner-block .login-section {
-    padding: 12px 0 !important;
+  .inner-block .login-section .login-info .title-login-page {
+    font-size: 40px;
+  }
+  .inner-block .login-section .login-info .subtitle-login-page {
+    font-size: 26px;
+  }
+  .inner-block .login-section .login-icons-wrapper {
+    gap: 16px;
+  }
+}
+@media screen and (max-width: 375px) {
+  .inner-block {
+    padding: 40px 6px !important;
+  }
+  .inner-block .login-section .login-info .title-login-page {
+    font-size: 37px;
+  }
+  .inner-block .login-section .login-info .subtitle-login-page {
+    font-size: 23px;
   }
 }

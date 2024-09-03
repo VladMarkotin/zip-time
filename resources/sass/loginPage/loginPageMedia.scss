@@ -82,7 +82,34 @@ $maxContentWidth480: 270px;
         padding: 40px 12px !important;
 
         .login-section {
-            padding: 12px 0 !important;
+            .login-info {
+                .title-login-page {
+                    font-size: 40px;
+                }
+
+                .subtitle-login-page {
+                    font-size: 26px;
+                }
+            }
+            .login-icons-wrapper  {
+                gap: 16px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .inner-block {
+        padding: 40px 6px!important;
+        .login-section {
+            .login-info {
+                .title-login-page {
+                    font-size: 37px;
+                }
+                .subtitle-login-page {
+                    font-size: 23px;
+                }
+            }
         }
     }
 }
