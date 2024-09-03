@@ -123,23 +123,4 @@
     font-size: 10px;
     line-height: 11px;
   }
-
-  @media screen and (max-width: 480px) {
-    .login-button__text {
-      font-size: 11px;
-    }
-
-    .secure-login-text {
-      font-size: 9px;
-    }
-
-    .login-button {
-      padding: 7px 12px;
-    }
-
-    .login-button-icon {
-      height: 30px;
-      width: 30px;
-    }
-  }
 </style>

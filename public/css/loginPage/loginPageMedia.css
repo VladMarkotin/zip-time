@@ -18,32 +18,17 @@
   }
 }
 @media screen and (max-width: 770px) {
-  .inner-block .login-section {
-    grid-column-gap: 30px;
-    min-height: 0;
+  .login-section {
+    padding: 12px !important;
   }
-
-  .login-info .title-login-page {
-    font-size: 35px;
-    margin: 35px;
-  }
-  .login-info .subtitle-login-page {
-    font-size: 24px;
-    margin-bottom: 45px;
-  }
-
-  .login-icons-wrapper {
+  .login-section .login-icons-wrapper {
     justify-content: center;
-    gap: 25px;
-  }
-  .login-icons-wrapper .login-icon-wrapper .login-icon {
-    height: 40px;
-    width: 40px;
+    gap: 35px;
   }
 }
 @media screen and (max-width: 740px) {
   .inner-block {
-    max-width: 450px;
+    max-width: 90% !important;
     padding: 0;
   }
   .inner-block .login-section {
@@ -74,22 +59,12 @@
     margin-bottom: 20px;
   }
 }
-@media screen and (max-width: 520px) {
+@media screen and (max-width: 450px) {
   .inner-block {
-    max-width: 420px;
+    max-width: 100% !important;
+    padding: 40px 12px !important;
   }
-}
-@media screen and (max-width: 480px) {
-  .inner-block {
-    max-width: 270px;
-  }
-
-  .login-info .title-login-page {
-    font-size: 32px;
-  }
-  .login-info .subtitle-login-page {
-    text-align: justify;
-    font-size: 20px;
-    line-height: 26px;
+  .inner-block .login-section {
+    padding: 12px 0 !important;
   }
 }
