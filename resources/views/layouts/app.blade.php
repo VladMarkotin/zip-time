@@ -69,10 +69,6 @@
             <link href="{{ asset('css/indexPage/indexPage.css') }}" rel="stylesheet">
             <link href="{{ asset('css/indexPage/indexPageMedia.css') }}" rel="stylesheet">
         @endif
-        @if (Route::currentRouteName() == 'login')
-            <link href="{{ asset('css/loginPage/loginPage.css') }}" rel="stylesheet">
-            <link href="{{ asset('css/loginPage/loginPageMedia.css') }}" rel="stylesheet">
-        @endif
         @if(Route::currentRouteName() == 'backlog')
             <link href="{{ asset('css/backlogPage/backlogPage.css') }}" rel="stylesheet">
             <link href="{{ asset('css/backlogPage/backlogMedia.css') }}" rel="stylesheet">
