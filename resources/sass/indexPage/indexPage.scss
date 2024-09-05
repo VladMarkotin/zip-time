@@ -726,6 +726,7 @@ $signUpButtonColor: #4169E1;
     background-color: $mainSHadeRed;
 
     .statistics-content {
+        width: 100%;
         max-width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fill, 260px);

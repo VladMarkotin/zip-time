@@ -596,6 +596,7 @@ ol {
   background-color: #5c1a1a;
 }
 .statistics-section .statistics-content {
+  width: 100%;
   max-width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, 260px);
