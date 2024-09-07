@@ -494,7 +494,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         methods: {
-            ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus', 'deleteDetail']),
+            ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus', 'deleteDetail' , 'fetchPersonalResults']),
             ...mapMutations(['SET_MODE']),
 
             updateAlertData(alertData) {
@@ -637,6 +637,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
     
                 if (respData[resetDayMarkToDefVal]) {
                     this.$emit(resetDayMarkToDefVal);
+
+                    this.fetchPersonalResults(); 
+                    //запрашиваю опять персональную статистику на случай если поле с отметкой было заполнено,
+                    //но оно очистилось из-за добавления обязательной задачи
                 }
             },
 
