@@ -416,7 +416,7 @@
 			actualDetailsCounter() {
 				const detailsData = this.getDetailsData(this.item.taskId);
 				if (detailsData) {
-					return detailsData.details.length;
+					return detailsData.details.filter(detail =>!detail.is_old_compleated).length;
 				}
 				return 0;
 			},
