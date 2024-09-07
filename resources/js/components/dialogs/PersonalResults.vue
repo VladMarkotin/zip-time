@@ -8,11 +8,11 @@
       <v-card-text>
         <ul style="padding: 0; min-height: 40px;">
           <template v-if="!isEmergencyModeActivated">
-            <li v-if="!isOnlyOneUserInGroup" :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThenText"></li>
-            <li v-else>At the moment, you are the only one in your group</li>
+            <li v-if="!isOnlyOneUserWithRatingLowMax" :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThenText"></li>
+            <li v-else>You are the best in current group. Keep winning!</li>
             <li v-html="moreResponsibleText"></li>
             <li v-html="userPurposelnessText"></li>
-            <li v-html="betterThenPurposelnessText"></li>
+            <li v-if="!isOnlyOneUserWithRatingLowMax" v-html="betterThenPurposelnessText"></li>
           </template>
           <li v-else>Comparative information is unavailable during emergency mode</li>
         </ul>
@@ -37,12 +37,6 @@
             isEmergencyModeActivated() {
               return this.getPersonalResultData('is_emergency_mode_activated');
             },
-            isOnlyOneUserInGroup() {
-              return this.getPersonalResultData('is_only_one_user_in_group');
-            },
-            ratingData() {
-              return this.getPersonalResultData('ratingData');
-            },
             better_then() {
               return this.getPersonalResultData('better_then');
             },
@@ -55,6 +49,16 @@
             better_then_purposelness() {
               return this.getPersonalResultData('better_then_purposelness');
             },
+            isOnlyOneUserInGroup() {
+              return this.getPersonalResultData('is_only_one_user_in_group');
+            },
+            isOnlyOneUserWithRatingLowMax() {
+              return this.ratingData.ratingStatus === 'normal' && this.isOnlyOneUserInGroup;
+            },
+            ratingData() {
+              return this.getPersonalResultData('ratingData');
+            },
+            
             betterThenText() {
               const {ratingStatus} = this.ratingData;
               switch (ratingStatus) {
