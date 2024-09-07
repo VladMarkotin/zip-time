@@ -101,7 +101,6 @@
   
                   this.setRatingData(getValue('ratingData'));
                 }
-
               })
           }
       }
