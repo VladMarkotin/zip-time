@@ -31,6 +31,7 @@ const editCompletedPercent = ({compPercent}) => {
 };
 
 const DEFAULT_DETAILS_SORT_BY = 'created-at-asc';
+const DEFAULT_DETAILS_MODE    = 'actual';
 
 export default {
     state: {
@@ -43,7 +44,7 @@ export default {
                 completedPercent: checkCompletedPercent({complPercentResp: data.detailsCompletedPercent}),
                 details:  transformDetails(data.detailsData),
                 detailsSortBy:    DEFAULT_DETAILS_SORT_BY,
-                mode: 'all',
+                mode: DEFAULT_DETAILS_MODE,
             }));
             detailsTransformedData.forEach(({key, details, completedPercent, detailsSortBy, mode}) => {
                 state.details = {...state.details, [key]: {details, completedPercent, detailsSortBy, mode}};
@@ -71,7 +72,6 @@ export default {
 							return detailADate - detailBDate 
 					}
 			}
-                
 			switch (currentTaskData.detailsSortBy) {
 				case 'created-at-asc':
 					currentTaskDetails.sort((detailA, detailB) => {
@@ -157,7 +157,7 @@ export default {
         },
 
         RESET_FILTERS_TO_DEF_VAL(state, {key}) {
-            state.details[key] = {...state.details[key], detailsSortBy: DEFAULT_DETAILS_SORT_BY, mode: 'all'}
+            state.details[key] = {...state.details[key], detailsSortBy: DEFAULT_DETAILS_SORT_BY, mode: DEFAULT_DETAILS_MODE}
         }
     },
     getters: {
@@ -200,7 +200,7 @@ export default {
                 const detailsData = state.details[key];
 
                 if (detailsData === undefined) {
-                    return 'all';
+                    return DEFAULT_DETAILS_MODE;
                 }
 
                 return detailsData.mode;
@@ -321,5 +321,15 @@ export default {
                 console.error(error);
             }
         },
+
+        reset_to_default_values({commit, getters}, {taskId}) {
+            const payload = {key: taskId};
+            const currentTaskData = getters.getDetailsData(taskId);
+            commit('RESET_FILTERS_TO_DEF_VAL', payload);
+
+            if (currentTaskData) {
+                commit('SORT_DETAILS', payload);
+            }
+        }
     }
 }

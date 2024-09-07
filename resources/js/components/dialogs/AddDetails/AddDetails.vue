@@ -31,7 +31,7 @@
 
 <script>
 import store from '../../../store';
-import { mapActions, mapMutations } from 'vuex/dist/vuex.common.js';
+import { mapActions } from 'vuex/dist/vuex.common.js';
 import AddDetailsCard from './AddDetailsCard.vue';
 import {mdiChartGantt,}  from '@mdi/js'  
 import { uuid } from 'vue-uuid';
@@ -66,13 +66,12 @@ export default {
     watch: {
         isShowDialogDetails(value) {
             if (!value) {
-                this.RESET_FILTERS_TO_DEF_VAL({key: this.item.taskId});
+                this.reset_to_default_values({taskId: this.item.taskId});
             }
         },
     },
     methods: {
-        ...mapMutations(['RESET_FILTERS_TO_DEF_VAL']),
-        ...mapActions(['fetchDetails']),
+        ...mapActions(['fetchDetails', 'reset_to_default_values']),
         showAddDetailsDialog() {
             this.isShowDialogDetails = true;
         },
