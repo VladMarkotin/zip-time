@@ -25,18 +25,16 @@
                 :cols=3
                 >
                     <span>
-                        {{ notesTodayAmount }}
+                        {{notesTodayAmount}}
                     </span>
                 </v-col>
             </v-row>
 		</template>
 		<template v-if="isShowNotesDialog">
             <AddNotesCard 
-            :isLoading   = "isLoading"
-            :notesList   = "notesList"
+            :taskId      = "item.taskId"
             :item        = "item"
             :screenWidth = "screenWidth"
-            @updateNotesInfo     = "updateNotesInfo"
             @closeAddNotesDialog = "closeAddNotesDialog"
             />
         </template>
@@ -44,18 +42,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex/dist/vuex.common.js';
+import store from '../../../store';
 import AddNotesCard from './AddNotesCard.vue';
 import { mdiNotebookEditOutline }  from '@mdi/js'
     export default {
         props: {
             num:  {},
-            notesList: {
-                type: Array,
-                required: true,
-            },
-            notesTodayAmount: {
-                type: Number,
-            },
             item: {
                 type: Object,
                 required: true,
@@ -68,72 +61,32 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
             return {
                 isShowNotesDialog: false,
                 icons: { mdiNotebookEditOutline},
-                isLoading: false,
                 minPreloaderDispTime: 500,
             }
         },
+        store,
         components: {
             AddNotesCard,
         },
-        methods: {
+        computed: {
+            ...mapGetters(['getNotesData']),
+            notesTodayAmount() {
+                const notesData = this.getNotesData(this.item.taskId);
+                if (!notesData) {
+                    return 0;
+                }
 
+                return notesData.length;
+            }
+        },
+        methods: {
             showAddNotesDialog() {
                 this.isShowNotesDialog = true;
-                this.getAllNotesForTask();
-            },
-
-            getAllNotesForTask() {
-                const controllLoadingTime = (time, callback) => {
-				    if (time > this.minPreloaderDispTime) callback();
-				    else setTimeout(callback, this.minPreloaderDispTime - time);
-			    }
-
-                this.isLoading = true
-                const loadingStart = Date.now();
-
-				/**query for getting all notes */
-				axios.post('/get-saved-notes',{
-                    task_id : this.item.taskId, 
-                    hash:     this.item.hash
-                })
-				.then((response) => {
-                    const loadingEnd = Date.now();
-
-                    controllLoadingTime(loadingEnd - loadingStart, () => {
-                        this.isLoading = false;
-
-                        const notesList = response.data;
-                        this.updateNotesInfo({notesList}); 
-                    })
-
-				})
-			},
-
-            getTodayNoteAmount(){
-				axios.post('/get-today-note-amount',{
-                    task_id : this.item.taskId,
-                    details : this.item.details,
-				    note :    this.item.notes,
-                    type :    this.item.type})
-				.then((response) => {
-                    const todayAmount = response.data.amount;
-					this.updateNotesInfo({todayAmount}); 
-				  })
-
-			},
-
-            updateNotesInfo(dataObj) {
-                this.$emit('updateNotesInfo', dataObj);
             },
 
             closeAddNotesDialog() {
                 this.isShowNotesDialog = false;
-                this.getTodayNoteAmount()
             }
-        },
-
-        created() {
-            this.getTodayNoteAmount();
         },
     }
 </script>

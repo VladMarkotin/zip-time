@@ -51,23 +51,17 @@ class NoteController extends Controller
         ];
 
         try {
-            if (isset($saved_task_id)) {
-                $savedNoteData = [
-                    'saved_task_id' => $saved_task_id,
-                    'note'          => $noteAfterValidation,
-                    'created_at'    => $this->carbon::now(),
-                    'updated_at'    => $this->carbon::now(),
-                ];
+            $noteData = [
+                'task_id'       => $task_id,
+                'saved_task_id' => $saved_task_id,
+                'note'          => $noteAfterValidation,
+                'created_at'    => $this->carbon::now(),
+                'updated_at'    => $this->carbon::now(),
+            ];
+            $new_note = SavedNotes::create($noteData);
 
-                SavedNotes::create($savedNoteData);
-                if ($isReturnResponse) {
-                    $all_notes = $this->getNotes($saved_task_id);
-
-                    $response['all_notes'] = $all_notes;
-                }
-            } else {
-                $current_task = Tasks::find($task_id);
-                $current_task->update(['note' => $noteAfterValidation]);
+            if ($isReturnResponse) {
+                $response['new_note'] = $new_note;
             }
 
             $response['status'] = 'success';
@@ -97,35 +91,36 @@ class NoteController extends Controller
         return $noteAfterValidation;
     }
 
-    private function getNotes($saved_task_id)
+    private function getNotes($task_id)
     {
-        $notes = SavedNotes::select('id', 'note', 'created_at', 'updated_at')
-        ->where('saved_task_id', $saved_task_id)
-        ->orderBy('created_at', 'desc')
-        ->get()
-        ->toArray();
+        $saved_task_id = $this->getSavedTaskId(['id' => $task_id]);
+
+        $notes = SavedNotes::select('id', 'task_id', 'note', 'created_at', 'updated_at')
+            ->where(function ($query) use ($saved_task_id, $task_id) {
+                if (isset($saved_task_id)) {
+                    $query->where('saved_task_id', $saved_task_id);
+                } else {
+                    $query->where('task_id', $task_id);
+                }
+            })
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->toArray();
 
         return $notes;
     }
 
     public function getSavedNotes(Request $request)
     {
-        //get id of saved_task
-        $savedTaskId = SavedTask::select('id')->where([['hash_code', $request->get('hash')], ['user_id', Auth::id()]])
-        ->orderBy('created_at', 'desc')
-        ->get()
-        ->toArray();
-
-        if (!count($savedTaskId)) {
-            return json_encode([]);
-        }
-
-        $savedTaskId = $savedTaskId[0]['id'];
-
-        //get notes for saved Task
-        $notes = $this->getNotes($savedTaskId);
-        //die(var_dump($notes));
+        $task_id = $request->task_id;
+        $notes = $this->fetchNotes($task_id);
+        
         return json_encode( $notes, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function fetchNotes($task_id)
+    {
+        return $this->getNotes($task_id);
     }
 
     public function getTodayNoteAmount(Request $request)
@@ -203,8 +198,6 @@ class NoteController extends Controller
         $note    = $request->get('note');
         $task_id = $request->get('task_id');
 
-        $saved_task_id = $this->getSavedTaskId(['id' => $task_id]);
-        
         $noteAfterValidation = $this->getNoteAfterValidation($note);
 
         $response = $this->responseTemplate;
@@ -213,8 +206,7 @@ class NoteController extends Controller
             $current_note = $this->savedNotes::find($note_id);
             $current_note->update(['note' => $noteAfterValidation]);
 
-            $all_notes = $this->getNotes($saved_task_id);
-            $response['all_notes'] = $all_notes;
+            $response['edited_note'] = $current_note;
             
             $response['status'] = 'success';
             $response['message'] = 'note has been updated';

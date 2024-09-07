@@ -24,19 +24,9 @@ class AddNoteToSavedTask {
     }
 
     public function addSavedNote(array $params)
-    {
-        //Need hash_code and user_id, note
-        $savedTask = [
-            "hash_code" => $params['hash_code'],
-            "user_id"   => $params['user_id']
-        ];
-        $savedTaskId = $this->getSavedTaskId($savedTask);
-        $data = [
-            'saved_task_id' => $savedTaskId,
-            'note'          => $params['note']
-        ];
-
-        SavedNotes::insert($data);
+    {   
+        $saved_task_id = $this->getSavedTaskId($params);
+        SavedNotes::where('task_id', $params['task_id'])->update(['saved_task_id' => $saved_task_id]);
     }
 
     public function getLastNote(array $params)

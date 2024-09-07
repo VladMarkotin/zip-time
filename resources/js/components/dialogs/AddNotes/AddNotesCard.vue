@@ -61,9 +61,7 @@
         class="pb-0 addNotesCard-notes-wrapper"
         style="height: 450px; position: relative; overflow-x: hidden"
         >
-            <v-list 
-            v-if="!isLoading"
-            >
+            <v-list >
             <transition-group name="list" tag="div" class="notes-wrapper">
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
@@ -74,16 +72,6 @@
                     />
                 </v-list-item>
             </transition-group>
-            </v-list>
-            <v-list
-            style="height: 100%;"
-            v-else
-            class="d-flex justify-content-center align-items-center"
-            >
-                <DefaultPreloader 
-                :size="96"
-                :width="7"
-                />
             </v-list>
         </v-card-text>
         <v-divider class="m-0"></v-divider>
@@ -141,25 +129,22 @@
 </template>
 
 <script>
-import DefaultPreloader from '../../UI/DefaultPreloader.vue';
+import { mapGetters, mapActions } from 'vuex/dist/vuex.common.js';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import Note from './Note.vue';
 import EditNotesDialog from './EditNotesDialog.vue';
     export default {
         props: {
-            notesList: {
-                type: Array,
-                required: true,
-            },
-            isLoading: {
-                type: Boolean,
-            },
             item: {
                 type: Object,
                 required: true,
             },
             screenWidth: {
                 type: Number,
+            },
+            taskId: {
+                type: Number,
+                required: true,
             }
         },
         data() {
@@ -194,29 +179,31 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 editableNoteData: {},
             };
         },
-
+        emits: ['closeAddNotesDialog'],
+        computed: {
+            ...mapGetters(['getNotesData']),
+            notesList() {
+                return this.getNotesData(this.taskId);
+            }
+        },
         components: {
-            DefaultPreloader,
             AddSubtaskButton,
             Note,
             EditNotesDialog,
         },
 
         methods: {
-            deleteNote(noteId) {
-                axios.post('/delete-note', {note_id: noteId})
-                .then(response => {
-                    const {data} = response;
-                    if (data.status === 'success') {
-                        const newNotesList = [...this.notesList].filter(note => note.id !== noteId);
-                        const todayAmount  = newNotesList.length;
+            ...mapActions(['addNote', 'removeNote', 'editCurrentNote']),
+            async deleteNote(noteId) {
+                try {
+                    const response = await this.removeNote({taskId: this.taskId, noteId});
+                    const respData = response.data;
 
-                        this.$emit('updateNotesInfo', {notesList: newNotesList, todayAmount});
-                    }
-                    
-                    this.setAlertData(data);
+                    this.setAlertData(respData);
                     this.showAlert();
-                })
+                } catch (error) {
+                    console.error(error);
+                }
             },
 
             setAlertData({status, message}) {
@@ -247,26 +234,24 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 .every(checkResult => checkResult === true);
             },
 
-            addNewNote() {
-                const task_id = this.item.taskId;
+            async addNewNote() {
+                const taskId = this.taskId;
                 const note    = this.newNoteInpuVal.trim();
-                axios.post('/add-note', {task_id, note})
-                .then(response => {
-                    const {data} = response;
+                
+                try {
+                    const response = await this.addNote({taskId, note});
+                    const respData = response.data;
 
-                    if (data.status === 'success') {
-                        const notesList   = data.all_notes;
-                        const todayAmount = notesList.length;
-                        this.$emit('updateNotesInfo', {notesList, todayAmount});
-                        
+                    if (respData.status === 'success') {
                         this.newNoteInpuVal = '';
                         this.isNewNoteInpuValValid = false;
-                        
                     }
 
-                    this.setAlertData({status: data.status, message: data.text});
+                    this.setAlertData({status: respData.status, message: respData.text});
                     this.showAlert();
-                })
+                } catch(error) {
+                    console.error(error);
+                }
             },
 
             showEditNotesDialog(id) {
@@ -287,22 +272,16 @@ import EditNotesDialog from './EditNotesDialog.vue';
                 this.editableNoteData = {...currenNote};
             },
 
-            editNote(updatedNote) {
-                const task_id = this.item.taskId;
-                const note_id = updatedNote.id;
-                const note    = updatedNote.note;
-                axios.post('/update-note', {note_id, note, task_id})
-                .then(response => {
-                    const {data} = response;
-
-                    if (data.status === 'success') {
-                        const notesList   = data.all_notes;
-                        this.$emit('updateNotesInfo', {notesList,});
-                    }
-
-                    this.setAlertData({status: data.status, message: data.message});
+            async editNote(updatedNote) {
+                try {
+                    const response = await this.editCurrentNote({taskId: this.taskId, updatedNote});
+                    const respData = response.data;
+                    
+                    this.setAlertData({status: respData.status, message: respData.message});
                     this.showAlert();
-                })
+                } catch(error) {
+                    console.error(error);
+                }
             }
         },
 

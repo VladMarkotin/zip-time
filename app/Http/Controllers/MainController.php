@@ -133,9 +133,6 @@ class MainController
         $params['default_saved_task_id']     = $request->input('default_saved_task_id', null);
         
         $taskId = $request->input('task_id');
-        if (isset($taskId)) {
-            $params['note']     = Tasks::find($taskId)->note;
-        }
         $taskId    = (isset($taskId)) ? $request->input('task_id') : null;
         //die(var_dump($params));
         $createResponce         = fn($message, $status) => ['message' => $message, 'status'  => $status,];
@@ -152,13 +149,7 @@ class MainController
                     if ($taskId) {
                         Tasks::where('id', $taskId)->update(['hash_code' => $params['hash_code'] ]);
                         $this->subPlanService ->saveSubtasks(['task_id' => $taskId]); 
-                    }
-                    if (isset($params['note'])) {
-                        $response = $this->notesService->addNoteForSavedTask($params);
-                        
-                        if($response){
-                            $this->notesRepository->addSavedNote($params); 
-                        }
+                        $this->notesRepository->addSavedNote(['task_id' => $taskId, 'hash_code' => $params['hash_code']]); 
                     }
                 });
 

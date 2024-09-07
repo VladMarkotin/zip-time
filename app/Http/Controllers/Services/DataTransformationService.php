@@ -106,6 +106,9 @@ class DataTransformationService
             if( ($v->type == 1) || ($v->type == 2) ){
                 $transformData["plan"][$k]['is_ready'] = $v->mark; //Must Be isReady
             }
+            $transformData["plan"][$k]['detailsCompletedPercent'] = $v->detailsCompletedPercent;
+            $transformData["plan"][$k]['detailsData'] = $v->detailsData;
+            $transformData["plan"][$k]['notesData'] = $v->notesData;
         }
         //Эту информацию мне нужно добавить в итоговый ответ
         $transformData["dayStatus"]    = $data[0]->day_status;

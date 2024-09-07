@@ -71,7 +71,7 @@ import ResetButton from '../../UI/ResetButton.vue';
                 isNoteTextChanged: false,
             }
         },
-
+        emits: ['closeEditNotesDialog', 'editNote'],
         components: {
             ResetButton,
         },

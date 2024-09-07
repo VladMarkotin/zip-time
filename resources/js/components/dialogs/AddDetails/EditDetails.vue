@@ -10,13 +10,13 @@
             <v-card-text>
                 Edit Subtask`s title:
                 <form
-                @keydown.enter="saveChangesInSubtask"
+                @keydown.enter="updateDetail"
                 >
                     <v-text-field 
                     class="ml-1 pt-0" 
                     :counter="subtaskRules.subtaskTitle.maxLength" 
                     v-model="subtaskInputsValues.title"
-                    :rules="subtaskTitleRules"
+                    :rules="detailTitleRules"
                     success
                     @input="checkInputsValue"
                     ref="subtaskTitleInput"
@@ -28,7 +28,7 @@
                     :counter="subtaskRules.subtaskText.maxLength"
                     class="ml-1 pt-0" 
                     v-model="subtaskInputsValues.text"
-                    :rules="subtaskTextRules"
+                    :rules="detailTextRules"
                     success
                     @input="checkInputsValue"
                     ref="subtaskTextInput"
@@ -58,7 +58,7 @@
                 v-if="isSubTaskInputValValid" 
                 color="green-darken-1" 
                 variant="text"
-                @click="saveChangesInSubtask">
+                @click="updateDetail">
                     Save
                 </v-btn>
             </v-card-actions>
@@ -67,32 +67,31 @@
 </template>
 
 <script>
+import store from '../../../store';
+import { mapGetters, mapActions} from 'vuex/dist/vuex.common.js';
 export default {
     props: {
         isShowEditDetailsDialog: {
             type: Boolean,
             required: true,
         },
-
-        modifiedDetailTemplate: {
-            type: Object,
+        taskId: {
+            type: Number,
             required: true,
         },
-
-        details: {
-            type: Array,
+        editableDetailId: {
+            type: Number,
             required: true,
         },
-
         subtaskRules: {
             type: Object,
         },
 
-        subtaskTitleRules: {
+        detailTitleRules: {
             type: Array,
         },
 
-        subtaskTextRules: {
+        detailTextRules: {
             type: Array,
         },
 
@@ -112,15 +111,13 @@ export default {
             isSubTaskInputValValid: false,
         }
     },
+    store,
+    emits: ['closeEditDetailsDialog'],
+    computed: {
+        ...mapGetters(['getDetail']),
+    },
     methods: {
-        updateDetails() {
-            const updateDetails = this.details.map(item => {
-                if (item.taskId === this.modifiedDetailTemplate.id) return {...item, text: this.subtaskInputsValues.text, title: this.subtaskInputsValues.title};
-                return item;
-            })
-
-            this.$emit('updateDetails', updateDetails);
-        },
+        ...mapActions(['editDetail']),
 
         setAlertData(alertData) {
             this.alert = {
@@ -130,39 +127,43 @@ export default {
             }
         },
 
-        saveChangesInSubtask(){	
-            if (this.isSubTaskInputValValid) {
-				axios.post('/edit-subtask', 
-                {id: this.modifiedDetailTemplate.id, title: this.subtaskInputsValues.title, text: this.subtaskInputsValues.text})
-					.then((response) => {
-						
-						if (response.data.status == 'success') {
-							this.updateDetails();
-						}
+        async updateDetail() {
+            try {
+                if (this.isSubTaskInputValValid) {
+                    const response = await this.editDetail({
+                        taskId:   this.taskId,
+                        detailId: this.editableDetailId,
+                        title:    this.subtaskInputsValues.title,
+                        text:     this.subtaskInputsValues.text,
+                    });
+                    const respData = response.data;
 
-                        this.setAlertData({type: response.data.status, text: response.data.message});
-                        this.alert.isShowAlert = true;
+                    this.setAlertData({type: respData.status, text: respData.message});
+                    this.alert.isShowAlert = true;
 
-						setTimeout( () => {
-							this.dialogEditSubTask = false;
-						},this.alertDisplayTime)
-				  })
+					setTimeout( () => {
+						this.dialogEditSubTask = false;
+					},this.alertDisplayTime)
             } else {
-                this.setAlertData({type: 'error', text: 'Invalid data'})
-                this.alert.isShowAlert = true;
+                    this.setAlertData({type: 'error', text: 'Invalid data'})
+                    this.alert.isShowAlert = true;
 
-                setTimeout(() => {
-                    this.alert.isShowAlert = false;
-                }, this.alertDisplayTime)
+                    setTimeout(() => {
+                        this.alert.isShowAlert = false;
+                    }, this.alertDisplayTime)
+                }
+            } catch(error) {
+                console.error(error);
             }
-			},
+            
+        },
 
-            checkInputsValue() {
-                this.isSubTaskInputValValid = new Array(
-                    ...this.subtaskTitleRules.map(check => check(this.subtaskInputsValues.title)),
-                    ...this.subtaskTextRules.map(check => check(this.subtaskInputsValues.text)),
-                ).every(checkResult => checkResult === true);
-            },
+        checkInputsValue() {
+            this.isSubTaskInputValValid = new Array(
+                ...this.detailTitleRules.map(check => check(this.subtaskInputsValues.title)),
+                 ...this.detailTextRules.map(check => check(this.subtaskInputsValues.text)),
+            ).every(checkResult => checkResult === true);
+        },
     },
     watch: {
         dialogEditSubTask(dialogStatus) {
@@ -171,7 +172,9 @@ export default {
     },
     created() {
         this.dialogEditSubTask = this.isShowEditDetailsDialog;
-        this.subtaskInputsValues = {title: this.modifiedDetailTemplate.title, text: this.modifiedDetailTemplate.text};
+
+        const editableDetail = this.getDetail(this.taskId, this.editableDetailId);
+        this.subtaskInputsValues = {title: editableDetail.title, text: editableDetail.text};
     },
 
     mounted() {

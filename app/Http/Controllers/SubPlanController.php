@@ -55,8 +55,9 @@ class SubPlanController extends Controller
         }
         if (in_array(false, $errors, true)) {
             return ( response()->json([
-                'message' => 'data for subtask is invalid',
+                'message'  => 'data for subtask is invalid',
                 'elements' => $subPlan, 
+                'status'   => 'error'
             ]) );
         }
         /**Have to get saved_task_id */
@@ -89,6 +90,7 @@ class SubPlanController extends Controller
                 'subtaskId'            => $subtask_id,
                 'completedPercent'     => $completedPercent,
                 'resetDayMarkToDefVal' => $resetDayMarkToDefVal,
+                'status'               => 'success',
             ];
         };
 
@@ -104,11 +106,19 @@ class SubPlanController extends Controller
 
     public function getSubPlan(Request $request)
     {
-        $mode = $request->get('mode');
+        $response = $this->fetchSubPlan($request->get('task_id'), $request->get('mode'));
+        
+        return (
+            response()->json($response, 200)
+            ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
+        );
+    }
+
+    public function fetchSubPlan($task_id, $mode)
+    {
         $currentUserTime = $this->getUserTimeService->getUserTime('Y-m-d');
 
-        $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $request->get('task_id')]);
-        $id = $request->get('task_id');
+        $savedTaskId = $this->subPlanService->getSavedTaskId(['task_id' => $task_id]);
 
         $getSubplan = function($columnName, $columnVal, $currentUserTime) {
             $subPlan = SubPlan::where([[$columnName, $columnVal]])
@@ -135,10 +145,10 @@ class SubPlanController extends Controller
             }
 
         } else {
-            $subPlan = $getSubplan('task_id', $request->get('task_id'), $currentUserTime);
+            $subPlan = $getSubplan('task_id', $task_id, $currentUserTime);
 
             $lastId = SubPlan::select('id')
-            ->where('task_id', $id)
+            ->where('task_id', $task_id)
             ->get()
             ->toArray();
         }
@@ -155,14 +165,13 @@ class SubPlanController extends Controller
         }
 
         return (
-            response()->json([
+            [
                 'status' => 'success', 
-                'data' => $subPlan, 
+                'data'   => $subPlan, 
                 'completedPercent' => $this->subPlanService->countPercentOfCompletedWork(
-                    ['task_id' => $lastTaskId ? $lastTaskId : $request->get('task_id')]
-                ),
-            ], 200)
-            ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
+                    ['task_id' => $lastTaskId ? $lastTaskId : $task_id]
+                )
+            ]
         );
     }
 

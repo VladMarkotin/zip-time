@@ -10,7 +10,6 @@
                         :rotate="360" 
                         :size="100" 
                         :width="10" 
-                        :model-value="completedPercent"
                         color="red" 
                         :value="completedPercent">
                             {{ completedPercent }} %
@@ -35,9 +34,9 @@
                             v-if="isShowAddNewDetailMobileDialog"
                             :isShowAddNewDetailMobileDialog = "isShowAddNewDetailMobileDialog"
                             :newDetail                      = "newDetail"
-                            :subtaskRules                   = "subtaskRules"
-                            :subtaskTitleRules              = "subtaskTitleRules"
-                            :subtaskTextRules               = "subtaskTextRules"
+                            :subtaskRules                   = "detailsRules"
+                            :detailTitleRules               = "detailTitleRules"
+                            :detailTextRules                = "detailTextRules"
                             :dataOnValidofInputs            = "dataOnValidofInputs"
                             @closeAddNewDetailMobileDialog  = "isShowAddNewDetailMobileDialog = false"
                             @setNewDetail                   = "setNewDetail"
@@ -55,9 +54,9 @@
                                 width="20px" 
                                 v-model="newDetail.title" 
                                 v-on:keyup.enter="addDetail" 
-                                :counter="subtaskRules.subtaskTitle.maxLength" 
+                                :counter="detailsRules.subtaskTitle.maxLength" 
                                 label="Subtask title"
-                                :rules="subtaskTitleRules"
+                                :rules="detailTitleRules"
                                 :success="dataOnValidofInputs.isTitleInpuValValid"
                                 ref="subtaskTitleInput"
                                 required></v-text-field>
@@ -69,9 +68,9 @@
                                 width="20px" 
                                 v-model="newDetail.text" 
                                 v-on:keyup.enter="addDetail" 
-                                :counter="subtaskRules.subtaskText.maxLength"
+                                :counter="detailsRules.subtaskText.maxLength"
                                 label="Subtask details" 
-                                :rules="subtaskTextRules"
+                                :rules="detailTextRules"
                                 :success="dataOnValidofInputs.isTextInputValValid"
                                 ref="subtaskTextInput"
                                 required></v-text-field>
@@ -98,7 +97,7 @@
                                     >
                                         <AddSubtaskButton 
                                         :buttonSize="40"
-                                        @addSubtask="addDetail(item)"
+                                        @addSubtask="addDetail"
                                         />
                                     </template>
                                     </v-col>
@@ -109,7 +108,7 @@
                         <v-divider></v-divider>
                         <v-row>
                             <template>
-                                <v-expansion-panels v-if="!isLoading">
+                                <v-expansion-panels>
                                     <transition-group name="detailsList" tag="div" style="width: 100%;">
                                         <v-expansion-panel v-for="(v, i) in details" :key="v.uniqKey">
                                             <v-expansion-panel-header>
@@ -152,7 +151,7 @@
                                                             <template>
                                                                 <div v-show="!v.is_old_compleated">
                                                                     <EditButton 
-                                                                    @click="createModifiedDetailTemplate(v)"
+                                                                    @click="showEditDetailsDialog(v)"
                                                                     :tooltipValue="'Edit subtask'"
                                                                     />
                                                                 </div>
@@ -246,15 +245,6 @@
                                         </v-expansion-panel>
                                     </transition-group>
                                 </v-expansion-panels>
-                                <v-row
-                                v-else 
-                                class="p-0 m-0 mt-6 d-flex justify-content-center align-items-center"
-                                >
-                                    <DefaultPreloader
-                                    :size="96"
-                                    :width="7"
-                                    />
-                                </v-row>
                             </template>
                         </v-row>
                     </template>
@@ -336,24 +326,24 @@
             <template v-if="isShowEditDetailsDialog">
                 <EditDetails 
                 :isShowEditDetailsDialog = "isShowEditDetailsDialog"
-                :modifiedDetailTemplate  = "modifiedDetailTemplate"
-                :details                 = "details"
-                :subtaskRules            = "subtaskRules"
-                :subtaskTitleRules       = "subtaskTitleRules"
-                :subtaskTextRules        = "subtaskTextRules"
+                :taskId                  = "taskId"
+                :editableDetailId        = "editableDetailId"
+                :subtaskRules            = "detailsRules"
+                :detailTitleRules        = "detailTitleRules"
+                :detailTextRules         = "detailTextRules"
                 :alertDisplayTime        = "alertDisplayTime"
-                @closeEditDetailsDialog = "closeEditDetailsDialog"
-                @updateDetails          = "updateDetails"
+                @closeEditDetailsDialog  = "closeEditDetailsDialog"
                 />
             </template>
         </v-card>
 </template>
 
 <script>
+import store from '../../../store';
+import { mapGetters, mapActions, mapMutations, } from 'vuex/dist/vuex.common.js';
 import EditDetails from './EditDetails.vue';
 import AddSubtaskButton from '../../UI/AddSubtaskButton.vue';
 import EditButton from '../../UI/EditButton.vue';
-import DefaultPreloader from '../../UI/DefaultPreloader.vue';
 import AddNewDetailMobile from './AddNewDetailMobile.vue';
 import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
@@ -362,24 +352,12 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 type: Object,
                 required: true,
             },
-            details: {
-                type: Array,
-                required: true,
-            },
-            completedPercent: {
+            taskId: {
                 type: Number,
                 required: true,
             },
             alert: {
                 type: Object,
-            },
-            isLoading: {
-                type: Boolean,
-                required: true,
-            },
-            detailsSortingCrit: {
-                type: String,
-                required: true,
             },
             generateUniqKey: {
                 type: Function,
@@ -402,7 +380,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 					},
                 isShowAlertInDetails: false,
                 alertDisplayTime: 1500,
-                subtaskRules: {
+                detailsRules: {
                     subtaskTitle: {
                         minLength: 3,
                         maxLength: 255,
@@ -412,23 +390,23 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                         maxLength: 999,
                     }
                 },
-                subtaskTitleRules: [
+                detailTitleRules: [
                     (inputVal) => {
                         inputVal = inputVal ? inputVal.trim().length : 0;
-                        const {minLength} = this.subtaskRules.subtaskTitle;
+                        const {minLength} = this.detailsRules.subtaskTitle;
                         return inputVal >= minLength || `Minimum length is ${minLength} characters`;
                     },
 
                     (inputVal) => {
                         inputVal = inputVal ? inputVal.trim().length : 0;
-                        const {maxLength} = this.subtaskRules.subtaskTitle;
+                        const {maxLength} = this.detailsRules.subtaskTitle;
                         return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
                     }
                 ],
-                subtaskTextRules: [
+                detailTextRules: [
                     (inputVal) => {
                         inputVal = inputVal ? inputVal.trim().length : 0;
-                        const {maxLength} = this.subtaskRules.subtaskText;
+                        const {maxLength} = this.detailsRules.subtaskText;
                         return inputVal <= maxLength || `Maximum length is ${maxLength} characters`;
                     }
                 ],
@@ -437,19 +415,9 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     isTitleInpuValValid:  false,
                     isTextInputValValid:  true,
                 },
+                editableDetailId: null,
                 isShowEditDetailsDialog: false,
                 isSavedTask: this.item.hash !== '#',
-                modifiedDetailTemplate: {id: null, title: '', text: ''},
-                displayedDetails: {
-                    currentMode: 'actual',
-                    all: {
-                        showSubtasksButtonText: 'View actual subtasks'
-                    },
-                    actual: {
-                        showSubtasksButtonText: 'View all subtasks',
-                    }
-                },
-                detailsSortBy: null,
                 radioButtons: [
                     {value: 'created-at-asc', label: 'Old first',},
                     {value: 'created-at-desc', label: 'New first',},
@@ -459,64 +427,81 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 isShowAddNewDetailMobileDialog: false,
             }
         },
-        components: {EditDetails, AddSubtaskButton, EditButton, DefaultPreloader, AddNewDetailMobile},
+        store,
+        emits: ['closeAddDetailsDialog', 'updateAlertData', 'resetDayMarkToDefVal'],
+        components: {EditDetails, AddSubtaskButton, EditButton, AddNewDetailMobile},
         watch: {
-            detailsSortBy(sortCritVal) {
-                this.updateDetailsSortingCrit(sortCritVal);
-            },
             'newDetail.title'() {
                 this.setDataOnValidOfInputs(
                     'isTitleInpuValValid', 
-                    this.subtaskTitleRules, 
+                    this.detailTitleRules, 
                     this.newDetail.title
                 );
             },
             'newDetail.text'() {
                 this.setDataOnValidOfInputs(
                     'isTextInputValValid', 
-                    this.subtaskTextRules, 
+                    this.detailTextRules, 
                     this.newDetail.text
                 );
             }
         },
         computed: {
+            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent', 'getMode']),
+            detailsSortBy: {
+                get() {
+                    return this.getDetailsSortBy(this.taskId);
+                },
+                set(val) {
+                    this.updateDetailsSortingCrit({key: this.taskId, newDetailsSortingCrit: val});
+                }
+            },
+            details() {
+                const currentTaskData = this.getDetailsData(this.taskId);
+
+                if (!currentTaskData) {
+                    return [];
+                }
+                const details = currentTaskData.details;
+                const mode = this.displayedDetails.currentMode;
+
+                if (mode === 'all') {
+                    return details;
+                }
+                
+                return details.filter(detail => !detail.is_old_compleated);
+            },
             isMobile() {
                 return this.screenWidth < 768; 
-            }  
+            },
+            detailsSortingCrit() {
+                return this.getDetailsSortingCrit(this.taskId);
+            },
+            completedPercent() {
+                return this.getCompletedPercent(this.taskId);
+            },  
+            displayedDetails() {
+                const currentMode = this.getMode(this.taskId);
+                return {
+                    currentMode,
+                    all: {
+                        showSubtasksButtonText: 'View actual subtasks'
+                    },
+                    actual: {
+                        showSubtasksButtonText: 'View all subtasks',
+                    }
+                };
+            }
         },
         methods: {
-            updateDetails(details) {
-                this.$emit('updateDetails', details);
-            },
-
-            updateCompletedPercent(compPercent) {
-                this.$emit('updateCompletedPercent', compPercent);
-            },
+            ...mapActions(['addNewDetail', 'updateDetailsSortingCrit', 'updateCompletedStatus', 'deleteDetail']),
+            ...mapMutations(['SET_MODE']),
 
             updateAlertData(alertData) {
                 this.$emit('updateAlertData', alertData);
             },
 
-            updateDetailsSortingCrit(sortCritVal) {
-                this.$emit('updateDetailsSortingCrit', sortCritVal)
-            },
-
-            checkCompletedPercent(complPercentResp) {
-                return (typeof complPercentResp === 'number') && !(Number.isNaN(+complPercentResp))
-                        ? complPercentResp
-                        : this.editCompletedPercet(complPercentResp);
-            },
-
-            editCompletedPercet(compPercent) {
-                if (typeof compPercent === 'string') {
-                    return +(compPercent.replace(/[^0-9.]/g,""));
-                }
-                return compPercent;
-            },
-
-            addDetail(){
-                if (this.isLoading) return;
-
+            async addDetail(){
                 if (this.dataOnValidofInputs.areAllInputsValValid) {
 
                     const dateNow = new Date;
@@ -524,8 +509,14 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                     const date = dateNow.toLocaleString("en-CA", dataOpt);
 
                     this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: date, uniqKey: this.generateUniqKey(),};
-                    this.updateDetails([...this.details, this.newDetail]);
-                    this.createSubPlan(this.newDetail)
+                    
+                    const response = await this.addNewDetail({newDetail: this.newDetail})
+                    const respData = response.data;
+                    
+					this.isShowAlertInDetails = true;
+                    this.checkResetDayMarkToDefVal(respData);
+					this.$emit('updateAlertData', {type: respData.status === 'success' ? 'success' : 'error', text: respData.message});
+
                     this.newDetail = {
 						title: '',
 						text: '',
@@ -535,6 +526,12 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 						is_ready: false,
                         created_at_date: '',
 					};
+
+                    this.isShowAddNewDetailMobileDialog = false;
+
+                    setTimeout( () => {
+						this.isShowAlertInDetails = false;
+					},this.alertDisplayTime);
                 } else {
 					this.$emit('updateAlertData', {type: 'error', text: 'Invalid data'});
                     this.isShowAlertInDetails = true;
@@ -542,25 +539,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 						this.isShowAlertInDetails = false;
 					},this.alertDisplayTime)
                 }
-			},
-
-			createSubPlan(item){
-				axios.post('/add-sub-task',{task_id : item.taskId, hash: item.hash, sub_plan: item})
-				.then((response) => {
-                    const respData = response.data;
-
-					this.isShowAlertInDetails = true;
-                    this.checkResetDayMarkToDefVal(respData);
-					this.$emit('updateAlertData', {type: response.status === 200 ? 'success' : 'error', text: respData.message});
-					const completedPercent = this.checkCompletedPercent(respData.completedPercent);
-                    this.updateCompletedPercent(completedPercent);
-					item.taskId = respData.subtaskId
-					setTimeout( () => {
-						this.isShowAlertInDetails = false;
-					},this.alertDisplayTime)
-				  })
-				  .catch(function (error) {
-				  })
 			},
 
             setDataOnValidOfInputs(key, rules, inputVal) {
@@ -578,57 +556,43 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 .every(checkResult => checkResult === true);
             },
 
-            deleteSubTask(item){
-                const removedTaskId = item.taskId;
-                
-				axios.post('/del-sub-task',{task_id : removedTaskId})
-				.then((response) => {
-                    if (response.data.status === 'success') {
-                        this.isShowAlertInDetails = true;
-                        this.updateAlertData({type: response.data.status, text: 'subtask has been removed'});
-                        this.updateDetails(this.details.filter(item => item.taskId !== removedTaskId));
-                        this.updateCompletedPercent(this.editCompletedPercet(response.data.completedPercent));
-                        console.log(response.data);
+            async deleteSubTask(item){
+                const detailId = item.taskId;
+                const taskId   = this.taskId;
+                const response = await this.deleteDetail({taskId, detailId});
+                const respData = response.data;
 
-                        setTimeout( () => {
-                            this.isShowAlertInDetails = false;
-					    },this.alertDisplayTime)
-                    }
-				})
+                if (respData.status === 'success') {
+                    this.isShowAlertInDetails = true;
+                    this.updateAlertData({type: respData.status, text: 'subtask has been removed'});
+
+                    setTimeout( () => {
+                        this.isShowAlertInDetails = false;
+					},this.alertDisplayTime)
+                }
 			},
 
-            completed(subtask){
+            async completed(subtask){
                 const taskId = this.item.taskId;
-                const isSubtaskRequired = !!subtask.checkpoint;
-
-				axios.post('/complete-sub-task',{
-                    subtask_id : subtask.taskId, 
-                    is_subtask_ready: subtask.is_ready,
-                    is_subtask_required: isSubtaskRequired,
-                    task_id: taskId,
-                })
-				.then((response) => {
+                try {
+                    const response = await this.updateCompletedStatus({
+                        subtask_id:          subtask.taskId, 
+                        is_subtask_ready:    subtask.is_ready,
+                        is_subtask_required: !!subtask.checkpoint,
+                        task_id:             taskId,
+                    })
+                    
                     const respData = response.data;
                     if (respData.status === 'success') {
                         this.checkResetDayMarkToDefVal(response.data);
-                        this.updateCompletedPercent(this.editCompletedPercet(respData.completedPercent));
-                        //раскомментить если хочу, что бы массив сортировался при клике на чекбокс
-                        // this.updateDetailsSortingCrit(this.detailsSortBy); 
                     }
-				})
+                } catch(error) {
+                    console.error(error);
+                }
 			},
 
-            createModifiedDetailTemplate(item) {
-                this.modifiedDetailTemplate = {
-                    id: item.taskId,
-                    title: item.title,
-                    text: item.text,
-                }
-
-                this.showEditDetailsDialog();
-            },
-
-            showEditDetailsDialog() {
+            showEditDetailsDialog(editableDetail) {
+                this.editableDetailId = editableDetail.taskId;
                 this.isShowEditDetailsDialog = true;
             },
 
@@ -637,23 +601,22 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             },
 
             showSubtasks() {
-               if (this.isLoading) return;
-               const updateDispDataCurrentMode = (mode) => this.displayedDetails.currentMode = mode;
+               const currentMode = this.displayedDetails.currentMode;
 
-               switch(this.displayedDetails.currentMode) {
-                    case 'actual':
-                        updateDispDataCurrentMode('all');
-                        this.$emit('showAllSubTasks', this.item);
-                    break;
-                    case 'all':
-                        updateDispDataCurrentMode('actual');
-                        this.$emit('showActualSubTasks', this.item);
-                    break;
-                    default:
-                        updateDispDataCurrentMode('all');
-                        this.$emit('showAllSubTasks', this.item);
-               }
+               const getNewModeVal = (currentMode) => {
+                    switch(currentMode) {
+                        case 'actual':
+                            return 'all';
+                        case 'all':
+                            return 'actual';
+                        default:
+                            return 'all';
+                    }
+                };
 
+                const newMode = getNewModeVal(currentMode);
+
+                this.SET_MODE({key: this.taskId, newMode});
             },
 
             getSubtaskComptimeText(fullDate) {
@@ -681,20 +644,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 Object.assign(this.newDetail, newDetail);
             }
         },
-
-        created() {
-            this.detailsSortBy = this.detailsSortingCrit
-        },
-
-        mounted() {
-        // раскомментить, если хочу, что бы инпуты валидировались сразу после монтирования компоненты
-        //    const subtasksInputs = [this.$refs.subtaskTitleInput, this.$refs.subtaskTextInput]
-           
-        //    if (subtasksInputs.every(item => item)) {
-        //         subtasksInputs.forEach(item => item.validate(true));
-        //         this.checAllkInputsValue();
-        //    }
-        }
     }
 </script>
 
