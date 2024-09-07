@@ -7,12 +7,12 @@
 
       <v-card-text>
         <ul style="padding: 0; min-height: 40px;">
-          <template v-if="!is_emergency_mode_activated">
-            <li v-if="!is_only_one_user_in_group" :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThen"></li>
+          <template v-if="!isEmergencyModeActivated">
+            <li v-if="!isOnlyOneUserInGroup" :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThenText"></li>
             <li v-else>At the moment, you are the only one in your group</li>
-            <li v-html="moreResponsible"></li>
-            <li v-html="userPurposelness"></li>
-            <li v-html="betterThenPurposelness"></li>
+            <li v-html="moreResponsibleText"></li>
+            <li v-html="userPurposelnessText"></li>
+            <li v-html="betterThenPurposelnessText"></li>
           </template>
           <li v-else>Comparative information is unavailable during emergency mode</li>
         </ul>
@@ -22,27 +22,40 @@
   </template> 
 
   <script>
-  import {mdiCancel,mdiSendClock} from '@mdi/js'
+  import { mapActions, mapGetters } from 'vuex/dist/vuex.common.js';
+  import store from '../../store';
   
   export default
       {
-          data: () => ({
-            better_then: 0,
-            more_pesponsible: 0,
-            user_purposelness: 0,
-            better_then_purposelness: 0,
-            ratingData: {},
-            is_emergency_mode_activated: false,
-            is_only_one_user_in_group: false,
-          }),
+          store,
           methods :
           {
-            setRatingData(ratingData) {
-              this.ratingData = {...ratingData};
-            }
+            ...mapActions(['fetchPersonalResults']),
           },
           computed: {
-            betterThen() {
+            ...mapGetters(['getPersonalResultData']),
+            isEmergencyModeActivated() {
+              return this.getPersonalResultData('is_emergency_mode_activated');
+            },
+            isOnlyOneUserInGroup() {
+              return this.getPersonalResultData('is_only_one_user_in_group');
+            },
+            ratingData() {
+              return this.getPersonalResultData('ratingData');
+            },
+            better_then() {
+              return this.getPersonalResultData('better_then');
+            },
+            more_pesponsible() {
+              return this.getPersonalResultData('more_pesponsible');
+            },
+            user_purposelness() {
+              return this.getPersonalResultData('user_purposelness');
+            },
+            better_then_purposelness() {
+              return this.getPersonalResultData('better_then_purposelness');
+            },
+            betterThenText() {
               const {ratingStatus} = this.ratingData;
               switch (ratingStatus) {
                 case 'lessThatMin':
@@ -62,17 +75,17 @@
               }
             },
 
-            moreResponsible() {
+            moreResponsibleText() {
               return this.more_pesponsible !== 'n/a'
                 ? `For now you are responsible on <strong>${this.more_pesponsible}%</strong>`
                 : ''
             },
 
-            userPurposelness() {
+            userPurposelnessText() {
               return `For now your purposefulness is <strong>${this.user_purposelness}%</strong>`;
             },
 
-            betterThenPurposelness() {
+            betterThenPurposelnessText() {
               const {ratingStatus} = this.ratingData;
               switch (ratingStatus) {
                 case 'lessThatMin':
@@ -87,25 +100,7 @@
             }
           },
           async created() {
-              await axios.post('/get-results')
-              .then((response) => {
-                  
-                const getData = (response) => (key) => response.data[key];
-                const getValue = getData(response);
-
-                this.is_emergency_mode_activated = getValue('is_emergency_mode_activated');
-                
-                if (!this.is_emergency_mode_activated) {
-                  this.better_then = getValue('better');
-                  this.more_pesponsible = getValue('more_pesponsible');
-                  this.user_purposelness = getValue('user_purposelness');
-                  this.better_then_purposelness = getValue('better_then_purposelness');
-                  this.is_only_one_user_in_group = getValue('is_only_one_user_in_group');
-  
-                  this.setRatingData(getValue('ratingData'));
-                }
-
-              })
+            this.fetchPersonalResults();
           }
       }
 </script>
