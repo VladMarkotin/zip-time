@@ -33,7 +33,7 @@ class ProgressBar {
     }
 
     calPercents(e) {
-        const windowScroll = document.body.scrollTop;
+        const windowScroll = window.scrollY;
         const per = windowScroll / this.#windowHeight * 100;
     
         this.updateWidth(per);

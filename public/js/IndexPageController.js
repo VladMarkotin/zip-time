@@ -512,7 +512,7 @@ var ProgressBar = /*#__PURE__*/function () {
   }, {
     key: "calPercents",
     value: function calPercents(e) {
-      var windowScroll = document.body.scrollTop;
+      var windowScroll = window.scrollY;
       var per = windowScroll / _classPrivateFieldGet(this, _windowHeight) * 100;
       this.updateWidth(per);
     }
