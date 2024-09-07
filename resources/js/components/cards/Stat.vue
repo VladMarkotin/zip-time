@@ -181,6 +181,7 @@
 		justify-content: center;
 	}
 
+	
 	.stat-main-data-list .stat-main-data-li span {
 		margin-bottom: 0;
 	}
