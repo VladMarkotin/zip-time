@@ -293,14 +293,14 @@
 								>
 								</v-checkbox>
 							</div>
-							<v-tooltip right>
+							<!-- <v-tooltip right>
 								<template v-slot:activator="{on}">
 									<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
 										<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
 									</v-btn>
 								</template>
 								<span>Update</span>
-							</v-tooltip>
+							</v-tooltip> -->
 						</template>
 					</form>
 				</v-col>
@@ -477,7 +477,7 @@
 		}, 
 		methods :
 		{
-			...mapActions(['fetchDetails', 'fetchNotes']),
+			...mapActions(['fetchDetails', 'fetchNotes', 'fetchPersonalResults']),
 			closeHashCodeDialog() {
       	   		this.isShowAddHashCodeDialog = false;
       		},
@@ -494,17 +494,17 @@
 				}
 			},
 			
-			sendIsReadyState(item)
-			{
-				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
-				.then((response) => {
-					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message);
-					setTimeout( () => {
-						this.isShowAlert = false;
-					},3000)
-				  })
-			},
+			// sendIsReadyState(item)
+			// {
+			// 	axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
+			// 	.then((response) => {
+			// 		this.isShowAlert = true;
+			// 		this.setAlertData(response.data.status, response.data.message);
+			// 		setTimeout( () => {
+			// 			this.isShowAlert = false;
+			// 		},3000)
+			// 	  })
+			// },
 			
 			updateIsReadyState(item)
 			{
@@ -527,6 +527,9 @@
 					
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
+
+					this.fetchPersonalResults();
+
 					setTimeout( () => {
 						this.isShowAlert = false;
 					},3000)
@@ -551,6 +554,8 @@
 					if (data.status === 'success') {
 						this.item.mark = +this.jobMarkInputValue;
 					}
+					
+					this.fetchPersonalResults();
 
 					setTimeout( () => {
 						this.isShowAlert = false;
