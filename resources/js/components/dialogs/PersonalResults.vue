@@ -8,7 +8,8 @@
       <v-card-text>
         <ul style="padding: 0; min-height: 40px;">
           <template v-if="!is_emergency_mode_activated">
-            <li :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThen"></li>
+            <li v-if="!is_only_one_user_in_group" :class="{'less-rating': ratingData.ratingStatus === 'lessThatMin'}" v-html="betterThen"></li>
+            <li v-else>At the moment, you are the only one in your group</li>
             <li v-html="moreResponsible"></li>
             <li v-html="userPurposelness"></li>
             <li v-html="betterThenPurposelness"></li>
@@ -26,12 +27,13 @@
   export default
       {
           data: () => ({
-              is_emergency_mode_activated: false,
-              better_then: 0,
-              more_pesponsible: 0,
-              user_purposelness: 0,
-              better_then_purposelness: 0,
-              ratingData: {},
+            better_then: 0,
+            more_pesponsible: 0,
+            user_purposelness: 0,
+            better_then_purposelness: 0,
+            ratingData: {},
+            is_emergency_mode_activated: false,
+            is_only_one_user_in_group: false,
           }),
           methods :
           {
@@ -98,6 +100,7 @@
                   this.more_pesponsible = getValue('more_pesponsible');
                   this.user_purposelness = getValue('user_purposelness');
                   this.better_then_purposelness = getValue('better_then_purposelness');
+                  this.is_only_one_user_in_group = getValue('is_only_one_user_in_group');
   
                   this.setRatingData(getValue('ratingData'));
                 }

@@ -19,7 +19,8 @@ trait UserAchievmentsTrait
             'user_purposelness'           => null,
             'better_then_purposelness'    => null,
             'ratingData'                  => null,
-            'is_emergency_mode_activated' => null,
+            'is_emergency_mode_activated' => false,
+            'is_only_one_user_in_group'   => false,
         ];
 
         $result['is_emergency_mode_activated'] = GeneralHelper::checkIfEmergModeIsActive();
@@ -39,11 +40,12 @@ trait UserAchievmentsTrait
             'better_then_Purposelness' => $better_then_Purposelness
         ]                            = GetUserPurposelness::getData($data, $usersQuantityInGroup);
         
-        $result['better']                   = $better;
-        $result['more_pesponsible']         = $more_pesponsible;
-        $result['user_purposelness']        = $user_purposelness;
-        $result['better_then_purposelness'] = $better_then_Purposelness;
-        $result['ratingData']               = $usersQuantityInGroup['ratingData'];
+        $result['better']                    = $better;
+        $result['more_pesponsible']          = $more_pesponsible;
+        $result['user_purposelness']         = $user_purposelness;
+        $result['better_then_purposelness']  = $better_then_Purposelness;
+        $result['ratingData']                = $usersQuantityInGroup['ratingData'];
+        $result['is_only_one_user_in_group'] = empty($usersQuantityInGroup['quntityInGroupExcludingOneself']);
         
         return $result;
     }
