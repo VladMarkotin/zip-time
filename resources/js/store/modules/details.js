@@ -246,6 +246,7 @@ export default {
             }
         },
 
+        
         async deleteDetail({getters, commit, dispatch}, {taskId, detailId}) {
             try {
                 const response = await axios.post('/del-sub-task',{task_id : detailId});
