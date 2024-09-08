@@ -504,11 +504,9 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             async addDetail(){
                 if (this.dataOnValidofInputs.areAllInputsValValid) {
 
-                    const dateNow = new Date;
-                    const dataOpt = {year: 'numeric', month: 'numeric', day: 'numeric'};
-                    const date = dateNow.toLocaleString("en-CA", dataOpt);
+                    const created_at_date = new Date().getCurrentDate();
 
-                    this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: date, uniqKey: this.generateUniqKey(),};
+                    this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: created_at_date, uniqKey: this.generateUniqKey(),};
                     
                     const response = await this.addNewDetail({newDetail: this.newDetail})
                     const respData = response.data;
