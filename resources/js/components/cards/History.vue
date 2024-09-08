@@ -161,6 +161,7 @@ export default
 
 				nativeEvent.stopPropagation()
 			},
+			
 			async updateRange(period) {
 				const history = await axios.post('/hist', {
 					start_date: period.start.date
