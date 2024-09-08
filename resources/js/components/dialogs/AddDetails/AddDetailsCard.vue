@@ -501,14 +501,25 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 this.$emit('updateAlertData', alertData);
             },
 
+            getCurrentDate() {
+                const date = new Date();
+
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            },
+
             async addDetail(){
                 if (this.dataOnValidofInputs.areAllInputsValValid) {
 
-                    const dateNow = new Date;
-                    const dataOpt = {year: 'numeric', month: 'numeric', day: 'numeric'};
-                    const date = dateNow.toLocaleString("en-CA", dataOpt);
+                    const created_at_date = new Date().getCurrentDate();
 
-                    this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: date, uniqKey: this.generateUniqKey(),};
+                    this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: created_at_date, uniqKey: this.generateUniqKey(),};
                     
                     const response = await this.addNewDetail({newDetail: this.newDetail})
                     const respData = response.data;

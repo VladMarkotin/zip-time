@@ -1,20 +1,31 @@
 import { uuid } from "vue-uuid";
 
 const transformDetails = (details) => {
-    return details.map(element => ({
-        title: element.title,
-        text:  element.text,
-        taskId: element.id,
-        is_ready: element.is_ready, 
-        checkpoint: element.checkpoint,
-        is_old_compleated: element.is_old_compleated,
-        done_at_user_time: element.done_at_user_time,
-        is_ready: element.is_ready,
-        uniqKey: uuid.v1(),
-        created_at_date: element.created_at_user_time.slice(//получаю дату без времени
-            0, element.created_at_user_time.trim().indexOf(' ')
-        ),
-    }));
+    return details.map(element => {
+        const originalDate = element.created_at;
+        const date = new Date(originalDate);
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        return ({
+            title: element.title,
+            text:  element.text,
+            taskId: element.id,
+            is_ready: element.is_ready, 
+            checkpoint: element.checkpoint,
+            is_old_compleated: element.is_old_compleated,
+            done_at_user_time: element.done_at_user_time,
+            is_ready: element.is_ready,
+            uniqKey: uuid.v1(),
+            created_at_date: formattedDate,
+        })
+    });
 };
 
 const checkCompletedPercent =({complPercentResp}) => {
