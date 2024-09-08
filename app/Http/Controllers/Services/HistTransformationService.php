@@ -18,7 +18,7 @@ class HistTransformationService
                     $task->mark = $task->mark . "%";
                 }
                 if (in_array($task->type, [1, 2])) {
-                    $task->mark = ($task->mark == 99) ? 'OK': '-';
+                    $task->mark = ((int) $task->mark == 99) ? 'OK': '-';
                 }
             }
         }
