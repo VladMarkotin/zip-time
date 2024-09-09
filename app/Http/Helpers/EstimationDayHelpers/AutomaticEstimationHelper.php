@@ -82,9 +82,11 @@ class AutomaticEstimationHelper
         }
         if (count($userIdsAsArr)) {
             $userIdsAsStr = implode(',', $userIdsAsArr);
-            $queryUpdate = "UPDATE timetables T0 SET T0.own_estimation = 50 WHERE T0.user_id IN ($userIdsAsStr) ";
+            $queryUpdate = "UPDATE timetables T0 
+                                SET T0.own_estimation = 50 
+                                    WHERE T0.user_id IN ($userIdsAsStr) AND T0.date = '$date' AND T0.own_estimation = 0";
             DB::update($queryUpdate);
-            //Log::info($queryUpdate);
+            // Log::info($queryUpdate);
         }
         
         return true;
