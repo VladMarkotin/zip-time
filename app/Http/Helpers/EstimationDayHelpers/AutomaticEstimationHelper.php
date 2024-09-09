@@ -75,6 +75,7 @@ class AutomaticEstimationHelper
                                 WHERE t.day_status = 1 AND u.timezone IN( $in) AND t.date='$date' ";
         $userIds = DB::select($query);
         $userIdsAsArr = [];
+        
         //Step 2: Update query for users with such id
         foreach ($userIds as $obj) {
             $userIdsAsArr[] = $obj->user_id;
