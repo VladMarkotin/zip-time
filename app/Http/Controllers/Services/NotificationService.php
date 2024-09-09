@@ -50,7 +50,7 @@ class NotificationService
      
         $auth = [
             'VAPID' => [
-                'subject' => 'https://zip-time.local/', // can be a mailto: or your website address
+                'subject' => 'https://quipl.co/', // can be a mailto: or your website address
                 'publicKey' => '    BGPbvN2N_ETuxiZZ90jMjXWardKtcrhDeFr93npJg5pInkDpDtJfUXRH0Het53h-zNUgRmS30N9iiCM-uN6Jsxk  ', // (recommended) uncompressed public key P-256 encoded in Base64-URL
                 'privateKey' => '0Rdr03_bupDraVkmhF6j7q73nlaPyVT-bDtMWW7NLPA', // (recommended) in fact the secret multiplier of the private key encoded in Base64-URL
             ],
@@ -61,7 +61,7 @@ class NotificationService
         $payload = json_encode([
             'title' => "Todays Plan Reminder",
             'body' => $message,
-            'url' => 'https://zip-time.local/',
+            'url' => 'https://quipl.co/',
         ]);
 
         $notifications = User::whereIn('id', $ids)->get();
