@@ -76,7 +76,14 @@
 					class="p-0 m-0"
 					:cols="4"
 					>
-						<v-list-item-content>Time:</v-list-item-content>
+						<v-list-item-content
+							v-if="item.type == 4 || item.type == 3"
+							>
+							Job`s duration:
+						</v-list-item-content>
+						<v-list-item-content v-else>
+						Task`s duration:
+						</v-list-item-content>
 					</v-col>
 					<v-col 
 					class="p-0 m-0"
