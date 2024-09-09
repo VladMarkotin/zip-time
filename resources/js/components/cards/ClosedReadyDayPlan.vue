@@ -40,7 +40,15 @@
 				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
 			</v-list-item>
 			<v-list-item class="comment-wrapper">
-				<v-list-item-content class="key d-flex comment-key-wrapper">
+				<v-list-item-content class="key" >Comment:</v-list-item-content>
+                <v-list-item-content class="align-end" style="overflow: visible;">
+					<ClosedDayCommentDialog 
+					:commentText = "commentText"
+					@editComment = "editComment"
+					@saveComment = "saveComment"
+					/>
+				</v-list-item-content>
+				<!-- <v-list-item-content class="key d-flex comment-key-wrapper">
 					<div>
 						<div>
 							<div>
@@ -88,7 +96,7 @@
 						:clearable = "!isMobile"
 						@keydown.enter.prevent = "saveComment"
 					></v-textarea>
-				</v-list-item-content>
+				</v-list-item-content> -->
 			</v-list-item>
 		</v-list>
 		<v-list v-else class="day-info-list d-flex justify-content-center">
@@ -133,6 +141,7 @@
 	import { mapGetters, mapMutations } from 'vuex/dist/vuex.common.js';
 	import EditCommentButton from '../UI/EditCommentButton.vue';
 	import SaveCommentButton from '../UI/SaveCommentButton.vue';
+	import ClosedDayCommentDialog from '../dialogs/ClosedDayCommentDialog.vue';
 	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline } from '@mdi/js'
 	import Challenges from "./../challenges/Challenges.vue";
 	import { data } from 'jquery';
@@ -140,7 +149,7 @@
 	export default
 	{
 		props : ['data'],
-		components: { Challenges, EditCommentButton, SaveCommentButton },
+		components: { Challenges, EditCommentButton, SaveCommentButton , ClosedDayCommentDialog},
 		data()
 		{
 			const commentText = this.data.comment;
@@ -235,18 +244,16 @@
 						this.isLoading = false;
 					}
 				},
-				editComment () {
-					this.isCommentEdited = true;
-					this.newComment = this.commentText;
+				editComment (value) {
+					this.commentText = value;
 				},
 				saveComment() {
 					axios.post('/edit-comment',{	
-						comment    : this.newComment,
+						comment    : this.commentText,
 						date       : this.currentDate
 					})
 					.then((response) => {
-						this.commentText     = this.newComment;
-						this.isCommentEdited = false;
+						
 					})
 				},
 
