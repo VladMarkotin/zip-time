@@ -17,21 +17,21 @@
 </template>
 
 <script>
+import store from '../../store';
+import { mapGetters } from 'vuex/dist/vuex.common.js';
     export default {
         props : {
             title: {
                 type: String,
             },
-            screenWidth: {
-                type: Number,
-            }
         },
         computed: {
+            ...mapGetters(['getWindowScreendWidth']),
             imageSrc() {
                 return this.cardsTypeImageMap.get(this.title);
             },
             tooltipPosition() {
-                const screenWidth = this.screenWidth;
+                const screenWidth = this.getWindowScreendWidth;
                 return {
                     right:  screenWidth >= 768,
                     bottom: screenWidth < 768

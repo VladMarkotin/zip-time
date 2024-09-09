@@ -66,7 +66,6 @@
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
                     :item        = "item"
-                    :screenWidth = "screenWidth"
                     @deleteNote         = "deleteNote"
                     @showEditNotesDialog = "showEditNotesDialog"
                     />
@@ -138,9 +137,6 @@ import EditNotesDialog from './EditNotesDialog.vue';
             item: {
                 type: Object,
                 required: true,
-            },
-            screenWidth: {
-                type: Number,
             },
             taskId: {
                 type: Number,

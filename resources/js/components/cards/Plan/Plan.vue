@@ -195,7 +195,6 @@
          </div>
          <v-divider></v-divider>
          <PreplanTasksTable 
-         :screenWidth     = "screenWidth"
          :items           = "items"
          :isShowPreloader = "showPreloaderInsteadTable"
          @deleteItem  = "deleteItem"
@@ -311,6 +310,8 @@
    </v-card>
 </template>
 <script>
+import store from '../../../store';
+import { mapMutations, mapGetters } from 'vuex/dist/vuex.common.js';
 import AddHashCode from '../../dialogs/AddHashCode.vue';
 import AddHashCodeButton from '../../UI/AddHashCodeButton.vue';
 import CleanHashCodeButton from '../../UI/CleanHashCodeButton.vue';
@@ -399,7 +400,6 @@ export default {
          interval: {},
          closeAlertTime: 0,
          showPreloaderInsteadTable: false,
-         screenWidth: window.innerWidth,
          isShowPressEntTooltip: false,
          WEEKEND_DEFAULT_TASK_TYPE: 'task',
          WORKING_DAY_DEFAULT_TASK_TYPE: 'required job',
@@ -410,6 +410,7 @@ export default {
          },
          addTaskToPlanWithoutConfirmation: false,
     }),
+    store,
     watch: {
       day_status() {
          const { hash } = this.defaultSelected;
@@ -445,6 +446,10 @@ export default {
       },
       },
     computed : {
+        ...mapGetters(['getWindowScreendWidth']),
+        screenWidth() {
+            return this.getWindowScreendWidth;
+        },
         taskTypes() {
             return this.isTodayAWeekend 
                ? [this.WEEKEND_DEFAULT_TASK_TYPE] 
@@ -497,7 +502,7 @@ export default {
          }
     },
     methods: {
-
+      ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
       clearCurrentHashCode(){
 			this.defaultSelected.hash = '#'
 			this.defaultSelected.taskName = ''
@@ -729,7 +734,7 @@ export default {
       },
 
       updateScreenWidth() {
-         this.screenWidth = window.innerWidth;
+         this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
       },
     },
     created() {

@@ -27,7 +27,6 @@
                            :width             = "200"
 						   :tooltipData       = "tooltipPrioritiesData"
 						   :isShowDescription = "false"
-                           :screenWidth       = "screenWidth"
                            />
                         </template>
                 </v-select>
@@ -89,10 +88,6 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
                 type: String,
                 required: true
             },
-
-            screenWidth: {
-                type: Number,
-            }
         },
         data() {
             return {

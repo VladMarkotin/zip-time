@@ -129,11 +129,13 @@
 	</v-card>
 </template>
 <script>
+	import store from '../../store';
+	import { mapGetters, mapMutations } from 'vuex/dist/vuex.common.js';
 	import EditCommentButton from '../UI/EditCommentButton.vue';
 	import SaveCommentButton from '../UI/SaveCommentButton.vue';
 	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline } from '@mdi/js'
 	import Challenges from "./../challenges/Challenges.vue";
-import { data } from 'jquery';
+	import { data } from 'jquery';
 
 	export default
 	{
@@ -167,10 +169,11 @@ import { data } from 'jquery';
 					prev: true,
 					next: false,
 				   },
-				   screenWidth: window.innerWidth,
 		   }
 		},
+		store,
 		computed : {
+			...mapGetters(['getWindowScreendWidth']),
 			dayStatus() {
 				const statusCode = this.data.dayStatus;
 				
@@ -178,11 +181,12 @@ import { data } from 'jquery';
 			},
 
 			isMobile() {
-				return this.screenWidth < 550;
+				return this.getWindowScreendWidth < 550;
 			}
 		},
 		methods :
 			{	
+				...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
 				setDate(flag) {
 					if (this.isLoading) return;
 
@@ -247,7 +251,7 @@ import { data } from 'jquery';
 				},
 
 				updateScreenWidth() {
-            		this.screenWidth = window.innerWidth;
+            		this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
         		}
 			},
 		

@@ -108,7 +108,6 @@
 								<EditCardData 
 								:currentTaskPriority = "item.priority"
 								:currentTaskTime     = "item.time"
-								:screenWidth         = "screenWidth"
 								@saveChanges = "changeTime"
 								/>
 							</v-col>
@@ -146,7 +145,6 @@
 									<AddDetails 
 									:num                = "num"
 									:item               = "item"
-									:screenWidth        = "screenWidth"
 									@resetDayMarkToDefVal  = "resetDayMarkToDefVal"
 									/>
 								</template>
@@ -229,7 +227,6 @@
 							<AddNotes 
 							:num              = "num"
 							:item             = "item"
-							:screenWidth      = "screenWidth"
 							/>
 						</template>
 					</v-col>
@@ -352,7 +349,7 @@
 	import EditCardData from '../dialogs/EditCardData.vue';
 	export default
 	{
-		props : ['item', 'num', 'screenWidth'],
+		props : ['item', 'num'],
 		data()
 		{
 			return {

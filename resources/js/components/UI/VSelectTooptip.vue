@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import store from '../../store';
+import { mapGetters } from 'vuex/dist/vuex.common.js';
 import { mdiHelpCircleOutline,} from '@mdi/js'
     export default {
         props: {
@@ -64,9 +66,6 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
                 type: Boolean,
                 default: true,
             },
-            screenWidth: {
-                type: Number,
-            }
         },
         data() {
             return {
@@ -75,20 +74,21 @@ import { mdiHelpCircleOutline,} from '@mdi/js'
             }
         },
         computed: {
-            isMobile() {
-                return this.screenWidth < 768;
+            ...mapGetters(['getWindowScreendWidth']),
+            isShowTooltipsLeft() {
+                return this.getWindowScreendWidth < 768;
             },
 
             nudgeTop() {
-                return this.isMobile ? 0 : 8
+                return this.isShowTooltipsLeft ? 0 : 8
             },
 
             nudgeLeft() {
-                return this.isMobile ? 215 : null
+                return this.isShowTooltipsLeft ? 215 : null
             },
 
             nudgeRight() {
-                return this.isMobile ? null : 55
+                return this.isShowTooltipsLeft ? null : 55
             }
         },
         methods: {

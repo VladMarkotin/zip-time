@@ -18,11 +18,11 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text class="details-cards-wrapper" :style="{ height: isMobile ? '450px' : '400px' }">
+            <v-card-text class="details-cards-wrapper" :style="{ height: screenWidth < 768 ? '450px' : '400px' }">
                     <template>
                         <v-row 
                         class="m-0 p-0 addDetailsCard_addNewSubtaskBtn-wrapper d-flex justify-content-center align-items-center"
-                        v-if="isMobile"
+                        v-if="screenWidth < 768"
                         >
                             <v-btn
                             class="addDetailsCard_addNewSubtaskBtn-mobile addDetailsCard_btn"
@@ -362,9 +362,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             generateUniqKey: {
                 type: Function,
             },
-            screenWidth: {
-                type: Number,
-            }
         },
         data() {
             return {
@@ -447,7 +444,10 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         computed: {
-            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent', 'getMode']),
+            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent', 'getMode', 'getWindowScreendWidth']),
+            screenWidth() {
+                return this.getWindowScreendWidth;
+            },
             detailsSortBy: {
                 get() {
                     return this.getDetailsSortBy(this.taskId);
@@ -470,9 +470,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 }
                 
                 return details.filter(detail => !detail.is_old_compleated);
-            },
-            isMobile() {
-                return this.screenWidth < 768; 
             },
             detailsSortingCrit() {
                 return this.getDetailsSortingCrit(this.taskId);
