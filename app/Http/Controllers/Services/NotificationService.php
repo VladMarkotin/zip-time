@@ -26,8 +26,8 @@ class NotificationService
     private $timezoneList = [];
 
     private $tzList = [
-        RemindTimeHelper::MORNING_TIME => [],
-        RemindTimeHelper::EVENING_TIME => [],
+        RemindTimeHelper::MORNING_TIME => ['09'],
+        RemindTimeHelper::EVENING_TIME => ['19'],
     ];
 
     public function __construct()
@@ -65,6 +65,7 @@ class NotificationService
         ]);
 
         $notifications = User::whereIn('id', $ids)->get();
+        
         foreach ($notifications as $notification) {
             $webPush->sendOneNotification(
                 Subscription::create($notification['device_token']),
@@ -166,8 +167,6 @@ class NotificationService
                                          WHERE timetables.day_status = 2
                                          AND users.timezone IN ($timezones)
                                           AND timetables.date = '$today'";
-            // Log::info($query);
-            // die;
             $idsArr = DB::select($query);
             $ids = [];
             foreach ($idsArr as $v) {
