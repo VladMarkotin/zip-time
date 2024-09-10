@@ -207,6 +207,7 @@
 							comment    : this.newCommentText,
 							date       : this.currentDate
 						})
+						console.log(response);
 						if (response.data.comment_updated_status === 'success') {
 							this.commentText = this.newCommentText
 						}
@@ -259,7 +260,7 @@
 	}
 
 	.day-info_list-item-content {
-		padding: 4px; 
+		padding: 12px; 
 		box-sizing: border-box;
 	}
 
@@ -274,6 +275,7 @@
 
 	.comment-wrapper {
 		align-items: flex-start;
+		min-height: 150px;
 	}
 
 	.comment-wrapper > .v-list-item__content {

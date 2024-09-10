@@ -63,17 +63,17 @@ class EstimationController extends Controller
 
     public function saveComment(Request $request)
     {
+        $comment = isset($request->comment) ? $request->comment: '';
         $rules = [
-            'comment' => 'string|max:65535', // 65535 - максимальная длина типа TEXT в MySQL
+            'comment' => 'nullable|string|max:65535', // 65535 - максимальная длина типа TEXT в MySQL
         ];
         $validator = Validator::make($request->all(), $rules);
-
         if (!$validator->fails()) {
             $carbonDate = Carbon::parse($request->input('date'));
             // Форматирование даты в формат "Y-m-d"
             $formattedDate = $carbonDate->format('Y-m-d');
             $temp = TimetableModel::where([['date',$formattedDate], ['user_id', Auth::id()] ])
-              ->update(['comment' => $request->input('comment')]);
+              ->update(['comment' => $comment]);
             
             return response(['comment_updated_status' => !empty($temp) ? 'success' : 'eror'], 200);
         }
