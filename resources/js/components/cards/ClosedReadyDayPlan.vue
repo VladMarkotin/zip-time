@@ -30,18 +30,22 @@
 		</v-card-title>
 		<v-list v-if="wasADailyPlanCreated" class="day-info-list closedReadyDayPlan_dayInfoList-existing-day">
 			<v-list-item>
-				<v-list-item-content class="key">Final mark:</v-list-item-content>
-				<v-list-item-content class="align-end" v-if="data.dayFinalMark > 0 ">{{data.dayFinalMark}} %</v-list-item-content>
-				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
+				<v-list-item-content class="key p-1">Final mark:</v-list-item-content>
+				<v-list-item-content class="align-end p-0">
+					<div v-if="data.dayFinalMark > 0 " class="day-info_list-item-content">{{data.dayFinalMark}} %</div>
+					<div v-else class="align-end day-info_list-item-content"> - </div>
+				</v-list-item-content>
 			</v-list-item>
 			<v-list-item>
-				<v-list-item-content class="key" >Own mark:</v-list-item-content>
-                <v-list-item-content class="align-end" v-if="data.dayOwnMark > 0 ">{{data.dayOwnMark}} %</v-list-item-content>
-				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
+				<v-list-item-content class="key p-1" >Own mark:</v-list-item-content>
+                <v-list-item-content class="align-end p-0" >
+					<div v-if="data.dayOwnMark > 0 " class="day-info_list-item-content">{{data.dayOwnMark}} %</div>
+					<div v-else class="day-info_list-item-content">-</div>
+				</v-list-item-content>
 			</v-list-item>
 			<v-list-item class="comment-wrapper">
-				<v-list-item-content class="key" >Comment:</v-list-item-content>
-                <v-list-item-content class="align-end" style="overflow: visible;">
+				<v-list-item-content class="key p-1" >Comment:</v-list-item-content>
+                <v-list-item-content class="align-end p-0" style="overflow: visible;">
 					<ClosedDayCommentDialog 
 					:commentText = "commentText"
 					@editComment = "editComment"
@@ -298,6 +302,11 @@
 
 	.day-info-list {
 		min-height: 172px;
+	}
+
+	.day-info_list-item-content {
+		padding: 4px; 
+		box-sizing: border-box;
 	}
 
 	.missed-day-text {
