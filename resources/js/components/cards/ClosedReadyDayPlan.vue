@@ -47,60 +47,12 @@
 				<v-list-item-content class="key p-1" >Comment:</v-list-item-content>
                 <v-list-item-content class="align-end p-0" style="overflow: visible;">
 					<ClosedDayCommentDialog 
-					:commentText = "commentText"
+					:commentText     = "commentText"
+					:newCommentText  = "newCommentText"
 					@editComment = "editComment"
 					@saveComment = "saveComment"
 					/>
 				</v-list-item-content>
-				<!-- <v-list-item-content class="key d-flex comment-key-wrapper">
-					<div>
-						<div>
-							<div>
-								Comment:
-							</div>
-							<EditCommentButton 
-							v-if             = "isMobile && wasADailyPlanCreated"
-							:isCommentEdited = "isCommentEdited"
-							:iconSize        = "29"
-							@click="editComment"
-							/>
-							<SaveCommentButton 
-							v-if             = "isMobile && wasADailyPlanCreated"
-							:isCommentEdited = "isCommentEdited"
-							:iconSize        = "29"
-							@click="saveComment"
-							/>
-						</div>
-					</div>
-					<div class="d-flex justify-content-center comment-buttons-wrapper">
-						<EditCommentButton 
-						v-if="!isMobile"
-						:isCommentEdited = "isCommentEdited"
-						:iconSize        = "26"
-						@click="editComment"
-						/>
-						<SaveCommentButton 
-						v-if="!isMobile"
-						:isCommentEdited = "isCommentEdited"
-						:iconSize        = "26"
-						@click="saveComment"
-						/>
-					</div>
-				</v-list-item-content>
-				<v-list-item-content class="align-end closeReadyDayPlan_comment-text closeReadyDayPlan_comment-text-wrapper" v-if="!isCommentEdited">
-					{{commentText}}
-				</v-list-item-content>
-				<v-list-item-content class="align-end closeReadyDayPlan_comment-text-wrapper" v-else>
-					<v-textarea 
-						class="newComment-input"
-						solo
-						clear-icon="mdi-close-circle"
-						label="Describe your day"
-						v-model="newComment"
-						:clearable = "!isMobile"
-						@keydown.enter.prevent = "saveComment"
-					></v-textarea>
-				</v-list-item-content> -->
 			</v-list-item>
 		</v-list>
 		<v-list v-else class="day-info-list d-flex justify-content-center">
@@ -113,7 +65,7 @@
 		<v-card-actions class="d-flex justify-space-between">
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('prev')" :disabled="!isShowButton.prev || isCommentEdited">
+					<v-btn icon v-on="on" v-on:click="setDate('prev')" :disabled="!isShowButton.prev">
 						<v-icon color="#D71700" large>{{icons.mdiArrowLeft}}</v-icon>
 					</v-btn>
 				</template>
@@ -122,7 +74,7 @@
 			<div>
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="setDate('today')" :disabled="isCommentEdited">
+						<v-btn icon v-on="on" v-on:click="setDate('today')">
 							<v-icon color="#D71700" large>{{icons.mdiCalendarToday}}</v-icon>
 						</v-btn>
 					</template>
@@ -131,7 +83,7 @@
 			</div>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next || isCommentEdited">
+					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next">
 						<v-icon color="#D71700" large>{{icons.mdiArrowRight}}</v-icon>
 					</v-btn>
 				</template>
@@ -143,8 +95,6 @@
 <script>
 	import store from '../../store';
 	import { mapGetters, mapMutations } from 'vuex/dist/vuex.common.js';
-	import EditCommentButton from '../UI/EditCommentButton.vue';
-	import SaveCommentButton from '../UI/SaveCommentButton.vue';
 	import ClosedDayCommentDialog from '../dialogs/ClosedDayCommentDialog.vue';
 	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline } from '@mdi/js'
 	import Challenges from "./../challenges/Challenges.vue";
@@ -153,7 +103,7 @@
 	export default
 	{
 		props : ['data'],
-		components: { Challenges, EditCommentButton, SaveCommentButton , ClosedDayCommentDialog},
+		components: { Challenges, ClosedDayCommentDialog},
 		data()
 		{
 			const commentText = this.data.comment;
@@ -174,8 +124,7 @@
 			       disabled : {prevButton : false,nextButton : true},
 				   commentText,
 				   daystatusCodeInfo,
-				   newComment: '',
-				   isCommentEdited: false,
+				   newCommentText: commentText,
 				   wasADailyPlanCreated: true,
 				   isLoading: false,
 				   isShowButton: {
@@ -238,6 +187,7 @@
 							this.data.dayOwnMark      = currentDayData.dayOwnMark;
 							this.data.dayStatus       = currentDayData.dayStatus;
 							this.commentText          = currentDayData.commentText; 
+							this.newCommentText       = currentDayData.commentText;
 						} else {
 							this.wasADailyPlanCreated = false;
 						}
@@ -249,16 +199,20 @@
 					}
 				},
 				editComment (value) {
-					this.commentText = value;
+					this.newCommentText = value;
 				},
-				saveComment() {
-					axios.post('/edit-comment',{	
-						comment    : this.commentText,
-						date       : this.currentDate
-					})
-					.then((response) => {
-						
-					})
+				async saveComment() {
+					try {
+						const response = await axios.post('/edit-comment',{	
+							comment    : this.newCommentText,
+							date       : this.currentDate
+						})
+						if (response.data.comment_updated_status === 'success') {
+							this.commentText = this.newCommentText
+						}
+					} catch(error) {
+						console.error(error);
+					}
 				},
 
 				updateScreenWidth() {

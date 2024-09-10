@@ -74,6 +74,8 @@ class EstimationController extends Controller
             $formattedDate = $carbonDate->format('Y-m-d');
             $temp = TimetableModel::where([['date',$formattedDate], ['user_id', Auth::id()] ])
               ->update(['comment' => $request->input('comment')]);
+            
+            return response(['comment_updated_status' => !empty($temp) ? 'success' : 'eror'], 200);
         }
     }
 
