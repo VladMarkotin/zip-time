@@ -1,7 +1,6 @@
 <template>
     <div>
         <div 
-        style="min-height: 70px;"
         @click="dialog = true"
         class="comment-text-field"
         :class="{ 'editable-comment': isHovered }"
@@ -11,13 +10,16 @@
             {{commentText}}
         </div>
         <v-dialog 
+        :fullscreen = "isShowFullScreen" 
         v-model="dialog" 
         max-width="560px"
         :persistent = "!isCommentTextValid"
         >
-            <v-card class="p-2 closed-day-comment-card">
+            <v-card 
+            v-if="!isShowFullScreen"
+            class="p-2 closed-day-comment-card">
                 <v-textarea 
-                clearable
+                clearable 
                 clear-icon="mdi-close-circle"
                 :success="isCommentTextValid"
                 ref="commentTextarea"
@@ -31,11 +33,50 @@
                 @input  = "editComment"
                 />
             </v-card>
+            <v-card
+            v-else
+            class="closed-day-comment-card d-flex flex-column justify-content-center"
+            >
+                <v-card-text style="height: 500px;" class="closed-day-comment_textarea-wrapper p-0">
+                    <v-textarea 
+                    class="closed-day-comment_textarea"
+                    height="450px"
+                    :clearable = "!isMobile"
+                    clear-icon="mdi-close-circle"
+                    :success="isCommentTextValid"
+                    ref="commentTextarea"
+                    solo
+                    outlined 
+                    :rules="commentTextareaRules"
+                    label   = "comment"
+                    hide-details
+                    :value  = "newCommentText" 
+                    @input  = "editComment"
+                    />
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions class="p-0 d-flex justify-content-between">
+                    <v-btn 
+                    min-width="94px"
+                    @click="dialog = false"
+                    >
+                        Cancel
+                    </v-btn>
+                    <v-btn 
+                    min-width="94px"
+                    @click="saveCommentMobile"
+                    >
+                        Save
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
         </v-dialog>
     </div>
 </template>
 
 <script>
+import store from '../../store';
+import { mapGetters } from 'vuex/dist/vuex.common.js';
     export default {
         props: ['commentText', 'newCommentText'],
         data() {
@@ -53,10 +94,20 @@
                 ],
             }
         },
-        emits: ['editComment'],
+        store,
+        emits: ['editComment', 'saveComment'],
+        computed: {
+            ...mapGetters(['getWindowScreendWidth']),
+            isShowFullScreen() {
+                return this.getWindowScreendWidth < 768;
+            },
+            isMobile() {
+                return this.getWindowScreendWidth < 425;
+            }
+        },
         watch: {
             dialog(value) {
-                if (value) {
+                if (value && !this.isShowFullScreen) {
                     this.$nextTick(() => {
                         this.setTextareaHeight();
                     });
@@ -80,6 +131,10 @@
                     textarea.style.height = `${textarea.scrollHeight}px`;
                 }
             },
+            saveCommentMobile() {
+                this.$emit('saveComment');
+                this.dialog = false;
+            }
         }
     }
 </script>
@@ -89,7 +144,7 @@
         box-sizing: border-box;
         padding: 12px;
         transition: box-shadow 0.3s ease;
-        max-height: 150px;
+        height: 150px;
         overflow-y: scroll;
         border-radius: 10px;
         border:  1px solid #e0e0e0;
@@ -125,5 +180,18 @@
         max-height: 80vh;
         overflow-y: auto;
     }
+    /*------------*/
+    @media screen and (max-width: 768px)  {
 
+        .closed-day-comment-card {
+            max-height: 100vh;
+            padding: 18px !important;
+        }
+    }
+
+    @media screen and (max-width: 350px)  {
+        .closed-day-comment-card {
+            padding: 6px !important;
+        }
+    }
 </style>
