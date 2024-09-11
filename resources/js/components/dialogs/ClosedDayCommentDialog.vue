@@ -13,14 +13,13 @@
         <v-dialog 
         v-model="dialog" 
         max-width="560px"
-        :fullscreen = 'isShowMobileDialog'
         :persistent = "!isCommentTextValid"
+        :content-class="isMobile ? 'm-2' : ''"
         >
             <v-card 
-            v-if="!isShowMobileDialog"
             class="p-2 closed-day-comment-card">
                 <v-textarea 
-                clearable 
+                :clearable = "!isMobile"
                 clear-icon="mdi-close-circle"
                 :success="isCommentTextValid"
                 ref="commentTextarea"
@@ -33,50 +32,6 @@
                 :value  = "newCommentText" 
                 @input  = "editComment"
                 />
-            </v-card>
-            <v-card
-            v-else
-            class="closed-day-comment-card d-flex flex-column justify-content-center"
-            >
-                <div class="test">
-                    <v-card-title 
-                class="p-0 pt-3 pb-3 mb-5 justify-content-center indigo lighten-5 text-uppercase">
-                    Edit Comment
-                </v-card-title>
-                <v-card-text 
-                style="flex-grow: 1;" class="closed-day-comment_textarea-wrapper p-0 pb-4">
-                    <v-textarea 
-                    class="closed-day-comment_textarea"
-                    height="350px"
-                    :clearable = "!isMobile"
-                    clear-icon="mdi-close-circle"
-                    :success="isCommentTextValid"
-                    ref="commentTextarea"
-                    solo
-                    outlined 
-                    :rules="commentTextareaRules"
-                    label   = "comment"
-                    hide-details
-                    :value  = "newCommentText" 
-                    @input  = "editComment"
-                    />
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions class="p-0 py-4 d-flex justify-content-between">
-                    <v-btn 
-                    min-width="94px"
-                    @click="cancel"
-                    >
-                        Cancel
-                    </v-btn>
-                    <v-btn 
-                    min-width="94px"
-                    @click="saveCommentMobile"
-                    >
-                        Save
-                    </v-btn>
-                </v-card-actions>
-                </div>
             </v-card>
         </v-dialog>
     </div>
@@ -93,7 +48,6 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
                 dialog: false,
                 isCommentTextValid: true,
                 COMMENT_MAX_LEN_CHARACT: 1024,
-                isSaveCommentFlag: true,
                 commentTextareaRules: [
                     (inputVal) => {
                         inputVal = inputVal ? inputVal.trim().length : 0;
@@ -107,20 +61,17 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
         emits: ['editComment', 'saveComment'],
         computed: {
             ...mapGetters(['getWindowScreendWidth']),
-            isShowMobileDialog() {
-                return this.getWindowScreendWidth < 450;
-            },
             isMobile() {
                 return this.getWindowScreendWidth < 425;
             }
         },
         watch: {
             dialog(value) {
-                if (value && !this.isShowMobileDialog) {
+                if (value) {
                     this.$nextTick(() => {
                         this.setTextareaHeight();
                     });
-                } else if(this.isSaveCommentFlag) {
+                } else {
                     this.$emit('saveComment');
                 }
             },
@@ -131,7 +82,6 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
         },
         methods: {
             editComment(value) {
-                this.isSaveCommentFlag = true;
                 this.$emit('editComment', value);
             },
             setTextareaHeight() {
@@ -145,11 +95,6 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
                 this.$emit('saveComment');
                 this.dialog = false;
             },
-            cancel() {
-                this.$emit('editComment', this.commentText);
-                this.isSaveCommentFlag = false;
-                this.dialog = false;
-            }
         }
     }
 </script>
@@ -198,19 +143,5 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
     .closed-day-comment-card {
         max-height: 80vh;
         overflow-y: auto;
-    }
-    /*------------*/
-    @media screen and (max-width: 768px)  {
-        .closed-day-comment-card {
-            box-sizing: border-box;
-            max-height: 100vh;
-            padding: 18px !important;
-        }
-    }
-
-    @media screen and (max-width: 350px)  {
-        .closed-day-comment-card {
-            padding: 12px 6px 6px !important;
-        }
     }
 </style>
