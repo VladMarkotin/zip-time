@@ -2,6 +2,7 @@
     <div>
         <div 
         @click="dialog = true"
+        :style="`height: ${commentFieldHeight}`"
         class="comment-text-field"
         :class="{ 'editable-comment': isHovered }"
         @mouseover  = "isHovered = true"
@@ -58,7 +59,7 @@
                 <v-card-actions class="p-0 d-flex justify-content-between">
                     <v-btn 
                     min-width="94px"
-                    @click="dialog = false"
+                    @click="cancel"
                     >
                         Cancel
                     </v-btn>
@@ -78,13 +79,14 @@
 import store from '../../store';
 import { mapGetters } from 'vuex/dist/vuex.common.js';
     export default {
-        props: ['commentText', 'newCommentText'],
+        props: ['commentText', 'newCommentText', 'commentFieldHeight'],
         data() {
             return {
                 isHovered: false,
                 dialog: false,
                 isCommentTextValid: true,
                 COMMENT_MAX_LEN_CHARACT: 1024,
+                isSaveCommentFlag: true,
                 commentTextareaRules: [
                     (inputVal) => {
                         inputVal = inputVal ? inputVal.trim().length : 0;
@@ -111,7 +113,7 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
                     this.$nextTick(() => {
                         this.setTextareaHeight();
                     });
-                } else {
+                } else if(this.isSaveCommentFlag) {
                     this.$emit('saveComment');
                 }
             },
@@ -122,6 +124,7 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
         },
         methods: {
             editComment(value) {
+                this.isSaveCommentFlag = true;
                 this.$emit('editComment', value);
             },
             setTextareaHeight() {
@@ -134,6 +137,11 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
             saveCommentMobile() {
                 this.$emit('saveComment');
                 this.dialog = false;
+            },
+            cancel() {
+                this.$emit('editComment', this.commentText);
+                this.isSaveCommentFlag = false;
+                this.dialog = false;
             }
         }
     }
@@ -144,7 +152,6 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
         box-sizing: border-box;
         padding: 12px;
         transition: box-shadow 0.3s ease;
-        height: 150px;
         overflow-y: scroll;
         border-radius: 10px;
         border:  1px solid #e0e0e0;

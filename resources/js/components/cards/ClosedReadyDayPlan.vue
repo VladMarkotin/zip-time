@@ -47,8 +47,9 @@
 				<v-list-item-content class="key p-1" >Comment:</v-list-item-content>
                 <v-list-item-content class="align-end p-0" style="overflow: visible;">
 					<ClosedDayCommentDialog 
-					:commentText     = "commentText"
-					:newCommentText  = "newCommentText"
+					:commentText        = "commentText"
+					:newCommentText     = "newCommentText"
+					commentFieldHeight = "150px"
 					@editComment = "editComment"
 					@saveComment = "saveComment"
 					/>
