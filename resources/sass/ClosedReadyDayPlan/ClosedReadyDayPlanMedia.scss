@@ -65,7 +65,9 @@
     }
 
     .closedReadyDayPlan_dayInfoList-existing-day {
-        font-size: 1.2rem;
+        .comment-text-field {
+            font-size: 1.2rem;
+        }
         .v-list-item {
             &::after {
                 display: none;

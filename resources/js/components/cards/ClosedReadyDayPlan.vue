@@ -1,6 +1,6 @@
 <template>
 	<v-card>
-		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header" style="margin-top: 50px">
+		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header">
 			<div class="closedReadyDayPlan_day-info-header-date">
 				<p class="closedReadyDayPlan_header-text">
 					<span>Date: </span> <span>{{shownDate}}</span>
@@ -28,20 +28,38 @@
 			</div>
 		</v-card-title>
 		<v-list v-if="wasADailyPlanCreated" class="day-info-list closedReadyDayPlan_dayInfoList-existing-day">
-			<v-list-item class="mark-wrapper">
-				<v-list-item-content class="key p-1"><span>Final mark:</span></v-list-item-content>
-				<v-list-item-content class="align-end p-0 day-info_list-item-content-wrapper">
-					<div v-if="data.dayFinalMark > 0 " class="day-info_list-item-content">{{data.dayFinalMark}} %</div>
-					<div v-else class="align-end day-info_list-item-content"> - </div>
-				</v-list-item-content>
-			</v-list-item>
-			<v-list-item class="mark-wrapper">
-				<v-list-item-content class="key p-1" ><span>Own mark:</span></v-list-item-content>
-                <v-list-item-content class="align-end p-0 day-info_list-item-content-wrapper" >
-					<div v-if="data.dayOwnMark > 0 " class="day-info_list-item-content">{{data.dayOwnMark}} %</div>
-					<div v-else class="day-info_list-item-content">-</div>
-				</v-list-item-content>
-			</v-list-item>
+			<v-container>
+				<v-expansion-panels>
+				<v-expansion-panel>
+					<v-expansion-panel-header>
+						<v-list-item class="mark-wrapper p-0">
+							<v-list-item-content class="key p-1"><span>Final mark:</span></v-list-item-content>
+							<v-list-item-content class="align-end p-0 day-info_list-item-content-wrapper">
+								<div v-if="data.dayFinalMark > 0 " class="day-info_list-item-content">{{data.dayFinalMark}} %</div>
+								<div v-else class="align-end day-info_list-item-content"> - </div>
+							</v-list-item-content>
+						</v-list-item>
+					</v-expansion-panel-header>
+					<v-expansion-panel-content class="text-center">
+						Final mark represents the arithmetic mean of tasks with the type "Required job"
+					</v-expansion-panel-content>
+				</v-expansion-panel>
+				<v-expansion-panel>
+					<v-expansion-panel-header>
+						<v-list-item class="mark-wrapper p-0">
+							<v-list-item-content class="key p-1" ><span>Own mark:</span></v-list-item-content>
+							<v-list-item-content class="align-end p-0 day-info_list-item-content-wrapper" >
+								<div v-if="data.dayOwnMark > 0 " class="day-info_list-item-content">{{data.dayOwnMark}} %</div>
+								<div v-else class="day-info_list-item-content">-</div>
+							</v-list-item-content>
+						</v-list-item>
+					</v-expansion-panel-header>
+					<v-expansion-panel-content class="text-center">
+						Own mark represents your subjective assessment of the day's success.
+					</v-expansion-panel-content>
+				</v-expansion-panel>
+				</v-expansion-panels>
+			</v-container>
 			<v-list-item >
 				<v-list-item-content class="key p-1 justify-content-center" >Comment:</v-list-item-content>
 			</v-list-item>

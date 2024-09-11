@@ -53,7 +53,7 @@
     display: initial !important;
   }
 
-  .closedReadyDayPlan_dayInfoList-existing-day {
+  .closedReadyDayPlan_dayInfoList-existing-day .comment-text-field {
     font-size: 1.2rem;
   }
   .closedReadyDayPlan_dayInfoList-existing-day .v-list-item::after {
