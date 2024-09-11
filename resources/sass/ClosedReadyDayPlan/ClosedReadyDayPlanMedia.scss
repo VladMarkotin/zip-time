@@ -88,3 +88,43 @@
         }
     }
 }
+
+@media screen and (max-width: 450px) {
+    .closedReadyDayPlan_day-info-header {
+        grid-template-columns: 1fr !important;
+        .closedReadyDayPlan_header-text {
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 5px;
+            span:nth-child(2) {
+                text-align: right !important;
+            }
+        }
+        .closedReadyDayPlan_header-finished {
+            .closedReadyDayPlan_header-text {
+               grid-template-columns: 1fr !important;
+               text-align: center;
+               font-size: 1.2rem;
+               text-transform: uppercase;
+            }
+        }
+    }
+    
+    .closedReadyDayPlan_dayInfoList-existing-day {
+        .v-list-item {
+            grid-template-columns: 1fr 1fr !important;
+        }
+    }
+    .closedReadyDayPlan_dayInfoList-existing-day {
+        .v-list-item  {
+            .day-info_list-item-content {
+                text-align: right;
+            }
+        }
+        .comment-wrapper {
+            grid-template-columns: 1fr !important;
+            .v-list-item__content.key{
+                justify-content: center !important;
+            }
+        }
+    }
+}

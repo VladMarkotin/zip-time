@@ -149,6 +149,7 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
         border-radius: 10px;
         border:  1px solid #e0e0e0;
         word-break: break-word;
+        line-height: 24px;
     }
 
     .comment-text-field::-webkit-scrollbar {
@@ -184,6 +185,7 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
     @media screen and (max-width: 768px)  {
 
         .closed-day-comment-card {
+            box-sizing: border-box;
             max-height: 100vh;
             padding: 18px !important;
         }

@@ -207,7 +207,6 @@
 							comment    : this.newCommentText,
 							date       : this.currentDate
 						})
-						console.log(response);
 						if (response.data.comment_updated_status === 'success') {
 							this.commentText = this.newCommentText
 						}
