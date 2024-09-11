@@ -129,7 +129,7 @@
 				   wasADailyPlanCreated: true,
 				   isLoading: false,
 				   isShowButton: {
-					prev: true,
+					prev: false,
 					next: false,
 				   },
 		   }
@@ -153,42 +153,34 @@
 				setDate(flag) {
 					if (this.isLoading) return;
 
-					const currentDay = this.currentDate;
-
-					switch (flag) {
-						case 'prev':
-							currentDay.setDate(currentDay.getDate() - 1);
-						break;
-						case 'today':
-							const today = new Date;
-
-							currentDay.setDate(today.getDate());
-							currentDay.setMonth(today.getMonth());
-						break;
-						case 'next':
-							currentDay.setDate(currentDay.getDate() + 1);
-						break;
+					if (flag === 'today') {
+						this.setData(new Date().getCurrentDate(), flag);
+					} else {
+						this.setData(this.currentDate.getCurrentDate(), flag); // в файле functions.js расширял прототип
 					}
 
-					this.setData(currentDay);
-					this.shownDate = this.currentDate.toEnStr();
+					
 				},
-				async setData(date)
+				async setData(date, flag)
 				{
 					try {
 						this.isLoading = true;
-						const {data} = (await axios.post(`/hist/forClosedDay`,{date}))
+						const {data} = (await axios.post(`/hist/forClosedDay`,{date, flag}))
 						this.isShowButton = {prev: data.doesTheDayExistBefore, next: data.doesTheDayExistAfter};
 
 						if (!data.isDayMissed) {
 							const {currentDayData} = data;
-
+							
 							this.wasADailyPlanCreated = true;
 							this.data.dayFinalMark    = currentDayData.dayFinalMark;
 							this.data.dayOwnMark      = currentDayData.dayOwnMark;
 							this.data.dayStatus       = currentDayData.dayStatus;
 							this.commentText          = currentDayData.commentText; 
 							this.newCommentText       = currentDayData.commentText;
+							
+							const {date} = currentDayData;
+							this.currentDate = new Date(date);
+							this.shownDate = this.currentDate.toEnStr();
 						} else {
 							this.wasADailyPlanCreated = false;
 						}
@@ -222,6 +214,7 @@
 			},
 		
 		mounted() {
+			this.setDate('today');
 			window.addEventListener('resize', this.updateScreenWidth);
 		},
 

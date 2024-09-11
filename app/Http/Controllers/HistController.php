@@ -42,11 +42,12 @@ class HistController extends Controller
     public function getHistforClosedDay(Request $request) {
         $user_id = Auth::id();
         $date    = $request->date;
+        $flag    = $request->flag;
         $pattern = "/^(\d{4}-\d{2}-\d{2})/";
 
         if (preg_match($pattern, $date, $matches)) {
             $formatedDate = $matches[0];   
-            $response = $this->histService->getHistforClosedDay($formatedDate, $user_id);
+            $response = $this->histService->getHistforClosedDay($formatedDate, $user_id, $flag);
             return response()->json($response);
         }
 

@@ -27,7 +27,7 @@
                 solo
                 outlined 
                 :rules="commentTextareaRules"
-                label   = "comment"
+                label   = "Enter your comment for the day"
                 hide-details
                 :value  = "newCommentText" 
                 @input  = "editComment"
