@@ -1,6 +1,5 @@
 <template>
 	<v-card>
-		
 		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header" style="margin-top: 50px">
 			<div class="closedReadyDayPlan_day-info-header-date">
 				<p class="closedReadyDayPlan_header-text">
@@ -29,23 +28,25 @@
 			</div>
 		</v-card-title>
 		<v-list v-if="wasADailyPlanCreated" class="day-info-list closedReadyDayPlan_dayInfoList-existing-day">
-			<v-list-item>
-				<v-list-item-content class="key p-1">Final mark:</v-list-item-content>
-				<v-list-item-content class="align-end p-0">
+			<v-list-item class="mark-wrapper">
+				<v-list-item-content class="key p-1"><span>Final mark:</span></v-list-item-content>
+				<v-list-item-content class="align-end p-0 day-info_list-item-content-wrapper">
 					<div v-if="data.dayFinalMark > 0 " class="day-info_list-item-content">{{data.dayFinalMark}} %</div>
 					<div v-else class="align-end day-info_list-item-content"> - </div>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item>
-				<v-list-item-content class="key p-1" >Own mark:</v-list-item-content>
-                <v-list-item-content class="align-end p-0" >
+			<v-list-item class="mark-wrapper">
+				<v-list-item-content class="key p-1" ><span>Own mark:</span></v-list-item-content>
+                <v-list-item-content class="align-end p-0 day-info_list-item-content-wrapper" >
 					<div v-if="data.dayOwnMark > 0 " class="day-info_list-item-content">{{data.dayOwnMark}} %</div>
 					<div v-else class="day-info_list-item-content">-</div>
 				</v-list-item-content>
 			</v-list-item>
-			<v-list-item class="comment-wrapper">
-				<v-list-item-content class="key p-1" >Comment:</v-list-item-content>
-                <v-list-item-content class="align-end p-0" style="overflow: visible;">
+			<v-list-item >
+				<v-list-item-content class="key p-1 justify-content-center" >Comment:</v-list-item-content>
+			</v-list-item>
+			<v-list-item class="justify-content-center">
+				<v-list-item-content class="comment-wrapper p-0">
 					<ClosedDayCommentDialog 
 					:commentText        = "commentText"
 					:newCommentText     = "newCommentText"
@@ -243,9 +244,24 @@
 		margin-bottom: 0;
 	}
 
-	.key
-	{
-		font-weight : bold
+	.mark-wrapper {
+		gap: 15px;
+	}
+	.mark-wrapper::after {
+		display: none;
+	}
+	.mark-wrapper .key {
+		display: grid;
+		grid-template-columns: 1fr 120px;
+	}
+
+	.key {
+		font-weight : bold;	
+	}
+
+	.key span {
+		grid-column: 2/3;
+		text-align: right;
 	}
 
 	.day-info-list {
@@ -267,8 +283,11 @@
 	}
 
 	.comment-wrapper {
-		align-items: flex-start;
 		min-height: 150px;
+		justify-content: center;
+		width: 60%; 
+		flex: 0 0 auto;
+		overflow: visible;
 	}
 
 	.comment-wrapper > .v-list-item__content {

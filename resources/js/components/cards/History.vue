@@ -55,7 +55,7 @@
 								<v-list-item-content class="key comment-title"> Comment:</v-list-item-content>
 							</v-list-item> -->
 							<v-list-item>
-								<v-list-item-content>
+								<v-list-item-content style="overflow: visible;">
 									<ClosedDayCommentDialog 
 									:commentText        = "selectedEvent.comment"
 									:newCommentText     = "newCommentText"

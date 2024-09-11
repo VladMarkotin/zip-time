@@ -1,3 +1,8 @@
+@media screen and (max-width: 900px) {
+  .comment-wrapper {
+    width: 80% !important;
+  }
+}
 @media screen and (max-width: 680px) {
   .closedReadyDayPlan_day-info-header {
     grid-template-columns: 1fr 1fr !important;
@@ -51,13 +56,6 @@
   .closedReadyDayPlan_dayInfoList-existing-day {
     font-size: 1.2rem;
   }
-  .closedReadyDayPlan_dayInfoList-existing-day .comment-wrapper {
-    align-items: center !important;
-  }
-  .closedReadyDayPlan_dayInfoList-existing-day .v-list-item {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-  }
   .closedReadyDayPlan_dayInfoList-existing-day .v-list-item::after {
     display: none;
   }
@@ -69,11 +67,9 @@
     min-height: 210px;
     align-items: flex-start !important;
   }
-  .closedReadyDayPlan_dayInfoList-existing-day .comment-wrapper {
-    align-items: flex-start !important;
-  }
-  .closedReadyDayPlan_dayInfoList-existing-day .newComment-input textarea {
-    padding-right: 0 !important;
+
+  .comment-wrapper {
+    width: 100% !important;
   }
 }
 @media screen and (max-width: 450px) {
@@ -98,7 +94,7 @@
     grid-template-columns: 1fr 1fr !important;
   }
 
-  .closedReadyDayPlan_dayInfoList-existing-day .v-list-item .day-info_list-item-content {
+  .closedReadyDayPlan_dayInfoList-existing-day .day-info_list-item-content-wrapper .day-info_list-item-content {
     text-align: right;
   }
   .closedReadyDayPlan_dayInfoList-existing-day .comment-wrapper {
@@ -106,5 +102,14 @@
   }
   .closedReadyDayPlan_dayInfoList-existing-day .comment-wrapper .v-list-item__content.key {
     justify-content: center !important;
+  }
+
+  .mark-wrapper .key {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+  .mark-wrapper .key span {
+    flex-grow: 1;
+    text-align: left !important;
   }
 }

@@ -1,4 +1,11 @@
+@media screen and (max-width:900px) {
+    .comment-wrapper {
+        width: 80% !important;
+    }
+}
+
 @media screen and (max-width: 680px) {
+    
     .closedReadyDayPlan_day-info-header {
         grid-template-columns: 1fr 1fr !important;
         grid-row-gap: 5px;
@@ -59,15 +66,10 @@
 
     .closedReadyDayPlan_dayInfoList-existing-day {
         font-size: 1.2rem;
-        .comment-wrapper {
-            align-items: center !important;
-        }
         .v-list-item {
             &::after {
                 display: none;
             }
-            display: grid;
-            grid-template-columns: 110px 1fr;
         }
         .closeReadyDayPlan_comment-text {
             font-style: italic;
@@ -79,13 +81,10 @@
             align-items: flex-start !important;
         }
 
-        .comment-wrapper {
-            align-items: flex-start !important;
-        }
+    }
 
-        .newComment-input textarea {
-            padding-right: 0 !important;
-        }
+    .comment-wrapper {
+        width: 100% !important;
     }
 }
 
@@ -115,7 +114,7 @@
         }
     }
     .closedReadyDayPlan_dayInfoList-existing-day {
-        .v-list-item  {
+        .day-info_list-item-content-wrapper  {
             .day-info_list-item-content {
                 text-align: right;
             }
@@ -124,6 +123,16 @@
             grid-template-columns: 1fr !important;
             .v-list-item__content.key{
                 justify-content: center !important;
+            }
+        }
+    }
+    .mark-wrapper  {
+        .key {
+            display: flex !important;
+            justify-content: flex-start !important;
+            span {
+                flex-grow: 1;
+                text-align: left !important;
             }
         }
     }
