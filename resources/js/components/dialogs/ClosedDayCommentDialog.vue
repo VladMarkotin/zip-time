@@ -11,13 +11,13 @@
             {{commentText}}
         </div>
         <v-dialog 
-        :fullscreen = "isShowFullScreen" 
         v-model="dialog" 
         max-width="560px"
+        :fullscreen = 'isShowMobileDialog'
         :persistent = "!isCommentTextValid"
         >
             <v-card 
-            v-if="!isShowFullScreen"
+            v-if="!isShowMobileDialog"
             class="p-2 closed-day-comment-card">
                 <v-textarea 
                 clearable 
@@ -38,10 +38,16 @@
             v-else
             class="closed-day-comment-card d-flex flex-column justify-content-center"
             >
-                <v-card-text style="height: 500px;" class="closed-day-comment_textarea-wrapper p-0">
+                <div class="test">
+                    <v-card-title 
+                class="p-0 pt-3 pb-3 mb-5 justify-content-center indigo lighten-5 text-uppercase">
+                    Edit Comment
+                </v-card-title>
+                <v-card-text 
+                style="flex-grow: 1;" class="closed-day-comment_textarea-wrapper p-0 pb-4">
                     <v-textarea 
                     class="closed-day-comment_textarea"
-                    height="450px"
+                    height="350px"
                     :clearable = "!isMobile"
                     clear-icon="mdi-close-circle"
                     :success="isCommentTextValid"
@@ -56,7 +62,7 @@
                     />
                 </v-card-text>
                 <v-divider></v-divider>
-                <v-card-actions class="p-0 d-flex justify-content-between">
+                <v-card-actions class="p-0 py-4 d-flex justify-content-between">
                     <v-btn 
                     min-width="94px"
                     @click="cancel"
@@ -70,6 +76,7 @@
                         Save
                     </v-btn>
                 </v-card-actions>
+                </div>
             </v-card>
         </v-dialog>
     </div>
@@ -100,8 +107,8 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
         emits: ['editComment', 'saveComment'],
         computed: {
             ...mapGetters(['getWindowScreendWidth']),
-            isShowFullScreen() {
-                return this.getWindowScreendWidth < 768;
+            isShowMobileDialog() {
+                return this.getWindowScreendWidth < 450;
             },
             isMobile() {
                 return this.getWindowScreendWidth < 425;
@@ -109,7 +116,7 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
         },
         watch: {
             dialog(value) {
-                if (value && !this.isShowFullScreen) {
+                if (value && !this.isShowMobileDialog) {
                     this.$nextTick(() => {
                         this.setTextareaHeight();
                     });
@@ -148,6 +155,10 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
 </script>
 
 <style scoped>
+    .test {
+        box-shadow: 4px 4px 12px black;
+        padding: 6px;
+    }
     .comment-text-field {
         box-sizing: border-box;
         padding: 12px;
@@ -190,7 +201,6 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
     }
     /*------------*/
     @media screen and (max-width: 768px)  {
-
         .closed-day-comment-card {
             box-sizing: border-box;
             max-height: 100vh;
@@ -200,7 +210,7 @@ import { mapGetters } from 'vuex/dist/vuex.common.js';
 
     @media screen and (max-width: 350px)  {
         .closed-day-comment-card {
-            padding: 6px !important;
+            padding: 12px 6px 6px !important;
         }
     }
 </style>

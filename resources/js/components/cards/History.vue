@@ -229,21 +229,18 @@ export default
 		font-weight : bold
 	}
 
-	.history_final-data-list .history_comment-wrapper .v-list-item__content {
-		align-self: flex-start;
-    }
-
 	.history_final-data-list .history_final-data-li {
 		gap: 25px;
 		min-height: 0 ;
 	}
 
 	.history_final-data-list .history_final-data-li .key {
-		justify-content: flex-end;
+		justify-content: flex-start !important;
 	}
 
 	.history_final-data-list .history_final-data-li .v-list-item__content{
 		padding: 4px;
+		justify-content: flex-end;
 	}
 
 	@import url('/css/History/HistoryMedia.css');
