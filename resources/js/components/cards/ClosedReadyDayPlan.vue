@@ -181,6 +181,7 @@ import { data } from 'jquery';
 				return this.screenWidth < 550;
 			}
 		},
+		
 		methods :
 			{	
 				setDate(flag) {
