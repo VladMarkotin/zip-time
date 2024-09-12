@@ -1,15 +1,1 @@
-@media screen and (max-width: 550px) {
-  .stat_main-data-wrapper,
-.stat_chart-wrapper {
-    padding: 0;
-  }
-
-  .stat_main-data-wrapper {
-    margin-bottom: 35px;
-  }
-}
-@media screen and (max-width: 395px) {
-  .stat-main-data-list .stat-main-data-li .stat-main-data-li-item {
-    grid-template-columns: 140px 110px !important;
-  }
-}
+@media screen and (max-width:550px){.stat_chart-wrapper,.stat_main-data-wrapper{padding:0}.stat_main-data-wrapper{margin-bottom:35px}}@media screen and (max-width:395px){.stat-main-data-list .stat-main-data-li .stat-main-data-li-item{grid-template-columns:140px 110px!important}}
