@@ -221,9 +221,6 @@
 					class="p-0 m-0"
 					:cols="6"
 					>
-						<!-- <v-list-item-content class="align-end ">
-							<v-textarea counter="256" rows="2" outlined shaped v-model="item.notes"></v-textarea>
-						</v-list-item-content>	 -->
 					</v-col>
 					<v-col 
 					class="p-0 m-0"
@@ -232,8 +229,8 @@
 						<template
 						>
 							<AddNotes 
-							:num              = "num"
-							:item             = "item"
+							:num  = "num"
+							:item = "item"
 							/>
 						</template>
 					</v-col>
@@ -262,33 +259,19 @@
 							class="ml-1" 
 							style="width : 54px" 
 							v-model="jobMarkInputValue" 
-							v-on:keypress.enter.prevent="sendMark(item)" 
+							v-on:keypress.enter.prevent="debounseSendMark(item)" 
+							@input    = "debounseSendMark(item)"
 							@keypress = "filterJobMarkInputValue($event, item.taskId)"
 							@focus    = "focusedInput=!focusedInput" 
 							@blur     = "focusedInput=!focusedInput"
 							>
 								<v-icon slot="append">mdi-percent</v-icon>
 							</v-text-field>
-							
-							<v-tooltip right>
-								<template v-slot:activator="{on}">
-									<v-btn 
-									:class="{'button-attention' : isShowUpdateCardNotification}"
-									icon
-									v-on="on" 
-									v-on:click="sendMark(item)"
-									>
-										<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
-									</v-btn>
-								</template>
-								<span>Update</span>
-							</v-tooltip>
-							
 						</template>
 						
 						<template v-else-if="[2,1].includes(item.type)">
 							<div>Ready?</div>
-							<div @click="updateIsReadyState(item)">
+							<div @click="debounseUpdateIsReadyState(item)">
 								<v-checkbox color="#D71700"
 								readonly
 								v-model="isTaskReady"
@@ -297,14 +280,6 @@
 								>
 								</v-checkbox>
 							</div>
-							<!-- <v-tooltip right>
-								<template v-slot:activator="{on}">
-									<v-btn icon v-on="on" v-on:click="sendIsReadyState(item)">
-										<v-icon color="#D71700">{{icons.mdiUpdate}}</v-icon>
-									</v-btn>
-								</template>
-								<span>Update</span>
-							</v-tooltip> -->
 						</template>
 					</form>
 				</v-col>
@@ -314,20 +289,8 @@
 					leave-active-class="notification_leave"
 					mode="out-in"
 					>
-						<div
-						v-if="isShowUpdateCardNotification"
-						style="width: inherit;"
-						class="d-flex justify-content-center card_update-card-notification-wrapper"
-						key="updante-card-not"
-						>
-							<span 
-							class="update-card-notification card_update-card-notification" 
-							>
-								Don't forget<br class="update-card-notifiactiob-br"> to save your mark!
-							</span>
-						</div>
 						<span 
-						v-if="focusedInput && !isShowUpdateCardNotification"
+						v-if="focusedInput"
 						class="mark-info" 
 						key="rating-range"
 						>Ratings` range 
@@ -342,6 +305,7 @@
 	</v-card>
 </template>
 <script>
+	import { debounce } from 'lodash';
 	import store from '../../store';
 	import { mapActions, mapGetters } from 'vuex/dist/vuex.common.js';
 	import {mdiUpdate, mdiPencil,
@@ -377,7 +341,6 @@
 					done: 'v-card-done',
 					completedProgressBar: 0,
 					focusedInput: false,
-					isShowUpdateCardNotification: false,
 					details: [],
 					ex4: [],
 					isShow : true,
@@ -498,18 +461,6 @@
 				}
 			},
 			
-			// sendIsReadyState(item)
-			// {
-			// 	axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes, type : item.type})
-			// 	.then((response) => {
-			// 		this.isShowAlert = true;
-			// 		this.setAlertData(response.data.status, response.data.message);
-			// 		setTimeout( () => {
-			// 			this.isShowAlert = false;
-			// 		},3000)
-			// 	  })
-			// },
-			
 			updateIsReadyState(item)
 			{
 				const getNewCheckboxVal = (oldVal) => {
@@ -539,6 +490,14 @@
 					},3000)
 				  })
 			},
+
+			debounseSendMark: debounce(function(item) {
+				this.sendMark(item);
+			}, 900),//интервал для тасок, пока не понимаю как избавиться от хардкода
+
+			debounseUpdateIsReadyState: debounce(function(item) {
+				this.updateIsReadyState(item);
+			}, 900),
 			
 			sendMark(item)
 			{	
@@ -552,11 +511,16 @@
 				.then((response) => {
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
-					this.checkIsSavedMark(item.taskId);
 
-					const {data} = response;
+					const {data}              = response;
+					const {current_task_mark} = data;
 					if (data.status === 'success') {
 						this.item.mark = +this.jobMarkInputValue;
+					} 
+					if((data.status === 'error') && current_task_mark !== undefined) {
+						this.jobMarkInputValue = current_task_mark !== -1 
+							? String(current_task_mark) 
+							: '';
 					}
 					
 					this.fetchPersonalResults();
@@ -651,29 +615,8 @@
 					return;
 				}
 
-				this.checkIsSavedMark(taskId);
 			},
 
-			checkIsSavedMark(taskId) {
-				const isShowUpdateCardNotification = (markInInput, savedMark) => {
-					if (markInInput === '' && savedMark === -1) return false;
-					return +markInInput !== savedMark;
-				};
-
-				axios.post('/get-task-mark',{task_id : taskId})
-				.then((response) => {
-					const {data} = response;
-					const savedMark = data.mark;
-					const markInInput = this.jobMarkInputValue.trim();
-					
-					if (data.status === 'success') {
-						this.isShowUpdateCardNotification = isShowUpdateCardNotification(
-							markInInput,
-							savedMark
-						);
-					}
-				})
-			},
 		},
 		
 		

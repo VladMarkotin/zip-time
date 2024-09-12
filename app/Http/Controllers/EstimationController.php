@@ -19,40 +19,46 @@ use App\Events\RewardEvent;
 use App\Models\ChallengeModel;
 use Illuminate\Support\Facades\Validator;
 use App\Models\TimetableModel;
+use App\Http\Helpers\EstimationDayHelpers\EstimationDayHelper;
 
 
 class EstimationController extends Controller
 {
-    private $currentPlanInfo   = null;
-    private $checkCheckpoints  = null;
-    private $estimationService = null;
-    private $noteController    = null;
+    private $currentPlanInfo     = null;
+    private $checkCheckpoints    = null;
+    private $estimationService   = null;
+    private $noteController      = null;
+    private $estimationDayHelper = null;
 
     public function __construct(
-        CheckpointService $checkCheckpoints,
-        EstimationService $estimationService,
-        GetPlanRepository $getPlanRepository,
-        NoteController $noteController
+        CheckpointService   $checkCheckpoints,
+        EstimationService   $estimationService,
+        GetPlanRepository   $getPlanRepository,
+        NoteController      $noteController,
+        EstimationDayHelper $estimationDayHelper,
     )
     {
-        $this->checkCheckpoints  = $checkCheckpoints;
-        $this->estimationService = $estimationService;
-        $this->currentPlanInfo   = $getPlanRepository;
-        $this->noteController    = $noteController;
+        $this->checkCheckpoints     = $checkCheckpoints;
+        $this->estimationService    = $estimationService;
+        $this->currentPlanInfo      = $getPlanRepository;
+        $this->noteController       = $noteController;
+        $this->estimationDayHelper  = $estimationDayHelper;
     }
 
     public function estimateTask(Request $request)
     {
         $task_id  =  $request->get('task_id');
         $doesUserHaveUncomplReqSubtask  = !$this->checkCheckpoints->checkCheckpoints(['task_id' => $task_id]);
+        $current_task_mark  =  $this->estimationDayHelper->getCurrentMark($task_id);
 
         if ($doesUserHaveUncomplReqSubtask) {
             $response = [
-                'status'  => 'error',
-                'message' => 'Error! Some required subtasks are still undone',
+                'status'            => 'error',
+                'message'           => 'Error! Some required subtasks are still undone',
+                'current_task_mark' => $current_task_mark,
             ];
         } else {
-            $response = json_encode($this->estimateTaskWithoutUncomReqSubtask($request), JSON_UNESCAPED_UNICODE);
+            $response = json_encode($this->estimateTaskWithoutUncomReqSubtask($request, $current_task_mark), JSON_UNESCAPED_UNICODE);
         }
         
         // $challengeModel = new ChallengeModel();    
@@ -82,18 +88,10 @@ class EstimationController extends Controller
     /**
      * I am waiting: {task_id: <id>, mark: <>, details: "", note: "" }
      */
-    private function estimateTaskWithoutUncomReqSubtask(Request $request)
+    private function estimateTaskWithoutUncomReqSubtask(Request $request, $current_task_mark)
     {
+        // ожидаю текущую отметку, что бы в случае ошибки вернуть ее на фронт
         /**Before estimation check subplans */
-        
-        //раскомментить всю эту проверку, когда разделим логику по добавлению заметок и выставлению отметок
-        // $checkSubPlan = $this->checkCheckpoints->checkCheckpoints(['task_id' => $request->get('task_id')]);
-        // if (!$checkSubPlan) {
-        //     return response()->json([
-        //         'status' => 'error',
-        //         'message' => 'Error! Some required subtasks are still undone',
-        //     ]);
-        // }
         
         //checkCheckpoints
         /**end */
@@ -149,7 +147,8 @@ class EstimationController extends Controller
 
         $response = [
             "status" => 'error', 
-            "message" => 'Error during estimation.'
+            "message" => 'Error during estimation.',
+            'current_task_mark' => $current_task_mark,
         ];
 
         return $response;
