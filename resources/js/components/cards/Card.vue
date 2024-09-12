@@ -497,7 +497,7 @@
 
 			debounseUpdateIsReadyState: debounce(function(item) {
 				this.updateIsReadyState(item);
-			}, 900),
+			}, 900),//интервал для тасок, пока не понимаю как избавиться от хардкода
 			
 			sendMark(item)
 			{	
