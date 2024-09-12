@@ -139,7 +139,7 @@
 
 			return {
 				   currentDate,
-				   shownDate: currentDate.toEnStr(),
+				   shownDate: this.transformDate(currentDate),
 				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},
 				   commentText,
@@ -180,6 +180,14 @@
 
 					
 				},
+				transformDate(date) {
+					const day = date.getDate().toString().padStart(2, '0');
+					const month = (date.getMonth() + 1).toString().padStart(2, '0');
+					const year = date.getFullYear();
+
+					const formattedDate = `${day}-${month}-${year}`;
+					return formattedDate;
+				},
 				async setData(date, flag)
 				{
 					try {
@@ -199,7 +207,8 @@
 							
 							const {date} = currentDayData;
 							this.currentDate = new Date(date);
-							this.shownDate = this.currentDate.toEnStr();
+							this.shownDate = this.transformDate(this.currentDate);
+							
 						} else {
 							this.wasADailyPlanCreated = false;
 						}
