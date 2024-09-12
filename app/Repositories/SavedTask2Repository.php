@@ -37,7 +37,7 @@ class SavedTask2Repository
     public function getMostPopularHashesOnNextDay($id, $status = 1)
     {
         $query = "SELECT t1.hash_code,  COUNT(t1.id) num FROM tasks t1 JOIN timetables t2 ON t1.timetable_id = t2.id
-        JOIN saved_tasks s ON (s.hash_code = t1.hash_code AND s.user_id = 1 )
+        JOIN saved_tasks s ON (s.hash_code = t1.hash_code AND s.user_id = $id )
            WHERE t2.user_id=$id
           AND DAYOFWEEK(t2.date) = DAYOFWEEK(now() + interval 1 day)
           AND t1.hash_code <> '#'

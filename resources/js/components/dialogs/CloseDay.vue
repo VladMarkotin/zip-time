@@ -37,15 +37,17 @@
 							You can choose tasks for tomorrow`s plan
 						</p>
 							<v-chip-group
+							class="close-day_chips-wrapper"
 							multiple
 							active-class="primary--text"
 							v-model="chosenChips"
-							selected-class="text-primary"
 							>
 							<v-chip
 								v-for="tag in tags"
 								:key="tag"
 								:input-value="chosenChips.includes(tag)"
+								filter
+								outlined
 							>
 								{{ tag }}
 							</v-chip>
@@ -330,6 +332,15 @@
 	.v-progress-circular{
 		width: 50px;
 		margin: auto;
+	}
+
+	.close-day_chips-wrapper ::v-deep .v-slide-group__wrapper {
+		display: block;
+	}
+
+	.close-day_chips-wrapper ::v-deep .v-slide-group__wrapper .v-slide-group__content {
+		display: block;
+		white-space: normal;
 	}
 
 	@import url('/css/CloseDay/CloseDayMedia.css');
