@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import store from '../../../store';
+import { mapGetters } from 'vuex/dist/vuex.common.js';
 import { mdiDelete, } from '@mdi/js'
 import DefaultPreloader from '../../UI/DefaultPreloader.vue'
 export default {
@@ -82,10 +84,6 @@ export default {
         isShowPreloader: {
             type: Boolean,
             default: false,
-        },
-        screenWidth: {
-            type: Number,
-            required: true,
         },
     },
     data: () => ({
@@ -148,9 +146,11 @@ export default {
             },
         ],
     }),
+    store,
     computed: {
+        ...mapGetters(['getWindowScreendWidth']),
         isMobile() {
-            return this.screenWidth < 500;
+            return this.getWindowScreendWidth < 500;
         }
     },
     components: { DefaultPreloader},

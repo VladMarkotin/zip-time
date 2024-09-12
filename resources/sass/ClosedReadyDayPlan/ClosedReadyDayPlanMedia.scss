@@ -1,4 +1,11 @@
+@media screen and (max-width:900px) {
+    .comment-wrapper {
+        width: 80% !important;
+    }
+}
+
 @media screen and (max-width: 680px) {
+    
     .closedReadyDayPlan_day-info-header {
         grid-template-columns: 1fr 1fr !important;
         grid-row-gap: 5px;
@@ -58,16 +65,13 @@
     }
 
     .closedReadyDayPlan_dayInfoList-existing-day {
-        font-size: 1.2rem;
-        .comment-wrapper {
-            align-items: center !important;
+        .comment-text-field {
+            font-size: 1.2rem;
         }
         .v-list-item {
             &::after {
                 display: none;
             }
-            display: grid;
-            grid-template-columns: 110px 1fr;
         }
         .closeReadyDayPlan_comment-text {
             font-style: italic;
@@ -79,12 +83,59 @@
             align-items: flex-start !important;
         }
 
-        .comment-wrapper {
-            align-items: flex-start !important;
-        }
+    }
 
-        .newComment-input textarea {
-            padding-right: 0 !important;
+    .comment-wrapper {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .closedReadyDayPlan_day-info-header {
+        grid-template-columns: 1fr !important;
+        .closedReadyDayPlan_header-text {
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 5px;
+            span:nth-child(2) {
+                text-align: right !important;
+            }
+        }
+        .closedReadyDayPlan_header-finished {
+            .closedReadyDayPlan_header-text {
+               grid-template-columns: 1fr !important;
+               text-align: center;
+               font-size: 1.2rem;
+               text-transform: uppercase;
+            }
+        }
+    }
+    
+    .closedReadyDayPlan_dayInfoList-existing-day {
+        .v-list-item {
+            grid-template-columns: 1fr 1fr !important;
+        }
+    }
+    .closedReadyDayPlan_dayInfoList-existing-day {
+        .day-info_list-item-content-wrapper  {
+            .day-info_list-item-content {
+                text-align: right;
+            }
+        }
+        .comment-wrapper {
+            grid-template-columns: 1fr !important;
+            .v-list-item__content.key{
+                justify-content: center !important;
+            }
+        }
+    }
+    .mark-wrapper  {
+        .key {
+            display: flex !important;
+            justify-content: flex-start !important;
+            span {
+                flex-grow: 1;
+                text-align: left !important;
+            }
         }
     }
 }

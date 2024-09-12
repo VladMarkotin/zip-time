@@ -34,7 +34,6 @@
             <AddNotesCard 
             :taskId      = "item.taskId"
             :item        = "item"
-            :screenWidth = "screenWidth"
             @closeAddNotesDialog = "closeAddNotesDialog"
             />
         </template>
@@ -53,9 +52,6 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
                 type: Object,
                 required: true,
             },
-            screenWidth: {
-                type: Number,
-            }
         },
         data() {
             return {

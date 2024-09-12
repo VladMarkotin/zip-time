@@ -51,35 +51,18 @@
 								<v-list-item-content class="key">Own mark:</v-list-item-content>
 								<v-list-item-content>{{ selectedEvent.dayOwnMark }}</v-list-item-content>
 							</v-list-item>
-							<v-list-item class="history_final-data-li history_comment-wrapper">
-								<v-list-item-content> 
-									<span class="key">Comment:</span>
-									<div>
-										<EditCommentButton 
-										:isCommentEdited = "isCommentEdited"
-										:iconSize        = "29"
-										@click = "editComment"
-										/>
-										<SaveCommentButton 
-										:isCommentEdited = "isCommentEdited"
-										:iconSize        = "29"
-										@click  = "saveComment"
-										/>
-									</div>
-								</v-list-item-content>
-								<v-list-item-content v-if="!isCommentEdited"
-								class="history_comment-value" 
-								style="word-break: break-word">
-									{{ selectedEvent.comment }}
-								</v-list-item-content>
-								<v-list-item-content v-else>
-									<v-textarea 
-										solo
-										clear-icon="mdi-close-circle"
-										label="Describe your day"
-										v-model="newComment"
-										@keydown.enter.prevent ="saveComment"
-									></v-textarea>
+							<!-- <v-list-item class="history_final-data-li history_comment-wrapper">
+								<v-list-item-content class="key comment-title"> Comment:</v-list-item-content>
+							</v-list-item> -->
+							<v-list-item>
+								<v-list-item-content style="overflow: visible;">
+									<ClosedDayCommentDialog 
+									:commentText        = "selectedEvent.comment"
+									:newCommentText     = "newCommentText"
+									commentFieldHeight  = "150px"
+									@editComment = "editComment"
+									@saveComment = "saveComment"
+									/>
 								</v-list-item-content>
 							</v-list-item>
 						</v-list>
@@ -97,9 +80,9 @@
 	</v-row>
 </template>
 <script>
-
-import EditCommentButton from '../UI/EditCommentButton.vue';
-import SaveCommentButton from '../UI/SaveCommentButton.vue';
+import ClosedDayCommentDialog from '../dialogs/ClosedDayCommentDialog.vue';
+import store from '../../store';
+import { mapMutations } from 'vuex/dist/vuex.common.js';
 
 export default
 	{
@@ -117,19 +100,14 @@ export default
 				],
 				events: [],
 				isCommentEdited: false,
-				newComment: '',
+				newCommentText: '',
 			}
 		},
-		components: {EditCommentButton, SaveCommentButton},
-		watch: {
-			selectedOpen(value) {
-				if (value === false) {
-					this.isCommentEdited = false;
-				}
-			}
-		},
+		store,
+		components: {ClosedDayCommentDialog},
 		methods:
 		{
+			...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
 			async mounted() {
 				this.$refs.calendar.checkChange()
 			},
@@ -147,8 +125,9 @@ export default
 			},
 			showEvent({ nativeEvent, event }) {
 				const open = () => {
-					this.selectedEvent = event
+					this.selectedEvent   = event
 					this.selectedElement = nativeEvent.target
+					this.newCommentText  = this.selectedEvent.comment
 					requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
 				}
 
@@ -214,26 +193,34 @@ export default
 				}
 			},
 
-			editComment () {
-				this.isCommentEdited = true;
-				this.newComment      = this.selectedEvent.comment;
+			editComment (value) {
+				this.newCommentText = value;
 			},
 
 			async saveComment() {
 				const date = this.selectedEvent.end;
 
 				try {
-					const response = await axios.post('/edit-comment', {comment : this.newComment, date})
-					if (response.status === 200) {
-						this.selectedEvent.comment = this.newComment;
+					const response = await axios.post('/edit-comment', {comment : this.newCommentText, date})
+					if (response.data.comment_updated_status === 'success') {
+						this.selectedEvent.comment = this.newCommentText;
 					}
 				} catch (error) {
 					console.error(error);
-				} finally {
-					this.isCommentEdited = false;
-				}
+				} 
 			},
+
+			updateScreenWidth() {
+            	this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
+        	}
 		},
+		mounted() {
+			window.addEventListener('resize', this.updateScreenWidth);
+		},
+
+		beforeDestroy() {
+			window.removeEventListener('resize', this.updateScreenWidth);
+		}
 	}
 </script>
 
@@ -242,19 +229,18 @@ export default
 		font-weight : bold
 	}
 
-	.history_final-data-list .history_comment-wrapper .v-list-item__content {
-		align-self: flex-start;
-    }
-
 	.history_final-data-list .history_final-data-li {
-		align-items: flex-start;
-        display: grid;
-        grid-column-gap: 20px;
-        grid-template-columns: 80px 1fr;
+		gap: 25px;
+		min-height: 0 ;
 	}
 
-	.history_final-data-list .history_final-data-li::after {
-		display: none;
+	.history_final-data-list .history_final-data-li .key {
+		justify-content: flex-start !important;
+	}
+
+	.history_final-data-list .history_final-data-li .v-list-item__content{
+		padding: 4px;
+		justify-content: flex-end;
 	}
 
 	@import url('/css/History/HistoryMedia.css');

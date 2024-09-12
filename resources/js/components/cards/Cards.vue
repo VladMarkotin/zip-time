@@ -3,7 +3,6 @@
         <div class="cards_type-img-wrapper">
             <CardsTypeImage 
                 :title       = "title"
-                :screenWidth = "screenWidth"
             />
         </div>
         <v-row class="cards_cards-wrapper">
@@ -11,7 +10,6 @@
                 <Card 
                 v-bind:item="item" 
                 v-bind:num="i" 
-                v-bind:screenWidth = "screenWidth"
                 />
             </v-col>
         </v-row>
@@ -22,7 +20,7 @@
     import CardsTypeImage from '../UI/CardsTypeImage.vue';
 
     export default {
-    props : ['title','items', 'screenWidth'],
+    props : ['title','items'],
     components : {Card, CardsTypeImage,},
     }
 </script>

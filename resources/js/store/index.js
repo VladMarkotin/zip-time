@@ -4,6 +4,7 @@ import Challenge from './modules/challenge'
 import Details from './modules/details';
 import Notes from './modules/notes';
 import PersonalResults from './modules/personalResults';
+import WindowScreenWidth from './modules/windowScreenWidth';
 
 Vue.use(Vuex)
 
@@ -13,5 +14,6 @@ export default new Vuex.Store({
         Details,
         Notes,
         PersonalResults,
+        WindowScreenWidth,
      }
 })

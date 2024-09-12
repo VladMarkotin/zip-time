@@ -1,7 +1,6 @@
 <template>
 	<v-card>
-		
-		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header" style="margin-top: 50px">
+		<v-card-title class="font-weight-bold justify-space-between v-card-title closedReadyDayPlan_day-info-header">
 			<div class="closedReadyDayPlan_day-info-header-date">
 				<p class="closedReadyDayPlan_header-text">
 					<span>Date: </span> <span>{{shownDate}}</span>
@@ -29,65 +28,50 @@
 			</div>
 		</v-card-title>
 		<v-list v-if="wasADailyPlanCreated" class="day-info-list closedReadyDayPlan_dayInfoList-existing-day">
-			<v-list-item>
-				<v-list-item-content class="key">Final mark:</v-list-item-content>
-				<v-list-item-content class="align-end" v-if="data.dayFinalMark > 0 ">{{data.dayFinalMark}} %</v-list-item-content>
-				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
+			<v-container>
+				<v-expansion-panels>
+				<v-expansion-panel>
+					<v-expansion-panel-header>
+						<v-list-item class="mark-wrapper p-0">
+							<v-list-item-content class="key p-1"><span>Final mark:</span></v-list-item-content>
+							<v-list-item-content class="align-end p-0 day-info_list-item-content-wrapper">
+								<div v-if="data.dayFinalMark > 0 " class="day-info_list-item-content">{{data.dayFinalMark}} %</div>
+								<div v-else class="align-end day-info_list-item-content"> - </div>
+							</v-list-item-content>
+						</v-list-item>
+					</v-expansion-panel-header>
+					<v-expansion-panel-content class="text-center">
+						Final mark represents the arithmetic mean of tasks with the type "Required job"
+					</v-expansion-panel-content>
+				</v-expansion-panel>
+				<v-expansion-panel>
+					<v-expansion-panel-header>
+						<v-list-item class="mark-wrapper p-0">
+							<v-list-item-content class="key p-1" ><span>Own mark:</span></v-list-item-content>
+							<v-list-item-content class="align-end p-0 day-info_list-item-content-wrapper" >
+								<div v-if="data.dayOwnMark > 0 " class="day-info_list-item-content">{{data.dayOwnMark}} %</div>
+								<div v-else class="day-info_list-item-content">-</div>
+							</v-list-item-content>
+						</v-list-item>
+					</v-expansion-panel-header>
+					<v-expansion-panel-content class="text-center">
+						Own mark represents your subjective assessment of the day's success.
+					</v-expansion-panel-content>
+				</v-expansion-panel>
+				</v-expansion-panels>
+			</v-container>
+			<v-list-item >
+				<v-list-item-content class="key p-1 justify-content-center" >Comment:</v-list-item-content>
 			</v-list-item>
-			<v-list-item>
-				<v-list-item-content class="key" >Own mark:</v-list-item-content>
-                <v-list-item-content class="align-end" v-if="data.dayOwnMark > 0 ">{{data.dayOwnMark}} %</v-list-item-content>
-				<v-list-item-content class="align-end" v-else> - </v-list-item-content>
-			</v-list-item>
-			<v-list-item class="comment-wrapper">
-				<v-list-item-content class="key d-flex comment-key-wrapper">
-					<div>
-						<div>
-							<div>
-								Comment:
-							</div>
-							<EditCommentButton 
-							v-if             = "isMobile && wasADailyPlanCreated"
-							:isCommentEdited = "isCommentEdited"
-							:iconSize        = "29"
-							@click="editComment"
-							/>
-							<SaveCommentButton 
-							v-if             = "isMobile && wasADailyPlanCreated"
-							:isCommentEdited = "isCommentEdited"
-							:iconSize        = "29"
-							@click="saveComment"
-							/>
-						</div>
-					</div>
-					<div class="d-flex justify-content-center comment-buttons-wrapper">
-						<EditCommentButton 
-						v-if="!isMobile"
-						:isCommentEdited = "isCommentEdited"
-						:iconSize        = "26"
-						@click="editComment"
-						/>
-						<SaveCommentButton 
-						v-if="!isMobile"
-						:isCommentEdited = "isCommentEdited"
-						:iconSize        = "26"
-						@click="saveComment"
-						/>
-					</div>
-				</v-list-item-content>
-				<v-list-item-content class="align-end closeReadyDayPlan_comment-text closeReadyDayPlan_comment-text-wrapper" v-if="!isCommentEdited">
-					{{commentText}}
-				</v-list-item-content>
-				<v-list-item-content class="align-end closeReadyDayPlan_comment-text-wrapper" v-else>
-					<v-textarea 
-						class="newComment-input"
-						solo
-						clear-icon="mdi-close-circle"
-						label="Describe your day"
-						v-model="newComment"
-						:clearable = "!isMobile"
-						@keydown.enter.prevent = "saveComment"
-					></v-textarea>
+			<v-list-item class="justify-content-center">
+				<v-list-item-content class="comment-wrapper p-0">
+					<ClosedDayCommentDialog 
+					:commentText        = "commentText"
+					:newCommentText     = "newCommentText"
+					commentFieldHeight = "150px"
+					@editComment = "editComment"
+					@saveComment = "saveComment"
+					/>
 				</v-list-item-content>
 			</v-list-item>
 		</v-list>
@@ -101,7 +85,7 @@
 		<v-card-actions class="d-flex justify-space-between">
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('prev')" :disabled="!isShowButton.prev || isCommentEdited">
+					<v-btn icon v-on="on" v-on:click="setDate('prev')" :disabled="!isShowButton.prev">
 						<v-icon color="#D71700" large>{{icons.mdiArrowLeft}}</v-icon>
 					</v-btn>
 				</template>
@@ -110,7 +94,7 @@
 			<div>
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
-						<v-btn icon v-on="on" v-on:click="setDate('today')" :disabled="isCommentEdited">
+						<v-btn icon v-on="on" v-on:click="setDate('today')">
 							<v-icon color="#D71700" large>{{icons.mdiCalendarToday}}</v-icon>
 						</v-btn>
 					</template>
@@ -119,7 +103,7 @@
 			</div>
 			<v-tooltip right>
 				<template v-slot:activator="{on}">
-					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next || isCommentEdited">
+					<v-btn icon v-on="on" v-on:click="setDate('next')" :disabled="!isShowButton.next">
 						<v-icon color="#D71700" large>{{icons.mdiArrowRight}}</v-icon>
 					</v-btn>
 				</template>
@@ -129,16 +113,17 @@
 	</v-card>
 </template>
 <script>
-	import EditCommentButton from '../UI/EditCommentButton.vue';
-	import SaveCommentButton from '../UI/SaveCommentButton.vue';
+	import store from '../../store';
+	import { mapGetters, mapMutations } from 'vuex/dist/vuex.common.js';
+	import ClosedDayCommentDialog from '../dialogs/ClosedDayCommentDialog.vue';
 	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline } from '@mdi/js'
 	import Challenges from "./../challenges/Challenges.vue";
-import { data } from 'jquery';
+	import { data } from 'jquery';
 
 	export default
 	{
 		props : ['data'],
-		components: { Challenges, EditCommentButton, SaveCommentButton },
+		components: { Challenges, ClosedDayCommentDialog},
 		data()
 		{
 			const commentText = this.data.comment;
@@ -154,23 +139,23 @@ import { data } from 'jquery';
 
 			return {
 				   currentDate,
-				   shownDate: currentDate.toEnStr(),
+				   shownDate: this.transformDate(currentDate),
 				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},
 				   commentText,
 				   daystatusCodeInfo,
-				   newComment: '',
-				   isCommentEdited: false,
+				   newCommentText: commentText,
 				   wasADailyPlanCreated: true,
 				   isLoading: false,
 				   isShowButton: {
-					prev: true,
+					prev: false,
 					next: false,
 				   },
-				   screenWidth: window.innerWidth,
 		   }
 		},
+		store,
 		computed : {
+			...mapGetters(['getWindowScreendWidth']),
 			dayStatus() {
 				const statusCode = this.data.dayStatus;
 				
@@ -178,50 +163,53 @@ import { data } from 'jquery';
 			},
 
 			isMobile() {
-				return this.screenWidth < 550;
+				return this.getWindowScreendWidth < 550;
 			}
 		},
 		
 		methods :
 			{	
+				...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
 				setDate(flag) {
 					if (this.isLoading) return;
 
-					const currentDay = this.currentDate;
-
-					switch (flag) {
-						case 'prev':
-							currentDay.setDate(currentDay.getDate() - 1);
-						break;
-						case 'today':
-							const today = new Date;
-
-							currentDay.setDate(today.getDate());
-							currentDay.setMonth(today.getMonth());
-						break;
-						case 'next':
-							currentDay.setDate(currentDay.getDate() + 1);
-						break;
+					if (flag === 'today') {
+						this.setData(new Date().getCurrentDate(), flag);
+					} else {
+						this.setData(this.currentDate.getCurrentDate(), flag); // в файле functions.js расширял прототип
 					}
 
-					this.setData(currentDay);
-					this.shownDate = this.currentDate.toEnStr();
+					
 				},
-				async setData(date)
+				transformDate(date) {
+					const day = date.getDate().toString().padStart(2, '0');
+					const month = (date.getMonth() + 1).toString().padStart(2, '0');
+					const year = date.getFullYear();
+
+					const formattedDate = `${day}-${month}-${year}`;
+					return formattedDate;
+				},
+				async setData(date, flag)
 				{
 					try {
 						this.isLoading = true;
-						const {data} = (await axios.post(`/hist/forClosedDay`,{date}))
+						const {data} = (await axios.post(`/hist/forClosedDay`,{date, flag}))
 						this.isShowButton = {prev: data.doesTheDayExistBefore, next: data.doesTheDayExistAfter};
 
 						if (!data.isDayMissed) {
 							const {currentDayData} = data;
-
+							
 							this.wasADailyPlanCreated = true;
 							this.data.dayFinalMark    = currentDayData.dayFinalMark;
 							this.data.dayOwnMark      = currentDayData.dayOwnMark;
 							this.data.dayStatus       = currentDayData.dayStatus;
 							this.commentText          = currentDayData.commentText; 
+							this.newCommentText       = currentDayData.commentText;
+							
+							const {date} = currentDayData;
+							this.currentDate = new Date(date);
+							this.shownDate = this.transformDate(this.currentDate);
+							
 						} else {
 							this.wasADailyPlanCreated = false;
 						}
@@ -232,27 +220,30 @@ import { data } from 'jquery';
 						this.isLoading = false;
 					}
 				},
-				editComment () {
-					this.isCommentEdited = true;
-					this.newComment = this.commentText;
+				editComment (value) {
+					this.newCommentText = value;
 				},
-				saveComment() {
-					axios.post('/edit-comment',{	
-						comment    : this.newComment,
-						date       : this.currentDate
-					})
-					.then((response) => {
-						this.commentText     = this.newComment;
-						this.isCommentEdited = false;
-					})
+				async saveComment() {
+					try {
+						const response = await axios.post('/edit-comment',{	
+							comment    : this.newCommentText,
+							date       : this.currentDate
+						})
+						if (response.data.comment_updated_status === 'success') {
+							this.commentText = this.newCommentText
+						}
+					} catch(error) {
+						console.error(error);
+					}
 				},
 
 				updateScreenWidth() {
-            		this.screenWidth = window.innerWidth;
+            		this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
         		}
 			},
 		
 		mounted() {
+			this.setDate('today');
 			window.addEventListener('resize', this.updateScreenWidth);
 		},
 
@@ -281,13 +272,33 @@ import { data } from 'jquery';
 		margin-bottom: 0;
 	}
 
-	.key
-	{
-		font-weight : bold
+	.mark-wrapper {
+		gap: 15px;
+	}
+	.mark-wrapper::after {
+		display: none;
+	}
+	.mark-wrapper .key {
+		display: grid;
+		grid-template-columns: 1fr 120px;
+	}
+
+	.key {
+		font-weight : bold;	
+	}
+
+	.key span {
+		grid-column: 2/3;
+		text-align: right;
 	}
 
 	.day-info-list {
 		min-height: 172px;
+	}
+
+	.day-info_list-item-content {
+		padding: 12px; 
+		box-sizing: border-box;
 	}
 
 	.missed-day-text {
@@ -300,7 +311,11 @@ import { data } from 'jquery';
 	}
 
 	.comment-wrapper {
-		align-items: flex-start;
+		min-height: 150px;
+		justify-content: center;
+		width: 60%; 
+		flex: 0 0 auto;
+		overflow: visible;
 	}
 
 	.comment-wrapper > .v-list-item__content {

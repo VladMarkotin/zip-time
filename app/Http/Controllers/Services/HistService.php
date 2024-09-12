@@ -47,29 +47,24 @@ class HistService
         return ( json_encode($response, JSON_UNESCAPED_UNICODE));
      }
 
-    public function getHistforClosedDay($date, $user_id)
+    public function getHistforClosedDay($date, $user_id, $flag)
     {
         $responseData = [];
+        $currentDayData = $this->getCurrentDayData($date, $user_id, $flag);
 
-        $currentDayData = $this->timeTable
-        ->select('date', 'day_status', 'final_estimation', 'own_estimation', 'comment')
-        ->where('user_id', $user_id)
-        ->where('date', $date)
-        ->get()
-        ->toArray();
-
-        $doesTheDayExistBefore = $this->timeTable::where('date', '<', $date)->where('user_id', $user_id)->exists();
-        $doesTheDayExistAfter  = $this->timeTable::where('date', '>', $date)->where('user_id', $user_id)->exists();
+        $doesTheDayExistBefore = $this->timeTable::where('date', '<', $currentDayData['date'])->where('user_id', $user_id)->exists();
+        $doesTheDayExistAfter  = $this->timeTable::where('date', '>', $currentDayData['date'])->where('user_id', $user_id)->exists();
 
         $isDayMissed = !count($currentDayData);
-        $responseData['isDayMissed']      = $isDayMissed;
+        $responseData['isDayMissed']           = $isDayMissed;
         $responseData['doesTheDayExistBefore'] = $doesTheDayExistBefore;
         $responseData['doesTheDayExistAfter']  = $doesTheDayExistAfter;
 
-        
         if (!$isDayMissed) {
             $transformedKeys = array_map(function($key) {
                 switch ($key) {
+                    case 'date':
+                        return 'date';
                     case 'day_status':
                         return 'dayStatus';
                     case 'final_estimation':
@@ -81,12 +76,41 @@ class HistService
                     default:
                         return $key;
                 }
-            }, array_keys($currentDayData[0]));
-            $currentDayData = array_combine($transformedKeys, $currentDayData[0]);
+            }, array_keys($currentDayData));
+            $currentDayData = array_combine($transformedKeys, $currentDayData);
 
             $responseData['currentDayData'] = $currentDayData;
         }
 
         return $responseData;
+    }
+
+    private function getCurrentDayData($date, $user_id, $flag) 
+    {
+        switch($flag) {
+            case 'prev':
+                return $this->timeTable
+                ->select('date', 'day_status', 'final_estimation', 'own_estimation', 'comment')
+                ->where('user_id', $user_id)
+                ->where('date', '<', $date)
+                ->orderBy('date', 'desc')
+                ->first()
+                ->toArray();
+            case 'today':
+                return $this->timeTable
+                ->select('date', 'day_status', 'final_estimation', 'own_estimation', 'comment')
+                ->where('user_id', $user_id)
+                ->where('date', $date)
+                ->first()
+                ->toArray();
+            case 'next':
+                 return $this->timeTable
+                ->select('date', 'day_status', 'final_estimation', 'own_estimation', 'comment')
+                ->where('user_id', $user_id)
+                ->where('date', '>', $date)
+                ->orderBy('date', 'asc')
+                ->first() 
+                ->toArray();
+        }
     }
 }

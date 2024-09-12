@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import store from '../../store';
+import { mapGetters } from 'vuex/dist/vuex.common.js';
 import { mdiCog } from '@mdi/js';
     export default {
         props: {
@@ -45,18 +47,17 @@ import { mdiCog } from '@mdi/js';
             attachTo: {
                 type: String,
             },
-            screenWidth: {
-                type: Number,
-            }
         },
         data() {
             return {
                 icon : {mdiCog},
             }
         },
+        store,
         computed: {
+            ...mapGetters(['getWindowScreendWidth']),
             isDispOptionRight() {
-               return this.screenWidth > 430;
+               return this.getWindowScreendWidth > 430;
             }
         },
         methods: {

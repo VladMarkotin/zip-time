@@ -33,14 +33,12 @@
                 title="Required jobs and tasks"
                 v-if="isExistsRequiredTasks(data.plan)"
                 v-bind:items="getRequiredTasks(data.plan)"
-                :screenWidth = "screenWidth"
             />
             <v-divider></v-divider>
             <Cards
                 title="Non required jobs and tasks"
                 v-if="isExistsNonRequiredTasks(data.plan)"
                 v-bind:items="getNonRequiredTasks(data.plan)"
-                :screenWidth = "screenWidth"
             />
         </v-data-iterator>
         <div class="d-flex justify-space-between mt-6">
@@ -108,18 +106,13 @@ export default {
             isShowAlertDialog: false,
 
             alert: { type: "", text: "" },
-            screenWidth: window.innerWidth,
             isShowFirework: false,
         };
     },
     store,
-    computed: {
-        isMobile() {
-            return this.screenWidth < 768;
-        }
-    },
+    computed: {},
     methods: {
-        ...mapMutations(['INITIALIZE_DETAILS_STORE', 'INITIALIZE_NOTES_STORE']),
+        ...mapMutations(['INITIALIZE_DETAILS_STORE', 'INITIALIZE_NOTES_STORE', 'SET_WINDOW_SCREEN_WIDTH']),
         getRequiredTasks(data) {
             return data.filter((item) => [4, 2].includes(item.type));
         },
@@ -153,7 +146,7 @@ export default {
         },
 
         updateScreenWidth() {
-            this.screenWidth = window.innerWidth;
+            this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
         }
     },
 

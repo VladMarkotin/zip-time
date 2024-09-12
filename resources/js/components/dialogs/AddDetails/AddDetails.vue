@@ -1,6 +1,6 @@
 <template>
     <v-dialog 
-    :fullscreen = "isMobile" 
+    :fullscreen = "isShowFullScreen" 
     v-model     = "isShowDialogDetails" 
     scrollable 
     width="auto">
@@ -20,7 +20,6 @@
 			:taskId             = "item.taskId"
             :alert              = "alert"
             :generateUniqKey    = "generateUniqKey"
-            :screenWidth        = "screenWidth"
             @closeAddDetailsDialog    = "closeAddDetailsDialog"
             @updateAlertData          = "setAlertData"
             @resetDayMarkToDefVal     = "$emit('resetDayMarkToDefVal')"
@@ -31,7 +30,7 @@
 
 <script>
 import store from '../../../store';
-import { mapActions } from 'vuex/dist/vuex.common.js';
+import { mapActions, mapGetters } from 'vuex/dist/vuex.common.js';
 import AddDetailsCard from './AddDetailsCard.vue';
 import {mdiChartGantt,}  from '@mdi/js'  
 import { uuid } from 'vue-uuid';
@@ -42,9 +41,6 @@ export default {
             type: Object,
             required: true,
         },
-        screenWidth: {
-            type: Number,
-        }
     },
     data() {
         return {
@@ -59,8 +55,9 @@ export default {
     emits: ['resetDayMarkToDefVal'],
     components: {AddDetailsCard},
     computed: {
-        isMobile() {
-            return this.screenWidth < 768; 
+        ...mapGetters(['getWindowScreendWidth']),
+        isShowFullScreen() {
+            return this.getWindowScreendWidth < 768; 
         }  
     },
     watch: {
