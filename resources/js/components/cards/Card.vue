@@ -270,6 +270,7 @@
 								<v-icon slot="append">mdi-percent</v-icon>
 							</v-text-field>
 							
+							
 							<v-tooltip right>
 								<template v-slot:activator="{on}">
 									<v-btn 
