@@ -42,6 +42,7 @@
 					</v-expansion-panel-header>
 					<v-expansion-panel-content class="text-center">
 						Final mark represents the arithmetic mean of tasks with the type "Required job"
+						plus the arithmetic mean of tasks with "Non required jobs" type dividing on 2.
 					</v-expansion-panel-content>
 				</v-expansion-panel>
 				<v-expansion-panel>
