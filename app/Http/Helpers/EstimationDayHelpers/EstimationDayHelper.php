@@ -9,6 +9,9 @@ use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 use App\Models\PersonalConfigs;
 use App\Models\DefaultConfigs;
 use Illuminate\Support\Facades\Log;
+use App\Models\Tasks;
+
+use function PHPSTORM_META\type;
 
 class EstimationDayHelper
 {
@@ -154,5 +157,10 @@ class EstimationDayHelper
         }
 
         return 1;
+    }
+
+    public function getCurrentMark($task_id)
+    {
+        return Tasks::where('id', $task_id)->value('mark');   
     }
 }
