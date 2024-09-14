@@ -163,5 +163,25 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         height: 500px;
     }
     
+    .editCardData-content::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .editCardData-content::-webkit-scrollbar-track {
+        background: #e6e6e6;
+        border-left: 1px solid #dadada;
+    }
+
+    .editCardData-content::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .editCardData-content::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
+        cursor: pointer;
+    }
+
     @import url('/css/EditCardData/EditCardDataMedia.css');
 </style>

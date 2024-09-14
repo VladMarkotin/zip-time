@@ -1,1 +1,14 @@
-@media screen and (max-width:424px){.addNotes-addNotes-dialog{margin:0!important}}
+@media screen and (max-width: 768px) {
+  .addNotes-addNotes-dialog .addNotes-addNotesCard-wrapper {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+  }
+}
+@media screen and (max-width: 425px) {
+  .addNotes-addNotesCard-wrapper .addNotesCard-accordion-header,
+.addNotes-addNotesCard-wrapper .addNotesCard-title,
+.addNotes-addNotesCard-wrapper .addNotesCard-footer {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
