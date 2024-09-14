@@ -668,6 +668,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
     .details-cards-wrapper::-webkit-scrollbar-thumb:hover {
         background: rgb(161, 0, 0);
+        cursor: pointer;
     }
 
     .isReqSubtask-checkbox-wrapper .v-input--checkbox {

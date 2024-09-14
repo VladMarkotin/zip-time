@@ -79,7 +79,7 @@
         class="px-6 addNotesCard-footer addNotesCard-footer"
         >
         <v-row 
-        class="d-flex justify-content-between align-items-center p-0 m-0"
+        class="d-flex justify-content-between align-items-end p-0 m-0"
         style="min-height: 72px;"
         >
             <v-col 
@@ -326,6 +326,26 @@ import EditNotesDialog from './EditNotesDialog.vue';
 		from { opacity: 1; left: 0;}
 		to { opacity: 0; left: 10px;}
 	}
+
+    .addNotesCard-notes-wrapper::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .addNotesCard-notes-wrapper::-webkit-scrollbar-track {
+        background: #e6e6e6;
+        border-left: 1px solid #dadada;
+    }
+
+    .addNotesCard-notes-wrapper::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .addNotesCard-notes-wrapper::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
+        cursor: pointer;
+    }
 
     @import url('/css/AddNotesCard/AddNotesCardMedia.css');
 </style>
