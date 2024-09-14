@@ -163,5 +163,5 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         height: 500px;
     }
     
-     @import url('/css/EditCardData/EditCardDataMedia.css');
+    @import url('/css/EditCardData/EditCardDataMedia.css');
 </style>
