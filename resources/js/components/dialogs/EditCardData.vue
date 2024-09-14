@@ -1,16 +1,17 @@
 <template>
     <v-dialog 
+    :fullscreen = "isMobile"
     v-model="isShowEditCardDataDialog" 
     persistent 
-    content-class="editJobTask-editJobTask-dialog"
+    scrollable
     width="500">
         <template v-slot:activator="{ props }">
             <template>
                 <EditButton @click="isShowEditCardDataDialog = true" />
             </template>
         </template>
-        <v-card class="pt-3 pb-3 editCardData_editCard-wrapper">
-            <v-card-text class="pb-2">
+        <v-card class="pt-6 pb-6 editCardData_editCard-wrapper d-flex flex-column">
+            <v-card-text class="pb-2 pt-2 editCardData-content">
                 <v-row class="p-0 m-0">
                     <h4 class="p-0" style="font-size: 1rem;">Edit task`s priority:</h4>
                     <v-select
@@ -49,8 +50,8 @@
                     </div>
                 </v-row>
             </v-card-text>
-            <v-spacer></v-spacer>
-            <v-card-actions>
+            <v-divider></v-divider>
+            <v-card-actions class="px-5 pb-0 editCardData-footer">
                 <div class="d-flex justify-content-between" style="width: 100%;">
                     <v-btn
                         color="green-darken-1"
@@ -74,6 +75,8 @@
 </template>
 
 <script>
+import store from '../../store';
+import { mapGetters } from 'vuex/dist/vuex.common.js';
 import EditButton from '../UI/EditButton.vue';
 import VSelectTooptip from '../UI/VSelectTooptip.vue';
     export default {
@@ -97,8 +100,10 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
                 timeFormat: 'ampm',
             }
         },
+        store,
         components: {EditButton, VSelectTooptip},
         computed: {
+            ...mapGetters(['getWindowScreendWidth']),
             tooltipPrioritiesData() {
 				return {
 					titles: {
@@ -107,8 +112,10 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
 						'3' : 'extremly imortant',
 					}
 				}
-        	}
-            
+        	},
+            isMobile() {
+                return this.getWindowScreendWidth < 768;
+            }
         },
         watch: {
             isShowEditCardDataDialog(isDialogOpen) {
@@ -152,5 +159,9 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
 </script>
 
 <style>
+    .editCardData-content {
+        height: 500px;
+    }
+    
      @import url('/css/EditCardData/EditCardDataMedia.css');
 </style>

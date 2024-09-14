@@ -1,6 +1,9 @@
 $timePickerSize: 270px;
 
 @media screen and (max-width: 768px)  {
+    .v-dialog--fullscreen>.v-card.editCardData_editCard-wrapper {
+        padding: 24px 0 !important;
+    }
     .editCardData_editCard-wrapper {
         .v-picker__title {
             padding: 8px;
@@ -24,8 +27,12 @@ $timePickerSize: 270px;
 
 }
 
-@media screen and (max-width: 424px) {
-    .editJobTask-editJobTask-dialog {
-        margin: 0 !important;
+@media screen and (max-width: 425px) {
+    .editCardData_editCard-wrapper {
+        .editCardData-content,
+        .editCardData-footer {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+        }
     }
 }
