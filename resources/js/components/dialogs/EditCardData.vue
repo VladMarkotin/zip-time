@@ -52,7 +52,7 @@
                 </v-row>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions class="px-5 pb-0">
+            <v-card-actions class="px-5 pb-0 editCardData-footer">
                 <div class="d-flex justify-content-between" style="width: 100%;">
                     <v-btn
                         color="green-darken-1"

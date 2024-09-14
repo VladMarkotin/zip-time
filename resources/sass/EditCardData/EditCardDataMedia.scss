@@ -27,8 +27,12 @@ $timePickerSize: 270px;
 
 }
 
-// @media screen and (max-width: 424px) {
-//     .editJobTask-editJobTask-dialog {
-//         margin: 0 !important;
-//     }
-// }
+@media screen and (max-width: 425px) {
+    .editCardData_editCard-wrapper {
+        .editCardData-content,
+        .editCardData-footer {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+        }
+    }
+}

@@ -19,3 +19,10 @@
     flex-basis: 270px;
   }
 }
+@media screen and (max-width: 425px) {
+  .editCardData_editCard-wrapper .editCardData-content,
+.editCardData_editCard-wrapper .editCardData-footer {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
