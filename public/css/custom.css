@@ -438,7 +438,6 @@ body {
 
 .personal-results-toggle:hover .personal-results {
     display: block;
-    z-index: 1;
 }
 
 @media screen and (max-width: 450px) {

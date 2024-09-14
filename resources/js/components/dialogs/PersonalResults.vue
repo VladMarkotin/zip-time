@@ -1,6 +1,6 @@
 <template>
     <div 
-    class="personal-results personal-results-card-wrapper" 
+    class="personal-results-card-wrapper" 
     >
     <v-card class="mx-auto personal-results-card" width="500" prepend-icon="mdi-home">
       <template v-slot:title> Your current personal results:</template>
@@ -109,9 +109,10 @@
       }
 </script>
 <style scoped>
-  .personal-results{
+  .personal-results-card-wrapper{
       position:absolute;
       right: 5%;
+      z-index: 9999;
   }
 
   .less-rating {
