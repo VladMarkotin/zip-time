@@ -1,5 +1,6 @@
 <template>
     <v-dialog
+        :fullscreen = "isMobile"
 		v-model="isShowNotesDialog"
 		scrollable
         content-class="addNotes-addNotes-dialog"
@@ -71,7 +72,7 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
             AddNotesCard,
         },
         computed: {
-            ...mapGetters(['getNotesData']),
+            ...mapGetters(['getNotesData', 'getWindowScreendWidth']),
             notesTodayAmount() {
                 const notesData = this.getNotesData(this.item.taskId);
                 if (!notesData) {
@@ -79,6 +80,9 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
                 }
 
                 return notesData.length;
+            },
+            isMobile() {
+                return this.getWindowScreendWidth < 768;
             }
         },
         methods: {
@@ -96,4 +100,5 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
 
 <style>
     @import url('/css/AddNotes/AddNotesMedia.css');
+   
 </style>

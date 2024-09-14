@@ -1,14 +1,15 @@
 <template>
     <v-card
 	width="450"
+    class="pt-6 pb-6 addNotes-addNotesCard-wrapper"
     >
-		<v-card-title>Notes list</v-card-title>
+		<v-card-title class="pt-0 addNotesCard-title">Notes list</v-card-title>
 		<v-divider class="mt-2 mb-2"></v-divider>
         <v-row class="m-0">
             <v-col class="p-0 m-0">
                 <v-expansion-panels>
                     <v-expansion-panel>
-                        <v-expansion-panel-header>
+                        <v-expansion-panel-header class="addNotesCard-accordion-header">
                             <template v-slot:default="{ open }">
                                 <v-row class="p-0 m-0" style="min-height: 36px;">
                                     <v-col class="p-0 m-0 d-flex justify-content-start d-flex align-items-center">         
@@ -75,7 +76,7 @@
         </v-card-text>
         <v-divider class="m-0"></v-divider>
 		<v-card-actions 
-        class="px-4"
+        class="px-6 addNotesCard-footer addNotesCard-footer"
         >
         <v-row 
         class="d-flex justify-content-between align-items-center p-0 m-0"
