@@ -637,6 +637,8 @@
 	.task-name-wrapper {
 		padding: 0 10px !important;
 		min-height: 48px;
+		word-break: break-word;
+		text-align: center;
 	}
 
 	.task-name {
