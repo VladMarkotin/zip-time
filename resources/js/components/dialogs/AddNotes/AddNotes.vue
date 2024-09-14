@@ -11,14 +11,20 @@
                 class="p-0 m-0 d-flex justify-content-end align-center"
                 :cols="9"
                 >
-                    <v-btn
-                    icon
-                    v-bind="props"
-                    @click="showAddNotesDialog"
-                    :id="!num ? 'card-notes' : false"
-                    >
-                    <v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
-                    </v-btn>
+                <v-tooltip right>
+                    <template v-slot:activator="{ on: tooltip  }">
+                        <v-btn
+                        icon
+                        v-on="tooltip"
+                        v-bind="props"
+                        @click="showAddNotesDialog"
+                        :id="!num ? 'card-notes' : false"
+                        >
+                        <v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Show notes</span>
+                </v-tooltip>
                 </v-col>
                 <v-col
                 class="p-0 m-0 d-flex justify-content-end align-center"

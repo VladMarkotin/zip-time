@@ -259,8 +259,8 @@
 							class="ml-1" 
 							style="width : 54px" 
 							v-model="jobMarkInputValue" 
-							v-on:keypress.enter.prevent="debounseSendMark(item)" 
-							@input    = "debounseSendMark(item)"
+							v-on:keypress.enter.prevent="debounceSendMark(item)" 
+							@input    = "debounceSendMark(item)"
 							@keypress = "filterJobMarkInputValue($event, item.taskId)"
 							@focus    = "focusedInput=!focusedInput" 
 							@blur     = "focusedInput=!focusedInput"
@@ -271,7 +271,7 @@
 						
 						<template v-else-if="[2,1].includes(item.type)">
 							<div>Ready?</div>
-							<div @click="debounseUpdateIsReadyState(item)">
+							<div @click="debounceUpdateIsReadyState(item)">
 								<v-checkbox color="#D71700"
 								readonly
 								v-model="isTaskReady"
@@ -365,6 +365,16 @@
 						default: 50,
 						forRender: 50,
 					},
+					DEBOUNCE_DELAY: {
+						tasks: {
+							default: 900,
+							mobile:  2000,
+						},
+						jobs: {
+							default: 450,
+							mobile: 450,
+						}
+					}
 				}
 			},
 		store,
@@ -379,7 +389,7 @@
 			EditCardData,
 		},
 		computed: {
-			...mapGetters(['getDetailsData',]),
+			...mapGetters(['getDetailsData', 'getWindowScreendWidth']),
 			actualDetailsCounter() {
 				const detailsData = this.getDetailsData(this.item.taskId);
 				if (detailsData) {
@@ -440,7 +450,29 @@
 
 			isTaskNameLong() {
 				return this.item.taskName.length > this.maxTaskNameLen.default;
-			}
+			},
+
+			debouncedSendMark() {
+				const key = this.isMobile ? 'mobile' : 'default';
+				const delay = this.DEBOUNCE_DELAY.tasks[key];
+
+				return debounce(function(item) {
+					this.sendMark(item);
+				}, delay)
+			},
+
+			debouncedUpdateIsReadyState() {
+				const key = this.isMobile ? 'mobile' : 'default';
+				const delay = this.DEBOUNCE_DELAY.jobs[key];
+
+				return debounce(function(item) {
+					this.updateIsReadyState(item);
+				}, delay)
+			},
+
+			isMobile() {
+				return this.getWindowScreendWidth < 770;
+			},
 		}, 
 		methods :
 		{
@@ -491,13 +523,13 @@
 				  })
 			},
 
-			debounseSendMark: debounce(function(item) {
-				this.sendMark(item);
-			}, 900),//интервал для тасок, пока не понимаю как избавиться от хардкода
+			debounceSendMark(item) {
+				this.debouncedSendMark(item);
+			},	
 
-			debounseUpdateIsReadyState: debounce(function(item) {
-				this.updateIsReadyState(item);
-			}, 450),//интервал для тасок, пока не понимаю как избавиться от хардкода
+			debounceUpdateIsReadyState(item) {
+				this.debouncedUpdateIsReadyState(item);
+			},
 			
 			sendMark(item)
 			{	
@@ -637,6 +669,8 @@
 	.task-name-wrapper {
 		padding: 0 10px !important;
 		min-height: 48px;
+		word-break: break-word;
+		text-align: center;
 	}
 
 	.task-name {

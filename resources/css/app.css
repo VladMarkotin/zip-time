@@ -318,9 +318,17 @@ html {
     .footer-bottom_list .footer-list-li:nth-child(3), 
     .footer-bottom_list .footer-list-li:nth-child(6) {
         justify-self: flex-end;
-    } */
+    } */ 
+}
 
-    
+@media screen and (max-width: 350px) {
+    .footer-bottom {
+        font-size: 14px;
+    }
+    .footer-bottom .footer-bottom_main-info, 
+    .footer-bottom .footer-bottom-mail {
+        font-weight: 400;
+    }
 }
 
 /*---футер----*/
