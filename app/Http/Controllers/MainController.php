@@ -169,12 +169,18 @@ class MainController
 
     public function getSavedTasks(Request $request)
     {
+        $getUserHashCodes = fn($id) => $this->savedTaskRepository->getUserHashCodes($id);
+
         $id = Auth::id();
         $selection = $request->input('selection');
         if (isset($selection)) {
             $hashCodes = $this->savedTaskRepository->getMostPopularHashesOnNextDay($id);
+            
+            if (!count($hashCodes)) {
+                $hashCodes = $getUserHashCodes($id);
+            }
         } else{
-            $hashCodes = $this->savedTaskRepository->getUserHashCodes($id);
+            $hashCodes = $getUserHashCodes($id);
         }
 
         return response()->json([
