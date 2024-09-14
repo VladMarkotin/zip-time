@@ -85,6 +85,7 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
             }
         },
     }
+    
 </script>
 
 <style>
