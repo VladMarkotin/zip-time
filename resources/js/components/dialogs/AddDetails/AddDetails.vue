@@ -5,14 +5,20 @@
     scrollable 
     width="auto">
         <template v-slot:activator="{ props }">
-            <v-btn 
-            icon 
-            v-bind="props" 
-            @click="showAddDetailsDialog" 
-            :id="!num ? 'card-details' : false"
-            >
-                <v-icon color="#D71700">{{ icons.mdiChartGantt }}</v-icon>
-            </v-btn>
+            <v-tooltip right>
+                <template v-slot:activator="{ on: tooltip  }">
+                    <v-btn 
+                    icon 
+                    v-on="tooltip"
+                    v-bind="props" 
+                    @click="showAddDetailsDialog" 
+                    :id="!num ? 'card-details' : false"
+                    >
+                        <v-icon color="#D71700">{{ icons.mdiChartGantt }}</v-icon>
+                    </v-btn>
+                </template>
+                <span>Show details</span>
+            </v-tooltip>
         </template>
         <template v-if="isShowDialogDetails">
             <AddDetailsCard 
