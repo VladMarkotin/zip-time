@@ -13,7 +13,6 @@
             <v-card-text class="pb-2">
                 <v-row class="p-0 m-0">
                     <h4 class="p-0" style="font-size: 1rem;">Edit task`s priority:</h4>
-    
                     <v-select
                         :items="priorities"
                         v-model="selectedPriority"
