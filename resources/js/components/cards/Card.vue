@@ -1,24 +1,20 @@
 <template>  
 	<v-card :id="!num ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
 		<div class="card-demo">
-			<template v-if="isShowAddHashCodeDialog">
-				<AddHashCode 
-				:width  		= "450"
-				:hashCodeVal    = "newHashCodeData.newHashCode"
-				:isShowDialog   = "isShowAddHashCodeDialog"
-				:taskName       = "newHashCodeData.taskName"
-				:time           = "newHashCodeData.time"
-				:type           = "newHashCodeData.type"
-				:priority       = "newHashCodeData.priority"
-				:details        = "newHashCodeData.details"
-				:taskId 		=  "item.taskId"
-				@close          = "closeHashCodeDialog"
-				@addHashCode    = "createUnsavedTaskSaved"
-				/>
-			</template>
-			<template v-if="isShowPreloader">
-				<Preloader :showPreloader="isShowPreloader"/>
-			</template>
+			<AddHashCode 
+			v-if="isShowAddHashCodeDialog"
+			:width  		= "450"
+			:hashCodeVal    = "newHashCodeData.newHashCode"
+			:isShowDialog   = "isShowAddHashCodeDialog"
+			:taskName       = "newHashCodeData.taskName"
+			:time           = "newHashCodeData.time"
+			:type           = "newHashCodeData.type"
+			:priority       = "newHashCodeData.priority"
+			:details        = "newHashCodeData.details"
+			:taskId 		= "item.taskId"
+			@close          = "isShowAddHashCodeDialog = false"
+			@addHashCode    = "renameHashCode"
+			/>
 			<div class="card-demo"></div>
 		<v-card-title class="font-weight-bold justify-space-between v-card-title">
 			<v-row class="m-0 p-0">
@@ -313,7 +309,6 @@
 	import Alert from '../dialogs/Alert.vue'
 	import AddHashCode from '../dialogs/AddHashCode.vue'
 	import AddHashCodeButton from '../UI/AddHashCodeButton.vue';
-	import Preloader from '../UI/Preloader.vue';
 	import CreateSubplanGPT from '../dialogs/CreateSubplanGPT.vue'
 	import AddDetails from '../dialogs/AddDetails/AddDetails.vue';
 	import AddNotes from '../dialogs/AddNotes/AddNotes.vue';
@@ -326,24 +321,9 @@
 			return {
 					icons      : {mdiMarkerCheck, mdiUpdate,mdiPencil,
 						mdiCircle, mdiMusicAccidentalSharp  },
-			        path: {mdiMarkerCheck},
 					isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
-					isReady    : true,
-					dialog     : false,  
-					dialogEditSubTask : false, 
-					subTaskTitle: false,
-					dialogNotes: false,
-					checked: true,
-					time       : this.item.time,
-					priority   : this.item.priority,
-					id: this.item.id,
-					done: 'v-card-done',
-					completedProgressBar: 0,
 					focusedInput: false,
-					details: [],
-					ex4: [],
-					isShow : true,
 					isShowAddHashCodeDialog : false,
 					newHashCodeData: {
 						newHashCode: '#',
@@ -354,7 +334,6 @@
 						details: 	this.item.details,
 					},
 					hashCode: this.item.hash,
-					isShowPreloader: false,
 					defaultConfigs: {},
 					isTaskReady: this.item.is_ready,
 					jobMarkInputValue: String(this.item.mark),
@@ -382,7 +361,6 @@
 			Alert, 
 			AddHashCode, 
 			AddHashCodeButton, 
-			Preloader, 
 			CreateSubplanGPT, 
 			AddDetails,
 			AddNotes, 
@@ -477,9 +455,6 @@
 		methods :
 		{
 			...mapActions(['fetchDetails', 'fetchNotes', 'fetchPersonalResults']),
-			closeHashCodeDialog() {
-      	   		this.isShowAddHashCodeDialog = false;
-      		},
 
 			resetDayMarkToDefVal() {
 				const currentTaskType = this.item.type;
@@ -619,10 +594,6 @@
 
 					this.newHashCodeData.type = checkType(this.newHashCodeData.type);
 				}
-			},
-
-			createUnsavedTaskSaved(newHashCode) {
-				this.renameHashCode(newHashCode);
 			},
 
 			renameHashCode(newHashCode) {
