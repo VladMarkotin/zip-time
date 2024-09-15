@@ -9,7 +9,7 @@
 	>
 		<v-card class="emergencyCall-card">
 			<v-card-title class="font-weight-bold v-card-title pt-6 emergencyCall-header">Emergency call</v-card-title>
-			<v-card-text v-if="!isShowEmergencyConfirmation" height="450px" class="emergencyCall-content">
+			<v-card-text v-if="!isShowEmergencyConfirmation" height="450px" class="emergencyCall-content pb-0">
 				<div class="pt-4 pb-4">
 					<v-row class="date-wrapper">
 						<v-col cols="12" sm="7" class="date-datePicker-wrapper">
@@ -208,6 +208,9 @@
 </script>
 
 <style>
+	.v-dialog:not(.v-dialog--fullscreen).emergencyCall_emergencyCall-dialog {
+		max-height: none;
+	}
 	.input-data-period input[type="text"] {
 		font-size: 14px !important;
 	}
