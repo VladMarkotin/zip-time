@@ -2,12 +2,15 @@
 	<v-dialog 
 	max-width="650px" 
 	content-class="closeDay-closeDay-dialog"
-	persistent v-model="isShow"
+	scrollable
+	:fullscreen="isMobile"
+	persistent 
+	v-model="isShow"
 	>
 		<v-card id="close-day__wrapper">
-			<v-card-title class="font-weight-bold v-card-title">Close day</v-card-title>
-			<v-card-text>
-				<v-container>
+			<v-card-title class="font-weight-bold v-card-title pt-6 closeDay-header">Close day</v-card-title>
+			<v-card-text height="450px" class="closeDay-content">
+				<v-container >
 					<v-row class="justify-center">
 						<v-col cols="3" class="closeDay-ownMark-input-wrapper">
 							<div id="close-day__mark">
@@ -59,7 +62,7 @@
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-alert color="#404040" text class="elevation-1" v-bind:type="alert.type" v-if="isShowAlert">{{alert.text}}</v-alert>  
-			<v-card-actions class="justify-space-between v-card-actions">
+			<v-card-actions class="justify-space-between pb-6 pt-2 px-6 closeDay-footer">
 				<v-tooltip right>
 					<template v-slot:activator="{on}">
 						<v-btn icon v-on="on" v-on:click="closeDay" id="close-day__icon">
@@ -92,6 +95,8 @@
 	</v-dialog>
 </template>
 <script>
+	import store from '../../store';
+	import { mapGetters } from 'vuex/dist/vuex.common.js';
 	import { driver } from "driver.js";
 	import "driver.js/dist/driver.css";
 	import {mdiCancel,mdiSendClock} from '@mdi/js'
@@ -111,7 +116,14 @@
 				chosenChips: [],
 				minDefActiveChipsQuant: 4,
 			}),
+			store,
 			components : {Alert},
+			computed: {
+				...mapGetters(['getWindowScreendWidth']),
+				isMobile() {
+					return this.getWindowScreendWidth < 768;
+				}
+        	},
 			methods :
 			{
 				closeDay()
@@ -341,6 +353,39 @@
 	.close-day_chips-wrapper ::v-deep .v-slide-group__wrapper .v-slide-group__content {
 		display: block;
 		white-space: normal;
+	}
+
+	.closeDay-content::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .closeDay-content::-webkit-scrollbar-track {
+        background: #e6e6e6;
+        border-left: 1px solid #dadada;
+    }
+
+    .closeDay-content::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .closeDay-content::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
+        cursor: pointer;
+    }
+
+	@media screen and (max-width: 424px) {
+		::v-deep .closeDay-content .container {
+			padding: 0 !important;
+		}
+
+		::v-deep .closeDay-header,
+		::v-deep .closeDay-content,
+		::v-deep .closeDay-footer {
+			padding-left: 16px !important;
+			padding-right: 16px !important;
+		}
 	}
 
 	@import url('/css/CloseDay/CloseDayMedia.css');
