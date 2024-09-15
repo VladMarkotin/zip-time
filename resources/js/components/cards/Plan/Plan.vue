@@ -1,22 +1,21 @@
 <template>
    <v-card id="plan-wrapper">
-      <template v-if="isShowAddHashCodeDialog">    
-         <AddHashCode
-         :width                = "450"
-         :hashCodeVal          = "newHashCode"
-         :isShowDialog         = "isShowAddHashCodeDialog"
-         :taskName             = "defaultSelected.taskName"
-         :time                 = "defaultSelected.time"
-         :type                 = "defaultSelected.type"
-         :priority             = "defaultSelected.priority"
-         :details              = "defaultSelected.details"
-         :notes                = "defaultSelected.notes"
-         :defaultSavedTaskData = "defaultSavedTaskData"
-         @close          = "closeHashCodeDialog"
-         @changeHashCode = "changeHashCode"
-         @addHashCode    = "addHashCode"
-         />
-      </template>
+      <AddHashCode
+      v-if="isShowAddHashCodeDialog"
+      :width                = "450"
+      :hashCodeVal          = "newHashCode"
+      :isShowDialog         = "isShowAddHashCodeDialog"
+      :taskName             = "defaultSelected.taskName"
+      :time                 = "defaultSelected.time"
+      :type                 = "defaultSelected.type"
+      :priority             = "defaultSelected.priority"
+      :details              = "defaultSelected.details"
+      :notes                = "defaultSelected.notes"
+      :defaultSavedTaskData = "defaultSavedTaskData"
+      @close          = "closeHashCodeDialog"
+      @changeHashCode = "changeHashCode"
+      @addHashCode    = "addHashCode"
+      />
       <v-card-title style="background-color: #A10000;color: white;" >Create your day plan!</v-card-title>
       <v-container>
          <div id="plan-day-status">
@@ -293,9 +292,9 @@
          </v-col>
          </v-row>
          
-         <template v-if="isShowEmergencyCallDialog">
-	         <EmergencyCall  v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
-         </template>
+	      <EmergencyCall  
+         v-if="isShowEmergencyCallDialog"
+         v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
       </v-container>
    </v-card>
 </template>
@@ -342,8 +341,6 @@ export default {
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
-         showPlusIcon: 0,
-         readyTasks: [],
          newHashCode: '#',
          showIcon: 0,
          day_status: 'Work Day',
@@ -359,7 +356,6 @@ export default {
             details: '',
             notes: ''
          },
-         preparedTask: {},
          items: [],
          icons: {
             mdiAccount,
@@ -374,7 +370,6 @@ export default {
             mdiCarEmergency,
          },
          hashCodes: [],
-         hashNames: '#',
          taskPriority: ['1', '2', '3'],
          dayStatuses: ['Work Day', 'Weekend'],
          dayStatuses2: [
@@ -387,17 +382,12 @@ export default {
             disable:false,
             }
          ],
-         time: '',
-         notes: '',
-         details: '',
          serverMessage: '',
          showAlert: false,
          alertType: 'success',
          isShowAddHashCodeDialog: false,
-         dialogDelete: false,
          isShowProgress: false,
          value: 0,
-         interval: {},
          closeAlertTime: 0,
          showPreloaderInsteadTable: false,
          isShowPressEntTooltip: false,

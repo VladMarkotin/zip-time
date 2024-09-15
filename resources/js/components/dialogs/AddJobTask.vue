@@ -237,12 +237,10 @@
 			methods :
 			{
 				clearCurrentHashCode(){
-					const self = this;
-
 					this.task = {
 						hashCode : '#',
 						name : '',
-						type : self.isTodayAWeekend ? self.WEEKEND_DEFAULT_TASK_TYPE : self.WORKING_DAY_DEFAULT_TASK_TYPE,
+						type : this.isTodayAWeekend ? this.WEEKEND_DEFAULT_TASK_TYPE : this.WORKING_DAY_DEFAULT_TASK_TYPE,
 						priority : 1,
 						time : '01:00',
 						details: '',
