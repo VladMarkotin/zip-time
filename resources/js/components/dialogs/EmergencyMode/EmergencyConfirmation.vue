@@ -105,6 +105,9 @@ import {mdiStepBackward} from '@mdi/js'
 </script>
 
 <style scoped>
+    .emergency-confirmation-content {
+        color: rgba(0,0,0,.87) !important;
+    }
     .emergency-confirmation-title {
         text-align: center;
         font-size: 26px;

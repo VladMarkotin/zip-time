@@ -26,3 +26,15 @@
         }
     }
 }
+
+@media screen and (max-width: 350px) {
+    .emergencyCall_emergencyCall-dialog {
+        .emergencyCall-card {
+            .emergencyCall-content {
+                padding-left: 3px !important;
+                padding-right: 3px !important;
+                overflow-x: hidden;
+            }
+        }
+    }
+}
