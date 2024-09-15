@@ -15,7 +15,8 @@
 }
 @media screen and (max-width: 425px) {
   .emergencyCall_emergencyCall-dialog .emergencyCall-card .emergencyCall-header,
-.emergencyCall_emergencyCall-dialog .emergencyCall-card .emergencyCall-content .emergencyCall-footer {
+.emergencyCall_emergencyCall-dialog .emergencyCall-card .emergencyCall-content,
+.emergencyCall_emergencyCall-dialog .emergencyCall-card .emergencyCall-footer {
     padding-left: 16px !important;
     padding-right: 16px !important;
   }

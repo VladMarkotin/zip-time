@@ -212,5 +212,26 @@
 		font-size: 14px !important;
 	}
 
+	.emergencyCall-content::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .emergencyCall-content::-webkit-scrollbar-track {
+        background: #e6e6e6;
+        border-left: 1px solid #dadada;
+    }
+
+    .emergencyCall-content::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .emergencyCall-content::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
+        cursor: pointer;
+    }
+
+
 	@import url('/css/EmergencyCall/EmergencyCallMedia.css');
 </style>

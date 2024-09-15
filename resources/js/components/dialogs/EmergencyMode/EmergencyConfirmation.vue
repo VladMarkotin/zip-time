@@ -1,6 +1,6 @@
 <template>
-    <v-card-text height="450px" class="emergency-confirmation-container">
-        <v-container>
+    <v-card-text height="450px" class="emergency-confirmation-content">
+        <div class="pt-4 pb-4">
             <v-tooltip right>
                     <template v-slot:activator="{on}">
                         <v-btn 
@@ -38,7 +38,7 @@
                         Nevertheless, "Statistics", "History", "Backlog" and "Reminders" will remain available. 
                     </li>
                 </ul>
-        </v-container>
+            </div>
     </v-card-text>
 </template>
 
@@ -105,14 +105,6 @@ import {mdiStepBackward} from '@mdi/js'
 </script>
 
 <style scoped>
-    .emergency-confirmation-container {
-        /* min-height: 515px; */
-    }
-
-    .emergency-confirmation-container .container {
-        padding: 0;
-    }
-
     .emergency-confirmation-title {
         text-align: center;
         font-size: 26px;
@@ -172,6 +164,34 @@ import {mdiStepBackward} from '@mdi/js'
         font-weight: 600;
         text-align: justify;
     }
+
+    .emergency-confirmation-content::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .emergency-confirmation-content::-webkit-scrollbar-track {
+        background: #e6e6e6;
+        border-left: 1px solid #dadada;
+    }
+
+    .emergency-confirmation-content::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .emergency-confirmation-content::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 425px) {
+        .emergency-confirmation-content {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+        }
+    }
+
 
     @import url('/css/EmergencyConfirmation/EmergencyConfirmationMedia.css');
 </style>
