@@ -75,6 +75,7 @@
 	</v-dialog>
 </template>
 <script>
+
 	import {mdiCarEmergency,mdiCancel} from '@mdi/js'
 	import EmergencyConfirmation from './EmergencyConfirmation.vue';
 	export default
