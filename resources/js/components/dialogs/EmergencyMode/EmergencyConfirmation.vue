@@ -1,47 +1,45 @@
 <template>
-    <div class="emergency-confirmation-container">
-        <v-card-text>
-            <v-container>
-                <v-tooltip right>
-						<template v-slot:activator="{on}">
-							<v-btn 
-								icon 
-								v-on="on" 
-								@click="$emit('goBackOneStep')"
-								>
-								<v-icon color="#D71700" large>{{icons.mdiStepBackward}}</v-icon>
-							</v-btn>
-						</template>
-						<span>Go back</span>
-					</v-tooltip>
-                    <v-card-title class="emergency-confirmation-title"><p>
-                        You are about<br class="emergency-confirmation-title_mobile-br"> to activate <br class="emergency-confirmation-title_desktop-br"/> <span class="customRed">«Emergency mode»</span> !</p></v-card-title>
-                    <div style="display: flex; justify-content: center;">
-                        <v-card-text class="emergency-confirmation-text">
-                            This action will reset your <b>day plan</b> and <b>all</b> your day progress. 
-                        </v-card-text>
-                    </div>
-                    <div class="emergency-confirmation-input-wrapper">
-                        <p class="emergency-confirmation-tooltip" v-html="emergencyConfirmationTolltip"></p>
-                        <v-text-field 
-                        class="confirmation-input"
-                        label="Confirmation" 
-                        :success = "isTheCheckCompleted"
-                        :rules   = "confirmationInputRules"
-                        v-model  = "confirmationInputValue"
-                        @keypress.enter = "callEmergency"
-                        ></v-text-field>
-                    </div>
-                    <ul class="emergencyMode-warning-list">
-                        <li class="emergencyMode-warning-li">Activating `Emergency Mode` like a last resort.</li>
-                        <li class="emergencyMode-warning-li">You won't be able to cancel it afterwards, and during
-                            its activation, day`s planing functionalities will be unavailable!
-                            Nevertheless, "Statistics", "History", "Backlog" and "Reminders" will remain available. 
-                        </li>
-                    </ul>
-            </v-container>
-        </v-card-text>
-    </div>
+    <v-card-text height="450px" class="emergency-confirmation-container">
+        <v-container>
+            <v-tooltip right>
+                    <template v-slot:activator="{on}">
+                        <v-btn 
+                            icon 
+                            v-on="on" 
+                            @click="$emit('goBackOneStep')"
+                            >
+                            <v-icon color="#D71700" large>{{icons.mdiStepBackward}}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Go back</span>
+                </v-tooltip>
+                <v-card-title class="emergency-confirmation-title"><p>
+                    You are about<br class="emergency-confirmation-title_mobile-br"> to activate <br class="emergency-confirmation-title_desktop-br"/> <span class="customRed">«Emergency mode»</span> !</p></v-card-title>
+                <div style="display: flex; justify-content: center;">
+                    <v-card-text class="emergency-confirmation-text">
+                        This action will reset your <b>day plan</b> and <b>all</b> your day progress. 
+                    </v-card-text>
+                </div>
+                <div class="emergency-confirmation-input-wrapper">
+                    <p class="emergency-confirmation-tooltip" v-html="emergencyConfirmationTolltip"></p>
+                    <v-text-field 
+                    class="confirmation-input"
+                    label="Confirmation" 
+                    :success = "isTheCheckCompleted"
+                    :rules   = "confirmationInputRules"
+                    v-model  = "confirmationInputValue"
+                    @keypress.enter = "callEmergency"
+                    ></v-text-field>
+                </div>
+                <ul class="emergencyMode-warning-list">
+                    <li class="emergencyMode-warning-li">Activating `Emergency Mode` like a last resort.</li>
+                    <li class="emergencyMode-warning-li">You won't be able to cancel it afterwards, and during
+                        its activation, day`s planing functionalities will be unavailable!
+                        Nevertheless, "Statistics", "History", "Backlog" and "Reminders" will remain available. 
+                    </li>
+                </ul>
+        </v-container>
+    </v-card-text>
 </template>
 
 <script>
@@ -108,7 +106,7 @@ import {mdiStepBackward} from '@mdi/js'
 
 <style scoped>
     .emergency-confirmation-container {
-        min-height: 515px;
+        /* min-height: 515px; */
     }
 
     .emergency-confirmation-container .container {

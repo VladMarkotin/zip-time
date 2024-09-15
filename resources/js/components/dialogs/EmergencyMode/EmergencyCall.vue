@@ -2,53 +2,64 @@
 	<v-dialog 
 	max-width="650px" 
 	content-class="emergencyCall_emergencyCall-dialog"
-	persistent v-model="isShow"
+	persistent 
+	scrollable
+	v-model="isShow"
+	:fullscreen="isMobile"
 	>
-		<v-card>
-			<v-card-title class="font-weight-bold v-card-title">Emergency call</v-card-title>
-				<v-card-text v-if="!isShowEmergencyConfirmation">
-					<v-container>
-						<v-row>
-							<v-col cols="12" sm="7">
-								<v-date-picker 
-								v-model="dates"
-								color="#A10000"
-								range 
-								:min="minDate"
-								:max="maxDate"
-								>
-								</v-date-picker>
-							</v-col>
-							<v-col cols="12" sm="5">
-								<v-text-field 
-								class="input-data-period"
-								v-model="dateRangeText"
-								label="Date period" 
-								prepend-icon="mdi-calendar" 
-								append-icon="mdi-close-circle" 
-								@click:append="resetDates"
-								readonly 
-								>
+		<v-card class="emergencyCall-card">
+			<v-card-title class="font-weight-bold v-card-title pt-6 emergencyCall-header">Emergency call</v-card-title>
+			<v-card-text v-if="!isShowEmergencyConfirmation" height="450px" class="emergencyCall-content">
+				<div class="pt-4 pb-4">
+					<v-row class="date-wrapper">
+						<v-col cols="12" sm="7" class="date-datePicker-wrapper">
+							<v-date-picker 
+							v-model="dates"
+							color="#A10000"
+							range 
+							:min="minDate"
+							:max="maxDate"
+							>
+							</v-date-picker>
+						</v-col>
+						<v-col cols="12" sm="5" class="date-textField">
+							<v-text-field 
+							class="input-data-period"
+							v-model="dateRangeText"
+							label="Date period" 
+							prepend-icon="mdi-calendar" 
+							append-icon="mdi-close-circle" 
+							@click:append="resetDates"
+							readonly 
+							>
 							</v-text-field>
-							</v-col>
-						</v-row>
-						<v-row>
-							<v-col cols="12">
-								<v-textarea counter="256" label="Comment" rows="2" outlined shaped v-model="comment" style="margin-top : -25px"></v-textarea>
-							</v-col>
-						</v-row>
-					</v-container>
-				</v-card-text>
-				<EmergencyConfirmation 
-				v-else
-				:emergencyModeDates  = "dates"
-				:isTheCheckCompleted = "isTheCheckCompleted"
-				@goBackOneStep          = "goBackOneStep"
-				@setIsTheCheckCompleted = "setIsTheCheckCompleted"
-				@callEmergency          = "callEmergency"
-				/>
-				<v-divider></v-divider>
-				<v-card-actions class="justify-space-between v-card-actions emergencyCall_emergencyCall-footer">
+						</v-col>
+					</v-row>
+					<v-row>
+						<v-col cols="12">
+							<v-textarea 
+							counter="256" 
+							label="Comment" 
+							rows="2" 
+							outlined 
+							shaped 
+							v-model="comment" 
+							style="margin-top : -25px">
+							</v-textarea>
+						</v-col>
+					</v-row>
+				</div>
+			</v-card-text>
+			<EmergencyConfirmation 
+			v-else
+			:emergencyModeDates  = "dates"
+			:isTheCheckCompleted = "isTheCheckCompleted"
+			@goBackOneStep          = "goBackOneStep"
+			@setIsTheCheckCompleted = "setIsTheCheckCompleted"
+			@callEmergency          = "callEmergency"
+			/>
+			<v-divider></v-divider>
+			<v-card-actions class="justify-space-between v-card-actions emergencyCall-footer px-6 pb-6 pt-5">
 					<v-tooltip right>
 						<template v-slot:activator="{on}">
 							<v-btn 
@@ -70,11 +81,13 @@
 						</template>
 						<span>Cancel</span>
 					</v-tooltip>
-				</v-card-actions>
+			</v-card-actions>
 		</v-card>
 	</v-dialog>
 </template>
 <script>
+	import store from '../../../store';
+	import { mapGetters } from 'vuex/dist/vuex.common.js';
 	import {mdiCarEmergency,mdiCancel} from '@mdi/js'
 	import EmergencyConfirmation from './EmergencyConfirmation.vue';
 	export default
@@ -101,6 +114,7 @@
 			components: {EmergencyConfirmation},
 			computed :
 			{
+				...mapGetters(['getWindowScreendWidth']),
 				dateRangeText()
 				{
 					return this.dates.join(' - ')
@@ -128,7 +142,10 @@
 						return !this.isDateSet;
 					}
 					return !this.isTheCheckCompleted;
-				}
+				},
+				isMobile() {
+                	return this.getWindowScreendWidth < 768;
+            	}
 			},
 			watch: {
 				maxSelectableDate() {
@@ -194,5 +211,6 @@
 	.input-data-period input[type="text"] {
 		font-size: 14px !important;
 	}
+
 	@import url('/css/EmergencyCall/EmergencyCallMedia.css');
 </style>
