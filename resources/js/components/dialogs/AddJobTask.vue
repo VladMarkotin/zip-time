@@ -317,7 +317,7 @@
 						this.addTaskToPlanWithoutConfirmation = true;
 						return;
 					}
-
+					
 					const response =
 						(
 							await

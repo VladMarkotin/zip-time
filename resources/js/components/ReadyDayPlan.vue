@@ -112,7 +112,7 @@ export default {
     store,
     computed: {},
     methods: {
-        ...mapMutations(['INITIALIZE_DETAILS_STORE', 'INITIALIZE_NOTES_STORE', 'SET_WINDOW_SCREEN_WIDTH']),
+        ...mapMutations(['INITIALIZE_DETAILS_STORE', 'INITIALIZE_NOTES_STORE', 'INITIALIZE_TASK_DATA_STORE', 'SET_WINDOW_SCREEN_WIDTH']),
         getRequiredTasks(data) {
             return data.filter((item) => [4, 2].includes(item.type));
         },
@@ -151,6 +151,7 @@ export default {
     },
 
     created() {
+        
         const detailsData = this.data.plan.map(taskData => ({
             detailsData: taskData.detailsData,
             detailsCompletedPercent: taskData.detailsCompletedPercent,
@@ -162,9 +163,19 @@ export default {
             notesData: taskData.notesData,
         }));
 
+        const taskData = this.data.plan.map(taskData => ({
+            hash:     taskData.hash,
+            mark:     taskData.mark,
+            priority: taskData.priority,
+            taskId:   taskData.taskId,
+            taskName: taskData.taskName,
+            time:     taskData.time,
+            type:     taskData.type,
+        }));
         
         this.INITIALIZE_DETAILS_STORE({detailsData});
         this.INITIALIZE_NOTES_STORE({notesData});
+        this.INITIALIZE_TASK_DATA_STORE({taskData});
     },
 
     async mounted() {

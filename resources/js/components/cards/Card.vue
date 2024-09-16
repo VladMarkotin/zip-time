@@ -1,16 +1,24 @@
 <template>  
 	<v-card :id="!num ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
 		<div class="card-demo">
+			<h1>{{ hash }}</h1>
+			<h2>{{ mark }}</h2>
+			<h3>{{ priority}}</h3>
+			<h4>{{ taskId }}</h4>
+			<h5>{{ taskName }}</h5>
+			<h6>{{ time }}</h6>
+			<h6>{{ type }}</h6>
+			<h6>{{ transformedType }}</h6>
 			<AddHashCode 
 			v-if="isShowAddHashCodeDialog"
 			:width  		= "450"
-			:hashCodeVal    = "newHashCodeData.newHashCode"
+			:hashCodeVal    = "hash"
 			:isShowDialog   = "isShowAddHashCodeDialog"
-			:taskName       = "newHashCodeData.taskName"
-			:time           = "newHashCodeData.time"
-			:type           = "newHashCodeData.type"
-			:priority       = "newHashCodeData.priority"
-			:taskId 		= "item.taskId"
+			:taskName       = "taskName"
+			:time           = "time"
+			:type           = "transformedType"
+			:priority       = "priority"
+			:taskId 		= "taskId"
 			@close          = "isShowAddHashCodeDialog = false"
 			@addHashCode    = "renameHashCode"
 			/>
@@ -24,7 +32,7 @@
 				>
 					<v-row 
 					class="m-0 p-0"
-					v-if="hashCode == '#'"
+					v-if="this.item.hash == '#'"
 					>
 						<AddHashCodeButton 
 						:buttonColor = "'white'"
@@ -36,7 +44,7 @@
 					class="m-0 p-0"
 					v-else
 					>
-						<span style="line-height: 1.5rem;" class="p-0">{{ hashCode }}</span>
+						<span style="line-height: 1.5rem;" class="p-0">{{ this.item.hash }}</span>
 					</v-row>
 				</v-col>
 				<v-col class="m-0 p-0 d-flex justify-content-center align-items-start task-name-wrapper">
@@ -329,7 +337,6 @@
 						type: 		this.item.type,
 						priority: 	this.item.priority,
 					},
-					hashCode: this.item.hash,
 					defaultConfigs: {},
 					isTaskReady: this.item.is_ready,
 					jobMarkInputValue: String(this.item.mark),
@@ -363,7 +370,48 @@
 			EditCardData,
 		},
 		computed: {
-			...mapGetters(['getDetailsData', 'getWindowScreendWidth']),
+			...mapGetters(['getDetailsData', 'getWindowScreendWidth', 'getTaskData']),
+			hash() {
+				return this.getTaskData(this.item.taskId, 'hash');
+			},
+			mark() {
+				return this.getTaskData(this.item.taskId, 'mark');
+			},
+			priority() {
+				return this.getTaskData(this.item.taskId, 'priority');
+			},
+			taskId() {
+				return this.getTaskData(this.item.taskId, 'taskId');
+			},
+			taskName() {
+				return this.getTaskData(this.item.taskId, 'taskName');
+			},
+			time() {
+				return this.getTaskData(this.item.taskId, 'time');
+			},
+			type() {
+				return this.getTaskData(this.item.taskId, 'type');
+			},
+			transformedType() {
+				const type = this.type;
+
+				if (typeof type === 'number') {
+					switch (type) {
+						case 0:
+							return 'reminder';
+						case 1:
+							return 'task';
+						case 2:
+							return 'required task';
+						case 3:
+							return 'non required job'
+						case 4:
+							return 'required job';
+					}
+				}
+
+				return type;
+			},
 			actualDetailsCounter() {
 				const detailsData = this.getDetailsData(this.item.taskId);
 				if (detailsData) {
@@ -594,7 +642,6 @@
 
 			renameHashCode(newHashCode) {
 				this.item.hash = newHashCode;
-				this.hashCode = newHashCode;
 			},
 
 			getConfigs(data=null) {
