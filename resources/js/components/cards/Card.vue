@@ -48,7 +48,7 @@
 					</v-row>
 				</v-col>
 				<v-col class="m-0 p-0 d-flex justify-content-center align-items-start task-name-wrapper">
-					<span v-if="!isTaskNameLong" class="task-name">{{ item.taskName }}</span>
+					<span v-if="!isTaskNameLong" class="task-name">{{ taskName }}</span>
 					<span 
 					v-else
 					:class="maxTaskNameLen.forRender === 255 ? 'task-name trancated-task-name-full' : 'task-name pointer'"
@@ -91,10 +91,10 @@
 					class="p-0 m-0"
 					:cols="6"
 					>
-						<v-list-item-content class="justify-content-center" v-if="time.includes('00:')">{{item.time}}
+						<v-list-item-content class="justify-content-center" v-if="time.includes('00:')">{{time}}
 							 minutes
 						</v-list-item-content>
-						<v-list-item-content class="justify-content-center" v-else-if="time.includes('01:00')">{{item.time}}
+						<v-list-item-content class="justify-content-center" v-else-if="time.includes('01:00')">{{time}}
 							 hour
 						</v-list-item-content>
 						<v-list-item-content class="justify-content-center" v-else>{{time}}
@@ -198,9 +198,9 @@
 									<CreateSubplanGPT 
 									:requestData="{
 										label: 'Request: create subplan for',
-										taskName: item.taskName,
+										taskName: taskName,
 										taskHash: hash,
-										taskId: item.taskId,
+										taskId:   taskId,
 									}"
 									/>
 								</template>
@@ -262,7 +262,7 @@
 							v-model="jobMarkInputValue" 
 							v-on:keypress.enter.prevent="debounceSendMark(item)" 
 							@input    = "debounceSendMark(item)"
-							@keypress = "filterJobMarkInputValue($event, item.taskId)"
+							@keypress = "filterJobMarkInputValue($event, taskId)"
 							@focus    = "focusedInput=!focusedInput" 
 							@blur     = "focusedInput=!focusedInput"
 							>
@@ -331,7 +331,7 @@
 					focusedInput: false,
 					isShowAddHashCodeDialog : false,
 					defaultConfigs: {},
-					isTaskReady: this.item.is_ready,
+					isTaskReady: -1, //присваивается в created
 					jobMarkInputValue: '', //присваивается в created
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
@@ -452,7 +452,7 @@
 			},
 
 			truncatedTaskName() {
-				const {taskName} = this.item;
+				const taskName = this.taskName;
 
 				if (taskName.length > this.maxTaskNameLen.forRender) {
 					return taskName.slice(0, this.maxTaskNameLen.forRender) + '...';
@@ -462,7 +462,7 @@
 			},
 
 			isTaskNameLong() {
-				return this.item.taskName.length > this.maxTaskNameLen.default;
+				return this.taskName.length > this.maxTaskNameLen.default;
 			},
 
 			debouncedSendMark() {
@@ -521,6 +521,13 @@
 				.then((response) => {
 					if (response.data.status === 'success') {
 						this.isTaskReady = getNewCheckboxVal(this.isTaskReady);
+						
+						this.UPDATE_TASK_DATA({
+							updatedTaskData: {
+								taskId: this.taskId, 
+								mark: this.isTaskReady !== -1 ? this.isTaskReady : ''
+							},
+						});
 					}
 					
 					this.isShowAlert = true;
@@ -624,6 +631,7 @@
 			this.getConfigs(); 
 			
 			this.jobMarkInputValue = String(this.mark);
+			this.isTaskReady       = this.mark || -1;
 		},
 	}
 	
