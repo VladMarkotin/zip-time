@@ -151,8 +151,8 @@
 							>
 								<template>
 									<AddDetails 
-									:num                = "num"
-									:item               = "item"
+									:num     = "num"
+									:taskId  = "taskId"
 									@resetDayMarkToDefVal  = "resetDayMarkToDefVal"
 									/>
 								</template>

@@ -22,8 +22,7 @@
         </template>
         <template v-if="isShowDialogDetails">
             <AddDetailsCard 
-            :item               = "item"
-			:taskId             = "item.taskId"
+			:taskId             = "taskId"
             :alert              = "alert"
             :generateUniqKey    = "generateUniqKey"
             @closeAddDetailsDialog    = "closeAddDetailsDialog"
@@ -43,8 +42,8 @@ import { uuid } from 'vue-uuid';
 export default {
     props: {
         num: {},
-        item: {
-            type: Object,
+        taskId: {
+            type: Number,
             required: true,
         },
     },
@@ -69,7 +68,7 @@ export default {
     watch: {
         isShowDialogDetails(value) {
             if (!value) {
-                this.reset_to_default_values({taskId: this.item.taskId});
+                this.reset_to_default_values({taskId: this.taskId});
             }
         },
     },

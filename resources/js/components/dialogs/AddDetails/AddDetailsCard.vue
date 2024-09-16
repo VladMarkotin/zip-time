@@ -348,10 +348,6 @@ import AddNewDetailMobile from './AddNewDetailMobile.vue';
 import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js' 
     export default {
         props: {
-            item: {
-                type: Object,
-                required: true,
-            },
             taskId: {
                 type: Number,
                 required: true,
@@ -414,7 +410,6 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                 },
                 editableDetailId: null,
                 isShowEditDetailsDialog: false,
-                isSavedTask: this.item.hash !== '#',
                 radioButtons: [
                     {value: 'created-at-asc', label: 'Old first',},
                     {value: 'created-at-desc', label: 'New first',},
@@ -444,7 +439,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
             }
         },
         computed: {
-            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent', 'getMode', 'getWindowScreendWidth']),
+            ...mapGetters(['getDetailsData', 'getDetailsSortBy', 'getCompletedPercent', 'getMode', 'getWindowScreendWidth', 'getTaskData']),
             screenWidth() {
                 return this.getWindowScreendWidth;
             },
@@ -488,6 +483,9 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
                         showSubtasksButtonText: 'View all subtasks',
                     }
                 };
+            },
+            isSavedTask() {
+                return this.getTaskData(this.taskId, 'hash') !== '#';
             }
         },
         methods: {
@@ -503,7 +501,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 
                     const created_at_date = new Date().getCurrentDate();
 
-                    this.newDetail = {...this.newDetail, task_id: this.item.taskId, created_at_date: created_at_date, uniqKey: this.generateUniqKey(),};
+                    this.newDetail = {...this.newDetail, task_id: this.taskId, created_at_date: created_at_date, uniqKey: this.generateUniqKey(),};
                     
                     const response = await this.addNewDetail({newDetail: this.newDetail})
                     const respData = response.data;
@@ -568,7 +566,7 @@ import {mdiExclamation, mdiMarkerCheck, mdiDelete}  from '@mdi/js'
 			},
 
             async completed(subtask){
-                const taskId = this.item.taskId;
+                const taskId = this.taskId;
                 try {
                     const response = await this.updateCompletedStatus({
                         subtask_id:          subtask.taskId, 
