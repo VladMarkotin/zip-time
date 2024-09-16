@@ -79,7 +79,7 @@
 					:cols="4"
 					>
 						<v-list-item-content
-							v-if="item.type == 4 || item.type == 3"
+							v-if="type == 4 || type == 3"
 							>
 							Job`s duration:
 						</v-list-item-content>
@@ -254,7 +254,7 @@
 					class="d-flex align-center gap-1" 
 					:id="!num ? 'card-mark' : false"
 					>
-						<template v-if="[4,3].includes(item.type)">
+						<template v-if="[4,3].includes(type)">
 							<div>Mark</div>
 							<v-text-field 
 							class="ml-1" 
@@ -270,7 +270,7 @@
 							</v-text-field>
 						</template>
 						
-						<template v-else-if="[2,1].includes(item.type)">
+						<template v-else-if="[2,1].includes(type)">
 							<div>Ready?</div>
 							<div @click="debounceUpdateIsReadyState(item)">
 								<v-checkbox color="#D71700"
@@ -332,7 +332,7 @@
 					isShowAddHashCodeDialog : false,
 					defaultConfigs: {},
 					isTaskReady: this.item.is_ready,
-					jobMarkInputValue: String(this.item.mark),
+					jobMarkInputValue: '', //присваивается в created
 					isTaskReadyCheckboxTrueVal: 99,
 					isTaskReadyCheckboxFalseVal: -1,
 					//Тут менять от скольки символов название таски обрезается,з начения полей объекта должны совпадать.
@@ -406,14 +406,14 @@
 				return type;
 			},
 			actualDetailsCounter() {
-				const detailsData = this.getDetailsData(this.item.taskId);
+				const detailsData = this.getDetailsData(this.taskId);
 				if (detailsData) {
 					return detailsData.details.filter(detail =>!detail.is_old_compleated && !detail.is_ready).length;
 				}
 				return 0;
 			},
 			isCurrentTaskReady() {
-				const {type} = this.item;
+				const type = this.type;
 
 				const checkTask = (data) => {
 					const {type, mark} = data;
@@ -442,11 +442,9 @@
 					case 1:
 					case 2:
 						return checkTask({type: 'task', mark: this.isTaskReady});
-					break;
 					case 3:
 					case 4:
-						return checkTask({type: 'job', mark: this.item.mark});
-					break;
+						return checkTask({type: 'job', mark: this.mark});
 					default:
 						return 'card-wrapper_unready';
 				}
@@ -495,7 +493,7 @@
 			...mapMutations(['UPDATE_TASK_DATA']),
 
 			resetDayMarkToDefVal() {
-				const currentTaskType = this.item.type;
+				const currentTaskType = this.type;
 				
 				if ([1,2].includes(currentTaskType)) {
 					this.isTaskReady = this.isTaskReadyCheckboxFalseVal;
@@ -512,14 +510,14 @@
 					switch (oldVal) {
 						case this.isTaskReadyCheckboxTrueVal:
 							return this.isTaskReadyCheckboxFalseVal;
-						break;
 						case this.isTaskReadyCheckboxFalseVal:
 							return this.isTaskReadyCheckboxTrueVal;
-						break;
 					}
 				}
-				axios.post('/estimate',{task_id : item.taskId,details : item.details,note : item.notes,
-					is_ready : getNewCheckboxVal(this.isTaskReady),type : item.type})
+				axios.post('/estimate',{
+					task_id : item.taskId, 
+					is_ready : getNewCheckboxVal(this.isTaskReady),type : this.type
+				})
 				.then((response) => {
 					if (response.data.status === 'success') {
 						this.isTaskReady = getNewCheckboxVal(this.isTaskReady);
@@ -548,10 +546,8 @@
 			{	
 				axios.post('/estimate',{
 					task_id : item.taskId,
-					details : item.details,
-					note    : item.notes,
 					mark    : this.jobMarkInputValue,
-					type    : item.type
+					type    : this.type
 				})
 				.then((response) => {
 					this.isShowAlert = true;
@@ -560,7 +556,9 @@
 					const {data}              = response;
 					const {current_task_mark} = data;
 					if (data.status === 'success') {
-						this.item.mark = +this.jobMarkInputValue;
+						this.UPDATE_TASK_DATA({
+							updatedTaskData: {mark: +this.jobMarkInputValue, taskId: this.taskId},
+						});
 					} 
 					if((data.status === 'error') && current_task_mark !== undefined) {
 						this.jobMarkInputValue = current_task_mark !== -1 
@@ -624,6 +622,8 @@
 		
 		created() {
 			this.getConfigs(); 
+			
+			this.jobMarkInputValue = String(this.mark);
 		},
 	}
 	

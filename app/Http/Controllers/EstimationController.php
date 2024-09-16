@@ -109,16 +109,16 @@ class EstimationController extends Controller
         if (isset($isReady)) {
             $data = [
                 "id"       => $request->get('task_id'),
-                "details"  => $request->get('details'),
+                "details"  => $request->get('details', ''),
                 "mark"     => $isReady,
-                "note"     => $request->get('note'),
+                "note"     => $request->get('note', ''),
                 "action"   => '1', //it means that user try to estimate one task
             ];
         } else {
             $data = [
                 "id"       => $request->get('task_id'),
-                "details"  => $request->get('details'),
-                "note"     => $request->get('note'),
+                "details"  => $request->get('details', ''),
+                "note"     => $request->get('note', ''),
                 "action"   => '1', //it means that user try to estimate one task
             ];
         }
