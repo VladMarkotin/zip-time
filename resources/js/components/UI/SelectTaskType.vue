@@ -5,6 +5,7 @@
         :items="taskTypes"
         :value="value"
         @input="updateValue"
+        @change = "$emit('change')"
         >
         <template v-slot:item="{item}" >
             <v-list-item >{{ item }}</v-list-item>
@@ -55,7 +56,6 @@ import VSelectTooptip from './VSelectTooptip.vue';
         },
         methods: {
             updateValue(value) {
-                console.log(value);
                 this.$emit('input', value);
             }
         }

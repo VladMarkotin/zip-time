@@ -6,6 +6,15 @@ export default {
         INITIALIZE_TASK_DATA_STORE(state, {taskData}) {
             state.taskData = [...taskData];
         },
+        UPDATE_TASK_DATA(state, {updatedTaskData}) {
+            state.taskData = state.taskData.map(taskData => {
+                if (taskData.taskId !== updatedTaskData.taskId) return taskData
+                return {
+                    ...taskData,
+                    ...updatedTaskData
+                }
+            });
+        }
     },
     getters: {
         getTaskData(state) {

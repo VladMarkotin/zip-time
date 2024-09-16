@@ -32,7 +32,7 @@
 				>
 					<v-row 
 					class="m-0 p-0"
-					v-if="this.item.hash == '#'"
+					v-if="hash == '#'"
 					>
 						<AddHashCodeButton 
 						:buttonColor = "'white'"
@@ -44,7 +44,7 @@
 					class="m-0 p-0"
 					v-else
 					>
-						<span style="line-height: 1.5rem;" class="p-0">{{ this.item.hash }}</span>
+						<span style="line-height: 1.5rem;" class="p-0">{{ hash }}</span>
 					</v-row>
 				</v-col>
 				<v-col class="m-0 p-0 d-flex justify-content-center align-items-start task-name-wrapper">
@@ -199,7 +199,7 @@
 									:requestData="{
 										label: 'Request: create subplan for',
 										taskName: item.taskName,
-										taskHash: item.hash,
+										taskHash: hash,
 										taskId: item.taskId,
 									}"
 									/>
@@ -308,7 +308,7 @@
 <script>
 	import { debounce } from 'lodash';
 	import store from '../../store';
-	import { mapActions, mapGetters } from 'vuex/dist/vuex.common.js';
+	import { mapActions, mapGetters, mapMutations } from 'vuex/dist/vuex.common.js';
 	import {mdiUpdate, mdiPencil,
 		mdiMarkerCheck, mdiCircle, mdiMusicAccidentalSharp }  from '@mdi/js'  //mdiContentSaveCheckOutline
 	import Alert from '../dialogs/Alert.vue'
@@ -330,13 +330,6 @@
 					alert      : {type: 'success', text: 'success'},
 					focusedInput: false,
 					isShowAddHashCodeDialog : false,
-					newHashCodeData: {
-						newHashCode: '#',
-						taskName: 	this.item.taskName,
-						time: 		this.item.time,
-						type: 		this.item.type,
-						priority: 	this.item.priority,
-					},
 					defaultConfigs: {},
 					isTaskReady: this.item.is_ready,
 					jobMarkInputValue: String(this.item.mark),
@@ -499,6 +492,7 @@
 		methods :
 		{
 			...mapActions(['fetchDetails', 'fetchNotes', 'fetchPersonalResults']),
+			...mapMutations(['UPDATE_TASK_DATA']),
 
 			resetDayMarkToDefVal() {
 				const currentTaskType = this.item.type;
@@ -590,6 +584,7 @@
 
 			changeTime(newData)
 			{
+				console.log(newData);
 				const {priority: newPriority, time: newTime} = newData;
 
 				if ((this.item.time != newTime ) || (this.item.priority != newPriority) ) {
@@ -610,38 +605,13 @@
 							this.isShowAlert = false;
 						},3000)
 				  })
-
-				  	this.newHashCodeData = {...this.newHashCodeData, time: newTime, priority: newPriority.toString()};
 				}
 			},
 
-			editHashCodeData() {
-				if (typeof this.newHashCodeData.priority === 'number' ) {
-					this.newHashCodeData.priority = this.newHashCodeData.priority.toString();
-				}
-
-				if (typeof this.newHashCodeData.type === 'number') {
-					const checkType = (type) => {
-						switch (type) {
-							case 0:
-								return 'reminder';
-							case 1:
-								return 'task';
-							case 2:
-								return 'required task';
-							case 3:
-								return 'non required job'
-							case 4:
-								return 'required job';
-						}
-					}
-
-					this.newHashCodeData.type = checkType(this.newHashCodeData.type);
-				}
-			},
-
-			renameHashCode(newHashCode) {
-				this.item.hash = newHashCode;
+			renameHashCode(newHash) {
+				this.UPDATE_TASK_DATA({
+					updatedTaskData: {hash: newHash, taskId: this.taskId},
+				});
 			},
 
 			getConfigs(data=null) {
@@ -665,9 +635,7 @@
 
 		},
 		
-		
 		created() {
-			this.editHashCodeData();
 			this.getConfigs(); 
 		},
 	}
