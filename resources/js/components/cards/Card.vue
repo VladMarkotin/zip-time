@@ -10,7 +10,6 @@
 			:time           = "newHashCodeData.time"
 			:type           = "newHashCodeData.type"
 			:priority       = "newHashCodeData.priority"
-			:details        = "newHashCodeData.details"
 			:taskId 		= "item.taskId"
 			@close          = "isShowAddHashCodeDialog = false"
 			@addHashCode    = "renameHashCode"
@@ -64,7 +63,6 @@
 			</v-row>
 		</v-card-title>
 		</div>
-		
 		<v-list>
 			<v-list-item>
 				<v-row class="p-0 m-0">
@@ -116,7 +114,6 @@
 							</v-col>
 						</v-row>
 					</v-col>
-
 					
 				</v-row>
 			</v-list-item>
@@ -331,7 +328,6 @@
 						time: 		this.item.time,
 						type: 		this.item.type,
 						priority: 	this.item.priority,
-						details: 	this.item.details,
 					},
 					hashCode: this.item.hash,
 					defaultConfigs: {},

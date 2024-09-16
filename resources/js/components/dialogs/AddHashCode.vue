@@ -96,7 +96,6 @@
 				time: {},
 				type: {},
 				priority: {},
-				details: {},
 				taskId: {}, 
 			},
 			data() {
@@ -236,7 +235,6 @@
 							time:     this.time,
 							type:     this.type,
 							priority: this.priority,
-							details:  this.details,
 							task_id:  this.taskId,
 						};
 
