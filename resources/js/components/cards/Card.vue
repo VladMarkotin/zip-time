@@ -63,9 +63,9 @@
 				cols="auto"
 				style="min-width: 22px;"
 				>
-					<span v-if="item.priority == 1"> </span>
-					<span v-else-if="item.priority == 2">!</span>
-					<span v-else-if="item.priority == 3">!!!</span>
+					<span v-if="priority == 1"> </span>
+					<span v-else-if="priority == 2">!</span>
+					<span v-else-if="priority == 3">!!!</span>
 					<span v-else>  </span>
 				</v-col>
 			</v-row>
@@ -91,13 +91,13 @@
 					class="p-0 m-0"
 					:cols="6"
 					>
-						<v-list-item-content class="justify-content-center" v-if="item.time.includes('00:')">{{item.time}}
+						<v-list-item-content class="justify-content-center" v-if="time.includes('00:')">{{item.time}}
 							 minutes
 						</v-list-item-content>
-						<v-list-item-content class="justify-content-center" v-else-if="item.time.includes('01:00')">{{item.time}}
+						<v-list-item-content class="justify-content-center" v-else-if="time.includes('01:00')">{{item.time}}
 							 hour
 						</v-list-item-content>
-						<v-list-item-content class="justify-content-center" v-else>{{item.time}}
+						<v-list-item-content class="justify-content-center" v-else>{{time}}
 							 hours
 						</v-list-item-content>
 					</v-col>
@@ -115,9 +115,9 @@
 							:cols="9"
 							>
 								<EditCardData 
-								:currentTaskPriority = "item.priority"
-								:currentTaskTime     = "item.time"
-								@saveChanges = "changeTime"
+								:currentTaskPriority = "priority"
+								:currentTaskTime     = "time"
+								@saveChanges = "saveChanges"
 								/>
 							</v-col>
 						</v-row>
@@ -491,7 +491,7 @@
 		}, 
 		methods :
 		{
-			...mapActions(['fetchDetails', 'fetchNotes', 'fetchPersonalResults']),
+			...mapActions(['fetchPersonalResults', 'editCardData']),
 			...mapMutations(['UPDATE_TASK_DATA']),
 
 			resetDayMarkToDefVal() {
@@ -582,29 +582,16 @@
 				this.alert.text = text
 			},
 
-			changeTime(newData)
+			async saveChanges(newData)
 			{
-				console.log(newData);
-				const {priority: newPriority, time: newTime} = newData;
+				const response = await this.editCardData({editedCardData: {...newData, taskId: this.taskId}});
 
-				if ((this.item.time != newTime ) || (this.item.priority != newPriority) ) {
-					axios.post('/edit-card',{
-						task_id : this.item.taskId, 
-						time : newTime, 
-						priority: newPriority}) 
-					.then((response) => {
-						this.isShowAlert = true;
-						
-						if (response.data.status == 'success') {
-							this.item.time = newTime;
-							this.item.priority = newPriority;
-						}
-
-						this.setAlertData(response.data.status, response.data.message)
+				if (response && response.data.status == 'success') {
+					this.isShowAlert = true;
+					this.setAlertData(response.data.status, response.data.message)
 						setTimeout( () => {
 							this.isShowAlert = false;
 						},3000)
-				  })
 				}
 			},
 
