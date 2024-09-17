@@ -385,24 +385,7 @@
 				return this.getTaskData(this.taskId, 'type');
 			},
 			transformedType() {
-				const type = this.type;
-
-				if (typeof type === 'number') {
-					switch (type) {
-						case 0:
-							return 'reminder';
-						case 1:
-							return 'task';
-						case 2:
-							return 'required task';
-						case 3:
-							return 'non required job'
-						case 4:
-							return 'required job';
-					}
-				}
-
-				return type;
+				return this.getTaskData(this.taskId, 'transformedType');
 			},
 			actualDetailsCounter() {
 				const detailsData = this.getDetailsData(this.taskId);

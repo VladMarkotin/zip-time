@@ -118,7 +118,7 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         store,
         components: {EditButton, VSelectTooptip, SelectTaskType},
         computed: {
-            ...mapGetters(['getWindowScreendWidth', 'getDayStatus']),
+            ...mapGetters(['getWindowScreendWidth', 'getDayStatus',]),
             tooltipPrioritiesData() {
 				return {
 					titles: {
@@ -158,6 +158,10 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         },
         watch: {
             isShowEditCardDataDialog(isDialogOpen) {
+                if (isDialogOpen) {
+                   this.selectedType = this.currentTaskType;
+                } //При открытии диалога всега выбирается текущий тип задания
+
                 if (this.$refs.picker) {
                     const isSelectingMinutes = !this.$refs.picker.selectingHour;
     
@@ -165,7 +169,7 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
                         this.resetToHourSelection();
                     }
                 }
-            }
+            },
         },
         methods: {
             toggleTimeFormat() {

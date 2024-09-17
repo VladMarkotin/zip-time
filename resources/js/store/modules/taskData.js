@@ -1,3 +1,23 @@
+const getTransformedType = (type) => {
+    switch (type) {
+        case 0:
+            return 'reminder';
+        case 1:
+            return 'task';
+        case 2:
+            return 'required task';
+        case 3:
+            return 'non required job'
+        case 4:
+            return 'required job';
+    }
+};
+
+const transformTaskData = (taskData) => {
+    const transformedTaskData = taskData.map(data => ({...data, transformedType: getTransformedType(data.type)}));
+    return transformedTaskData;
+}
+
 export default {
     state: {
         dayStatus: 2,
@@ -5,8 +25,10 @@ export default {
     },
     mutations: {
         INITIALIZE_TASK_DATA_STORE(state, {taskData, dayStatus}) {
+            const transfomedTaskData = transformTaskData(taskData);
+
             state.dayStatus = dayStatus;
-            state.taskData = [...taskData];
+            state.taskData = [...transfomedTaskData];
         },
         UPDATE_TASK_DATA(state, {updatedTaskData}) {
             // ожидает {updatedTaskData: {
@@ -14,6 +36,11 @@ export default {
             //     Changeable property of object: new value,
             //     Changeable property of object: new value,
             // }}
+
+            if (Object.keys(updatedTaskData).includes('type')) {
+                updatedTaskData = {...updatedTaskData, transformedType: getTransformedType(updatedTaskData.type)};
+            }
+
             state.taskData = state.taskData.map(taskData => {
                 if (taskData.taskId !== updatedTaskData.taskId) return taskData
                 return {
@@ -21,6 +48,7 @@ export default {
                     ...updatedTaskData
                 }
             });
+            // console.log(state);
         }
     },
     getters: {
