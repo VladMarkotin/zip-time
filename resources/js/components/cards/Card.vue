@@ -590,7 +590,7 @@
 			{
 				const response = await this.editCardData({editedCardData: {...newData, taskId: this.taskId}});
 
-				if (response && response.data.status == 'success') {
+				if (response) {
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 						setTimeout( () => {

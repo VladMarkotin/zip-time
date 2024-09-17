@@ -13,7 +13,8 @@ use Auth;
 class EditController extends Controller
 {
     private $editTaskService = null;
-    private $task = null;
+    private $task            = null;
+    private $response        = ['status' => '', 'message' => '', 'updated_data' => []];
 
     public function __construct(EditTaskService $editTaskService)
     {
@@ -28,6 +29,9 @@ class EditController extends Controller
         $this->task      = Tasks::find($task_id);
         $current_task_type = $this->task->type;
         $new_type         = $data['type'];
+
+        $updated_data = [];
+
         //Don`t forget about checks
         if ($this->editTaskService->checkTask($data) ) {
             
@@ -35,25 +39,65 @@ class EditController extends Controller
                 'time'     => $data['time'],
                 'priority' => $data['priority']
             ];
+            $updated_data['time']     = $data['time'];
+            $updated_data['priority'] = $data['priority'];
 
-            if ($new_type !== $current_task_type) {
-                $updated_data = $this->editType($new_type, $current_task_type, $task_id, $updated_data);
-            }
-            dd($updated_data);
+            $this->setResponse([
+                'status'       => 'success',
+                'message'      => 'Task`s configurations has been changed.',
+                'updated_data' => $updated_data,
 
-            Tasks::where('id', $task_id)->update($updated_data);
-            return json_encode(['status' => 'success', 'message' => 'Task`s configurations has been changed.'], JSON_UNESCAPED_UNICODE);
+            ]);
+        } else {
+            $this->setResponse([
+                'status'       => 'error',
+                'message'      => 'Error has happend!',
+                'updated_data' => $updated_data,
+
+            ]);
         }
 
-        return json_encode(['status' => 'fail', 'message' => 'Error has happend!'], JSON_UNESCAPED_UNICODE);
+        if ($new_type !== $current_task_type) {
+            $updated_data = $this->editType($new_type, $current_task_type, $task_id, $updated_data);
+        }
+
+        if (count($updated_data)) {
+            Tasks::where('id', $task_id)->update($updated_data);
+        }
+
+        return json_encode($this->getResponse(), JSON_UNESCAPED_UNICODE);
     }
 
     private function editType($new_type, $current_task_type,$task_id, $updated_data) {
         if ($current_task_type === 4) {
-            $this->editTaskService->checkReqJobsInDayPlan($task_id);
+            $checkReqJobs = $this->editTaskService->checkReqJobsInDayPlan($task_id);
+            
+            if (!$checkReqJobs) {
+                $this->setResponse([
+                    'status'       => 'error',
+                    'message'      => 'The plan for the day must include at least two required jobs.!',
+                    'updated_data' => $updated_data,
+    
+                ]);
+                return $updated_data;
+            }
         } 
         $updated_data['type'] = $new_type;
 
         return $updated_data;
+    }
+
+    private function setResponse(array $data) {
+        $keys = ['status', 'message', 'updated_data'];
+        
+        foreach ($data as $key => $value) {
+            if (in_array($key, $keys) && $value !== '') {
+                $this->response[$key] = $value;
+            }
+        }
+    }
+
+    private function getResponse() {
+        return $this->response;
     }
 }

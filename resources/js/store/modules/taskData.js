@@ -56,8 +56,13 @@ export default {
 						priority: editedCardData.priority,
                         type:     editedCardData.type,
                     }) 
-                    if (response.data.status == 'success') {
-                        commit('UPDATE_TASK_DATA', {updatedTaskData: editedCardData});			
+
+                    const {updated_data} = response.data;
+                    if (response.status === 200 && updated_data) {
+
+                        updated_data.taskId = editedCardData.taskId; //добавляю taskId для мутации
+                        
+                        commit('UPDATE_TASK_DATA', {updatedTaskData: updated_data});			
                     }
                     return response;
                 }
