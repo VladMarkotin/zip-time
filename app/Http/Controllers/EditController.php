@@ -75,7 +75,7 @@ class EditController extends Controller
             if (!$checkReqJobs) {
                 $this->setResponse([
                     'status'       => 'error',
-                    'message'      => 'The plan for the day must include at least two required jobs.!',
+                    'message'      => 'The plan for the day must include at least two required jobs!',
                     'updated_data' => $updated_data,
     
                 ]);
