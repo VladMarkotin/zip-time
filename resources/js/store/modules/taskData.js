@@ -14,7 +14,6 @@ export default {
             //     Changeable property of object: new value,
             //     Changeable property of object: new value,
             // }}
-            console.log(updatedTaskData);
             state.taskData = state.taskData.map(taskData => {
                 if (taskData.taskId !== updatedTaskData.taskId) return taskData
                 return {
@@ -60,8 +59,10 @@ export default {
 
                     const {updated_data} = response.data;
                     if (response.status === 200 && updated_data) {
-
                         updated_data.taskId = editedCardData.taskId; //добавляю taskId для мутации
+                        if (Object.keys(updated_data).includes('type')) {
+                            updated_data.mark = '';
+                        };
                         
                         commit('UPDATE_TASK_DATA', {updatedTaskData: updated_data});			
                     }

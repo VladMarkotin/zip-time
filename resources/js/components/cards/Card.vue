@@ -591,6 +591,11 @@
 				const response = await this.editCardData({editedCardData: {...newData, taskId: this.taskId}});
 
 				if (response) {
+					const {updated_data} = response.data;
+					if (Object.keys(updated_data).includes('type')) {
+						this.resetDayMarkToDefVal();
+					};
+
 					this.isShowAlert = true;
 					this.setAlertData(response.data.status, response.data.message)
 						setTimeout( () => {

@@ -162,7 +162,6 @@ export default {
             key: taskData.taskId,
             notesData: taskData.notesData,
         }));
-
         const taskData = this.data.plan.map(taskData => ({
             hash:     taskData.hash,
             mark:     taskData.mark,

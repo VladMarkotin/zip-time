@@ -83,6 +83,7 @@ class EditController extends Controller
             }
         } 
         $updated_data['type'] = $new_type;
+        $updated_data['mark'] = -1;
         $this->setResponse([
             'updated_data' => $updated_data,
         ]);
