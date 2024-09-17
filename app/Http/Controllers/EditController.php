@@ -83,9 +83,18 @@ class EditController extends Controller
             }
         } 
         $updated_data['type'] = $new_type;
+        $this->setResponse([
+            'updated_data' => $updated_data,
+        ]);
 
         return $updated_data;
     }
+
+    // private function setResponse($status, $message, $updated_data) {
+    //     $this->response['status']       = $status;
+    //     $this->response['message']      = $message;
+    //     $this->response['updated_data'] = $updated_data;
+    // }
 
     private function setResponse(array $data) {
         $keys = ['status', 'message', 'updated_data'];

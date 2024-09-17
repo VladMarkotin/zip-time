@@ -14,6 +14,7 @@ export default {
             //     Changeable property of object: new value,
             //     Changeable property of object: new value,
             // }}
+            console.log(updatedTaskData);
             state.taskData = state.taskData.map(taskData => {
                 if (taskData.taskId !== updatedTaskData.taskId) return taskData
                 return {
