@@ -175,7 +175,7 @@ export default {
         
         this.INITIALIZE_DETAILS_STORE({detailsData});
         this.INITIALIZE_NOTES_STORE({notesData});
-        this.INITIALIZE_TASK_DATA_STORE({taskData});
+        this.INITIALIZE_TASK_DATA_STORE({taskData, dayStatus: this.data.dayStatus});
     },
 
     async mounted() {

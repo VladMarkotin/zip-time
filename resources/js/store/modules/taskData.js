@@ -1,9 +1,11 @@
 export default {
     state: {
+        dayStatus: 2,
         taskData: [],
     },
     mutations: {
-        INITIALIZE_TASK_DATA_STORE(state, {taskData}) {
+        INITIALIZE_TASK_DATA_STORE(state, {taskData, dayStatus}) {
+            state.dayStatus = dayStatus;
             state.taskData = [...taskData];
         },
         UPDATE_TASK_DATA(state, {updatedTaskData}) {
@@ -32,6 +34,9 @@ export default {
                 const currenTaskData = state.taskData.find(taskdata => taskdata.taskId === taskId);
                 return currenTaskData[key];
             }
+        },
+        getDayStatus(state) {
+            return state.dayStatus;
         }
     },
     actions: {
@@ -48,7 +53,8 @@ export default {
                     const response = await axios.post('/edit-card',{
 						task_id : editedCardData.taskId, 
 						time :    editedCardData.time, 
-						priority: editedCardData.priority
+						priority: editedCardData.priority,
+                        type:     editedCardData.type,
                     }) 
                     if (response.data.status == 'success') {
                         commit('UPDATE_TASK_DATA', {updatedTaskData: editedCardData});			

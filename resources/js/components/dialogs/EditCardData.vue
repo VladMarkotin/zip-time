@@ -12,6 +12,14 @@
         </template>
         <v-card class="pt-6 pb-6 editCardData_editCard-wrapper d-flex flex-column">
             <v-card-text class="pb-2 pt-2 editCardData-content">
+                <v-row class="p-0 m-0" v-if="!isTodayAWeekend">
+                    <h4 class="p-0" style="font-size: 1rem;">Edit task`s type:</h4>
+                    <SelectTaskType 
+                    label      = "Type" 
+                    v-model    = "selectedType"
+                    :taskTypes = "types"
+                    />
+                </v-row>
                 <v-row class="p-0 m-0">
                     <h4 class="p-0" style="font-size: 1rem;">Edit task`s priority:</h4>
                     <v-select
@@ -78,9 +86,15 @@
 import store from '../../store';
 import { mapGetters } from 'vuex/dist/vuex.common.js';
 import EditButton from '../UI/EditButton.vue';
+import SelectTaskType from '../UI/SelectTaskType.vue';
 import VSelectTooptip from '../UI/VSelectTooptip.vue';
     export default {
         props: {
+            currentTaskType: {
+                type: String,
+                required: true,
+            },
+
             currentTaskPriority: {
                 type: Number,
                 required: true,
@@ -94,6 +108,7 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         data() {
             return {
                 isShowEditCardDataDialog: false,
+                selectedType: this.currentTaskType,
                 selectedPriority: this.currentTaskPriority,
                 selectedTime: this.currentTaskTime,
                 priorities : [1,2,3],
@@ -101,9 +116,9 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
             }
         },
         store,
-        components: {EditButton, VSelectTooptip},
+        components: {EditButton, VSelectTooptip, SelectTaskType},
         computed: {
-            ...mapGetters(['getWindowScreendWidth']),
+            ...mapGetters(['getWindowScreendWidth', 'getDayStatus']),
             tooltipPrioritiesData() {
 				return {
 					titles: {
@@ -115,7 +130,31 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         	},
             isMobile() {
                 return this.getWindowScreendWidth < 768;
-            }
+            },
+            isTodayAWeekend() {
+				return this.getDayStatus === 1;
+			},
+            types() {
+                const getAvailableTypes = (type) => {
+
+                    switch(type) {
+                        case 'required job':
+                            return ['required job','required task',];
+                        case 'non required job':
+                            return ['required job','non required job','required task','task'];
+                        case 'required task':
+                            return ['required job','required task',];
+                        case 'task':
+                            return ['required job','non required job','required task','task'];
+                    }
+
+                    return ['required job','non required job','required task','task'];
+                }
+
+				return !this.isTodayAWeekend 
+					? getAvailableTypes(this.currentTaskType)
+					: [];
+			},
         },
         watch: {
             isShowEditCardDataDialog(isDialogOpen) {
@@ -149,8 +188,19 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
                 this.isShowEditCardDataDialog = false;
             },
 
+            getTypeCode(selectedType) {
+                const taskTypesMap = new Map([
+                    ['task',             1],
+                    ['required task',    2],
+                    ['non required job', 3],
+                    ['required job',     4],
+                ])
+
+                return taskTypesMap.get(selectedType);
+            },
+
             saveChanges() {
-                this.$emit('saveChanges', {priority: this.selectedPriority, time: this.selectedTime});
+                this.$emit('saveChanges', {priority: this.selectedPriority, time: this.selectedTime, type: this.getTypeCode(this.selectedType)});
                 this.isShowEditCardDataDialog = false;
             }
         },

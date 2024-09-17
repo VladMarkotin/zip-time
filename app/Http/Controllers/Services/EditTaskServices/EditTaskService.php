@@ -48,4 +48,10 @@ class EditTaskService
             return true;
         }
     } 
+
+    public function checkReqJobsInDayPlan($task_id) {
+        $timetable_id = Tasks::where('id', $task_id)->value('timetable_id');
+
+        return Tasks::where('timetable_id', $timetable_id)->where('type', 4)->where('id', '!=', $task_id)->count() >= 2;
+    }
 }
