@@ -37,7 +37,13 @@ export default {
         },
         getDayStatus(state) {
             return state.dayStatus;
-        }
+        },
+        getRequiredTasks(state) {
+            return state.taskData.filter(task => [4, 2].includes(task.type));
+        },
+        getNonRequiredTasks(state) {
+            return state.taskData.filter(task => [3, 1].includes(task.type));
+        },
     },
     actions: {
         async editCardData({getters, commit, dispatch}, {editedCardData}) {

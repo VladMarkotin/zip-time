@@ -31,14 +31,14 @@
         <v-data-iterator hide-default-footer v-bind:items="data.plan">
             <Cards
                 title="Required jobs and tasks"
-                v-if="isExistsRequiredTasks(data.plan)"
-                v-bind:items="getRequiredTasks(data.plan)"
+                v-if="isExistsRequiredTasks"
+                v-bind:items="getRequiredTasks"
             />
             <v-divider></v-divider>
             <Cards
                 title="Non required jobs and tasks"
-                v-if="isExistsNonRequiredTasks(data.plan)"
-                v-bind:items="getNonRequiredTasks(data.plan)"
+                v-if="isExistsNonRequiredTasks"
+                v-bind:items="getNonRequiredTasks"
             />
         </v-data-iterator>
         <div class="d-flex justify-space-between mt-6">
@@ -91,7 +91,7 @@ import Firework from "./UI/Firework.vue";
 import { mdiCarEmergency, mdiPlusBox, mdiSendClock } from "@mdi/js";
 import "intro.js/introjs.css";
 import store from "../store";
-import { mapMutations } from "vuex/dist/vuex.common.js";
+import { mapMutations, mapGetters } from "vuex/dist/vuex.common.js";
 
 export default {
     components: { Alert, AddJobTask, CloseDay, Cards, EmergencyCall, Challenges, Firework },
@@ -110,22 +110,19 @@ export default {
         };
     },
     store,
-    computed: {},
-    methods: {
-        ...mapMutations(['INITIALIZE_DETAILS_STORE', 'INITIALIZE_NOTES_STORE', 'INITIALIZE_TASK_DATA_STORE', 'SET_WINDOW_SCREEN_WIDTH']),
-        getRequiredTasks(data) {
-            return data.filter((item) => [4, 2].includes(item.type));
-        },
-        isExistsRequiredTasks(data) {
-            return this.getRequiredTasks(data).length > 0;
+    computed: {
+        ...mapGetters(['getRequiredTasks', 'getNonRequiredTasks']),
+
+        isExistsRequiredTasks() {
+            return this.getRequiredTasks.length;
         },
 
-        getNonRequiredTasks(data) {
-            return data.filter((item) => [3, 1].includes(item.type));
+        isExistsNonRequiredTasks() {
+            return this.getNonRequiredTasks.length;
         },
-        isExistsNonRequiredTasks(data) {
-            return this.getNonRequiredTasks(data).length > 0;
-        },
+    },
+    methods: {
+        ...mapMutations(['INITIALIZE_DETAILS_STORE', 'INITIALIZE_NOTES_STORE', 'INITIALIZE_TASK_DATA_STORE', 'SET_WINDOW_SCREEN_WIDTH']),
 
         toggleAddJobTaskDialog() {
             this.isShowAddJobTaskDialog = !this.isShowAddJobTaskDialog;
