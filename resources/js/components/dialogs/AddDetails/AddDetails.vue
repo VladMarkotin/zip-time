@@ -12,7 +12,7 @@
                     v-on="tooltip"
                     v-bind="props" 
                     @click="showAddDetailsDialog" 
-                    :id="!num ? 'card-details' : false"
+                    :id="!cardIdx ? 'card-details' : false"
                     >
                         <v-icon color="#D71700">{{ icons.mdiChartGantt }}</v-icon>
                     </v-btn>
@@ -41,7 +41,10 @@ import {mdiChartGantt,}  from '@mdi/js'
 import { uuid } from 'vue-uuid';
 export default {
     props: {
-        num: {},
+        cardIdx: { //нужен для презентации
+            type: Number,
+            required: true,
+        },
         taskId: {
             type: Number,
             required: true,

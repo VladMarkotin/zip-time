@@ -1,14 +1,6 @@
 <template>  
-	<v-card :id="!num ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
+	<v-card :id="!cardIdx ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
 		<div class="card-demo">
-			<h1>{{ hash }}</h1>
-			<h2>{{ mark }}</h2>
-			<h3>{{ priority}}</h3>
-			<h4>{{ taskId }}</h4>
-			<h5>{{ taskName }}</h5>
-			<h6>{{ time }}</h6>
-			<h6>{{ type }}</h6>
-			<h6>{{ transformedType }}</h6>
 			<AddHashCode 
 			v-if="isShowAddHashCodeDialog"
 			:width  		= "450"
@@ -117,7 +109,7 @@
 								<EditCardData 
 								:currentTaskPriority = "priority"
 								:currentTaskTime     = "time"
-								@saveChanges = "saveChanges"
+								@saveChanges         = "saveChanges"
 								/>
 							</v-col>
 						</v-row>
@@ -151,7 +143,7 @@
 							>
 								<template>
 									<AddDetails 
-									:num     = "num"
+									:cardIdx = "cardIdx"
 									:taskId  = "taskId"
 									@resetDayMarkToDefVal  = "resetDayMarkToDefVal"
 									/>
@@ -230,8 +222,8 @@
 						<template
 						>
 							<AddNotes 
-							:num  = "num"
-							:item = "item"
+							:cardIdx = "cardIdx"
+							:taskId  = "taskId"
 							/>
 						</template>
 					</v-col>
@@ -252,7 +244,7 @@
 				<v-col class="p-0 m-0" cols="auto">
 					<form 
 					class="d-flex align-center gap-1" 
-					:id="!num ? 'card-mark' : false"
+					:id="!cardIdx ? 'card-mark' : false"
 					>
 						<template v-if="[4,3].includes(type)">
 							<div>Mark</div>
@@ -260,8 +252,8 @@
 							class="ml-1" 
 							style="width : 54px" 
 							v-model="jobMarkInputValue" 
-							v-on:keypress.enter.prevent="debounceSendMark(item)" 
-							@input    = "debounceSendMark(item)"
+							v-on:keypress.enter.prevent="debounceSendMark(taskId)" 
+							@input    = "debounceSendMark(taskId)"
 							@keypress = "filterJobMarkInputValue($event, taskId)"
 							@focus    = "focusedInput=!focusedInput" 
 							@blur     = "focusedInput=!focusedInput"
@@ -272,7 +264,7 @@
 						
 						<template v-else-if="[2,1].includes(type)">
 							<div>Ready?</div>
-							<div @click="debounceUpdateIsReadyState(item)">
+							<div @click="debounceUpdateIsReadyState(taskId)">
 								<v-checkbox color="#D71700"
 								readonly
 								v-model="isTaskReady"
@@ -320,7 +312,16 @@
 	import EditCardData from '../dialogs/EditCardData.vue';
 	export default
 	{
-		props : ['item', 'num'],
+		props : {
+			taskId: {
+				type: Number,
+				required: true,
+			},
+			cardIdx: {
+				type: Number,
+				required: true,
+			}
+		},
 		data()
 		{
 			return {
@@ -363,27 +364,24 @@
 			EditCardData,
 		},
 		computed: {
-			...mapGetters(['getDetailsData', 'getWindowScreendWidth', 'getTaskData']),
+			...mapGetters(['getDetailsData', 'getWindowScreendWidth', 'getTaskData', 'getFullTaskData']),
 			hash() {
-				return this.getTaskData(this.item.taskId, 'hash');
+				return this.getTaskData(this.taskId, 'hash');
 			},
 			mark() {
-				return this.getTaskData(this.item.taskId, 'mark');
+				return this.getTaskData(this.taskId, 'mark');
 			},
 			priority() {
-				return this.getTaskData(this.item.taskId, 'priority');
-			},
-			taskId() {
-				return this.getTaskData(this.item.taskId, 'taskId');
+				return this.getTaskData(this.taskId, 'priority');
 			},
 			taskName() {
-				return this.getTaskData(this.item.taskId, 'taskName');
+				return this.getTaskData(this.taskId, 'taskName');
 			},
 			time() {
-				return this.getTaskData(this.item.taskId, 'time');
+				return this.getTaskData(this.taskId, 'time');
 			},
 			type() {
-				return this.getTaskData(this.item.taskId, 'type');
+				return this.getTaskData(this.taskId, 'type');
 			},
 			transformedType() {
 				const type = this.type;
@@ -541,12 +539,12 @@
 				  })
 			},
 
-			debounceSendMark(item) {
-				this.debouncedSendMark(item);
+			debounceSendMark(taskId) {
+				this.debouncedSendMark(this.getFullTaskData(taskId));
 			},	
 
-			debounceUpdateIsReadyState(item) {
-				this.debouncedUpdateIsReadyState(item);
+			debounceUpdateIsReadyState(taskId) {
+				this.debouncedUpdateIsReadyState(this.getFullTaskData(taskId));
 			},
 			
 			sendMark(item)

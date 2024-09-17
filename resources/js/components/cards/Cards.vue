@@ -6,10 +6,10 @@
             />
         </div>
         <v-row class="cards_cards-wrapper">
-            <v-col cols="6" v-for="item, i of items" v-bind:key="item.taskId">
+            <v-col cols="6" v-for="item, idx of items" v-bind:key="item.taskId">
                 <Card 
-                v-bind:item="item" 
-                v-bind:num="i" 
+                :taskId="item.taskId" 
+                :cardIdx="idx" 
                 />
             </v-col>
         </v-row>

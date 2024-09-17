@@ -7,6 +7,11 @@ export default {
             state.taskData = [...taskData];
         },
         UPDATE_TASK_DATA(state, {updatedTaskData}) {
+            // ожидает {updatedTaskData: {
+            //     taskId: taskId,
+            //     Changeable property of object: new value,
+            //     Changeable property of object: new value,
+            // }}
             state.taskData = state.taskData.map(taskData => {
                 if (taskData.taskId !== updatedTaskData.taskId) return taskData
                 return {

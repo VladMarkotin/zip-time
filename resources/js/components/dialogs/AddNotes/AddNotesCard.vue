@@ -66,7 +66,7 @@
             <transition-group name="list" tag="div" class="notes-wrapper">
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
-                    :item        = "item"
+                    :noteData           = "item"
                     @deleteNote         = "deleteNote"
                     @showEditNotesDialog = "showEditNotesDialog"
                     />
@@ -135,10 +135,6 @@ import Note from './Note.vue';
 import EditNotesDialog from './EditNotesDialog.vue';
     export default {
         props: {
-            item: {
-                type: Object,
-                required: true,
-            },
             taskId: {
                 type: Number,
                 required: true,
