@@ -18,6 +18,7 @@
                     label      = "Type" 
                     v-model    = "selectedType"
                     :taskTypes = "types"
+                    :solo      = "true"
                     />
                 </v-row>
                 <v-row class="p-0 m-0">

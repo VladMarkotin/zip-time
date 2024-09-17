@@ -4,6 +4,7 @@
         required
         :items="taskTypes"
         :value="value"
+        :solo = "solo"
         @input="updateValue"
         @change = "$emit('change')"
         >
@@ -32,6 +33,10 @@ import VSelectTooptip from './VSelectTooptip.vue';
             taskTypes: {
                 type: Array,
                 required: true,
+            },
+            solo: {
+                type: Boolean,
+                default: false,
             }
         },
         components: {VSelectTooptip},
