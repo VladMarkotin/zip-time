@@ -23,7 +23,7 @@
     </div>
 </template>
 <script>
-    import Card from './Card.vue';
+    import Card from './Card/Card.vue';
     import CardsTypeImage from '../UI/CardsTypeImage.vue';
 
     export default {
