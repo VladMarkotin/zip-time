@@ -269,8 +269,8 @@
 								<v-checkbox color="#D71700"
 								readonly
 								v-model="isTaskReady"
-								:true-value="isTaskReadyCheckboxTrueVal"
-								:false-value="isTaskReadyCheckboxFalseVal"
+								:true-value="taskCheckboxTrueVal"
+								:false-value="taskCheckboxFalseVal"
 								>
 								</v-checkbox>
 							</div>
@@ -335,8 +335,6 @@
 					defaultConfigs: {},
 					isTaskReady: '', //присваивается в created
 					jobMarkInputValue: '', //присваивается в created
-					isTaskReadyCheckboxTrueVal: 99,
-					isTaskReadyCheckboxFalseVal: '',
 					//Тут менять от скольки символов название таски обрезается,з начения полей объекта должны совпадать.
 					maxTaskNameLen: { 
 						default: 50,
@@ -365,7 +363,15 @@
 			EditCardData,
 		},
 		computed: {
-			...mapGetters(['getDetailsData', 'getWindowScreendWidth', 'getTaskData', 'getFullTaskData', 'checkIsCurrentTaskReady']),
+			...mapGetters([
+				'getDetailsData', 
+				'getWindowScreendWidth', 
+				'getTaskData', 
+				'getFullTaskData', 
+				'checkIsCurrentTaskReady', 
+				'getTaskCheckboxTrueVal',
+				'getTaskCheckboxFalseVal'
+			]),
 			hash() {
 				return this.getTaskData(this.taskId, 'hash');
 			},
@@ -386,6 +392,12 @@
 			},
 			transformedType() {
 				return this.getTaskData(this.taskId, 'transformedType');
+			},
+			taskCheckboxTrueVal() {
+				return this.getTaskCheckboxTrueVal();
+			},
+			taskCheckboxFalseVal() {
+				return this.getTaskCheckboxFalseVal();
 			},
 			actualDetailsCounter() {
 				const detailsData = this.getDetailsData(this.taskId);
@@ -439,14 +451,14 @@
 		}, 
 		methods :
 		{
-			...mapActions(['fetchPersonalResults', 'editCardData', 'estimateJob']),
+			...mapActions(['fetchPersonalResults', 'editCardData', 'estimateJob', 'estimateTask']),
 			...mapMutations(['UPDATE_TASK_DATA']),
 
 			resetDayMarkToDefVal() {
 				const currentTaskType = this.type;
 				
 				if ([1,2].includes(currentTaskType)) {
-					this.isTaskReady = this.isTaskReadyCheckboxFalseVal;
+					this.isTaskReady = this.taskCheckboxFalseVal;
 				}
 
 				if ([3,4].includes(currentTaskType)) {
@@ -456,36 +468,37 @@
 				this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: ''}});
 			},
 			
-			updateIsReadyState(item)
+			async updateIsReadyState(item)
 			{
-				const getNewCheckboxVal = (oldVal) => {
-					switch (oldVal) {
-						case this.isTaskReadyCheckboxTrueVal:
-							return {forCheckbox: this.isTaskReadyCheckboxFalseVal, forRequest: -1};
-						case this.isTaskReadyCheckboxFalseVal:
-							return {forCheckbox: this.isTaskReadyCheckboxTrueVal, forRequest: this.isTaskReadyCheckboxTrueVal};
+				try {
+					const getNewCheckboxVal = (oldVal) => {
+						switch (oldVal) {
+							case this.taskCheckboxTrueVal:
+								return this.taskCheckboxFalseVal;
+							case this.taskCheckboxFalseVal:
+								return this.taskCheckboxTrueVal;
+						}
 					}
-				}
-				axios.post('/estimate',{
-					task_id : item.taskId, 
-					is_ready : getNewCheckboxVal(this.isTaskReady).forRequest,type : this.type
-				})
-				.then((response) => {
+
+					const payload = {
+						task_id :  this.taskId,
+						is_ready : getNewCheckboxVal(this.isTaskReady),
+						type :     this.type
+					};
+
+					const response = await this.estimateTask({payload: payload});
+
 					if (response.data.status === 'success') {
-						this.isTaskReady = getNewCheckboxVal(this.isTaskReady).forCheckbox;
-						
-						this.UPDATE_TASK_DATA({
-							updatedTaskData: {
-								taskId: this.taskId, 
-								mark: this.isTaskReady,
-							},
-						});
+						this.isTaskReady = payload.is_ready;
 					}
-					
+
 					this.fetchPersonalResults();
 
 					this.showAlert({status: response.data.status, message: response.data.message});
-				  })
+				} catch(error) {
+					this.showAlert({status: 'error', message: 'Error! Something has happened!'})
+					console.error(error);
+				}
 			},
 
 			debounceSendMark(taskId) {

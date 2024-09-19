@@ -29,6 +29,8 @@ const transformTaskData = (taskData) => {
 
 export default {
     state: {
+        taskCheckboxTrueVal: {forCheckbox: 99, forRequest: 99},
+        taskCheckboxFalseVal:{forCheckbox: '', forRequest: -1},
         dayStatus: 2,
         taskData: [],
     },
@@ -38,8 +40,6 @@ export default {
 
             state.dayStatus = dayStatus;
             state.taskData = [...transfomedTaskData];
-
-            console.log(state.taskData);
         },
         UPDATE_TASK_DATA(state, {updatedTaskData}) {
             // ожидает {updatedTaskData: {
@@ -59,7 +59,6 @@ export default {
                     ...updatedTaskData
                 }
             });
-            console.log(state.taskData);
         }
     },
     getters: {
@@ -82,6 +81,12 @@ export default {
         },
         getNonRequiredTasks(state) {
             return state.taskData.filter(task => [3, 1].includes(task.type));
+        },
+        getTaskCheckboxTrueVal(state) {
+            return (type = 'forCheckbox') => state.taskCheckboxTrueVal[type]
+        },
+        getTaskCheckboxFalseVal(state) {
+            return (type = 'forCheckbox') => state.taskCheckboxFalseVal[type];
         },
         checkIsCurrentTaskReady(_, getters) {
             return ({taskId, defaultConfigs}) => {
@@ -178,5 +183,31 @@ export default {
                 console.error(error);
             }
         },
+
+        async estimateTask({getters, commit}, {payload}) {
+            const getCheckboxValForRequest = (val) => {
+                switch (val) {
+                    case getters.getTaskCheckboxTrueVal('forCheckbox'):
+                        return getters.getTaskCheckboxTrueVal('forRequest');
+                    case getters.getTaskCheckboxFalseVal('forCheckbox'):
+                        return getters.getTaskCheckboxFalseVal('forRequest');
+                }
+            }
+
+            const response = await axios.post('/estimate',{
+                task_id :  payload.task_id, 
+                is_ready : getCheckboxValForRequest(payload.is_ready),
+                type :     payload.type
+            });
+
+            if (response.data.status === 'success') {
+                commit('UPDATE_TASK_DATA', {updatedTaskData: {
+                    taskId: payload.task_id, 
+                    mark:   payload.is_ready,
+                }});
+            }
+
+            return response;
+        }
     },
 }
