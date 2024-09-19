@@ -91,27 +91,17 @@ import SelectTaskType from '../UI/SelectTaskType.vue';
 import VSelectTooptip from '../UI/VSelectTooptip.vue';
     export default {
         props: {
-            currentTaskType: {
-                type: String,
-                required: true,
-            },
-
-            currentTaskPriority: {
+            taskId: {
                 type: Number,
                 required: true,
-            },
-
-            currentTaskTime: {
-                type: String,
-                required: true
             },
         },
         data() {
             return {
                 isShowEditCardDataDialog: false,
-                selectedType: this.currentTaskType,
-                selectedPriority: this.currentTaskPriority,
-                selectedTime: this.currentTaskTime,
+                selectedType: '', //присваивается в created
+                selectedPriority: '', //присваивается в created,
+                selectedTime: '', //присваивается в created,
                 priorities : [1,2,3],
                 timeFormat: 'ampm',
             }
@@ -119,7 +109,16 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         store,
         components: {EditButton, VSelectTooptip, SelectTaskType},
         computed: {
-            ...mapGetters(['getWindowScreendWidth', 'getDayStatus',]),
+            ...mapGetters(['getWindowScreendWidth', 'getDayStatus', 'getTaskData']),
+            currentTaskType() {
+                return this.getTaskData(this.taskId, 'transformedType');
+            },
+            currentTaskPriority() {
+                return this.getTaskData(this.taskId, 'priority');
+            },
+            currentTaskTime() {
+                return this.getTaskData(this.taskId, 'time');
+            },
             tooltipPrioritiesData() {
 				return {
 					titles: {
@@ -210,6 +209,11 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
             }
         },
 
+        created() {
+            this.selectedType     = this.currentTaskType;
+            this.selectedPriority = this.currentTaskPriority;
+            this.selectedTime     = this.currentTaskTime;
+        }
     };
 </script>
 

@@ -107,9 +107,7 @@
 							:cols="9"
 							>
 								<EditCardData 
-								:currentTaskType     = "transformedType"
-								:currentTaskPriority = "priority"
-								:currentTaskTime     = "time"
+								:taskId              = "taskId"
 								@saveChanges         = "saveChanges"
 								/>
 							</v-col>
