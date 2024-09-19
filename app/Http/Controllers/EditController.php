@@ -63,6 +63,13 @@ class EditController extends Controller
 
         if (count($updated_data)) {
             Tasks::where('id', $task_id)->update($updated_data);
+
+            if (array_key_exists('mark', $updated_data)) {
+                unset($updated_data['mark']);
+                $this->setResponse([
+                    'updated_data' => $updated_data,
+                ]);
+            }
         }
 
         return json_encode($this->getResponse(), JSON_UNESCAPED_UNICODE);

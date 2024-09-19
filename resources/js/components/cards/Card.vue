@@ -333,10 +333,10 @@
 					focusedInput: false,
 					isShowAddHashCodeDialog : false,
 					defaultConfigs: {},
-					isTaskReady: -1, //присваивается в created
+					isTaskReady: '', //присваивается в created
 					jobMarkInputValue: '', //присваивается в created
 					isTaskReadyCheckboxTrueVal: 99,
-					isTaskReadyCheckboxFalseVal: -1,
+					isTaskReadyCheckboxFalseVal: '',
 					//Тут менять от скольки символов название таски обрезается,з начения полей объекта должны совпадать.
 					maxTaskNameLen: { 
 						default: 50,
@@ -365,7 +365,7 @@
 			EditCardData,
 		},
 		computed: {
-			...mapGetters(['getDetailsData', 'getWindowScreendWidth', 'getTaskData', 'getFullTaskData']),
+			...mapGetters(['getDetailsData', 'getWindowScreendWidth', 'getTaskData', 'getFullTaskData', 'checkIsCurrentTaskReady']),
 			hash() {
 				return this.getTaskData(this.taskId, 'hash');
 			},
@@ -395,42 +395,10 @@
 				return 0;
 			},
 			isCurrentTaskReady() {
-				const type = this.type;
-
-				const checkTask = (data) => {
-					const {type, mark} = data;
-					const cardRules = this.defaultConfigs.cardRules;
-
-					if (cardRules) {
-						const maxMark = +cardRules[0].maxMark;
-						const minMark = +cardRules[0].minMark;
-						switch (type) {
-							case 'task':
-								return mark === 99 //хардкод
-									? 'card-wrapper_ready'
-									: 'card-wrapper_unready';
-							case 'job':
-								return mark >= minMark && mark <= maxMark
-									? 'card-wrapper_ready'
-									: 'card-wrapper_unready';
-							default:
-								return 'card-wrapper_unready';
-						}
-					}
-
-				}
-				
-				switch(type) {
-					case 1:
-					case 2:
-						return checkTask({type: 'task', mark: this.isTaskReady});
-					case 3:
-					case 4:
-						return checkTask({type: 'job', mark: this.mark});
-					default:
-						return 'card-wrapper_unready';
-				}
-				
+				return this.checkIsCurrentTaskReady({
+						taskId:         this.taskId,
+						defaultConfigs: this.defaultConfigs.cardRules
+					});
 			},
 
 			truncatedTaskName() {
@@ -484,6 +452,8 @@
 				if ([3,4].includes(currentTaskType)) {
 					this.jobMarkInputValue = '';
 				}
+
+				this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: ''}});
 			},
 			
 			updateIsReadyState(item)
@@ -491,35 +461,30 @@
 				const getNewCheckboxVal = (oldVal) => {
 					switch (oldVal) {
 						case this.isTaskReadyCheckboxTrueVal:
-							return this.isTaskReadyCheckboxFalseVal;
+							return {forCheckbox: this.isTaskReadyCheckboxFalseVal, forRequest: -1};
 						case this.isTaskReadyCheckboxFalseVal:
-							return this.isTaskReadyCheckboxTrueVal;
+							return {forCheckbox: this.isTaskReadyCheckboxTrueVal, forRequest: this.isTaskReadyCheckboxTrueVal};
 					}
 				}
 				axios.post('/estimate',{
 					task_id : item.taskId, 
-					is_ready : getNewCheckboxVal(this.isTaskReady),type : this.type
+					is_ready : getNewCheckboxVal(this.isTaskReady).forRequest,type : this.type
 				})
 				.then((response) => {
 					if (response.data.status === 'success') {
-						this.isTaskReady = getNewCheckboxVal(this.isTaskReady);
+						this.isTaskReady = getNewCheckboxVal(this.isTaskReady).forCheckbox;
 						
 						this.UPDATE_TASK_DATA({
 							updatedTaskData: {
 								taskId: this.taskId, 
-								mark: this.isTaskReady !== -1 ? this.isTaskReady : ''
+								mark: this.isTaskReady,
 							},
 						});
 					}
 					
-					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message)
-
 					this.fetchPersonalResults();
 
-					setTimeout( () => {
-						this.isShowAlert = false;
-					},3000)
+					this.showAlert({status: response.data.status, message: response.data.message});
 				  })
 			},
 
@@ -539,9 +504,7 @@
 					type    : this.type
 				})
 				.then((response) => {
-					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message)
-
+					
 					const {data}              = response;
 					const {current_task_mark} = data;
 					if (data.status === 'success') {
@@ -557,9 +520,7 @@
 					
 					this.fetchPersonalResults();
 
-					setTimeout( () => {
-						this.isShowAlert = false;
-					},3000)
+					this.showAlert({status: response.data.status, message: response.data.message});
 				  })
 			},
 			
@@ -579,11 +540,7 @@
 						this.resetDayMarkToDefVal();
 					};
 
-					this.isShowAlert = true;
-					this.setAlertData(response.data.status, response.data.message)
-						setTimeout( () => {
-							this.isShowAlert = false;
-						},3000)
+					this.showAlert({status: response.data.status, message: response.data.message});
 				}
 			},
 
@@ -612,13 +569,21 @@
 
 			},
 
+			showAlert({status, message}) {
+				this.isShowAlert = true;
+				this.setAlertData(status, message)
+				setTimeout( () => {
+					this.isShowAlert = false;
+				},3000)
+			}
+
 		},
 		
 		created() {
 			this.getConfigs(); 
 			
 			this.jobMarkInputValue = String(this.mark);
-			this.isTaskReady       = this.mark || -1;
+			this.isTaskReady       = this.mark;
 		},
 	}
 	

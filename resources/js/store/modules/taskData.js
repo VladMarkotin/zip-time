@@ -14,7 +14,16 @@ const getTransformedType = (type) => {
 };
 
 const transformTaskData = (taskData) => {
-    const transformedTaskData = taskData.map(data => ({...data, transformedType: getTransformedType(data.type)}));
+    const transformedTaskData = taskData.map(taskData => ({
+        hash:     taskData.hash,
+        mark:     taskData.mark,
+        priority: taskData.priority,
+        taskId:   taskData.taskId,
+        taskName: taskData.taskName,
+        time:     taskData.time,
+        type:     taskData.type,
+        transformedType: getTransformedType(taskData.type)}));
+
     return transformedTaskData;
 }
 
@@ -29,6 +38,8 @@ export default {
 
             state.dayStatus = dayStatus;
             state.taskData = [...transfomedTaskData];
+
+            console.log(state.taskData);
         },
         UPDATE_TASK_DATA(state, {updatedTaskData}) {
             // ожидает {updatedTaskData: {
@@ -48,7 +59,7 @@ export default {
                     ...updatedTaskData
                 }
             });
-            // console.log(state);
+            console.log(state.taskData);
         }
     },
     getters: {
@@ -72,9 +83,54 @@ export default {
         getNonRequiredTasks(state) {
             return state.taskData.filter(task => [3, 1].includes(task.type));
         },
+        checkIsCurrentTaskReady(_, getters) {
+            return ({taskId, defaultConfigs}) => {
+                const type = getters.getTaskData(taskId, 'type');
+                const mark = getters.getTaskData(taskId, 'mark');
+
+                const classForCard = {
+                    ready:   'card-wrapper_ready',
+                    unready: 'card-wrapper_unready',
+                }
+
+				const checkTask = (data) => {
+					const {type, mark} = data;
+
+					if (defaultConfigs) {
+						const maxMark = +defaultConfigs[0].maxMark;
+						const minMark = +defaultConfigs[0].minMark;
+						switch (type) {
+							case 'task':
+								return mark === 99 //хардкод
+									? classForCard.ready
+									: classForCard.unready;
+							case 'job':
+								return mark >= minMark && mark <= maxMark
+									? classForCard.ready
+									: classForCard.unready;
+							default:
+								return classForCard.unready;
+						}
+					}
+
+                    return classForCard.unready;
+				}
+				
+				switch(type) {
+					case 1:
+					case 2:
+						return checkTask({type: 'task', mark});
+					case 3:
+					case 4:
+						return checkTask({type: 'job', mark});
+					default:
+						return classForCard.unready;
+				}
+            }
+        }
     },
     actions: {
-        async editCardData({getters, commit, dispatch}, {editedCardData}) {
+        async editCardData({getters, commit}, {editedCardData}) {
             try {
                 const currenTaskData = getters.getFullTaskData(editedCardData.taskId);
                 const storeData = {};
@@ -94,9 +150,6 @@ export default {
                     const {updated_data} = response.data;
                     if (response.status === 200 && updated_data) {
                         updated_data.taskId = editedCardData.taskId; //добавляю taskId для мутации
-                        if (Object.keys(updated_data).includes('type')) {
-                            updated_data.mark = '';
-                        };
                         
                         commit('UPDATE_TASK_DATA', {updatedTaskData: updated_data});			
                     }

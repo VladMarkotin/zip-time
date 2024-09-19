@@ -159,19 +159,10 @@ export default {
             key: taskData.taskId,
             notesData: taskData.notesData,
         }));
-        const taskData = this.data.plan.map(taskData => ({
-            hash:     taskData.hash,
-            mark:     taskData.mark,
-            priority: taskData.priority,
-            taskId:   taskData.taskId,
-            taskName: taskData.taskName,
-            time:     taskData.time,
-            type:     taskData.type,
-        }));
         
         this.INITIALIZE_DETAILS_STORE({detailsData});
         this.INITIALIZE_NOTES_STORE({notesData});
-        this.INITIALIZE_TASK_DATA_STORE({taskData, dayStatus: this.data.dayStatus});
+        this.INITIALIZE_TASK_DATA_STORE({taskData: this.data.plan, dayStatus: this.data.dayStatus});
     },
 
     async mounted() {
