@@ -159,6 +159,24 @@ export default {
             } catch(error) {
                 console.error(error);
             }
-        }
+        },
+
+        async estimateJob({commit}, {payload}) {
+            try {
+                const response = await axios.post('/estimate', payload)
+                const {data}  = response;
+
+                if (data.status === 'success') {
+                    commit('UPDATE_TASK_DATA', {updatedTaskData: {
+                        mark:  +payload.mark, 
+                        taskId: payload.task_id
+                    }});
+                } 
+
+                return response;
+            } catch (error) {
+                console.error(error);
+            }
+        },
     },
 }

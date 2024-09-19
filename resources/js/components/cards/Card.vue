@@ -439,7 +439,7 @@
 		}, 
 		methods :
 		{
-			...mapActions(['fetchPersonalResults', 'editCardData']),
+			...mapActions(['fetchPersonalResults', 'editCardData', 'estimateJob']),
 			...mapMutations(['UPDATE_TASK_DATA']),
 
 			resetDayMarkToDefVal() {
@@ -496,23 +496,22 @@
 				this.debouncedUpdateIsReadyState(this.getFullTaskData(taskId));
 			},
 			
-			sendMark(item)
+			async sendMark()
 			{	
-				axios.post('/estimate',{
-					task_id : item.taskId,
-					mark    : this.jobMarkInputValue,
-					type    : this.type
-				})
-				.then((response) => {
-					
-					const {data}              = response;
-					const {current_task_mark} = data;
-					if (data.status === 'success') {
-						this.UPDATE_TASK_DATA({
-							updatedTaskData: {mark: +this.jobMarkInputValue, taskId: this.taskId},
-						});
-					} 
-					if((data.status === 'error') && current_task_mark !== undefined) {
+				try {
+					const response = await this.estimateJob({
+						payload: {
+							task_id : this.taskId,
+							mark    : this.jobMarkInputValue,
+							type    : this.type
+				 		}
+					})
+
+					const {data} = response;
+
+					if(data.status === 'error') {
+						const {current_task_mark} = response.data;
+						
 						this.jobMarkInputValue = current_task_mark !== -1 
 							? String(current_task_mark) 
 							: '';
@@ -521,7 +520,12 @@
 					this.fetchPersonalResults();
 
 					this.showAlert({status: response.data.status, message: response.data.message});
-				  })
+
+				} catch(error) {
+					this.jobMarkInputValue = '';
+					this.showAlert({status: 'error', message: 'Error! Something has happened!'})
+					console.error(error);
+				}
 			},
 			
 			setAlertData(type, text)
