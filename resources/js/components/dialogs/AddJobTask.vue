@@ -143,6 +143,8 @@
 	</div>
 </template>
 <script>
+	import store from '../../store';
+	import { mapMutations } from "vuex/dist/vuex.common.js";
 	import AddHashCode from './AddHashCode.vue';
 	import AddHashCodeButton from '../UI/AddHashCodeButton.vue';
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
@@ -209,6 +211,7 @@
 						addTaskToPlanWithoutConfirmation: false,
 					}
 			},
+			store,
 			computed: {
 				tooltipPrioritiesData() {
 					return {
@@ -236,6 +239,7 @@
 			},
 			methods :
 			{
+				...mapMutations(['INITIALIZE_TASK_DATA_STORE',]),
 				clearCurrentHashCode(){
 					this.task = {
 						hashCode : '#',
@@ -314,10 +318,10 @@
 					try {
 
 						if (this.isDefaultSavedTaskSelected) {
-						this.isShowAddHashCodeDialog          = true;
-						//после успешного создание хешкода таска попадет сразу в план
-						this.addTaskToPlanWithoutConfirmation = true;
-						return;
+							this.isShowAddHashCodeDialog          = true;
+							//после успешного создание хешкода таска попадет сразу в план
+							this.addTaskToPlanWithoutConfirmation = true;
+							return;
 						}
 
 
@@ -330,15 +334,14 @@
 										};
 					
 						const response = ( await axios.post('/addJob', requestData)).data
-						console.log(response);
+
 						if (response.status == 'success') {
-						
+							this.INITIALIZE_TASK_DATA_STORE({taskData: response.updated_plan});
 						}
-						this.$emit('setAlertData',response.status,response.message)
-						this.$emit('toggleAlertDialog')
+
+						this.showAlert({status: response.status, text: response.message});
 					} catch(error) {
-						this.$emit('setAlertData','error','error!');
-						this.$emit('toggleAlertDialog')
+						this.showAlert({status: 'error', text: 'Error! Something has happened!'});
 					}
 					
 				},
@@ -370,6 +373,11 @@
 				setTime(time) {
 					this.task = {...this.task, time};
 					this.compareWithTemplate();
+				},
+
+				showAlert({status, text}) {
+					this.$emit('setAlertData',status,text);
+					this.$emit('toggleAlertDialog');
 				}
 			},
 			async created()
