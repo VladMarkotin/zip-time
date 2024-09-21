@@ -209,6 +209,7 @@
 							selectedSavedTaskId: null,
          				},
 						addTaskToPlanWithoutConfirmation: false,
+						isLoading: false,
 					}
 			},
 			store,
@@ -324,6 +325,9 @@
 							return;
 						}
 
+						if (this.isLoading) {
+							return;
+						}
 
 						const requestData = {
 											hash_code : this.task.hashCode,
@@ -333,15 +337,19 @@
 											time : this.task.time
 										};
 					
-						const response = ( await axios.post('/addJob', requestData)).data
+						this.isLoading = true;
+						const response = ( await axios.post('/addJob', requestData)).data;
 
 						if (response.status == 'success') {
 							this.INITIALIZE_TASK_DATA_STORE({taskData: response.updated_plan});
+							this.clearCurrentHashCode();
 						}
-
+						
 						this.showAlert({status: response.status, text: response.message});
 					} catch(error) {
 						this.showAlert({status: 'error', text: 'Error! Something has happened!'});
+					} finally {
+						this.isLoading = false;
 					}
 					
 				},
