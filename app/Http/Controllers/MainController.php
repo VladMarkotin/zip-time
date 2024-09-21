@@ -367,6 +367,7 @@ class MainController
      * {"hash_code":<string>, "name": <string>, "type": <string>, "priority": <int>, "time": <string>}*/
     public function addJob(Request $request)
     {
+        dd(1);
         $hash = $request->get('hash_code'); //hashCode
         $hash = (isset($hash)) ? $request->get('hash_code') : '#';
         /*Have to get lastTimetableId to get day Status*/

@@ -311,53 +311,36 @@
 
 				async addJob()
 				{
-					if (this.isDefaultSavedTaskSelected) {
+					try {
+
+						if (this.isDefaultSavedTaskSelected) {
 						this.isShowAddHashCodeDialog          = true;
 						//после успешного создание хешкода таска попадет сразу в план
 						this.addTaskToPlanWithoutConfirmation = true;
 						return;
-					}
-					
-					const response =
-						(
-							await
-								axios.
-								post
-									(
-										'/addJob',
-										{
+						}
+
+
+						const requestData = {
 											hash_code : this.task.hashCode,
 											name : this.task.name,
 											type : this.task.type,
 											priority : this.task.priority,
 											time : this.task.time
-										}
-									)
-						).data
-					if (response.status == 'success')
-					{
-						this.$root.currComponentProps.plan.push
-							(
-								{
-									hash : this.task.hashCode,
-									taskName : this.task.name,
-									priority : this.task.priority,
-									type : this.task.type,
-									time : this.task.time,
-									details : '',
-									notes : '',
-									mark : '',
-									taskId : response.taskId
-								}
-							)
-						this.$root.$forceUpdate()
-						this.toggle()
-						setTimeout(function (){
-							location.reload()
-						}, 3000);
+										};
+					
+						const response = ( await axios.post('/addJob', requestData)).data
+						console.log(response);
+						if (response.status == 'success') {
+						
+						}
+						this.$emit('setAlertData',response.status,response.message)
+						this.$emit('toggleAlertDialog')
+					} catch(error) {
+						this.$emit('setAlertData','error','error!');
+						this.$emit('toggleAlertDialog')
 					}
-					this.$emit('setAlertData',response.status,response.message)
-					this.$emit('toggleAlertDialog')
+					
 				},
 				toggle()
 				{
