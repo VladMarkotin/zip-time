@@ -328,7 +328,8 @@
 						if (this.isLoading) {
 							return;
 						}
-
+						this.isLoading = true;
+						
 						const requestData = {
 											hash_code : this.task.hashCode,
 											name : this.task.name,
@@ -337,7 +338,6 @@
 											time : this.task.time
 										};
 					
-						this.isLoading = true;
 						const response = ( await axios.post('/addJob', requestData)).data;
 
 						if (response.status == 'success') {
