@@ -893,6 +893,7 @@ export default {
                      welcomeBlock.remove();
                   }
 
+
                   const checkDefaultTasks = () => {
                      const defaultTasks = this.defaultSelected.hashCodes.filter(hash => hash.match(/^#q-/))  
                      if (defaultTasks.length) return defaultTasks[0];
