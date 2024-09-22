@@ -38,8 +38,15 @@ export default {
         INITIALIZE_TASK_DATA_STORE(state, {taskData, dayStatus}) {
             const transfomedTaskData = transformTaskData(taskData);
 
-            state.dayStatus = dayStatus;
-            state.taskData = [...transfomedTaskData];
+            const isDefined = (arg) => arg !== undefined;
+
+            if (isDefined(dayStatus)) {
+                state.dayStatus = dayStatus;
+            }
+
+            if (isDefined(taskData)) {
+                state.taskData = [...transfomedTaskData];
+            }
         },
         UPDATE_TASK_DATA(state, {updatedTaskData}) {
             // ожидает {updatedTaskData: {

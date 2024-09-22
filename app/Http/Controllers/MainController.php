@@ -406,6 +406,10 @@ class MainController
             //It would be better if I make it like transaction
             Tasks::insert($dataForTasks);
             $response['taskId'] = DB::getPdo()->lastInsertId();
+
+            $response['updated_plan'] = json_decode($this->getCreatedPlanIfExists())->plan;
+
+            return $response;
         }
 
         return $response;

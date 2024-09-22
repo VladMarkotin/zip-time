@@ -143,6 +143,8 @@
 	</div>
 </template>
 <script>
+	import store from '../../store';
+	import { mapMutations } from "vuex/dist/vuex.common.js";
 	import AddHashCode from './AddHashCode.vue';
 	import AddHashCodeButton from '../UI/AddHashCodeButton.vue';
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
@@ -207,8 +209,10 @@
 							selectedSavedTaskId: null,
          				},
 						addTaskToPlanWithoutConfirmation: false,
+						isLoading: false,
 					}
 			},
+			store,
 			computed: {
 				tooltipPrioritiesData() {
 					return {
@@ -236,6 +240,7 @@
 			},
 			methods :
 			{
+				...mapMutations(['INITIALIZE_TASK_DATA_STORE',]),
 				clearCurrentHashCode(){
 					this.task = {
 						hashCode : '#',
@@ -311,53 +316,42 @@
 
 				async addJob()
 				{
-					if (this.isDefaultSavedTaskSelected) {
-						this.isShowAddHashCodeDialog          = true;
-						//после успешного создание хешкода таска попадет сразу в план
-						this.addTaskToPlanWithoutConfirmation = true;
-						return;
-					}
-					
-					const response =
-						(
-							await
-								axios.
-								post
-									(
-										'/addJob',
-										{
+					try {
+
+						if (this.isDefaultSavedTaskSelected) {
+							this.isShowAddHashCodeDialog          = true;
+							//после успешного создание хешкода таска попадет сразу в план
+							this.addTaskToPlanWithoutConfirmation = true;
+							return;
+						}
+
+						if (this.isLoading) {
+							return;
+						}
+						this.isLoading = true;
+						
+						const requestData = {
 											hash_code : this.task.hashCode,
 											name : this.task.name,
 											type : this.task.type,
 											priority : this.task.priority,
 											time : this.task.time
-										}
-									)
-						).data
-					if (response.status == 'success')
-					{
-						this.$root.currComponentProps.plan.push
-							(
-								{
-									hash : this.task.hashCode,
-									taskName : this.task.name,
-									priority : this.task.priority,
-									type : this.task.type,
-									time : this.task.time,
-									details : '',
-									notes : '',
-									mark : '',
-									taskId : response.taskId
-								}
-							)
-						this.$root.$forceUpdate()
-						this.toggle()
-						setTimeout(function (){
-							location.reload()
-						}, 3000);
+										};
+					
+						const response = ( await axios.post('/addJob', requestData)).data;
+
+						if (response.status == 'success') {
+							this.INITIALIZE_TASK_DATA_STORE({taskData: response.updated_plan});
+							this.clearCurrentHashCode();
+						}
+						
+						this.showAlert({status: response.status, text: response.message});
+					} catch(error) {
+						this.showAlert({status: 'error', text: 'Error! Something has happened!'});
+					} finally {
+						this.isLoading = false;
 					}
-					this.$emit('setAlertData',response.status,response.message)
-					this.$emit('toggleAlertDialog')
+					
 				},
 				toggle()
 				{
@@ -387,6 +381,11 @@
 				setTime(time) {
 					this.task = {...this.task, time};
 					this.compareWithTemplate();
+				},
+
+				showAlert({status, text}) {
+					this.$emit('setAlertData',status,text);
+					this.$emit('toggleAlertDialog');
 				}
 			},
 			async created()
