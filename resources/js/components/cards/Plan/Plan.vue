@@ -675,8 +675,9 @@ export default {
             }));
 
             const response = await axios.post('/add-preplan', {
-               plan: transformedPlan,
-               date: planData.date,
+               plan:       transformedPlan,
+               date:       planData.date,
+               day_status: planData.day_status
             });
 
             this.alertType = response.data.status;
@@ -798,13 +799,23 @@ export default {
             }
          },
 
-         changePlanDate() {
-            this.items = [];
-            this.day_status = 'Work Day';
+         async getPreplan() {
+            try {
+               const response = await axios.post('/get-preplan', {date: this.planDate});
+            } catch(error) {
+               console.error(error);
+            }
+         },
 
+         async changePlanDate() {
+            this.items = [];
+            
             if (this.isTodayPlan) {
-               return this.getTodayPlan();
+                this.getTodayPlan();
             } 
+            this.getPreplan();
+
+            //тут будет вызов метода дергающего препланы
          }
     },
     created() {

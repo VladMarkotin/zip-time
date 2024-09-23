@@ -129,6 +129,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Preplans
     Route::post('/add-preplan', [App\Http\Controllers\PreplanController::class, 'addPreplan'])->name('preplans.create');
+    Route::post('/get-preplan', [App\Http\Controllers\PreplanController::class, 'getPreplan'])->name('preplans.get');
 
 });
 Route::post('/get-default-configs', function (){
