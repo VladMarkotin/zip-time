@@ -335,6 +335,7 @@ import {
 import { uuid } from 'vue-uuid';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
+import details from '../../../store/modules/details';
 
 export default {
    components : {
@@ -658,7 +659,28 @@ export default {
 
         async createPreplan() {
          try {
-            axios.post('/add-preplan', this.getPostParams());
+
+            const planData = this.getPostParams();
+
+            const transformedPlan = planData.plan.map(data => ({
+               hash:    data.hash,
+               details: data.details,
+               notes: data.notes,
+               priority: data.priority,
+               taskName: data.taskName,
+               time: data.time,
+               type: data.type,
+               uniqKey: data.uniqKey,
+            }));
+
+            const response = await axios.post('/add-preplan', {
+               plan: transformedPlan,
+               date: planData.date,
+            });
+
+            this.alertType = response.data.status;
+            this.serverMessage = response.data.message;
+            this.showAlert = true;
          } catch(error) {
             console.error(error);
          }
