@@ -14,7 +14,8 @@
         color="#A10000"
         :value="value" 
         :min="todayDate"
-        @input="updateValue"
+        @input  = "updateValue"
+        @change = "$emit('changePlanDate')"
         ></v-date-picker>
       </div>
     </v-menu>

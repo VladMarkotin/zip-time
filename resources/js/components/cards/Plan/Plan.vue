@@ -23,6 +23,7 @@
                <PreplanDataPicker 
                v-model="planDate"
                :todayDate = "todayDate"
+               @changePlanDate = "changePlanDate"
                />
             </div>
             <div id="plan-day-status">
@@ -449,15 +450,6 @@ export default {
             console.error('Error processing tasks:', error); 
          });
       },
-         planDate() {
-            this.items = [];
-
-            if (this.isTodayPlan) {
-               return this.getTodayPlan();
-            } 
-
-            
-         }
       },
     computed : {
         ...mapGetters(['getWindowScreendWidth']),
@@ -804,6 +796,15 @@ export default {
             } finally {
                   this.showPreloaderInsteadTable = false;
             }
+         },
+
+         changePlanDate() {
+            this.items = [];
+            this.day_status = 'Work Day';
+
+            if (this.isTodayPlan) {
+               return this.getTodayPlan();
+            } 
          }
     },
     created() {
