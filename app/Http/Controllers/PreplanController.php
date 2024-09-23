@@ -56,11 +56,33 @@ class PreplanController extends Controller
     public function getPreplan(Request $request)
     {
         $date = $request->date;
+
+        $day_status_map = [
+            1 => 'Weekend',
+            2 => 'Work Day',
+        ];
+
+        $response = [
+            "transformed_day_status" => $day_status_map[2],
+            'tasks'                  => [],
+        ];
         
         if (isset($date)) {
             $user_id = Auth::id();
 
-            dd($user_id);
+            $preplanData = $this->preplan::where('user_id', $user_id)->where('date', $date)->get()->toArray();
+
+            if (count($preplanData)) {
+                
+                $day_status = $preplanData[0]['day_status'];
+                $transformed_day_status = $day_status_map[$day_status];
+                
+                $response['tasks'] = json_decode($preplanData[0]['jsoned_tasks']);
+                $response["transformed_day_status"] = $transformed_day_status;
+                
+            }
         }
+
+        return $response;
     }
 }

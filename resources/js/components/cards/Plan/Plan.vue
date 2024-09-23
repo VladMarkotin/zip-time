@@ -802,6 +802,11 @@ export default {
          async getPreplan() {
             try {
                const response = await axios.post('/get-preplan', {date: this.planDate});
+               
+               if (response.status === 200) {
+                  this.items = [...response.data.tasks];
+                  this.day_status = response.data.transformed_day_status;
+               }
             } catch(error) {
                console.error(error);
             }
@@ -809,13 +814,18 @@ export default {
 
          async changePlanDate() {
             this.items = [];
-            
-            if (this.isTodayPlan) {
-                this.getTodayPlan();
-            } 
-            this.getPreplan();
+            this.showPreloaderInsteadTable = true;
 
-            //тут будет вызов метода дергающего препланы
+            const promises = [];
+
+            if (this.isTodayPlan) {
+               promises.push(this.getTodayPlan());
+            }
+            promises.push(this.getPreplan());
+
+            await Promise.all(promises);
+            
+            this.showPreloaderInsteadTable = false;
          }
     },
     created() {
