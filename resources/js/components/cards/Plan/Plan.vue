@@ -382,6 +382,7 @@ export default {
             disable:false,
             }
          ],
+         preparedTask: {},
          serverMessage: '',
          showAlert: false,
          alertType: 'success',
@@ -760,7 +761,7 @@ export default {
                for(let i = 0; i < response.data.length; i++){
                   const currentIterableTask = response.data[i];
                   if (Object.keys(currentIterableTask).length === 0) continue;
-
+                  
                   currentObj.preparedTask.hash = currentIterableTask.hash_code;
                   currentObj.preparedTask.taskName = currentIterableTask.task_name;
                   currentObj.preparedTask.type = currentIterableTask.type;
@@ -769,6 +770,7 @@ export default {
                   currentObj.preparedTask.details = currentIterableTask.details;
                   currentObj.preparedTask.notes = currentIterableTask.note;
                   currentObj.preparedTask.uniqKey = currentObj.generateUniqKey();
+                 
                   
                   
                   currentObj.items.push(currentObj.preparedTask);
