@@ -47,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications',      [App\Http\Controllers\NotificationController::class, 'notificationsHistory']);
                       
     Route::post('/addPlan', [App\Http\Controllers\MainController::class, 'addPlan'] );
-    Route::post('/createPreplan', [App\Http\Controllers\MainController::class, 'createPreplan'] );
     Route::post('/addHashCode', [App\Http\Controllers\MainController::class, 'addHashCode']);//
     Route::post('/getSavedTasks', [App\Http\Controllers\MainController::class, 'getSavedTasks']);
     Route::post('/getDefaultSavedTasks', [App\Http\Controllers\MainController::class, 'getDefaultSavedTasks']);
@@ -127,6 +126,9 @@ Route::middleware(['auth'])->group(function () {
 
     //Update comment
     Route::post('edit-comment', [App\Http\Controllers\EstimationController::class, 'saveComment']);
+
+    //Preplans
+    Route::post('/add-preplan', [App\Http\Controllers\PreplanController::class, 'addPreplan'])->name('preplans.create');
 
 });
 Route::post('/get-default-configs', function (){

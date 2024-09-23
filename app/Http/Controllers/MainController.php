@@ -263,14 +263,6 @@ class MainController
         return $savedTask;//
     }
 
-    public function createPreplan(Request $request) 
-    {
-        $data = $request->json()->all();
-        dd($data);
-        dd(json_encode($data["plan"]));
-    }
-
-
     public function addPlan(Request $request)
     {
         $data = $request->json()->all();

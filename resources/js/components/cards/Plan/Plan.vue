@@ -658,7 +658,7 @@ export default {
 
         async createPreplan() {
          try {
-            axios.post('/createPreplan', this.getPostParams());
+            axios.post('/add-preplan', this.getPostParams());
          } catch(error) {
             console.error(error);
          }
