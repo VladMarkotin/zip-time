@@ -20,7 +20,10 @@
       <v-container>
          <div style="display: flex; justify-content: space-between;">
             <div>
-               <PreplanDataPicker />
+               <PreplanDataPicker 
+               v-model="planDate"
+               :todayDate = "todayDate"
+               />
             </div>
             <div id="plan-day-status">
                <v-select
@@ -347,6 +350,8 @@ export default {
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
+         planDate: new Date().getTodayFormatedDate(),
+         todayDate: new Date().getTodayFormatedDate(),
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          newHashCode: '#',
          showIcon: 0,

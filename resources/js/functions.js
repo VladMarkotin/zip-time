@@ -27,3 +27,8 @@ Date.prototype.getCurrentDate =
 
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 	}
+Date.prototype.getTodayFormatedDate = 
+	function()
+	{
+		return this.getCurrentDate().slice(0,10);
+	}
