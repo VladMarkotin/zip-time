@@ -449,6 +449,15 @@ export default {
             console.error('Error processing tasks:', error); 
          });
       },
+         planDate() {
+            this.items = [];
+
+            if (this.isTodayPlan) {
+               return this.getTodayPlan();
+            } 
+
+            
+         }
       },
     computed : {
         ...mapGetters(['getWindowScreendWidth']),
@@ -765,7 +774,37 @@ export default {
 
       setTaskType(value) {
          console.log(value);
-      }
+      },
+
+      async getTodayPlan() {
+         this.showPreloaderInsteadTable = true;
+
+            try {
+                  const response = await axios.post('/getPreparedPlan');
+                  if (response) {
+                     for (let i = 0; i < response.data.length; i++) {
+                        const currentIterableTask = response.data[i];
+                        if (Object.keys(currentIterableTask).length === 0) continue;
+
+                        this.preparedTask.hash = currentIterableTask.hash_code;
+                        this.preparedTask.taskName = currentIterableTask.task_name;
+                        this.preparedTask.type = currentIterableTask.type;
+                        this.preparedTask.priority = String(currentIterableTask.priority);
+                        this.preparedTask.time = currentIterableTask.time;
+                        this.preparedTask.details = currentIterableTask.details;
+                        this.preparedTask.notes = currentIterableTask.note;
+                        this.preparedTask.uniqKey = this.generateUniqKey();
+
+                        this.items.push(this.preparedTask);
+                        this.preparedTask = {};
+                     }
+                  }
+            } catch (error) {
+                  this.output = error;
+            } finally {
+                  this.showPreloaderInsteadTable = false;
+            }
+         }
     },
     created() {
         let currentObj = this;
@@ -806,35 +845,7 @@ export default {
             currentObj.output = error;
          });
 
-         axios.post('/getPreparedPlan')
-         .then(function(response) {
-            if(response){
-               for(let i = 0; i < response.data.length; i++){
-                  const currentIterableTask = response.data[i];
-                  if (Object.keys(currentIterableTask).length === 0) continue;
-                  
-                  currentObj.preparedTask.hash = currentIterableTask.hash_code;
-                  currentObj.preparedTask.taskName = currentIterableTask.task_name;
-                  currentObj.preparedTask.type = currentIterableTask.type;
-                  currentObj.preparedTask.priority = String(currentIterableTask.priority);
-                  currentObj.preparedTask.time = currentIterableTask.time;
-                  currentObj.preparedTask.details = currentIterableTask.details;
-                  currentObj.preparedTask.notes = currentIterableTask.note;
-                  currentObj.preparedTask.uniqKey = currentObj.generateUniqKey();
-                 
-                  
-                  
-                  currentObj.items.push(currentObj.preparedTask);
-                  currentObj.preparedTask = {};
-               }
-            }
-         })
-         .catch(function(error) {
-            currentObj.output = error;
-         })
-         .finally(() => {
-            currentObj.showPreloaderInsteadTable = false;
-         });
+         this.getTodayPlan();
     },
 
     async mounted() {
