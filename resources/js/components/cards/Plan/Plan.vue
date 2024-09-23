@@ -222,7 +222,7 @@
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
                         id="plan-creating" 
-                        v-on:click="formSubmit()" 
+                        v-on:click="formSubmit" 
                         v-bind="attrs"
                         v-on="on"
                         color="#D71700" 
@@ -488,6 +488,10 @@ export default {
             return !!this.defaultSelected.hash.match(/^#q-/);
          },
 
+         isTodayPlan() {
+            return this.planDate === this.todayDate;
+         },
+
     },
     methods: {
       ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -501,7 +505,7 @@ export default {
        
         getPostParams() {
             return {
-               date: new Date().toISOString().substr(0, 10),
+               date: this.planDate,
                day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
                plan: this.items,
             }; 
@@ -652,7 +656,19 @@ export default {
             this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success'});
         },
 
+        async createPreplan() {
+         try {
+            axios.post('/createPreplan', this.getPostParams());
+         } catch(error) {
+            console.error(error);
+         }
+        },
+
         formSubmit(e) {
+            if (!this.isTodayPlan) {
+               return this.createPreplan();
+            }
+
             let currentObj = this;
             axios.post('/addPlan', currentObj.getPostParams())
             .then(function(response) { 
