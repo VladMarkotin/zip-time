@@ -389,6 +389,7 @@ export default {
          isShowAddHashCodeDialog: false,
          isShowProgress: false,
          value: 0,
+         interval: {},
          closeAlertTime: 0,
          showPreloaderInsteadTable: false,
          isShowPressEntTooltip: false,
