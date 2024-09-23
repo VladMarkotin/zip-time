@@ -375,7 +375,6 @@
 
 						this.isChangedHashCodeTemplate = !(convertToJSON(currentTask) === convertToJSON(this.savedTaskTemplate));
 					}
-
 				},
 
 				setTime(time) {
