@@ -18,16 +18,21 @@
       />
       <v-card-title style="background-color: #A10000;color: white;" >Create your day plan!</v-card-title>
       <v-container>
-         <div id="plan-day-status">
-            <v-select
-               :items="dayStatuses2"
-               label="Day status"
-               v-model="day_status"
-               @change="isWeekendAvailable"
-               item-disabled="disable"
-               item-text="status"
-               required
-               ></v-select>
+         <div style="display: flex; justify-content: space-between;">
+            <div>
+               <PreplanDataPicker />
+            </div>
+            <div id="plan-day-status">
+               <v-select
+                  :items="dayStatuses2"
+                  label="Day status"
+                  v-model="day_status"
+                  @change="isWeekendAvailable"
+                  item-disabled="disable"
+                  item-text="status"
+                  required
+                  ></v-select>
+            </div>
          </div>
          <div style="min-height: 24px;">
             <transition name="tasks-counter">
@@ -300,6 +305,7 @@
 </template>
 <script>
 import store from '../../../store';
+import PreplanDataPicker from '../../UI/PreplanDataPicker.vue';
 import { mapMutations, mapGetters } from 'vuex/dist/vuex.common.js';
 import AddHashCode from '../../dialogs/AddHashCode.vue';
 import AddHashCodeButton from '../../UI/AddHashCodeButton.vue';
@@ -337,6 +343,7 @@ export default {
       VSelectTooptip, 
       CustomTimepicker,
       SelectTaskType,
+      PreplanDataPicker,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
