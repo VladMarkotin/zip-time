@@ -4,8 +4,8 @@
       <template #activator="{ props }">
         <v-btn 
         v-bind="props" 
-        color="primary"
         @click="menu = true"
+        style="background-color: rgb(161, 0, 0); color: white"
         >Set date</v-btn>
       </template>
       
@@ -47,8 +47,10 @@ export default {
     computed: {
         displayDate() {
             const formatedDate = this.formatDate(this.value);
+            
+            const dayOfWeek = new Date(formatedDate).toLocaleString('en-US', { weekday: 'long' });
 
-            return formatedDate === this.todayDate ? 'Today' : formatedDate;
+            return formatedDate === this.todayDate ? 'Today' : `${formatedDate} ${dayOfWeek}`;
         },
     },
     methods: {
