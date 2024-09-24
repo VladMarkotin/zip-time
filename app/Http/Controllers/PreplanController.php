@@ -18,7 +18,7 @@ class PreplanController extends Controller
     public function addPreplan(Request $request)
     {
         $data = $request->json()->all();
-        // dd($data["day_status"]);
+
         $preplanDate = $data["date"];
         $updatedData = [
             "user_id"      => null, 
@@ -33,8 +33,9 @@ class PreplanController extends Controller
         $updatedData["day_status"] = $data["day_status"];
 
         $allSet = true;
+        $areAnyTasks = count($data["plan"]);
 
-        foreach ($updatedData as $value) {
+        foreach ([$updatedData["date"], $updatedData["user_id"], $updatedData["day_status"]] as $value) {
             if (!isset($value)) {
                 $allSet = false;
                 break; 
@@ -42,18 +43,30 @@ class PreplanController extends Controller
         }
 
         if ($allSet) {
-            $this->preplan::updateOrCreate(
-                ["user_id" => $updatedData["user_id"], 'date' => $updatedData["date"]],
-                $updatedData
-            );
+            if ($areAnyTasks) {
+                $this->preplan::updateOrCreate(
+                    ["user_id" => $updatedData["user_id"], 'date' => $updatedData["date"]],
+                    $updatedData
+                );
+    
+                return response()->json(["status" => 'success', "message" => "The preplan for $preplanDate was successfully created"]);
+            }
 
-            return response()->json(["status" => 'success', "message" => "The preplan for $preplanDate was successfully created"]);
+            $preplan = $this->getPreplan(["user_id" => $updatedData["user_id"], "date" => $updatedData["date"]]);
+            
+            if (count($preplan)) {
+                $preplan_id = $preplan["id"];
+                
+                $this->preplan::destroy($preplan_id);
+
+                return response()->json(["status" => 'success', "message" => "The preplan for $preplanDate was successfully deleted"]);
+            }
         }
 
         return response()->json(["status" => "error", "message" => "Error! Failed to create the preplan"]);
     }
 
-    public function getPreplan(Request $request)
+    public function getPreplanData(Request $request)
     {
         $date = $request->date;
 
@@ -70,19 +83,27 @@ class PreplanController extends Controller
         if (isset($date)) {
             $user_id = Auth::id();
 
-            $preplanData = $this->preplan::where('user_id', $user_id)->where('date', $date)->get()->toArray();
+            // $preplanData = $this->preplan::where('user_id', $user_id)->where('date', $date)->get()->toArray();
+            $preplanData = $this->getPreplan(["user_id" => $user_id, 'date' => $date]);
 
             if (count($preplanData)) {
                 
-                $day_status = $preplanData[0]['day_status'];
+                $day_status = $preplanData['day_status'];
                 $transformed_day_status = $day_status_map[$day_status];
                 
-                $response['tasks'] = json_decode($preplanData[0]['jsoned_tasks']);
+                $response['tasks'] = json_decode($preplanData['jsoned_tasks']);
                 $response["transformed_day_status"] = $transformed_day_status;
                 
             }
         }
 
         return $response;
+    }
+
+    private function getPreplan(array $data)
+    {
+        $preplan = $this->preplan::where('user_id', $data["user_id"])->where('date', $data["date"])->get()->toArray();
+
+        return count($preplan) ? $preplan[0] : [];
     }
 }

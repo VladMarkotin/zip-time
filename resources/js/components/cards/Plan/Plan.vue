@@ -217,7 +217,7 @@
                <div 
                style="position: relative;"
                class=" d-flex justify-space-between" 
-               v-if="items.length > 0"
+               v-if="!isTodayPlan || items.length > 0"
                >
                <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
@@ -867,7 +867,7 @@ export default {
          });
 
          currentObj.showPreloaderInsteadTable = true;
-         
+
          Promise.all([this.getTodayPlan(), this.getPreplan()])
          .then(() => {
             currentObj.showPreloaderInsteadTable = false;
