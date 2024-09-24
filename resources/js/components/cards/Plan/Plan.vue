@@ -804,7 +804,7 @@ export default {
                const response = await axios.post('/get-preplan', {date: this.planDate});
                
                if (response.status === 200) {
-                  this.items = [...response.data.tasks];
+                  this.items = [...response.data.tasks, ...this.items];
                   this.day_status = response.data.transformed_day_status;
                }
             } catch(error) {
@@ -830,7 +830,6 @@ export default {
     },
     created() {
         let currentObj = this;
-        currentObj.showPreloaderInsteadTable = true;
 
         axios.post('/getSavedTasks')
             .then(function(response) {
@@ -867,7 +866,13 @@ export default {
             currentObj.output = error;
          });
 
-         this.getTodayPlan();
+         currentObj.showPreloaderInsteadTable = true;
+         
+         Promise.all([this.getTodayPlan(), this.getPreplan()])
+         .then(() => {
+            currentObj.showPreloaderInsteadTable = false;
+         });
+         ;
     },
 
     async mounted() {
