@@ -1,5 +1,4 @@
 <div>
-
     @include('livewire.modals')
 
     <div class="col-md-7 mx-auto rounded ">
@@ -32,7 +31,16 @@
                         </div>
 
                     </h4>
-
+                    @php
+                        $notifiactionSetting = [
+                            "areNotifiactionsActive"   => false,
+                            "extraNotifiactionsAmount" => 2
+                        ];
+                    @endphp
+                    <notification-settings 
+                      :are-notifiactions-active   = "{{ json_encode($notifiactionSetting["areNotifiactionsActive"]) }}"
+                      :extra-notifiactions-amount = "{{ json_encode($notifiactionSetting["extraNotifiactionsAmount"]) }}"
+                    />
                 </div>
 
                 <div wire:ignore.self class="collapse" id="collapseExample">
