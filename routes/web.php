@@ -95,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
 //settings
     Route::get('/settings',  [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
     Route::get('/settings/{setting}', [App\Http\Controllers\SettingsController::class, 'index']);
+    Route::post('/settings-save-notify', [App\Http\Controllers\SettingsController::class, 'saveNotificationsConfigs']);
     //Backlog
     Route::get('backlog', [App\Http\Controllers\BackLogController::class, 'index'])->name('backlog');
 

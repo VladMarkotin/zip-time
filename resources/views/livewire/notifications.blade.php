@@ -31,17 +31,6 @@
                         </div>
 
                     </h4>
-                    @php
-                        //ожидаю с бэка массив notifiactionSettings с соответствующими ключами. После эту переменную удалить
-                        $notifiactionSettings = [
-                            "areNotifiactionsEnabled"      => false,
-                            "notificationsCount"           => 2
-                        ];
-                    @endphp
-                    <notification-settings 
-                      :are-notifiactions-enabled   = "{{ json_encode($notifiactionSettings["areNotifiactionsEnabled"]) }}"
-                      :notifications-count = "{{ json_encode($notifiactionSettings["notificationsCount"]) }}"
-                    />
                 </div>
 
                 <div wire:ignore.self class="collapse" id="collapseExample">

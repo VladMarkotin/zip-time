@@ -25,7 +25,7 @@
                 class="p-0 m-0"
                 >   
                     <v-col class="p-0 m-0 d-flex justify-content-center align-items-center">
-                        <span class="label">Extra notifiactions amount</span>
+                        <span class="label">Number of additional notifications per day</span>
                     </v-col>
                     <v-col class="p-0 m-0 d-flex justify-content-center">
                         <v-slider
@@ -81,14 +81,13 @@ import { debounce } from 'lodash';
             debounceSendSettings() {
                 this.debouncedSendSettings(async() => {
                     try {
-                        const url = ''; //тут указать куда запрос отправляется
+                        const url = 'settings-save-notify'; //тут указать куда запрос отправляется
                         const params = {
                             areNotifiactionsActive:       this.areNotifiactionsActive,
                             additionalNotificationsCount: this.additionalNotificationsCount,
                         }; 
-                        console.log(params);
 
-                        // const response = await axios.post(url, params); 
+                        const response = await axios.post(url, params); 
 
                     } catch(error) {
                         console.error(error);
