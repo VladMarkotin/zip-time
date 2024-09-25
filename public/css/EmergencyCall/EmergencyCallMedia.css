@@ -1,1 +1,10 @@
-@media screen and (max-width:424px){.emergencyCall_emergencyCall-dialog{margin:0!important}.emergencyCall_emergencyCall-footer{padding-bottom:35px!important;padding-top:35px!important}}
+@media screen and (max-width: 424px) {
+  .emergencyCall_emergencyCall-dialog {
+    margin: 0 !important;
+  }
+
+  .emergencyCall_emergencyCall-footer {
+    padding-top: 35px !important;
+    padding-bottom: 35px !important;
+  }
+}
