@@ -28,4 +28,10 @@ class SettingsController extends Controller
         ]);
 
     }
+
+    public function saveNotificationsConfigs(Request $request)
+    {
+        var_dump($request->all());
+        die;
+    }
 }

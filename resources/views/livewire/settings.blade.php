@@ -37,6 +37,18 @@
                         <x-week-ends :personal="$config['personalConfigs']" :default="$config['defaultConfigs']" :isWeekendTaken="$config['isWeekendTaken']"/>
                        
                         <x-daily-plan :personal="$config['personalConfigs']" :default="$config['defaultConfigs']" :isDayPlanCompleted="$config['isDayPlanCompleted']"/>
+                        @php
+                        //ожидаю с бэка массив notifiactionSettings с соответствующими ключами. После эту переменную удалить
+                        $notifiactionSettings = [
+                            "areNotifiactionsEnabled"      => false,
+                            "notificationsCount"           => 2
+                        ];
+                        @endphp
+                        <notification-settings 
+                        :are-notifiactions-enabled   = "{{ json_encode($notifiactionSettings["areNotifiactionsEnabled"]) }}"
+                        :notifications-count = "{{ json_encode($notifiactionSettings["notificationsCount"]) }}"
+                        />
+                   
                     </div>
     
                 </div>

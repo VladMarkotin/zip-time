@@ -1,5 +1,4 @@
 <div>
-
     @include('livewire.modals')
 
     <div class="col-md-7 mx-auto rounded ">
@@ -32,7 +31,6 @@
                         </div>
 
                     </h4>
-
                 </div>
 
                 <div wire:ignore.self class="collapse" id="collapseExample">

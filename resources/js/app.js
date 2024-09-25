@@ -25,6 +25,7 @@ Vue.component('TermsOfUse', require('./termsOfUsePage/TermsOfUse.vue').default);
 Vue.component('DataDeletionPolicy', require('./dataDeletionPolicyPage/DataDeletionPolicy.vue').default);
 Vue.component('ReadyDayPlan', require('./components/ReadyDayPlan.vue').default);
 Vue.component('PersonalResults', require('./components/dialogs/PersonalResults.vue').default);
+Vue.component('NotificationSettings', require('./components/UI/NotificationSettings.vue').default);
 
 const app =
 	new Vue
