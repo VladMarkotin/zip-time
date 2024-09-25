@@ -32,14 +32,15 @@
 
                     </h4>
                     @php
-                        $notifiactionSetting = [
-                            "areNotifiactionsActive"   => false,
-                            "extraNotifiactionsAmount" => 2
+                        //ожидаю с бэка массив notifiactionSettings с соответствующими ключами. После эту переменную удалить
+                        $notifiactionSettings = [
+                            "areNotifiactionsEnabled"      => false,
+                            "notificationsCount"           => 2
                         ];
                     @endphp
                     <notification-settings 
-                      :are-notifiactions-active   = "{{ json_encode($notifiactionSetting["areNotifiactionsActive"]) }}"
-                      :extra-notifiactions-amount = "{{ json_encode($notifiactionSetting["extraNotifiactionsAmount"]) }}"
+                      :are-notifiactions-enabled   = "{{ json_encode($notifiactionSettings["areNotifiactionsEnabled"]) }}"
+                      :notifications-count = "{{ json_encode($notifiactionSettings["notificationsCount"]) }}"
                     />
                 </div>
 

@@ -12,11 +12,12 @@
                     </v-col>
                     <v-col class="p-0 m-0 d-flex justify-content-center">
                         <v-switch
-                        v-model="model"
+                        v-model="areNotifiactionsActive"
                         color="red darken-3"
                         dense
                         class="mt-0 cursor-pointer"
                         hide-details
+                        @change="debounceSendSettings"
                         ></v-switch>
                 </v-col>
                 </v-row>
@@ -28,8 +29,8 @@
                     </v-col>
                     <v-col class="p-0 m-0 d-flex justify-content-center">
                         <v-slider
-                        v-model="fruits"
-                        :tick-labels="ticksLabels"
+                        v-model="additionalNotificationsCount"
+                        :tick-labels="additionalNotificationsLabels"
                         track-color="grey"
                         color="red darken-3"
                         min       = "2"
@@ -38,6 +39,7 @@
                         ticks     ="always"
                         tick-size ="2"
                         hide-details
+                        @change="debounceSendSettings"
                     ></v-slider>
                     </v-col>
                 </v-row>
@@ -47,29 +49,53 @@
 </template>
 
 <script>
+import { debounce } from 'lodash';
     export default {
         props: {
-            areNotifiactionsActive: {
+            areNotifiactionsEnabled: {
                 type: Boolean,
                 required: true,
             },
 
-            extraNotifiactionsAmount: {
+            notificationsCount: {
                 type: Number,
                 required: true
             }
         },
         data () {
-        return {
-            model: this.areNotifiactionsActive,
-            value: 0,
-            fruits: 2,
-                ticksLabels: [
-                '2',
-                '3',
-                ],
+            return {
+                areNotifiactionsActive: this.areNotifiactionsEnabled,
+                additionalNotificationsCount: this.notificationsCount,
+                additionalNotificationsLabels: ['2','3'],
+                DEBOUNCER_DELAY: 700, //тут менять после скольки мс после клика пойдет запрос
+                }
+        },
+        computed: {
+            debouncedSendSettings() {
+                return debounce(function(callback) {
+                    callback();
+                }, this.DEBOUNCER_DELAY)
             }
         },
+        methods: {
+            debounceSendSettings() {
+                this.debouncedSendSettings(async() => {
+                    try {
+                        const url = ''; //тут указать куда запрос отправляется
+                        const params = {
+                            areNotifiactionsActive:       this.areNotifiactionsActive,
+                            additionalNotificationsCount: this.additionalNotificationsCount,
+                        }; 
+                        console.log(params);
+
+                        // const response = await axios.post(url, params); 
+
+                    } catch(error) {
+                        console.error(error);
+                    }
+                });
+            }
+        }
     }
 </script>
 
