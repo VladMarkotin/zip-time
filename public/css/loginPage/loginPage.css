@@ -1,1 +1,142 @@
-body,h1,h2,h3,h4,li,ol[class],p,ul[class]{margin:0}body{line-height:1.5;min-height:100vh;scroll-behavior:smooth;text-rendering:optimizeSpeed}button,input,select,textarea{font:inherit}ol,ul{list-style:none}.white-background{background-color:#fff}.inner-block,.login-page-container{min-height:inherit}.inner-block{align-items:center;display:flex;flex-direction:column;font-family:Roboto,sans-serif;justify-content:center;margin:0 auto;max-width:1170px;padding:0 50px}.inner-block .login-section{grid-column-gap:10px;border-radius:25px;box-shadow:0 1px 4px rgba(0,0,0,.04),0 2px 18px rgba(0,0,0,.08);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;max-width:800px;min-height:450px;padding:35px}.login-icons-wrapper{display:flex;justify-content:space-between}.login-info{color:#000;grid-column:1/2;text-align:center}.login-info .title-login-page{font-size:44px;font-weight:600;margin:45px 0}.login-info .subtitle-login-page{font-size:30px;font-weight:900;line-height:38px;margin-bottom:65px}.login-links-wrapper{align-items:flex-end;display:flex;flex-direction:column;grid-column:2/3;grid-row:1/4}.facebook-link-wrapper,.login-links-wrapper .login-links-inner-block{display:flex;flex-direction:column;height:100%}.facebook-link-wrapper{gap:15px;justify-content:center}.privacy-policy-wrapper{display:flex;justify-content:center;min-height:50px}.privacy-policy-wrapper .privacy-policy-text-wrapper{align-items:center;display:flex;flex-direction:column}.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text{color:#7d7f7d;font-family:Inter,sans-serif;font-size:14px;font-weight:400;line-height:17px;margin-bottom:0}.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link{color:inherit;color:#8a9597;position:relative;text-decoration:none}.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:after{background-color:#8a9597;content:"";display:block;height:1.5px;left:0;position:absolute;transition:width .3s ease-out;width:0}.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:focus:after,.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:hover:after{width:100%}
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+.white-background {
+  background-color: #fff;
+}
+
+.login-page-container {
+  min-height: inherit;
+}
+
+.inner-block {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1170px;
+  margin: 0 auto;
+  min-height: inherit;
+  padding: 0 50px;
+}
+.inner-block .login-section {
+  max-width: 800px;
+  min-height: 450px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-column-gap: 10px;
+  padding: 35px;
+  border-radius: 25px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 2px 18px rgba(0, 0, 0, 0.08);
+}
+
+.login-icons-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-info {
+  color: #000000;
+  text-align: center;
+  grid-column: 1/2;
+}
+.login-info .title-login-page {
+  margin: 45px 0;
+  font-weight: 600;
+  font-size: 44px;
+}
+.login-info .subtitle-login-page {
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 38px;
+  margin-bottom: 65px;
+}
+
+.login-links-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  grid-row: 1/4;
+  grid-column: 2/3;
+}
+.login-links-wrapper .login-links-inner-block {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.facebook-link-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  height: 100%;
+}
+
+.privacy-policy-wrapper {
+  display: flex;
+  justify-content: center;
+  min-height: 50px;
+}
+.privacy-policy-wrapper .privacy-policy-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text {
+  margin-bottom: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #7d7f7d;
+}
+.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link {
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  color: #8a9597;
+}
+.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: #8a9597;
+  transition: width 0.3s ease-out;
+}
+.privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:hover::after, .privacy-policy-wrapper .privacy-policy-text-wrapper .privacy-policy-text .privacy-policy-link:focus::after {
+  width: 100%;
+}

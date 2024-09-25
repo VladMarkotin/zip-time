@@ -4,8 +4,3 @@
     flex: 0 0 100%;
   }
 }
-@media screen and (max-width: 424px) {
-  .closeDay-closeDay-dialog {
-    margin: 0 !important;
-  }
-}

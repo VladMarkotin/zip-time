@@ -1,22 +1,21 @@
 <template>
    <v-card id="plan-wrapper">
-      <template v-if="isShowAddHashCodeDialog">    
-         <AddHashCode
-         :width                = "450"
-         :hashCodeVal          = "newHashCode"
-         :isShowDialog         = "isShowAddHashCodeDialog"
-         :taskName             = "defaultSelected.taskName"
-         :time                 = "defaultSelected.time"
-         :type                 = "defaultSelected.type"
-         :priority             = "defaultSelected.priority"
-         :details              = "defaultSelected.details"
-         :notes                = "defaultSelected.notes"
-         :defaultSavedTaskData = "defaultSavedTaskData"
-         @close          = "closeHashCodeDialog"
-         @changeHashCode = "changeHashCode"
-         @addHashCode    = "addHashCode"
-         />
-      </template>
+      <AddHashCode
+      v-if="isShowAddHashCodeDialog"
+      :width                = "450"
+      :hashCodeVal          = "newHashCode"
+      :isShowDialog         = "isShowAddHashCodeDialog"
+      :taskName             = "defaultSelected.taskName"
+      :time                 = "defaultSelected.time"
+      :type                 = "defaultSelected.type"
+      :priority             = "defaultSelected.priority"
+      :details              = "defaultSelected.details"
+      :notes                = "defaultSelected.notes"
+      :defaultSavedTaskData = "defaultSavedTaskData"
+      @close          = "closeHashCodeDialog"
+      @changeHashCode = "changeHashCode"
+      @addHashCode    = "addHashCode"
+      />
       <v-card-title style="background-color: #A10000;color: white;" >Create your day plan!</v-card-title>
       <v-container>
          <div id="plan-day-status">
@@ -113,21 +112,11 @@
                <v-col md="2"
                class="plan_taskType-input-wrapper"
                >
-                  <v-select
-                     :label="placeholders[1]"
-                     required
-                     :items="taskTypes"
-                     v-model="defaultSelected.type"
-                     >
-                     <template v-slot:item="{item}" >
-                           <v-list-item >{{ item }}</v-list-item>
-                           <!-- open-on-hover -->
-                           <VSelectTooptip 
-                           :item="item"
-                           :tooltipData = "tooltipTypesData"
-                           />
-                     </template>
-                  </v-select>
+                  <SelectTaskType 
+                  :label="placeholders[1]"
+                  :taskTypes="taskTypes"
+                  v-model="defaultSelected.type"
+                  />
                </v-col>
                <v-col 
                md="1"
@@ -303,9 +292,9 @@
          </v-col>
          </v-row>
          
-         <template v-if="isShowEmergencyCallDialog">
-	         <EmergencyCall  v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
-         </template>
+	      <EmergencyCall  
+         v-if="isShowEmergencyCallDialog"
+         v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
       </v-container>
    </v-card>
 </template>
@@ -320,6 +309,7 @@ import EmergencyCall from '../../dialogs/EmergencyMode/EmergencyCall.vue';
 import PreplanTasksTable from './PreplanTasksTable.vue';
 import VSelectTooptip from '../../UI/VSelectTooptip.vue';
 import CustomTimepicker from '../../UI/CustomTimepicker.vue';
+import SelectTaskType from '../../UI/SelectTaskType.vue';
 import {
     mdiAccount,
     mdiPlex,
@@ -338,12 +328,19 @@ import { uuid } from 'vue-uuid';
 import createWatcherForDefSavTaskMixin from '../../../mixins';
 
 export default {
-   components : {EmergencyCall, AddHashCode, AddHashCodeButton, CleanHashCodeButton, PreplanTasksTable, VSelectTooptip, CustomTimepicker},
+   components : {
+      EmergencyCall, 
+      AddHashCode, 
+      AddHashCodeButton, 
+      CleanHashCodeButton, 
+      PreplanTasksTable, 
+      VSelectTooptip, 
+      CustomTimepicker,
+      SelectTaskType,
+   },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
-         showPlusIcon: 0,
-         readyTasks: [],
          newHashCode: '#',
          showIcon: 0,
          day_status: 'Work Day',
@@ -359,7 +356,6 @@ export default {
             details: '',
             notes: ''
          },
-         preparedTask: {},
          items: [],
          icons: {
             mdiAccount,
@@ -374,7 +370,6 @@ export default {
             mdiCarEmergency,
          },
          hashCodes: [],
-         hashNames: '#',
          taskPriority: ['1', '2', '3'],
          dayStatuses: ['Work Day', 'Weekend'],
          dayStatuses2: [
@@ -387,14 +382,11 @@ export default {
             disable:false,
             }
          ],
-         time: '',
-         notes: '',
-         details: '',
+         preparedTask: {},
          serverMessage: '',
          showAlert: false,
          alertType: 'success',
          isShowAddHashCodeDialog: false,
-         dialogDelete: false,
          isShowProgress: false,
          value: 0,
          interval: {},
@@ -456,23 +448,6 @@ export default {
                : ['required job', 'non required job', 'required task', 'task']
         },
 
-        tooltipTypesData() {
-            return {
-               titles: {
-                  requiredJob: 'required job',
-                  nonRequiredJob: 'non required job',
-                  requiredTask: 'required task',
-                  task: 'task',
-               },
-               descriptions: {
-                  requiredJob: `<span style="text-indent: -1em; padding-left: 1em;">Main entity of your plan. By adding a required job, you kind of sign a commitment with yourself that you will at least start doing it today. After finishing working on a job, you should evaluate the effort you spent.</span><br><span style="text-indent: -1em; padding-left: 1em;">By 23:59 all (!) required jobs should be evaluated</span>`,
-                  nonRequiredJob: `<span style="text-indent: -1em; padding-left: 1em;">Some of your day\`s jobs could be not so important but, anyway, you want to evaluate your efforts. So, non required jobs are exactly what you need. Failure to comply has no consequences. Moreover, to complete all non required jobs is a perfect way to increase your final day grade</span>`,
-                  requiredTask: `<span style="text-indent: -1em; padding-left: 1em;">We often have a plenty of small (but important) tasks (e.g “call to the boss”). It would be difficult to evaluate the result of such task, but, anyway, you have to do it.</span>`,
-                  task: `<span style="text-indent: -1em; padding-left: 1em;">Anything that\`s not so important and hard to evaluate but necessary personally for you ( e.g. “night out with friends” )</span>`,
-               },
-            }
-         },
-
          tooltipPrioritiesData() {
             return {
                titles: {
@@ -499,7 +474,8 @@ export default {
 
          isDefaultSavedTaskSelected() {
             return !!this.defaultSelected.hash.match(/^#q-/);
-         }
+         },
+
     },
     methods: {
       ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -638,17 +614,17 @@ export default {
 
          this.items.push({...this.defaultSelected, uniqKey: this.generateUniqKey()});
          this.showIcon = 0;
-         const self = this;
          this.defaultSelected = {
-                hashCodes: this.defaultSelected.hashCodes,
-                hash: '#',
-                taskName: '',
-                time: '01:00',
-                type: self.currentDayDefaultTaskType,
-                priority: '1',
-                details: '',
-                notes: ''
-            }
+               ...this.defaultSelected,
+               hashCodes: this.defaultSelected.hashCodes,
+               hash: '#',
+               taskName: '',
+               time: '01:00',
+               type: this.currentDayDefaultTaskType,
+               priority: '1',
+               details: '',
+               notes: ''
+         }
             // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
          this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success'});
@@ -736,6 +712,10 @@ export default {
       updateScreenWidth() {
          this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
       },
+
+      setTaskType(value) {
+         console.log(value);
+      }
     },
     created() {
         let currentObj = this;
@@ -782,7 +762,7 @@ export default {
                for(let i = 0; i < response.data.length; i++){
                   const currentIterableTask = response.data[i];
                   if (Object.keys(currentIterableTask).length === 0) continue;
-
+                  
                   currentObj.preparedTask.hash = currentIterableTask.hash_code;
                   currentObj.preparedTask.taskName = currentIterableTask.task_name;
                   currentObj.preparedTask.type = currentIterableTask.type;
@@ -791,6 +771,7 @@ export default {
                   currentObj.preparedTask.details = currentIterableTask.details;
                   currentObj.preparedTask.notes = currentIterableTask.note;
                   currentObj.preparedTask.uniqKey = currentObj.generateUniqKey();
+                 
                   
                   
                   currentObj.items.push(currentObj.preparedTask);
@@ -914,6 +895,7 @@ export default {
                   if (currentStepIndex !== 0 && welcomeBlock) {
                      welcomeBlock.remove();
                   }
+
 
                   const checkDefaultTasks = () => {
                      const defaultTasks = this.defaultSelected.hashCodes.filter(hash => hash.match(/^#q-/))  

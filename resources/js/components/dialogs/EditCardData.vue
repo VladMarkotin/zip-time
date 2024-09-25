@@ -12,6 +12,15 @@
         </template>
         <v-card class="pt-6 pb-6 editCardData_editCard-wrapper d-flex flex-column">
             <v-card-text class="pb-2 pt-2 editCardData-content">
+                <v-row class="p-0 m-0" v-if="!isTodayAWeekend">
+                    <h4 class="p-0" style="font-size: 1rem;">Edit task`s type:</h4>
+                    <SelectTaskType 
+                    label      = "Type" 
+                    v-model    = "selectedType"
+                    :taskTypes = "types"
+                    :solo      = "true"
+                    />
+                </v-row>
                 <v-row class="p-0 m-0">
                     <h4 class="p-0" style="font-size: 1rem;">Edit task`s priority:</h4>
                     <v-select
@@ -78,32 +87,38 @@
 import store from '../../store';
 import { mapGetters } from 'vuex/dist/vuex.common.js';
 import EditButton from '../UI/EditButton.vue';
+import SelectTaskType from '../UI/SelectTaskType.vue';
 import VSelectTooptip from '../UI/VSelectTooptip.vue';
     export default {
         props: {
-            currentTaskPriority: {
+            taskId: {
                 type: Number,
                 required: true,
-            },
-
-            currentTaskTime: {
-                type: String,
-                required: true
             },
         },
         data() {
             return {
                 isShowEditCardDataDialog: false,
-                selectedPriority: this.currentTaskPriority,
-                selectedTime: this.currentTaskTime,
+                selectedType: '', //присваивается в created
+                selectedPriority: '', //присваивается в created,
+                selectedTime: '', //присваивается в created,
                 priorities : [1,2,3],
                 timeFormat: 'ampm',
             }
         },
         store,
-        components: {EditButton, VSelectTooptip},
+        components: {EditButton, VSelectTooptip, SelectTaskType},
         computed: {
-            ...mapGetters(['getWindowScreendWidth']),
+            ...mapGetters(['getWindowScreendWidth', 'getDayStatus', 'getTaskData']),
+            currentTaskType() {
+                return this.getTaskData(this.taskId, 'transformedType');
+            },
+            currentTaskPriority() {
+                return this.getTaskData(this.taskId, 'priority');
+            },
+            currentTaskTime() {
+                return this.getTaskData(this.taskId, 'time');
+            },
             tooltipPrioritiesData() {
 				return {
 					titles: {
@@ -115,10 +130,38 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         	},
             isMobile() {
                 return this.getWindowScreendWidth < 768;
-            }
+            },
+            isTodayAWeekend() {
+				return this.getDayStatus === 1;
+			},
+            types() {
+                const getAvailableTypes = (type) => {
+
+                    switch(type) {
+                        case 'required job':
+                            return ['required job','required task',];
+                        case 'non required job':
+                            return ['required job','non required job','required task','task'];
+                        case 'required task':
+                            return ['required job','required task',];
+                        case 'task':
+                            return ['required job','non required job','required task','task'];
+                    }
+
+                    return ['required job','non required job','required task','task'];
+                }
+
+				return !this.isTodayAWeekend 
+					? getAvailableTypes(this.currentTaskType)
+					: [];
+			},
         },
         watch: {
             isShowEditCardDataDialog(isDialogOpen) {
+                if (isDialogOpen) {
+                   this.selectedType = this.currentTaskType;
+                } //При открытии диалога всега выбирается текущий тип задания
+
                 if (this.$refs.picker) {
                     const isSelectingMinutes = !this.$refs.picker.selectingHour;
     
@@ -126,7 +169,7 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
                         this.resetToHourSelection();
                     }
                 }
-            }
+            },
         },
         methods: {
             toggleTimeFormat() {
@@ -149,12 +192,28 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
                 this.isShowEditCardDataDialog = false;
             },
 
+            getTypeCode(selectedType) {
+                const taskTypesMap = new Map([
+                    ['task',             1],
+                    ['required task',    2],
+                    ['non required job', 3],
+                    ['required job',     4],
+                ])
+
+                return taskTypesMap.get(selectedType);
+            },
+
             saveChanges() {
-                this.$emit('saveChanges', {priority: this.selectedPriority, time: this.selectedTime});
+                this.$emit('saveChanges', {priority: this.selectedPriority, time: this.selectedTime, type: this.getTypeCode(this.selectedType)});
                 this.isShowEditCardDataDialog = false;
             }
         },
 
+        created() {
+            this.selectedType     = this.currentTaskType;
+            this.selectedPriority = this.currentTaskPriority;
+            this.selectedTime     = this.currentTaskTime;
+        }
     };
 </script>
 
@@ -163,5 +222,25 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         height: 500px;
     }
     
-     @import url('/css/EditCardData/EditCardDataMedia.css');
+    .editCardData-content::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .editCardData-content::-webkit-scrollbar-track {
+        background: #e6e6e6;
+        border-left: 1px solid #dadada;
+    }
+
+    .editCardData-content::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .editCardData-content::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
+        cursor: pointer;
+    }
+
+    @import url('/css/EditCardData/EditCardDataMedia.css');
 </style>

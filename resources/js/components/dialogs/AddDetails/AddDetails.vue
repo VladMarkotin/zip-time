@@ -12,7 +12,7 @@
                     v-on="tooltip"
                     v-bind="props" 
                     @click="showAddDetailsDialog" 
-                    :id="!num ? 'card-details' : false"
+                    :id="!cardIdx ? 'card-details' : false"
                     >
                         <v-icon color="#D71700">{{ icons.mdiChartGantt }}</v-icon>
                     </v-btn>
@@ -22,8 +22,7 @@
         </template>
         <template v-if="isShowDialogDetails">
             <AddDetailsCard 
-            :item               = "item"
-			:taskId             = "item.taskId"
+			:taskId             = "taskId"
             :alert              = "alert"
             :generateUniqKey    = "generateUniqKey"
             @closeAddDetailsDialog    = "closeAddDetailsDialog"
@@ -42,9 +41,12 @@ import {mdiChartGantt,}  from '@mdi/js'
 import { uuid } from 'vue-uuid';
 export default {
     props: {
-        num: {},
-        item: {
-            type: Object,
+        cardIdx: { //нужен для презентации
+            type: Number,
+            required: true,
+        },
+        taskId: {
+            type: Number,
             required: true,
         },
     },
@@ -69,7 +71,7 @@ export default {
     watch: {
         isShowDialogDetails(value) {
             if (!value) {
-                this.reset_to_default_values({taskId: this.item.taskId});
+                this.reset_to_default_values({taskId: this.taskId});
             }
         },
     },

@@ -64,20 +64,12 @@
 							class="p-0 m-0"
 							></v-col>
 							<v-col class="p-0 m-0">
-								<v-select 
-								label="Type" 
-								v-bind:items="types" 
-								v-model="task.type"
-								@change="compareWithTemplate"
-								>
-								<template v-slot:item="{item}">
-									<v-list-item >{{ item }}</v-list-item>
-									<VSelectTooptip 
-                          			:item        = "item"
-									:tooltipData = "tooltipTypesData"
-                           			/>
-								</template>
-							</v-select>
+								<SelectTaskType 
+								label      = "Type" 
+								v-model    = "task.type"
+								:taskTypes = "types"
+								@change = "compareWithTemplate"
+								/>
 							</v-col>
 							<v-col
 							cols="1"
@@ -100,7 +92,6 @@
 								>
 								<template v-slot:item="{item}" >
 									<v-list-item >{{ item }}</v-list-item>
-									<!-- open-on-hover -->
 									<VSelectTooptip 
 									:item              = "String(item)"
 									:width             = "200"
@@ -152,6 +143,8 @@
 	</div>
 </template>
 <script>
+	import store from '../../store';
+	import { mapMutations } from "vuex/dist/vuex.common.js";
 	import AddHashCode from './AddHashCode.vue';
 	import AddHashCodeButton from '../UI/AddHashCodeButton.vue';
 	import CleanHashCodeButton from '../UI/CleanHashCodeButton.vue';
@@ -159,12 +152,21 @@
 	import VSelectTooptip from '../UI/VSelectTooptip.vue';
 	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
 	import CustomTimepicker from '../UI/CustomTimepicker.vue';
+	import SelectTaskType from '../UI/SelectTaskType.vue';
 
 	import createWatcherForDefSavTaskMixin from '../../mixins';
 
 	export default
 		{
-			components : {AddHashCode, AddHashCodeButton, CleanHashCodeButton, CloseButton, VSelectTooptip, CustomTimepicker},
+			components : {
+				AddHashCode, 
+				AddHashCodeButton, 
+				CleanHashCodeButton, 
+				CloseButton, 
+				VSelectTooptip, 
+				CustomTimepicker, 
+				SelectTaskType
+			},
 			props: {
 				dayStatus: {
 					type: Number,
@@ -207,26 +209,11 @@
 							selectedSavedTaskId: null,
          				},
 						addTaskToPlanWithoutConfirmation: false,
+						isLoading: false,
 					}
 			},
+			store,
 			computed: {
-				tooltipTypesData() {
-					return {
-						titles: {
-							requiredJob: 'required job',
-							nonRequiredJob: 'non required job',
-							requiredTask: 'required task',
-							task: 'task',
-						},
-						descriptions: {
-							requiredJob: `<span style="text-indent: -1em; padding-left: 1em;">Main entity of your plan. By adding a required job, you kind of sign a commitment with yourself that you will at least start doing it today. After finishing working on a job, you should evaluate the effort you spent.</span><br><span style="text-indent: -1em; padding-left: 1em;">By 23:59 all (!) required jobs should be evaluated</span>`,
-							nonRequiredJob: `<span style="text-indent: -1em; padding-left: 1em;">Some of your day\`s jobs could be not so important but, anyway, you want to evaluate your efforts. So, non required jobs are exactly what you need. Failure to comply has no consequences. Moreover, to complete all non required jobs is a perfect way to increase your final day grade</span>`,
-							requiredTask: `<span style="text-indent: -1em; padding-left: 1em;">We often have a plenty of small (but important) tasks (e.g “call to the boss”). It would be difficult to evaluate the result of such task, but, anyway, you have to do it.</span>`,
-							task: `<span style="text-indent: -1em; padding-left: 1em;">Anything that\`s not so important and hard to evaluate but necessary personally for you ( e.g. “night out with friends” )</span>`,
-						},
-					}
-        		},
-
 				tooltipPrioritiesData() {
 					return {
 						titles: {
@@ -253,13 +240,12 @@
 			},
 			methods :
 			{
+				...mapMutations(['INITIALIZE_TASK_DATA_STORE',]),
 				clearCurrentHashCode(){
-					const self = this;
-
 					this.task = {
 						hashCode : '#',
 						name : '',
-						type : self.isTodayAWeekend ? self.WEEKEND_DEFAULT_TASK_TYPE : self.WORKING_DAY_DEFAULT_TASK_TYPE,
+						type : this.isTodayAWeekend ? this.WEEKEND_DEFAULT_TASK_TYPE : this.WORKING_DAY_DEFAULT_TASK_TYPE,
 						priority : 1,
 						time : '01:00',
 						details: '',
@@ -330,53 +316,42 @@
 
 				async addJob()
 				{
-					if (this.isDefaultSavedTaskSelected) {
-						this.isShowAddHashCodeDialog          = true;
-						//после успешного создание хешкода таска попадет сразу в план
-						this.addTaskToPlanWithoutConfirmation = true;
-						return;
-					}
+					try {
 
-					const response =
-						(
-							await
-								axios.
-								post
-									(
-										'/addJob',
-										{
+						if (this.isDefaultSavedTaskSelected) {
+							this.isShowAddHashCodeDialog          = true;
+							//после успешного создание хешкода таска попадет сразу в план
+							this.addTaskToPlanWithoutConfirmation = true;
+							return;
+						}
+
+						if (this.isLoading) {
+							return;
+						}
+						this.isLoading = true;
+						
+						const requestData = {
 											hash_code : this.task.hashCode,
 											name : this.task.name,
 											type : this.task.type,
 											priority : this.task.priority,
 											time : this.task.time
-										}
-									)
-						).data
-					if (response.status == 'success')
-					{
-						this.$root.currComponentProps.plan.push
-							(
-								{
-									hash : this.task.hashCode,
-									taskName : this.task.name,
-									priority : this.task.priority,
-									type : this.task.type,
-									time : this.task.time,
-									details : '',
-									notes : '',
-									mark : '',
-									taskId : response.taskId
-								}
-							)
-						this.$root.$forceUpdate()
-						this.toggle()
-						setTimeout(function (){
-							location.reload()
-						}, 3000);
+										};
+					
+						const response = ( await axios.post('/addJob', requestData)).data;
+
+						if (response.status == 'success') {
+							this.INITIALIZE_TASK_DATA_STORE({taskData: response.updated_plan});
+							this.clearCurrentHashCode();
+						}
+						
+						this.showAlert({status: response.status, text: response.message});
+					} catch(error) {
+						this.showAlert({status: 'error', text: 'Error! Something has happened!'});
+					} finally {
+						this.isLoading = false;
 					}
-					this.$emit('setAlertData',response.status,response.message)
-					this.$emit('toggleAlertDialog')
+					
 				},
 				toggle()
 				{
@@ -384,7 +359,6 @@
 				},
 
 				compareWithTemplate() {
-
 					if (this.task.hashCode !== '#') {
 						
 						const convertToJSON = (targetObj) => {
@@ -401,12 +375,16 @@
 
 						this.isChangedHashCodeTemplate = !(convertToJSON(currentTask) === convertToJSON(this.savedTaskTemplate));
 					}
-
 				},
 
 				setTime(time) {
 					this.task = {...this.task, time};
 					this.compareWithTemplate();
+				},
+
+				showAlert({status, text}) {
+					this.$emit('setAlertData',status,text);
+					this.$emit('toggleAlertDialog');
 				}
 			},
 			async created()

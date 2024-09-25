@@ -1,1 +1,76 @@
-(()=>{function t(e){return t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},t(e)}function e(t,e){for(var i=0;i<e.length;i++){var r=e[i];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,n(r.key),r)}}function n(e){var n=function(e,n){if("object"!=t(e)||!e)return e;var i=e[Symbol.toPrimitive];if(void 0!==i){var r=i.call(e,n||"default");if("object"!=t(r))return r;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===n?String:Number)(e)}(e,"string");return"symbol"==t(n)?n:String(n)}function i(t,e,n){!function(t,e){if(e.has(t))throw new TypeError("Cannot initialize the same private elements twice on an object")}(t,e),e.set(t,n)}function r(t,e){return function(t,e){if(e.get)return e.get.call(t);return e.value}(t,a(t,e,"get"))}function o(t,e,n){return function(t,e,n){if(e.set)e.set.call(t,n);else{if(!e.writable)throw new TypeError("attempted to set read only private field");e.value=n}}(t,a(t,e,"set"),n),n}function a(t,e,n){if(!e.has(t))throw new TypeError("attempted to "+n+" private field on non-instance");return e.get(t)}var l=new WeakMap,s=new WeakMap,u=new WeakMap,c=new WeakMap;(new(function(){function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),i(this,l,{writable:!0,value:null}),i(this,s,{writable:!0,value:null}),i(this,u,{writable:!0,value:"nav-menu-sticky"}),i(this,c,{writable:!0,value:200})}var n,a,f;return n=t,(a=[{key:"init",value:function(){var t=this;o(this,l,document.body.querySelector(".nav-menu")),o(this,s,parseInt(window.getComputedStyle(r(this,l)).height)),o(this,c,Math.floor(window.innerHeight/2)),window.addEventListener("scroll",(function(){var e=window.pageYOffset;e>r(t,s)+r(t,c)&&!r(t,l).classList.contains(r(t,u))&&t.addClass(),e<r(t,s)+r(t,c)&&r(t,l).classList.contains(r(t,u))&&t.removeClass()}))}},{key:"addClass",value:function(){r(this,l).classList.add(r(this,u))}},{key:"removeClass",value:function(){r(this,l).classList.remove(r(this,u))}}])&&e(n.prototype,a),f&&e(n,f),Object.defineProperty(n,"prototype",{writable:!1}),t}())).init()})();
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*******************************************!*\
+  !*** ./resources/js/indexPage/NavMenu.js ***!
+  \*******************************************/
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _navMenu = /*#__PURE__*/new WeakMap();
+var _navMenuHeight = /*#__PURE__*/new WeakMap();
+var _stickyMenuClass = /*#__PURE__*/new WeakMap();
+var _deltaForAppearance = /*#__PURE__*/new WeakMap();
+var NavMenu = /*#__PURE__*/function () {
+  function NavMenu() {
+    _classCallCheck(this, NavMenu);
+    _classPrivateFieldInitSpec(this, _navMenu, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _navMenuHeight, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _stickyMenuClass, {
+      writable: true,
+      value: 'nav-menu-sticky'
+    });
+    _classPrivateFieldInitSpec(this, _deltaForAppearance, {
+      writable: true,
+      value: 200
+    });
+  }
+  _createClass(NavMenu, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      _classPrivateFieldSet(this, _navMenu, document.body.querySelector('.nav-menu'));
+      _classPrivateFieldSet(this, _navMenuHeight, parseInt(window.getComputedStyle(_classPrivateFieldGet(this, _navMenu)).height));
+      _classPrivateFieldSet(this, _deltaForAppearance, Math.floor(window.innerHeight / 2));
+      window.addEventListener('scroll', function () {
+        var posTop = window.pageYOffset;
+        if (posTop > _classPrivateFieldGet(_this, _navMenuHeight) + _classPrivateFieldGet(_this, _deltaForAppearance) && !_classPrivateFieldGet(_this, _navMenu).classList.contains(_classPrivateFieldGet(_this, _stickyMenuClass))) {
+          _this.addClass();
+        }
+        if (posTop < _classPrivateFieldGet(_this, _navMenuHeight) + _classPrivateFieldGet(_this, _deltaForAppearance) && _classPrivateFieldGet(_this, _navMenu).classList.contains(_classPrivateFieldGet(_this, _stickyMenuClass))) {
+          _this.removeClass();
+        }
+      });
+    }
+  }, {
+    key: "addClass",
+    value: function addClass() {
+      _classPrivateFieldGet(this, _navMenu).classList.add(_classPrivateFieldGet(this, _stickyMenuClass));
+    }
+  }, {
+    key: "removeClass",
+    value: function removeClass() {
+      _classPrivateFieldGet(this, _navMenu).classList.remove(_classPrivateFieldGet(this, _stickyMenuClass));
+    }
+  }]);
+  return NavMenu;
+}();
+var navMenu = new NavMenu();
+navMenu.init();
+/******/ })()
+;

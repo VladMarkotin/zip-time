@@ -1,14 +1,15 @@
 <template>
     <v-card
 	width="450"
+    class="pt-6 pb-6 addNotes-addNotesCard-wrapper"
     >
-		<v-card-title>Notes list</v-card-title>
+		<v-card-title class="pt-0 addNotesCard-title">Notes list</v-card-title>
 		<v-divider class="mt-2 mb-2"></v-divider>
         <v-row class="m-0">
             <v-col class="p-0 m-0">
                 <v-expansion-panels>
                     <v-expansion-panel>
-                        <v-expansion-panel-header>
+                        <v-expansion-panel-header class="addNotesCard-accordion-header">
                             <template v-slot:default="{ open }">
                                 <v-row class="p-0 m-0" style="min-height: 36px;">
                                     <v-col class="p-0 m-0 d-flex justify-content-start d-flex align-items-center">         
@@ -65,7 +66,7 @@
             <transition-group name="list" tag="div" class="notes-wrapper">
                 <v-list-item v-for="(item, i) in notesList" :key="item.id" class="list-item">
                     <Note 
-                    :item        = "item"
+                    :noteData           = "item"
                     @deleteNote         = "deleteNote"
                     @showEditNotesDialog = "showEditNotesDialog"
                     />
@@ -75,10 +76,10 @@
         </v-card-text>
         <v-divider class="m-0"></v-divider>
 		<v-card-actions 
-        class="px-4"
+        class="px-6 addNotesCard-footer addNotesCard-footer"
         >
         <v-row 
-        class="d-flex justify-content-between align-items-center p-0 m-0"
+        class="d-flex justify-content-between align-items-end p-0 m-0"
         style="min-height: 72px;"
         >
             <v-col 
@@ -134,10 +135,6 @@ import Note from './Note.vue';
 import EditNotesDialog from './EditNotesDialog.vue';
     export default {
         props: {
-            item: {
-                type: Object,
-                required: true,
-            },
             taskId: {
                 type: Number,
                 required: true,
@@ -325,6 +322,26 @@ import EditNotesDialog from './EditNotesDialog.vue';
 		from { opacity: 1; left: 0;}
 		to { opacity: 0; left: 10px;}
 	}
+
+    .addNotesCard-notes-wrapper::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .addNotesCard-notes-wrapper::-webkit-scrollbar-track {
+        background: #e6e6e6;
+        border-left: 1px solid #dadada;
+    }
+
+    .addNotesCard-notes-wrapper::-webkit-scrollbar-thumb {
+        background: #b0b0b0;
+        border: solid 3px #e6e6e6;
+        border-radius: 7px;
+    }
+
+    .addNotesCard-notes-wrapper::-webkit-scrollbar-thumb:hover {
+        background: rgb(161, 0, 0);
+        cursor: pointer;
+    }
 
     @import url('/css/AddNotesCard/AddNotesCardMedia.css');
 </style>

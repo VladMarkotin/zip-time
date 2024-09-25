@@ -1,5 +1,6 @@
 <template>
     <v-dialog
+        :fullscreen = "isMobile"
 		v-model="isShowNotesDialog"
 		scrollable
         content-class="addNotes-addNotes-dialog"
@@ -18,7 +19,7 @@
                         v-on="tooltip"
                         v-bind="props"
                         @click="showAddNotesDialog"
-                        :id="!num ? 'card-notes' : false"
+                        :id="!cardIdx ? 'card-notes' : false"
                         >
                         <v-icon color="#D71700">{{icons.mdiNotebookEditOutline}}</v-icon>
                         </v-btn>
@@ -38,8 +39,7 @@
 		</template>
 		<template v-if="isShowNotesDialog">
             <AddNotesCard 
-            :taskId      = "item.taskId"
-            :item        = "item"
+            :taskId      = "taskId"
             @closeAddNotesDialog = "closeAddNotesDialog"
             />
         </template>
@@ -53,9 +53,12 @@ import AddNotesCard from './AddNotesCard.vue';
 import { mdiNotebookEditOutline }  from '@mdi/js'
     export default {
         props: {
-            num:  {},
-            item: {
-                type: Object,
+            cardIdx:  { //нужен для презентации
+                type: Number,
+                required: true,
+            },
+            taskId: {
+                type: Number,
                 required: true,
             },
         },
@@ -71,14 +74,17 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
             AddNotesCard,
         },
         computed: {
-            ...mapGetters(['getNotesData']),
+            ...mapGetters(['getNotesData', 'getWindowScreendWidth']),
             notesTodayAmount() {
-                const notesData = this.getNotesData(this.item.taskId);
+                const notesData = this.getNotesData(this.taskId);
                 if (!notesData) {
                     return 0;
                 }
 
                 return notesData.length;
+            },
+            isMobile() {
+                return this.getWindowScreendWidth < 768;
             }
         },
         methods: {
@@ -96,4 +102,5 @@ import { mdiNotebookEditOutline }  from '@mdi/js'
 
 <style>
     @import url('/css/AddNotes/AddNotesMedia.css');
+   
 </style>

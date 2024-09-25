@@ -7,15 +7,15 @@
             <v-col 
             class="p-0 m-0 d-flex justify-content-between align-items-center" 
             style="width: 100%;"
-            :id="getVMenuWrapperId(item.id)"
+            :id="getVMenuWrapperId(noteData.id)"
             >
                 <v-card-title class="p-0 m-0 note_note-card-title">
-                    Note from {{ item.created_at }}
+                    Note from {{ noteData.created_at }}
                 </v-card-title>
                 <SettingsMenu 
-                :item        =  "item"
+                :item        =  "noteData"
                 :options     =  "options"
-                :attachTo    = "getVMenuWrapperId(item.id)"
+                :attachTo    = "getVMenuWrapperId(noteData.id)"
                 @deleteNote         = "deleteNote"
                 @showEditNotesDialog = "showEditNotesDialog"
                 />
@@ -23,7 +23,7 @@
         </v-row>
         <v-card-text class="bg-white text--primary p-0 m-0">
             <b style="white-space: pre-line;">
-                {{ item.note }}
+                {{ noteData.note }}
             </b>
         </v-card-text>
     </v-card>
@@ -33,7 +33,7 @@
 import SettingsMenu from '../../UI/SettingsMenu.vue';
     export default {
         props: {
-            item: {
+            noteData: {
                 type: Object,
                 required: true,
             },
