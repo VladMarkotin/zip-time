@@ -27,7 +27,7 @@ class HistTransformationService
                 }
             }
         }
-       
+        return $data;
     }
 
     private function checkIsAfterToday($planDate, $todayDate)

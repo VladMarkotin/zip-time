@@ -42,8 +42,7 @@ class HistService
         $period["with_emergency"] = 0;
 
         $response = $this->histRepository->getHist($period);
-        //returns nothing `cause i work with object 
-        $this->histTransformationService->transformHistResponse($response, $period["today"]);
+        $response = $this->histTransformationService->transformHistResponse($response, $period["today"]);
         
         return ( json_encode($response, JSON_UNESCAPED_UNICODE));
      }

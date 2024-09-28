@@ -108,16 +108,24 @@ export default
 					start_date: period.start.date,
 					today_date: this.todayDate
 				})
-				console.log(history);
 				this.events = []
 				let status;
 				let color = '#A10000';
-				for (const date in history.data.plans) {
+				const plans = history.data.plans;
+				for (const date in plans) {
 					status = '';
-					
-					switch(history.data.plans[date].dayStatus ){
+
+					switch(plans[date].dayStatus ){
+						case 4:
+							status = "Test1"
+							color = '#A10000';
+							break;
 						case 3: 
 							status = "Success"
+							color = '#A10000';
+							break;
+						case 2:
+							status = "Test2"
 							color = '#A10000';
 							break;
 						case 1:
@@ -134,25 +142,26 @@ export default
 							break;
 
 					}
-					if (history.data.plans[date].dayFinalMark == 0) {
-						history.data.plans[date].dayFinalMark = '-';
+					console.log(status, color);
+					if (plans[date].dayFinalMark == 0) {
+						plans[date].dayFinalMark = '-';
 					} else {
-						history.data.plans[date].dayFinalMark = history.data.plans[date].dayFinalMark +'%';
+						plans[date].dayFinalMark = plans[date].dayFinalMark +'%';
 					}
-					if (history.data.plans[date].dayOwnMark == 0) {
-						history.data.plans[date].dayOwnMark = '-';
+					if (plans[date].dayOwnMark == 0) {
+						plans[date].dayOwnMark = '-';
 					} else {
-						history.data.plans[date].dayOwnMark = history.data.plans[date].dayOwnMark +'%';
+						plans[date].dayOwnMark = plans[date].dayOwnMark +'%';
 					}
 					this.events.push({
 						start: new Date(date),
 						end: new Date(date),
 						name: `Day status:\t${status}`,
 						color: color,
-						dayFinalMark: history.data.plans[date].dayFinalMark,
-						dayOwnMark: history.data.plans[date].dayOwnMark,
-						comment: history.data.plans[date].comment,
-						tasks: history.data.plans[date].tasks
+						dayFinalMark: plans[date].dayFinalMark,
+						dayOwnMark: plans[date].dayOwnMark,
+						comment: plans[date].comment,
+						tasks: plans[date].tasks
 					})
 				}
 			},

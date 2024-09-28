@@ -130,9 +130,8 @@ class HistRepository
 
                 continue;
             }
-            $transformedFuturePlans[$futureDate] = [];
+            $transformedFuturePlans[$futureDate] = ["dayStatus" => 4]; //код для обозначения дня в будущем на который нету ничего не запланировано
         }
-
         return $transformedFuturePlans;
     }
 
