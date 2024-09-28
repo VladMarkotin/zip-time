@@ -683,6 +683,10 @@ export default {
             this.alertType = response.data.status;
             this.serverMessage = response.data.message;
             this.showAlert = true;
+
+            setTimeout(() => {
+               this.showAlert = false;
+            }, 5e3);
          } catch(error) {
             console.error(error);
          }

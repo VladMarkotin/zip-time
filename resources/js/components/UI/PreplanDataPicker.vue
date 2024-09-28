@@ -55,7 +55,7 @@ export default {
     },
     methods: {
         formatDate(date) {
-            return new Date(date).getCurrentDate().slice(0,10);
+            return new Date(date).getTodayFormatedDate();
         },
         updateValue(selectedDate) {
             this.menu = false;
