@@ -118,7 +118,7 @@ class HistRepository
                     $task = [
                         "hashCode"  => $taskData->hash,
                         "taskName"  => $taskData->taskName,
-                        "mark"      => 0,
+                        "mark"      => '',
                     ];
                     return (object) $task;
                 }, $tasks);
