@@ -54,11 +54,13 @@ class HistRepository
             }
             $response['histLength'] = $userHistLength;
         }
-        $futureDates = $this->getFutureDatesInCurrentMonth($period);
 
+        $futureDates = $this->getFutureDatesInCurrentMonth($period);
         if (count($futureDates)) {
             $futurePlans = $this->getFuturePlans($futureDates);
+            $response["plans"] = [...$response["plans"], ...$futurePlans];
         }
+        
         return $response;
     }
 
@@ -109,26 +111,29 @@ class HistRepository
         foreach($futureDates as $futureDate) {
             if(array_key_exists($futureDate, $transformedPreplans)) {
                 $currentDayData   = $transformedPreplans[$futureDate];
-                $currentDayDate   = $currentDayData["date"];
                 $currentDayStatus = $currentDayData["day_status"];
                 $tasks = json_decode($currentDayData["jsoned_tasks"]);
 
-                $tasks = array_map(function($item) use ($currentDayDate, $currentDayStatus) {
-                    // dd($item);
-                    return [
-                        "date"      => $currentDayDate,
-                        "dayStatus" => $currentDayStatus,
-                        "hashCode"  => $item->hash,
-                        "taskName"  => $item->taskName,
+                $tasks = array_map(function($taskData) {
+                    $task = [
+                        "hashCode"  => $taskData->hash,
+                        "taskName"  => $taskData->taskName,
+                        "mark"      => 0,
                     ];
+                    return (object) $task;
                 }, $tasks);
-                dd($tasks);
+                
+                $transformedFuturePlans[$futureDate] = [
+                    "dayStatus" => $currentDayStatus,
+                    "tasks"     => $tasks,
+                ];
+
                 continue;
             }
             $transformedFuturePlans[$futureDate] = [];
         }
 
-        dd($transformedFuturePlans);
+        return $transformedFuturePlans;
     }
 
     private function doWeHaveHist(array $data) //$data = ['currentDate'=>'','timeDirection'=>'<|>']
