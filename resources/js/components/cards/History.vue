@@ -27,53 +27,14 @@
 					:event-color="getEventColor" :type="type" @click:event="showEvent" @change="updateRange">
 				</v-calendar>
 				<v-menu max-width="100%" style="z-index: 20;" v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
-					<v-card 
-					color="grey lighten-4" 
-					width="400px" 
-					flat
-					>
-						<v-toolbar :color="selectedEvent.color" dark>
-							<v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
-							<v-spacer></v-spacer>
-						</v-toolbar>
-						<v-card-text>
-							<v-data-table :headers="headers" :items="selectedEvent.tasks" class="elevation-1"
-								hide-default-footer>
-							</v-data-table>
-						</v-card-text>
-						<v-divider></v-divider>
-						<v-list class="history_final-data-list">
-							<v-list-item class="history_final-data-li">
-								<v-list-item-content class="key">Final mark:</v-list-item-content>
-								<v-list-item-content>{{ selectedEvent.dayFinalMark }}</v-list-item-content>
-							</v-list-item>
-							<v-list-item class="history_final-data-li">
-								<v-list-item-content class="key">Own mark:</v-list-item-content>
-								<v-list-item-content>{{ selectedEvent.dayOwnMark }}</v-list-item-content>
-							</v-list-item>
-							<!-- <v-list-item class="history_final-data-li history_comment-wrapper">
-								<v-list-item-content class="key comment-title"> Comment:</v-list-item-content>
-							</v-list-item> -->
-							<v-list-item>
-								<v-list-item-content style="overflow: visible;">
-									<ClosedDayCommentDialog 
-									:commentText        = "selectedEvent.comment"
-									:newCommentText     = "newCommentText"
-									commentFieldHeight  = "150px"
-									@editComment = "editComment"
-									@saveComment = "saveComment"
-									/>
-								</v-list-item-content>
-							</v-list-item>
-						</v-list>
-						<v-card-actions>
-							<v-row class="pt-3 pb-3">
-								<v-btn text color="secondary" @click="selectedOpen = false">
-									Cancel
-								</v-btn>
-							</v-row>
-						</v-card-actions>
-					</v-card>
+					<HistoryDayCard 
+					:selectedEvent="selectedEvent"
+					:headers="headers"
+					:newCommentText="newCommentText"
+					@editComment="editComment"
+					@saveComment="saveComment"
+					@close="selectedOpen = false" 
+					/>
 				</v-menu>
 			</v-sheet>
 		</v-col>
@@ -83,6 +44,7 @@
 import ClosedDayCommentDialog from '../dialogs/ClosedDayCommentDialog.vue';
 import store from '../../store';
 import { mapMutations } from 'vuex/dist/vuex.common.js';
+import HistoryDayCard from '../UI/HistoryDayCard.vue';
 
 export default
 	{
@@ -104,7 +66,7 @@ export default
 			}
 		},
 		store,
-		components: {ClosedDayCommentDialog},
+		components: {ClosedDayCommentDialog, HistoryDayCard},
 		methods:
 		{
 			...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -199,6 +161,7 @@ export default
 
 			async saveComment() {
 				const date = this.selectedEvent.end;
+				console.log(this.newCommentText);
 
 				try {
 					const response = await axios.post('/edit-comment', {comment : this.newCommentText, date})
