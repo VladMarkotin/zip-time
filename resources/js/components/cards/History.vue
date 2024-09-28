@@ -41,7 +41,6 @@
 	</v-row>
 </template>
 <script>
-import ClosedDayCommentDialog from '../dialogs/ClosedDayCommentDialog.vue';
 import store from '../../store';
 import { mapMutations } from 'vuex/dist/vuex.common.js';
 import HistoryDayCard from '../UI/HistoryDayCard.vue';
@@ -50,6 +49,7 @@ export default
 	{
 		data() {
 			return {
+				todayDate: new Date().getTodayFormatedDate(),
 				focus: '',
 				type: 'month',
 				selectedEvent: {},
@@ -66,7 +66,7 @@ export default
 			}
 		},
 		store,
-		components: {ClosedDayCommentDialog, HistoryDayCard},
+		components: {HistoryDayCard},
 		methods:
 		{
 			...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -105,8 +105,10 @@ export default
 			
 			async updateRange(period) {
 				const history = await axios.post('/hist', {
-					start_date: period.start.date
+					start_date: period.start.date,
+					today_date: this.todayDate
 				})
+				console.log(history);
 				this.events = []
 				let status;
 				let color = '#A10000';

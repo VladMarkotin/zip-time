@@ -32,10 +32,11 @@ class HistService
         $this->timeTable                 = $timeTable;
     }
 
-    public function getHist($startDate)
+    public function getHist($startDate, $todayDate)
     {
+        $period["today"]          = $todayDate;
         $period["from"]           = $startDate;
-        $period["to"]             = $this->carbon->endOfWeek()->toDateString();
+        $period["to"]             = Carbon::createFromFormat('Y-m-d', $period["from"])->endOfMonth()->toDateString();
         $period["with_failed"]    = 0;
         $period["with_weekend"]   = 1;
         $period["with_emergency"] = 0;

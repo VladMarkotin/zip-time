@@ -12,14 +12,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\HistRepositories\traits\TransformHistTrait;
 use Carbon\Carbon;
+use App\Models\Preplan;
 
 class HistRepository
 {
-    private $period = null;
+    private $period  = null;
+    private $preplan = null;
+
+    public function __construct(Preplan $preplan)
+    {
+        $this->preplan = $preplan;
+    }
 
     public function getHist(array $period)
     {
-       
         //direction of movement (-1 - back, 1 - forward)
         $directionSign = function (array $period){
             if($period['direction'] < 0){
@@ -48,8 +54,81 @@ class HistRepository
             }
             $response['histLength'] = $userHistLength;
         }
+        $futureDates = $this->getFutureDatesInCurrentMonth($period);
 
+        if (count($futureDates)) {
+            $futurePlans = $this->getFuturePlans($futureDates);
+        }
         return $response;
+    }
+
+    private function getFutureDatesInCurrentMonth($period)
+    {   
+        $isNotLate = function($currentDay, $lastDayOfMonth){
+            return ($currentDay->isBefore($lastDayOfMonth)) || ($currentDay->isSameDay($lastDayOfMonth));
+        };
+
+        $getStartDay = function($today, $firstDayOfMonth, $lastDayOfMonth) use($isNotLate) {
+            if (!$isNotLate($today, $firstDayOfMonth)) {
+                return $today->copy()->addDay();
+            };
+            
+            return $firstDayOfMonth->copy();
+        };
+
+        $firstDayOfMonth  = Carbon::createFromFormat('Y-m-d', $period["from"]);
+        $lastDayOfMonth   = Carbon::createFromFormat('Y-m-d', $period["to"]);
+        $today            = Carbon::createFromFormat('Y-m-d', $period["today"]);
+
+        if ($today->isAfter($lastDayOfMonth)) {
+            return [];
+        }
+
+        $startDay = $getStartDay($today, $firstDayOfMonth, $lastDayOfMonth);
+
+        for ($startDay; $isNotLate($startDay, $lastDayOfMonth); $startDay->addDay()) {
+            $dates[] = $startDay->toDateString();
+        }
+
+        return $dates;
+
+    }
+
+    private function getFuturePlans($futureDates)
+    {
+        $user_id = Auth::id();
+        
+        $preplans = $this->preplan::where("user_id", $user_id)->whereIn("date", $futureDates)->get()->toArray();
+
+        $transformedPreplans = [];
+        foreach($preplans as $preplan) {
+            $transformedPreplans[$preplan["date"]] = $preplan;
+        }
+
+        $transformedFuturePlans = [];
+        foreach($futureDates as $futureDate) {
+            if(array_key_exists($futureDate, $transformedPreplans)) {
+                $currentDayData   = $transformedPreplans[$futureDate];
+                $currentDayDate   = $currentDayData["date"];
+                $currentDayStatus = $currentDayData["day_status"];
+                $tasks = json_decode($currentDayData["jsoned_tasks"]);
+
+                $tasks = array_map(function($item) use ($currentDayDate, $currentDayStatus) {
+                    // dd($item);
+                    return [
+                        "date"      => $currentDayDate,
+                        "dayStatus" => $currentDayStatus,
+                        "hashCode"  => $item->hash,
+                        "taskName"  => $item->taskName,
+                    ];
+                }, $tasks);
+                dd($tasks);
+                continue;
+            }
+            $transformedFuturePlans[$futureDate] = [];
+        }
+
+        dd($transformedFuturePlans);
     }
 
     private function doWeHaveHist(array $data) //$data = ['currentDate'=>'','timeDirection'=>'<|>']
