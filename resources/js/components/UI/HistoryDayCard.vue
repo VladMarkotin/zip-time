@@ -3,8 +3,9 @@
       color="grey lighten-4" 
       width="400px" 
       flat
+      class="history-day-card d-flex flex-column"
     >
-      <v-toolbar :color="selectedEvent.color" dark>
+      <v-toolbar :color="selectedEvent.color" dark class="history-day-card_header">
         <v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
@@ -17,7 +18,7 @@
         />
       </v-card-text>
       <v-divider />
-      <v-list class="history_final-data-list">
+      <v-list class="history_final-data-list" v-if="isDayPassed">
         <v-list-item class="history_final-data-li">
           <v-list-item-content class="key">Final mark:</v-list-item-content>
           <v-list-item-content>{{ selectedEvent.dayFinalMark }}</v-list-item-content>
@@ -38,6 +39,14 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-list v-else>
+        <v-list-item>
+          <v-list-item-content class="justify-content-center">
+            <v-btn>{{isPreplanExists ? 'update plan' : 'create plan'}}</v-btn>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-spacer></v-spacer> 
       <v-card-actions>
         <v-row class="pt-3 pb-3">
           <v-btn text color="secondary" @click="$emit('close')">
@@ -66,6 +75,14 @@
       },
     },
     components: {ClosedDayCommentDialog},
+    computed: {
+      isPreplanExists() {
+        return this.selectedEvent.status !== 4;
+      },
+      isDayPassed() {
+        return this.selectedEvent.isDayPassed;
+      }
+    },
     methods: {
       editComment(value) {
         this.$emit('editComment', value);
@@ -75,6 +92,14 @@
   </script>
 
 <style scoped>
+  .history-day-card {
+    min-height: 566px;
+  }
+
+  .history-day-card_header {
+    flex-grow: 0;
+  }
+
   .key {
 	  font-weight : bold
 	}
@@ -92,4 +117,6 @@
 		padding: 4px;
 		justify-content: flex-end;
 	}
+
+  @import url('/css/History/HistoryMedia.css');
 </style>

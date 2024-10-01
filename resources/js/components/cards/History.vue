@@ -95,7 +95,6 @@ export default
 		},
 		computed: {
 			shownEvents() {
-				console.log(this.events);
 				return this.events.filter(dayData => {
 					const areAnyPlans    = dayData.status !== 4;
 					const isSelectedDate = dayData.date === this.selectedDate;
@@ -205,6 +204,7 @@ export default
 						tasks: plans[date].tasks,
 						status: plans[date].dayStatus,
 						date: date,
+						isDayPassed: plans[date].isDayPassed,
 					}
 
 					this.events = [...this.events, dayData];
@@ -255,7 +255,6 @@ export default
 </script>
 
 <style scoped>
-	
 
 	@import url('/css/History/HistoryMedia.css');
 </style>
