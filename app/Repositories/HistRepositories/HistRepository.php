@@ -66,17 +66,22 @@ class HistRepository
 
     private function getFutureDatesInCurrentMonth($period)
     {   
-        $isNotLate = function($currentDay, $lastDayOfMonth){
-            return ($currentDay->isBefore($lastDayOfMonth)) || ($currentDay->isSameDay($lastDayOfMonth));
+        $isNotLate = function($checkDay, $referenceDay) {
+            return ($checkDay->isBefore($referenceDay)) || ($checkDay->isSameDay($referenceDay));
         };
 
         $getStartDay = function($today, $firstDayOfMonth) use($isNotLate) {
-            if (!$isNotLate($today, $firstDayOfMonth)) {
+            $isTodayFirst = $today->isSameDay($firstDayOfMonth); 
+
+            if (!$isNotLate($today, $firstDayOfMonth) || $isTodayFirst) {
                 return $today->copy()->addDay();
             };
             
             return $firstDayOfMonth->copy();
         };
+        //Мне необходимо выводить препланы начиная со следующего дня после сегодняшней даты
+        //isNotLate нужно для того что бы не выводить пропущенные дни в текущем месяце
+        //$isTodayFirst необходма для тех случаев, когда сегодняшняя дата приходится на 1е число месяца
 
         $firstDayOfMonth  = Carbon::createFromFormat('Y-m-d', $period["from"]);
         $lastDayOfMonth   = Carbon::createFromFormat('Y-m-d', $period["to"]);
@@ -86,12 +91,11 @@ class HistRepository
             return [];
         }
 
-        $startDay = $getStartDay($today, $firstDayOfMonth);
+        $startDay = $getStartDay($today, $firstDayOfMonth); //определяю начиная от какого дня мне надо выводить препланы
 
         for ($startDay; $isNotLate($startDay, $lastDayOfMonth); $startDay->addDay()) {
             $dates[] = $startDay->toDateString();
         }
-
         return $dates;
 
     }
