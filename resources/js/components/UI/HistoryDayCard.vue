@@ -73,3 +73,23 @@
     },
   };
   </script>
+
+<style scoped>
+  .key {
+	  font-weight : bold
+	}
+
+	.history_final-data-list .history_final-data-li {
+		gap: 25px;
+		min-height: 0 ;
+	}
+
+	.history_final-data-list .history_final-data-li .key {
+		justify-content: flex-start !important;
+	}
+
+	.history_final-data-list .history_final-data-li .v-list-item__content{
+		padding: 4px;
+		justify-content: flex-end;
+	}
+</style>

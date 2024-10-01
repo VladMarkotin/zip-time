@@ -70,7 +70,7 @@ class HistRepository
             return ($currentDay->isBefore($lastDayOfMonth)) || ($currentDay->isSameDay($lastDayOfMonth));
         };
 
-        $getStartDay = function($today, $firstDayOfMonth, $lastDayOfMonth) use($isNotLate) {
+        $getStartDay = function($today, $firstDayOfMonth) use($isNotLate) {
             if (!$isNotLate($today, $firstDayOfMonth)) {
                 return $today->copy()->addDay();
             };
@@ -86,7 +86,7 @@ class HistRepository
             return [];
         }
 
-        $startDay = $getStartDay($today, $firstDayOfMonth, $lastDayOfMonth);
+        $startDay = $getStartDay($today, $firstDayOfMonth);
 
         for ($startDay; $isNotLate($startDay, $lastDayOfMonth); $startDay->addDay()) {
             $dates[] = $startDay->toDateString();

@@ -23,10 +23,27 @@
 				</v-toolbar>
 			</v-sheet>
 			<v-sheet height="600">
-				<v-calendar ref="calendar" v-model="focus" color="primary" v-bind:events="events"
-					:event-color="getEventColor" :type="type" @click:event="showEvent" @change="updateRange">
+				<v-calendar 
+				ref="calendar" 
+				v-model="focus" 
+				color="primary" 
+				v-bind:events="shownEvents"
+				:event-color="getEventColor" 
+				:type="type" 
+				@click:event="showEvent" 
+				@change="updateRange"
+				@mouseenter:day="onMouseEnterDay"
+				@mouseleave:day="onMouseLeaveDay" 
+				>
 				</v-calendar>
-				<v-menu max-width="100%" style="z-index: 20;" v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
+				<v-menu 
+				max-width="100%" 
+				style="z-index: 20;" 
+				v-model="selectedOpen" 
+				:close-on-content-click="false" 
+				:activator="selectedElement" 
+				offset-x
+				>
 					<HistoryDayCard 
 					:selectedEvent="selectedEvent"
 					:headers="headers"
@@ -55,6 +72,7 @@ export default
 				selectedEvent: {},
 				selectedElement: null,
 				selectedOpen: false,
+				selectedDate: '',
 				headers: [
 					{ text: ' hash', value: 'hashCode' },
 					{ text: 'Task name', value: 'taskName' },
@@ -67,6 +85,24 @@ export default
 		},
 		store,
 		components: {HistoryDayCard},
+		watch: {
+			selectedOpen(value) {
+				if (!value) {
+					this.selectedElement = null;
+					this.selectedDate = '';
+				}
+			}
+		},
+		computed: {
+			shownEvents() {
+				return this.events.filter(dayData => {
+					const areAnyPlans    = dayData.status !== 4;
+					const isSelectedDate = dayData.date === this.selectedDate;
+
+					return areAnyPlans || isSelectedDate;
+				});
+			}
+		},
 		methods:
 		{
 			...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -114,10 +150,9 @@ export default
 				const plans = history.data.plans;
 				for (const date in plans) {
 					status = '';
-
 					switch(plans[date].dayStatus ){
 						case 4:
-							status = "Test1"
+							status = ""
 							color = '#A10000';
 							break;
 						case 3: 
@@ -125,7 +160,7 @@ export default
 							color = '#A10000';
 							break;
 						case 2:
-							status = "Test2"
+							status = "Weekend"
 							color = '#A10000';
 							break;
 						case 1:
@@ -142,7 +177,6 @@ export default
 							break;
 
 					}
-					console.log(status, color);
 					if (plans[date].dayFinalMark == 0) {
 						plans[date].dayFinalMark = '-';
 					} else {
@@ -153,7 +187,7 @@ export default
 					} else {
 						plans[date].dayOwnMark = plans[date].dayOwnMark +'%';
 					}
-					this.events.push({
+					const dayData = {
 						start: new Date(date),
 						end: new Date(date),
 						name: `Day status:\t${status}`,
@@ -161,8 +195,12 @@ export default
 						dayFinalMark: plans[date].dayFinalMark,
 						dayOwnMark: plans[date].dayOwnMark,
 						comment: plans[date].comment,
-						tasks: plans[date].tasks
-					})
+						tasks: plans[date].tasks,
+						status: plans[date].dayStatus,
+						date: date,
+					}
+
+					this.events = [...this.events, dayData];
 				}
 			},
 
@@ -172,7 +210,6 @@ export default
 
 			async saveComment() {
 				const date = this.selectedEvent.end;
-				console.log(this.newCommentText);
 
 				try {
 					const response = await axios.post('/edit-comment', {comment : this.newCommentText, date})
@@ -186,7 +223,19 @@ export default
 
 			updateScreenWidth() {
             	this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
-        	}
+        	},
+
+			onMouseEnterDay({date}) {
+				if (!this.selectedElement) {
+					this.selectedDate = date;
+				}
+			},
+
+			onMouseLeaveDay() {
+				if (!this.selectedElement) {
+					this.selectedDate = '';
+				}
+			}
 		},
 		mounted() {
 			window.addEventListener('resize', this.updateScreenWidth);
@@ -199,23 +248,7 @@ export default
 </script>
 
 <style scoped>
-	.key {
-		font-weight : bold
-	}
-
-	.history_final-data-list .history_final-data-li {
-		gap: 25px;
-		min-height: 0 ;
-	}
-
-	.history_final-data-list .history_final-data-li .key {
-		justify-content: flex-start !important;
-	}
-
-	.history_final-data-list .history_final-data-li .v-list-item__content{
-		padding: 4px;
-		justify-content: flex-end;
-	}
+	
 
 	@import url('/css/History/HistoryMedia.css');
 </style>

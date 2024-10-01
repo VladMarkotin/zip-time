@@ -13,8 +13,8 @@ class HistTransformationService
     public function transformHistResponse(array $data, string $todayDate)
     {
         foreach ($data['plans'] as $planDate => &$plan) {
-            $plan["isUpcomingDay"] = $this->checkIsAfterToday($planDate, $todayDate);
-            if (!$plan["isUpcomingDay"]) {
+            $plan["isUpcomingDay"] = $this->checkIsBeforeToday($planDate, $todayDate);
+            if ($plan["isUpcomingDay"]) {
                 foreach ($plan['tasks'] as $task) {
                     if ($task->mark == -1) {
                         $task->mark = "-";
@@ -30,8 +30,8 @@ class HistTransformationService
         return $data;
     }
 
-    private function checkIsAfterToday($planDate, $todayDate)
+    private function checkIsBeforeToday($planDate, $todayDate)
     {
-        return Carbon::createFromFormat('Y-m-d', $planDate)->isAfter(Carbon::createFromFormat('Y-m-d', $todayDate));
+        return Carbon::createFromFormat('Y-m-d', $planDate)->isBefore(Carbon::createFromFormat('Y-m-d', $todayDate));
     }
 }
