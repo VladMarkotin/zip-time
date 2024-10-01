@@ -145,61 +145,21 @@ export default
 					today_date: this.todayDate
 				})
 				this.events = []
-				let status;
-				let color = '#A10000';
 				const plans = history.data.plans;
 				for (const date in plans) {
 					const isDayPassed = plans[date].isDayPassed;
-					status = '';
-					switch(plans[date].dayStatus ){
-						case 4: //несозданный преплан
-							status = ""
-							color = '#44944A';
-							break;
-						case 3: 
-							status = "Success"
-							color = '#A10000';
-							break;
-						case 2: //преплан рабочий день
-							status = "Work future"
-							color = '#44944A';
-							break;
-						case 1:
-							if (isDayPassed) {
-								status = "Weekend"
-								color = '#ffcfcf'
-							} else {
-								status = "Weekend future"
-								color = '#A8E4A0'
-							}
-							break;
-						case 0:
-							status = "Emergency mode"
-							color = '#ffcfcf';
-							break;
-						default:
-							status = "Fail !";
-							color = "#474747";
-							break;
 
-					}
-					if (plans[date].dayFinalMark == 0) {
-						plans[date].dayFinalMark = '-';
-					} else {
-						plans[date].dayFinalMark = plans[date].dayFinalMark +'%';
-					}
-					if (plans[date].dayOwnMark == 0) {
-						plans[date].dayOwnMark = '-';
-					} else {
-						plans[date].dayOwnMark = plans[date].dayOwnMark +'%';
-					}
+					const cardHeaderData        = this.getCardHeaderData(plans[date].dayStatus, isDayPassed);
+					const transformedFinalMark  = this.getTransformedMark(plans[date].dayFinalMark);
+					const transformedDayOwnMark = this.getTransformedMark(plans[date].dayOwnMark);
+					
 					const dayData = {
 						start: new Date(date),
 						end: new Date(date),
-						name: `Day status:\t${status}`,
-						color: color,
-						dayFinalMark: plans[date].dayFinalMark,
-						dayOwnMark: plans[date].dayOwnMark,
+						name: `Day status:\t${cardHeaderData.status}`,
+						color: cardHeaderData.color,
+						dayFinalMark: transformedFinalMark,
+						dayOwnMark: transformedDayOwnMark,
 						comment: plans[date].comment,
 						tasks: plans[date].tasks,
 						status: plans[date].dayStatus,
@@ -209,6 +169,34 @@ export default
 
 					this.events = [...this.events, dayData];
 				}
+			},
+
+			getTransformedMark(finalMark) {
+				if (finalMark == 0) {
+					return '-';
+				}
+				return `${finalMark}%`;
+			},
+
+			getCardHeaderData(dayStatus, isDayPassed) {
+				switch(dayStatus){
+					case 4: //несозданный преплан
+						return {status: '', color:  '#44944A',};
+					case 3: 
+						return {status: 'Success', color:  '#A10000',};
+					case 2: //преплан рабочий день
+						return {status: 'Work day', color:  '#44944A',};
+					case 1:
+						if (isDayPassed) {
+							return {status: 'Weekend', color:  '#ffcfcf',};
+						} else {
+							return {status: 'Weekend', color:  '#A8E4A0',};
+						}
+					case 0:
+						return {status: 'Emergency mode', color:  '#ffcfcf',};
+					default:
+						return {status: 'Fail !', color:  '#474747',};
+					}
 			},
 
 			editComment (value) {
