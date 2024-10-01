@@ -18,7 +18,7 @@
         />
       </v-card-text>
       <v-divider />
-      <v-list class="history_final-data-list" v-if="isDayPassed">
+      <v-list class="history_final-data-list" v-if="isDayPassed || isEmergencyModeActive">
         <v-list-item class="history_final-data-li">
           <v-list-item-content class="key">Final mark:</v-list-item-content>
           <v-list-item-content>{{ selectedEvent.dayFinalMark }}</v-list-item-content>
@@ -81,6 +81,9 @@
       },
       isDayPassed() {
         return this.selectedEvent.isDayPassed;
+      },
+      isEmergencyModeActive() {
+        return this.selectedEvent.status === 0;
       }
     },
     methods: {

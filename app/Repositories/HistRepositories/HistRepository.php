@@ -13,15 +13,19 @@ use Illuminate\Support\Facades\DB;
 use App\Repositories\HistRepositories\traits\TransformHistTrait;
 use Carbon\Carbon;
 use App\Models\Preplan;
+use App\Http\Controllers\Services\EmergencyService;
 
 class HistRepository
 {
-    private $period  = null;
-    private $preplan = null;
+    private $period           = null;
+    private $preplan          = null;
+    private $emergencyService = null;
 
-    public function __construct(Preplan $preplan)
+    public function __construct(Preplan $preplan,
+                                EmergencyService $emergencyService,)
     {
         $this->preplan = $preplan;
+        $this->emergencyService = $emergencyService;
     }
 
     public function getHist(array $period)
@@ -54,7 +58,6 @@ class HistRepository
             }
             $response['histLength'] = $userHistLength;
         }
-
         $futureDates = $this->getFutureDatesInCurrentMonth($period);
         if (count($futureDates)) {
             $futurePlans = $this->getFuturePlans($futureDates);
@@ -70,6 +73,9 @@ class HistRepository
             return ($checkDay->isBefore($referenceDay)) || ($checkDay->isSameDay($referenceDay));
         };
 
+        //Мне необходимо выводить препланы начиная со следующего дня после сегодняшней даты
+        //isNotLate нужно для того что бы не выводить пропущенные дни в текущем месяце
+        //$isTodayFirst необходма для тех случаев, когда сегодняшняя дата приходится на 1е число месяца
         $getStartDay = function($today, $firstDayOfMonth) use($isNotLate) {
             $isTodayFirst = $today->isSameDay($firstDayOfMonth); 
 
@@ -79,9 +85,6 @@ class HistRepository
             
             return $firstDayOfMonth->copy();
         };
-        //Мне необходимо выводить препланы начиная со следующего дня после сегодняшней даты
-        //isNotLate нужно для того что бы не выводить пропущенные дни в текущем месяце
-        //$isTodayFirst необходма для тех случаев, когда сегодняшняя дата приходится на 1е число месяца
 
         $firstDayOfMonth  = Carbon::createFromFormat('Y-m-d', $period["from"]);
         $lastDayOfMonth   = Carbon::createFromFormat('Y-m-d', $period["to"]);
@@ -91,27 +94,35 @@ class HistRepository
             return [];
         }
 
+        
         $startDay = $getStartDay($today, $firstDayOfMonth); //определяю начиная от какого дня мне надо выводить препланы
-
+        
         for ($startDay; $isNotLate($startDay, $lastDayOfMonth); $startDay->addDay()) {
             $dates[] = $startDay->toDateString();
         }
-        return $dates;
-
+        //получаю даты в этом месяце на которые взят Emergency mode
+        $emModDates = $this->emergencyService->getEmergencyModeDates($today->toDateString(), $lastDayOfMonth->toDateString());
+        //возвращаю будущие даты этого месяца на который Emergency mode не активирован
+        return array_diff($dates, $emModDates);
     }
 
     private function getFuturePlans($futureDates)
     {
         $user_id = Auth::id();
-        
+        //получаю данные по предварительным планам
         $preplans = $this->preplan::where("user_id", $user_id)->whereIn("date", $futureDates)->get()->toArray();
 
+        //трансфомирую данные в более удобный вид (где дата будет ключом)
         $transformedPreplans = [];
         foreach($preplans as $preplan) {
             $transformedPreplans[$preplan["date"]] = $preplan;
         }
 
         $transformedFuturePlans = [];
+        //Подготоавливаю данные для фронта (Ключи в таблице preplans и timetables(из нее берутся 
+        // данные для прошедних дней) не совпадают. Если существует преплан, то верну только данные используемые на фронте
+        //если преплана нету, то верну массив ["dayStatus" => 4] (этот код использую 
+        // для будущего дня на который не составлен преплан)
         foreach($futureDates as $futureDate) {
             if(array_key_exists($futureDate, $transformedPreplans)) {
                 $currentDayData   = $transformedPreplans[$futureDate];

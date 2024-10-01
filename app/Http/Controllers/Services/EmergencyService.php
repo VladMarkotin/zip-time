@@ -9,8 +9,16 @@
 namespace App\Http\Controllers\Services;
 
 use Carbon\Carbon;
+use App\Models\TimetableModel;
 class EmergencyService
 {
+    private $timetableModel = null;
+
+    public function __construct(TimetableModel $timetableModel)
+    {
+        $this->timetableModel = $timetableModel;
+    }
+
     public function check(array $data)
     {
         $makeCommentRight = function () use($data) {
@@ -44,5 +52,13 @@ class EmergencyService
         $data = $makeTermRight();
 
         return $data;
+    }
+
+    public function getEmergencyModeDates($from, $to) {
+        return $this->timetableModel::where('date', '>=', $from)
+        ->where('date', '<=', $to)
+        ->where('day_status', '=', 0)
+        ->pluck('date')
+        ->toArray();
     }
 } 
