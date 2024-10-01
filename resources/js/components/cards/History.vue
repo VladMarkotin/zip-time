@@ -181,16 +181,16 @@ export default
 			getCardHeaderData(dayStatus, isDayPassed) {
 				switch(dayStatus){
 					case 4: //несозданный преплан
-						return {status: '', color:  '#44944A',};
+						return {status: '', color:  '#4285B4',};
 					case 3: 
 						return {status: 'Success', color:  '#A10000',};
 					case 2: //преплан рабочий день
-						return {status: 'Work day', color:  '#44944A',};
+						return {status: 'Work day', color:  '#4285B4',};
 					case 1:
 						if (isDayPassed) {
 							return {status: 'Weekend', color:  '#ffcfcf',};
 						} else {
-							return {status: 'Weekend', color:  '#A8E4A0',};
+							return {status: 'Weekend', color:  '#ABCDEF',};
 						}
 					case 0:
 						return {status: 'Emergency mode', color:  '#ffcfcf',};
