@@ -95,6 +95,7 @@ export default
 		},
 		computed: {
 			shownEvents() {
+				console.log(this.events);
 				return this.events.filter(dayData => {
 					const areAnyPlans    = dayData.status !== 4;
 					const isSelectedDate = dayData.date === this.selectedDate;
@@ -149,23 +150,29 @@ export default
 				let color = '#A10000';
 				const plans = history.data.plans;
 				for (const date in plans) {
+					const isDayPassed = plans[date].isDayPassed;
 					status = '';
 					switch(plans[date].dayStatus ){
-						case 4:
+						case 4: //несозданный преплан
 							status = ""
-							color = '#A10000';
+							color = '#44944A';
 							break;
 						case 3: 
 							status = "Success"
 							color = '#A10000';
 							break;
-						case 2:
-							status = "Weekend"
-							color = '#A10000';
+						case 2: //преплан рабочий день
+							status = "Work future"
+							color = '#44944A';
 							break;
 						case 1:
-							status = "Weekend"
-							color = '#ffcfcf'
+							if (isDayPassed) {
+								status = "Weekend"
+								color = '#ffcfcf'
+							} else {
+								status = "Weekend future"
+								color = '#A8E4A0'
+							}
 							break;
 						case 0:
 							status = "Emergency mode"

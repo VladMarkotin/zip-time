@@ -13,8 +13,8 @@ class HistTransformationService
     public function transformHistResponse(array $data, string $todayDate)
     {
         foreach ($data['plans'] as $planDate => &$plan) {
-            $plan["isUpcomingDay"] = $this->checkIsBeforeToday($planDate, $todayDate);
-            if ($plan["isUpcomingDay"]) {
+            $plan["isDayPassed"] = $this->checkIsBeforeToday($planDate, $todayDate);
+            if ($plan["isDayPassed"]) {
                 foreach ($plan['tasks'] as $task) {
                     if ($task->mark == -1) {
                         $task->mark = "-";
