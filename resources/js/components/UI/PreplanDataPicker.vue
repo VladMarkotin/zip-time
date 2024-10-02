@@ -6,7 +6,7 @@
         v-bind="props" 
         @click="menu = true"
         style="background-color: rgb(161, 0, 0); color: white"
-        >Set date</v-btn>
+        >Set future plans</v-btn>
       </template>
       
       <div>
