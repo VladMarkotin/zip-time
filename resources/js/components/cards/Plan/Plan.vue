@@ -18,7 +18,7 @@
       />
       <v-card-title style="background-color: #A10000;color: white;" >Create your day plan!</v-card-title>
       <v-container>
-         <div style="display: flex; justify-content: space-between;">
+         <div class="plan-settings-wrapper">
             <div>
                <PreplanDataPicker 
                v-model             = "planDate"
@@ -1155,6 +1155,11 @@ export default {
 }
 </script>
 <style scoped>
+   .plan-settings-wrapper {
+      display: flex;
+      justify-content: space-between;
+   }
+
 	.v-progress-circular{
 		width: 50px;
 		margin: auto;

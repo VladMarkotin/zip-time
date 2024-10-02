@@ -1,5 +1,5 @@
 <template>
-     <v-container>
+     <v-container class="dataPicker-wraper">
     <v-menu v-model="menu" offset-y>
       <template #activator="{ props }">
         <v-btn 
@@ -22,7 +22,7 @@
     </v-menu>
 
     <div>
-        <p>Selected date: {{ displayDate }}</p>
+        <p class="mb-0">Selected date: {{ displayDate }}</p>
     </div>
   </v-container>
 </template>
@@ -73,3 +73,20 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+    .dataPicker-wraper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 0 0;
+    }
+
+    @media screen and (max-width: 900px) {
+        .dataPicker-wraper {
+            flex-direction: column;
+            gap: 0;
+            padding: 0;
+        }
+    }
+</style>
