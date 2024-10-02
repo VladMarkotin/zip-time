@@ -85,14 +85,6 @@ export default
 		},
 		store,
 		components: {HistoryDayCard},
-		watch: {
-			selectedOpen(value) {
-				if (!value) {
-					this.selectedElement = null;
-					this.selectedDate = '';
-				}
-			}
-		},
 		computed: {
 			shownEvents() {
 				return this.events.filter(dayData => {
@@ -221,15 +213,11 @@ export default
         	},
 
 			onMouseEnterDay({date}) {
-				if (!this.selectedElement) {
-					this.selectedDate = date;
-				}
+				this.selectedDate = date;
 			},
 
 			onMouseLeaveDay() {
-				if (!this.selectedElement) {
-					this.selectedDate = '';
-				}
+				this.selectedDate = '';
 			}
 		},
 		mounted() {
