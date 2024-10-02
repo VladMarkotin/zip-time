@@ -61,6 +61,7 @@
 import store from '../../store';
 import { mapMutations } from 'vuex/dist/vuex.common.js';
 import HistoryDayCard from '../UI/HistoryDayCard.vue';
+import { debounce } from 'lodash';
 
 export default
 	{
@@ -81,6 +82,7 @@ export default
 				events: [],
 				isCommentEdited: false,
 				newCommentText: '',
+				DEBOUNCER_DELAY: 400,
 			}
 		},
 		store,
@@ -93,6 +95,11 @@ export default
 
 					return areAnyPlans || isSelectedDate;
 				});
+			},
+			debouncedOnMouseEnterDay() {
+				return debounce(function(callback) {
+					callback();
+				}, this.DEBOUNCER_DELAY);
 			}
 		},
 		methods:
@@ -213,7 +220,9 @@ export default
         	},
 
 			onMouseEnterDay({date}) {
-				this.selectedDate = date;
+				this.debouncedOnMouseEnterDay(() => {
+					this.selectedDate = date;
+				});
 			},
 
 			onMouseLeaveDay() {
