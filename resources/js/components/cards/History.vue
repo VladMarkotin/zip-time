@@ -34,6 +34,7 @@
 				@change="updateRange"
 				@mouseenter:day="onMouseEnterDay"
 				@mouseleave:day="onMouseLeaveDay" 
+				locale="en"
 				>
 				</v-calendar>
 				<v-menu 
