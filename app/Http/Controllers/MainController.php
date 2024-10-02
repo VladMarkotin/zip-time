@@ -263,7 +263,6 @@ class MainController
         return $savedTask;//
     }
 
-
     public function addPlan(Request $request)
     {
         $data = $request->json()->all();

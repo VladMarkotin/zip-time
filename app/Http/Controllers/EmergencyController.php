@@ -45,4 +45,12 @@ class EmergencyController extends Controller
 
         return json_encode($response);
     }
+
+    public function getEmergencyModeDates(Request $request)
+    {
+        $today_date = $request->todayDate;
+        $emergency_mode_dates = $this->emergencyService->getEmergencyModeDates($today_date);
+        
+        return response()->json(["emergency_mode_dates" => $emergency_mode_dates]);
+    }
 }

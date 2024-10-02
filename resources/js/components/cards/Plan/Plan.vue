@@ -18,16 +18,26 @@
       />
       <v-card-title style="background-color: #A10000;color: white;" >Create your day plan!</v-card-title>
       <v-container>
-         <div id="plan-day-status">
-            <v-select
-               :items="dayStatuses2"
-               label="Day status"
-               v-model="day_status"
-               @change="isWeekendAvailable"
-               item-disabled="disable"
-               item-text="status"
-               required
-               ></v-select>
+         <div class="plan-settings-wrapper">
+            <div>
+               <PreplanDataPicker 
+               v-model             = "planDate"
+               :todayDate          = "todayDate"
+               :emergencyModeDates = "emergencyModeDates"
+               @changePlanDate = "changePlanDate"
+               />
+            </div>
+            <div id="plan-day-status">
+               <v-select
+                  :items="dayStatuses2"
+                  label="Day status"
+                  v-model="day_status"
+                  @change="isWeekendAvailable"
+                  item-disabled="disable"
+                  item-text="status"
+                  required
+                  ></v-select>
+            </div>
          </div>
          <div style="min-height: 24px;">
             <transition name="tasks-counter">
@@ -208,13 +218,13 @@
                <div 
                style="position: relative;"
                class=" d-flex justify-space-between" 
-               v-if="items.length > 0"
+               v-if="!isTodayPlan || items.length > 0"
                >
                <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
                         id="plan-creating" 
-                        v-on:click="formSubmit()" 
+                        v-on:click="formSubmit" 
                         v-bind="attrs"
                         v-on="on"
                         color="#D71700" 
@@ -300,6 +310,7 @@
 </template>
 <script>
 import store from '../../../store';
+import PreplanDataPicker from '../../UI/PreplanDataPicker.vue';
 import { mapMutations, mapGetters } from 'vuex/dist/vuex.common.js';
 import AddHashCode from '../../dialogs/AddHashCode.vue';
 import AddHashCodeButton from '../../UI/AddHashCodeButton.vue';
@@ -326,6 +337,7 @@ import {
 import { uuid } from 'vue-uuid';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
+import details from '../../../store/modules/details';
 
 export default {
    components : {
@@ -337,9 +349,12 @@ export default {
       VSelectTooptip, 
       CustomTimepicker,
       SelectTaskType,
+      PreplanDataPicker,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
+         planDate: new Date().getTodayFormatedDate(),
+         todayDate: new Date().getTodayFormatedDate(),
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          newHashCode: '#',
          showIcon: 0,
@@ -401,6 +416,7 @@ export default {
             selectedSavedTaskId: null,
          },
          addTaskToPlanWithoutConfirmation: false,
+         emergencyModeDates: [],
     }),
     store,
     watch: {
@@ -476,6 +492,10 @@ export default {
             return !!this.defaultSelected.hash.match(/^#q-/);
          },
 
+         isTodayPlan() {
+            return this.planDate === this.todayDate;
+         },
+
     },
     methods: {
       ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -489,7 +509,7 @@ export default {
        
         getPostParams() {
             return {
-               date: new Date().toISOString().substr(0, 10),
+               date: this.planDate,
                day_status: {Weekend: 1, 'Work Day': 2}[this.day_status],
                plan: this.items,
             }; 
@@ -569,18 +589,19 @@ export default {
          return true;
         },
 
-        setAlert({serverMessage, alertType}) {
-         //если длина названия таски очень большая, то оставляю первые 25 символов только
-         const regex = /The task (.+?) has/g;
-         const matches = regex.exec(serverMessage);
-         if (matches) {
-            const taskName = matches[1]; 
-            
-            if (taskName && taskName.length > 25) {
-               serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+        setAlert({serverMessage, alertType, checkTaskName = false}) {
+            if (checkTaskName) {
+               //если длина названия таски очень большая, то оставляю первые 25 символов только
+               const regex = /The task (.+?) has/g;
+               const matches = regex.exec(serverMessage);
+               if (matches) {
+                  const taskName = matches[1]; 
+                  
+                  if (taskName && taskName.length > 25) {
+                     serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+                  }
+               }
             }
-         }
-
          
             this.serverMessage = serverMessage;
             this.alertType = alertType;
@@ -589,7 +610,7 @@ export default {
             clearTimeout(this.closeAlertTime);
             this.closeAlertTime = setTimeout(() => {
                this.showAlert = false;
-            }, 3000);
+            }, 5e3);
         },
 
         addTask() {
@@ -608,7 +629,7 @@ export default {
          const {taskName}      = this.defaultSelected;
 
          if (checkTaskResult !== true) {
-            this.setAlert({serverMessage: checkTaskResult, alertType: 'error'});
+            this.setAlert({serverMessage: checkTaskResult, alertType: 'error', checkTaskName: true});
             return;
          }
 
@@ -627,7 +648,7 @@ export default {
          }
             // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
-         this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success'});
+         this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success', checkTaskName: true});
         },
 
         deleteItem(item) {
@@ -637,10 +658,42 @@ export default {
             this.items.splice(index, 1);
              // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
-            this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success'});
+            this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success', checkTaskName: true});
+        },
+
+        async createPreplan() {
+         try {
+
+            const planData = this.getPostParams();
+
+            const transformedPlan = planData.plan.map(data => ({
+               hash:    data.hash,
+               details: data.details,
+               notes: data.notes,
+               priority: data.priority,
+               taskName: data.taskName,
+               time: data.time,
+               type: data.type,
+               uniqKey: data.uniqKey,
+            }));
+
+            const response = await axios.post('/add-preplan', {
+               plan:       transformedPlan,
+               date:       planData.date,
+               day_status: planData.day_status
+            });
+
+            this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
+         } catch(error) {
+            console.error(error);
+         }
         },
 
         formSubmit(e) {
+            if (!this.isTodayPlan) {
+               return this.createPreplan();
+            }
+
             let currentObj = this;
             axios.post('/addPlan', currentObj.getPostParams())
             .then(function(response) { 
@@ -715,11 +768,82 @@ export default {
 
       setTaskType(value) {
          console.log(value);
-      }
+      },
+
+      async getTodayPlan() {
+         this.showPreloaderInsteadTable = true;
+
+            try {
+                  const response = await axios.post('/getPreparedPlan');
+                  if (response) {
+                     for (let i = 0; i < response.data.length; i++) {
+                        const currentIterableTask = response.data[i];
+                        if (Object.keys(currentIterableTask).length === 0) continue;
+
+                        this.preparedTask.hash = currentIterableTask.hash_code;
+                        this.preparedTask.taskName = currentIterableTask.task_name;
+                        this.preparedTask.type = currentIterableTask.type;
+                        this.preparedTask.priority = String(currentIterableTask.priority);
+                        this.preparedTask.time = currentIterableTask.time;
+                        this.preparedTask.details = currentIterableTask.details;
+                        this.preparedTask.notes = currentIterableTask.note;
+                        this.preparedTask.uniqKey = this.generateUniqKey();
+
+                        this.items.push(this.preparedTask);
+                        this.preparedTask = {};
+                     }
+                  }
+            } catch (error) {
+                  this.output = error;
+            } finally {
+                  this.showPreloaderInsteadTable = false;
+            }
+         },
+
+         async getPreplan() {
+            try {
+               const response = await axios.post('/get-preplan', {date: this.planDate});
+               
+               if (response.status === 200) {
+                  this.items = [...response.data.tasks, ...this.items];
+                  this.day_status = response.data.transformed_day_status;
+               }
+            } catch(error) {
+               console.error(error);
+            }
+         },
+
+         async changePlanDate() {
+            this.items = [];
+            this.showPreloaderInsteadTable = true;
+
+            const promises = [];
+
+            if (this.isTodayPlan) {
+               promises.push(this.getTodayPlan());
+            }
+            promises.push(this.getPreplan());
+
+            await Promise.all(promises);
+            
+            this.showPreloaderInsteadTable = false;
+         },
+
+         async getEmergencyModeDates() {
+            try {
+               const response = await axios.post('/getEmergencyModeDates', {todayDate: this.todayDate});
+               
+               if (response.status === 200) {
+                  return response.data.emergency_mode_dates;
+               }
+               return [];
+            } catch(error) {
+               console.error(error);
+            }
+         }
     },
     created() {
         let currentObj = this;
-        currentObj.showPreloaderInsteadTable = true;
 
         axios.post('/getSavedTasks')
             .then(function(response) {
@@ -756,35 +880,20 @@ export default {
             currentObj.output = error;
          });
 
-         axios.post('/getPreparedPlan')
-         .then(function(response) {
-            if(response){
-               for(let i = 0; i < response.data.length; i++){
-                  const currentIterableTask = response.data[i];
-                  if (Object.keys(currentIterableTask).length === 0) continue;
-                  
-                  currentObj.preparedTask.hash = currentIterableTask.hash_code;
-                  currentObj.preparedTask.taskName = currentIterableTask.task_name;
-                  currentObj.preparedTask.type = currentIterableTask.type;
-                  currentObj.preparedTask.priority = String(currentIterableTask.priority);
-                  currentObj.preparedTask.time = currentIterableTask.time;
-                  currentObj.preparedTask.details = currentIterableTask.details;
-                  currentObj.preparedTask.notes = currentIterableTask.note;
-                  currentObj.preparedTask.uniqKey = currentObj.generateUniqKey();
-                 
-                  
-                  
-                  currentObj.items.push(currentObj.preparedTask);
-                  currentObj.preparedTask = {};
-               }
-            }
-         })
-         .catch(function(error) {
-            currentObj.output = error;
-         })
-         .finally(() => {
+         currentObj.showPreloaderInsteadTable = true;
+
+         Promise.all([this.getTodayPlan(), this.getPreplan()])
+         .then(() => {
             currentObj.showPreloaderInsteadTable = false;
          });
+
+        this.getEmergencyModeDates()
+        .then((dates) => {
+            this.emergencyModeDates = dates;
+        })
+        .catch((dates) => {
+            this.emergencyModeDates = [];
+        })
     },
 
     async mounted() {
@@ -1046,6 +1155,11 @@ export default {
 }
 </script>
 <style scoped>
+   .plan-settings-wrapper {
+      display: flex;
+      justify-content: space-between;
+   }
+
 	.v-progress-circular{
 		width: 50px;
 		margin: auto;

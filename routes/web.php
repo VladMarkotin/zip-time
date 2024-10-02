@@ -91,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
 
 //emergency
     Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index']);
+    Route::post('/getEmergencyModeDates', [App\Http\Controllers\EmergencyController::class, 'getEmergencyModeDates'])->name('get-emer-mode-dates');
 //
 //settings
     Route::get('/settings',  [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');
@@ -126,6 +127,10 @@ Route::middleware(['auth'])->group(function () {
 
     //Update comment
     Route::post('edit-comment', [App\Http\Controllers\EstimationController::class, 'saveComment']);
+
+    //Preplans
+    Route::post('/add-preplan', [App\Http\Controllers\PreplanController::class, 'addPreplan'])->name('preplans.create');
+    Route::post('/get-preplan', [App\Http\Controllers\PreplanController::class, 'getPreplanData'])->name('preplans.get');
 
 });
 Route::post('/get-default-configs', function (){

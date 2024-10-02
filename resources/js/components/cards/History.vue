@@ -23,76 +23,58 @@
 				</v-toolbar>
 			</v-sheet>
 			<v-sheet height="600">
-				<v-calendar ref="calendar" v-model="focus" color="primary" v-bind:events="events"
-					:event-color="getEventColor" :type="type" @click:event="showEvent" @change="updateRange">
+				<v-calendar 
+				ref="calendar" 
+				v-model="focus" 
+				color="primary" 
+				v-bind:events="shownEvents"
+				:event-color="getEventColor" 
+				:type="type" 
+				@click:event="showEvent" 
+				@change="updateRange"
+				@mouseenter:day="onMouseEnterDay"
+				@mouseleave:day="onMouseLeaveDay" 
+				locale="en"
+				>
 				</v-calendar>
-				<v-menu max-width="100%" style="z-index: 20;" v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
-					<v-card 
-					color="grey lighten-4" 
-					width="400px" 
-					flat
-					>
-						<v-toolbar :color="selectedEvent.color" dark>
-							<v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
-							<v-spacer></v-spacer>
-						</v-toolbar>
-						<v-card-text>
-							<v-data-table :headers="headers" :items="selectedEvent.tasks" class="elevation-1"
-								hide-default-footer>
-							</v-data-table>
-						</v-card-text>
-						<v-divider></v-divider>
-						<v-list class="history_final-data-list">
-							<v-list-item class="history_final-data-li">
-								<v-list-item-content class="key">Final mark:</v-list-item-content>
-								<v-list-item-content>{{ selectedEvent.dayFinalMark }}</v-list-item-content>
-							</v-list-item>
-							<v-list-item class="history_final-data-li">
-								<v-list-item-content class="key">Own mark:</v-list-item-content>
-								<v-list-item-content>{{ selectedEvent.dayOwnMark }}</v-list-item-content>
-							</v-list-item>
-							<!-- <v-list-item class="history_final-data-li history_comment-wrapper">
-								<v-list-item-content class="key comment-title"> Comment:</v-list-item-content>
-							</v-list-item> -->
-							<v-list-item>
-								<v-list-item-content style="overflow: visible;">
-									<ClosedDayCommentDialog 
-									:commentText        = "selectedEvent.comment"
-									:newCommentText     = "newCommentText"
-									commentFieldHeight  = "150px"
-									@editComment = "editComment"
-									@saveComment = "saveComment"
-									/>
-								</v-list-item-content>
-							</v-list-item>
-						</v-list>
-						<v-card-actions>
-							<v-row class="pt-3 pb-3">
-								<v-btn text color="secondary" @click="selectedOpen = false">
-									Cancel
-								</v-btn>
-							</v-row>
-						</v-card-actions>
-					</v-card>
+				<v-menu 
+				max-width="100%" 
+				style="z-index: 20;" 
+				v-model="selectedOpen" 
+				:close-on-content-click="false" 
+				:activator="selectedElement" 
+				offset-x
+				>
+					<HistoryDayCard 
+					:selectedEvent="selectedEvent"
+					:headers="headers"
+					:newCommentText="newCommentText"
+					@editComment="editComment"
+					@saveComment="saveComment"
+					@close="selectedOpen = false" 
+					/>
 				</v-menu>
 			</v-sheet>
 		</v-col>
 	</v-row>
 </template>
 <script>
-import ClosedDayCommentDialog from '../dialogs/ClosedDayCommentDialog.vue';
 import store from '../../store';
 import { mapMutations } from 'vuex/dist/vuex.common.js';
+import HistoryDayCard from '../UI/HistoryDayCard.vue';
+import { debounce } from 'lodash';
 
 export default
 	{
 		data() {
 			return {
+				todayDate: new Date().getTodayFormatedDate(),
 				focus: '',
 				type: 'month',
 				selectedEvent: {},
 				selectedElement: null,
 				selectedOpen: false,
+				selectedDate: '',
 				headers: [
 					{ text: ' hash', value: 'hashCode' },
 					{ text: 'Task name', value: 'taskName' },
@@ -101,10 +83,26 @@ export default
 				events: [],
 				isCommentEdited: false,
 				newCommentText: '',
+				DEBOUNCER_DELAY: 400,
 			}
 		},
 		store,
-		components: {ClosedDayCommentDialog},
+		components: {HistoryDayCard},
+		computed: {
+			shownEvents() {
+				return this.events.filter(dayData => {
+					const areAnyPlans    = dayData.status !== 4;
+					const isSelectedDate = dayData.date === this.selectedDate;
+
+					return areAnyPlans || isSelectedDate;
+				});
+			},
+			debouncedOnMouseEnterDay() {
+				return debounce(function(callback) {
+					callback();
+				}, this.DEBOUNCER_DELAY);
+			}
+		},
 		methods:
 		{
 			...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -143,54 +141,62 @@ export default
 			
 			async updateRange(period) {
 				const history = await axios.post('/hist', {
-					start_date: period.start.date
+					start_date: period.start.date,
+					today_date: this.todayDate
 				})
 				this.events = []
-				let status;
-				let color = '#A10000';
-				for (const date in history.data.plans) {
-					status = '';
-					
-					switch(history.data.plans[date].dayStatus ){
-						case 3: 
-							status = "Success"
-							color = '#A10000';
-							break;
-						case 1:
-							status = "Weekend"
-							color = '#ffcfcf'
-							break;
-						case 0:
-							status = "Emergency mode"
-							color = '#ffcfcf';
-							break;
-						default:
-							status = "Fail !";
-							color = "#474747";
-							break;
+				const plans = history.data.plans;
+				for (const date in plans) {
+					const isDayPassed = plans[date].isDayPassed;
 
-					}
-					if (history.data.plans[date].dayFinalMark == 0) {
-						history.data.plans[date].dayFinalMark = '-';
-					} else {
-						history.data.plans[date].dayFinalMark = history.data.plans[date].dayFinalMark +'%';
-					}
-					if (history.data.plans[date].dayOwnMark == 0) {
-						history.data.plans[date].dayOwnMark = '-';
-					} else {
-						history.data.plans[date].dayOwnMark = history.data.plans[date].dayOwnMark +'%';
-					}
-					this.events.push({
+					const cardHeaderData        = this.getCardHeaderData(plans[date].dayStatus, isDayPassed);
+					const transformedFinalMark  = this.getTransformedMark(plans[date].dayFinalMark);
+					const transformedDayOwnMark = this.getTransformedMark(plans[date].dayOwnMark);
+					
+					const dayData = {
 						start: new Date(date),
 						end: new Date(date),
-						name: `Day status:\t${status}`,
-						color: color,
-						dayFinalMark: history.data.plans[date].dayFinalMark,
-						dayOwnMark: history.data.plans[date].dayOwnMark,
-						comment: history.data.plans[date].comment,
-						tasks: history.data.plans[date].tasks
-					})
+						name: `Day status:\t${cardHeaderData.status}`,
+						color: cardHeaderData.color,
+						dayFinalMark: transformedFinalMark,
+						dayOwnMark: transformedDayOwnMark,
+						comment: plans[date].comment,
+						tasks: plans[date].tasks,
+						status: plans[date].dayStatus,
+						date: date,
+						isDayPassed: plans[date].isDayPassed,
+					}
+
+					this.events = [...this.events, dayData];
 				}
+			},
+
+			getTransformedMark(finalMark) {
+				if (finalMark == 0) {
+					return '-';
+				}
+				return `${finalMark}%`;
+			},
+
+			getCardHeaderData(dayStatus, isDayPassed) {
+				switch(dayStatus){
+					case 4: //несозданный преплан
+						return {status: '', color:  '#4285B4',};
+					case 3: 
+						return {status: 'Success', color:  '#A10000',};
+					case 2: //преплан рабочий день
+						return {status: 'Work day', color:  '#4285B4',};
+					case 1:
+						if (isDayPassed) {
+							return {status: 'Weekend', color:  '#ffcfcf',};
+						} else {
+							return {status: 'Weekend', color:  '#ABCDEF',};
+						}
+					case 0:
+						return {status: 'Emergency mode', color:  '#ffcfcf',};
+					default:
+						return {status: 'Fail !', color:  '#474747',};
+					}
 			},
 
 			editComment (value) {
@@ -212,7 +218,17 @@ export default
 
 			updateScreenWidth() {
             	this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
-        	}
+        	},
+
+			onMouseEnterDay({date}) {
+				this.debouncedOnMouseEnterDay(() => {
+					this.selectedDate = date;
+				});
+			},
+
+			onMouseLeaveDay() {
+				this.selectedDate = '';
+			}
 		},
 		mounted() {
 			window.addEventListener('resize', this.updateScreenWidth);
@@ -225,23 +241,6 @@ export default
 </script>
 
 <style scoped>
-	.key {
-		font-weight : bold
-	}
-
-	.history_final-data-list .history_final-data-li {
-		gap: 25px;
-		min-height: 0 ;
-	}
-
-	.history_final-data-list .history_final-data-li .key {
-		justify-content: flex-start !important;
-	}
-
-	.history_final-data-list .history_final-data-li .v-list-item__content{
-		padding: 4px;
-		justify-content: flex-end;
-	}
 
 	@import url('/css/History/HistoryMedia.css');
 </style>
