@@ -16,6 +16,7 @@
         :min="todayDate"
         @input  = "updateValue"
         @change = "$emit('changePlanDate')"
+        :allowed-dates="isDateAllowed"
         ></v-date-picker>
       </div>
     </v-menu>
@@ -37,6 +38,10 @@ export default {
         todayDate: {
             type: String,
             default: new Date().getTodayFormatedDate(),
+        },
+        emergencyModeDates: {
+            type: Array,
+            default: () => [],
         }
     },
     data() {
@@ -60,6 +65,9 @@ export default {
         updateValue(selectedDate) {
             this.menu = false;
             this.$emit('input', this.formatDate(selectedDate));
+        },
+        isDateAllowed(date) {
+           return !this.emergencyModeDates.includes(date);
         }
     },
 };

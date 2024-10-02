@@ -21,8 +21,9 @@
          <div style="display: flex; justify-content: space-between;">
             <div>
                <PreplanDataPicker 
-               v-model="planDate"
-               :todayDate = "todayDate"
+               v-model             = "planDate"
+               :todayDate          = "todayDate"
+               :emergencyModeDates = "emergencyModeDates"
                @changePlanDate = "changePlanDate"
                />
             </div>
@@ -415,6 +416,7 @@ export default {
             selectedSavedTaskId: null,
          },
          addTaskToPlanWithoutConfirmation: false,
+         emergencyModeDates: [],
     }),
     store,
     watch: {
@@ -830,6 +832,19 @@ export default {
             await Promise.all(promises);
             
             this.showPreloaderInsteadTable = false;
+         },
+
+         async getEmergencyModeDates() {
+            try {
+               const response = await axios.post('/getEmergencyModeDates', {todayDate: this.todayDate});
+               
+               if (response.status === 200) {
+                  return response.data.emergency_mode_dates;
+               }
+               return [];
+            } catch(error) {
+               console.error(error);
+            }
          }
     },
     created() {
@@ -876,7 +891,14 @@ export default {
          .then(() => {
             currentObj.showPreloaderInsteadTable = false;
          });
-         ;
+
+        this.getEmergencyModeDates()
+        .then((dates) => {
+            this.emergencyModeDates = dates;
+        })
+        .catch((dates) => {
+            this.emergencyModeDates = [];
+        })
     },
 
     async mounted() {

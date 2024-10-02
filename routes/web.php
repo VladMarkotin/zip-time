@@ -91,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
 
 //emergency
     Route::post('/emergency', [App\Http\Controllers\EmergencyController::class, 'index']);
+    Route::post('/getEmergencyModeDates', [App\Http\Controllers\EmergencyController::class, 'getEmergencyModeDates'])->name('get-emer-mode-dates');
 //
 //settings
     Route::get('/settings',  [App\Http\Controllers\SettingsController::class, 'index'])->name('settings');

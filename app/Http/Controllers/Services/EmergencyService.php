@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Services;
 
 use Carbon\Carbon;
 use App\Models\TimetableModel;
+use Illuminate\Support\Facades\Auth;
+
 class EmergencyService
 {
     private $timetableModel = null;
@@ -54,11 +56,17 @@ class EmergencyService
         return $data;
     }
 
-    public function getEmergencyModeDates($from, $to) {
-        return $this->timetableModel::where('date', '>=', $from)
-        ->where('date', '<=', $to)
+    public function getEmergencyModeDates($from, $to = null) {
+        $user_id = Auth::id();
+
+        $query = $this->timetableModel::where('date', '>=', $from)
         ->where('day_status', '=', 0)
-        ->pluck('date')
-        ->toArray();
+        ->where('user_id', $user_id);
+
+        if (isset($to)) {
+            $query->where('date', '<=', $to);
+        }
+
+        return $query->pluck('date')->toArray();
     }
 } 
