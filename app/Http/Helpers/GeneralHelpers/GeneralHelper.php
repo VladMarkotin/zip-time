@@ -3,6 +3,7 @@ namespace App\Http\Helpers\GeneralHelpers;
 
 
 use App\Models\TimetableModel;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Auth;
 
@@ -83,4 +84,8 @@ class GeneralHelper
         return $day_status === 0;
     }
 
+    public static function getUserTimeZone() {
+        $user_id = Auth::id();
+        return User::find($user_id)->timezone;
+    }
 }

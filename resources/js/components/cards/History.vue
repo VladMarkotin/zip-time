@@ -68,7 +68,6 @@ export default
 	{
 		data() {
 			return {
-				todayDate: new Date().getTodayFormatedDate(),
 				focus: '',
 				type: 'month',
 				selectedEvent: {},
@@ -142,7 +141,6 @@ export default
 			async updateRange(period) {
 				const history = await axios.post('/hist', {
 					start_date: period.start.date,
-					today_date: this.todayDate
 				})
 				this.events = []
 				const plans = history.data.plans;
