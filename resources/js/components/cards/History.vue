@@ -241,6 +241,5 @@ export default
 </script>
 
 <style scoped>
-
 	@import url('/css/History/HistoryMedia.css');
 </style>
