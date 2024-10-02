@@ -8,6 +8,7 @@
       <v-toolbar :color="selectedEvent.color" dark class="history-day-card_header">
         <v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
         <v-spacer></v-spacer>
+        <span>{{ formatedDate }}</span>
       </v-toolbar>
       <v-card-text>
         <v-data-table 
@@ -84,7 +85,10 @@
       },
       isEmergencyModeActive() {
         return this.selectedEvent.status === 0;
-      }
+      },
+      formatedDate() {
+        return new Date(this.selectedEvent.date).formatDateToDMY();
+      },
     },
     methods: {
       editComment(value) {
