@@ -589,18 +589,19 @@ export default {
          return true;
         },
 
-        setAlert({serverMessage, alertType}) {
-         //если длина названия таски очень большая, то оставляю первые 25 символов только
-         const regex = /The task (.+?) has/g;
-         const matches = regex.exec(serverMessage);
-         if (matches) {
-            const taskName = matches[1]; 
-            
-            if (taskName && taskName.length > 25) {
-               serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+        setAlert({serverMessage, alertType, checkTaskName = false}) {
+            if (checkTaskName) {
+               //если длина названия таски очень большая, то оставляю первые 25 символов только
+               const regex = /The task (.+?) has/g;
+               const matches = regex.exec(serverMessage);
+               if (matches) {
+                  const taskName = matches[1]; 
+                  
+                  if (taskName && taskName.length > 25) {
+                     serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+                  }
+               }
             }
-         }
-
          
             this.serverMessage = serverMessage;
             this.alertType = alertType;
@@ -609,7 +610,7 @@ export default {
             clearTimeout(this.closeAlertTime);
             this.closeAlertTime = setTimeout(() => {
                this.showAlert = false;
-            }, 3000);
+            }, 5e3);
         },
 
         addTask() {
@@ -628,7 +629,7 @@ export default {
          const {taskName}      = this.defaultSelected;
 
          if (checkTaskResult !== true) {
-            this.setAlert({serverMessage: checkTaskResult, alertType: 'error'});
+            this.setAlert({serverMessage: checkTaskResult, alertType: 'error', checkTaskName: true});
             return;
          }
 
@@ -647,7 +648,7 @@ export default {
          }
             // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
-         this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success'});
+         this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success', checkTaskName: true});
         },
 
         deleteItem(item) {
@@ -657,7 +658,7 @@ export default {
             this.items.splice(index, 1);
              // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
-            this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success'});
+            this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success', checkTaskName: true});
         },
 
         async createPreplan() {
@@ -682,13 +683,7 @@ export default {
                day_status: planData.day_status
             });
 
-            this.alertType = response.data.status;
-            this.serverMessage = response.data.message;
-            this.showAlert = true;
-
-            setTimeout(() => {
-               this.showAlert = false;
-            }, 5e3);
+            this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
          } catch(error) {
             console.error(error);
          }
