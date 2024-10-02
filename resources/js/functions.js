@@ -32,3 +32,9 @@ Date.prototype.getTodayFormatedDate =
 	{
 		return this.getCurrentDate().slice(0,10);
 	}
+Date.prototype.formatDateToDMY =
+	function()
+	{
+		const [year, month, day] = this.getTodayFormatedDate().split('-');
+		return `${day}-${month}-${year}`;
+	}

@@ -52,10 +52,11 @@ export default {
     computed: {
         displayDate() {
             const formatedDate = this.formatDate(this.value);
+            const dmyDate      = new Date(formatedDate).formatDateToDMY(); 
             
             const dayOfWeek = new Date(formatedDate).toLocaleString('en-US', { weekday: 'long' });
 
-            return formatedDate === this.todayDate ? 'Today' : `${formatedDate} ${dayOfWeek}`;
+            return formatedDate === this.todayDate ? 'Today' : `${dmyDate} ${dayOfWeek}`;
         },
     },
     methods: {
