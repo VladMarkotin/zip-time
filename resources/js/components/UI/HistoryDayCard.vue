@@ -40,13 +40,13 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-list v-else>
+      <!-- <v-list v-else>
         <v-list-item>
           <v-list-item-content class="justify-content-center">
             <v-btn>{{isPreplanExists ? 'update plan' : 'create plan'}}</v-btn>
           </v-list-item-content>
         </v-list-item>
-      </v-list>
+      </v-list> -->
       <v-spacer></v-spacer> 
       <v-card-actions>
         <v-row class="pt-3 pb-3">
