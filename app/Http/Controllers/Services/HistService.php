@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Repositories\HistRepositories\HistRepository;
 use App\Http\Controllers\Services\HistTransformationService;
 use App\Models\TimetableModel;
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 
 class HistService
 {
@@ -19,22 +20,27 @@ class HistService
     private $histRepository            = null;
     private $histTransformationService = null;
     private $timeTable                 = null;
+    private $generealHelper            = null;
 
     public function __construct(Carbon $carbon, 
                                 HistRepository $histRepository,
                                 HistTransformationService $histTransformationService,
-                                TimetableModel $timeTable
+                                TimetableModel $timeTable,
+                                GeneralHelper $generalHelper,
                                 )
     {
         $this->carbon                    = $carbon;
         $this->histRepository            = $histRepository;
         $this->histTransformationService = $histTransformationService;
         $this->timeTable                 = $timeTable;
+        $this->generealHelper            = $generalHelper;
     }
 
-    public function getHist($startDate, $todayDate)
-    {
-        $period["today"]          = $todayDate;
+    public function getHist($startDate)
+    {   
+        $user_time_zone           = $this->generealHelper::getUserTimeZone();
+
+        $period["today"]          = $this->generealHelper::getNow($user_time_zone)->toDateString();
         $period["from"]           = $startDate;
         $period["to"]             = Carbon::createFromFormat('Y-m-d', $period["from"])->endOfMonth()->toDateString();
         $period["with_failed"]    = 0;
