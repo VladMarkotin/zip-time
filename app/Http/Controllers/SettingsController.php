@@ -18,20 +18,27 @@ class SettingsController extends Controller
     public function __construct(SettingsService $settingsService)
     {
         $this->settingsService = $settingsService;
-     
     }
 
-    public function index(Request $request)  
+    public function index(Request $request)
     {
         return view('settings', [
             'timezones' => "Europe/Minsk",
         ]);
-
     }
 
     public function saveNotificationsConfigs(Request $request)
     {
-        var_dump($request->all());
-        die;
+        $fields = [
+            'config_data' => json_encode(
+                [
+                    'notifies_config' => [[
+                        'quantity' => $request->get('additionalNotificationsCount'),
+                        'enable' => intval($request->get('areNotifiactionsActive')),
+                    ]]
+                ]
+            ),
+        ];
+        $this->settingsService->saveNotitifcationSettings($fields);
     }
 }

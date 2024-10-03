@@ -25,4 +25,9 @@ class SettingsService
 
         return $currentSettings;
     }
+
+    public function saveNotitifcationSettings(array $fields) {
+        $fields['config_block_id'] = 3;
+        $this->settingsRepository->saveSettings($fields);
+    }
 } 

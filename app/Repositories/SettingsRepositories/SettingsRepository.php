@@ -9,6 +9,8 @@ namespace App\Repositories\SettingsRepositories;
 
 
 use App\Repositories\SettingsRepositories\traits\HashTrait;
+use Illuminate\Support\Facades\Auth;
+use App\Models\PersonalConfigs;
 
 class SettingsRepository
 {
@@ -28,5 +30,11 @@ class SettingsRepository
             default:
                 return HashTrait::getAllHashCodes($params);
         }
+    }
+
+    public function saveSettings(array $fields) {
+        $personalNotificationConfigs = PersonalConfigs::where(['config_block_id' => $fields['config_block_id'], 'user_id' => Auth::id()])->first();
+        $personalNotificationConfigs->update($fields);
+        $personalNotificationConfigs->save();
     }
 } 
