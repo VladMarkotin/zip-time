@@ -32,13 +32,9 @@ class SocialController extends Controller
 
     public function Callback($provider)
     {
-        $userSocial =   Socialite::driver($provider)->stateless()->user();
-        $users       =   User::where(['provider_id' => $userSocial->getId()])->first();
-        if ($users) {
-            Auth::login($users);
-            
-            return redirect('/'); //->with('user', $users);
-        } else {
+        $userSocial = Socialite::driver($provider)->stateless()->user();
+        $user = User::where(['provider_id' => $userSocial->getId()])->first();
+        if (!$user) {
             $user = User::create([
                 'name'          => $userSocial->getName(),
                 'email'         => $userSocial->getEmail(),
@@ -46,13 +42,17 @@ class SocialController extends Controller
                 'provider_id'   => $userSocial->getId(),
                 'provider'      => $provider,
             ]);
-            $this->createConfigs( $user );
-            $currentUser       =   User::where(['provider_id' => $userSocial->getId()])->first();
-            Auth::login($currentUser);
-            //RewardService::assignNewChToUser(['first_ch' => 1]);
 
-            return redirect('/');
+            $this->createConfigs($user);
+            $user = User::where(['provider_id' => $userSocial->getId()])->first();
+            //RewardService::assignNewChToUser(['first_ch' => 1]);
         }
+
+        $this->checkOrCreateNotiticationConfigs($user);
+        
+        Auth::login($user);
+
+        return redirect('/'); //->with('user', $users);
     }
 
     private function createConfigs($user)
@@ -88,5 +88,27 @@ class SocialController extends Controller
 
         //collect($def_config_data)->map(function ($data) use ($default_config) { $default_config->create($data); });
         $personal_config->create($personal_config_data);
+    }
+
+    private function checkOrCreateNotiticationConfigs($user)
+    {
+        $personalNotificationConfigs = PersonalConfigs::where(['config_block_id' => 3, 'user_id' => $user->id])->first();
+
+        if (!$personalNotificationConfigs) {
+            $defaultNotificationConfigs = DefaultConfigs::where(['config_block_id' => 3])->first();
+
+            if (!$defaultNotificationConfigs) {
+                throw new \Exception('Missing default notification configs');
+            }
+
+            $userNotificationConfigs = [
+                'user_id' => $user->id,
+                'config_block_id' => 3,
+                'config_data' => $defaultNotificationConfigs->config_data,
+                'last_updates' => '{"weekend_updated_at":"0:0:0"}',
+            ];
+
+            PersonalConfigs::create($userNotificationConfigs);
+        }
     }
 }
