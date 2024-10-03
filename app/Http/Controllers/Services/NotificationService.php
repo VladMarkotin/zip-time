@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Francis
@@ -16,13 +17,16 @@ use Minishlink\WebPush\WebPush;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Minishlink\WebPush\Subscription;
-use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\GeneralHelpers\GeneralHelper;
-use App\Http\Helpers\TimeHelpers\TimeHelper;  
-use App\Http\Helpers\TimeHelpers\RemindTimeHelper;  
+use App\Http\Helpers\TimeHelpers\TimeHelper;
+use App\Http\Helpers\TimeHelpers\RemindTimeHelper;
 
 class NotificationService
 {
+
+    const NOTIFICATION_MULTIPLYIER_TWO = 4;
+    const NOTIFICATION_MULTIPLYIER_THREE = 8;
+
     private $timezoneList = [];
 
     private $tzList = [
@@ -38,16 +42,29 @@ class NotificationService
 
     public function saveSubscription(Request $request)
     {
-    
-          User::where('id', Auth::id())
-          ->update([
-            'device_token'=>$request->sub
+
+        $user = User::where('id', Auth::id())->first();
+        $devices = $user['device_token'];
+        $request->sub = json_decode($request->sub, 1);
+
+        if (!isset($devices) || !isset($devices['devices'])) {
+            $devices = [
+                'devices' => [$request->sub['keys']['auth'] => $request->sub],
+            ];
+        }
+
+        if (!isset($devices['devices'][$request->sub['keys']['auth']])) {
+            $devices['devices'][$request->sub['keys']['auth']] = $request->sub;
+        }
+
+        User::where('id', Auth::id())->update([
+            'device_token' => json_encode($devices),
         ]);
     }
 
     public function sendNotification($ids, $message)
     {
-     
+
         $auth = [
             'VAPID' => [
                 'subject' => 'https://zip-time.local/', // can be a mailto: or your website address
@@ -57,7 +74,7 @@ class NotificationService
         ];
 
         $webPush = new WebPush($auth);
- 
+
         $payload = json_encode([
             'title' => "Todays Plan Reminder",
             'body' => $message,
@@ -65,27 +82,27 @@ class NotificationService
         ]);
 
         $notifications = User::whereIn('id', $ids)->get();
-        
-        foreach ($notifications as $notification) {
-            $webPush->sendOneNotification(
-                Subscription::create($notification['device_token']),
-                $payload,
-                ['TTL' => 5000]
-            );
-        }
 
-    
+        foreach ($notifications as $notification) {
+            foreach ($notification['device_token']['devices'] as $deviceToken) {
+                $webPush->sendOneNotification(
+                    Subscription::create($deviceToken),
+                    $payload,
+                    ['TTL' => 5000]
+                );
+            }
+        }
     }
 
-    
+
     public function reminder(): void
     {
         $flag = 0;
         foreach ($this->tzList as $time => $zones) {
             if ($time == RemindTimeHelper::EVENING_TIME) {
-                $flag = 1;
+                $flag = 0;
             }
-            
+
             $this->sendNotification(
                 $this->defineNotificationGroup($this->tzList[$time], $flag),
                 $this->reminderMessages()[$time]
@@ -93,35 +110,98 @@ class NotificationService
         }
     }
 
-    public function defineNotificationGroup(array $zones = [], $flag = 0) //0-morning 1-evening
+    public function dailyReminder(): void
+    {
+        $notfificationSchedule = [
+            '2' => [
+                '12' => TimeHelper::getTimezonesWithTime('12'),
+                '18' => TimeHelper::getTimezonesWithTime('18'),
+            ],
+            '3' => [
+                '12' => TimeHelper::getTimezonesWithTime('12'),
+                '16' => TimeHelper::getTimezonesWithTime('16'),
+                '20' => TimeHelper::getTimezonesWithTime('20'),
+            ],
+        ];
+        foreach ($notfificationSchedule as $notfificationQuantity => $notfificationHours) {
+            $this->sendNotification(
+                $this->defineDailyNotificationGroup($notfificationHours, $notfificationQuantity),
+                $this->getDailtyNotificationMessage()
+            );
+        }
+        
+    }
+
+    public function defineDailyNotificationGroup(array $zones = [], $notfificationQuantity)
     {
         if (count($zones) > 0) {
             $timezones = GeneralHelper::prepareSqlIn($zones);
+            if (empty($timezones)) {
+                return [];
+            }
             $today = Carbon::today()->toDateString();
-
-            if (!$flag) {
-                $query = "SELECT users.id FROM users WHERE users.device_token IS NOT NULL 
-                            AND users.timezone IN ($timezones)
+            $query = "SELECT users.id FROM users WHERE users.device_token IS NOT NULL 
+                            AND
+                                users.id IN ( SELECT config.user_id
+                                FROM personal_configs config
+                                WHERE 
+                                    config.config_block_id = 3
+                                AND
+                                    config.config_data LIKE '%\"quantity\": {$notfificationQuantity}%'
+                                    
+                                AND
+                                    config.config_data LIKE '%\"enable\": 1%'
+                                )
                             AND
                                 users.id NOT IN (select b.user_id
                                     from timetables b
                                     where b.date = '" .
-                                    $today .
-                                    "');
+                $today .
+                "')
+                AND users.timezone IN ($timezones);
                         ";
-            } else {
-                $query ="SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
-                            WHERE timetables.day_status = 2
-                                AND users.timezone IN ($timezones)
-                                AND timetables.date = '$today'";    
-            }
-    
             $idsArr = DB::select($query);
             $ids = [];
             foreach ($idsArr as $v) {
-                    $ids[] = $v->id;
+                $ids[] = $v->id;
             }
-    
+            return $ids;
+        }
+
+        return [];
+    }
+
+    public function defineNotificationGroup(array $zones = [], $flag = 0) //0-morning 1-evening
+    {
+        if (count($zones) > 0) {
+            $timezones = GeneralHelper::prepareSqlIn($zones);
+
+            if (empty($timezones)) {
+                return [];
+            }
+
+            $today = Carbon::today()->toDateString();
+            if (!$flag) {
+                $query = "SELECT users.id FROM users WHERE users.device_token IS NOT NULL 
+                            AND
+                                users.id NOT IN (select b.user_id
+                                    from timetables b
+                                    where b.date = '" .
+                    $today .
+                    "')";
+            } else {
+                $query = "SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
+                            WHERE timetables.day_status = 2
+                                AND timetables.date = '$today'";
+            }
+
+            $query .= "AND users.timezone IN ($timezones);";
+            $idsArr = DB::select($query);
+            $ids = [];
+            foreach ($idsArr as $v) {
+                $ids[] = $v->id;
+            }
+
             return $ids;
         }
 
@@ -143,8 +223,8 @@ class NotificationService
                             users.id NOT IN (select b.user_id
                                 from timetables b
                                 where b.date = '" .
-                    $today .
-                    "');
+                $today .
+                "');
                 ";
             $idsArr = DB::select($query);
             $ids = [];
@@ -163,7 +243,7 @@ class NotificationService
         $timezones = GeneralHelper::prepareSqlIn($zones);
         if ($timezones) {
             $today = Carbon::today()->toDateString();
-            $query ="SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
+            $query = "SELECT users.id  FROM users JOIN timetables ON users.id = timetables.user_id 
                                          WHERE timetables.day_status = 2
                                          AND users.timezone IN ($timezones)
                                           AND timetables.date = '$today'";
@@ -187,4 +267,8 @@ class NotificationService
         ];
     }
 
+    private function getDailtyNotificationMessage()
+    {
+        return 'Remind you to complete your necessary tasks and jobs!';
+    }
 }

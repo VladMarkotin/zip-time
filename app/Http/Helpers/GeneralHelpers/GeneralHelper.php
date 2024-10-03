@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Helpers\GeneralHelpers; 
+
+namespace App\Http\Helpers\GeneralHelpers;
 
 
 use App\Models\TimetableModel;
@@ -21,21 +22,20 @@ class GeneralHelper
                 ->toArray();
         } else {
             $response = TimetableModel::where('user_id', $data['id'])
-                        ->where('date', $date)
-                        ->where('day_status', 2)
-                        ->pluck('id')
-                        ->toArray();
-
+                ->where('date', $date)
+                ->where('day_status', 2)
+                ->pluck('id')
+                ->toArray();
         }
-        
+
         return $response[0];
     }
 
     public static function getDayStatus()
     {
         $response = TimetableModel::where('id', self::getCurrentTimetableId())
-                ->pluck('day_status')
-                ->toArray();
+            ->pluck('day_status')
+            ->toArray();
 
         return $response[0];
     }
@@ -56,15 +56,18 @@ class GeneralHelper
 
     public static function prepareSqlIn(array $data)
     {
+        $result = [];
         if (count($data)) {
-            $result = array_map(function($item) {
-                return "'".$item."'";
-            }, $data);
-                
-            return implode(',', $result);
+            $result = array_filter($data, function ($item) {
+                return !empty($item);
+            });
         }
-
-        return [];
+        if (count($result)) {
+            $result = array_map(function ($item) {
+                return "'" . (is_array($item) ? reset($item) : $item) . "'";
+            }, $result);
+        }
+        return implode(',', $result);
     }
 
     public static function checkIfEmergModeIsActive()
@@ -72,15 +75,14 @@ class GeneralHelper
         $today_date = self::getTodayDate();
 
         $day_status = TimetableModel::join('users', 'timetables.user_id', '=', 'users.id')
-                    ->where('users.id', Auth::id())
-                    ->where('timetables.date', $today_date)
-                    ->value('day_status');
-        
+            ->where('users.id', Auth::id())
+            ->where('timetables.date', $today_date)
+            ->value('day_status');
+
         if ($day_status === null) {
             return false;
         }
-        
+
         return $day_status === 0;
     }
-
 }
