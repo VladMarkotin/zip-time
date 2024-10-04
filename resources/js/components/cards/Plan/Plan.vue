@@ -1197,6 +1197,7 @@ export default {
 		to { opacity: 0; top: 5px;}
 	}
 
+   
    .button_appearance {
       animation: .25s button_appearance ease;
    }
