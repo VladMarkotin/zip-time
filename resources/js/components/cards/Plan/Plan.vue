@@ -24,7 +24,7 @@
                v-model             = "planDate"
                :todayDate          = "todayDate"
                :emergencyModeDates = "disabledDates"
-               @changePlanDate = "changePlanDate"
+               @changePlanDate = "setActualTasks(true)"
                />
             </div>
             <div id="plan-day-status">
@@ -873,16 +873,18 @@ export default {
             }
          },
 
-         async changePlanDate() {
-            this.items = [];
+         async setActualTasks(clearTable) {
+            if (clearTable) {
+               this.items = [];
+            }
             this.showPreloaderInsteadTable = true;
 
             const promises = [];
 
+            promises.push(this.setPreplan());
             if (this.isTodayPlan) {
                promises.push(this.setForTomorrowTasks());
             }
-            promises.push(this.setPreplan());
 
             await Promise.all(promises);
             
@@ -961,10 +963,7 @@ export default {
 
             currentObj.showPreloaderInsteadTable = true;
 
-            Promise.all([this.setPreplan(),this.setForTomorrowTasks()])
-            .then(() => {
-               currentObj.showPreloaderInsteadTable = false;
-            });
+         this.setActualTasks(false);
 
          this.getEmergencyModeDates()
          .then((emModedates) => this.setDisabledDates(emModedates))
