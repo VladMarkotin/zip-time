@@ -311,6 +311,10 @@
          v-model="snackbar"
          :text="snackbarData.snackbarText"
          />
+
+         <HistoryBackSnackbar 
+         v-if="isShowHistoryBackSnackbar"
+         />
       </v-container>
    </v-card>
 </template>
@@ -342,6 +346,7 @@ import {
 } from '@mdi/js'
 import { uuid } from 'vue-uuid';
 import Snackbar from '../../UI/Snackbar.vue';
+import HistoryBackSnackbar from '../../UI/HistoryBackSnackbar.vue';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
 
@@ -362,6 +367,7 @@ export default {
       SelectTaskType,
       PreplanDataPicker,
       Snackbar,
+      HistoryBackSnackbar,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
@@ -517,6 +523,9 @@ export default {
             return this.planDate === this.todayDate;
          },
 
+         isShowHistoryBackSnackbar() {
+            return !this.snackbar && this.selectedPlanDate;
+         }
     },
     methods: {
       ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
