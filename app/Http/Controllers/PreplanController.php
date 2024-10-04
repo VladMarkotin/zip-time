@@ -23,10 +23,12 @@ class PreplanController extends Controller
     public function index(Request $request) 
     {
         $selected_plan_date = $request->date;
-        $pattern = '/^\d{4}-\d{2}-\d{2}$/';
 
-        if (preg_match($pattern, $selected_plan_date)) {
-            $user_today_date = $this->generealHelper->getUsetTodayDate()->toDateString();
+        $user_today_date = $this->generealHelper->getUsetTodayDate()->toDateString();
+        $is_date_correct = $this->generealHelper->checkIfDateIsCorrect($selected_plan_date);
+        $is_selected_date_later = $this->generealHelper->checkIfDateIsLater($selected_plan_date, $user_today_date);
+        
+        if ($is_date_correct && $is_selected_date_later) {
             return view('plan', compact('selected_plan_date', 'user_today_date'));
         } 
 
