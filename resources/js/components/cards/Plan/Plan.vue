@@ -223,6 +223,7 @@
                <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
+                        :disabled="!isTodayPlan"
                         id="plan-creating" 
                         v-on:click="formSubmit" 
                         v-bind="attrs"
@@ -448,6 +449,7 @@ export default {
 
          Promise.all(tasksForTheDay).then(updatedItems => {
             this.items = updatedItems;
+            this.checkIfPreplanNeedsToBeSav();
          }).catch(error => {
             console.error('Error processing tasks:', error); 
          });
@@ -649,6 +651,7 @@ export default {
             // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
          this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success', checkTaskName: true});
+         this.checkIfPreplanNeedsToBeSav();
         },
 
         deleteItem(item) {
@@ -659,6 +662,13 @@ export default {
              // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
             this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success', checkTaskName: true});
+            this.checkIfPreplanNeedsToBeSav();
+        },
+
+        checkIfPreplanNeedsToBeSav() {
+            if (!this.isTodayPlan) {
+               this.createPreplan();
+            }
         },
 
         async createPreplan() {
@@ -682,18 +692,14 @@ export default {
                date:       planData.date,
                day_status: planData.day_status
             });
-
-            this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
+            
+            // this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
          } catch(error) {
             console.error(error);
          }
         },
 
         formSubmit(e) {
-            if (!this.isTodayPlan) {
-               return this.createPreplan();
-            }
-
             let currentObj = this;
             axios.post('/addPlan', currentObj.getPostParams())
             .then(function(response) { 
