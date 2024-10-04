@@ -9,6 +9,7 @@ import 'vuetify/dist/vuetify.min.css';
 import ChatGPTIcon from './components/icons/ChatGPTIcon.vue';
 import GPTRecreateIcon from './components/icons/GPTRecreateIcon.vue';
 import UUID from "vue-uuid";
+import Plan from './components/cards/Plan/Plan.vue';
 
 Vue.use(HighchartsVue);
 Vue.use(Vuetify);

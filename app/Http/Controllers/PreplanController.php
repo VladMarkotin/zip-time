@@ -15,6 +15,10 @@ class PreplanController extends Controller
         $this->preplan = $preplan;
     }
 
+    public function index(Request $request) {
+        return view('plan');
+    }
+
     public function addPreplan(Request $request)
     {
         $data = $request->json()->all();
