@@ -305,7 +305,12 @@
          
 	      <EmergencyCall  
          v-if="isShowEmergencyCallDialog"
-         v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
+         v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"
+         />
+         <Snackbar 
+         v-model="snackbar"
+         :text="snackbarText"
+         />
       </v-container>
    </v-card>
 </template>
@@ -336,9 +341,9 @@ import {
     mdiCancel,
 } from '@mdi/js'
 import { uuid } from 'vue-uuid';
+import Snackbar from '../../UI/Snackbar.vue';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
-import details from '../../../store/modules/details';
 
 export default {
    components : {
@@ -351,6 +356,7 @@ export default {
       CustomTimepicker,
       SelectTaskType,
       PreplanDataPicker,
+      Snackbar,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
@@ -418,6 +424,8 @@ export default {
          },
          addTaskToPlanWithoutConfirmation: false,
          emergencyModeDates: [],
+         snackbar: false,
+         snackbarText: '',
     }),
     store,
     watch: {
@@ -449,7 +457,9 @@ export default {
 
          Promise.all(tasksForTheDay).then(updatedItems => {
             this.items = updatedItems;
-            this.checkIfPreplanNeedsToBeSav();
+            if (this.items.length) {
+               this.checkIfPreplanNeedsToBeSav();
+            }
          }).catch(error => {
             console.error('Error processing tasks:', error); 
          });
@@ -693,6 +703,8 @@ export default {
                day_status: planData.day_status
             });
             
+            this.snackbar = true;
+            this.snackbarText = response.data.message;
             // this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
          } catch(error) {
             console.error(error);
