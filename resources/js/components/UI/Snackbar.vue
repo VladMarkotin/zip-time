@@ -2,7 +2,7 @@
     <v-snackbar 
     :value="value" 
     @input="updateValue"
-    :timeout="5e3"
+    :timeout="null"
     >
         {{text}}
     </v-snackbar>

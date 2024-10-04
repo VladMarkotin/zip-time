@@ -309,7 +309,7 @@
          />
          <Snackbar 
          v-model="snackbar"
-         :text="snackbarText"
+         :text="snackbarData.snackbarText"
          />
       </v-container>
    </v-card>
@@ -425,6 +425,10 @@ export default {
          addTaskToPlanWithoutConfirmation: false,
          emergencyModeDates: [],
          snackbar: false,
+         snackbarData: {
+            snackbarText:    '',
+            snackbarTimerId: '',
+         },
          snackbarText: '',
     }),
     store,
@@ -586,44 +590,54 @@ export default {
             }
         },
 
-        checkDefaultSelected() {
-         let {taskName} = this.defaultSelected;
-         taskName = taskName.trim();
+         checkDefaultSelected() {
+            let {taskName} = this.defaultSelected;
+            taskName = taskName.trim();
 
-         if (taskName.length < 4) {
-            return 'The task\'s name must be more than 3 characters long';
-         }
+            if (taskName.length < 4) {
+               return 'The task\'s name must be more than 3 characters long';
+            }
 
-         if (taskName.length > 255) {
-            return 'The task\'s name can\'t consist of more than 255 characters';
-         }
+            if (taskName.length > 255) {
+               return 'The task\'s name can\'t consist of more than 255 characters';
+            }
 
-         return true;
-        },
+            return true;
+         },
 
-        setAlert({serverMessage, alertType, checkTaskName = false}) {
-            if (checkTaskName) {
-               //если длина названия таски очень большая, то оставляю первые 25 символов только
-               const regex = /The task (.+?) has/g;
-               const matches = regex.exec(serverMessage);
-               if (matches) {
-                  const taskName = matches[1]; 
-                  
-                  if (taskName && taskName.length > 25) {
-                     serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+         showSnackbar(text) {
+            this.snackbar = true;
+            this.snackbarData.snackbarText = text;
+           
+            clearTimeout(this.snackbarData.snackbarTimerId);
+            this.snackbarData.snackbarTimerId = setTimeout(() => {
+               this.snackbar = false;
+            }, 5e3);
+         },
+
+         setAlert({serverMessage, alertType, checkTaskName = false}) {
+               if (checkTaskName) {
+                  //если длина названия таски очень большая, то оставляю первые 25 символов только
+                  const regex = /The task (.+?) has/g;
+                  const matches = regex.exec(serverMessage);
+                  if (matches) {
+                     const taskName = matches[1]; 
+                     
+                     if (taskName && taskName.length > 25) {
+                        serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+                     }
                   }
                }
-            }
-         
-            this.serverMessage = serverMessage;
-            this.alertType = alertType;
-            this.showAlert = true;
+            
+               this.serverMessage = serverMessage;
+               this.alertType = alertType;
+               this.showAlert = true;
 
-            clearTimeout(this.closeAlertTime);
-            this.closeAlertTime = setTimeout(() => {
-               this.showAlert = false;
-            }, 5e3);
-        },
+               clearTimeout(this.closeAlertTime);
+               this.closeAlertTime = setTimeout(() => {
+                  this.showAlert = false;
+               }, 5e3);
+         },
 
         addTask() {
          // если пользователь пытается добавить в план дефолтную таску, то ему необходио сделать ее сохраненной
@@ -703,8 +717,7 @@ export default {
                day_status: planData.day_status
             });
             
-            this.snackbar = true;
-            this.snackbarText = response.data.message;
+            this.showSnackbar(response.data.message);
             // this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
          } catch(error) {
             console.error(error);
