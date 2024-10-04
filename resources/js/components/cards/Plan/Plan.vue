@@ -223,6 +223,7 @@
                <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
+                        :disabled="!isTodayPlan"
                         id="plan-creating" 
                         v-on:click="formSubmit" 
                         v-bind="attrs"
@@ -304,7 +305,12 @@
          
 	      <EmergencyCall  
          v-if="isShowEmergencyCallDialog"
-         v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
+         v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"
+         />
+         <Snackbar 
+         v-model="snackbar"
+         :text="snackbarData.snackbarText"
+         />
       </v-container>
    </v-card>
 </template>
@@ -335,9 +341,9 @@ import {
     mdiCancel,
 } from '@mdi/js'
 import { uuid } from 'vue-uuid';
+import Snackbar from '../../UI/Snackbar.vue';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
-import details from '../../../store/modules/details';
 
 export default {
    components : {
@@ -350,6 +356,7 @@ export default {
       CustomTimepicker,
       SelectTaskType,
       PreplanDataPicker,
+      Snackbar,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
@@ -417,6 +424,12 @@ export default {
          },
          addTaskToPlanWithoutConfirmation: false,
          emergencyModeDates: [],
+         snackbar: false,
+         snackbarData: {
+            snackbarText:    '',
+            snackbarTimerId: '',
+         },
+         snackbarText: '',
     }),
     store,
     watch: {
@@ -448,6 +461,9 @@ export default {
 
          Promise.all(tasksForTheDay).then(updatedItems => {
             this.items = updatedItems;
+            if (this.items.length) {
+               this.checkIfPreplanNeedsToBeSav();
+            }
          }).catch(error => {
             console.error('Error processing tasks:', error); 
          });
@@ -574,44 +590,54 @@ export default {
             }
         },
 
-        checkDefaultSelected() {
-         let {taskName} = this.defaultSelected;
-         taskName = taskName.trim();
+         checkDefaultSelected() {
+            let {taskName} = this.defaultSelected;
+            taskName = taskName.trim();
 
-         if (taskName.length < 4) {
-            return 'The task\'s name must be more than 3 characters long';
-         }
+            if (taskName.length < 4) {
+               return 'The task\'s name must be more than 3 characters long';
+            }
 
-         if (taskName.length > 255) {
-            return 'The task\'s name can\'t consist of more than 255 characters';
-         }
+            if (taskName.length > 255) {
+               return 'The task\'s name can\'t consist of more than 255 characters';
+            }
 
-         return true;
-        },
+            return true;
+         },
 
-        setAlert({serverMessage, alertType, checkTaskName = false}) {
-            if (checkTaskName) {
-               //если длина названия таски очень большая, то оставляю первые 25 символов только
-               const regex = /The task (.+?) has/g;
-               const matches = regex.exec(serverMessage);
-               if (matches) {
-                  const taskName = matches[1]; 
-                  
-                  if (taskName && taskName.length > 25) {
-                     serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+         showSnackbar(text) {
+            this.snackbar = true;
+            this.snackbarData.snackbarText = text;
+           
+            clearTimeout(this.snackbarData.snackbarTimerId);
+            this.snackbarData.snackbarTimerId = setTimeout(() => {
+               this.snackbar = false;
+            }, 5e3);
+         },
+
+         setAlert({serverMessage, alertType, checkTaskName = false}) {
+               if (checkTaskName) {
+                  //если длина названия таски очень большая, то оставляю первые 25 символов только
+                  const regex = /The task (.+?) has/g;
+                  const matches = regex.exec(serverMessage);
+                  if (matches) {
+                     const taskName = matches[1]; 
+                     
+                     if (taskName && taskName.length > 25) {
+                        serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+                     }
                   }
                }
-            }
-         
-            this.serverMessage = serverMessage;
-            this.alertType = alertType;
-            this.showAlert = true;
+            
+               this.serverMessage = serverMessage;
+               this.alertType = alertType;
+               this.showAlert = true;
 
-            clearTimeout(this.closeAlertTime);
-            this.closeAlertTime = setTimeout(() => {
-               this.showAlert = false;
-            }, 5e3);
-        },
+               clearTimeout(this.closeAlertTime);
+               this.closeAlertTime = setTimeout(() => {
+                  this.showAlert = false;
+               }, 5e3);
+         },
 
         addTask() {
          // если пользователь пытается добавить в план дефолтную таску, то ему необходио сделать ее сохраненной
@@ -649,6 +675,7 @@ export default {
             // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
          this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success', checkTaskName: true});
+         this.checkIfPreplanNeedsToBeSav();
         },
 
         deleteItem(item) {
@@ -659,6 +686,13 @@ export default {
              // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
             this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success', checkTaskName: true});
+            this.checkIfPreplanNeedsToBeSav();
+        },
+
+        checkIfPreplanNeedsToBeSav() {
+            if (!this.isTodayPlan) {
+               this.createPreplan();
+            }
         },
 
         async createPreplan() {
@@ -682,18 +716,15 @@ export default {
                date:       planData.date,
                day_status: planData.day_status
             });
-
-            this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
+            
+            this.showSnackbar(response.data.message);
+            // this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
          } catch(error) {
             console.error(error);
          }
         },
 
         formSubmit(e) {
-            if (!this.isTodayPlan) {
-               return this.createPreplan();
-            }
-
             let currentObj = this;
             axios.post('/addPlan', currentObj.getPostParams())
             .then(function(response) { 
