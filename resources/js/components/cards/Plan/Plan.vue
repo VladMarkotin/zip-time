@@ -23,7 +23,7 @@
                <PreplanDataPicker 
                v-model             = "planDate"
                :todayDate          = "todayDate"
-               :emergencyModeDates = "emergencyModeDates"
+               :emergencyModeDates = "disabledDates"
                @changePlanDate = "changePlanDate"
                />
             </div>
@@ -439,7 +439,7 @@ export default {
             selectedSavedTaskId: null,
          },
          addTaskToPlanWithoutConfirmation: false,
-         emergencyModeDates: [],
+         disabledDates: [],
          snackbar: false,
          snackbarData: {
             snackbarText:    '',
@@ -892,6 +892,15 @@ export default {
             }
          },
 
+         setDisabledDates(emModeDates) {
+            //если пользователь создает преплан, то у него не должно быть возможности создать на сегодня план
+            if(this.selectedPlanDate && !emModeDates.includes(this.selectedPlanDate)) {
+               this.disabledDates = [this.todayDate, ... emModeDates];
+            } else {
+               this.disabledDates = [...emModeDates];
+            }
+         },
+
          setPlanDate(date) {
             if (date !== undefined) {
                return date;
@@ -948,12 +957,8 @@ export default {
             });
 
          this.getEmergencyModeDates()
-         .then((dates) => {
-               this.emergencyModeDates = dates;
-         })
-         .catch((dates) => {
-               this.emergencyModeDates = [];
-         })
+         .then((emModedates) => this.setDisabledDates(emModedates))
+         .catch(() => this.setDisabledDates([]))
     },
 
     async mounted() {
