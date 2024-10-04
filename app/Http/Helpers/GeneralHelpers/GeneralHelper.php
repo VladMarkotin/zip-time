@@ -84,8 +84,14 @@ class GeneralHelper
         return $day_status === 0;
     }
 
-    public static function getUserTimeZone() {
+    public static function getUserTimeZone() 
+    {
         $user_id = Auth::id();
         return User::find($user_id)->timezone;
+    }
+
+    public static function getUsetTodayDate() {
+        $user_time_zone = self::getUserTimeZone();
+        return self::getNow($user_time_zone);
     }
 }

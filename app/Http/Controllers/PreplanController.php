@@ -5,23 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Preplan;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 
 class PreplanController extends Controller
 {
-    private $preplan = null;
+    private $preplan        = null;
+    private $generealHelper = null;
 
-    public function __construct(Preplan $preplan)
+    public function __construct(Preplan       $preplan,
+                                GeneralHelper $generalHelper
+                                )
     {
         $this->preplan = $preplan;
+        $this->generealHelper = $generalHelper;
     }
 
     public function index(Request $request) 
     {
-        $selectedPlanDate = $request->date;
+        $selected_plan_date = $request->date;
         $pattern = '/^\d{4}-\d{2}-\d{2}$/';
 
-        if (preg_match($pattern, $selectedPlanDate)) {
-            return view('plan', compact('selectedPlanDate'));
+        if (preg_match($pattern, $selected_plan_date)) {
+            $user_today_date = $this->generealHelper->getUsetTodayDate()->toDateString();
+            return view('plan', compact('selected_plan_date', 'user_today_date'));
         } 
 
         return abort(404);

@@ -354,6 +354,11 @@ export default {
    props: {
       selectedPlanDate: {
          type: String,
+      },
+
+      userTodayDate: {
+         type: String,
+         default: new Date().getTodayFormatedDate(),
       }
    },
    components : {
@@ -372,7 +377,7 @@ export default {
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
          planDate: '', //инициализируется в хуке created
-         todayDate: new Date().getTodayFormatedDate(),
+         todayDate: '',//инициализируется в хуке created
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          newHashCode: '#',
          showIcon: 0,
@@ -897,7 +902,8 @@ export default {
     },
     created() {
          let currentObj = this;
-         currentObj.planDate = this.setPlanDate(currentObj.selectedPlanDate);
+         currentObj.planDate  = this.setPlanDate(currentObj.selectedPlanDate);
+         currentObj.todayDate = currentObj.userTodayDate;
 
          axios.post('/getSavedTasks')
                .then(function(response) {
