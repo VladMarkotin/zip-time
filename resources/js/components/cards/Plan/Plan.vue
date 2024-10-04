@@ -820,12 +820,13 @@ export default {
          console.log(value);
       },
 
-      async getTodayPlan() {
+      async setForTomorrowTasks() {
          this.showPreloaderInsteadTable = true;
 
             try {
                   const response = await axios.post('/getPreparedPlan');
                   if (response) {
+                     const forTomorrowTasks = [];
                      for (let i = 0; i < response.data.length; i++) {
                         const currentIterableTask = response.data[i];
                         if (Object.keys(currentIterableTask).length === 0) continue;
@@ -839,9 +840,18 @@ export default {
                         this.preparedTask.notes = currentIterableTask.note;
                         this.preparedTask.uniqKey = this.generateUniqKey();
 
-                        this.items.push(this.preparedTask);
+                        forTomorrowTasks.push(this.preparedTask);
                         this.preparedTask = {};
                      }
+
+                     const addedTasksHashes = this.items.filter(task => task.hash !== '#')
+                                                         .map(task => task.hash)
+                     //убираю дубли из добавленных в план заданий
+                     const uniqAdeedTaskHashes = [...new Set(addedTasksHashes)];
+                     //получаю только те сохраненные задания for_tomorrow, которые еще не добавлены в план
+                     const uniqFormTomorrowTasks = forTomorrowTasks.filter(({hash}) => !uniqAdeedTaskHashes.includes(hash));
+                     
+                     this.items = [...this.items, ...uniqFormTomorrowTasks];
                   }
             } catch (error) {
                   this.output = error;
@@ -850,12 +860,12 @@ export default {
             }
          },
 
-         async getPreplan() {
+         async setPreplan() {
             try {
                const response = await axios.post('/get-preplan', {date: this.planDate});
                
                if (response.status === 200) {
-                  this.items = [...response.data.tasks, ...this.items];
+                  this.items = [...response.data.tasks];
                   this.day_status = response.data.transformed_day_status;
                }
             } catch(error) {
@@ -870,9 +880,9 @@ export default {
             const promises = [];
 
             if (this.isTodayPlan) {
-               promises.push(this.getTodayPlan());
+               promises.push(this.setForTomorrowTasks());
             }
-            promises.push(this.getPreplan());
+            promises.push(this.setPreplan());
 
             await Promise.all(promises);
             
@@ -951,7 +961,7 @@ export default {
 
             currentObj.showPreloaderInsteadTable = true;
 
-            Promise.all([this.getTodayPlan(), this.getPreplan()])
+            Promise.all([this.setPreplan(),this.setForTomorrowTasks()])
             .then(() => {
                currentObj.showPreloaderInsteadTable = false;
             });
