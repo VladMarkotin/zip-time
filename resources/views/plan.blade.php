@@ -3,7 +3,9 @@
 
     <div class="container">
         <v-app> 
-            <Plan />
+            <Plan 
+            :selected-plan-date = {{json_encode($selectedPlanDate)}}
+            />
         </v-app>
     </div>
 @endsection

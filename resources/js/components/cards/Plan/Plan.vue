@@ -346,6 +346,11 @@ import Snackbar from '../../UI/Snackbar.vue';
 import createWatcherForDefSavTaskMixin from '../../../mixins';
 
 export default {
+   props: {
+      selectedPlanDate: {
+         type: String,
+      }
+   },
    components : {
       EmergencyCall, 
       AddHashCode, 
@@ -360,7 +365,7 @@ export default {
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
-         planDate: new Date().getTodayFormatedDate(),
+         planDate: '', //инициализируется в хуке created
          todayDate: new Date().getTodayFormatedDate(),
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          newHashCode: '#',
@@ -871,60 +876,69 @@ export default {
             } catch(error) {
                console.error(error);
             }
+         },
+
+         setPlanDate(date) {
+            if (date !== undefined) {
+               return date;
+            }
+
+            return new Date().getTodayFormatedDate();
          }
     },
     created() {
-        let currentObj = this;
+         let currentObj = this;
+         currentObj.planDate = this.setPlanDate(currentObj.selectedPlanDate);
 
-        axios.post('/getSavedTasks')
+         axios.post('/getSavedTasks')
+               .then(function(response) {
+                  currentObj.defaultSelected.hashCodes = response.data.hash_codes;
+                  let length = response.data.hash_codes.length;
+                  for (let i = 0; i < length; i++) {
+                     currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
+                  }
+                        axios.post('/getDefaultSavedTasks')
+                        .then((response) => {
+                           const {defaultSavedTasks} = response.data;
+                           
+                           currentObj.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks
+
+                           if (defaultSavedTasks.length) {
+                              defaultSavedTasks.forEach(defaultSavedTask => {
+                                 currentObj.defaultSelected.hashCodes = [...currentObj.defaultSelected.hashCodes, defaultSavedTask.hash_code];
+                              })
+                           }
+                        })
+                        .catch((error) => {
+                           currentObj.output = error;;
+                        })
+               })
+               .catch(function(error) {
+                  currentObj.output = error;
+               });
+
+            axios.post('/isWeekendAvailable')
             .then(function(response) {
-                 currentObj.defaultSelected.hashCodes = response.data.hash_codes;
-                let length = response.data.hash_codes.length;
-                for (let i = 0; i < length; i++) {
-                    currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
-                }
-                     axios.post('/getDefaultSavedTasks')
-                     .then((response) => {
-                        const {defaultSavedTasks} = response.data;
-                        
-                        currentObj.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks
-
-                        if (defaultSavedTasks.length) {
-                           defaultSavedTasks.forEach(defaultSavedTask => {
-                              currentObj.defaultSelected.hashCodes = [...currentObj.defaultSelected.hashCodes, defaultSavedTask.hash_code];
-                           })
-                        }
-                     })
-                     .catch((error) => {
-                        currentObj.output = error;;
-                     })
+               currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
             })
             .catch(function(error) {
-                currentObj.output = error;
+               currentObj.output = error;
             });
 
-         axios.post('/isWeekendAvailable')
-         .then(function(response) {
-            currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
+            currentObj.showPreloaderInsteadTable = true;
+
+            Promise.all([this.getTodayPlan(), this.getPreplan()])
+            .then(() => {
+               currentObj.showPreloaderInsteadTable = false;
+            });
+
+         this.getEmergencyModeDates()
+         .then((dates) => {
+               this.emergencyModeDates = dates;
          })
-         .catch(function(error) {
-            currentObj.output = error;
-         });
-
-         currentObj.showPreloaderInsteadTable = true;
-
-         Promise.all([this.getTodayPlan(), this.getPreplan()])
-         .then(() => {
-            currentObj.showPreloaderInsteadTable = false;
-         });
-
-        this.getEmergencyModeDates()
-        .then((dates) => {
-            this.emergencyModeDates = dates;
-        })
-        .catch((dates) => {
-            this.emergencyModeDates = [];
-        })
+         .catch((dates) => {
+               this.emergencyModeDates = [];
+         })
     },
 
     async mounted() {
@@ -1228,7 +1242,7 @@ export default {
 		to { opacity: 0; top: 5px;}
 	}
 
-   
+
    .button_appearance {
       animation: .25s button_appearance ease;
    }
