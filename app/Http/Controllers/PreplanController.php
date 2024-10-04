@@ -15,9 +15,11 @@ class PreplanController extends Controller
         $this->preplan = $preplan;
     }
 
-    public function index(Request $request) {
+    public function index(Request $request) 
+    {
         $selectedPlanDate = $request->date;
         $pattern = '/^\d{4}-\d{2}-\d{2}$/';
+
         if (preg_match($pattern, $selectedPlanDate)) {
             return view('plan', compact('selectedPlanDate'));
         } 
