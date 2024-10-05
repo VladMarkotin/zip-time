@@ -1248,6 +1248,7 @@ export default {
       color: rgba(0,0,0,.6);
    }
 
+
    .tasks-counter-enter-active, .tasks-counter-leave-active {
       position: relative;
    }
