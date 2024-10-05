@@ -6,33 +6,43 @@ use Illuminate\Http\Request;
 use App\Models\Preplan;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\GeneralHelpers\GeneralHelper;
+use App\Http\Controllers\Services\EmergencyService;
 
 class PreplanController extends Controller
 {
-    private $preplan        = null;
-    private $generealHelper = null;
+    private $preplan          = null;
+    private $generealHelper   = null;
+    private $emergencyService = null;
 
     public function __construct(Preplan       $preplan,
-                                GeneralHelper $generalHelper
+                                GeneralHelper $generalHelper,
+                                EmergencyService $emergencyService,
                                 )
     {
         $this->preplan = $preplan;
         $this->generealHelper = $generalHelper;
+        $this->emergencyService = $emergencyService;
     }
 
     public function index(Request $request) 
     {
         $selected_plan_date = $request->date;
-
         $user_today_date = $this->generealHelper->getUsetTodayDate()->toDateString();
-        $is_date_correct = $this->generealHelper->checkIfDateIsCorrect($selected_plan_date);
-        $is_selected_date_later = $this->generealHelper->checkIfDateIsLater($selected_plan_date, $user_today_date);
         
-        if ($is_date_correct && $is_selected_date_later) {
-            return view('plan', compact('selected_plan_date', 'user_today_date'));
-        } 
+        if (!$this->generealHelper->checkIfDateIsCorrect($selected_plan_date)) {
+            return abort(404);
+        }
 
-        return abort(404);
+        if (!$this->generealHelper->checkIfDateIsLater($selected_plan_date, $user_today_date)) {
+            return abort(404);
+        }
+        
+        if ($this->emergencyService->checkIfEmerModeIsActive($selected_plan_date, $user_today_date)) {
+            return abort(404);
+        }
+
+        return view('plan', compact('selected_plan_date', 'user_today_date'));
+        
     }
 
     public function addPreplan(Request $request)
