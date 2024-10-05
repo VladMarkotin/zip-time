@@ -38,9 +38,7 @@ class HistService
 
     public function getHist($startDate)
     {   
-        $user_time_zone           = $this->generealHelper::getUserTimeZone();
-
-        $period["today"]          = $this->generealHelper::getNow($user_time_zone)->toDateString();
+        $period["today"]          = $this->generealHelper::getUsetTodayDate()->toDateString();
         $period["from"]           = $startDate;
         $period["to"]             = Carbon::createFromFormat('Y-m-d', $period["from"])->endOfMonth()->toDateString();
         $period["with_failed"]    = 0;

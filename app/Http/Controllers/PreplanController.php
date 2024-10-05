@@ -5,14 +5,44 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Preplan;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
+use App\Http\Controllers\Services\EmergencyService;
 
 class PreplanController extends Controller
 {
-    private $preplan = null;
+    private $preplan          = null;
+    private $generealHelper   = null;
+    private $emergencyService = null;
 
-    public function __construct(Preplan $preplan)
+    public function __construct(Preplan       $preplan,
+                                GeneralHelper $generalHelper,
+                                EmergencyService $emergencyService,
+                                )
     {
         $this->preplan = $preplan;
+        $this->generealHelper = $generalHelper;
+        $this->emergencyService = $emergencyService;
+    }
+
+    public function index(Request $request) 
+    {
+        $selected_plan_date = $request->date;
+        $user_today_date = $this->generealHelper->getUsetTodayDate()->toDateString();
+        
+        if (!$this->generealHelper->checkIfDateIsCorrect($selected_plan_date)) {
+            return abort(404);
+        }
+
+        if (!$this->generealHelper->checkIfDateIsLater($selected_plan_date, $user_today_date)) {
+            return abort(404);
+        }
+        
+        if ($this->emergencyService->checkIfEmerModeIsActive($selected_plan_date, $user_today_date)) {
+            return abort(404);
+        }
+
+        return view('plan', compact('selected_plan_date', 'user_today_date'));
+        
     }
 
     public function addPreplan(Request $request)

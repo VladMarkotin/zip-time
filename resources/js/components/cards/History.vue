@@ -165,6 +165,10 @@ export default
 						isDayPassed: plans[date].isDayPassed,
 					}
 
+					if (!cardHeaderData.status) {
+						dayData.name = 'Create preplan'
+					}
+
 					this.events = [...this.events, dayData];
 				}
 			},

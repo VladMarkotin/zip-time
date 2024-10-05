@@ -23,8 +23,8 @@
                <PreplanDataPicker 
                v-model             = "planDate"
                :todayDate          = "todayDate"
-               :emergencyModeDates = "emergencyModeDates"
-               @changePlanDate = "changePlanDate"
+               :emergencyModeDates = "disabledDates"
+               @changePlanDate = "setActualTasks(true)"
                />
             </div>
             <div id="plan-day-status">
@@ -311,6 +311,10 @@
          v-model="snackbar"
          :text="snackbarData.snackbarText"
          />
+
+         <HistoryBackSnackbar 
+         v-if="isShowHistoryBackSnackbar"
+         />
       </v-container>
    </v-card>
 </template>
@@ -342,10 +346,21 @@ import {
 } from '@mdi/js'
 import { uuid } from 'vue-uuid';
 import Snackbar from '../../UI/Snackbar.vue';
+import HistoryBackSnackbar from '../../UI/HistoryBackSnackbar.vue';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
 
 export default {
+   props: {
+      selectedPlanDate: {
+         type: String,
+      },
+
+      userTodayDate: {
+         type: String,
+         default: new Date().getTodayFormatedDate(),
+      }
+   },
    components : {
       EmergencyCall, 
       AddHashCode, 
@@ -357,11 +372,12 @@ export default {
       SelectTaskType,
       PreplanDataPicker,
       Snackbar,
+      HistoryBackSnackbar,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
-         planDate: new Date().getTodayFormatedDate(),
-         todayDate: new Date().getTodayFormatedDate(),
+         planDate: '', //инициализируется в хуке created
+         todayDate: '',//инициализируется в хуке created
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          newHashCode: '#',
          showIcon: 0,
@@ -423,7 +439,7 @@ export default {
             selectedSavedTaskId: null,
          },
          addTaskToPlanWithoutConfirmation: false,
-         emergencyModeDates: [],
+         disabledDates: [],
          snackbar: false,
          snackbarData: {
             snackbarText:    '',
@@ -512,6 +528,9 @@ export default {
             return this.planDate === this.todayDate;
          },
 
+         isShowHistoryBackSnackbar() {
+            return !this.snackbar && this.selectedPlanDate;
+         }
     },
     methods: {
       ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -801,12 +820,13 @@ export default {
          console.log(value);
       },
 
-      async getTodayPlan() {
+      async setForTomorrowTasks() {
          this.showPreloaderInsteadTable = true;
 
             try {
                   const response = await axios.post('/getPreparedPlan');
                   if (response) {
+                     const forTomorrowTasks = [];
                      for (let i = 0; i < response.data.length; i++) {
                         const currentIterableTask = response.data[i];
                         if (Object.keys(currentIterableTask).length === 0) continue;
@@ -820,9 +840,18 @@ export default {
                         this.preparedTask.notes = currentIterableTask.note;
                         this.preparedTask.uniqKey = this.generateUniqKey();
 
-                        this.items.push(this.preparedTask);
+                        forTomorrowTasks.push(this.preparedTask);
                         this.preparedTask = {};
                      }
+
+                     const addedTasksHashes = this.items.filter(task => task.hash !== '#')
+                                                         .map(task => task.hash)
+                     //убираю дубли из добавленных в план заданий
+                     const uniqAdeedTaskHashes = [...new Set(addedTasksHashes)];
+                     //получаю только те сохраненные задания for_tomorrow, которые еще не добавлены в план
+                     const uniqFormTomorrowTasks = forTomorrowTasks.filter(({hash}) => !uniqAdeedTaskHashes.includes(hash));
+                     
+                     this.items = [...this.items, ...uniqFormTomorrowTasks];
                   }
             } catch (error) {
                   this.output = error;
@@ -831,12 +860,12 @@ export default {
             }
          },
 
-         async getPreplan() {
+         async setPreplan() {
             try {
                const response = await axios.post('/get-preplan', {date: this.planDate});
                
                if (response.status === 200) {
-                  this.items = [...response.data.tasks, ...this.items];
+                  this.items = [...response.data.tasks];
                   this.day_status = response.data.transformed_day_status;
                }
             } catch(error) {
@@ -844,16 +873,18 @@ export default {
             }
          },
 
-         async changePlanDate() {
-            this.items = [];
+         async setActualTasks(clearTable) {
+            if (clearTable) {
+               this.items = [];
+            }
             this.showPreloaderInsteadTable = true;
 
             const promises = [];
 
+            promises.push(this.setPreplan());
             if (this.isTodayPlan) {
-               promises.push(this.getTodayPlan());
+               promises.push(this.setForTomorrowTasks());
             }
-            promises.push(this.getPreplan());
 
             await Promise.all(promises);
             
@@ -871,60 +902,72 @@ export default {
             } catch(error) {
                console.error(error);
             }
+         },
+
+         setDisabledDates(emModeDates) {
+            //если пользователь создает преплан, то у него не должно быть возможности создать на сегодня план
+            if(this.selectedPlanDate && !emModeDates.includes(this.selectedPlanDate)) {
+               this.disabledDates = [this.todayDate, ... emModeDates];
+            } else {
+               this.disabledDates = [...emModeDates];
+            }
+         },
+
+         setPlanDate(date) {
+            if (date !== undefined) {
+               return date;
+            }
+
+            return new Date().getTodayFormatedDate();
          }
     },
     created() {
-        let currentObj = this;
+         let currentObj = this;
+         currentObj.planDate  = this.setPlanDate(currentObj.selectedPlanDate);
+         currentObj.todayDate = currentObj.userTodayDate;
 
-        axios.post('/getSavedTasks')
+         axios.post('/getSavedTasks')
+               .then(function(response) {
+                  currentObj.defaultSelected.hashCodes = response.data.hash_codes;
+                  let length = response.data.hash_codes.length;
+                  for (let i = 0; i < length; i++) {
+                     currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
+                  }
+                        axios.post('/getDefaultSavedTasks')
+                        .then((response) => {
+                           const {defaultSavedTasks} = response.data;
+                           
+                           currentObj.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks
+
+                           if (defaultSavedTasks.length) {
+                              defaultSavedTasks.forEach(defaultSavedTask => {
+                                 currentObj.defaultSelected.hashCodes = [...currentObj.defaultSelected.hashCodes, defaultSavedTask.hash_code];
+                              })
+                           }
+                        })
+                        .catch((error) => {
+                           currentObj.output = error;;
+                        })
+               })
+               .catch(function(error) {
+                  currentObj.output = error;
+               });
+
+            axios.post('/isWeekendAvailable')
             .then(function(response) {
-                 currentObj.defaultSelected.hashCodes = response.data.hash_codes;
-                let length = response.data.hash_codes.length;
-                for (let i = 0; i < length; i++) {
-                    currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
-                }
-                     axios.post('/getDefaultSavedTasks')
-                     .then((response) => {
-                        const {defaultSavedTasks} = response.data;
-                        
-                        currentObj.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks
-
-                        if (defaultSavedTasks.length) {
-                           defaultSavedTasks.forEach(defaultSavedTask => {
-                              currentObj.defaultSelected.hashCodes = [...currentObj.defaultSelected.hashCodes, defaultSavedTask.hash_code];
-                           })
-                        }
-                     })
-                     .catch((error) => {
-                        currentObj.output = error;;
-                     })
+               currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
             })
             .catch(function(error) {
-                currentObj.output = error;
+               currentObj.output = error;
             });
 
-         axios.post('/isWeekendAvailable')
-         .then(function(response) {
-            currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
-         })
-         .catch(function(error) {
-            currentObj.output = error;
-         });
+            currentObj.showPreloaderInsteadTable = true;
 
-         currentObj.showPreloaderInsteadTable = true;
+         this.setActualTasks(false);
 
-         Promise.all([this.getTodayPlan(), this.getPreplan()])
-         .then(() => {
-            currentObj.showPreloaderInsteadTable = false;
-         });
-
-        this.getEmergencyModeDates()
-        .then((dates) => {
-            this.emergencyModeDates = dates;
-        })
-        .catch((dates) => {
-            this.emergencyModeDates = [];
-        })
+         this.getEmergencyModeDates()
+         .then((emModedates) => this.setDisabledDates(emModedates))
+         .catch(() => this.setDisabledDates([]))
     },
 
     async mounted() {
@@ -1228,7 +1271,7 @@ export default {
 		to { opacity: 0; top: 5px;}
 	}
 
-   
+
    .button_appearance {
       animation: .25s button_appearance ease;
    }

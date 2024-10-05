@@ -69,4 +69,10 @@ class EmergencyService
 
         return $query->pluck('date')->toArray();
     }
+
+    public function checkIfEmerModeIsActive($date, $user_today_date) {
+        $user_emergency_mode_dates = $this->getEmergencyModeDates($user_today_date);
+        
+        return in_array($date, $user_emergency_mode_dates);
+    }
 } 
