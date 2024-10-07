@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Services;
 
 use Illuminate\Support\Carbon;
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 
 
 class HistTransformationService
@@ -13,7 +14,7 @@ class HistTransformationService
     public function transformHistResponse(array $data, string $todayDate)
     {
         foreach ($data['plans'] as $planDate => &$plan) {
-            $plan["isDayPassed"] = $this->checkIsBeforeToday($planDate, $todayDate);
+            $plan["isDayPassed"] = !GeneralHelper::checkIfDateIsLater($planDate, $todayDate);
             if ($plan["isDayPassed"]) {
                 foreach ($plan['tasks'] as $task) {
                     if ($task->mark == -1) {
@@ -28,10 +29,5 @@ class HistTransformationService
             }
         }
         return $data;
-    }
-
-    private function checkIsBeforeToday($planDate, $todayDate)
-    {
-        return Carbon::createFromFormat('Y-m-d', $planDate)->isBefore(Carbon::createFromFormat('Y-m-d', $todayDate));
     }
 }

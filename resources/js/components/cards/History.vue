@@ -68,7 +68,6 @@ export default
 	{
 		data() {
 			return {
-				todayDate: new Date().getTodayFormatedDate(),
 				focus: '',
 				type: 'month',
 				selectedEvent: {},
@@ -142,7 +141,6 @@ export default
 			async updateRange(period) {
 				const history = await axios.post('/hist', {
 					start_date: period.start.date,
-					today_date: this.todayDate
 				})
 				this.events = []
 				const plans = history.data.plans;
@@ -165,6 +163,10 @@ export default
 						status: plans[date].dayStatus,
 						date: date,
 						isDayPassed: plans[date].isDayPassed,
+					}
+
+					if (!cardHeaderData.status) {
+						dayData.name = 'Create preplan'
 					}
 
 					this.events = [...this.events, dayData];
@@ -241,6 +243,5 @@ export default
 </script>
 
 <style scoped>
-
 	@import url('/css/History/HistoryMedia.css');
 </style>

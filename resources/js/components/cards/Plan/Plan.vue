@@ -23,8 +23,8 @@
                <PreplanDataPicker 
                v-model             = "planDate"
                :todayDate          = "todayDate"
-               :emergencyModeDates = "emergencyModeDates"
-               @changePlanDate = "changePlanDate"
+               :emergencyModeDates = "disabledDates"
+               @changePlanDate = "setActualTasks(true)"
                />
             </div>
             <div id="plan-day-status">
@@ -223,6 +223,7 @@
                <v-tooltip right>
                      <template v-slot:activator="{ on, attrs }">
                         <v-btn 
+                        :disabled="!isTodayPlan"
                         id="plan-creating" 
                         v-on:click="formSubmit" 
                         v-bind="attrs"
@@ -304,7 +305,16 @@
          
 	      <EmergencyCall  
          v-if="isShowEmergencyCallDialog"
-         v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"/>
+         v-on:toggleEmergencyCallDialog="toggleEmergencyCallDialog"
+         />
+         <Snackbar 
+         v-model="snackbar"
+         :text="snackbarData.snackbarText"
+         />
+
+         <HistoryBackSnackbar 
+         v-if="isShowHistoryBackSnackbar"
+         />
       </v-container>
    </v-card>
 </template>
@@ -335,11 +345,22 @@ import {
     mdiCancel,
 } from '@mdi/js'
 import { uuid } from 'vue-uuid';
+import Snackbar from '../../UI/Snackbar.vue';
+import HistoryBackSnackbar from '../../UI/HistoryBackSnackbar.vue';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
-import details from '../../../store/modules/details';
 
 export default {
+   props: {
+      selectedPlanDate: {
+         type: String,
+      },
+
+      userTodayDate: {
+         type: String,
+         default: new Date().getTodayFormatedDate(),
+      }
+   },
    components : {
       EmergencyCall, 
       AddHashCode, 
@@ -350,11 +371,13 @@ export default {
       CustomTimepicker,
       SelectTaskType,
       PreplanDataPicker,
+      Snackbar,
+      HistoryBackSnackbar,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data: () => ({
-         planDate: new Date().getTodayFormatedDate(),
-         todayDate: new Date().getTodayFormatedDate(),
+         planDate: '', //инициализируется в хуке created
+         todayDate: '',//инициализируется в хуке created
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          newHashCode: '#',
          showIcon: 0,
@@ -416,7 +439,13 @@ export default {
             selectedSavedTaskId: null,
          },
          addTaskToPlanWithoutConfirmation: false,
-         emergencyModeDates: [],
+         disabledDates: [],
+         snackbar: false,
+         snackbarData: {
+            snackbarText:    '',
+            snackbarTimerId: '',
+         },
+         snackbarText: '',
     }),
     store,
     watch: {
@@ -448,6 +477,9 @@ export default {
 
          Promise.all(tasksForTheDay).then(updatedItems => {
             this.items = updatedItems;
+            if (this.items.length) {
+               this.checkIfPreplanNeedsToBeSav();
+            }
          }).catch(error => {
             console.error('Error processing tasks:', error); 
          });
@@ -496,6 +528,9 @@ export default {
             return this.planDate === this.todayDate;
          },
 
+         isShowHistoryBackSnackbar() {
+            return !this.snackbar && this.selectedPlanDate;
+         }
     },
     methods: {
       ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
@@ -574,44 +609,54 @@ export default {
             }
         },
 
-        checkDefaultSelected() {
-         let {taskName} = this.defaultSelected;
-         taskName = taskName.trim();
+         checkDefaultSelected() {
+            let {taskName} = this.defaultSelected;
+            taskName = taskName.trim();
 
-         if (taskName.length < 4) {
-            return 'The task\'s name must be more than 3 characters long';
-         }
+            if (taskName.length < 4) {
+               return 'The task\'s name must be more than 3 characters long';
+            }
 
-         if (taskName.length > 255) {
-            return 'The task\'s name can\'t consist of more than 255 characters';
-         }
+            if (taskName.length > 255) {
+               return 'The task\'s name can\'t consist of more than 255 characters';
+            }
 
-         return true;
-        },
+            return true;
+         },
 
-        setAlert({serverMessage, alertType, checkTaskName = false}) {
-            if (checkTaskName) {
-               //если длина названия таски очень большая, то оставляю первые 25 символов только
-               const regex = /The task (.+?) has/g;
-               const matches = regex.exec(serverMessage);
-               if (matches) {
-                  const taskName = matches[1]; 
-                  
-                  if (taskName && taskName.length > 25) {
-                     serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+         showSnackbar(text) {
+            this.snackbar = true;
+            this.snackbarData.snackbarText = text;
+           
+            clearTimeout(this.snackbarData.snackbarTimerId);
+            this.snackbarData.snackbarTimerId = setTimeout(() => {
+               this.snackbar = false;
+            }, 5e3);
+         },
+
+         setAlert({serverMessage, alertType, checkTaskName = false}) {
+               if (checkTaskName) {
+                  //если длина названия таски очень большая, то оставляю первые 25 символов только
+                  const regex = /The task (.+?) has/g;
+                  const matches = regex.exec(serverMessage);
+                  if (matches) {
+                     const taskName = matches[1]; 
+                     
+                     if (taskName && taskName.length > 25) {
+                        serverMessage = serverMessage.replace(taskName, taskName.slice(0,25) + '...');
+                     }
                   }
                }
-            }
-         
-            this.serverMessage = serverMessage;
-            this.alertType = alertType;
-            this.showAlert = true;
+            
+               this.serverMessage = serverMessage;
+               this.alertType = alertType;
+               this.showAlert = true;
 
-            clearTimeout(this.closeAlertTime);
-            this.closeAlertTime = setTimeout(() => {
-               this.showAlert = false;
-            }, 5e3);
-        },
+               clearTimeout(this.closeAlertTime);
+               this.closeAlertTime = setTimeout(() => {
+                  this.showAlert = false;
+               }, 5e3);
+         },
 
         addTask() {
          // если пользователь пытается добавить в план дефолтную таску, то ему необходио сделать ее сохраненной
@@ -649,6 +694,7 @@ export default {
             // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
          this.setAlert({serverMessage: `The task ${taskName} has been successfully added`, alertType: 'success', checkTaskName: true});
+         this.checkIfPreplanNeedsToBeSav();
         },
 
         deleteItem(item) {
@@ -659,6 +705,13 @@ export default {
              // если показываю алерт через метод setAlert и использую название таски, то важно для регулярки что бы текст был вида
             // The task .... has  (влияет на работу регулярки и обрезание большого названия таски)
             this.setAlert({serverMessage: `The task ${taskName} has been successfully removed`, alertType: 'success', checkTaskName: true});
+            this.checkIfPreplanNeedsToBeSav();
+        },
+
+        checkIfPreplanNeedsToBeSav() {
+            if (!this.isTodayPlan) {
+               this.createPreplan();
+            }
         },
 
         async createPreplan() {
@@ -682,18 +735,15 @@ export default {
                date:       planData.date,
                day_status: planData.day_status
             });
-
-            this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
+            
+            this.showSnackbar(response.data.message);
+            // this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
          } catch(error) {
             console.error(error);
          }
         },
 
         formSubmit(e) {
-            if (!this.isTodayPlan) {
-               return this.createPreplan();
-            }
-
             let currentObj = this;
             axios.post('/addPlan', currentObj.getPostParams())
             .then(function(response) { 
@@ -770,12 +820,13 @@ export default {
          console.log(value);
       },
 
-      async getTodayPlan() {
+      async setForTomorrowTasks() {
          this.showPreloaderInsteadTable = true;
 
             try {
                   const response = await axios.post('/getPreparedPlan');
                   if (response) {
+                     const forTomorrowTasks = [];
                      for (let i = 0; i < response.data.length; i++) {
                         const currentIterableTask = response.data[i];
                         if (Object.keys(currentIterableTask).length === 0) continue;
@@ -789,9 +840,18 @@ export default {
                         this.preparedTask.notes = currentIterableTask.note;
                         this.preparedTask.uniqKey = this.generateUniqKey();
 
-                        this.items.push(this.preparedTask);
+                        forTomorrowTasks.push(this.preparedTask);
                         this.preparedTask = {};
                      }
+
+                     const addedTasksHashes = this.items.filter(task => task.hash !== '#')
+                                                         .map(task => task.hash)
+                     //убираю дубли из добавленных в план заданий
+                     const uniqAdeedTaskHashes = [...new Set(addedTasksHashes)];
+                     //получаю только те сохраненные задания for_tomorrow, которые еще не добавлены в план
+                     const uniqFormTomorrowTasks = forTomorrowTasks.filter(({hash}) => !uniqAdeedTaskHashes.includes(hash));
+                     
+                     this.items = [...this.items, ...uniqFormTomorrowTasks];
                   }
             } catch (error) {
                   this.output = error;
@@ -800,12 +860,12 @@ export default {
             }
          },
 
-         async getPreplan() {
+         async setPreplan() {
             try {
                const response = await axios.post('/get-preplan', {date: this.planDate});
                
                if (response.status === 200) {
-                  this.items = [...response.data.tasks, ...this.items];
+                  this.items = [...response.data.tasks];
                   this.day_status = response.data.transformed_day_status;
                }
             } catch(error) {
@@ -813,16 +873,18 @@ export default {
             }
          },
 
-         async changePlanDate() {
-            this.items = [];
+         async setActualTasks(clearTable) {
+            if (clearTable) {
+               this.items = [];
+            }
             this.showPreloaderInsteadTable = true;
 
             const promises = [];
 
+            promises.push(this.setPreplan());
             if (this.isTodayPlan) {
-               promises.push(this.getTodayPlan());
+               promises.push(this.setForTomorrowTasks());
             }
-            promises.push(this.getPreplan());
 
             await Promise.all(promises);
             
@@ -840,60 +902,72 @@ export default {
             } catch(error) {
                console.error(error);
             }
+         },
+
+         setDisabledDates(emModeDates) {
+            //если пользователь создает преплан, то у него не должно быть возможности создать на сегодня план
+            if(this.selectedPlanDate && !emModeDates.includes(this.selectedPlanDate)) {
+               this.disabledDates = [this.todayDate, ... emModeDates];
+            } else {
+               this.disabledDates = [...emModeDates];
+            }
+         },
+
+         setPlanDate(date) {
+            if (date !== undefined) {
+               return date;
+            }
+
+            return new Date().getTodayFormatedDate();
          }
     },
     created() {
-        let currentObj = this;
+         let currentObj = this;
+         currentObj.planDate  = this.setPlanDate(currentObj.selectedPlanDate);
+         currentObj.todayDate = currentObj.userTodayDate;
 
-        axios.post('/getSavedTasks')
+         axios.post('/getSavedTasks')
+               .then(function(response) {
+                  currentObj.defaultSelected.hashCodes = response.data.hash_codes;
+                  let length = response.data.hash_codes.length;
+                  for (let i = 0; i < length; i++) {
+                     currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
+                  }
+                        axios.post('/getDefaultSavedTasks')
+                        .then((response) => {
+                           const {defaultSavedTasks} = response.data;
+                           
+                           currentObj.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks
+
+                           if (defaultSavedTasks.length) {
+                              defaultSavedTasks.forEach(defaultSavedTask => {
+                                 currentObj.defaultSelected.hashCodes = [...currentObj.defaultSelected.hashCodes, defaultSavedTask.hash_code];
+                              })
+                           }
+                        })
+                        .catch((error) => {
+                           currentObj.output = error;;
+                        })
+               })
+               .catch(function(error) {
+                  currentObj.output = error;
+               });
+
+            axios.post('/isWeekendAvailable')
             .then(function(response) {
-                 currentObj.defaultSelected.hashCodes = response.data.hash_codes;
-                let length = response.data.hash_codes.length;
-                for (let i = 0; i < length; i++) {
-                    currentObj.defaultSelected.hashCodes[i] = currentObj.defaultSelected.hashCodes[i].hash_code
-                }
-                     axios.post('/getDefaultSavedTasks')
-                     .then((response) => {
-                        const {defaultSavedTasks} = response.data;
-                        
-                        currentObj.defaultSavedTaskData.defaultSavedTasks = defaultSavedTasks
-
-                        if (defaultSavedTasks.length) {
-                           defaultSavedTasks.forEach(defaultSavedTask => {
-                              currentObj.defaultSelected.hashCodes = [...currentObj.defaultSelected.hashCodes, defaultSavedTask.hash_code];
-                           })
-                        }
-                     })
-                     .catch((error) => {
-                        currentObj.output = error;;
-                     })
+               currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
             })
             .catch(function(error) {
-                currentObj.output = error;
+               currentObj.output = error;
             });
 
-         axios.post('/isWeekendAvailable')
-         .then(function(response) {
-            currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
-         })
-         .catch(function(error) {
-            currentObj.output = error;
-         });
+            currentObj.showPreloaderInsteadTable = true;
 
-         currentObj.showPreloaderInsteadTable = true;
+         this.setActualTasks(false);
 
-         Promise.all([this.getTodayPlan(), this.getPreplan()])
-         .then(() => {
-            currentObj.showPreloaderInsteadTable = false;
-         });
-
-        this.getEmergencyModeDates()
-        .then((dates) => {
-            this.emergencyModeDates = dates;
-        })
-        .catch((dates) => {
-            this.emergencyModeDates = [];
-        })
+         this.getEmergencyModeDates()
+         .then((emModedates) => this.setDisabledDates(emModedates))
+         .catch(() => this.setDisabledDates([]))
     },
 
     async mounted() {
@@ -1197,6 +1271,7 @@ export default {
 		to { opacity: 0; top: 5px;}
 	}
 
+
    .button_appearance {
       animation: .25s button_appearance ease;
    }
@@ -1215,6 +1290,7 @@ export default {
       margin: 0;
       color: rgba(0,0,0,.6);
    }
+
 
    .tasks-counter-enter-active, .tasks-counter-leave-active {
       position: relative;

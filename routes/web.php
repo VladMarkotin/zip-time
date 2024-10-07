@@ -129,9 +129,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('edit-comment', [App\Http\Controllers\EstimationController::class, 'saveComment']);
 
     //Preplans
+    Route::get('/preplan',  [App\Http\Controllers\PreplanController::class, 'index'])->name('preplan.index');
     Route::post('/add-preplan', [App\Http\Controllers\PreplanController::class, 'addPreplan'])->name('preplans.create');
     Route::post('/get-preplan', [App\Http\Controllers\PreplanController::class, 'getPreplanData'])->name('preplans.get');
-
 });
 Route::post('/get-default-configs', function (){
     exit(DefaultConfigs::getConfigs());
