@@ -29,6 +29,8 @@
 
 
 <script>
+import store from '../../store';
+import { mapGetters } from 'vuex/dist/vuex.common.js';
 export default {
     props: {
         value: {
@@ -39,17 +41,15 @@ export default {
             type: String,
             default: new Date().getTodayFormatedDate(),
         },
-        emergencyModeDates: {
-            type: Array,
-            default: () => [],
-        }
     },
     data() {
     return {
         menu: false,
     };
-  },
+},
+    store,
     computed: {
+        ...mapGetters(['getDisabledDates']),
         displayDate() {
             const formatedDate = this.formatDate(this.value);
             const dmyDate      = new Date(formatedDate).formatDateToDMY(); 
@@ -58,6 +58,9 @@ export default {
 
             return formatedDate === this.todayDate ? 'Today' : `${dmyDate} ${dayOfWeek}`;
         },
+        disabledDates() {
+            return this.getDisabledDates;
+        }
     },
     methods: {
         formatDate(date) {
@@ -68,7 +71,7 @@ export default {
             this.$emit('input', this.formatDate(selectedDate));
         },
         isDateAllowed(date) {
-           return !this.emergencyModeDates.includes(date);
+           return !this.disabledDates.includes(date);
         }
     },
 };

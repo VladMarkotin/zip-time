@@ -23,7 +23,6 @@
                <PreplanDataPicker 
                v-model             = "planDate"
                :todayDate          = "todayDate"
-               :emergencyModeDates = "disabledDates"
                @changePlanDate = "setActualTasks(true)"
                />
             </div>
@@ -321,7 +320,7 @@
 <script>
 import store from '../../../store';
 import PreplanDataPicker from '../../UI/PreplanDataPicker.vue';
-import { mapMutations, mapGetters } from 'vuex/dist/vuex.common.js';
+import { mapMutations, mapGetters, mapActions } from 'vuex/dist/vuex.common.js';
 import AddHashCode from '../../dialogs/AddHashCode.vue';
 import AddHashCodeButton from '../../UI/AddHashCodeButton.vue';
 import CleanHashCodeButton from '../../UI/CleanHashCodeButton.vue';
@@ -534,6 +533,7 @@ export default {
     },
     methods: {
       ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
+      ...mapActions(['setDisabledDates']),
       clearCurrentHashCode(){
 			this.defaultSelected.hash = '#'
 			this.defaultSelected.taskName = ''
@@ -891,28 +891,6 @@ export default {
             this.showPreloaderInsteadTable = false;
          },
 
-         async getEmergencyModeDates() {
-            try {
-               const response = await axios.post('/getEmergencyModeDates', {todayDate: this.todayDate});
-               
-               if (response.status === 200) {
-                  return response.data.emergency_mode_dates;
-               }
-               return [];
-            } catch(error) {
-               console.error(error);
-            }
-         },
-
-         setDisabledDates(emModeDates) {
-            //если пользователь создает преплан, то у него не должно быть возможности создать на сегодня план
-            if(this.selectedPlanDate && !emModeDates.includes(this.selectedPlanDate)) {
-               this.disabledDates = [this.todayDate, ... emModeDates];
-            } else {
-               this.disabledDates = [...emModeDates];
-            }
-         },
-
          setPlanDate(date) {
             if (date !== undefined) {
                return date;
@@ -964,10 +942,10 @@ export default {
             currentObj.showPreloaderInsteadTable = true;
 
          this.setActualTasks(false);
-
-         this.getEmergencyModeDates()
-         .then((emModedates) => this.setDisabledDates(emModedates))
-         .catch(() => this.setDisabledDates([]))
+         this.setDisabledDates({
+            todayDate:        currentObj.todayDate, 
+            selectedPlanDate: currentObj.selectedPlanDate
+         });
     },
 
     async mounted() {
