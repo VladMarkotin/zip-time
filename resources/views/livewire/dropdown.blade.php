@@ -82,7 +82,7 @@
                                 <div class="form-group">
                                     <strong>Notification type:</strong>
                                     <input type="text" class="form-control"
-                                        placeholder='Придумайте тип напоминания (например "Важное")' wire:model="type">
+                                        placeholder='Consider the type of reminder (for example, “Important”)' wire:model="type">
                                     @error('type')
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
