@@ -1,6 +1,6 @@
 <template>
      <v-container class="dataPicker-wraper">
-    <v-menu v-model="menu" offset-y>
+    <v-menu v-model="menu" menuPosition>
       <template #activator="{ props }">
         <v-btn 
         v-bind="props" 
@@ -41,6 +41,12 @@ export default {
             type: String,
             default: new Date().getTodayFormatedDate(),
         },
+        menuPosition: {
+            type: Object,
+            default: () => ({
+                'offset-y': true,
+            })
+        }
     },
     data() {
     return {

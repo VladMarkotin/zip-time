@@ -69,8 +69,9 @@
 					</v-expansion-panel-header>
 					<v-expansion-panel-content class="">
 						<PreplanDataPicker 
-						v-model   = "planDate"
-               			:todayDate = "userTodayDate"
+						v-model       = "planDate"
+               			:todayDate    = "userTodayDate"
+						:menuPosition = "{'offset-x': true,}"
 						@changePlanDate = "redirectToPreplanPAge"
 						/>
 					</v-expansion-panel-content>
