@@ -59,6 +59,22 @@
 						Own mark represents your subjective assessment of the day's success.
 					</v-expansion-panel-content>
 				</v-expansion-panel>
+				<v-expansion-panel>
+					<v-expansion-panel-header>
+						<v-list-item class="">
+							<v-list-item-content class="key" >
+								<span class="text-center">Create preplan:</span>
+							</v-list-item-content>
+						</v-list-item>
+					</v-expansion-panel-header>
+					<v-expansion-panel-content class="">
+						<PreplanDataPicker 
+						v-model   = "planDate"
+               			:todayDate = "userTodayDate"
+						@changePlanDate = "redirectToPreplanPAge"
+						/>
+					</v-expansion-panel-content>
+				</v-expansion-panel>
 				</v-expansion-panels>
 			</v-container>
 			<v-list-item >
@@ -115,16 +131,25 @@
 </template>
 <script>
 	import store from '../../store';
-	import { mapGetters, mapMutations } from 'vuex/dist/vuex.common.js';
+	import { mapGetters, mapMutations, mapActions } from 'vuex/dist/vuex.common.js';
 	import ClosedDayCommentDialog from '../dialogs/ClosedDayCommentDialog.vue';
 	import {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline } from '@mdi/js'
 	import Challenges from "./../challenges/Challenges.vue";
 	import { data } from 'jquery';
+	import PreplanDataPicker from '../UI/PreplanDataPicker.vue';
 
 	export default
 	{
-		props : ['data'],
-		components: { Challenges, ClosedDayCommentDialog},
+		props : {
+			data: {
+
+			},
+			userTodayDate: {
+				type: String,
+				default: new Date().getTodayFormatedDate(),
+			}
+		},
+		components: { Challenges, ClosedDayCommentDialog, PreplanDataPicker},
 		data()
 		{
 			const commentText = this.data.comment;
@@ -135,11 +160,11 @@
 			daystatusCodeInfo.set(1, 'Weekend mode');
 			daystatusCodeInfo.set(2, 'Failed');
 			daystatusCodeInfo.set(3, 'Success');
-
 			const currentDate = new Date;
 
 			return {
 				   currentDate,
+				   planDate: this.userTodayDate,
 				   shownDate: this.transformDate(currentDate),
 				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},
@@ -171,6 +196,7 @@
 		methods :
 			{	
 				...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
+				...mapActions(['setDisabledDates']),
 				setDate(flag) {
 					if (this.isLoading) return;
 
@@ -240,8 +266,19 @@
 
 				updateScreenWidth() {
             		this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
-        		}
+        		},
+
+				redirectToPreplanPAge() {
+					window.location.href = `/preplan?date=${this.planDate}`;
+				}
 			},
+		
+		created() {
+			this.setDisabledDates({
+				todayDate:        this.userTodayDate, 
+				disableToday:     true,
+         	});
+		},
 		
 		mounted() {
 			this.setDate('today');

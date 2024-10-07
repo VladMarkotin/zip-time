@@ -83,6 +83,7 @@ export default {
         align-items: center;
         gap: 10px;
         padding: 12px 0 0;
+        justify-content: center;
     }
 
     @media screen and (max-width: 900px) {
