@@ -44,7 +44,7 @@
         <v-list-item>
           <v-list-item-content class="justify-content-center">
             <a :href="preplanUrl">
-              <v-btn style="width: 100%;">{{isPreplanExists ? 'update plan' : 'create plan'}}</v-btn>
+              <v-btn style="width: 100%;">{{isPreplanExists ? 'update preplan' : 'create preplan'}}</v-btn>
             </a>
           </v-list-item-content>
         </v-list-item>

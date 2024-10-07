@@ -63,7 +63,7 @@
 					<v-expansion-panel-header>
 						<v-list-item class="">
 							<v-list-item-content class="key" >
-								<span class="text-center">Create preplan:</span>
+								<span class="text-center">Create preplan</span>
 							</v-list-item-content>
 						</v-list-item>
 					</v-expansion-panel-header>
