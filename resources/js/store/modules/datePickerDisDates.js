@@ -29,16 +29,15 @@ export default {
              }
         },
         //переименовать в setDisabledDates
-        async setDisabledDates({commit, dispatch}, {todayDate, selectedPlanDate})  {
+        async setDisabledDates({commit, dispatch}, {todayDate, disableToday})  {
             try {
                 const emergencyModeDates = await dispatch('fetchEmergencyModeDates', {todayDate});
                 commit('SET_EMERGENCY_MODE_DATES', {emergencyModeDates});
+                
+                const shouldDisableToday = disableToday && !emergencyModeDates.includes(todayDate);
+                const disabledDates = shouldDisableToday ? [todayDate, ...emergencyModeDates] : emergencyModeDates;
 
-                if(selectedPlanDate && !emergencyModeDates.includes(selectedPlanDate)) {
-                    commit('SET_DISABLED_DATES', {disabledDates: [todayDate, ...emergencyModeDates]});
-                } else {
-                    commit('SET_DISABLED_DATES', {disabledDates: emergencyModeDates});
-                }
+                commit('SET_DISABLED_DATES', { disabledDates });
             } catch(error) {
                 console.error(error);
             }

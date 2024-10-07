@@ -944,8 +944,9 @@ export default {
          this.setActualTasks(false);
          this.setDisabledDates({
             todayDate:        currentObj.todayDate, 
-            selectedPlanDate: currentObj.selectedPlanDate
+            disableToday:     !!currentObj.selectedPlanDate,
          });
+         //если установлено значенеи пропса selectedPlanDate, то сегодняшнюю дату надо задизейблить
     },
 
     async mounted() {
