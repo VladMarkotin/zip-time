@@ -21,7 +21,7 @@
       </div>
     </v-menu>
 
-    <div>
+    <div v-if="isShowSelectedDate">
         <p class="mb-0">Selected date: {{ displayDate }}</p>
     </div>
   </v-container>
@@ -46,6 +46,10 @@ export default {
             default: () => ({
                 'offset-y': true,
             })
+        },
+        isShowSelectedDate: {
+            type: Boolean,
+            default: true,
         }
     },
     data() {

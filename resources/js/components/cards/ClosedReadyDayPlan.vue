@@ -69,9 +69,10 @@
 					</v-expansion-panel-header>
 					<v-expansion-panel-content class="">
 						<PreplanDataPicker 
-						v-model       = "planDate"
-               			:todayDate    = "userTodayDate"
-						:menuPosition = "{'offset-x': true,}"
+						v-model             = "planDate"
+               			:todayDate          = "userTodayDate"
+						:menuPosition       = "{'offset-x': true,}"
+						:isShowSelectedDate = "false"
 						@changePlanDate = "redirectToPreplanPAge"
 						/>
 					</v-expansion-panel-content>
@@ -145,7 +146,7 @@
 			data: {
 
 			},
-			userTodayDate: {
+			userTodayDate: { //надо получать с бэка
 				type: String,
 				default: new Date().getTodayFormatedDate(),
 			}
