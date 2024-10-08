@@ -6,6 +6,7 @@ import Notes from './modules/notes';
 import PersonalResults from './modules/personalResults';
 import WindowScreenWidth from './modules/windowScreenWidth';
 import TaskData from './modules/taskData';
+import DatePickerDisDates from './modules/datePickerDisDates';
 
 Vue.use(Vuex)
 
@@ -17,5 +18,6 @@ export default new Vuex.Store({
         PersonalResults,
         WindowScreenWidth,
         TaskData,
+        DatePickerDisDates,
      }
 })

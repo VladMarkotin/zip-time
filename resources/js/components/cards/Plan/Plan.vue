@@ -23,7 +23,6 @@
                <PreplanDataPicker 
                v-model             = "planDate"
                :todayDate          = "todayDate"
-               :emergencyModeDates = "disabledDates"
                @changePlanDate = "setActualTasks(true)"
                />
             </div>
@@ -321,7 +320,7 @@
 <script>
 import store from '../../../store';
 import PreplanDataPicker from '../../UI/PreplanDataPicker.vue';
-import { mapMutations, mapGetters } from 'vuex/dist/vuex.common.js';
+import { mapMutations, mapGetters, mapActions } from 'vuex/dist/vuex.common.js';
 import AddHashCode from '../../dialogs/AddHashCode.vue';
 import AddHashCodeButton from '../../UI/AddHashCodeButton.vue';
 import CleanHashCodeButton from '../../UI/CleanHashCodeButton.vue';
@@ -355,10 +354,13 @@ export default {
       selectedPlanDate: {
          type: String,
       },
-
       userTodayDate: {
          type: String,
          default: new Date().getTodayFormatedDate(),
+      },
+      isWorkingDay: {//какое значение будет в селекте по умолчанию
+         type: Boolean,
+         default: true,
       }
    },
    components : {
@@ -375,13 +377,14 @@ export default {
       HistoryBackSnackbar,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
-    data: () => ({
+    data() {
+      return {
          planDate: '', //инициализируется в хуке created
          todayDate: '',//инициализируется в хуке created
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          newHashCode: '#',
          showIcon: 0,
-         day_status: 'Work Day',
+         day_status: this.isWorkingDay ? 'Work Day' : 'Weekend',
          menu: false/*for defaultSelected.time*/,
          isShowEmergencyCallDialog : false,
          defaultSelected: {
@@ -446,7 +449,8 @@ export default {
             snackbarTimerId: '',
          },
          snackbarText: '',
-    }),
+    }
+    },
     store,
     watch: {
       day_status() {
@@ -534,6 +538,7 @@ export default {
     },
     methods: {
       ...mapMutations(['SET_WINDOW_SCREEN_WIDTH']),
+      ...mapActions(['setDisabledDates']),
       clearCurrentHashCode(){
 			this.defaultSelected.hash = '#'
 			this.defaultSelected.taskName = ''
@@ -735,7 +740,7 @@ export default {
                date:       planData.date,
                day_status: planData.day_status
             });
-            
+            console.log(response.data.message);
             this.showSnackbar(response.data.message);
             // this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
          } catch(error) {
@@ -816,10 +821,6 @@ export default {
          this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
       },
 
-      setTaskType(value) {
-         console.log(value);
-      },
-
       async setForTomorrowTasks() {
          this.showPreloaderInsteadTable = true;
 
@@ -891,28 +892,6 @@ export default {
             this.showPreloaderInsteadTable = false;
          },
 
-         async getEmergencyModeDates() {
-            try {
-               const response = await axios.post('/getEmergencyModeDates', {todayDate: this.todayDate});
-               
-               if (response.status === 200) {
-                  return response.data.emergency_mode_dates;
-               }
-               return [];
-            } catch(error) {
-               console.error(error);
-            }
-         },
-
-         setDisabledDates(emModeDates) {
-            //если пользователь создает преплан, то у него не должно быть возможности создать на сегодня план
-            if(this.selectedPlanDate && !emModeDates.includes(this.selectedPlanDate)) {
-               this.disabledDates = [this.todayDate, ... emModeDates];
-            } else {
-               this.disabledDates = [...emModeDates];
-            }
-         },
-
          setPlanDate(date) {
             if (date !== undefined) {
                return date;
@@ -964,10 +943,11 @@ export default {
             currentObj.showPreloaderInsteadTable = true;
 
          this.setActualTasks(false);
-
-         this.getEmergencyModeDates()
-         .then((emModedates) => this.setDisabledDates(emModedates))
-         .catch(() => this.setDisabledDates([]))
+         this.setDisabledDates({
+            todayDate:        currentObj.todayDate, 
+            disableToday:     !!currentObj.selectedPlanDate,
+         });
+         //если установлено значенеи пропса selectedPlanDate, то сегодняшнюю дату надо задизейблить
     },
 
     async mounted() {

@@ -311,11 +311,9 @@ class MainController
             if($createdDayPlan){
                 if($createdDayPlan[0]->day_status == 0){
                     $createdDayPlan = $this->dataTransformationService->transformDataForEmergencyRequest($createdDayPlan);
-                    
                     return json_encode($createdDayPlan, JSON_UNESCAPED_UNICODE);
                 }
                 $transformData  = ($this->dataTransformationService->transformData($createdDayPlan));
-
                 return json_encode($transformData, JSON_UNESCAPED_UNICODE);
             }
         }
