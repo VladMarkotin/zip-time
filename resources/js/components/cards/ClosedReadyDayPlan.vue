@@ -328,6 +328,7 @@
 		grid-template-columns: auto 1fr;
 	}
 
+	
 	.comment-buttons-wrapper {
 		gap: 5px;
 	}
