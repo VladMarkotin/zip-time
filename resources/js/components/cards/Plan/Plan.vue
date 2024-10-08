@@ -354,10 +354,13 @@ export default {
       selectedPlanDate: {
          type: String,
       },
-
       userTodayDate: {
          type: String,
          default: new Date().getTodayFormatedDate(),
+      },
+      isWorkingDay: {//какое значение будет в селекте по умолчанию
+         type: Boolean,
+         default: true,
       }
    },
    components : {
@@ -374,13 +377,14 @@ export default {
       HistoryBackSnackbar,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
-    data: () => ({
+    data() {
+      return {
          planDate: '', //инициализируется в хуке created
          todayDate: '',//инициализируется в хуке created
          placeholders: ['Enter name of task here', 'Type', 'Priority', 'Time', 'Details', 'Notes'],
          newHashCode: '#',
          showIcon: 0,
-         day_status: 'Work Day',
+         day_status: this.isWorkingDay ? 'Work Day' : 'Weekend',
          menu: false/*for defaultSelected.time*/,
          isShowEmergencyCallDialog : false,
          defaultSelected: {
@@ -445,7 +449,8 @@ export default {
             snackbarTimerId: '',
          },
          snackbarText: '',
-    }),
+    }
+    },
     store,
     watch: {
       day_status() {
@@ -814,10 +819,6 @@ export default {
 
       updateScreenWidth() {
          this.SET_WINDOW_SCREEN_WIDTH({windowScreenWidth: window.innerWidth});
-      },
-
-      setTaskType(value) {
-         console.log(value);
       },
 
       async setForTomorrowTasks() {

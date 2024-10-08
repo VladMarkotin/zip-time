@@ -40,8 +40,15 @@ class PreplanController extends Controller
         if ($this->emergencyService->checkIfEmerModeIsActive($selected_plan_date, $user_today_date)) {
             return abort(404);
         }
+        
+        $preplanData = $this->getPreplan(["user_id" => Auth::id(), "date" => $selected_plan_date]);
+        if(array_key_exists('day_status', $preplanData)) {//попрпавить
+            $is_working_day  = $preplanData["day_status"] === 2;
+        } else {
+            $is_working_day = true;
+        }
 
-        return view('plan', compact('selected_plan_date', 'user_today_date'));
+        return view('plan', compact('selected_plan_date', 'user_today_date', 'is_working_day'));
         
     }
 
@@ -100,13 +107,8 @@ class PreplanController extends Controller
     {
         $date = $request->date;
 
-        $day_status_map = [
-            1 => 'Weekend',
-            2 => 'Work Day',
-        ];
-
         $response = [
-            "transformed_day_status" => $day_status_map[2],
+            "transformed_day_status" => $this->getTransformedDayStatus(2),
             'tasks'                  => [],
         ];
         
@@ -119,7 +121,7 @@ class PreplanController extends Controller
             if (count($preplanData)) {
                 
                 $day_status = $preplanData['day_status'];
-                $transformed_day_status = $day_status_map[$day_status];
+                $transformed_day_status = $this->getTransformedDayStatus($day_status);
                 
                 $response['tasks'] = json_decode($preplanData['jsoned_tasks']);
                 $response["transformed_day_status"] = $transformed_day_status;
@@ -128,6 +130,15 @@ class PreplanController extends Controller
         }
 
         return $response;
+    }
+
+    public function getTransformedDayStatus($key) {
+        $day_status_map = [
+            1 => 'Weekend',
+            2 => 'Work Day',
+        ];
+
+        return $day_status_map[$key];
     }
 
     private function getPreplan(array $data)
