@@ -740,7 +740,7 @@ export default {
                date:       planData.date,
                day_status: planData.day_status
             });
-            
+            console.log(response.data.message);
             this.showSnackbar(response.data.message);
             // this.setAlert({serverMessage: response.data.message, alertType: response.data.status});
          } catch(error) {

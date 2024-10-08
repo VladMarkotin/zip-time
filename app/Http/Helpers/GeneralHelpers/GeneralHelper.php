@@ -111,4 +111,8 @@ class GeneralHelper
         
         return $carbonDate && $carbonDate->format('Y-m-d') === $date;
     }   
+
+    public static function transformDateToDMY($date) {
+        return Carbon::parse($date)->format('d-m-Y');
+    }
 }

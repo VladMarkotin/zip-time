@@ -63,6 +63,7 @@ class PreplanController extends Controller
             "jsoned_tasks" => null,
             "day_status"   => null,
         ];
+        $dmy_format_date = $this->generealHelper::transformDateToDMY($preplanDate);
 
         $updatedData["jsoned_tasks"] = json_encode($data["plan"]);
         $updatedData["date"] = $preplanDate;
@@ -86,7 +87,7 @@ class PreplanController extends Controller
                     $updatedData
                 );
     
-                return response()->json(["status" => 'success', "message" => "The preplan for $preplanDate was successfully created"]);
+                return response()->json(["status" => 'success', "message" => "The preplan for $dmy_format_date was successfully created"]);
             }
 
             $preplan = $this->getPreplan(["user_id" => $updatedData["user_id"], "date" => $updatedData["date"]]);
@@ -96,7 +97,7 @@ class PreplanController extends Controller
                 
                 $this->preplan::destroy($preplan_id);
 
-                return response()->json(["status" => 'success', "message" => "The preplan for $preplanDate was successfully deleted"]);
+                return response()->json(["status" => 'success', "message" => "The preplan for $dmy_format_date was successfully deleted"]);
             }
         }
 
