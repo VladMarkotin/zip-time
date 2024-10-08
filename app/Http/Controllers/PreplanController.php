@@ -27,7 +27,7 @@ class PreplanController extends Controller
     public function index(Request $request) 
     {
         $selected_plan_date = $request->date;
-        $user_today_date = $this->generealHelper->getUsetTodayDate()->toDateString();
+        $user_today_date = $this->generealHelper->getUserTodayDate()->toDateString();
         
         if (!$this->generealHelper->checkIfDateIsCorrect($selected_plan_date)) {
             return abort(404);

@@ -8,9 +8,17 @@
 
 namespace App\Http\Controllers\Services;
 
+use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 
 class DataTransformationService
 {
+    private $generalHelper = null;
+
+    public function __construct(GeneralHelper $generalHelper)
+    {
+        $this->generalHelper = $generalHelper;
+    }
+
     public function transformDataForWeekendRequest(array $data)
     {
         
@@ -44,6 +52,7 @@ class DataTransformationService
                 "date"      => $data[0]->date,
                 "dayStatus" => $data[0]->day_status,
                 "comment"   => $data[0]->comment,
+                "user_today_date" => $this->generalHelper->getUserTodayDate()->toDateString(),
             ];
            //die(var_dump($data).__FILE__);
            return $dataAsArray;
@@ -115,6 +124,7 @@ class DataTransformationService
         $transformData["dayFinalMark"] = $data[0]->final_estimation;
         $transformData["dayOwnMark"]   = $data[0]->own_estimation;
         $transformData["comment"]      = $data[0]->comment;
+        $transformData['user_today_date'] = $this->generalHelper->getUserTodayDate()->toDateString();
 
         /*$transformData["plan"] = $transformData;
         die(var_dump($transformData));*/

@@ -144,16 +144,12 @@
 	{
 		props : {
 			data: {
-
+				type: Object,
 			},
-			userTodayDate: { //надо получать с бэка
-				type: String,
-				default: new Date().getTodayFormatedDate(),
-			}
 		},
 		components: { Challenges, ClosedDayCommentDialog, PreplanDataPicker},
 		data()
-		{
+		{	
 			const commentText = this.data.comment;
 			const daystatusCodeInfo = new Map;
 
@@ -164,9 +160,12 @@
 			daystatusCodeInfo.set(3, 'Success');
 			const currentDate = new Date;
 
+			const userTodayDate = this.data.user_today_date ?? new Date().getTodayFormatedDate();
+
 			return {
 				   currentDate,
-				   planDate: this.userTodayDate,
+				   userTodayDate,
+				   planDate: userTodayDate,
 				   shownDate: this.transformDate(currentDate),
 				   icons : {mdiArrowLeft,mdiCalendarToday,mdiArrowRight, mdiContentSaveMoveOutline },
 			       disabled : {prevButton : false,nextButton : true},

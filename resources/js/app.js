@@ -64,18 +64,26 @@ const app =
 					if (window.user != '')
 					{
 						const data = (await axios.post('/ifexists')).data;
-						if (data.dayStatus == 3 || (data.dayOwnMark > 0) || (data.dayStatus == 0) || (data.dayStatus == -1)) /*day is closed || (|| (data[0].day_status === 0) data[0].day_status === 0)*/
+
+						const closedStatuses = [3, 0, -1]; // Закрытые дни
+						const openedStatuses = [1, 2]; // Открытые дни
+						
+						if (closedStatuses.includes(data.dayStatus) || (data.dayOwnMark > 0)) /*day is closed || (|| (data[0].day_status === 0) data[0].day_status === 0)*/
 						{
-							this.currComponent.props = data;
-							this.currComponent.name = 'ClosedReadyDayPlan';
+							this.currComponent = {
+								name: 'ClosedReadyDayPlan',
+								props: data,
+							}
 						}
-						else if (data.dayStatus == 2 || data.dayStatus == 1/*day is opened*/)
+						else if (openedStatuses.includes(data.dayStatus)/*day is opened*/)
 						{
-							this.currComponent.props = {
-								plan: data.plan,
-								dayStatus: data.dayStatus
-							};
-							this.currComponent.name = 'ReadyDayPlan';
+							this.currComponent = {
+								name: 'ReadyDayPlan',
+								props: {
+									plan: data.plan,
+									dayStatus: data.dayStatus
+								},
+							}
 						}
 						else/*no plan*/
 						{

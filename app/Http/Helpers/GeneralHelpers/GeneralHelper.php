@@ -90,7 +90,7 @@ class GeneralHelper
         return User::find($user_id)->timezone;
     }
 
-    public static function getUsetTodayDate() {
+    public static function getUserTodayDate() {
         $user_time_zone = self::getUserTimeZone();
         return self::getNow($user_time_zone);
     }
