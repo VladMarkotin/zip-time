@@ -33,21 +33,27 @@ class WeekendRepository
 
         $id = Auth::id();
         $time_zone = $this->generalHelper::getUserTimeZone();
-        $now = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $date, $time_zone);
-        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
-        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+        $cardon_date = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $date, $time_zone);
+        $weekStartDate = $cardon_date->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $cardon_date->endOfWeek()->format('Y-m-d');
         
-        $queryOne = TimetableModel::selectRaw('count(*) as count')
+        $weekend_in_timetables = TimetableModel::selectRaw('count(*) as count')
             ->where('user_id', $id)
             ->where('day_status', 1)
-            ->whereBetween('date', [$weekStartDate, $weekEndDate]);
+            ->whereBetween('date', [$weekStartDate, $weekEndDate])
+            ->where('date', '!=', $cardon_date->toDateString())
+            ->get()
+            ->sum('count');
     
-        $queryTwo = $this->preplanModel::selectRaw('count(*) as count')
+        $weekend_in_preplans = $this->preplanModel::selectRaw('count(*) as count')
             ->where('user_id', $id)
             ->where('day_status', 1)
-            ->whereBetween('date', [$weekStartDate, $weekEndDate]);
-    
-        return  $queryOne->union($queryTwo)->get()->sum('count');;
+            ->whereBetween('date', [$weekStartDate, $weekEndDate])
+            ->where('date', '!=', $cardon_date->toDateString())
+            ->get()
+            ->sum('count');
+
+        return  $weekend_in_timetables + $weekend_in_preplans;
     }
 
     public function weekendNumber()
