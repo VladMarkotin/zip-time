@@ -37,22 +37,19 @@ class WeekendRepository
         $weekStartDate = $cardon_date->startOfWeek()->format('Y-m-d');
         $weekEndDate = $cardon_date->endOfWeek()->format('Y-m-d');
         
-        $weekend_in_timetables = TimetableModel::selectRaw('count(*) as count')
-            ->where('user_id', $id)
+        $weekend_in_timetables = TimetableModel::where('user_id', $id)
             ->where('day_status', 1)
             ->whereBetween('date', [$weekStartDate, $weekEndDate])
             ->where('date', '!=', $cardon_date->toDateString())
-            ->get()
-            ->sum('count');
+            ->count();
+        
     
-        $weekend_in_preplans = $this->preplanModel::selectRaw('count(*) as count')
-            ->where('user_id', $id)
+        $weekend_in_preplans = $this->preplanModel::where('user_id', $id)
             ->where('day_status', 1)
             ->whereBetween('date', [$weekStartDate, $weekEndDate])
             ->where('date', '!=', $cardon_date->toDateString())
-            ->get()
-            ->sum('count');
-
+            ->count();
+        
         return  $weekend_in_timetables + $weekend_in_preplans;
     }
 
