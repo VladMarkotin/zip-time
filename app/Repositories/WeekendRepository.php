@@ -32,23 +32,23 @@ class WeekendRepository
     public function isWeekendAvailable($date)
     {
 
-        $id = Auth::id();
-        $time_zone = $this->generalHelper::getUserTimeZone();
-        $carbon_date = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $date, $time_zone);
-        $weekStartDate = $carbon_date->startOfWeek()->format('Y-m-d');
-        $weekEndDate = $carbon_date->endOfWeek()->format('Y-m-d');
+        $id            = Auth::id();
+        $timeZone      = $this->generalHelper::getUserTimeZone();
+        $carbonDate    = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $date, $timeZone);
+        $weekStartDate = $carbonDate->startOfWeek()->format('Y-m-d');
+        $weekEndDate   = $carbonDate->endOfWeek()->format('Y-m-d');
         
-        $queryOne = TimetableModel::selectRaw('count(*) as count')
+        $queryOne = $this->timetableModel::selectRaw('count(*) as count')
             ->where('user_id', $id)
             ->where('day_status', 1)
             ->whereBetween('date', [$weekStartDate, $weekEndDate])
-            ->where('date', '!=', $carbon_date->toDateString()); 
+            ->where('date', '!=', $carbonDate->toDateString()); 
     
         $queryTwo = $this->preplanModel::selectRaw('count(*) as count')
             ->where('user_id', $id)
             ->where('day_status', 1)
             ->whereBetween('date', [$weekStartDate, $weekEndDate])
-            ->where('date', '!=', $carbon_date->toDateString());
+            ->where('date', '!=', $carbonDate->toDateString());
             
         return  $queryOne->unionAll($queryTwo)->get()->sum('count');
     }
