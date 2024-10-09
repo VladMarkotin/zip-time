@@ -207,7 +207,7 @@ class MainController
         $id       = Auth::id();
         $active_weekend_in_week  = $this->weekendRepository->isWeekendAvailable($date);
         $total_weekend_available = (int) $this->weekendRepository-> weekendNumber();
-        $isWeekendAvailable = $active_weekend_in_week <= $total_weekend_available;
+        $isWeekendAvailable = $active_weekend_in_week + 1 <= $total_weekend_available;
 
         return response()->json([
             'id'                 => $id,

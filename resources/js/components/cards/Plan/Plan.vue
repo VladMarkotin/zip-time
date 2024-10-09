@@ -23,7 +23,7 @@
                <PreplanDataPicker 
                v-model             = "planDate"
                :todayDate          = "todayDate"
-               @changePlanDate = "setActualTasks(true)"
+               @changePlanDate = "changePlanDate"
                />
             </div>
             <div id="plan-day-status">
@@ -570,6 +570,7 @@ export default {
             try {
                const response = await axios.post('/isWeekendAvailable', {date: this.planDate});
                this.isWeekendAvailable = response.data.isWeekendAvailable
+               console.log(this.isWeekendAvailable);
             } catch (error) {
                this.isWeekendAvailable = true;
             }
@@ -872,6 +873,11 @@ export default {
             } catch(error) {
                console.error(error);
             }
+         },
+
+         changePlanDate() {
+            this.setActualTasks(true);
+            this.setIsWeekendAvailable();
          },
 
          async setActualTasks(clearTable) {
