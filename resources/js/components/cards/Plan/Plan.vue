@@ -31,7 +31,7 @@
                   :items="dayStatuses2"
                   label="Day status"
                   v-model="day_status"
-                  @change="isWeekendAvailable"
+                  @change="setIsWeekendAvailable"
                   item-disabled="disable"
                   item-text="status"
                   required
@@ -413,16 +413,7 @@ export default {
          hashCodes: [],
          taskPriority: ['1', '2', '3'],
          dayStatuses: ['Work Day', 'Weekend'],
-         dayStatuses2: [
-            {
-               status: 'Work Day',
-               disable: false,
-            },
-            {
-            status: 'Weekend',
-            disable:false,
-            }
-         ],
+         isWeekendAvailable: true,
          preparedTask: {},
          serverMessage: '',
          showAlert: false,
@@ -500,6 +491,19 @@ export default {
                : ['required job', 'non required job', 'required task', 'task']
         },
 
+        dayStatuses2() {
+            return ([
+               {
+                  status: 'Work Day',
+                  disable: false,
+               },
+               {
+                  status: 'Weekend',
+                  disable: !this.isWeekendAvailable,
+               }
+            ]);
+        },
+
          tooltipPrioritiesData() {
             return {
                titles: {
@@ -561,18 +565,14 @@ export default {
             if (this.showIcon < 4) {
                 this.showIcon += 1
             } 
-
         },
-        isWeekendAvailable(item){
-            let currentObj = this;
-            axios.post('/isWeekendAvailable', {})
-            .then(function(response) {
-                  currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
-             })
-            .catch(function(error) {
-                    currentObj.output = error;
-            });
-
+        async setIsWeekendAvailable(){
+            try {
+               const response = await axios.post('/isWeekendAvailable', {date: this.planDate});
+               this.isWeekendAvailable = response.data.isWeekendAvailable
+            } catch (error) {
+               this.isWeekendAvailable = true;
+            }
         },
 
         async onChange(code, isFocusedTaskNameInput = false) {
@@ -931,16 +931,9 @@ export default {
                .catch(function(error) {
                   currentObj.output = error;
                });
-
-            axios.post('/isWeekendAvailable')
-            .then(function(response) {
-               currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
-            })
-            .catch(function(error) {
-               currentObj.output = error;
-            });
-
-            currentObj.showPreloaderInsteadTable = true;
+         
+         currentObj.setIsWeekendAvailable();
+         currentObj.showPreloaderInsteadTable = true;
 
          this.setActualTasks(false);
          this.setDisabledDates({

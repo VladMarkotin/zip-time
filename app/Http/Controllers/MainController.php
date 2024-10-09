@@ -196,20 +196,18 @@ class MainController
         ]);
     }
 
-    public function isWeekendAvailable()
+    public function isWeekendAvailable(Request $request)
     {
         /*
          * По умолчанию 1 выходной в неделю
          * нужен репозитоий, который проверит, брались ли выходные за эту неделю и сколько раз
          * можно применить к селекту с типами дней @change="имя метода" для определения есть ли возможность
          * взять выходной*/
+        $date = $request->date;
         $id       = Auth::id();
-        $response = $this->weekendRepository->isWeekendAvailable();
-        $weekendDays = $this->weekendRepository-> weekendNumber();
-        $isWeekendAvailable = false;
-        if(count($response) >=  $weekendDays){
-            $isWeekendAvailable = true;
-        }
+        $active_weekend_in_week  = $this->weekendRepository->isWeekendAvailable($date);
+        $total_weekend_available = (int) $this->weekendRepository-> weekendNumber();
+        $isWeekendAvailable = $active_weekend_in_week <= $total_weekend_available;
 
         return response()->json([
             'id'                 => $id,
