@@ -10,6 +10,7 @@ use App\Models\PersonalConfigs;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 use App\Models\Preplan;
+use Illuminate\Support\Facades\DB;
 
 
 class WeekendRepository
@@ -37,19 +38,19 @@ class WeekendRepository
         $weekStartDate = $carbon_date->startOfWeek()->format('Y-m-d');
         $weekEndDate = $carbon_date->endOfWeek()->format('Y-m-d');
         
-        $weekend_in_timetables = TimetableModel::where('user_id', $id)
+        $queryOne = TimetableModel::selectRaw('count(*) as count')
+            ->where('user_id', $id)
             ->where('day_status', 1)
             ->whereBetween('date', [$weekStartDate, $weekEndDate])
-            ->where('date', '!=', $carbon_date->toDateString())
-            ->count();
+            ->where('date', '!=', $carbon_date->toDateString()); 
     
-        $weekend_in_preplans = $this->preplanModel::where('user_id', $id)
+        $queryTwo = $this->preplanModel::selectRaw('count(*) as count')
+            ->where('user_id', $id)
             ->where('day_status', 1)
             ->whereBetween('date', [$weekStartDate, $weekEndDate])
-            ->where('date', '!=', $carbon_date->toDateString())
-            ->count();
-        
-        return  $weekend_in_timetables + $weekend_in_preplans;
+            ->where('date', '!=', $carbon_date->toDateString());
+            
+        return  $queryOne->unionAll($queryTwo)->get()->sum('count');
     }
 
     public function weekendNumber()
