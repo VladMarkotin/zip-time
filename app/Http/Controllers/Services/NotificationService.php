@@ -153,7 +153,7 @@ class NotificationService
                                     config.config_data LIKE '%\"enable\": \"1\"%'
                                 )
                             AND
-                                users.id NOT IN (select b.user_id
+                                users.id IN (select b.user_id
                                     from timetables b
                                     where b.date = '" .
                 $today .
