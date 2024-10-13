@@ -41,6 +41,7 @@ class PushNotifications extends Command
     public function handle()
     {
         $this->info('start');
+        $this->notificationService->dailyReminder();
         $this->notificationService->reminder();
         $this->info('end');
         return 0;
