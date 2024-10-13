@@ -147,10 +147,10 @@ class NotificationService
                                 WHERE 
                                     config.config_block_id = 3
                                 AND
-                                    config.config_data LIKE '%\"quantity\": {$notfificationQuantity}%'
+                                    config.config_data LIKE '%\"quantity\": \"{$notfificationQuantity}\"%'
                                     
                                 AND
-                                    config.config_data LIKE '%\"enable\": 1%'
+                                    config.config_data LIKE '%\"enable\": \"1\"%'
                                 )
                             AND
                                 users.id NOT IN (select b.user_id

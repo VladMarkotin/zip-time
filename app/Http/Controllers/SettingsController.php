@@ -33,8 +33,8 @@ class SettingsController extends Controller
             'config_data' => json_encode(
                 [
                     'notifies_config' => [[
-                        'quantity' => $request->get('additionalNotificationsCount'),
-                        'enable' => intval($request->get('areNotifiactionsActive')),
+                        'quantity' => strval($request->get('additionalNotificationsCount')),
+                        'enable' => strval(intval($request->get('areNotifiactionsActive'))),
                     ]]
                 ]
             ),
