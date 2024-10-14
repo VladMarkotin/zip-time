@@ -75,13 +75,11 @@
                      class="p-0 m-0"
                      md="6"
                      >
-                        <v-select
-                           :items="defaultSelected.hashCodes"
-                           value="defaultSelected.hashCodes[0]"
-                           v-model="defaultSelected.hash"
-                           @change="onChange(defaultSelected.hash, true)"
-                           required>
-                        </v-select>
+                        <SelectHashCode 
+                        :hashCodes = "defaultSelected.hashCodes"
+                        v-model    = "defaultSelected.hash"
+                        @selectHashCode = "onChange"
+                        />
                      </v-col>    
                      <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center plan_code-cleanCodeButton-wrapper">
                         <CleanHashCodeButton 
@@ -348,6 +346,8 @@ import Snackbar from '../../UI/Snackbar.vue';
 import HistoryBackSnackbar from '../../UI/HistoryBackSnackbar.vue';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
+import SelectHashCode from '../../UI/SelectHashCode.vue';
+
 
 export default {
    props: {
@@ -376,6 +376,7 @@ export default {
       Snackbar,
       HistoryBackSnackbar,
       SelectDayStatus,
+      SelectHashCode,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data() {
@@ -926,7 +927,6 @@ export default {
                .catch(function(error) {
                   currentObj.output = error;
                });
-         
          currentObj.setIsWeekendAvailable();
          currentObj.showPreloaderInsteadTable = true;
 
@@ -1275,6 +1275,6 @@ export default {
    .plan_addTask-button-wrapper_mobile {
       display: none;
    }
-   
+
    @import url('/css/Plan/PlanMedia.css');
 </style>
