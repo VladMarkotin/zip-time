@@ -503,4 +503,9 @@ class MainController
         }
 
     }
+
+    public function searchHashCodes(Request $request) {
+        $searchValue = $request->searchInputValue;
+        dd($searchValue);
+    }
 }

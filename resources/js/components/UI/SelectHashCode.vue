@@ -15,7 +15,7 @@
             dense
             hide-details
             clearable
-            @input       = "filterHashCodes"
+            @input       = "debounceFilterHashCodes"
             @click:clear = "resetSearch"
             ></v-text-field>
         </v-list-item>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { debounce } from 'lodash';
     export default {
         props: {
             value: {
@@ -40,6 +41,13 @@
                 filteredHashCodes: this.hashCodes,
             }
         },
+        computed: {
+            debouncedFilterHashCodes() {
+                return debounce(function(searchInputValue) {
+					this.filterHashCodes(searchInputValue);
+				}, 1500)
+            },
+        },
         methods: {
             selectHashCode(value) {
                this.$emit('selectHashCode', value, true);
@@ -53,14 +61,22 @@
                 this.filteredHashCodes = [...this.hashCodes];
             },
 
-            filterHashCodes(value) {
+            debounceFilterHashCodes(value) {
                 if (!value) {
                     return;
                 }
 
                 const searchInputValue = value.trim().toLowerCase();
 
-                console.log(this.hashCodes);
+                this.debouncedFilterHashCodes(searchInputValue);
+            },
+
+            async filterHashCodes(searchInputValue) {
+                try {
+                    const response = await axios.post('/searchHashCodes', { searchInputValue });
+                } catch (error) {
+                    console.error(error);
+                }
             }
         }
     }

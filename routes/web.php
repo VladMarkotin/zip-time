@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/estimate', [App\Http\Controllers\EstimationController::class, 'estimateTask']);
     //Estimate day
     Route::post('/closeDay', [App\Http\Controllers\MainController::class, 'estimateDay']);
+    Route::post('/searchHashCodes', [App\Http\Controllers\MainController::class, 'searchHashCodes']);
 
 //Add job
     Route::post('/addJob', [App\Http\Controllers\MainController::class, 'addJob']);
