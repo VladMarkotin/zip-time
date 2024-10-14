@@ -27,15 +27,11 @@
                />
             </div>
             <div id="plan-day-status">
-               <v-select
-                  :items="dayStatuses2"
-                  label="Day status"
-                  v-model="day_status"
-                  @change="setIsWeekendAvailable"
-                  item-disabled="disable"
-                  item-text="status"
-                  required
-                  ></v-select>
+               <SelectDayStatus 
+               v-model             = "day_status"
+               :isWeekendAvailable = "isWeekendAvailable"
+               @change = "setIsWeekendAvailable"
+               />
             </div>
          </div>
          <div style="min-height: 24px;">
@@ -330,6 +326,7 @@ import PreplanTasksTable from './PreplanTasksTable.vue';
 import VSelectTooptip from '../../UI/VSelectTooptip.vue';
 import CustomTimepicker from '../../UI/CustomTimepicker.vue';
 import SelectTaskType from '../../UI/SelectTaskType.vue';
+import SelectDayStatus from '../../UI/SelectDayStatus.vue';
 import {
     mdiAccount,
     mdiPlex,
@@ -375,6 +372,7 @@ export default {
       PreplanDataPicker,
       Snackbar,
       HistoryBackSnackbar,
+      SelectDayStatus,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data() {
@@ -485,25 +483,13 @@ export default {
         screenWidth() {
             return this.getWindowScreendWidth;
         },
+
         taskTypes() {
             return this.isTodayAWeekend 
                ? [this.WEEKEND_DEFAULT_TASK_TYPE] 
                : ['required job', 'non required job', 'required task', 'task']
         },
-
-        dayStatuses2() {
-            return ([
-               {
-                  status: 'Work Day',
-                  disable: false,
-               },
-               {
-                  status: 'Weekend',
-                  disable: !this.isWeekendAvailable,
-               }
-            ]);
-        },
-
+        
          tooltipPrioritiesData() {
             return {
                titles: {
