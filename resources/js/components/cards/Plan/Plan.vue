@@ -30,7 +30,10 @@
                <SelectDayStatus 
                v-model             = "day_status"
                :isWeekendAvailable = "isWeekendAvailable"
-               @change = "setIsWeekendAvailable"
+               :planDate           = "planDate"
+               @change             = "setIsWeekendAvailable"
+               @showSnackbar       = "showSnackbar"
+               @removeSnackbar     = "snackbar = false"
                />
             </div>
          </div>
@@ -489,7 +492,7 @@ export default {
                ? [this.WEEKEND_DEFAULT_TASK_TYPE] 
                : ['required job', 'non required job', 'required task', 'task']
         },
-        
+
          tooltipPrioritiesData() {
             return {
                titles: {
@@ -616,14 +619,14 @@ export default {
             return true;
          },
 
-         showSnackbar(text) {
+         showSnackbar(text, delay = 5e3) {
             this.snackbar = true;
             this.snackbarData.snackbarText = text;
            
             clearTimeout(this.snackbarData.snackbarTimerId);
             this.snackbarData.snackbarTimerId = setTimeout(() => {
                this.snackbar = false;
-            }, 5e3);
+            }, delay);
          },
 
          setAlert({serverMessage, alertType, checkTaskName = false}) {
