@@ -1,12 +1,13 @@
 <template>
     <v-select 
+    label="#code"
     :items="filteredHashCodes" 
     :value="value" 
     @input="updateValue" 
     @change="selectHashCode"
     required>
         <template v-slot:prepend-item>
-            <v-list-item class="search-item pt-2">
+            <v-list-item class="search-item pt-2" :style="`width: ${searchItemWidth};`">
                 <v-text-field 
                 v-model="searchInputVal" 
                 placeholder="Search..." 
@@ -37,6 +38,10 @@ export default {
             type: Array,
             default: () => [], // Убедитесь, что есть значение по умолчанию
         },
+        searchItemWidth: {
+            type: String,
+            default: '100%',
+        }
     },
     data() {
         return {
@@ -95,7 +100,6 @@ export default {
 
 <style scoped>
 .v-list-item.search-item {
-    width: 190px;
     position: sticky;
     top: 0;
     z-index: 1;

@@ -34,7 +34,18 @@
 								</template>
 							</v-col>
 							<v-col>
-								<v-select label="#code" v-bind:items="hashCodes" v-model="task.hashCode" v-on:change="hashCodeChangeHandler"></v-select>
+								<!-- <v-select 
+								label="#code" 
+								v-bind:items="hashCodes" 
+								v-model="task.hashCode" 
+								v-on:change="hashCodeChangeHandler"
+								></v-select> -->
+								<SelectHashCode 
+								v-model         = "task.hashCode" 
+								:hashCodes      = "hashCodes"
+								searchItemWidth = '100%'
+								@selectHashCode = "hashCodeChangeHandler"
+								/>
 							</v-col>
 							<v-col cols="1">
 								<template v-if="task.name.length  > 2">
@@ -153,6 +164,7 @@
 	import {mdiPlusBox, mdiClockTimeFourOutline} from '@mdi/js';
 	import CustomTimepicker from '../UI/CustomTimepicker.vue';
 	import SelectTaskType from '../UI/SelectTaskType.vue';
+	import SelectHashCode from '../UI/SelectHashCode.vue';
 
 	import createWatcherForDefSavTaskMixin from '../../mixins';
 
@@ -165,7 +177,8 @@
 				CloseButton, 
 				VSelectTooptip, 
 				CustomTimepicker, 
-				SelectTaskType
+				SelectTaskType,
+				SelectHashCode,
 			},
 			props: {
 				dayStatus: {
