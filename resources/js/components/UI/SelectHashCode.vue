@@ -99,12 +99,12 @@ export default {
 </script>
 
 <style scoped>
-.v-list-item.search-item {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    /* Убедитесь, что элемент над другими */
-    background-color: white;
-    /* Установите фон, если необходимо */
-}
+    .v-list-item.search-item {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        /* Убедитесь, что элемент над другими */
+        background-color: white;
+        /* Установите фон, если необходимо */
+    }
 </style>

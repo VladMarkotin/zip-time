@@ -78,7 +78,7 @@
                         <SelectHashCode 
                         v-model         = "defaultSelected.hash"
                         :hashCodes      = "defaultSelected.hashCodes"
-                        searchItemWidth = '190px'
+                        searchItemWidth = '230px'
                         @selectHashCode = "onChange"
                         />
                      </v-col>    
