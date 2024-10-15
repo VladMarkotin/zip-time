@@ -44,6 +44,7 @@ use App\Models\DefaultSavedTasks;
 use Illuminate\Support\Facades\Log;
 use App\Events\RewardEvent;
 use  App\Events\FinishDayEvent;
+use App\Http\Controllers\Services\SearchService;
 
 class MainController
 {
@@ -69,6 +70,7 @@ class MainController
     private $noteController            = null;
     private $defaultSavedTasks         = null;
     private $subPlanService            = null;
+    private $searchService             = null;
 
     public function __construct(SavedTask2Repository $taskRepository,
                                 HashCodeService $codeService,
@@ -91,7 +93,8 @@ class MainController
                                 DefaultConfigs $defaultConfigs,
                                 NoteController $noteController,
                                 DefaultSavedTasks $defaultSavedTasks,
-                                SubPlanService $subPlanService
+                                SubPlanService $subPlanService,
+                                SearchService  $searchService,
                                 )
     {
         
@@ -117,6 +120,7 @@ class MainController
         $this->noteController            = $noteController;
         $this->defaultSavedTasks         = $defaultSavedTasks;
         $this->subPlanService            = $subPlanService;
+        $this->searchService             = $searchService;
     }
 
     public function addHashCode(Request $request)
@@ -504,8 +508,12 @@ class MainController
 
     }
 
-    public function searchHashCodes(Request $request) {
+    public function searchHashCodes(Request $request) 
+    {
         $searchValue = $request->searchInputValue;
-        dd($searchValue);
+
+        $searchResults = $this->searchService->searchHashCodes($searchValue);
+        
+        return response()->json(["searchResults" => $searchResults]);
     }
 }

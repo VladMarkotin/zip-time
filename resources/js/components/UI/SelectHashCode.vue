@@ -38,14 +38,14 @@ import { debounce } from 'lodash';
         data() {
             return {
                 searchInputVal: '',
-                filteredHashCodes: this.hashCodes,
+                filteredHashCodes:  [...this.hashCodes],
             }
         },
         computed: {
             debouncedFilterHashCodes() {
                 return debounce(function(searchInputValue) {
 					this.filterHashCodes(searchInputValue);
-				}, 1500)
+				}, 1000)
             },
         },
         methods: {
@@ -74,10 +74,20 @@ import { debounce } from 'lodash';
             async filterHashCodes(searchInputValue) {
                 try {
                     const response = await axios.post('/searchHashCodes', { searchInputValue });
+
+                    if (response.status === 200) {
+                       console.log([...response.data.searchResults]);
+                    } else {
+                        this.resetSearch();
+                    }
                 } catch (error) {
+                    this.resetSearch();
                     console.error(error);
                 }
             }
+        },
+        mounted() {
+            console.log(this.hashCodes);
         }
     }
 </script>
