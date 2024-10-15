@@ -21,7 +21,7 @@ class SearchService
     public function searchHashCodes($searchValue)
     {
         $userId = Auth::id();
-
+        
         $queryOne = $this->savedTaskModel::select('hash_code', 'task_name')
         ->where('user_id', $userId)
         ->where(function ($query) use ($searchValue) {

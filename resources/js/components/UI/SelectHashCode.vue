@@ -86,9 +86,9 @@ export default {
                 const response = await axios.post('/searchHashCodes', { searchInputValue });
                 if (response.status === 200) {
                     this.filteredHashCodes = [...response.data.searchResults];
-                } else {
-                    this.resetSearch();
+                    return;
                 }
+                this.resetSearch();
             } catch (error) {
                 this.resetSearch();
                 console.error(error);
@@ -103,8 +103,6 @@ export default {
         position: sticky;
         top: 0;
         z-index: 1;
-        /* Убедитесь, что элемент над другими */
         background-color: white;
-        /* Установите фон, если необходимо */
     }
 </style>
