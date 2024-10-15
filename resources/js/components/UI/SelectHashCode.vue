@@ -14,8 +14,10 @@
                 dense 
                 hide-details 
                 clearable
-                @input="debounceFilterHashCodes" 
-                @click:clear="resetSearch"></v-text-field>
+                @input       = "debounceFilterHashCodes" 
+                @click:clear = "resetSearch"
+                @blur        = "resetSearch"
+                ></v-text-field>
             </v-list-item>
         </template>
     </v-select>
