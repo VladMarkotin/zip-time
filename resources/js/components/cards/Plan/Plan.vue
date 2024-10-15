@@ -23,19 +23,18 @@
                <PreplanDataPicker 
                v-model             = "planDate"
                :todayDate          = "todayDate"
-               @changePlanDate = "setActualTasks(true)"
+               @changePlanDate = "changePlanDate"
                />
             </div>
             <div id="plan-day-status">
-               <v-select
-                  :items="dayStatuses2"
-                  label="Day status"
-                  v-model="day_status"
-                  @change="isWeekendAvailable"
-                  item-disabled="disable"
-                  item-text="status"
-                  required
-                  ></v-select>
+               <SelectDayStatus 
+               v-model             = "day_status"
+               :isWeekendAvailable = "isWeekendAvailable"
+               :planDate           = "planDate"
+               @change             = "setIsWeekendAvailable"
+               @showSnackbar       = "showSnackbar"
+               @removeSnackbar     = "snackbar = false"
+               />
             </div>
          </div>
          <div style="min-height: 24px;">
@@ -76,13 +75,12 @@
                      class="p-0 m-0"
                      md="6"
                      >
-                        <v-select
-                           :items="defaultSelected.hashCodes"
-                           value="defaultSelected.hashCodes[0]"
-                           v-model="defaultSelected.hash"
-                           @change="onChange(defaultSelected.hash, true)"
-                           required>
-                        </v-select>
+                        <SelectHashCode 
+                        v-model         = "defaultSelected.hash"
+                        :hashCodes      = "defaultSelected.hashCodes"
+                        searchItemWidth = '230px'
+                        @selectHashCode = "onChange"
+                        />
                      </v-col>    
                      <v-col md="3" class="p-0 m-0 d-flex justify-content-center align-items-center plan_code-cleanCodeButton-wrapper">
                         <CleanHashCodeButton 
@@ -330,6 +328,7 @@ import PreplanTasksTable from './PreplanTasksTable.vue';
 import VSelectTooptip from '../../UI/VSelectTooptip.vue';
 import CustomTimepicker from '../../UI/CustomTimepicker.vue';
 import SelectTaskType from '../../UI/SelectTaskType.vue';
+import SelectDayStatus from '../../UI/SelectDayStatus.vue';
 import {
     mdiAccount,
     mdiPlex,
@@ -348,6 +347,8 @@ import Snackbar from '../../UI/Snackbar.vue';
 import HistoryBackSnackbar from '../../UI/HistoryBackSnackbar.vue';
 
 import createWatcherForDefSavTaskMixin from '../../../mixins';
+import SelectHashCode from '../../UI/SelectHashCode.vue';
+
 
 export default {
    props: {
@@ -375,6 +376,8 @@ export default {
       PreplanDataPicker,
       Snackbar,
       HistoryBackSnackbar,
+      SelectDayStatus,
+      SelectHashCode,
    },
    mixins: [createWatcherForDefSavTaskMixin('defaultSelected.hash')],
     data() {
@@ -413,16 +416,7 @@ export default {
          hashCodes: [],
          taskPriority: ['1', '2', '3'],
          dayStatuses: ['Work Day', 'Weekend'],
-         dayStatuses2: [
-            {
-               status: 'Work Day',
-               disable: false,
-            },
-            {
-            status: 'Weekend',
-            disable:false,
-            }
-         ],
+         isWeekendAvailable: true,
          preparedTask: {},
          serverMessage: '',
          showAlert: false,
@@ -494,6 +488,7 @@ export default {
         screenWidth() {
             return this.getWindowScreendWidth;
         },
+
         taskTypes() {
             return this.isTodayAWeekend 
                ? [this.WEEKEND_DEFAULT_TASK_TYPE] 
@@ -561,18 +556,15 @@ export default {
             if (this.showIcon < 4) {
                 this.showIcon += 1
             } 
-
         },
-        isWeekendAvailable(item){
-            let currentObj = this;
-            axios.post('/isWeekendAvailable', {})
-            .then(function(response) {
-                  currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
-             })
-            .catch(function(error) {
-                    currentObj.output = error;
-            });
-
+        async setIsWeekendAvailable(){
+            try {
+               const response = await axios.post('/isWeekendAvailable', {date: this.planDate});
+               this.isWeekendAvailable = response.data.isWeekendAvailable
+               console.log(this.isWeekendAvailable);
+            } catch (error) {
+               this.isWeekendAvailable = true;
+            }
         },
 
         async onChange(code, isFocusedTaskNameInput = false) {
@@ -629,14 +621,14 @@ export default {
             return true;
          },
 
-         showSnackbar(text) {
+         showSnackbar(text, delay = 5e3) {
             this.snackbar = true;
             this.snackbarData.snackbarText = text;
            
             clearTimeout(this.snackbarData.snackbarTimerId);
             this.snackbarData.snackbarTimerId = setTimeout(() => {
                this.snackbar = false;
-            }, 5e3);
+            }, delay);
          },
 
          setAlert({serverMessage, alertType, checkTaskName = false}) {
@@ -874,6 +866,11 @@ export default {
             }
          },
 
+         changePlanDate() {
+            this.setActualTasks(true);
+            this.setIsWeekendAvailable();
+         },
+
          async setActualTasks(clearTable) {
             if (clearTable) {
                this.items = [];
@@ -931,16 +928,8 @@ export default {
                .catch(function(error) {
                   currentObj.output = error;
                });
-
-            axios.post('/isWeekendAvailable')
-            .then(function(response) {
-               currentObj.dayStatuses2[1].disable = response.data.isWeekendAvailable
-            })
-            .catch(function(error) {
-               currentObj.output = error;
-            });
-
-            currentObj.showPreloaderInsteadTable = true;
+         currentObj.setIsWeekendAvailable();
+         currentObj.showPreloaderInsteadTable = true;
 
          this.setActualTasks(false);
          this.setDisabledDates({
@@ -1287,6 +1276,6 @@ export default {
    .plan_addTask-button-wrapper_mobile {
       display: none;
    }
-   
+
    @import url('/css/Plan/PlanMedia.css');
 </style>
