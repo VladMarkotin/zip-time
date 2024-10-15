@@ -1,103 +1,104 @@
 <template>
-     <v-select
-    :items = "filteredHashCodes"
-    :value = "value"
-    @input       = "updateValue"
-    @change      = "selectHashCode"
-    @blur        = "resetSearch"
+    <v-select 
+    :items="filteredHashCodes" 
+    :value="value" 
+    @input="updateValue" 
+    @change="selectHashCode"
     required>
-    <template v-slot:prepend-item>
-        <v-list-item class="search-item pt-2">
-            <v-text-field
-            v-model="searchInputVal"
-            placeholder="Search..."
-            solo
-            dense
-            hide-details
-            clearable
-            @input       = "debounceFilterHashCodes"
-            @click:clear = "resetSearch"
-            ></v-text-field>
-        </v-list-item>
-    </template>
+        <template v-slot:prepend-item>
+            <v-list-item class="search-item pt-2">
+                <v-text-field 
+                v-model="searchInputVal" 
+                placeholder="Search..." 
+                solo 
+                dense 
+                hide-details 
+                clearable
+                @input="debounceFilterHashCodes" 
+                @click:clear="resetSearch"></v-text-field>
+            </v-list-item>
+        </template>
     </v-select>
 </template>
 
 <script>
 import { debounce } from 'lodash';
-    export default {
-        props: {
-            value: {
-                type: String,
-                required: true,
+import axios from 'axios';
+
+export default {
+    props: {
+        value: {
+            type: String,
+            required: true,
+        },
+        hashCodes: {
+            type: Array,
+            default: () => [], // Убедитесь, что есть значение по умолчанию
+        },
+    },
+    data() {
+        return {
+            searchInputVal: '',
+            filteredHashCodes: [...this.hashCodes],
+        };
+    },
+    watch: {
+        hashCodes: {
+            immediate: true,
+            handler(newValue) {
+                this.filteredHashCodes = [...newValue];
             },
-            hashCodes: {
-                type: Array,
+        },
+    },
+    methods: {
+        selectHashCode(value) {
+            this.$emit('selectHashCode', value, true);
+            this.resetSearch();
+        },
+
+        updateValue(value) {
+            this.$emit('input', value);
+        },
+
+        resetSearch() {
+            this.searchInputVal = '';
+            this.filteredHashCodes = [...this.hashCodes];
+        },
+
+        debounceFilterHashCodes: debounce(function (value) {
+            if (!value) {
+                this.resetSearch();
+                return;
             }
-        },
-        data() {
-            return {
-                searchInputVal: '',
-                filteredHashCodes:  [...this.hashCodes],
-            }
-        },
-        computed: {
-            debouncedFilterHashCodes() {
-                return debounce(function(searchInputValue) {
-					this.filterHashCodes(searchInputValue);
-				}, 1000)
-            },
-        },
-        methods: {
-            selectHashCode(value) {
-               this.$emit('selectHashCode', value, true);
-            },
+            const searchInputValue = value.trim().toLowerCase();
+            this.filterHashCodes(searchInputValue);
+        }, 1000), 
 
-            updateValue(value) {
-                this.$emit('input', value);
-            },
-
-            resetSearch() {
-                this.filteredHashCodes = [...this.hashCodes];
-            },
-
-            debounceFilterHashCodes(value) {
-                if (!value) {
-                    return;
-                }
-
-                const searchInputValue = value.trim().toLowerCase();
-
-                this.debouncedFilterHashCodes(searchInputValue);
-            },
-
-            async filterHashCodes(searchInputValue) {
-                try {
-                    const response = await axios.post('/searchHashCodes', { searchInputValue });
-
-                    if (response.status === 200) {
-                       console.log([...response.data.searchResults]);
-                    } else {
-                        this.resetSearch();
-                    }
-                } catch (error) {
+        async filterHashCodes(searchInputValue) {
+            try {
+                const response = await axios.post('/searchHashCodes', { searchInputValue });
+                if (response.status === 200) {
+                    this.filteredHashCodes = [...response.data.searchResults];
+                } else {
                     this.resetSearch();
-                    console.error(error);
                 }
+            } catch (error) {
+                this.resetSearch();
+                console.error(error);
             }
         },
-        mounted() {
-            console.log(this.hashCodes);
-        }
-    }
+    },
+};
 </script>
 
 <style scoped>
-    .v-list-item.search-item {
-      width: 190px;
-      position: sticky;
-      top: 0;
-      z-index: 1; /* Убедитесь, что элемент над другими */
-      background-color: white; /* Установите фон, если необходимо */
-   }
+.v-list-item.search-item {
+    width: 190px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    /* Убедитесь, что элемент над другими */
+    background-color: white;
+    /* Установите фон, если необходимо */
+}
 </style>
