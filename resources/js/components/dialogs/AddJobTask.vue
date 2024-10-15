@@ -399,6 +399,7 @@
 		width: 60%;
 		margin: 0 auto;
 	}
+	
 
 	@import url('/css/AddJobTask/AddJobTaskMedia.css');
 </style>
