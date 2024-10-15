@@ -1,6 +1,6 @@
 <template>
      <v-select
-    :items = "hashCodes"
+    :items = "filteredHashCodes"
     :value = "value"
     @input       = "updateValue"
     @change      = "selectHashCode"
