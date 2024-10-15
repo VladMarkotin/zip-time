@@ -46,9 +46,8 @@
                 const planDMYdate = new Date(this.planDate).formatDateToDMY();
                 const {mondayDMYDate, sundayDMYDate} = this.getMondayAndSunday(this.planDate);
 
-                return `On ${planDMYdate}, only the Work day status is available 
-                because the limit for weekend days has been exceeded from ${mondayDMYDate} to ${sundayDMYDate}. 
-                Once a week, you can change the allowed number of weekends on the settings page.`;
+                return `On ${planDMYdate} weekend\`s limit has been exceeded :( But don\`t worry, after ${sundayDMYDate}
+                   weekends will be available again :)`;
             }
         },
         methods: {
