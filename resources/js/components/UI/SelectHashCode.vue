@@ -36,7 +36,7 @@ export default {
         },
         hashCodes: {
             type: Array,
-            default: () => [], // Убедитесь, что есть значение по умолчанию
+            default: () => [],
         },
         searchItemWidth: {
             type: String,
