@@ -29,27 +29,29 @@ class WeekendRepository
         $this->preplanModel   = $preplan;
     }
 
-    public function isWeekendAvailable($date)
+    public function isWeekendAvailable($planDate)
     {
-
-        $id            = Auth::id();
-        $timeZone      = $this->generalHelper::getUserTimeZone();
-        $carbonDate    = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $date, $timeZone);
-        $weekStartDate = $carbonDate->startOfWeek()->format('Y-m-d');
-        $weekEndDate   = $carbonDate->endOfWeek()->format('Y-m-d');
+        $id             = Auth::id();
+        $timeZone       = $this->generalHelper::getUserTimeZone();
+        $planCarbonDate = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $planDate, $timeZone);
+        $planWeekStartDate  = $planCarbonDate->startOfWeek()->format('Y-m-d');
+        $planWeekEndDate    = $planCarbonDate->endOfWeek()->format('Y-m-d');
         
+        $planTomorrowDate = $planCarbonDate->addDay(1)->toDateString();
+        $timetablesDateRange = [$planWeekStartDate, $planWeekEndDate];
+        $preplansDateRange   = $this->getPreplansDateRange($planDate, $planTomorrowDate, $planWeekStartDate, $planWeekEndDate);
+
         $queryOne = $this->timetableModel::selectRaw('count(*) as count')
             ->where('user_id', $id)
             ->where('day_status', 1)
-            ->whereBetween('date', [$weekStartDate, $weekEndDate])
-            ->where('date', '!=', $carbonDate->toDateString()); 
+            ->whereBetween('date', $timetablesDateRange)
+            ->where('date', '!=', $planCarbonDate->toDateString()); 
     
         $queryTwo = $this->preplanModel::selectRaw('count(*) as count')
             ->where('user_id', $id)
             ->where('day_status', 1)
-            ->whereBetween('date', [$weekStartDate, $weekEndDate])
-            ->where('date', '!=', $carbonDate->toDateString());
-            
+            ->whereBetween('date', $preplansDateRange);
+
         return  $queryOne->unionAll($queryTwo)->get()->sum('count');
     }
 
@@ -60,5 +62,21 @@ class WeekendRepository
             ->where('user_id', Auth::id())
             ->get()->toArray()[0]['config_data'])
             ->rules[0]->weekends);
+    }
+
+    private function getPreplansDateRange($planDate, $planTomorrowDate, $planWeekStartDate, $planWeekEndDate) 
+    {
+        $todayDate          = $this->generalHelper::getUserTodayDate();
+        $currentWeekEndDate = $todayDate->endOfWeek()->format('Y-m-d');
+        
+        if ($this->generalHelper::checkIfDateIsLater($planDate, $currentWeekEndDate)) {
+            return [$planWeekStartDate, $planWeekEndDate];
+        }
+
+        if ($this->generalHelper::checkIfDateIsLater($planTomorrowDate, $planWeekEndDate)) {
+            return [];
+        }
+
+        return [$planTomorrowDate, $planWeekEndDate];
     }
 }
