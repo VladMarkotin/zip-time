@@ -24,11 +24,11 @@ trait GetUserPurposelness
         if ($configs['group']) {            
             $usersPurposelnessData = self::getQuantityOfAllDays($configs);
             $usersPurposelnessData = self::getQuantityOfWorkDays($configs, $usersPurposelnessData);
-            $usersPurposelnessData = self::getQuantityOfFailedDays($configs, $usersPurposelnessData);
+            $usersPurposelnessData = self::getQuantityOfWeekends($configs, $usersPurposelnessData);
         } else {
             $usersPurposelnessData = self::getQuantityOfAllDays([]);
             $usersPurposelnessData = self::getQuantityOfWorkDays([], $usersPurposelnessData);
-            $usersPurposelnessData = self::getQuantityOfFailedDays([], $usersPurposelnessData);
+            $usersPurposelnessData = self::getQuantityOfWeekends([], $usersPurposelnessData);
         }
         $usersPurposelnessData = self::getPurposelness($usersPurposelnessData);
         $usersPurposelResult   = self::calculatePurposelnessRanking($usersPurposelnessData, $configs);
@@ -80,10 +80,10 @@ trait GetUserPurposelness
         return $usersPurposelnessData;
     }
 
-    public static function getQuantityOfFailedDays(array $configs, array $usersPurposelnessData) {
-        $query = "SELECT u.id AS user_id, COALESCE(COUNT(t.id), 0) AS failedDays 
+    public static function getQuantityOfWeekends(array $configs, array $usersPurposelnessData) {
+        $query = "SELECT u.id AS user_id, COALESCE(COUNT(t.id), 0) AS weekends 
         FROM users u
-        LEFT JOIN timetables t ON u.id = t.user_id AND t.day_status = -1";
+        LEFT JOIN timetables t ON u.id = t.user_id AND t.day_status = 1";
 
         if ($configs) {
             $query .= " WHERE u.rating BETWEEN " . $configs['group']->from . " AND " .
@@ -95,7 +95,7 @@ trait GetUserPurposelness
         foreach ($results as $result) {
             foreach($usersPurposelnessData as &$userPurposelnessData) {
                 if($result->user_id === $userPurposelnessData['user_id']) {
-                    $userPurposelnessData['failedDays'] = $result->failedDays;
+                    $userPurposelnessData['weekends'] = $result->weekends;
                     continue;
                 }
             }
@@ -108,9 +108,9 @@ trait GetUserPurposelness
         // return round( ($allDays) ? ( ($workDays - $failedDays)/ $allDays) * 100 : 0, 2);
         foreach($usersPurposelnessData as &$userPurposelnessData) {
             $allDays = $userPurposelnessData['allDays'];
-            $successfulWorkDays = $userPurposelnessData['workDays'] - $userPurposelnessData['failedDays'];
+            $successfulDays = $userPurposelnessData['workDays'] + $userPurposelnessData['weekends'];
             if ($allDays > 0) {
-                $purposelness = ($successfulWorkDays / $allDays) * 100;
+                $purposelness = ($successfulDays / $allDays) * 100;
             } else {
                 $purposelness = 0;
             }
