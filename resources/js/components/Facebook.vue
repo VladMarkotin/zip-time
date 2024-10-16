@@ -81,6 +81,7 @@
     line-height: 15px;
   }
 
+
   .login-facebook-button:after {
     content: "";
     position: absolute;
