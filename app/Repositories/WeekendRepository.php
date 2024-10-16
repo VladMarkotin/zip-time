@@ -29,30 +29,29 @@ class WeekendRepository
         $this->preplanModel   = $preplan;
     }
 
-    public function isWeekendAvailable($planDate)
+    public function isWeekendAvailable($prePlanDate)
     {
-        $id             = Auth::id();
-        $timeZone       = $this->generalHelper::getUserTimeZone();
-        $planCarbonDate = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $planDate, $timeZone);
-        $planWeekStartDate  = $planCarbonDate->startOfWeek()->format('Y-m-d');
-        $planWeekEndDate    = $planCarbonDate->endOfWeek()->format('Y-m-d');
+        $id                    = Auth::id();
+        $timeZone              = $this->generalHelper::getUserTimeZone();
+        $prePlanCarbonDate     = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $prePlanDate, $timeZone);
+        $prePlanWeekStartDate  = $prePlanCarbonDate->startOfWeek()->format('Y-m-d');
+        $prePlanWeekEndDate    = $prePlanCarbonDate->endOfWeek()->format('Y-m-d');
         
-        $planTomorrowDate = $planCarbonDate->addDay(1)->toDateString();
-        $timetablesDateRange = [$planWeekStartDate, $planWeekEndDate];
-        $preplansDateRange   = $this->getPreplansDateRange($planDate, $planTomorrowDate, $planWeekStartDate, $planWeekEndDate);
+        $timetablesDateRange   = [$prePlanWeekStartDate, $prePlanWeekEndDate];
+        $preplansDateRange     = $this->getPreplansDateRange($prePlanDate, $prePlanWeekStartDate, $prePlanWeekEndDate);
 
-        $queryOne = $this->timetableModel::selectRaw('count(*) as count')
-            ->where('user_id', $id)
-            ->where('day_status', 1)
-            ->whereBetween('date', $timetablesDateRange)
-            ->where('date', '!=', $planCarbonDate->toDateString()); 
+        $timetablesQuery = $this->timetableModel::selectRaw('count(*) as count')
+                            ->where('user_id', $id)
+                            ->where('day_status', 1)
+                            ->whereBetween('date', $timetablesDateRange)
+                            ->where('date', '!=', $prePlanCarbonDate->toDateString()); 
     
-        $queryTwo = $this->preplanModel::selectRaw('count(*) as count')
-            ->where('user_id', $id)
-            ->where('day_status', 1)
-            ->whereBetween('date', $preplansDateRange);
+        $preplansQuery = $this->preplanModel::selectRaw('count(*) as count')
+                            ->where('user_id', $id)
+                            ->where('day_status', 1)
+                            ->whereBetween('date', $preplansDateRange);
 
-        return  $queryOne->unionAll($queryTwo)->get()->sum('count');
+        return  $timetablesQuery->unionAll($preplansQuery)->get()->sum('count');
     }
 
     public function weekendNumber()
@@ -64,19 +63,24 @@ class WeekendRepository
             ->rules[0]->weekends);
     }
 
-    private function getPreplansDateRange($planDate, $planTomorrowDate, $planWeekStartDate, $planWeekEndDate) 
+    private function getPreplansDateRange($prePlanDate, $prePlanWeekStartDate, $prePlanWeekEndDate) 
     {
-        $todayDate          = $this->generalHelper::getUserTodayDate();
-        $currentWeekEndDate = $todayDate->endOfWeek()->format('Y-m-d');
+        $todayCarbonDate    = $this->generalHelper::getUserTodayDate();
+        $tomorrowDate       = $todayCarbonDate->addDay()->toDateString();
+        $currentWeekEndDate = $todayCarbonDate->endOfWeek()->format('Y-m-d');
         
-        if ($this->generalHelper::checkIfDateIsLater($planDate, $currentWeekEndDate)) {
-            return [$planWeekStartDate, $planWeekEndDate];
+        /*
+        *Если преплан создается на следующую неделю от сегодняшней даты
+        *берутся преплан с пн по вск
+        */
+        if ($this->generalHelper::checkIfDateIsLater($prePlanDate, $currentWeekEndDate)) {
+            return [$prePlanWeekStartDate, $prePlanWeekEndDate];
         }
 
-        if ($this->generalHelper::checkIfDateIsLater($planTomorrowDate, $planWeekEndDate)) {
-            return [];
-        }
-
-        return [$planTomorrowDate, $planWeekEndDate];
+        /*
+        *Если преплан создается на текущую неделю
+        *берутся преплан с завтрашнего дня от сегодняшней даты по вск
+        */
+        return [$tomorrowDate, $currentWeekEndDate];
     }
 }
