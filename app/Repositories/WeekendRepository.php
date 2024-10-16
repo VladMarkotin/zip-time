@@ -4,14 +4,11 @@ namespace App\Repositories;
 
 
 use Carbon;
-use App\Models\DefaultConfigs;
 use App\Models\TimetableModel;
 use App\Models\PersonalConfigs;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\GeneralHelpers\GeneralHelper;
 use App\Models\Preplan;
-use Illuminate\Support\Facades\DB;
-
 
 class WeekendRepository
 {
@@ -36,31 +33,22 @@ class WeekendRepository
         $prePlanCarbonDate     = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $prePlanDate, $timeZone);
         $prePlanWeekStartDate  = $prePlanCarbonDate->startOfWeek()->format('Y-m-d');
         $prePlanWeekEndDate    = $prePlanCarbonDate->endOfWeek()->format('Y-m-d');
-        $todayCarbonDate       = $this->generalHelper::getUserTodayDate();
-        $tomorrowDate          = $todayCarbonDate->addDay()->toDateString();
-        $currentWeekEndDate    = $todayCarbonDate->endOfWeek()->format('Y-m-d');
-        $isPreplanFutureWeek   = $this->generalHelper::checkIfDateIsLater($prePlanDate, $currentWeekEndDate);
+        
         
         $timetablesDateRange   = [$prePlanWeekStartDate, $prePlanWeekEndDate];
-        $preplansDateRange     = $this->getPreplansDateRange(
-                                                                $tomorrowDate, 
-                                                                $currentWeekEndDate, 
-                                                                $prePlanWeekStartDate, 
-                                                                $prePlanWeekEndDate, 
-                                                                $isPreplanFutureWeek
-                                                            );
+        $preplansDateRange     = $this->getPreplansDateRange($prePlanDate, $prePlanWeekStartDate, $prePlanWeekEndDate);
 
         $timetablesQuery = $this->timetableModel::selectRaw('count(*) as count')
-                            ->where('user_id', $userId)
-                            ->where('day_status', 1)
-                            ->whereBetween('date', $timetablesDateRange)
-                            ->where('date', '!=', $prePlanCarbonDate->toDateString()); 
+                                ->where('user_id', $userId)
+                                ->where('day_status', 1)
+                                ->whereBetween('date', $timetablesDateRange)
+                                ->where('date', '!=', $prePlanCarbonDate->toDateString()); 
     
         $preplansQuery  = $this->preplanModel::selectRaw('count(*) as count')
-                            ->where('user_id', $userId)
-                            ->where('day_status', 1)
-                            ->whereBetween('date', $preplansDateRange)
-                            ->where('date', '!=', $prePlanCarbonDate->toDateString());
+                                ->where('user_id', $userId)
+                                ->where('day_status', 1)
+                                ->whereBetween('date', $preplansDateRange)
+                                ->where('date', '!=', $prePlanCarbonDate->toDateString());
 
         return  $timetablesQuery->unionAll($preplansQuery)->get()->sum('count');
     }
@@ -74,8 +62,12 @@ class WeekendRepository
             ->rules[0]->weekends);
     }
 
-    private function getPreplansDateRange($tomorrowDate, $currentWeekEndDate, $prePlanWeekStartDate, $prePlanWeekEndDate, $isPreplanFutureWeek) 
+    private function getPreplansDateRange($prePlanDate, $prePlanWeekStartDate, $prePlanWeekEndDate) 
     {
+        $todayCarbonDate     = $this->generalHelper::getUserTodayDate();
+        $tomorrowDate        = $todayCarbonDate->addDay()->toDateString();
+        $currentWeekEndDate  = $todayCarbonDate->endOfWeek()->format('Y-m-d');
+        $isPreplanFutureWeek = $this->generalHelper::checkIfDateIsLater($prePlanDate, $currentWeekEndDate);
         /*
         *Если преплан создается на следующую неделю от сегодняшней даты
         *берутся преплан с пн по вск
