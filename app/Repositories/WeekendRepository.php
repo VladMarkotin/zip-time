@@ -25,7 +25,6 @@ class WeekendRepository
     private $todayCarbonDate      = null;
     private $currentWeekEndDate   = null;
     private $isPreplanFutureWeek  = null;
-    private $istodayPlanExists    = null;
 
     public function __construct(TimetableModel $timetableModel,
                                 GeneralHelper  $generalHelper,
@@ -57,7 +56,6 @@ class WeekendRepository
     {
         $this->init($prePlanDate);
         $this->setPreplansDateRange();
-        $this->setIsTodayPlanExists();
         
         $timetablesDateRange   = [$this->prePlanWeekStartDate, $this->prePlanWeekEndDate];
         
@@ -68,7 +66,7 @@ class WeekendRepository
                                 ->where('date', '!=', $this->preplanDate); 
     
         $preplansQuery  = $this->getPreplansQuery();
-        // dd($timetablesQuery->unionAll($preplansQuery)->get()->toArray());                        
+                                
         return  $timetablesQuery->unionAll($preplansQuery)->get()->sum('count');
     }
 
@@ -100,7 +98,6 @@ class WeekendRepository
 
     private function getPreplansQuery()
     {
-        //Если преплан создается на сегодня, то сегодняшний преплан выкидываю
         if ($this->isPreplanFutureWeek) {
             return $this->preplanModel::selectRaw('count(*) as count')
                                     ->where('user_id', $this->userId)
@@ -108,25 +105,34 @@ class WeekendRepository
                                     ->whereBetween('date', $this->getPreplansDateRange())
                                     ->where('date', '!=', $this->preplanDate);
         }
-        
+
+        $isPlanCreatedForToday = $this->prePlanCarbonDate->isSameDay($this->todayCarbonDate);
+        if ($isPlanCreatedForToday) {
+            return $this->preplanModel::selectRaw('count(*) as count')
+                                    ->where('user_id', $this->userId)
+                                    ->where('day_status', 1)
+                                    ->whereBetween('date', $this->getPreplansDateRange())
+                                    ->where('date', '!=', $this->todayDate);
+        }
+
+        $isTodayPlanExists = $this->checkIsTodayPlanExists();
+
         return $this->preplanModel::selectRaw('count(*) as count')
                                 ->where('user_id', $this->userId)
                                 ->where('day_status', 1)
                                 ->whereBetween('date', $this->getPreplansDateRange())
-                                ->when($this->getIsTodayPlanExists(), function($query) {
+                                ->when($isTodayPlanExists, function($query) {
                                     return $query->where('date', '!=', $this->todayDate);
+                                })
+                                ->when(!$isPlanCreatedForToday, function($query) {
+                                    return $query->where('date', '!=', $this->preplanDate);
                                 });
     }
 
-    private function getIsTodayPlanExists()
+    private function checkIsTodayPlanExists()
     {
-        return $this->istodayPlanExists;
-    }
-
-    private function setIsTodayPlanExists()
-    {
-        $this->istodayPlanExists = $this->timetableModel::where('date', $this->todayDate)
-                                        ->where('user_id', $this->userId)
-                                        ->exists();
+        return $this->timetableModel::where('date', $this->todayDate)
+                                    ->where('user_id', $this->userId)
+                                    ->exists();
     }
 }
