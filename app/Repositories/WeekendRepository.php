@@ -35,31 +35,23 @@ class WeekendRepository
 
     private function setSettings($prePlanDate)
     {
-        $userId               = Auth::id();
-        $timeZone             = $this->generalHelper::getUserTimeZone();
-        $preplanDate          = $prePlanDate;
-        $prePlanCarbonDate    = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $prePlanDate, $timeZone);
-        $prePlanWeekStartDate = $prePlanCarbonDate->startOfWeek()->format('Y-m-d');
-        $prePlanWeekEndDate   = $prePlanCarbonDate->endOfWeek()->format('Y-m-d');
-        $todayCarbonDate      = $this->generalHelper::getUserTodayDate();
-        $todayDate            = $todayCarbonDate->toDateString();
-        $currentWeekEndDate   = $todayCarbonDate->copy()->endOfWeek()->format('Y-m-d');
-        $isPreplanFutureWeek  = $this->generalHelper::checkIfDateIsLater($prePlanDate, $currentWeekEndDate);
+        $timeZone            = $this->generalHelper::getUserTimeZone();
+        $prePlanCarbonDate   = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $prePlanDate, $timeZone);
+        $todayCarbonDate     = $this->generalHelper::getUserTodayDate();
+        $currentWeekEndDate  = $todayCarbonDate->copy()->endOfWeek()->format('Y-m-d');
 
         $this->settings = [
-            'userId'               => $userId,
-            'preplanDate'          => $preplanDate,
+            'userId'               => Auth::id(),
+            'preplanDate'          => $prePlanDate,
             'prePlanCarbonDate'    => $prePlanCarbonDate,
-            'prePlanWeekStartDate' => $prePlanWeekStartDate,
-            'prePlanWeekEndDate'   => $prePlanWeekEndDate,
+            'prePlanWeekStartDate' => $prePlanCarbonDate->startOfWeek()->format('Y-m-d'),
+            'prePlanWeekEndDate'   => $prePlanCarbonDate->endOfWeek()->format('Y-m-d'),
             'todayCarbonDate'      => $todayCarbonDate,  
-            'todayDate'            => $todayDate,
-            'currentWeekEndDate'   => $currentWeekEndDate,
-            'isPreplanFutureWeek'  => $isPreplanFutureWeek,
+            'todayDate'            => $todayCarbonDate->toDateString(),
+            'currentWeekEndDate'   => $todayCarbonDate->copy()->endOfWeek()->format('Y-m-d'),
+            'isPreplanFutureWeek'  => $this->generalHelper::checkIfDateIsLater($prePlanDate, $currentWeekEndDate),
         ];
     }
-
-    
 
     public function isWeekendAvailable($prePlanDate)
     {
@@ -78,8 +70,6 @@ class WeekendRepository
                                 
         return  $timetablesQuery->unionAll($preplansQuery)->get()->sum('count');
     }
-
-   
 
     public function weekendNumber()
     {
