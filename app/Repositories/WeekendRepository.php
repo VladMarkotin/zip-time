@@ -12,9 +12,20 @@ use App\Models\Preplan;
 
 class WeekendRepository
 {
-    private $timetableModel = null;
-    private $generalHelper  = null;
-    private $preplanModel   = null;
+    private $timetableModel       = null;
+    private $generalHelper        = null;
+    private $preplanModel         = null;
+    private $userId               = null;
+    private $preplanDate          = null;
+    private $prePlanCarbonDate    = null;
+    private $prePlanWeekStartDate = null;
+    private $prePlanWeekEndDate   = null;
+    private $preplansDateRange    = null;
+    private $todayDate            = null;
+    private $todayCarbonDate      = null;
+    private $currentWeekEndDate   = null;
+    private $isPreplanFutureWeek  = null;
+    private $istodayPlanExists    = null;
 
     public function __construct(TimetableModel $timetableModel,
                                 GeneralHelper  $generalHelper,
@@ -26,55 +37,42 @@ class WeekendRepository
         $this->preplanModel   = $preplan;
     }
 
+    public function init($prePlanDate)
+    {
+        $this->userId               = Auth::id();
+        $timeZone                   = $this->generalHelper::getUserTimeZone();
+        $this->preplanDate          = $prePlanDate;
+        $this->prePlanCarbonDate    = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $prePlanDate, $timeZone);
+        $this->prePlanWeekStartDate = $this->prePlanCarbonDate->startOfWeek()->format('Y-m-d');
+        $this->prePlanWeekEndDate   = $this->prePlanCarbonDate->endOfWeek()->format('Y-m-d');
+        $this->todayCarbonDate      = $this->generalHelper::getUserTodayDate();
+        $this->todayDate            = $this->todayCarbonDate->toDateString();
+        $this->currentWeekEndDate   = $this->todayCarbonDate->copy()->endOfWeek()->format('Y-m-d');
+        $this->isPreplanFutureWeek  = $this->generalHelper::checkIfDateIsLater($prePlanDate, $this->currentWeekEndDate);
+    }
+
+    
+
     public function isWeekendAvailable($prePlanDate)
     {
-        $userId                = Auth::id();
-        $timeZone              = $this->generalHelper::getUserTimeZone();
-        $prePlanCarbonDate     = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $prePlanDate, $timeZone);
-        $prePlanWeekStartDate  = $prePlanCarbonDate->startOfWeek()->format('Y-m-d');
-        $prePlanWeekEndDate    = $prePlanCarbonDate->endOfWeek()->format('Y-m-d');
+        $this->init($prePlanDate);
+        $this->setPreplansDateRange();
+        $this->setIsTodayPlanExists();
         
-        $timetablesDateRange   = [$prePlanWeekStartDate, $prePlanWeekEndDate];
-        $preplansDateRange     = $this->getPreplansDateRange($prePlanDate, $prePlanWeekStartDate, $prePlanWeekEndDate);
-        $todayCarbonDate = $this->generalHelper::getUserTodayDate();
+        $timetablesDateRange   = [$this->prePlanWeekStartDate, $this->prePlanWeekEndDate];
         
-        $istodayPlanExists     = $this->checkIsTodayPlanExists($userId);
-        $todayCarbonDate     = $this->generalHelper::getUserTodayDate();
-
         $timetablesQuery = $this->timetableModel::selectRaw('count(*) as count')
-                                ->where('user_id', $userId)
+                                ->where('user_id', $this->userId)
                                 ->where('day_status', 1)
                                 ->whereBetween('date', $timetablesDateRange)
-                                ->where('date', '!=', $prePlanCarbonDate->toDateString()); 
+                                ->where('date', '!=', $this->preplanDate); 
     
-        $preplansQuery  = $this->getPreplansQuery($prePlanDate, $userId, $preplansDateRange, $istodayPlanExists, $todayCarbonDate);
+        $preplansQuery  = $this->getPreplansQuery();
         // dd($timetablesQuery->unionAll($preplansQuery)->get()->toArray());                        
         return  $timetablesQuery->unionAll($preplansQuery)->get()->sum('count');
     }
 
-    private function getPreplansQuery($prePlanDate, $userId, $preplansDateRange, $istodayPlanExists, $todayCarbonDate)
-    {
-        $prePlanCarbonDate   = Carbon\CarbonImmutable::createFromFormat('Y-m-d', $prePlanDate);
-        $todayCarbonDate     = $this->generalHelper::getUserTodayDate();
-        $currentWeekEndDate  = $todayCarbonDate->copy()->endOfWeek()->format('Y-m-d');
-        $isPreplanFutureWeek = $this->generalHelper::checkIfDateIsLater($prePlanDate, $currentWeekEndDate);
-        //Если преплан создается на сегодня, то сегодняшний преплан выкидываю
-        if ($isPreplanFutureWeek) {
-            return $this->preplanModel::selectRaw('count(*) as count')
-                                    ->where('user_id', $userId)
-                                    ->where('day_status', 1)
-                                    ->whereBetween('date', $preplansDateRange)
-                                    ->where('date', '!=', $prePlanCarbonDate->toDateString());
-        }
-
-        return $this->preplanModel::selectRaw('count(*) as count')
-                ->where('user_id', $userId)
-                ->where('day_status', 1)
-                ->whereBetween('date', $preplansDateRange)
-                ->when($istodayPlanExists, function($query) use ($todayCarbonDate) {
-                    return $query->where('date', '!=', $todayCarbonDate->toDateString());
-                });
-    }
+   
 
     public function weekendNumber()
     {
@@ -85,32 +83,50 @@ class WeekendRepository
             ->rules[0]->weekends);
     }
 
-    private function getPreplansDateRange($prePlanDate, $prePlanWeekStartDate, $prePlanWeekEndDate) 
+    private function getPreplansDateRange()
     {
-        $todayCarbonDate     = $this->generalHelper::getUserTodayDate();
-        $currentWeekEndDate  = $todayCarbonDate->copy()->endOfWeek()->format('Y-m-d');
-        $isPreplanFutureWeek = $this->generalHelper::checkIfDateIsLater($prePlanDate, $currentWeekEndDate);
-        /*
-        *Если преплан создается на следующую неделю от сегодняшней даты
-        *берутся преплан с пн по вск
-        */
-        if ($isPreplanFutureWeek) {
-            return [$prePlanWeekStartDate, $prePlanWeekEndDate];
-        }
-
-        /*
-        *Если преплан создается на текущую неделю
-        *берутся преплан с завтрашнего дня от сегодняшней даты по вск
-        */
-        return [$todayCarbonDate->toDateString(), $currentWeekEndDate];
+        return $this->preplansDateRange;
     }
 
-    private function checkIsTodayPlanExists($userId)
+    private function setPreplansDateRange() 
     {
-        $todayCarbonDate = $this->generalHelper::getUserTodayDate();
+        if ($this->isPreplanFutureWeek) {
+            $this->preplansDateRange = [$this->prePlanWeekStartDate, $this->prePlanWeekEndDate];
+        } else {
+            $this->preplansDateRange = [$this->todayDate, $this->currentWeekEndDate];
+        }
 
-        return $this->timetableModel::where('date', $todayCarbonDate->toDateString())
-                                    ->where('user_id', $userId)
-                                    ->exists();
+    }
+
+    private function getPreplansQuery()
+    {
+        //Если преплан создается на сегодня, то сегодняшний преплан выкидываю
+        if ($this->isPreplanFutureWeek) {
+            return $this->preplanModel::selectRaw('count(*) as count')
+                                    ->where('user_id', $this->userId)
+                                    ->where('day_status', 1)
+                                    ->whereBetween('date', $this->getPreplansDateRange())
+                                    ->where('date', '!=', $this->preplanDate);
+        }
+        
+        return $this->preplanModel::selectRaw('count(*) as count')
+                                ->where('user_id', $this->userId)
+                                ->where('day_status', 1)
+                                ->whereBetween('date', $this->getPreplansDateRange())
+                                ->when($this->getIsTodayPlanExists(), function($query) {
+                                    return $query->where('date', '!=', $this->todayDate);
+                                });
+    }
+
+    private function getIsTodayPlanExists()
+    {
+        return $this->istodayPlanExists;
+    }
+
+    private function setIsTodayPlanExists()
+    {
+        $this->istodayPlanExists = $this->timetableModel::where('date', $this->todayDate)
+                                        ->where('user_id', $this->userId)
+                                        ->exists();
     }
 }
