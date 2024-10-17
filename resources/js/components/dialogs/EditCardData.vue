@@ -237,7 +237,6 @@ import VSelectTooptip from '../UI/VSelectTooptip.vue';
         border-radius: 7px;
     }
     
-
     .editCardData-content::-webkit-scrollbar-thumb:hover {
         background: rgb(161, 0, 0);
         cursor: pointer;
