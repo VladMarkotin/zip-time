@@ -1,9 +1,10 @@
 <template>
     <v-menu v-model="emojiPickerMenu" offset-y>
-        <template #activator="{ props }">
+        <template #activator="{ on }">
+            <!-- <h1>{{ selectedEmoji }}</h1> -->
             <v-img 
             @click="emojiPickerMenu = true"
-            src="/images/marks/sad_mark_icon.svg"  
+            :src="`/images/marks/${selectedEmoji}`"  
             max-width="80px" 
             max-height="80px" 
             />
@@ -14,26 +15,28 @@
         >
             <v-btn-toggle 
             color="white" 
-            v-model="selectedEmoji"
-            @change="sendMark"
             >
-                <v-btn 
-                v-for="(data, idx) in emojiButtonsData" 
-                :key="idx"
-                :value="data.markIconName"
-                >
-                    <v-img 
-                    :src="`/images/marks/${data.markIconName}`"  
-                    max-width="50px" 
-                    max-height="50px"/>
-                </v-btn>
+                <v-tooltip bottom v-for="(data, idx) in emojiButtonsData" :key="idx">
+                    <template v-slot:activator="{ on: tooltip  }">
+                        <v-btn 
+                        v-on   = "tooltip"
+                        :value = "data.iconName"
+                        @click = "sendMark(data.iconName)"
+                        >
+                            <v-img 
+                            :src="`/images/marks/${data.iconName}`"  
+                            max-width="50px" 
+                            max-height="50px"/>
+                        </v-btn>
+                    </template>
+                    <span>{{data.tooltipText}}</span>
+                </v-tooltip>
             </v-btn-toggle>
         </v-card>
     </v-menu>
 </template>
 
 <script>
-import { debounce } from 'lodash';
     export default {
         props: {
             taskId: {
@@ -49,8 +52,8 @@ import { debounce } from 'lodash';
         computed: {
             emojiButtonsData() {
                 return [
-                    {markIconName: 'sad_mark_icon.svg', value: 0, description: 'test1'},
-                    {markIconName: 'happy_mark_icon.svg', value: 99, description: 'test2'},
+                    {iconName: 'sad_mark_icon.svg', value: 0, tooltipText: 'test1'},
+                    {iconName: 'happy_mark_icon.svg', value: 99, tooltipText: 'test2'},
                 ];
             },
             getInitialSelectedEmojiVal() { //вытащу из стора
@@ -60,8 +63,8 @@ import { debounce } from 'lodash';
             }
         },
         methods: {
-            sendMark() {
-                
+            sendMark(selectedEmoji) {
+                this.selectedEmoji = selectedEmoji;
             },
         },
         created() {
