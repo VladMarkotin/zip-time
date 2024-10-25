@@ -191,7 +191,9 @@
 					:id="!cardIdx ? 'card-mark' : false"
 					>
 						<template v-if="[4,3].includes(type)">
-							<EmojiPicker />
+							<EmojiPicker 
+							:taskId = "taskId"
+							/>
 							<!-- <v-text-field 
 							class="ml-1" 
 							style="width : 54px" 
