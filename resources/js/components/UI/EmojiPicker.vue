@@ -1,37 +1,34 @@
 <template>
     <v-menu v-model="emojiPickerMenu" offset-y>
         <template #activator="{ on }">
-            <!-- <h1>{{ selectedEmoji }}</h1> -->
-            <v-img 
+            <span @click="emojiPickerMenu = true">{{ selectedEmoji }}</span>
+            <!-- <v-img 
             @click="emojiPickerMenu = true"
             :src="`/images/marks/${selectedEmoji}`"  
             max-width="80px" 
             max-height="80px" 
-            />
+            /> -->
         </template>
         <v-card 
         class="p-2 m-0 d-flex flex-column align-items-center" 
         >
-            <v-btn-toggle 
-            color="white" 
-            v-model="selectedEmoji"
+        <v-tabs 
+        v-model="selectedEmoji" 
+        @change="sendMark" 
+        >
+            <v-tab 
+            v-for="(data, idx) in emojiTabsData"
+            :key="idx"
+            :tab-value = "data.iconName"
             >
-                <v-tooltip bottom v-for="(data, idx) in emojiButtonsData" :key="idx">
-                    <template v-slot:activator="{ on: tooltip  }">
-                        <v-btn 
-                        v-on   = "tooltip"
-                        :value = "data.iconName"
-                        @click = "sendMark(data.iconName)"
-                        >
-                            <v-img 
-                            :src="`/images/marks/${data.iconName}`"  
-                            max-width="50px" 
-                            max-height="50px"/>
-                        </v-btn>
-                    </template>
-                    <span>{{data.tooltipText}}</span>
-                </v-tooltip>
-            </v-btn-toggle>
+                    <v-img 
+                    :src="`/images/marks/${data.iconName}`"  
+                    max-width="40px" 
+                    max-height="40px" 
+                    />
+            </v-tab>
+            <v-tabs-slider color="red"></v-tabs-slider>
+        </v-tabs>
         </v-card>
     </v-menu>
 </template>
@@ -50,10 +47,11 @@
             }
         },
         computed: {
-            emojiButtonsData() {
+            emojiTabsData() {
                 return [
-                    {iconName: 'sad_mark_icon.svg', value: 0, tooltipText: 'test1'},
-                    {iconName: 'happy_mark_icon.svg', value: 99, tooltipText: 'test2'},
+                    {iconName: 'sad_mark_icon.svg', value: 0, status: 'bad'},
+                    {iconName: 'sad2_mark_icon.svg', value: 0, status: 'normal'},
+                    {iconName: 'happy_mark_icon.svg', value: 99, status: 'good'},
                 ];
             },
             getInitialSelectedEmojiVal() { //вытащу из стора
@@ -64,7 +62,8 @@
         },
         methods: {
             sendMark(selectedEmoji) {
-                this.selectedEmoji = selectedEmoji;
+                console.log(selectedEmoji);
+                
             },
         },
         created() {
