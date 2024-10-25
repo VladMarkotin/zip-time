@@ -11,10 +11,10 @@
         </template>
         <v-card 
         class="p-2 m-0 d-flex flex-column align-items-center" 
-        width="300px"
         >
             <v-btn-toggle 
             color="white" 
+            v-model="selectedEmoji"
             >
                 <v-tooltip bottom v-for="(data, idx) in emojiButtonsData" :key="idx">
                     <template v-slot:activator="{ on: tooltip  }">
