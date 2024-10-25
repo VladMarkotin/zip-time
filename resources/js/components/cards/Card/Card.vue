@@ -1,5 +1,6 @@
 <template>  
 	<v-card :id="!cardIdx ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
+		<!-- Удалить -->
 		<CardHeader 
 		:hash            = "hash"
 		:taskName        = "taskName"
@@ -190,8 +191,8 @@
 					:id="!cardIdx ? 'card-mark' : false"
 					>
 						<template v-if="[4,3].includes(type)">
-							<div>Mark</div>
-							<v-text-field 
+							<EmojiPicker />
+							<!-- <v-text-field 
 							class="ml-1" 
 							style="width : 54px" 
 							v-model="jobMarkInputValue" 
@@ -202,7 +203,7 @@
 							@blur     = "focusedInput=!focusedInput"
 							>
 								<v-icon slot="append">mdi-percent</v-icon>
-							</v-text-field>
+							</v-text-field> -->
 						</template>
 						
 						<template v-else-if="[2,1].includes(type)">
@@ -252,6 +253,7 @@
 	import AddDetails from '../../dialogs/AddDetails/AddDetails.vue';
 	import AddNotes from '../../dialogs/AddNotes/AddNotes.vue';
 	import EditCardData from '../../dialogs/EditCardData.vue';
+	import EmojiPicker from '../../UI/EmojiPicker.vue';
 	
 	export default
 	{
@@ -297,6 +299,7 @@
 			AddDetails,
 			AddNotes, 
 			EditCardData,
+			EmojiPicker,
 		},
 		computed: {
 			...mapGetters([
