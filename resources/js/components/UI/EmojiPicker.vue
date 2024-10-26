@@ -1,5 +1,7 @@
 <template>
-    <v-menu v-model="emojiPickerMenu" offset-y transition="scale-transition">
+    <v-menu 
+    v-model="emojiPickerMenu" 
+    offset-y transition="scale-transition">
         <template #activator="{ on }">
             <v-tooltip right>
                 <template v-slot:activator="{ on: tooltip  }">
@@ -64,14 +66,14 @@
         computed: {
             emojiTabsData() {
                 return [
-                    {iconName: 'sad_mark_icon.svg', value: 0, toopltipText: 'bad'},
-                    {iconName: 'sad2_mark_icon.svg', value: 0, toopltipText: 'normal'},
-                    {iconName: 'happy_mark_icon.svg', value: 99, toopltipText: 'good'},
+                    {iconName: 'bad_mark_icon.svg', value: 0, toopltipText: 'bad'},
+                    {iconName: 'normal_mark_icon.svg', value: 0, toopltipText: 'normal'},
+                    {iconName: 'good_mark_icon.svg', value: 99, toopltipText: 'good'},
                 ];
             },
             getInitialSelectedEmojiVal() { //вытащу из стора
                 return (taskId) => {
-                    return 'happy_mark_icon.svg'
+                    return 'good_mark_icon.svg'
                 }
             }
         },
