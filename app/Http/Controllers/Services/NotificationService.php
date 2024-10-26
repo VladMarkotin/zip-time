@@ -53,9 +53,7 @@ class NotificationService
             ];
         }
 
-        if (!isset($devices['devices'][$request->sub['keys']['auth']])) {
-            $devices['devices'][$request->sub['keys']['auth']] = $request->sub;
-        }
+        $devices['devices'][$request->sub['keys']['auth']] = $request->sub;
 
         User::where('id', Auth::id())->update([
             'device_token' => json_encode($devices),
