@@ -191,22 +191,9 @@
 					>
 						<template v-if="[4,3].includes(type)">
 							<EmojiPicker 
-							v-model="jobMarkInputValue"
 							:taskId = "taskId"
 							@sendMark = "sendMark"
 							/>
-							<!-- <v-text-field 
-							class="ml-1" 
-							style="width : 54px" 
-							v-model="jobMarkInputValue" 
-							v-on:keypress.enter.prevent="debounceSendMark(taskId)" 
-							@input    = "debounceSendMark(taskId)"
-							@keypress = "filterJobMarkInputValue($event, taskId)"
-							@focus    = "focusedInput=!focusedInput" 
-							@blur     = "focusedInput=!focusedInput"
-							>
-								<v-icon slot="append">mdi-percent</v-icon>
-							</v-text-field> -->
 						</template>
 						
 						<template v-else-if="[2,1].includes(type)">
@@ -222,22 +209,6 @@
 							</div>
 						</template>
 					</form>
-				</v-col>
-				<v-col class="p-0 m-0 d-flex align-center" style="width: 100%;">
-					<transition
-					enter-active-class="notification_appearance"
-					leave-active-class="notification_leave"
-					mode="out-in"
-					>
-						<span 
-						v-if="focusedInput"
-						class="mark-info" 
-						key="rating-range"
-						>Ratings` range 
-							from {{ defaultConfigs.cardRules[0].minMark }}
-							to {{ defaultConfigs.cardRules[0].maxMark }}
-						</span>
-					</transition>
 				</v-col>
 			</v-row>
 		</v-card-title>
@@ -277,11 +248,9 @@
 						mdiCircle, mdiMusicAccidentalSharp  },
 					isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
-					focusedInput: false,
 					isShowAddHashCodeDialog : false,
 					defaultConfigs: {},
 					isTaskReady: '', //присваивается в created
-					jobMarkInputValue: '', //присваивается в created
 					DEBOUNCE_DELAY: {
 						tasks: {
 							default: 900,
@@ -355,15 +324,6 @@
 					});
 			},
 
-			debouncedSendMark() {
-				const key = this.isMobile ? 'mobile' : 'default';
-				const delay = this.DEBOUNCE_DELAY.tasks[key];
-
-				return debounce(function(item) {
-					this.sendMark(item);
-				}, delay)
-			},
-
 			debouncedUpdateIsReadyState() {
 				const key = this.isMobile ? 'mobile' : 'default';
 				const delay = this.DEBOUNCE_DELAY.jobs[key];
@@ -387,10 +347,6 @@
 				
 				if ([1,2].includes(currentTaskType)) {
 					this.isTaskReady = this.taskCheckboxFalseVal;
-				}
-
-				if ([3,4].includes(currentTaskType)) {
-					this.jobMarkInputValue = 0;
 				}
 
 				this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: 0}});
@@ -429,21 +385,17 @@
 				}
 			},
 
-			debounceSendMark(taskId) {
-				this.debouncedSendMark(this.getFullTaskData(taskId));
-			},	
-
 			debounceUpdateIsReadyState(taskId) {
 				this.debouncedUpdateIsReadyState(this.getFullTaskData(taskId));
 			},
 			
-			async sendMark()
+			async sendMark(mark)
 			{	
 				try {
 					const response = await this.estimateJob({
 						payload: {
 							task_id : this.taskId,
-							mark    : this.jobMarkInputValue,
+							mark    : mark,
 							type    : this.type
 				 		}
 					})
@@ -452,18 +404,19 @@
 
 					if(data.status === 'error') {
 						const {current_task_mark} = response.data;
-						
-						this.jobMarkInputValue = current_task_mark !== -1 
+
+						const mark = current_task_mark !== -1 
 							? current_task_mark 
 							: 0;
+
+						this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark}});
 					}
 					
 					this.fetchPersonalResults();
-
 					this.showAlert({status: response.data.status, message: response.data.message});
 
 				} catch(error) {
-					this.jobMarkInputValue = '';
+					this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: 0}});
 					this.showAlert({status: 'error', message: 'Error! Something has happened!'})
 					console.error(error);
 				}
@@ -497,17 +450,6 @@
 					  })
 			},
 
-			filterJobMarkInputValue(e, taskId) {
-				const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
-				const keyPressed  = e.key;
-
-				 if (!keysAllowed.includes(keyPressed)) {
-					e.preventDefault();
-					return;
-				}
-
-			},
-
 			showAlert({status, message}) {
 				this.isShowAlert = true;
 				this.setAlertData(status, message)
@@ -520,8 +462,6 @@
 		
 		created() {
 			this.getConfigs(); 
-			
-			this.jobMarkInputValue = this.mark;
 			this.isTaskReady       = this.mark;
 		},
 	}

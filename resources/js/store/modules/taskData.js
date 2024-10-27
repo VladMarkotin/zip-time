@@ -66,8 +66,6 @@ export default {
                     ...updatedTaskData
                 }
             });
-
-            console.log(state.taskData);
         }
     },
     getters: {

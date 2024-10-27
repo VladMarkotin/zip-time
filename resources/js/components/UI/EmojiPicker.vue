@@ -22,8 +22,8 @@
         class="p-2 m-0 d-flex flex-column align-items-center" 
         >
         <v-tabs 
-        :value="value"
-        @change="updateValue" 
+        :value="jobMark"
+        @change="sendMark" 
         >
             <v-tooltip 
             bottom 
@@ -51,13 +51,11 @@
 </template>
 
 <script>
+    import store from '../../store';
+    import {mapGetters,} from 'vuex/dist/vuex.common.js';
     export default {
         props: {
             taskId: {
-                type: Number,
-                required: true,
-            },
-            value: {
                 type: Number,
                 required: true,
             },
@@ -72,18 +70,23 @@
                 ],
             }
         },
-        emits: ['input', 'sendMark'],
+        store,
+        emits: ['sendMark'],
         computed: {
+            ...mapGetters(['getTaskData']),
             selectedEmoji() {
-                const {iconName} = this.emojiTabsData.find(data => data.mark === this.value);
+                const {iconName} = this.emojiTabsData.find(data => data.mark === this.jobMark);
                 
                 return `/images/marks/${iconName}`;
             },
+
+            jobMark() {
+                return this.getTaskData(this.taskId, 'mark');
+            }
         },
         methods: {
-            updateValue(mark) {
-                this.$emit('input', mark);
-                this.$emit('sendMark');
+            sendMark(mark) {
+                this.$emit('sendMark', mark);
             },
         },
         
