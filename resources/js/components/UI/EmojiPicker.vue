@@ -8,7 +8,7 @@
                     <div class="selected_emoji_icon">
                         <v-img 
                         @click="emojiPickerMenu = true"
-                        :src="`/images/marks/${selectedEmoji}`"  
+                        :src="selectedEmoji"  
                         v-on="tooltip"
                         max-width="80px" 
                         max-height="80px" 
@@ -22,8 +22,8 @@
         class="p-2 m-0 d-flex flex-column align-items-center" 
         >
         <v-tabs 
-        v-model="selectedEmoji" 
-        @change="sendMark" 
+        :value="value"
+        @change="updateValue" 
         >
             <v-tooltip 
             bottom 
@@ -32,7 +32,7 @@
             >
                 <template v-slot:activator="{ on: tooltip  }">
                     <v-tab 
-                    :tab-value = "data.iconName"
+                    :tab-value = "data.mark"
                     v-on="tooltip"
                     >
                         <v-img 
@@ -55,37 +55,38 @@
         props: {
             taskId: {
                 type: Number,
-            }
+                required: true,
+            },
+            value: {
+                type: Number,
+                required: true,
+            },
         },
         data() {
             return {
-                selectedEmoji: '',
                 emojiPickerMenu: false,
+                emojiTabsData: [
+                    {iconName: 'bad_mark_icon.svg', mark: 0, toopltipText: 'bad'},
+                    {iconName: 'normal_mark_icon.svg', mark: 50, toopltipText: 'normal'},
+                    {iconName: 'good_mark_icon.svg', mark: 99, toopltipText: 'good'},
+                ],
             }
         },
+        emits: ['input', 'sendMark'],
         computed: {
-            emojiTabsData() {
-                return [
-                    {iconName: 'bad_mark_icon.svg', value: 0, toopltipText: 'bad'},
-                    {iconName: 'normal_mark_icon.svg', value: 0, toopltipText: 'normal'},
-                    {iconName: 'good_mark_icon.svg', value: 99, toopltipText: 'good'},
-                ];
+            selectedEmoji() {
+                const {iconName} = this.emojiTabsData.find(data => data.mark === this.value);
+                
+                return `/images/marks/${iconName}`;
             },
-            getInitialSelectedEmojiVal() { //вытащу из стора
-                return (taskId) => {
-                    return 'good_mark_icon.svg'
-                }
-            }
         },
         methods: {
-            sendMark(selectedEmoji) {
-                console.log(selectedEmoji);
-                
+            updateValue(mark) {
+                this.$emit('input', mark);
+                this.$emit('sendMark');
             },
         },
-        created() {
-            this.selectedEmoji = this.getInitialSelectedEmojiVal(this.taskId);
-        }
+        
     }
 </script>
 

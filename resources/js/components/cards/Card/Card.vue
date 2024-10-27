@@ -1,6 +1,5 @@
 <template>  
 	<v-card :id="!cardIdx ? 'card-wrapper' : false" :class="`${isCurrentTaskReady} card-wrapper`">
-		<!-- Удалить -->
 		<CardHeader 
 		:hash            = "hash"
 		:taskName        = "taskName"
@@ -192,7 +191,9 @@
 					>
 						<template v-if="[4,3].includes(type)">
 							<EmojiPicker 
+							v-model="jobMarkInputValue"
 							:taskId = "taskId"
+							@sendMark = "sendMark"
 							/>
 							<!-- <v-text-field 
 							class="ml-1" 
@@ -389,10 +390,10 @@
 				}
 
 				if ([3,4].includes(currentTaskType)) {
-					this.jobMarkInputValue = '';
+					this.jobMarkInputValue = 0;
 				}
 
-				this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: ''}});
+				this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: 0}});
 			},
 			
 			async updateIsReadyState(item)
@@ -453,8 +454,8 @@
 						const {current_task_mark} = response.data;
 						
 						this.jobMarkInputValue = current_task_mark !== -1 
-							? String(current_task_mark) 
-							: '';
+							? current_task_mark 
+							: 0;
 					}
 					
 					this.fetchPersonalResults();
@@ -520,7 +521,7 @@
 		created() {
 			this.getConfigs(); 
 			
-			this.jobMarkInputValue = String(this.mark);
+			this.jobMarkInputValue = this.mark;
 			this.isTaskReady       = this.mark;
 		},
 	}
