@@ -1,22 +1,18 @@
 <template>
     <v-menu 
     v-model="emojiPickerMenu" 
-    offset-y transition="scale-transition">
+    offset-y transition="scale-transition"
+    :close-on-content-click="false"
+    >
         <template #activator="{ on }">
-            <v-tooltip right>
-                <template v-slot:activator="{ on: tooltip  }">
-                    <div class="selected_emoji_icon">
-                        <v-img 
-                        @click="emojiPickerMenu = true"
-                        :src="selectedEmoji"  
-                        v-on="tooltip"
-                        max-width="80px" 
-                        max-height="80px" 
-                        />
-                    </div>
-                </template>
-                <span>Set mark</span>
-            </v-tooltip>
+            <div class="selected_emoji_icon">
+                <v-img 
+                @click="emojiPickerMenu = true"
+                :src="selectedEmoji"  
+                max-width="80px" 
+                max-height="80px" 
+                />
+            </div>
         </template>
         <v-card 
         class="p-2 m-0 d-flex flex-column align-items-center" 
@@ -24,6 +20,8 @@
         <v-tabs 
         :value="jobMark"
         @change="sendMark" 
+        hide-slider
+        show-arrows
         >
             <v-tooltip 
             bottom 
@@ -44,7 +42,6 @@
                 </template>
                 <span>{{ data.toopltipText }}</span>
             </v-tooltip>
-            <v-tabs-slider color="red"></v-tabs-slider>
         </v-tabs>
         </v-card>
     </v-menu>
@@ -87,6 +84,7 @@
         methods: {
             sendMark(mark) {
                 this.$emit('sendMark', mark);
+                this.emojiPickerMenu = false;
             },
         },
         

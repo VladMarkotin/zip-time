@@ -184,7 +184,7 @@
 		</div>
 		<v-card-title class="font-weight-bold pt-0">
 			<v-row class="p-0 m-0">
-				<v-col class="p-0 m-0" cols="auto">
+				<v-col class="p-0 m-0" cols="12">
 					<form 
 					class="d-flex align-center gap-1" 
 					:id="!cardIdx ? 'card-mark' : false"
