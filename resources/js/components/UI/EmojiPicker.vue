@@ -1,47 +1,72 @@
 <template>
     <v-menu 
     v-model="emojiPickerMenu" 
-    offset-y transition="scale-transition"
+    offset-x transition="scale-transition"
     :close-on-content-click="false"
     >
         <template #activator="{ on }">
-            <div class="selected_emoji_icon">
-                <v-img 
-                @click="emojiPickerMenu = true"
-                :src="selectedEmoji"  
-                max-width="80px" 
-                max-height="80px" 
-                />
-            </div>
+            <v-tooltip top>
+                <template v-slot:activator="{ on: tooltip  }">
+                    <div class="selected_emoji_icon">
+                        <v-img 
+                        @click="emojiPickerMenu = true"
+                         v-on="tooltip"
+                        :src="selectedEmoji"  
+                        max-width="80px" 
+                        max-height="80px" 
+                        />
+                    </div>
+                </template>
+                <span>Update mark :)</span>
+            </v-tooltip>
         </template>
         <v-card 
         class="p-2 m-0 d-flex flex-column align-items-center" 
         >
+        <div class="mb-1 d-flex justify-content-end" style="width: 100%;">
+                <v-tooltip right>
+                    <template v-slot:activator="{ on: tooltip  }">
+                        <v-btn 
+                        v-on="tooltip"
+                        icon 
+                        @click="emojiPickerMenu = false"
+                        >
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Close</span>
+                </v-tooltip>
+        </div>
         <v-tabs 
         :value="jobMark"
         @change="sendMark" 
         hide-slider
         show-arrows
         >
-            <v-tooltip 
-            bottom 
+            <v-tab 
             v-for="(data, idx) in emojiTabsData" 
+            :tab-value = "data.mark"
             :key="idx"
             >
-                <template v-slot:activator="{ on: tooltip  }">
-                    <v-tab 
-                    :tab-value = "data.mark"
-                    v-on="tooltip"
-                    >
-                        <v-img 
-                        :src="`/images/marks/${data.iconName}`"  
-                        max-width="40px" 
-                        max-height="40px" 
-                        />
-                    </v-tab>
-                </template>
-                <span>{{ data.toopltipText }}</span>
-            </v-tooltip>
+                <v-img 
+                :src="`/images/marks/${data.iconName}`"  
+                max-width="40px" 
+                max-height="40px" 
+                />
+            </v-tab>
+            <v-tabs-items v-model="jobMark">
+                <v-tab-item 
+                    v-for="(data, idx) in emojiTabsData" 
+                    :key="idx"
+                    :value="data.mark"
+                >
+                    <v-card>
+                        <v-card-text class="text-center">
+                            {{data.description}}
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+            </v-tabs-items>
         </v-tabs>
         </v-card>
     </v-menu>
@@ -61,9 +86,10 @@
             return {
                 emojiPickerMenu: false,
                 emojiTabsData: [
-                    {iconName: 'bad_mark_icon.svg', mark: 0, toopltipText: 'bad'},
-                    {iconName: 'normal_mark_icon.svg', mark: 50, toopltipText: 'normal'},
-                    {iconName: 'good_mark_icon.svg', mark: 99, toopltipText: 'good'},
+                    {iconName: 'bad_mark_icon.svg', mark: 0, description: 'I couldn\'t do it today'},
+                    {iconName: 'normal_mark_icon.svg', mark: 50, description: 'I completed the task, but it could have been a bit better'},
+                    {iconName: 'normal_mark_icon.svg', mark: 60, description: 'I completed the task, but it could have been a bit better'},
+                    {iconName: 'good_mark_icon.svg', mark: 99, description: 'I did a great job on the task'},
                 ],
             }
         },
@@ -84,7 +110,6 @@
         methods: {
             sendMark(mark) {
                 this.$emit('sendMark', mark);
-                this.emojiPickerMenu = false;
             },
         },
         
