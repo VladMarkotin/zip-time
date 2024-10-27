@@ -25,7 +25,7 @@
     <script src="js/NavMenu.js" defer></script>
     <script src="js/AsideButtonsController.js" defer></script>
     {{--  --}}
- 
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -238,14 +238,14 @@
             <div class="footer-border"></div>
             <div class="container footer-container">
                 <div class="footer-bottom">
-                    <div class="footer-bottom_info"> 
+                    <div class="footer-bottom_info">
                         <div class="footer-bottom_main-info">
-                            <span>{{ config('app.name', 'Laravel')}}</span>  
+                            <span>{{ config('app.name', 'Laravel')}}</span>
                             &copy
                             <span class="footer-bottom_main-info-year">{{now()->year}}</span>
                         </div>
                         <div class="footer-bottom-mail">
-                            <a href="mailto:quiplapp@gmail.com">Contact us</a>
+                            <a href="mailto:support@quipl.co">Contact us</a>
                         </div>
                     </div>
                     <ul class="footer-bottom_list">
@@ -290,7 +290,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     @auth
         <script>
-          
+
             askForPermission()
             navigator.serviceWorker.register("{{ URL::asset('service-worker.js') }}");
 

@@ -122,7 +122,7 @@
                     Contact Information
                 </v-card-title>
                 <v-card-text class="custom-card-text pt-0">Address: Belarus</v-card-text>
-                <v-card-text class="custom-card-text pt-0">Email: quiplapp@gmail.com</v-card-text>
+                <v-card-text class="custom-card-text pt-0">Email: support@quipl.co</v-card-text>
             </section>
         </v-card>
     </div>

@@ -8,17 +8,22 @@ use App\Mail\FeedbackMail;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
 class Feedback extends Component
 {
     use WithFileUploads;
 
-    public const PATH = 'public/uploads/images';
+    public const PATH = 'public/uploads';
+    private const MAX_FILES_TEXT = 'Maximum of 6 files';
+    private const MAX_FILES = 6;
+
     public $message;
     public $subject;
     public $email;
     public $files = [];
+    protected $listeners = ['refresh' => '$refresh'];
 
     public function rules()
     {
@@ -28,8 +33,12 @@ class Feedback extends Component
         ];
     }
 
+    /**
+     * @return void
+     */
     public function sendFeedback(): void
     {
+        $to = config('mail.from.address');
         $this->validate();
         $data = [
             'content' => $this->message,
@@ -38,10 +47,10 @@ class Feedback extends Component
             'name' => Auth::check() ? Auth::user()->name : null,
         ];
 
-        Mail::send('emails.feedback', $data, function ($e) {
+        Mail::send('emails.feedback', $data, function ($e) use ($to) {
             $e
                 ->from($this->email, Auth::check() ? Auth::user()->name : null)
-                ->to('quiplapp@gmail.com')
+                ->to($to)
                 ->subject($this->subject);
             foreach (
                 str_ireplace('public', 'storage', Storage::files(self::PATH))
@@ -56,66 +65,96 @@ class Feedback extends Component
         ]);
     }
 
-    public function updatedFiles()
+
+    /**
+     * @return void
+     */
+
+    public function updatedFiles(): void
     {
-         $this->validate([
-            'files.*' => 'image|max:10024', // 10MB Max
+
+        $this->validate([
+            'files.*' => 'mimes:jpg,jpeg,png,gif,mp4,avi,mov,wmv,flv,pdf,doc,docx,xlsx|max:50000',
         ]);
-        $text = 'Maximum of 6 files';
-        $files = Storage::files(self::PATH);
-        $count = count($files);
 
-        if (count($this->files) <= 6) {
-            $i = 1;
-            foreach ($this->files as $key => $imageFile) {
-                if ($count < 6) {
-                    $extension = $imageFile->extension();
-                    $filename = time() . $i++ . '.' . $extension;
-                    $imageFile->storeAs(self::PATH, $filename);
-                    $this->files[$key] = $filename;
-                    $count++;
-                } else {
-                    $this->dispatchBrowserEvent('message', [
-                        'text' => $text,
-                    ]);
-                    break;
-                }
-            }
-        } else {
-            $this->dispatchBrowserEvent('message', [
-                'text' => $text,
-            ]);
+        $existingFiles = $this->uploads();
+
+        $existingCount = $existingFiles ? count($existingFiles) : 0;
+
+        if ($existingCount >= self::MAX_FILES || count($this->files) >= self::MAX_FILES) {
+            $this->dispatchBrowserEvent('message', ['text' => self::MAX_FILES_TEXT]);
+            return;
         }
+
+        $i = 1;
+        foreach ($this->files as $key => $imageFile) {
+
+            $filename = time() . $i++ . '.' . $imageFile->extension();
+            $path = $imageFile->storeAs(self::PATH, $filename);
+            $existingFiles[] =
+                str_ireplace('public/', '', $path);
+
+        }
+        Cookie::queue('uploaded_files', json_encode($existingFiles), 60);
+        $this->emitSelf('refresh');
+
     }
 
-    public function removeUpload($param)
+    /**
+     * @param string $key
+     * @return void
+     */
+    public function removeUpload(string $key): void
     {
-        foreach (Storage::files(self::PATH) as $key => $file) {
-            if ($key == $param) {
-                if (Storage::exists($file)) {
-                    return Storage::delete($file);
-                }
+        $files = $this->uploads();
+
+        if (isset($files[$key])) {
+
+            $filePath = self::PATH . '/' . basename($files[$key]);
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath);
             }
+
+            unset($files[$key]);
+            Cookie::queue('uploaded_files', json_encode(($files)), 60);
+            $this->emitSelf('refresh');
         }
     }
 
+
+    /**
+     * @return void
+     */
     public function resetErrors(): void
     {
         $this->resetErrorBag();
     }
 
+    /**
+     * @return void
+     */
     private function resetData()
     {
         $this->message = null;
         $this->subject = null;
         $this->email = null;
-        $files = Storage::allFiles(self::PATH);
-        // Delete Files
+
+        $files = $this->uploads();
         Storage::delete($files);
+        Cookie::queue('uploaded_files', json_encode([]), 60);
+    }
+
+    /**
+     * @return array
+     */
+    public function uploads(): array
+    {
+        return json_decode(Cookie::get('uploaded_files', '[]'), true);
     }
 
     public function render()
-    {   
+    {
         return view('livewire.feedback');
     }
+
 }

@@ -1,15 +1,9 @@
 
 <div>
-    <h3 class="fw-bold ">
+    <h6 class="fw-bold ">
         Name:  {{ $name }} <br>
         Date:  {{ $date   }} <br>
-        Email:  {{ $name }}
-    </h3>
+        Email:  {{ $email }}
+    </h6>
 </div>
-
-
-
-
-
-
 <p>{{ $content }}</p>

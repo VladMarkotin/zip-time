@@ -1,35 +1,7 @@
 
-
-
-
-
-
 $(document).ready(function () {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-  alertify.set('notifier', 'position', 'bottom-right');
+  alertify.set('notifier', 'position', 'bottom-left');
 
   /**
    * BACKLOG
@@ -41,14 +13,9 @@ $(document).ready(function () {
 
   });
 
-
-
-
   /**
    * NOTIFICATIONS
    */
-
-
   $('#bell').click(function (event) {
     event.stopPropagation();
     $(".notification-wrapper").slideToggle('fast');
@@ -74,15 +41,14 @@ $(document).ready(function () {
     let type = data.type;
     let notification_data = data.data;
     let notification_date = data.date;
-  
+
     Livewire.emit('saveBroadcastedNotification', type, notification_data, notification_date);
     alertify.notify('New Brodcast');
-    
+
   });
 
 
-
-  /* 
+  /*
    * LIVEWIRE
   */
 
@@ -114,8 +80,6 @@ $(document).ready(function () {
       $(".main-wrapper").hide();
     }
   });
-
-
 
 
   $(document).on("click", '#feedback-report', function (e) {
@@ -152,13 +116,9 @@ $(document).ready(function () {
     $('.feedback-main').show();
   });
 
-
   $('.c-toggle').on("mouseover", function () {
     show('personal-results')
   });
-
-
-
 
 });
 
