@@ -190,10 +190,7 @@
 					:id="!cardIdx ? 'card-mark' : false"
 					>
 						<template v-if="[4,3].includes(type)">
-							<EmojiPicker 
-							:taskId = "taskId"
-							@sendMark = "sendMark"
-							/>
+							<SetJobMark />
 						</template>
 						
 						<template v-else-if="[2,1].includes(type)">
@@ -228,6 +225,7 @@
 	import AddNotes from '../../dialogs/AddNotes/AddNotes.vue';
 	import EditCardData from '../../dialogs/EditCardData.vue';
 	import EmojiPicker from '../../UI/EmojiPicker.vue';
+	import SetJobMark from '../../dialogs/SetJobMark/SetJobMark.vue';
 	
 	export default
 	{
@@ -272,6 +270,7 @@
 			AddNotes, 
 			EditCardData,
 			EmojiPicker,
+			SetJobMark,
 		},
 		computed: {
 			...mapGetters([
