@@ -9,7 +9,7 @@
                         <v-img 
                         @click="toggleEmojiPicker"
                         v-on="tooltip"
-                        :src="'/images/marks/normal_mark_icon.svg'"  
+                        :src="selectedEmoji"  
                         max-width="80px" 
                         max-height="80px" 
                         />
@@ -23,18 +23,47 @@
 </template>
 
 <script>
+    import store from '../../../store';
     import SetJobMarkCard from './SetJobMarkCard.vue';
+    import {mapGetters,} from 'vuex/dist/vuex.common.js';
     export default {
+        props: {
+            taskId: {
+                type: Number,
+                required: true,
+            }
+        },
         data() {
             return {
                 isShowSetJobMark: false,
+                marksData: [
+                    {iconName: 'bad_mark_icon.svg',    mark: 0,  description: 'I couldn\'t do it today'},
+                    {iconName: 'normal_mark_icon.svg', mark: 50, description: 'I completed the task, but it could have been a bit better'},
+                    {iconName: 'normal_mark_icon.svg', mark: 60, description: 'I completed the task, but it could have been a bit better'},
+                    {iconName: 'good_mark_icon.svg',   mark: 99, description: 'I did a great job on the task'},
+                ],
             };
+        },
+        store,
+        computed: {
+            ...mapGetters(['getTaskData']),
+            jobMark() {
+                return this.getTaskData(this.taskId, 'mark');
+            },
+            selectedEmoji() {
+                const {iconName} = this.marksData.find(data => data.mark === this.jobMark);
+                
+                return `/images/marks/${iconName}`;
+            },
         },
         components: {SetJobMarkCard},
         methods: {
             toggleEmojiPicker() {
                 this.isShowSetJobMark = !this.isShowSetJobMark;
             }
+        },
+        created() {
+            console.log(this.jobMark);
         }
     }
 </script>

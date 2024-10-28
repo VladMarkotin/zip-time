@@ -190,7 +190,9 @@
 					:id="!cardIdx ? 'card-mark' : false"
 					>
 						<template v-if="[4,3].includes(type)">
-							<SetJobMark />
+							<SetJobMark 
+							:taskId = "taskId"
+							/>
 						</template>
 						
 						<template v-else-if="[2,1].includes(type)">

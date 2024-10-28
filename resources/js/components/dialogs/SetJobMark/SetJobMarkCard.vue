@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title>
-            Hello world
+            How successfully was the task completed?
         </v-card-title>
     </v-card>
 </template>
