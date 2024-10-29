@@ -3,7 +3,7 @@
     v-model     = "isShowSetJobMark" 
     width="auto">
         <template #activator="{ on }">
-            <v-tooltip top>
+            <v-tooltip right>
                 <template v-slot:activator="{ on: tooltip  }">
                     <div class="selected_emoji_icon">
                         <v-img 
@@ -18,7 +18,10 @@
                 <span>Set mark</span>
             </v-tooltip>
         </template>
-        <SetJobMarkCard v-if="isShowSetJobMark"/>
+        <SetJobMarkCard 
+        v-if="isShowSetJobMark"
+        :marksData = "marksData"
+        />
     </v-dialog>
 </template>
 
@@ -37,10 +40,30 @@
             return {
                 isShowSetJobMark: false,
                 marksData: [
-                    {iconName: 'bad_mark_icon.svg',    mark: 0,  description: 'I couldn\'t do it today'},
-                    {iconName: 'normal_mark_icon.svg', mark: 50, description: 'I completed the task, but it could have been a bit better'},
-                    {iconName: 'normal_mark_icon.svg', mark: 60, description: 'I completed the task, but it could have been a bit better'},
-                    {iconName: 'good_mark_icon.svg',   mark: 99, description: 'I did a great job on the task'},
+                    {
+                        iconName: 'bad_mark_icon.svg',    
+                        mark: 0,  
+                        description: 'Today I didn\'t do it, but I’m committed to learning from it and I know I\'ll succeed in the future.',
+                        tickLabelDescription: 'Today I didn\'t do it',
+                    },
+                    {
+                        iconName: 'normal_mark_icon.svg', 
+                        mark: 33, 
+                        description: 'I completed the task, but it could have been a bit better',
+                        tickLabelDescription: 'Unsatisfied with the result.',
+                    },
+                    {
+                        iconName: 'good_mark_icon.svg', 
+                        mark: 66, 
+                        description: 'I completed the task, but it could have been a bit better',
+                        tickLabelDescription: 'Satisfied with the result',
+                    },
+                    {
+                        iconName: 'best_mark_icon.svg',   
+                        mark: 99, 
+                        description: 'I did a great job on the task',
+                        tickLabelDescription: 'excelent',
+                    },
                 ],
             };
         },
@@ -63,7 +86,7 @@
             }
         },
         created() {
-            console.log(this.jobMark);
+            // console.log(this.jobMark);
         }
     }
 </script>
