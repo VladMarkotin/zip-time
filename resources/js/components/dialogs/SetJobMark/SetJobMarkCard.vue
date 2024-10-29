@@ -4,20 +4,24 @@
             <v-toolbar-title>How successfully was the task completed?</v-toolbar-title>
             <v-spacer></v-spacer>
             <span class="close-icon">
-                <v-icon>mdi-close</v-icon>
+                <v-icon
+                @click="$emit('toggleSetJobDialog')"
+                >
+                    mdi-close
+                </v-icon>
             </span>
         </v-toolbar>
         <v-card-text class="mt-14">
             <v-row class="d-flex justify-content-center">
-                <v-col cols="12">
+                <v-col cols="12" style="flex: 0 0 98% !important;">
                     <v-slider
                         v-model="mark"
-                        min          = "0"
-                        max          = "99"
-                        step         = "33"
+                        min          = "1"
+                        max          = "4"
+                        step         = "1"
                         ticks        = "always"
                         tick-size    = "4"
-                        thumb-label  = "always"
+                        
                         :tick-labels = "tickLabels"
                     >
                         <template v-slot:thumb-label="props">
@@ -34,7 +38,9 @@
             <v-row class="d-flex justify-content-center">
                 <v-col cols="6">
                     <v-card>
-                        <v-card-text>Today I didn't manage to complete this task, but I’m committed to learning from it and I know I'll succeed in the future.</v-card-text>
+                        <v-card-text class="selected-mark-description">
+                            {{ selectedMarkDescription }}
+                        </v-card-text>
                     </v-card>
                 </v-col>
             </v-row>
@@ -52,16 +58,27 @@
         },
         data() {
             return {
-                mark: 0,
+                mark: 1,
             }
         },
         computed: {
             selectedThumbIcon() {
-                const {iconName} = this.marksData.find(markData => markData.mark === this.mark);
+                const {iconName} = this.marksData.find(markData => markData.id === this.mark);
                 return `/images/marks/${iconName}`;
             },
+            
             tickLabels() {
                 return this.marksData.map(({tickLabelDescription}) => tickLabelDescription);
+            },
+
+            selectedMarkDescription() {
+                const selectedData = this.marksData.find(data => data.id === this.mark);
+
+                if (!selectedData) {
+                    return '';
+                }
+
+                return selectedData.description;
             }
         },
        
@@ -76,5 +93,11 @@
 
     .close-icon:hover {
         transform: rotate(3deg);
+    }
+
+    .selected-mark-description {
+        font-size: 16px;
+        text-align: justify;
+        min-height: 120px;
     }
 </style>

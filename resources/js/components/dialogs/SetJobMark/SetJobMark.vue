@@ -1,13 +1,14 @@
 <template>
     <v-dialog 
-    v-model     = "isShowSetJobMark" 
+    v-model     = "isShowSetJobDialog" 
+    persistent
     width="auto">
         <template #activator="{ on }">
             <v-tooltip right>
                 <template v-slot:activator="{ on: tooltip  }">
                     <div class="selected_emoji_icon">
                         <v-img 
-                        @click="toggleEmojiPicker"
+                        @click="toggleSetJobDialog"
                         v-on="tooltip"
                         :src="selectedEmoji"  
                         max-width="80px" 
@@ -19,8 +20,9 @@
             </v-tooltip>
         </template>
         <SetJobMarkCard 
-        v-if="isShowSetJobMark"
+        v-if="isShowSetJobDialog"
         :marksData = "marksData"
+        @toggleSetJobDialog = "toggleSetJobDialog"
         />
     </v-dialog>
 </template>
@@ -38,31 +40,35 @@
         },
         data() {
             return {
-                isShowSetJobMark: false,
+                isShowSetJobDialog: false,
                 marksData: [
                     {
                         iconName: 'bad_mark_icon.svg',    
                         mark: 0,  
                         description: 'Today I didn\'t do it, but I’m committed to learning from it and I know I\'ll succeed in the future.',
                         tickLabelDescription: 'Today I didn\'t do it',
+                        id: 1,
                     },
                     {
                         iconName: 'normal_mark_icon.svg', 
                         mark: 33, 
-                        description: 'I completed the task, but it could have been a bit better',
+                        description: 'I worked on the task, but the result is still far from ideal. However, I\'m proud of myself for making progress and putting in the effort!',
                         tickLabelDescription: 'Unsatisfied with the result.',
+                        id: 2,
                     },
                     {
                         iconName: 'good_mark_icon.svg', 
                         mark: 66, 
-                        description: 'I completed the task, but it could have been a bit better',
+                        description: 'I did an excellent job with the task and I\'m completely satisfied with the result. It\'s always good to remind myself of my achievements and celebrate my hard work!',
                         tickLabelDescription: 'Satisfied with the result',
+                        id: 3,
                     },
                     {
                         iconName: 'best_mark_icon.svg',   
                         mark: 99, 
-                        description: 'I did a great job on the task',
+                        description: 'Wow, I actually did even better than required! The key is to keep up this momentum and not stop at my current successes!',
                         tickLabelDescription: 'excelent',
+                        id: 4,
                     },
                 ],
             };
@@ -81,8 +87,8 @@
         },
         components: {SetJobMarkCard},
         methods: {
-            toggleEmojiPicker() {
-                this.isShowSetJobMark = !this.isShowSetJobMark;
+            toggleSetJobDialog() {
+                this.isShowSetJobDialog = !this.isShowSetJobDialog;
             }
         },
         created() {
