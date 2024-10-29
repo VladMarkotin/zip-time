@@ -11,8 +11,8 @@
                 </v-icon>
             </span>
         </v-toolbar>
-        <v-card-text class="mt-14">
-            <v-row class="d-flex justify-content-center">
+        <v-card-text>
+            <v-row class="d-flex justify-content-center mt-10 mb-3">
                 <v-col cols="12" style="flex: 0 0 98% !important;">
                     <v-slider
                         v-model="mark"
@@ -35,15 +35,29 @@
                     </v-slider>
                 </v-col>
             </v-row>
-            <v-row class="d-flex justify-content-center">
-                <v-col cols="6">
-                    <v-card>
-                        <v-card-text class="selected-mark-description">
-                            {{ selectedMarkDescription }}
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-            </v-row>
+            <v-window
+            :value="mark - 1"
+            >
+                <v-window-item
+                v-for="markData in marksData"
+                :key="`card-${markData.id}`"
+                >
+                    <v-row
+                    class="fill-height m-0 p-0"
+                    align="center"
+                    justify="center"
+                    >
+
+                        <v-col cols="6">
+                            <v-card>
+                                <v-card-text class="selected-mark-description">
+                                    {{ markData.description }}
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-window-item>
+            </v-window>
         </v-card-text>
     </v-card>
 </template>
@@ -54,6 +68,7 @@
             marksData: {
                 type: Array,
                 required: true,
+                
             }
         },
         data() {
@@ -96,8 +111,9 @@
     }
 
     .selected-mark-description {
-        font-size: 16px;
+        font-size: 17px;
         text-align: justify;
-        min-height: 120px;
+        min-height: 145px;
+        max-width: 350px;
     }
 </style>
