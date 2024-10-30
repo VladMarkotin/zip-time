@@ -192,6 +192,7 @@
 						<template v-if="[4,3].includes(type)">
 							<SetJobMark 
 							:taskId = "taskId"
+							@sendMark = "sendMark"
 							/>
 						</template>
 						

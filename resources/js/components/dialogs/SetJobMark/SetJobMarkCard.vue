@@ -15,14 +15,15 @@
             <v-row class="d-flex justify-content-center mt-10 mb-3">
                 <v-col cols="12" style="flex: 0 0 98% !important;">
                     <v-slider
-                        v-model="mark"
+                        v-model="selectedMarkId"
                         min          = "1"
                         max          = "4"
                         step         = "1"
                         ticks        = "always"
                         tick-size    = "4"
-                        
                         :tick-labels = "tickLabels"
+                        track-color  = "#DBD7D2"
+                        color        = "#CD5C5C"
                     >
                         <template v-slot:thumb-label="props">
                             <v-img 
@@ -36,7 +37,7 @@
                 </v-col>
             </v-row>
             <v-window
-            :value="mark - 1"
+            :value="selectedMarkId - 1"
             >
                 <v-window-item
                 v-for="markData in marksData"
@@ -59,6 +60,20 @@
                 </v-window-item>
             </v-window>
         </v-card-text>
+        <v-divider class="m-0" />
+        <v-card-actions class="d-flex justify-content-center">
+            <v-btn
+            class="p-3"
+            rounded
+            @click="sendMark"
+            >
+                <span class="mr-4">Estimate Job as </span>
+                <v-img 
+                :src="selectedThumbIcon"  
+                max-width="40px" 
+                max-height="40px" />
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -69,16 +84,21 @@
                 type: Array,
                 required: true,
                 
+            },
+            jobMark: {
+                type: Number,
+                required: true,
             }
         },
         data() {
             return {
-                mark: 1,
+                selectedMarkId: 1, // присваивается в хуке created
             }
         },
+        emits: ['toggleSetJobDialog' , 'sendMark'],
         computed: {
             selectedThumbIcon() {
-                const {iconName} = this.marksData.find(markData => markData.id === this.mark);
+                const iconName = this.getMarkDataProperty('iconName');
                 return `/images/marks/${iconName}`;
             },
             
@@ -87,7 +107,7 @@
             },
 
             selectedMarkDescription() {
-                const selectedData = this.marksData.find(data => data.id === this.mark);
+                const selectedData = this.getMarkDataProperty();
 
                 if (!selectedData) {
                     return '';
@@ -96,7 +116,25 @@
                 return selectedData.description;
             }
         },
-       
+        methods: {
+            sendMark() {
+                const mark = this.getMarkDataProperty('mark');
+                this.$emit('sendMark', mark);
+            },
+
+            getMarkDataProperty(key = 'allProperty') {
+                const markData = this.marksData.find(markData => markData.id === this.selectedMarkId);
+
+                if (key === 'allProperty') {
+                    return markData;
+                }
+
+                return markData[key];
+            }
+        },
+        created() {
+            this.selectedMarkId = this.marksData.find(markData => markData.mark === this.jobMark).id;
+        }
     }
 </script>
 

@@ -22,7 +22,9 @@
         <SetJobMarkCard 
         v-if="isShowSetJobDialog"
         :marksData = "marksData"
+        :jobMark   = "jobMark"
         @toggleSetJobDialog = "toggleSetJobDialog"
+        @sendMark           = "sendMark"
         />
     </v-dialog>
 </template>
@@ -73,6 +75,7 @@
                 ],
             };
         },
+        emits: ['sendMark'],
         store,
         computed: {
             ...mapGetters(['getTaskData']),
@@ -89,11 +92,12 @@
         methods: {
             toggleSetJobDialog() {
                 this.isShowSetJobDialog = !this.isShowSetJobDialog;
+            },
+            sendMark(mark) {
+                this.$emit('sendMark', mark);
+                this.toggleSetJobDialog();
             }
         },
-        created() {
-            // console.log(this.jobMark);
-        }
     }
 </script>
 
