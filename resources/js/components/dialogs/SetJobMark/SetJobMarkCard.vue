@@ -1,5 +1,5 @@
 <template>
-    <v-card width="800" flat>
+    <v-card width="500" flat>
         <v-toolbar color="#a10000" dark >
             <v-toolbar-title>How successfully was the task completed?</v-toolbar-title>
             <v-spacer></v-spacer>
@@ -13,7 +13,7 @@
         </v-toolbar>
         <v-card-text>
             <v-row class="d-flex justify-content-center mt-10 mb-3">
-                <v-col cols="12" style="flex: 0 0 98% !important;">
+                <v-col cols="11" style="flex: 0 0 98% !important;">
                     <v-slider
                         v-model="selectedMarkId"
                         min          = "1"
@@ -21,15 +21,16 @@
                         step         = "1"
                         ticks        = "always"
                         tick-size    = "4"
-                        :tick-labels = "tickLabels"
                         track-color  = "#DBD7D2"
                         color        = "#CD5C5C"
+                        thumb-size   = "35"
+                        hide-details
                     >
                         <template v-slot:thumb-label="props">
                             <v-img 
                             :src="selectedThumbIcon"  
-                            max-width="40px" 
-                            max-height="40px" >
+                            max-width="35px" 
+                            max-height="35px" >
                                 
                             </v-img>
                         </template>
@@ -49,8 +50,9 @@
                     justify="center"
                     >
 
-                        <v-col cols="7">
+                        <v-col cols="11">
                             <v-card>
+                                <v-card-title class="justify-content-center">{{ markData.tickLabelDescription }}</v-card-title>
                                 <v-card-text class="selected-mark-description">
                                     {{ markData.description }}
                                 </v-card-text>
@@ -156,5 +158,9 @@
 
     .set-mark-card-footer {
         background-color: #a10000;
+    }
+
+    ::v-deep .v-slider__thumb-label {
+        background-color: #fff !important;
     }
 </style>
