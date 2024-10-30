@@ -48,7 +48,7 @@
                     justify="center"
                     >
 
-                        <v-col cols="6">
+                        <v-col cols="7">
                             <v-card>
                                 <v-card-text class="selected-mark-description">
                                     {{ markData.description }}
@@ -111,9 +111,12 @@
     }
 
     .selected-mark-description {
-        font-size: 17px;
+        font-size: 16px;
         text-align: justify;
-        min-height: 145px;
-        max-width: 350px;
+        min-height: 120px;
+    }
+
+    .set-mark-card-footer {
+        background-color: #a10000;
     }
 </style>
