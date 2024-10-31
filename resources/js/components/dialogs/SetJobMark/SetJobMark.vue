@@ -1,6 +1,8 @@
 <template>
     <v-dialog 
+    :fullscreen = "isShowFullScreen" 
     v-model     = "isShowSetJobDialog" 
+    scrollable 
     persistent
     width="auto">
         <template #activator="{ on }">
@@ -78,7 +80,7 @@
         emits: ['sendMark'],
         store,
         computed: {
-            ...mapGetters(['getTaskData']),
+            ...mapGetters(['getTaskData', 'getWindowScreendWidth']),
             jobMark() {
                 return this.getTaskData(this.taskId, 'mark');
             },
@@ -87,6 +89,9 @@
                 
                 return `/images/marks/${iconName}`;
             },
+            isShowFullScreen() {
+                return this.getWindowScreendWidth < 768; 
+            }  
         },
         components: {SetJobMarkCard},
         methods: {

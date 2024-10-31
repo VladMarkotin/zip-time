@@ -11,9 +11,9 @@
                 </v-icon>
             </span>
         </v-toolbar>
-        <v-card-text>
+        <v-card-text :style="cardTextStyles">
             <v-row class="d-flex justify-content-center mt-10 mb-3">
-                <v-col cols="11" style="flex: 0 0 98% !important;">
+                <v-col :cols="isMobile ? 12 : 11" style="flex: 0 0 98% !important;">
                     <v-slider
                         v-model="selectedMarkId"
                         min          = "1"
@@ -50,9 +50,10 @@
                     justify="center"
                     >
 
-                        <v-col cols="11">
+                        <v-col :cols="isMobile ? 12 : 11">
                             <v-card>
-                                <v-card-title class="justify-content-center">{{ markData.tickLabelDescription }}</v-card-title>
+                                <v-card-title class="description-title">
+                                {{ markData.tickLabelDescription }}</v-card-title>
                                 <v-card-text class="selected-mark-description">
                                     {{ markData.description }}
                                 </v-card-text>
@@ -63,7 +64,7 @@
             </v-window>
         </v-card-text>
         <v-divider class="m-0" />
-        <v-card-actions class="d-flex justify-content-center">
+        <v-card-actions class="d-flex justify-content-center p-3">
             <v-btn
             class="p-3"
             rounded
@@ -80,6 +81,8 @@
 </template>
 
 <script>
+    import store from '../../../store';
+    import {mapGetters,} from 'vuex/dist/vuex.common.js';
     export default {
         props: {
             marksData: {
@@ -97,8 +100,10 @@
                 selectedMarkId: 1, // присваивается в хуке created
             }
         },
+        store,
         emits: ['toggleSetJobDialog' , 'sendMark'],
         computed: {
+            ...mapGetters(['getWindowScreendWidth']),
             selectedThumbIcon() {
                 const iconName = this.getMarkDataProperty('iconName');
                 return `/images/marks/${iconName}`;
@@ -116,6 +121,15 @@
                 }
 
                 return selectedData.description;
+            },
+            cardTextStyles() {
+                if (!this.isMobile) {
+                    return {};
+                }
+                return {'height': '450px'};
+            },
+            isMobile() {
+                return this.getWindowScreendWidth < 768;
             }
         },
         methods: {
@@ -162,5 +176,11 @@
 
     ::v-deep .v-slider__thumb-label {
         background-color: #fff !important;
+    }
+
+    .description-title {
+        justify-content: center;
+        text-align: center;
+        word-break: break-word;
     }
 </style>
