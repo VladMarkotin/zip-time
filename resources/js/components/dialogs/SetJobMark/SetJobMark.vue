@@ -10,7 +10,7 @@
                 <template v-slot:activator="{ on: tooltip  }">
                     <div class="selected_emoji_icon">
                         <v-img 
-                        @click="toggleSetJobDialog"
+                        @click="showSetJobDialog"
                         v-on="tooltip"
                         :src="selectedEmoji"  
                         max-width="80px" 
@@ -25,7 +25,7 @@
         v-if="isShowSetJobDialog"
         :marksData = "marksData"
         :jobMark   = "jobMark"
-        @toggleSetJobDialog = "toggleSetJobDialog"
+        @closeSetJobDialog  = "closeSetJobDialog"
         @sendMark           = "sendMark"
         />
     </v-dialog>
@@ -77,10 +77,10 @@
                 ],
             };
         },
-        emits: ['sendMark'],
+        emits: ['sendMark', 'showAlert'],
         store,
         computed: {
-            ...mapGetters(['getTaskData', 'getWindowScreendWidth']),
+            ...mapGetters(['getTaskData', 'getWindowScreendWidth', 'getUnreadyReqDetails']),
             jobMark() {
                 return this.getTaskData(this.taskId, 'mark');
             },
@@ -91,16 +91,25 @@
             },
             isShowFullScreen() {
                 return this.getWindowScreendWidth < 768; 
-            }  
+            },
+            unreadyReqDetails() {
+                return this.getUnreadyReqDetails(this.taskId).length;
+            } 
         },
         components: {SetJobMarkCard},
         methods: {
-            toggleSetJobDialog() {
-                this.isShowSetJobDialog = !this.isShowSetJobDialog;
+            showSetJobDialog() {
+                if (this.unreadyReqDetails) {
+                    return this.$emit('showAlert',  {status: 'error', message: 'Error! Some required subtasks are still undone!'});
+                }
+                this.isShowSetJobDialog = true;
+            },
+            closeSetJobDialog() {
+                this.isShowSetJobDialog = false;
             },
             sendMark(mark) {
                 this.$emit('sendMark', mark);
-                this.toggleSetJobDialog();
+                this.closeSetJobDialog();
             }
         },
     }

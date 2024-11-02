@@ -5,7 +5,7 @@
             <v-spacer></v-spacer>
             <span class="close-icon">
                 <v-icon
-                @click="$emit('toggleSetJobDialog')"
+                @click="$emit('closeSetJobDialog')"
                 >
                     mdi-close
                 </v-icon>
@@ -101,7 +101,7 @@
             }
         },
         store,
-        emits: ['toggleSetJobDialog' , 'sendMark'],
+        emits: ['closeSetJobDialog' , 'sendMark'],
         computed: {
             ...mapGetters(['getWindowScreendWidth']),
             selectedThumbIcon() {
