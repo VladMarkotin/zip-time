@@ -11,7 +11,7 @@
                 </v-icon>
             </span>
         </v-toolbar>
-        <v-card-text :style="cardTextStyles">
+        <v-card-text :style="cardTextStyles" class="card-content">
             <v-row class="d-flex justify-content-center mt-10 mb-3">
                 <v-col :cols="isMobile ? 12 : 11" style="flex: 0 0 98% !important;">
                     <v-slider
@@ -155,6 +155,10 @@
 </script>
 
 <style scoped>
+    .card-content {
+        padding: 12px !important;
+    }
+
     .close-icon {
         cursor: pointer;
         transition: all .3s ease;

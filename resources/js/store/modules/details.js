@@ -221,7 +221,7 @@ export default {
         getUnreadyReqDetails(state) {
             return (key) => {
                 const {details} = state.details[key];
-                return details.filter(detail => (detail.is_ready === 0) && (detail.checkpoint === 1));                
+                return details.filter(detail => !detail.is_ready && detail.checkpoint);                
             }
         }
     },
