@@ -1,9 +1,9 @@
 <template>
     <v-card width="500" flat>
-        <v-toolbar color="#a10000" dark >
-            <v-toolbar-title>How successfully was the task completed?</v-toolbar-title>
+        <v-toolbar color="#a10000" dark class="card-header">
+            <v-toolbar-title class="card-header-title">How successfully was the task completed?</v-toolbar-title>
             <v-spacer></v-spacer>
-            <span class="close-icon">
+            <span class="close-icon d-flex justify-content-end">
                 <v-icon
                 @click="$emit('closeSetJobDialog')"
                 >
@@ -13,7 +13,7 @@
         </v-toolbar>
         <v-card-text :style="cardTextStyles" class="card-content">
             <v-row class="d-flex justify-content-center mt-10 mb-3">
-                <v-col :cols="isMobile ? 12 : 11" style="flex: 0 0 98% !important;">
+                <v-col :cols="isMobile ? 10 : 11" style="flex: 0 0 98% !important;">
                     <v-slider
                         v-model="selectedMarkId"
                         min          = "1"
@@ -53,7 +53,7 @@
                         <v-col :cols="isMobile ? 12 : 11">
                             <v-card>
                                 <v-card-title class="description-title">
-                                {{ markData.tickLabelDescription }}</v-card-title>
+                                {{ markData.descriptionTitle }}</v-card-title>
                                 <v-card-text class="selected-mark-description">
                                     {{ markData.description }}
                                 </v-card-text>
@@ -110,7 +110,7 @@
             },
             
             tickLabels() {
-                return this.marksData.map(({tickLabelDescription}) => tickLabelDescription);
+                return this.marksData.map(({descriptionTitle}) => descriptionTitle);
             },
 
             selectedMarkDescription() {
@@ -187,4 +187,26 @@
         text-align: center;
         word-break: break-word;
     }
+
+    @media screen and (max-width: 550px) {
+        .card-header {
+            padding: 6px !important;
+        }
+
+        .card-header ::v-deep .v-toolbar__content {
+           padding: 0px !important;
+           display: grid !important;
+           grid-template-columns: auto auto;
+           grid-row-gap: 25px;
+        }
+
+        .card-header .card-header-title {
+            grid-column: 1/3;
+            grid-row: 2/3;
+            text-align: center;
+            word-break: break-word;
+            width: 100%;
+            white-space: normal;
+        }
+}
 </style>

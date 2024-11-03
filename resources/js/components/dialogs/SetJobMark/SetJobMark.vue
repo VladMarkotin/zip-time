@@ -18,7 +18,7 @@
                         />
                     </div>
                 </template>
-                <span>Set mark</span>
+                <span>{{selectedDescripTitle}}</span>
             </v-tooltip>
         </template>
         <SetJobMarkCard 
@@ -50,28 +50,28 @@
                         iconName: 'bad_mark_icon.svg',    
                         mark: 0,  
                         description: 'Today I didn\'t do it, but I’m committed to learning from it and I know I\'ll succeed in the future.',
-                        tickLabelDescription: 'Today I didn\'t do it',
+                        descriptionTitle: 'Today I didn\'t do it',
                         id: 1,
                     },
                     {
-                        iconName: 'normal_mark_icon.svg', 
+                        iconName: 'unsatisfied_mark_icon.svg', 
                         mark: 33, 
                         description: 'I worked on the task, but the result is still far from ideal. However, I\'m proud of myself for making progress and putting in the effort!',
-                        tickLabelDescription: 'Unsatisfied with the result.',
+                        descriptionTitle: 'Unsatisfied with the result.',
                         id: 2,
                     },
                     {
-                        iconName: 'good_mark_icon.svg', 
+                        iconName: 'satisfied_mark_icon.svg', 
                         mark: 66, 
                         description: 'I did an excellent job with the task and I\'m completely satisfied with the result. It\'s always good to remind myself of my achievements and celebrate my hard work!',
-                        tickLabelDescription: 'Satisfied with the result',
+                        descriptionTitle: 'Satisfied with the result',
                         id: 3,
                     },
                     {
-                        iconName: 'best_mark_icon.svg',   
+                        iconName: 'excelent_mark_icon.svg',   
                         mark: 99, 
                         description: 'Wow, I actually did even better than required! The key is to keep up this momentum and not stop at my current successes!',
-                        tickLabelDescription: 'excelent',
+                        descriptionTitle: 'excelent',
                         id: 4,
                     },
                 ],
@@ -88,6 +88,11 @@
                 const {iconName} = this.marksData.find(data => data.mark === this.jobMark);
                 
                 return `/images/marks/${iconName}`;
+            },
+            selectedDescripTitle() {
+                const {descriptionTitle} = this.marksData.find(data => data.mark === this.jobMark);
+                
+                return descriptionTitle;
             },
             isShowFullScreen() {
                 return this.getWindowScreendWidth < 768; 
