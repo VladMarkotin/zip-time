@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "ably/laravel-broadcaster": "^1.0",
+        "barryvdh/laravel-debugbar": "*",
         "beyondcode/laravel-websockets": "^1.13",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",
