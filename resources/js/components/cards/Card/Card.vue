@@ -598,6 +598,5 @@
 		to { opacity: 0; left: 10px;}
 	}
 
-	
 	@import url('/css/Card/CardMedia.css');
 </style>
