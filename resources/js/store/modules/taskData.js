@@ -30,7 +30,7 @@ const transformTaskData = (taskData) => {
 export default {
     state: {
         taskCheckboxTrueVal: {forCheckbox: 99, forRequest: 99},
-        taskCheckboxFalseVal:{forCheckbox: '', forRequest: -1},
+        taskCheckboxFalseVal:{forCheckbox: 0, forRequest: -1},
         dayStatus: 2,
         taskData: [],
     },

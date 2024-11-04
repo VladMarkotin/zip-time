@@ -1,0 +1,133 @@
+<template>
+    <v-dialog 
+    :fullscreen = "isShowFullScreen" 
+    v-model     = "isShowSetJobDialog" 
+    scrollable 
+    persistent
+    width="auto">
+        <template #activator="{ on }">
+            <v-tooltip right>
+                <template v-slot:activator="{ on: tooltip  }">
+                    <div class="selected_emoji_icon">
+                        <v-img 
+                        @click="showSetJobDialog"
+                        v-on="tooltip"
+                        :src="selectedEmoji"  
+                        max-width="80px" 
+                        max-height="80px" 
+                        />
+                    </div>
+                </template>
+                <span>{{selectedDescripTitle}}</span>
+            </v-tooltip>
+        </template>
+        <SetJobMarkCard 
+        v-if="isShowSetJobDialog"
+        :marksData = "marksData"
+        :jobMark   = "jobMark"
+        @closeSetJobDialog  = "closeSetJobDialog"
+        @sendMark           = "sendMark"
+        />
+    </v-dialog>
+</template>
+
+<script>
+    import store from '../../../store';
+    import SetJobMarkCard from './SetJobMarkCard.vue';
+    import {mapGetters,} from 'vuex/dist/vuex.common.js';
+    export default {
+        props: {
+            taskId: {
+                type: Number,
+                required: true,
+            }
+        },
+        data() {
+            return {
+                isShowSetJobDialog: false,
+                marksData: [
+                    {
+                        iconName: 'bad_mark_icon.svg',    
+                        mark: 0,  
+                        description: 'Today I didn\'t do it, but I’m committed to learning from it and I know I\'ll succeed in the future.',
+                        descriptionTitle: 'Today I didn\'t do it',
+                        id: 1,
+                    },
+                    {
+                        iconName: 'unsatisfied_mark_icon.svg', 
+                        mark: 33, 
+                        description: 'I worked on the task, but the result is still far from ideal. However, I\'m proud of myself for making progress and putting in the effort!',
+                        descriptionTitle: 'Unsatisfied with the result.',
+                        id: 2,
+                    },
+                    {
+                        iconName: 'satisfied_mark_icon.svg', 
+                        mark: 66, 
+                        description: 'I did an excellent job with the task and I\'m completely satisfied with the result. It\'s always good to remind myself of my achievements and celebrate my hard work!',
+                        descriptionTitle: 'Satisfied with the result',
+                        id: 3,
+                    },
+                    {
+                        iconName: 'excelent_mark_icon.svg',   
+                        mark: 99, 
+                        description: 'Wow, I actually did even better than required! The key is to keep up this momentum and not stop at my current successes!',
+                        descriptionTitle: 'excelent',
+                        id: 4,
+                    },
+                ],
+            };
+        },
+        emits: ['sendMark', 'showAlert'],
+        store,
+        computed: {
+            ...mapGetters(['getTaskData', 'getWindowScreendWidth', 'getUnreadyReqDetails']),
+            jobMark() {
+                return this.getTaskData(this.taskId, 'mark');
+            },
+            selectedEmoji() {
+                const {iconName} = this.marksData.find(data => data.mark === this.jobMark);
+                
+                return `/images/marks/${iconName}`;
+            },
+            selectedDescripTitle() {
+                const {descriptionTitle} = this.marksData.find(data => data.mark === this.jobMark);
+                
+                return descriptionTitle;
+            },
+            isShowFullScreen() {
+                return this.getWindowScreendWidth < 768; 
+            },
+            unreadyReqDetails() {
+                return this.getUnreadyReqDetails(this.taskId).length;
+            } 
+        },
+        components: {SetJobMarkCard},
+        methods: {
+            showSetJobDialog() {
+                if (this.unreadyReqDetails) {
+                    return this.$emit('showAlert',  {status: 'error', message: 'Error! Some required subtasks are still undone!'});
+                }
+                this.isShowSetJobDialog = true;
+            },
+            closeSetJobDialog() {
+                this.isShowSetJobDialog = false;
+            },
+            sendMark(mark) {
+                this.$emit('sendMark', mark);
+                this.closeSetJobDialog();
+            }
+        },
+    }
+</script>
+
+<style scoped>
+    .selected_emoji_icon {
+        cursor: pointer;
+        transition: all .3s ease;
+        overflow: hidden;
+    }
+
+    .selected_emoji_icon:hover {
+        transform: scale(1.05) rotate(5deg); 
+    }
+</style>

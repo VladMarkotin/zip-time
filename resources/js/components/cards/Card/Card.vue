@@ -184,25 +184,17 @@
 		</div>
 		<v-card-title class="font-weight-bold pt-0">
 			<v-row class="p-0 m-0">
-				<v-col class="p-0 m-0" cols="auto">
+				<v-col class="p-0 m-0" cols="12">
 					<form 
 					class="d-flex align-center gap-1" 
 					:id="!cardIdx ? 'card-mark' : false"
 					>
 						<template v-if="[4,3].includes(type)">
-							<div>Mark</div>
-							<v-text-field 
-							class="ml-1" 
-							style="width : 54px" 
-							v-model="jobMarkInputValue" 
-							v-on:keypress.enter.prevent="debounceSendMark(taskId)" 
-							@input    = "debounceSendMark(taskId)"
-							@keypress = "filterJobMarkInputValue($event, taskId)"
-							@focus    = "focusedInput=!focusedInput" 
-							@blur     = "focusedInput=!focusedInput"
-							>
-								<v-icon slot="append">mdi-percent</v-icon>
-							</v-text-field>
+							<SetJobMark 
+							:taskId = "taskId"
+							@sendMark  = "sendMark"
+							@showAlert = "showAlert"
+							/>
 						</template>
 						
 						<template v-else-if="[2,1].includes(type)">
@@ -218,22 +210,6 @@
 							</div>
 						</template>
 					</form>
-				</v-col>
-				<v-col class="p-0 m-0 d-flex align-center" style="width: 100%;">
-					<transition
-					enter-active-class="notification_appearance"
-					leave-active-class="notification_leave"
-					mode="out-in"
-					>
-						<span 
-						v-if="focusedInput"
-						class="mark-info" 
-						key="rating-range"
-						>Ratings` range 
-							from {{ defaultConfigs.cardRules[0].minMark }}
-							to {{ defaultConfigs.cardRules[0].maxMark }}
-						</span>
-					</transition>
 				</v-col>
 			</v-row>
 		</v-card-title>
@@ -252,6 +228,8 @@
 	import AddDetails from '../../dialogs/AddDetails/AddDetails.vue';
 	import AddNotes from '../../dialogs/AddNotes/AddNotes.vue';
 	import EditCardData from '../../dialogs/EditCardData.vue';
+	import EmojiPicker from '../../UI/EmojiPicker.vue';
+	import SetJobMark from '../../dialogs/SetJobMark/SetJobMark.vue';
 	
 	export default
 	{
@@ -272,11 +250,9 @@
 						mdiCircle, mdiMusicAccidentalSharp  },
 					isShowAlert: false ,
 					alert      : {type: 'success', text: 'success'},
-					focusedInput: false,
 					isShowAddHashCodeDialog : false,
 					defaultConfigs: {},
 					isTaskReady: '', //присваивается в created
-					jobMarkInputValue: '', //присваивается в created
 					DEBOUNCE_DELAY: {
 						tasks: {
 							default: 900,
@@ -297,6 +273,8 @@
 			AddDetails,
 			AddNotes, 
 			EditCardData,
+			EmojiPicker,
+			SetJobMark,
 		},
 		computed: {
 			...mapGetters([
@@ -349,15 +327,6 @@
 					});
 			},
 
-			debouncedSendMark() {
-				const key = this.isMobile ? 'mobile' : 'default';
-				const delay = this.DEBOUNCE_DELAY.tasks[key];
-
-				return debounce(function(item) {
-					this.sendMark(item);
-				}, delay)
-			},
-
 			debouncedUpdateIsReadyState() {
 				const key = this.isMobile ? 'mobile' : 'default';
 				const delay = this.DEBOUNCE_DELAY.jobs[key];
@@ -383,11 +352,7 @@
 					this.isTaskReady = this.taskCheckboxFalseVal;
 				}
 
-				if ([3,4].includes(currentTaskType)) {
-					this.jobMarkInputValue = '';
-				}
-
-				this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: ''}});
+				this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: 0}});
 			},
 			
 			async updateIsReadyState(item)
@@ -423,21 +388,17 @@
 				}
 			},
 
-			debounceSendMark(taskId) {
-				this.debouncedSendMark(this.getFullTaskData(taskId));
-			},	
-
 			debounceUpdateIsReadyState(taskId) {
 				this.debouncedUpdateIsReadyState(this.getFullTaskData(taskId));
 			},
 			
-			async sendMark()
+			async sendMark(mark)
 			{	
 				try {
 					const response = await this.estimateJob({
 						payload: {
 							task_id : this.taskId,
-							mark    : this.jobMarkInputValue,
+							mark    : mark,
 							type    : this.type
 				 		}
 					})
@@ -446,18 +407,19 @@
 
 					if(data.status === 'error') {
 						const {current_task_mark} = response.data;
-						
-						this.jobMarkInputValue = current_task_mark !== -1 
-							? String(current_task_mark) 
-							: '';
+
+						const mark = current_task_mark !== -1 
+							? current_task_mark 
+							: 0;
+
+						this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark}});
 					}
 					
 					this.fetchPersonalResults();
-
 					this.showAlert({status: response.data.status, message: response.data.message});
 
 				} catch(error) {
-					this.jobMarkInputValue = '';
+					this.UPDATE_TASK_DATA({updatedTaskData: {taskId: this.taskId, mark: 0}});
 					this.showAlert({status: 'error', message: 'Error! Something has happened!'})
 					console.error(error);
 				}
@@ -491,17 +453,6 @@
 					  })
 			},
 
-			filterJobMarkInputValue(e, taskId) {
-				const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
-				const keyPressed  = e.key;
-
-				 if (!keysAllowed.includes(keyPressed)) {
-					e.preventDefault();
-					return;
-				}
-
-			},
-
 			showAlert({status, message}) {
 				this.isShowAlert = true;
 				this.setAlertData(status, message)
@@ -514,8 +465,6 @@
 		
 		created() {
 			this.getConfigs(); 
-			
-			this.jobMarkInputValue = String(this.mark);
 			this.isTaskReady       = this.mark;
 		},
 	}
