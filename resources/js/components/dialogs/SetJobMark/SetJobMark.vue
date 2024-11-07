@@ -13,8 +13,8 @@
                         @click="showSetJobDialog"
                         v-on="tooltip"
                         :src="selectedEmoji"  
-                        max-width="80px" 
-                        max-height="80px" 
+                        width="80px" 
+                        height="80px" 
                         />
                     </div>
                 </template>

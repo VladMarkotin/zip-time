@@ -29,8 +29,8 @@
                         <template v-slot:thumb-label="props">
                             <v-img 
                             :src="selectedThumbIcon"  
-                            max-width="35px" 
-                            max-height="35px" >
+                            width="35px" 
+                            height="35px" >
                                 
                             </v-img>
                         </template>
