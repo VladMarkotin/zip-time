@@ -1,7 +1,7 @@
 <template>
     <v-card width="500" flat>
         <v-toolbar color="#a10000" dark class="card-header">
-            <v-toolbar-title class="card-header-title">How successfully was the task completed?</v-toolbar-title>
+            <v-toolbar-title class="card-header-title">{{cardTitle}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <span class="close-icon d-flex justify-content-end">
                 <v-icon
@@ -90,9 +90,13 @@
                 required: true,
                 
             },
-            jobMark: {
+            mark: {
                 type: Number,
                 required: true,
+            },
+            cardTitle: {
+                type: String,
+                default: '',
             }
         },
         data() {
@@ -149,7 +153,7 @@
             }
         },
         created() {
-            this.selectedMarkId = this.marksData.find(markData => markData.mark === this.jobMark).id;
+            this.selectedMarkId = this.marksData.find(markData => markData.mark === this.mark).id;
         }
     }
 </script>

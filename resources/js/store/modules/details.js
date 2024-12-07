@@ -172,6 +172,10 @@ export default {
         }
     },
     getters: {
+        getAllDetails(state) {
+            return state.details;
+        },
+
         getDetailsData(state) {
             return (key) => {
                 return state.details[key];

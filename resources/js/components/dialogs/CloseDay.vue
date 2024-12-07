@@ -14,9 +14,14 @@
 					<v-row class="justify-center">
 						<v-col cols="3" class="closeDay-ownMark-input-wrapper">
 							<div id="close-day__mark">
-								<v-text-field label="Own Mark" required v-model="ownMark" >
+								<!-- Удалить -->
+								<!-- <v-text-field label="Own Mark" required v-model="ownMark" >
 									<v-icon slot="append">mdi-percent</v-icon>
-								</v-text-field>
+								</v-text-field> -->
+								<SetJobMark 
+								:dayMark = "ownMark"
+								:isUsedInTaskCard = "false"
+								/>
 							</div>
 						</v-col>
 					</v-row>
@@ -101,10 +106,12 @@
 	import "driver.js/dist/driver.css";
 	import {mdiCancel,mdiSendClock} from '@mdi/js'
 	import Alert from '../dialogs/Alert.vue'
+	import SetJobMark from './SetJobMark/SetJobMark.vue';
 	export default
 		{
 			data: () => ({
-				ownMark : '',comment : '',
+				ownMark : 0,
+				comment : '',
 				isShowAlert: false,
 				icons : {mdiCancel,mdiSendClock},
 				isShow : true,
@@ -117,7 +124,7 @@
 				minDefActiveChipsQuant: 4,
 			}),
 			store,
-			components : {Alert},
+			components : {Alert, SetJobMark},
 			computed: {
 				...mapGetters(['getWindowScreendWidth']),
 				isMobile() {
