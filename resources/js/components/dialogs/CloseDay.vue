@@ -21,6 +21,8 @@
 								<SetJobMark 
 								:dayMark = "ownMark"
 								:isUsedInTaskCard = "false"
+								@showAlert = "showAlert"
+								@sendMark  = "sendMark"
 								/>
 							</div>
 						</v-col>
@@ -133,6 +135,9 @@
         	},
 			methods :
 			{
+				sendMark(mark) {
+					this.ownMark = mark;
+				},
 				closeDay()
 				{
 					let chosenChipValues = [];
@@ -177,7 +182,13 @@
 					this.alert.type = type
 					this.alert.text = text
 				},
-
+				showAlert({status, message}) {
+					this.isShowAlert = true;
+					this.setAlertData(status, message);
+					setTimeout( () => {
+						this.isShowAlert = false;
+					},3000)
+				},
 				async loadHashCodes()
 				{
 					const response = (await axios.post('/getSavedTasks')).data;

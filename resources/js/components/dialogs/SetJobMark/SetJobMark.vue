@@ -50,7 +50,7 @@
                 default: false,
             },
             dayMark: {
-
+                type: Number,
             }
         },
         data() {
@@ -115,7 +115,7 @@
                 if (this.isUsedInTaskCard && this.taskId) {
                     return this.getUnreadyReqDetails(this.taskId).length;
                 }
-                
+
                 const tasksId = Object.keys(this.getAllDetails);
                 return tasksId.reduce((accum, taskId) => {
                     return accum += this.getUnreadyReqDetails(taskId).length;
@@ -138,9 +138,6 @@
                 this.closeSetJobDialog();
             }
         },
-        created() {
-            // console.log([this.dayMark]);
-        }
     }
 </script>
 
