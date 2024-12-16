@@ -13,11 +13,7 @@
 				<v-container >
 					<v-row class="justify-center">
 						<v-col cols="3" class="closeDay-ownMark-input-wrapper">
-							<div id="close-day__mark">
-								<!-- Удалить -->
-								<!-- <v-text-field label="Own Mark" required v-model="ownMark" >
-									<v-icon slot="append">mdi-percent</v-icon>
-								</v-text-field> -->
+							<div id="close-day__mark" class="d-flex justify-content-center">
 								<SetJobMark 
 								:dayMark = "ownMark"
 								:isUsedInTaskCard = "false"
