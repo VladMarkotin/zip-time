@@ -1,5 +1,6 @@
 <template>
 <div class="challenges">
+  
   <div class="p-2 d-flex justify-content-center align-items-center">
       <ChallengeToggleButton 
       @toggleDispChallenges = "showCh"
