@@ -191,7 +191,9 @@
 					>
 						<template v-if="[4,3].includes(type)">
 							<SetJobMark 
-							:taskId = "taskId"
+							cardTitle         = "How successfully was the task completed?"
+							:isUsedInTaskCard = "true"
+							:taskId           = "taskId"
 							@sendMark  = "sendMark"
 							@showAlert = "showAlert"
 							/>

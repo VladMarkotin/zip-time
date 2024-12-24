@@ -46,7 +46,7 @@ class EstimationService
             if($data['mark'] == '') {
                $data['mark'] = -1;
             }
-            if($data['mark'] == '0') {
+            if($data['mark'] == 0) {
                 $data['mark'] = -1;
             }
             $data['mark'] = intval($data['mark']);

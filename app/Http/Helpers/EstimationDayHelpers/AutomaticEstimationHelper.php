@@ -24,8 +24,9 @@ class AutomaticEstimationHelper
                     SELECT u.id, '$date', -1, '00:00', 0, 0, 'It looks like the day was wasted :(', '', ''
                         FROM users u
                             LEFT JOIN timetables t ON u.id = t.user_id AND t.date = '$date'
-                                WHERE t.user_id IS NULL AND u.timezone IN( $in)";
-        
+                                WHERE t.user_id IS NULL AND u.timezone IN( $in)
+                                AND u.id != 15"; //Костыль, что бы избавиться от бага с закрытием дня у Карины
+
         DB::insert($query);
     }
 

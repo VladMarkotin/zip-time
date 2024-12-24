@@ -24,7 +24,8 @@
         <SetJobMarkCard 
         v-if="isShowSetJobDialog"
         :marksData = "marksData"
-        :jobMark   = "jobMark"
+        :cardTitle = "cardTitle"
+        :mark      = "mark"
         @closeSetJobDialog  = "closeSetJobDialog"
         @sendMark           = "sendMark"
         />
@@ -39,7 +40,17 @@
         props: {
             taskId: {
                 type: Number,
-                required: true,
+            },
+            cardTitle: {
+                type: String,
+                default: '',
+            },
+            isUsedInTaskCard: {
+                type: Boolean,
+                default: false,
+            },
+            dayMark: {
+                type: Number,
             }
         },
         data() {
@@ -80,17 +91,20 @@
         emits: ['sendMark', 'showAlert'],
         store,
         computed: {
-            ...mapGetters(['getTaskData', 'getWindowScreendWidth', 'getUnreadyReqDetails']),
-            jobMark() {
-                return this.getTaskData(this.taskId, 'mark');
+            ...mapGetters(['getTaskData', 'getWindowScreendWidth', 'getUnreadyReqDetails', 'getAllDetails']),
+            mark() {
+                if (this.isUsedInTaskCard && this.taskId) {
+                    return this.getTaskData(this.taskId, 'mark');
+                }
+                return this.dayMark;
             },
             selectedEmoji() {
-                const {iconName} = this.marksData.find(data => data.mark === this.jobMark);
+                const {iconName} = this.marksData.find(data => data.mark === this.mark);
                 
                 return `/images/marks/${iconName}`;
             },
             selectedDescripTitle() {
-                const {descriptionTitle} = this.marksData.find(data => data.mark === this.jobMark);
+                const {descriptionTitle} = this.marksData.find(data => data.mark === this.mark);
                 
                 return descriptionTitle;
             },
@@ -98,7 +112,14 @@
                 return this.getWindowScreendWidth < 768; 
             },
             unreadyReqDetails() {
-                return this.getUnreadyReqDetails(this.taskId).length;
+                if (this.isUsedInTaskCard && this.taskId) {
+                    return this.getUnreadyReqDetails(this.taskId).length;
+                }
+
+                const tasksId = Object.keys(this.getAllDetails);
+                return tasksId.reduce((accum, taskId) => {
+                    return accum += this.getUnreadyReqDetails(taskId).length;
+                }, 0);
             } 
         },
         components: {SetJobMarkCard},
