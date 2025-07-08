@@ -32,8 +32,8 @@ class NotificationService
 
     public function __construct()
     {
-        $this->tzList[RemindTimeHelper::MORNING_TIME] = TimeHelper::getTimezonesWithTime(RemindTimeHelper::MORNING_TIME);
-        $this->tzList[RemindTimeHelper::EVENING_TIME] = TimeHelper::getTimezonesWithTime(RemindTimeHelper::EVENING_TIME);
+        // $this->tzList[RemindTimeHelper::MORNING_TIME] = TimeHelper::getTimezonesWithTime(RemindTimeHelper::MORNING_TIME);
+        // $this->tzList[RemindTimeHelper::EVENING_TIME] = TimeHelper::getTimezonesWithTime(RemindTimeHelper::EVENING_TIME);
     }
 
     public function saveSubscription(Request $request)

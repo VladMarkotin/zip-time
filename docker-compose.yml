@@ -1,0 +1,48 @@
+
+services:
+  server:
+    image: nginx
+    volumes: 
+      - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./_docker/nginx/certs/:/etc/nginx/certs/
+      - ./:/var/www/
+      - ./public:/var/www/public
+    ports: 
+      - "8787:80"
+      - "8443:443"
+    container_name: nginx-zip-time
+  php-fpm2:
+    image: php:8.2-fpm
+    volumes:
+      - ./:/var/www/
+    container_name: php-fpm-container
+
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: ziptime
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+    - "8999:80"                  # Открываем phpMyAdmin на localhost:8080
+    environment:
+      PMA_HOST: mysql              # Имя твоего сервиса MySQL
+      PMA_USER: ${DB_USERNAME}               # Имя пользователя MySQL (например, root)
+      PMA_PASSWORD: ""             # Пароль пользователя (если пустой, оставь кавычки)
+
+  zip-time:
+    build: 
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    volumes:
+      - ./:/var/www 
+    container_name: zip-time
+volumes:
+  mysql-data:
