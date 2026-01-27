@@ -17,7 +17,7 @@
                     <v-slider
                         v-model="selectedMarkId"
                         min          = "1"
-                        max          = "4"
+                        :max         = "marksData.length"
                         step         = "1"
                         ticks        = "always"
                         tick-size    = "4"
@@ -110,6 +110,9 @@
             ...mapGetters(['getWindowScreendWidth']),
             selectedThumbIcon() {
                 const iconName = this.getMarkDataProperty('iconName');
+                if (!iconName) {
+                    return `/images/marks/${this.marksData[0]?.iconName || 'bad_mark_icon.svg'}`;
+                }
                 return `/images/marks/${iconName}`;
             },
             
@@ -145,6 +148,10 @@
             getMarkDataProperty(key = 'allProperty') {
                 const markData = this.marksData.find(markData => markData.id === this.selectedMarkId);
 
+                if (!markData) {
+                    return key === 'allProperty' ? null : undefined;
+                }
+
                 if (key === 'allProperty') {
                     return markData;
                 }
@@ -153,7 +160,8 @@
             }
         },
         created() {
-            this.selectedMarkId = this.marksData.find(markData => markData.mark === this.mark).id;
+            const found = this.marksData.find(markData => markData.mark === this.mark);
+            this.selectedMarkId = found ? found.id : 1;
         }
     }
 </script>

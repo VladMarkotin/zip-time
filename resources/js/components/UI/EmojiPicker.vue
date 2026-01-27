@@ -45,8 +45,8 @@
         >
             <v-tab 
             v-for="(data, idx) in emojiTabsData" 
-            :tab-value = "data.mark"
-            :key="idx"
+            :tab-value="data.mark"
+            :key="data.mark"
             >
                 <v-img 
                 :src="`/images/marks/${data.iconName}`"  
@@ -57,7 +57,7 @@
             <v-tabs-items v-model="jobMark">
                 <v-tab-item 
                     v-for="(data, idx) in emojiTabsData" 
-                    :key="idx"
+                    :key="data.mark"
                     :value="data.mark"
                 >
                     <v-card>
@@ -86,10 +86,11 @@
             return {
                 emojiPickerMenu: false,
                 emojiTabsData: [
-                    {iconName: 'bad_mark_icon.svg', mark: 0, description: 'I couldn\'t do it today'},
-                    {iconName: 'normal_mark_icon.svg', mark: 50, description: 'I completed the task, but it could have been a bit better'},
-                    {iconName: 'normal_mark_icon.svg', mark: 60, description: 'I completed the task, but it could have been a bit better'},
-                    {iconName: 'good_mark_icon.svg', mark: 99, description: 'I did a great job on the task'},
+                    { iconName: 'bad_mark_icon.svg', mark: 0, description: 'I couldn\'t do it today' },
+                    { iconName: 'unsatisfied_mark_icon.svg', mark: 33, description: 'I worked on it, but the result is far from ideal' },
+                    { iconName: '50%.png', mark: 50, description: 'I completed the task, but it could have been a bit better' },
+                    { iconName: 'satisfied_mark_icon.svg', mark: 66, description: 'I did a good job and I\'m satisfied with the result' },
+                    { iconName: 'excelent_mark_icon.svg', mark: 99, description: 'I did a great job on the task' },
                 ],
             }
         },
@@ -98,8 +99,8 @@
         computed: {
             ...mapGetters(['getTaskData']),
             selectedEmoji() {
-                const {iconName} = this.emojiTabsData.find(data => data.mark === this.jobMark);
-                
+                const found = this.emojiTabsData.find(data => data.mark === this.jobMark);
+                const iconName = found ? found.iconName : this.emojiTabsData[0].iconName;
                 return `/images/marks/${iconName}`;
             },
 

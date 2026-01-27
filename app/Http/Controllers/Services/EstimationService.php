@@ -52,20 +52,20 @@ class EstimationService
             $data['mark'] = intval($data['mark']);
             if(is_int($data['mark'])){
                 if(!$arg) {
-                    if (($data['mark'] < $defaultConfigs->cardRules[0]->minMark
-                          && $data['mark'] != 0 && ($data['mark'] != -1))) {
+                    // Преобразуем значения из конфигурации в числа для корректного сравнения
+                    $minMark = intval($defaultConfigs->cardRules[0]->minMark);
+                    $maxMark = intval($defaultConfigs->cardRules[0]->maxMark);
+                    
+                    // Разрешаем специальные значения: 0 и -1
+                    if ($data['mark'] == 0 || $data['mark'] == -1) {
                         $data['mark'] = -1;
-                        return false;
-                    } else if (($data['mark'] > $defaultConfigs->cardRules[0]->maxMark)) {
-                        $data['mark'] = -1;
-                        return false;
-                    } else if($data['mark']  === 0){
-                        $data['mark'] = -1;
-                        return false;
-                    } else if($data['mark']  == -1){
-                        $data['mark'] = -1;
-                        
                         return $data['mark'];
+                    }
+                    
+                    // Проверяем диапазон: новые оценки (35, 41, 50, 74, 90) должны проходить валидацию
+                    if ($data['mark'] < $minMark || $data['mark'] > $maxMark) {
+                        $data['mark'] = -1;
+                        return false;
                     }
                 } else{ //here own estimation is checking
                     if (($data['mark'] < 1)) {

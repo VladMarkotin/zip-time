@@ -72,18 +72,53 @@
                         id: 2,
                     },
                     {
+                        iconName: '35.svg',
+                        mark: 35,
+                        description: 'I made some progress, but there\'s still room for improvement. Every step forward counts!',
+                        descriptionTitle: 'Making progress',
+                        id: 3,
+                    },
+                    {
+                        iconName: '41.svg',
+                        mark: 41,
+                        description: 'I\'m getting closer to my goal. The effort I put in is starting to show results.',
+                        descriptionTitle: 'Getting closer',
+                        id: 4,
+                    },
+                    {
+                        iconName: '50.svg',
+                        mark: 50,
+                        description: 'I completed the task halfway. It\'s a solid foundation to build upon.',
+                        descriptionTitle: 'Halfway there',
+                        id: 5,
+                    },
+                    {
                         iconName: 'satisfied_mark_icon.svg', 
                         mark: 66, 
                         description: 'I did an excellent job with the task and I\'m completely satisfied with the result. It\'s always good to remind myself of my achievements and celebrate my hard work!',
                         descriptionTitle: 'Satisfied with the result',
-                        id: 3,
+                        id: 6,
+                    },
+                    {
+                        iconName: '74.svg',
+                        mark: 74,
+                        description: 'I did really well! I\'m proud of what I accomplished and the quality of my work.',
+                        descriptionTitle: 'Really good work',
+                        id: 7,
+                    },
+                    {
+                        iconName: '90.svg',
+                        mark: 90,
+                        description: 'I exceeded expectations! This is outstanding work that I can be truly proud of.',
+                        descriptionTitle: 'Outstanding',
+                        id: 8,
                     },
                     {
                         iconName: 'excelent_mark_icon.svg',   
                         mark: 99, 
                         description: 'Wow, I actually did even better than required! The key is to keep up this momentum and not stop at my current successes!',
                         descriptionTitle: 'excelent',
-                        id: 4,
+                        id: 9,
                     },
                 ],
             };
@@ -99,14 +134,13 @@
                 return this.dayMark;
             },
             selectedEmoji() {
-                const {iconName} = this.marksData.find(data => data.mark === this.mark);
-                
+                const found = this.marksData.find(data => data.mark === this.mark);
+                const iconName = found ? found.iconName : this.marksData[0].iconName;
                 return `/images/marks/${iconName}`;
             },
             selectedDescripTitle() {
-                const {descriptionTitle} = this.marksData.find(data => data.mark === this.mark);
-                
-                return descriptionTitle;
+                const found = this.marksData.find(data => data.mark === this.mark);
+                return found ? found.descriptionTitle : this.marksData[0].descriptionTitle;
             },
             isShowFullScreen() {
                 return this.getWindowScreendWidth < 768; 
